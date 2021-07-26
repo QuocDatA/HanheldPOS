@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Primary brand color. -->
+    <color name="primary">#005296</color>
+    <color name="primaryVariant">#005296</color>
+    <color name="onPrimary">#FFFFFF</color>
+
+    <!-- Secondary brand color. -->
+    <color name="secondary">#46BDFF</color>
+    <color name="secondaryVariant">#005296</color>
+    <color name="onSecondary">#FFFFFF</color>
+
+    <!-- Others -->
+    <color name="textPrimary">#000000</color>
+    <color name="textSecondary">#B8B8B8</color>
+    <color name="error">#FF0000</color>
+    <color name="onError">#FFFFFF</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="onSurface">#000000</color>
+    <color name="background">#FFFFFF</color>
+    <color name="backgroundDim">#80000000</color>
+    <color name="ripple">#D6D6D6</color>
+    <color name="divider">#EFEFEF</color>
+    <color name="disabled">#939393</color>
+</resources>

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="message"
+            type="String" />
+
+        <variable
+            name="btnConfirmText"
+            type="String" />
+
+        <variable
+            name="btnConfirmOnClick"
+            type="android.view.View.OnClickListener" />
+
+        <variable
+            name="btnDeniedText"
+            type="String" />
+
+        <variable
+            name="btnDeniedOnClick"
+            type="android.view.View.OnClickListener" />
+
+        <variable
+            name="reverseStyle"
+            type="Boolean" />
+
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        style="@style/Base.MaterialCardView"
+        android:layout_width="match_parent">
+
+        <LinearLayout
+            style="@style/RootLayout.WrapHeight"
+            android:background="@color/surface"
+            android:padding="@dimen/_8sdp">
+
+            <include layout="@layout/spacing_vertical" />
+
+            <TextView
+                style="@style/TextAppearance.Primary"
+                android:layout_width="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="@{message}"
+                tools:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s" />
+
+            <include layout="@layout/spacing_vertical" />
+
+            <LinearLayout
+                style="@style/RootLayout.WrapHeight"
+                android:layout_marginStart="@dimen/_8sdp"
+                android:layout_marginEnd="@dimen/_8sdp"
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    style="@style/MaterialButton.Secondary"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:onClick="@{btnDeniedOnClick}"
+                    android:text="@{btnDeniedText}"
+                    android:visibility="@{btnDeniedText == null ? View.GONE : View.VISIBLE}"
+                    app:cornerRadius="@dimen/_4sdp"
+                    tools:text="No" />
+
+                <View
+                    android:layout_width="@dimen/_8sdp"
+                    android:layout_height="0dp"
+                    android:visibility="@{btnDeniedText == null || btnDeniedText.empty ? View.GONE : View.VISIBLE}" />
+
+                <com.google.android.material.button.MaterialButton
+                    style="@style/MaterialButton.Accent"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:onClick="@{btnConfirmOnClick}"
+                    android:text="@{btnConfirmText}"
+                    android:visibility="@{btnConfirmText == null || btnConfirmText.empty ? View.GONE : View.VISIBLE}"
+                    app:cornerRadius="@dimen/_4sdp"
+                    tools:text="Yes" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+</layout>

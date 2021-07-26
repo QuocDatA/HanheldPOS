@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Hanheld POS</string>
+
+    <!-- Alert -->
+    <string name="alert_msg_an_error_has_occurred">Đã có lỗi xảy ra. Vui lòng thử lại</string>
+    <string name="alert_btn_positive">Đồng Ý</string>
+    <string name="alert_btn_negative">Huỷ</string>
+    <string name="alert_btn_go_to_settings">Mở Cài Đặt</string>
+    <string name="alert_msg_feature_is_temporary_close">Chức năng đang tạm đóng</string>
+
+</resources>
