@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.hanheldpos.ui.screens.welcome.WelcomeVM" />
+    </data>
+
+    <FrameLayout style="@style/RootLayout">
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                android:src="@drawable/bg_welcome"
+                tools:ignore="ContentDescription" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#99000000" />
+        </FrameLayout>
+
+        <LinearLayout
+            style="@style/RootLayout.WrapHeight"
+            android:layout_gravity="center"
+            android:gravity="center_horizontal">
+
+            <ImageView
+                android:layout_width="@dimen/_50sdp"
+                android:layout_height="@dimen/_50sdp"
+                android:src="@drawable/ic_app"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                style="@style/Base.TextAppearance"
+                android:layout_marginTop="@dimen/_24sdp"
+                android:text="Diadiem Point of Sale"
+                android:textColor="@color/onPrimary"
+                android:textSize="@dimen/_20ssp"
+                android:textStyle="bold" />
+
+            <TextView
+                style="@style/Base.TextAppearance"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:text="@string/run_and_grow_your_business"
+                android:textColor="@color/onPrimary"
+                android:textSize="@dimen/_13ssp"/>
+
+            <com.google.android.material.button.MaterialButton
+                style="@style/Base.MaterialButton"
+                android:layout_marginStart="@dimen/_13sdp"
+                android:layout_marginTop="@dimen/_52sdp"
+                android:layout_marginEnd="@dimen/_13sdp"
+                android:onClick="@{v -> viewModel.openDeviceCode()}"
+                android:padding="@dimen/_12sdp"
+                android:textSize="@dimen/_12ssp"
+                android:text="@string/get_started" />
+        </LinearLayout>
+
+    </FrameLayout>
+</layout>

@@ -4,7 +4,7 @@ import com.hanheldpos.R
 import com.hanheldpos.databinding.ActivityIntroBinding
 import com.hanheldpos.extension.navigateTo
 import com.hanheldpos.ui.base.activity.BaseActivity
-import com.hanheldpos.ui.screens.main.MainActivity
+import com.hanheldpos.ui.screens.welcome.WelcomeActivity
 
 class IntroActivity : BaseActivity<ActivityIntroBinding, IntroVM>(), IntroUV {
 
@@ -32,6 +32,6 @@ class IntroActivity : BaseActivity<ActivityIntroBinding, IntroVM>(), IntroUV {
     }
 
     override fun finishIntro() {
-        navigateTo(MainActivity::class.java, true)
+        navigateTo(WelcomeActivity::class.java, true)
     }
 }

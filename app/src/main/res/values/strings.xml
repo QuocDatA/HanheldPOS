@@ -7,5 +7,10 @@
     <string name="alert_btn_negative">Huỷ</string>
     <string name="alert_btn_go_to_settings">Mở Cài Đặt</string>
     <string name="alert_msg_feature_is_temporary_close">Chức năng đang tạm đóng</string>
+    <string name="device_code">Device Code</string>
+    <string name="run_and_grow_your_business">Run and grow your business</string>
+    <string name="get_started">Get Started</string>
+    <string name="sign_in">Sign In</string>
+    <string name="enter_passcode">Enter Passcode</string>
 
 </resources>
