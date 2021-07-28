@@ -20,7 +20,7 @@
                 style="@style/MaterialButton.Icon"
                 android:layout_height="match_parent"
                 android:layout_gravity="center|start"
-                android:src="@drawable/ic_arrow_back"
+                android:src="@drawable/ic_baseline_arrow_back_ios_24"
                 android:backgroundTint="@color/textPrimary"
                 android:onClick="@{() -> viewModel.backPress()}"
                 android:adjustViewBounds="true"
@@ -70,6 +70,7 @@
                     groupSize="@{viewModel.pinGroupSize}"
                     style="@style/BaseTextInput"
                     android:hint="@string/device_code"
+
                     android:inputType="textCapCharacters"
                     android:paddingStart="@dimen/_8sdp"
                     android:paddingTop="@dimen/_15sdp"

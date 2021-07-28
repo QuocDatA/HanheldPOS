@@ -15,7 +15,7 @@ class DeviceCodeActivity : BaseActivity<ActivityDeviceCodeBinding,DeviceCodeVM>(
     override fun layoutRes() = R.layout.activity_device_code;
 
     override fun initView() {
-        SystemHelper.hideSystemUI(window);
+
     }
 
     override fun initData() {

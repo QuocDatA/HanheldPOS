@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Primary brand color. -->
-    <color name="primary">#005296</color>
-    <color name="primaryVariant">#005296</color>
+    <color name="primary">#FD2C70</color>
+    <color name="primaryVariant">#B3FD2B70</color>
     <color name="onPrimary">#FFFFFF</color>
 
     <!-- Secondary brand color. -->
-    <color name="secondary">#46BDFF</color>
-    <color name="secondaryVariant">#005296</color>
+    <color name="secondary">#0B70D7</color>
+    <color name="secondaryVariant">#0965C1</color>
     <color name="onSecondary">#FFFFFF</color>
 
     <!-- Others -->

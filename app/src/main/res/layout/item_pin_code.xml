@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.hanheldpos.ui.screens.pincode.PinCodeRecyclerElement" />
+    </data>
+
+    <FrameLayout
+        android:layout_marginStart="@dimen/_5sdp"
+        android:layout_marginEnd="@dimen/_5sdp"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_50sdp">
+
+        <RelativeLayout style="@style/RootLayout">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnPinItem"
+                    style="@style/MaterialButton.Text"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@{item.text}"
+                    android:textColor="@color/textPrimary"
+                    android:textSize="@dimen/_15sdp" />
+
+                <ImageView
+                    imgSrc="@{item.resource}"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerInside"
+                    tools:ignore="ContentDescription" />
+
+            </FrameLayout>
+            <View
+                android:id="@+id/underLine"
+                android:layout_width="fill_parent"
+                android:layout_height="0.5dp"
+                android:layout_alignParentBottom="true"
+                android:background="@color/textSecondary" />
+
+        </RelativeLayout>
+    </FrameLayout>
+</layout>

@@ -40,7 +40,7 @@
 
             <TextView
                 style="@style/Base.TextAppearance"
-                android:layout_marginTop="@dimen/_24sdp"
+                android:layout_marginTop="@dimen/_20sdp"
                 android:text="Diadiem Point of Sale"
                 android:textColor="@color/onPrimary"
                 android:textSize="@dimen/_20ssp"
@@ -51,7 +51,7 @@
                 android:layout_marginTop="@dimen/_5sdp"
                 android:text="@string/run_and_grow_your_business"
                 android:textColor="@color/onPrimary"
-                android:textSize="@dimen/_13ssp"/>
+                android:textSize="@dimen/_12ssp"/>
 
             <com.google.android.material.button.MaterialButton
                 style="@style/Base.MaterialButton"
