@@ -32,7 +32,7 @@
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:text="@string/device_code"
-                android:textSize="@dimen/_13ssp"
+                android:textSize="@dimen/_15ssp"
                 android:textStyle="bold" />
 
             <com.google.android.material.button.MaterialButton
@@ -45,7 +45,7 @@
                 android:paddingStart="@dimen/_18sdp"
                 android:paddingEnd="@dimen/_18sdp"
                 android:text="@string/sign_in"
-                android:textSize="@dimen/_13ssp" />
+                android:textSize="@dimen/_15ssp" />
         </FrameLayout>
 
         <include layout="@layout/divider_ver" />
@@ -54,10 +54,10 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/BaseTextInput.OutlineBox"
-                android:layout_marginStart="@dimen/_13sdp"
-                android:layout_marginTop="@dimen/_25sdp"
-                android:layout_marginEnd="@dimen/_13sdp"
-                android:layout_marginBottom="@dimen/_25sdp"
+                android:layout_marginStart="@dimen/_17sdp"
+                android:layout_marginTop="@dimen/_34sdp"
+                android:layout_marginEnd="@dimen/_17sdp"
+                android:layout_marginBottom="@dimen/_34sdp"
                 android:importantForAutofill="no"
                 app:endIconMode="clear_text"
                 app:endIconDrawable="@drawable/ic_remove_10dp"
@@ -70,12 +70,11 @@
                     groupSize="@{viewModel.pinGroupSize}"
                     style="@style/BaseTextInput"
                     android:hint="@string/device_code"
-
                     android:inputType="textCapCharacters"
-                    android:paddingStart="@dimen/_8sdp"
-                    android:paddingTop="@dimen/_15sdp"
-                    android:paddingEnd="@dimen/_8sdp"
-                    android:paddingBottom="@dimen/_15sdp"
+                    android:paddingStart="@dimen/_10sdp"
+                    android:paddingTop="@dimen/_18sdp"
+                    android:paddingEnd="@dimen/_10sdp"
+                    android:paddingBottom="@dimen/_18sdp"
                     android:textAllCaps="true"
                     android:textSize="@dimen/_12ssp"
                     android:text="@{viewModel.pinTextLD}"/>
@@ -84,7 +83,7 @@
             <TextView
                 style="@style/Base.TextAppearance"
                 android:textColor="@color/textSecondary"
-                android:textSize="@dimen/_8sdp"
+                android:textSize="@dimen/_8ssp"
                 android:gravity="center"
                 android:layout_marginStart="@dimen/_13sdp"
                 android:layout_marginEnd="@dimen/_13sdp"

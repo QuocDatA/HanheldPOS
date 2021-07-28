@@ -29,7 +29,7 @@
                     android:layout_height="match_parent"
                     android:text="@{item.text}"
                     android:textColor="@color/textPrimary"
-                    android:textSize="@dimen/_15sdp" />
+                    android:textSize="@dimen/_17sdp" />
 
                 <ImageView
                     imgSrc="@{item.resource}"

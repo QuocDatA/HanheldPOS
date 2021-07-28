@@ -24,7 +24,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#99000000" />
+                android:background="#9A000000" />
         </FrameLayout>
 
         <LinearLayout
@@ -33,8 +33,8 @@
             android:gravity="center_horizontal">
 
             <ImageView
-                android:layout_width="@dimen/_50sdp"
-                android:layout_height="@dimen/_50sdp"
+                android:layout_width="@dimen/_60sdp"
+                android:layout_height="@dimen/_60sdp"
                 android:src="@drawable/ic_app"
                 tools:ignore="ContentDescription" />
 
@@ -43,7 +43,7 @@
                 android:layout_marginTop="@dimen/_20sdp"
                 android:text="Diadiem Point of Sale"
                 android:textColor="@color/onPrimary"
-                android:textSize="@dimen/_20ssp"
+                android:textSize="@dimen/_25ssp"
                 android:textStyle="bold" />
 
             <TextView
@@ -51,16 +51,16 @@
                 android:layout_marginTop="@dimen/_5sdp"
                 android:text="@string/run_and_grow_your_business"
                 android:textColor="@color/onPrimary"
-                android:textSize="@dimen/_12ssp"/>
+                android:textSize="@dimen/_15ssp"/>
 
             <com.google.android.material.button.MaterialButton
                 style="@style/Base.MaterialButton"
-                android:layout_marginStart="@dimen/_13sdp"
-                android:layout_marginTop="@dimen/_52sdp"
-                android:layout_marginEnd="@dimen/_13sdp"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_55sdp"
+                android:layout_marginEnd="@dimen/_15sdp"
                 android:onClick="@{v -> viewModel.openDeviceCode()}"
                 android:padding="@dimen/_12sdp"
-                android:textSize="@dimen/_12ssp"
+                android:textSize="@dimen/_15ssp"
                 android:text="@string/get_started" />
         </LinearLayout>
 
