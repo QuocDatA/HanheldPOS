@@ -1,18 +1,20 @@
 package com.hanheldpos.ui.screens.home.order
 
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentOrderBinding
 import com.hanheldpos.model.home.MenuModel
+import com.hanheldpos.model.home.ProductModel
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
-import com.hanheldpos.ui.screens.home.order.adapter.OrderMenuAdapter
+import com.hanheldpos.ui.screens.home.order.adapter.OrderProductAdapter
 
 class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
     override fun layoutRes() = R.layout.fragment_order;
 
     // Adapter
-    private lateinit var menuAdapter: OrderMenuAdapter;
+    private lateinit var productAdapter: OrderProductAdapter;
 
 
     override fun viewModelClass(): Class<OrderVM> {
@@ -29,26 +31,21 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
 
     override fun initView() {
 
+        // product adapter vs lítener
+        productAdapter = OrderProductAdapter(
+          listener = object : BaseItemClickListener<ProductModel> {
+              override fun onItemClick(adapterPosition: Int, item: ProductModel) {
 
-        //menu adapter vs listener
-        menuAdapter = OrderMenuAdapter(
-            listener = object : BaseItemClickListener<MenuModel> {
-                override fun onItemClick(adapterPosition: Int, item: MenuModel) {
-                    viewModel.menuSelected.value = item;
-                    viewModel.menuItemSelected(adapterPosition, item);
-                }
-            }
+              }
+          }
         );
 
-        binding.orderMenu.apply {
-            adapter = menuAdapter;
-            addItemDecoration(DividerItemDecoration(context,DividerItemDecoration.HORIZONTAL))
+        binding.orderProductList.apply {
+            adapter = productAdapter;
+            val itemDrawable = DividerItemDecoration(context,DividerItemDecoration.VERTICAL);
+            itemDrawable.setDrawable(ContextCompat.getDrawable(context,R.drawable.divider_vertical)!!);
+            addItemDecoration(itemDrawable);
         }
-
-        viewModel.menuSelected.observe(this, {
-
-            });
-
     }
 
     override fun initData() {
@@ -60,8 +57,13 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
     }
 
     override fun menuListObserve() {
-        menuAdapter.submitList(viewModel.getListOrderMenu());
-        menuAdapter.notifyDataSetChanged();
+
+    }
+
+
+    override fun productListObserve() {
+        productAdapter.submitList(viewModel.getProductList())
+        productAdapter.notifyDataSetChanged();
     }
 
 

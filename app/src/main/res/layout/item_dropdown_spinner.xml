@@ -23,7 +23,7 @@
         android:ellipsize="end"
         android:enabled="@{enable??true}"
         android:hint="@{hint}"
-        android:padding="@dimen/_2sdp"
+        android:padding="@dimen/_5sdp"
         android:singleLine="true"
         android:text="@{text}"
         android:textColor="@color/textPrimary"

@@ -24,6 +24,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
         Order(2, R.string.order);
     }
 
+
+
     override fun layoutRes() = R.layout.fragment_home;
 
     override fun viewModelClass(): Class<HomeVM> {

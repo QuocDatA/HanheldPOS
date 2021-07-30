@@ -4,4 +4,5 @@ import com.hanheldpos.ui.base.BaseUserView
 
 interface OrderUV : BaseUserView {
     fun menuListObserve();
+    fun productListObserve()
 }

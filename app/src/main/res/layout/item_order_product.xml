@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="item"
             type="com.hanheldpos.model.home.ProductModel" />
@@ -10,11 +12,60 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/_70sdp"
-        >
+        android:layout_marginTop="@dimen/_11sdp"
+        android:layout_marginBottom="@dimen/_11sdp"
+        android:layout_marginStart="@dimen/_14sdp"
+        android:layout_marginEnd="@dimen/_14sdp"
+        android:orientation="horizontal">
+
         <ImageView
+            imageUrl="@{item.img}"
             android:layout_width="@dimen/_70sdp"
             android:layout_height="match_parent"
-            android:src="@{}"
-            />
+            tools:ignore="ContentDescription"
+            tools:src="@drawable/ic_launcher_background"/>
+
+        <LinearLayout
+            android:layout_marginStart="@dimen/_8ssp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/productText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:textColor="@color/textPrimary"
+                    android:text="@{item.text, default=`name`}"
+                    android:textSize="@dimen/_12ssp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:textColor="@color/textPrimary"
+                    priceView="@{item.price, default=0.0}"
+                    android:textSize="@dimen/_12ssp"
+                    tools:ignore="RelativeOverlap" />
+            </RelativeLayout>
+
+            <TextView
+                android:layout_marginTop="@dimen/_5ssp"
+                android:layout_width="wrap_content"
+                android:maxLines="2"
+                android:ellipsize="end"
+                android:layout_height="wrap_content"
+                android:textColor="@color/textSecondary"
+                android:textSize="@dimen/_10ssp"
+                android:text="@{item.description, default=`description`}"
+                />
+        </LinearLayout>
     </LinearLayout>
 </layout>

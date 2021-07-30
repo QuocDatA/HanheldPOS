@@ -32,7 +32,7 @@
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:text="@string/device_code"
-                android:textSize="@dimen/_15ssp"
+                android:textSize="@dimen/_13ssp"
                 android:textStyle="bold" />
 
             <com.google.android.material.button.MaterialButton
@@ -45,7 +45,7 @@
                 android:paddingStart="@dimen/_18sdp"
                 android:paddingEnd="@dimen/_18sdp"
                 android:text="@string/sign_in"
-                android:textSize="@dimen/_15ssp" />
+                android:textSize="@dimen/_13ssp" />
         </FrameLayout>
 
         <include layout="@layout/divider_ver" />
@@ -55,9 +55,9 @@
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/BaseTextInput.OutlineBox"
                 android:layout_marginStart="@dimen/_17sdp"
-                android:layout_marginTop="@dimen/_34sdp"
+                android:layout_marginTop="@dimen/_27sdp"
                 android:layout_marginEnd="@dimen/_17sdp"
-                android:layout_marginBottom="@dimen/_34sdp"
+                android:layout_marginBottom="@dimen/_27sdp"
                 android:importantForAutofill="no"
                 app:endIconMode="clear_text"
                 app:endIconDrawable="@drawable/ic_remove_10dp"
@@ -72,22 +72,23 @@
                     android:hint="@string/device_code"
                     android:inputType="textCapCharacters"
                     android:paddingStart="@dimen/_10sdp"
-                    android:paddingTop="@dimen/_18sdp"
+                    android:paddingTop="@dimen/_17sdp"
                     android:paddingEnd="@dimen/_10sdp"
-                    android:paddingBottom="@dimen/_18sdp"
+                    android:paddingBottom="@dimen/_17sdp"
                     android:textAllCaps="true"
                     android:textSize="@dimen/_12ssp"
                     android:text="@{viewModel.pinTextLD}"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
+                android:layout_marginTop="@dimen/_6sdp"
                 style="@style/Base.TextAppearance"
-                android:textColor="@color/textSecondary"
-                android:textSize="@dimen/_8ssp"
-                android:gravity="center"
                 android:layout_marginStart="@dimen/_13sdp"
                 android:layout_marginEnd="@dimen/_13sdp"
-                android:text="Device Codes are created in Dashboard for each new device, allowing you to sign in without ever sharing your email and password" />
+                android:gravity="center"
+                android:text="Device Codes are created in Dashboard for each new device, allowing you to sign in without ever sharing your email and password"
+                android:textColor="@color/textSecondary"
+                android:textSize="@dimen/_9ssp" />
         </LinearLayout>
     </LinearLayout>
 </layout>

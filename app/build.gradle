@@ -54,8 +54,8 @@ android {
 
 dependencies {
     // Modules
-    implementation project(path: ':pos_components')
-    implementation project(path: ':pos_config')
+//    implementation project(path: ':pos_components')
+//    implementation project(path: ':pos_config')
     implementation project(path: ':utils')
 
     // Android Core

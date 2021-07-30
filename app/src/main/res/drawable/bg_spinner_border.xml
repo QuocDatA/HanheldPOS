@@ -9,7 +9,7 @@
                     <corners android:radius="4px" />
                 </shape>
             </item>
-            <item android:drawable="@drawable/ic_dropdown" android:gravity="center_vertical|end" android:right="10px" />
+            <item android:drawable="@drawable/ic_dropdown" android:gravity="center_vertical|end" android:right="27px" />
         </layer-list>
     </item>
 </selector>
