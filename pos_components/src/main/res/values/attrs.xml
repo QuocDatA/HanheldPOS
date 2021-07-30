@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="PTextView">
+        <attr name="useTextColor" format="enum">
+            <enum name="color0" value="0" />
+            <enum name="color1" value="1" />
+            <enum name="color2" value="2" />
+            <enum name="color3" value="3" />
+            <enum name="color4" value="4" />
+            <enum name="color5" value="5" />
+            <enum name="color6" value="6" />
+            <enum name="color7" value="7" />
+            <enum name="color8" value="8" />
+            <enum name="color9" value="9" />
+            <enum name="color10" value="10" />
+            <enum name="color11" value="11" />
+            <enum name="color12" value="12" />
+            <enum name="color13" value="13" />
+            <enum name="color14" value="14" />
+            <enum name="color15" value="15" />
+
+
+        </attr>
+        <attr name="useTextHeader" format="enum">
+            <enum name="h1" value="1" />
+            <enum name="h2" value="2" />
+            <enum name="h3" value="3" />
+            <enum name="h4" value="4" />
+            <enum name="h5" value="5" />
+            <enum name="h6" value="6" />
+        </attr>
+
+        <attr name="useFontStyle" format="enum">
+            <enum name="normal" value="1" />
+            <enum name="italic" value="2" />
+            <enum name="bold" value="3" />
+        </attr>
+
+    </declare-styleable>
+
+    <declare-styleable name="PMaterialButton">
+        <attr name="pbtn_useTextColor" format="enum">
+            <enum name="color0" value="0" />
+            <enum name="color1" value="1" />
+            <enum name="color2" value="2" />
+            <enum name="color3" value="3" />
+            <enum name="color4" value="4" />
+            <enum name="color5" value="5" />
+            <enum name="color6" value="6" />
+            <enum name="color7" value="7" />
+            <enum name="color8" value="8" />
+            <enum name="color9" value="9" />
+            <enum name="color10" value="10" />
+            <enum name="color11" value="11" />
+            <enum name="color12" value="12" />
+            <enum name="color13" value="13" />
+            <enum name="color14" value="14" />
+            <enum name="color15" value="15" />
+
+        </attr>
+        <attr name="pbtn_useTextHeader" format="enum">
+            <enum name="h1" value="1" />
+            <enum name="h2" value="2" />
+            <enum name="h3" value="3" />
+            <enum name="h4" value="4" />
+            <enum name="h5" value="5" />
+            <enum name="h6" value="6" />
+        </attr>
+
+        <attr name="pbtn_useFontStyle" format="enum">
+            <enum name="normal" value="1" />
+            <enum name="italic" value="2" />
+            <enum name="bold" value="3" />
+        </attr>
+
+        <attr name="pbtn_useBackgroundColor" format="boolean" />
+
+    </declare-styleable>
+
+    <declare-styleable name="PTextInputEditText">
+        <attr name="ipt_useTextColor" format="enum">
+            <enum name="color0" value="0" />
+            <enum name="color1" value="1" />
+            <enum name="color2" value="2" />
+            <enum name="color3" value="3" />
+            <enum name="color4" value="4" />
+            <enum name="color5" value="5" />
+            <enum name="color6" value="6" />
+            <enum name="color7" value="7" />
+            <enum name="color8" value="8" />
+            <enum name="color9" value="9" />
+            <enum name="color10" value="10" />
+            <enum name="color11" value="11" />
+            <enum name="color12" value="12" />
+            <enum name="color13" value="13" />
+            <enum name="color14" value="14" />
+            <enum name="color15" value="15" />
+
+        </attr>
+
+        <attr name="ipt_useHintTextColor" format="enum">
+            <enum name="color0" value="0" />
+            <enum name="color1" value="1" />
+            <enum name="color2" value="2" />
+            <enum name="color3" value="3" />
+            <enum name="color4" value="4" />
+            <enum name="color5" value="5" />
+            <enum name="color6" value="6" />
+            <enum name="color7" value="7" />
+            <enum name="color8" value="8" />
+            <enum name="color9" value="9" />
+            <enum name="color10" value="10" />
+            <enum name="color11" value="11" />
+            <enum name="color12" value="12" />
+            <enum name="color13" value="13" />
+            <enum name="color14" value="14" />
+            <enum name="color15" value="15" />
+
+
+        </attr>
+
+        <attr name="ipt_useTextHeader" format="enum">
+            <enum name="h1" value="1" />
+            <enum name="h2" value="2" />
+            <enum name="h3" value="3" />
+            <enum name="h4" value="4" />
+            <enum name="h5" value="5" />
+            <enum name="h6" value="6" />
+        </attr>
+
+        <attr name="ipt_useFontStyle" format="enum">
+            <enum name="normal" value="1" />
+            <enum name="italic" value="2" />
+            <enum name="bold" value="3" />
+        </attr>
+
+    </declare-styleable>
+
+    <declare-styleable name="PAppCompatAutoCompleteTextView">
+        <attr name="act_useTextColor" format="enum">
+            <enum name="color0" value="0" />
+            <enum name="color1" value="1" />
+            <enum name="color2" value="2" />
+            <enum name="color3" value="3" />
+            <enum name="color4" value="4" />
+            <enum name="color5" value="5" />
+            <enum name="color6" value="6" />
+            <enum name="color7" value="7" />
+            <enum name="color8" value="8" />
+            <enum name="color9" value="9" />
+            <enum name="color10" value="10" />
+            <enum name="color11" value="11" />
+            <enum name="color12" value="12" />
+            <enum name="color13" value="13" />
+            <enum name="color14" value="14" />
+            <enum name="color15" value="15" />
+
+        </attr>
+
+        <attr name="act_useHintTextColor" format="enum">
+            <enum name="color0" value="0" />
+            <enum name="color1" value="1" />
+            <enum name="color2" value="2" />
+            <enum name="color3" value="3" />
+            <enum name="color4" value="4" />
+            <enum name="color5" value="5" />
+            <enum name="color6" value="6" />
+            <enum name="color7" value="7" />
+            <enum name="color8" value="8" />
+            <enum name="color9" value="9" />
+            <enum name="color10" value="10" />
+            <enum name="color11" value="11" />
+            <enum name="color12" value="12" />
+            <enum name="color13" value="13" />
+            <enum name="color14" value="14" />
+            <enum name="color15" value="15" />
+
+
+        </attr>
+
+        <attr name="act_useTextHeader" format="enum">
+            <enum name="h1" value="1" />
+            <enum name="h2" value="2" />
+            <enum name="h3" value="3" />
+            <enum name="h4" value="4" />
+            <enum name="h5" value="5" />
+            <enum name="h6" value="6" />
+        </attr>
+
+        <attr name="act_useFontStyle" format="enum">
+            <enum name="normal" value="1" />
+            <enum name="italic" value="2" />
+            <enum name="bold" value="3" />
+        </attr>
+
+    </declare-styleable>
+
+    <declare-styleable name="PDropdown">
+        <attr name="dd_useHint" format="string"/>
+    </declare-styleable>
+
+</resources>
