@@ -1,6 +1,7 @@
 package com.hanheldpos.ui.base.adapter
 
 import androidx.databinding.ViewDataBinding
+import androidx.databinding.library.baseAdapters.BR
 import androidx.recyclerview.widget.RecyclerView
 
 class BaseBindingViewHolder<T>(
@@ -14,8 +15,7 @@ class BaseBindingViewHolder<T>(
         item?.let {
             this.item = it
             binding.apply {
-                //TODO enable it when using recycler item
-//                setVariable(BR.item, it)
+                setVariable(BR.item, it)
                 executePendingBindings()
             }
         }

@@ -7,10 +7,12 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.IdRes
 import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
 import com.hanheldpos.ui.base.activity.BaseActivity
@@ -157,4 +159,62 @@ abstract class BaseFragment<T : ViewDataBinding, VM : BaseViewModel> : Fragment(
             callback
         )
     }
+
+    /**
+     * Check if fragment is already in ContainerView then show fragment
+     * else add new one to
+     *
+     * @param containerViewId
+     * @param fragment
+     */
+    protected open fun showOrAddFragment(
+        @IdRes containerViewId: Int,
+        fragment: Fragment?
+    ) {
+        showOrAddFragment(null, containerViewId, fragment)
+    }
+
+    /**
+     * Check if fragment is already in ContainerView then show fragment
+     * else add new one to
+     *
+     * @param containerViewId
+     * @param fragment
+     */
+    protected open fun showOrAddFragment(
+        fragmentManager: FragmentManager?,
+        @IdRes containerViewId: Int,
+        fragment: Fragment?
+    ) {
+        var fragmentManager = fragmentManager
+        if (fragment == null) return
+        if (fragmentManager == null) fragmentManager = childFragmentManager
+        val fragmentTag = getFragmentTag(fragment)
+        val fragmentByTag = fragmentManager.findFragmentByTag(fragmentTag)
+        if (fragmentByTag != null) {
+            //if the fragment exists, show it.
+            fragmentManager.beginTransaction().show(fragmentByTag).commit()
+        } else {
+            //if the fragment does not exist, add it to fragment manager.
+            fragmentManager.beginTransaction().add(containerViewId, fragment, fragmentTag).commit()
+        }
+    }
+
+    protected open fun hideFragment(
+        fragment: Fragment?
+    ) {
+        if (fragment == null) return
+        val fragmentManager = childFragmentManager
+        val fragmentTag = getFragmentTag(fragment)
+        if (fragmentManager.findFragmentByTag(fragmentTag) != null) {
+            //if the other fragment is visible, hide it.
+            fragmentManager.beginTransaction().hide(fragment).commit()
+        }
+    }
+
+    private fun getFragmentTag(fragment: Fragment): String {
+        return fragment.javaClass.simpleName
+    }
+
+
 }

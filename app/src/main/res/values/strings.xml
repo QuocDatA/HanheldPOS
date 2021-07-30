@@ -12,5 +12,12 @@
     <string name="get_started">Get Started</string>
     <string name="sign_in">Sign In</string>
     <string name="enter_passcode">Enter Passcode</string>
+    <!-- Page-->
+    <string name="table">Table</string>
+    <string name="order">Order</string>
+
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

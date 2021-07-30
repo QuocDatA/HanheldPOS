@@ -42,8 +42,8 @@ class PinCodeVM : BaseUiViewModel<PinCodeUV>() {
         list.add(PinCodeRecyclerElement("8", null))
         list.add(PinCodeRecyclerElement("7", null))
         // Line 4
-        list.add(PinCodeRecyclerElement(null, R.drawable.ic_baseline_arrow_back_l))
-        list.add(PinCodeRecyclerElement("0", null))
+        list.add(PinCodeRecyclerElement(null, R.drawable.ic_baseline_arrow_back_l,false))
+        list.add(PinCodeRecyclerElement("0", null,false))
 
         return list;
     }
@@ -75,6 +75,7 @@ class PinCodeVM : BaseUiViewModel<PinCodeUV>() {
                 }
             }
             // Fetch data
+            uiCallback?.goHome();
         }
     }
 

@@ -4,7 +4,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.hanheldpos.R
 import com.hanheldpos.databinding.ActivityPinCodeBinding
+import com.hanheldpos.extension.navigateTo
 import com.hanheldpos.ui.base.activity.BaseActivity
+import com.hanheldpos.ui.screens.main.MainActivity
 import com.utils.helper.SystemHelper
 
 class PinCodeActivity : BaseActivity<ActivityPinCodeBinding,PinCodeVM>(), PinCodeUV{
@@ -43,6 +45,10 @@ class PinCodeActivity : BaseActivity<ActivityPinCodeBinding,PinCodeVM>(), PinCod
 
     override fun goBack() {
         finish();
+    }
+
+    override fun goHome() {
+        navigateTo(MainActivity::class.java,true);
     }
 
 }

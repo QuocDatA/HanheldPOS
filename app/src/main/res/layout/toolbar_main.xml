@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="com.hanheldpos.ui.screens.home.HomeFragment.HomePage"/>
+        <variable
+            name="viewModelHome"
+            type="com.hanheldpos.ui.screens.home.HomeVM" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="#E5E5E5"
+        android:orientation="horizontal">
+
+        <ImageButton
+            style="@style/Base.MaterialButton"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:src="@drawable/ic_menu"
+            tools:ignore="ContentDescription" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:layout_weight="1">
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/spinnerMain"
+                style="@style/Spinner.dropdown.notOverLap"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:minWidth="@dimen/_80sdp"
+                tools:listitem="@layout/item_dropdown_spinner" />
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/spnGroupBy"
+                style="@style/Spinner.dropdown.notOverLap"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:minWidth="@dimen/_80sdp"
+                tools:listitem="@layout/item_dropdown_spinner" />
+        </LinearLayout>
+
+        <ImageButton
+            style="@style/MaterialButton.Icon"
+            android:scaleType="centerInside"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_cart"
+            tools:ignore="ContentDescription" />
+
+    </LinearLayout>
+</layout>

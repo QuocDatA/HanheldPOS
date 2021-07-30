@@ -230,6 +230,24 @@
         <item name="android:layout_height">wrap_content</item>
     </style>
 
+    <!-- Buttom Image-->
+    <style name="Button.Image" parent="Widget.AppCompat.ActionButton">
+        <item name="android:layout_margin">0dp</item>
+        <item name="android:layout_width">@dimen/ic_img</item>
+        <item name="android:layout_height">@dimen/ic_img</item>
+        <item name="android:scaleType">centerCrop</item>
+        <item name="android:layout_gravity">center</item>
+    </style>
+
+    <style name="Button.Image.Margin" parent="Button.Image">
+        <item name="android:layout_margin">@dimen/_4sdp</item>
+    </style>
+
+    <style name="Button.Image.Big" parent="Button.Image.Margin">
+        <item name="android:layout_width">@dimen/ic_img_L</item>
+        <item name="android:layout_height">@dimen/ic_img_L</item>
+    </style>
+
     <!-- Radio Button & Checkbox -->
     <style name="MaterialRadio" parent="Widget.AppCompat.CompoundButton.RadioButton">
         <item name="android:layout_width">wrap_content</item>
@@ -250,6 +268,21 @@
         <item name="android:background">?attr/selectableItemBackground</item>
         <item name="android:minWidth">0dp</item>
         <item name="android:minHeight">0dp</item>
+    </style>
+
+    <!-- Spinner -->
+    <style name="Spinner" parent="Widget.AppCompat.Spinner">
+
+    </style>
+
+    <style name="Spinner.dropdown.notOverLap" parent="Spinner">
+        <item name="android:background">@drawable/bg_spinner_border</item>
+        <item name="android:popupBackground">@drawable/bg_spinner_item_border</item>
+        <item name="overlapAnchor">false</item>
+        <item name="android:layout_width">@dimen/_80sdp</item>
+        <item name="android:layout_height">@dimen/_24sdp</item>
+        <item name="android:popupElevation">0dp</item>
+        <item name="android:spinnerMode">dropdown</item>
     </style>
 
 </resources>

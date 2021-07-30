@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable
+            name="text"
+            type="String" />
+
+        <variable
+            name="enable"
+            type="Boolean" />
+
+        <variable
+            name="hint"
+            type="String" />
+    </data>
+
+    <CheckedTextView
+        android:id="@+id/text1"
+        style="?android:attr/spinnerDropDownItemStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:enabled="@{enable??true}"
+        android:hint="@{hint}"
+        android:padding="@dimen/_2sdp"
+        android:singleLine="true"
+        android:text="@{text}"
+        android:textColor="@color/textPrimary"
+        android:textColorHint="@color/ripple"
+        android:textSize="@dimen/_12sdp"
+        />
+</layout>

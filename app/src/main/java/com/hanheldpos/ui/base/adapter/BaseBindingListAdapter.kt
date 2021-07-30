@@ -15,7 +15,8 @@ abstract class BaseBindingListAdapter<T>(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseBindingViewHolder<T> {
         DataBindingUtil.inflate<ViewDataBinding>(
             LayoutInflater.from(parent.context),
-            viewType, parent, false
+            viewType,
+            parent, false
         ).also {
             return BaseBindingViewHolder(it, itemClickListener)
         }

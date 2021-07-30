@@ -4,8 +4,10 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.text.Editable;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.style.ReplacementSpan;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,9 +15,39 @@ import androidx.databinding.BindingAdapter;
 
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.util.Collection;
 import java.util.regex.Pattern;
 
 public class BindingAdapterUtils {
+
+    public static boolean visibleObject(Object object) {
+        boolean visibleObject = true;
+        if (object != null) {
+            if (object instanceof CharSequence) {
+                if (TextUtils.isEmpty((CharSequence) object) || object.equals("null")) {
+                    visibleObject = false;
+                }
+            } else if (object instanceof Boolean) {
+                if (!(Boolean) object) {
+                    visibleObject = false;
+                }
+            } else if (object instanceof Collection) {
+                if (((Collection) object).size() == 0) {
+                    visibleObject = false;
+                }
+            }
+        } else
+            visibleObject = false;
+        return visibleObject;
+    }
+
+    @BindingAdapter("visibleObject")
+    public static void setVisibleObject(View view, Object object) {
+        if (visibleObject(object))
+            view.setVisibility(View.VISIBLE);
+        else
+            view.setVisibility(View.GONE);
+    }
 
     @BindingAdapter({"groupSize"})
     public static void setGroupSize(TextInputEditText inputEditText, int groupSize) {
@@ -73,4 +105,6 @@ public class BindingAdapterUtils {
             }
         });
     }
+
+
 }
