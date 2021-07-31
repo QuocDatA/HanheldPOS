@@ -9,6 +9,7 @@ import com.hanheldpos.model.home.MenuModel
 import com.hanheldpos.model.home.ProductModel
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
 import com.hanheldpos.ui.base.viewmodel.BaseViewModel
+import com.hanheldpos.utils.screens.notifyValueChange
 
 class OrderVM : BaseUiViewModel<OrderUV>() {
 
@@ -48,6 +49,7 @@ class OrderVM : BaseUiViewModel<OrderUV>() {
         rs.add(MenuModel("main_course", "Main Course"));
         rs.add(MenuModel("sandwich", "Sandwich"));
         menuList.value = rs;
+        menuList.notifyValueChange();
     }
 
     fun getListOrderMenu(): List<MenuModel>? {

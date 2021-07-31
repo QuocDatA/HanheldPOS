@@ -2,6 +2,9 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
+        <variable
+            name="item"
+            type="com.hanheldpos.model.home.TableModel" />
 
     </data>
     <FrameLayout
@@ -15,7 +18,9 @@
             android:background="#EEEEEE"
             >
             <TextView
-                android:text="@{}"
+                android:text="@{item.name, default=`Table`}"
+                android:textSize="@dimen/_13ssp"
+                android:textColor="@color/textPrimary"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
         </LinearLayout>

@@ -77,6 +77,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
         val tabSpinnerAdapter = TabSpinnerAdapter(fragmentContext)
         tabSpinnerAdapter.submitList(HomePage.values().toMutableList())
         binding.toolbarLayout.spinnerMain.adapter = tabSpinnerAdapter
+
+
     }
 
     private fun switchToPage(page: HomePage?) {
