@@ -1,5 +1,6 @@
 package com.hanheldpos.ui.screens.main.home.order
 
+import android.view.View
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentOrderBinding
 import com.hanheldpos.model.home.order.CategoryModel
@@ -64,6 +65,8 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
 
     override fun showDropdownCategories(isShowed: Boolean) {
         if(isShowed){
+            binding.layoutCategory.visibility = View.VISIBLE;
+            binding.backgroundDropdown.visibility = View.VISIBLE;
             binding.layoutCategory.animate().apply {
                 duration = 200;
                 alpha(1f)
@@ -74,9 +77,12 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
         }
         else{
             binding.layoutCategory.animate().apply {
-                duration = 0;
+                duration = 200;
                 alpha(0.5f)
                 translationYBy(-100f)
+            }.withEndAction {
+                binding.layoutCategory.visibility = View.GONE;
+                binding.backgroundDropdown.visibility = View.GONE;
             }.start();
         }
     }

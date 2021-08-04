@@ -22,27 +22,33 @@
             android:layout_height="@dimen/_34sdp">
 
             <LinearLayout
-
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
 
-                <com.diadiem.pos_components.PMaterialButton
-                    style="@style/MaterialButton.Text"
+                <FrameLayout
+                    style="@style/Base.MaterialButton"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:background="@drawable/bg_categories_dropdown"
+                    android:background="@{ viewModel.dropDownCategory ? @drawable/bg_categories_button_selected :  @drawable/bg_categories_button_unselected}"
+                    android:focusable="true"
+                    android:clickable="true"
                     android:onClick="@{v -> viewModel.changeViewDropdown()}"
                     android:paddingStart="@dimen/_15sdp"
                     android:paddingTop="@dimen/_10sdp"
                     android:paddingEnd="@dimen/_15sdp"
-                    android:paddingBottom="@dimen/_10sdp"
-                    android:text="All Categories"
-                    android:textAlignment="viewStart"
-                    android:textColor="@color/textPrimary"
-                    android:textSize="@dimen/_12sdp"
-                    android:textStyle="bold" />
+                    android:paddingBottom="@dimen/_10sdp">
+
+                    <com.diadiem.pos_components.PTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="All Categories"
+                        android:textColor="@color/textPrimary"
+                        android:textSize="@dimen/_12sdp"
+                        android:textStyle="bold" />
+                </FrameLayout>
+
 
                 <include layout="@layout/divider_horizontal" />
 
@@ -65,7 +71,6 @@
         </FrameLayout>
 
 
-
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -80,43 +85,42 @@
                 tools:listitem="@layout/item_order_product_group" />
 
             <RelativeLayout
-                visibleObject="@{viewModel.dropDownCategory}"
+                android:id="@+id/backgroundDropdown"
+                visibleObject="@{false}"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                >
+                android:layout_height="match_parent">
 
                 <FrameLayout
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:onClick="@{v -> viewModel.changeViewDropdown()}"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@drawable/bg_categories_dropdown" />
-
-
+                    android:background="@drawable/bg_categories_dropdown"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:onClick="@{v -> viewModel.changeViewDropdown()}" />
 
 
             </RelativeLayout>
         </FrameLayout>
 
         <LinearLayout
-            visibleObject="@{viewModel.dropDownCategory}"
-            android:layout_below="@+id/subToolbar"
+            visibleObject="@{false}"
             android:id="@+id/layoutCategory"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/subToolbar"
             android:background="@color/color_3"
             android:clickable="true"
             android:focusable="true"
             android:padding="@dimen/_7sdp">
+
             <androidx.recyclerview.widget.RecyclerView
-                android:overScrollMode="never"
                 android:id="@+id/listCategories"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:overScrollMode="never"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                 app:spanCount="2"
-                tools:listitem="@layout/item_order_category"/>
+                tools:listitem="@layout/item_order_category" />
         </LinearLayout>
 
     </RelativeLayout>

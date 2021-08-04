@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <layer-list>
+            <item>
+                <shape  android:shape="rectangle">
+                    <solid android:color="@color/color_3" />
+                </shape>
+            </item>
+            <item android:gravity="center_vertical|end" android:right="27px" >
+                <rotate android:fromDegrees="180"
+                    android:drawable="@drawable/ic_dropdown"
+                    android:pivotX="75%"
+                    android:pivotY="55%"
+                    />
+            </item>
+        </layer-list>
+    </item>
+</selector>
