@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
-import com.hanheldpos.ui.screens.home.HomeFragment
+import com.hanheldpos.ui.screens.main.home.HomeFragment
 
 abstract class BaseSpinnerAdapter <T, V : ViewDataBinding>(
     context: Context,

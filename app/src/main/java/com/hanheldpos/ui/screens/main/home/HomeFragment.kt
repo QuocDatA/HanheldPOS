@@ -1,4 +1,4 @@
-package com.hanheldpos.ui.screens.home
+package com.hanheldpos.ui.screens.main.home
 
 import android.util.Log
 import android.view.View
@@ -10,21 +10,25 @@ import com.hanheldpos.databinding.FragmentHomeBinding
 import com.hanheldpos.ui.base.activity.BaseFragmentBindingActivity
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.base.fragment.FragmentNavigator
-import com.hanheldpos.ui.screens.home.order.OrderFragment
-import com.hanheldpos.ui.screens.home.table.TableFragment
+import com.hanheldpos.ui.base.pager.FragmentPagerAdapter
+import com.hanheldpos.ui.screens.main.BaseMainFragment
+import com.hanheldpos.ui.screens.main.home.order.OrderFragment
+import com.hanheldpos.ui.screens.main.home.table.TableFragment
 import com.hanheldpos.ui.screens.main.adapter.TabSpinnerAdapter
 
 
-class HomeFragment : BaseFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
+class HomeFragment : BaseMainFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
 
     private val fragmentMap: MutableMap<HomePage, Fragment> = mutableMapOf()
 
+
     enum class HomePage(val pos: Int, val textId: Int) {
         Table(0, R.string.table),
-        Order(2, R.string.order);
+        Menu(2, R.string.menu);
     }
 
-
+    //properties
+    private lateinit var paperAdapter: FragmentPagerAdapter
 
     override fun layoutRes() = R.layout.fragment_home;
 
@@ -38,12 +42,24 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
             init(this@HomeFragment)
             binding.viewModel = this;
         }
+
     }
 
     override fun initView() {
         // init fragment page
         fragmentMap[HomePage.Table] = TableFragment();
-        fragmentMap[HomePage.Order] = OrderFragment();
+        fragmentMap[HomePage.Menu] = OrderFragment();
+
+
+        paperAdapter = FragmentPagerAdapter(requireActivity().supportFragmentManager,lifecycle);
+
+
+
+        binding.homeViewPager.apply {
+            adapter = paperAdapter;
+            paperAdapter.submitList(fragmentMap.values)
+        }
+
 
 
         initSpinner();
@@ -82,25 +98,19 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
     }
 
     private fun switchToPage(page: HomePage?) {
-
-        page?.let {
-            fragmentMap.entries.forEach {
-                if (it.key == page) {
-                    showOrAddFragment(R.id.fragmentContainer,it.value);
-                } else {
-                    hideFragment(it.value);
-                }
-            }
-        }
-
         when (page) {
 
-            HomePage.Order -> {
-
-            }
             HomePage.Table -> {
-
+                Log.d("home", "switchPage: page_table");
+                binding.homeViewPager.currentItem = 0;
             }
+
+            HomePage.Menu -> {
+                Log.d("home","switchPage: page_order")
+                binding.homeViewPager.currentItem = 1;
+            }
+
         }
     }
+
 }

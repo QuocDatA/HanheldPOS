@@ -1,8 +1,8 @@
-package com.hanheldpos.ui.screens.home.table
+package com.hanheldpos.ui.screens.main.home.table
 
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
-import com.hanheldpos.model.home.TableModel
+import com.hanheldpos.model.home.table.TableModel
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
 import com.hanheldpos.utils.screens.notifyValueChange
 

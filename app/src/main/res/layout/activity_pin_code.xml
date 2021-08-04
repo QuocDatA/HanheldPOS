@@ -27,7 +27,7 @@
                 android:scaleType="centerInside"
                 tools:ignore="ContentDescription" />
 
-            <TextView
+            <com.diadiem.pos_components.PTextView
                 style="@style/Base.TextAppearance"
                 android:layout_gravity="center"
                 android:gravity="center"
@@ -95,18 +95,18 @@
             android:layout_height="@dimen/_200sdp"
             android:layout_marginBottom="@dimen/_38sdp"
             >
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/numberPad"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_marginStart="@dimen/_10sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
                 android:layoutDirection="rtl"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
                 android:overScrollMode="never"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                 app:spanCount="3"
-                tools:listitem="@layout/item_pin_code"
-                />
+                tools:listitem="@layout/item_pin_code" />
         </LinearLayout>
     </LinearLayout>
 </layout>

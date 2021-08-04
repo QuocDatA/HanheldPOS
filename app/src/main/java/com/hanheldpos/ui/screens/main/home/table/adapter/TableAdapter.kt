@@ -1,8 +1,8 @@
-package com.hanheldpos.ui.screens.home.table.adapter
+package com.hanheldpos.ui.screens.main.home.table.adapter
 
 import androidx.recyclerview.widget.DiffUtil
 import com.hanheldpos.R
-import com.hanheldpos.model.home.TableModel
+import com.hanheldpos.model.home.table.TableModel
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 

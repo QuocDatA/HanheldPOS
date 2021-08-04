@@ -27,7 +27,7 @@
                 android:scaleType="centerInside"
                 tools:ignore="ContentDescription" />
 
-            <TextView
+            <com.diadiem.pos_components.PTextView
                 style="@style/Base.TextAppearance"
                 android:layout_gravity="center"
                 android:gravity="center"
@@ -35,17 +35,18 @@
                 android:textSize="@dimen/_13ssp"
                 android:textStyle="bold" />
 
-            <com.google.android.material.button.MaterialButton
+            <com.diadiem.pos_components.PMaterialButton
                 style="@style/Base.MaterialButton"
+                android:background="@drawable/bg_primary_button"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="end"
                 android:gravity="center"
-                android:onClick="@{() -> viewModel.signIn()}"
+                android:onClick="@{v -> viewModel.signIn()}"
                 android:paddingStart="@dimen/_18sdp"
                 android:paddingEnd="@dimen/_18sdp"
                 android:text="@string/sign_in"
-                android:textSize="@dimen/_13ssp" />
+                android:textSize="@dimen/_13ssp"/>
         </FrameLayout>
 
         <include layout="@layout/divider_ver" />
@@ -67,20 +68,20 @@
                 tools:ignore="LabelFor">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    groupSize="@{viewModel.pinGroupSize}"
                     style="@style/BaseTextInput"
+                    groupSize="@{viewModel.pinGroupSize}"
                     android:hint="@string/device_code"
                     android:inputType="textCapCharacters"
                     android:paddingStart="@dimen/_10sdp"
                     android:paddingTop="@dimen/_17sdp"
                     android:paddingEnd="@dimen/_10sdp"
                     android:paddingBottom="@dimen/_17sdp"
+                    android:text="@{viewModel.pinTextLD}"
                     android:textAllCaps="true"
-                    android:textSize="@dimen/_12ssp"
-                    android:text="@{viewModel.pinTextLD}"/>
+                    android:textSize="@dimen/_12ssp" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <TextView
+            <com.diadiem.pos_components.PTextView
                 android:layout_marginTop="@dimen/_6sdp"
                 style="@style/Base.TextAppearance"
                 android:layout_marginStart="@dimen/_13sdp"

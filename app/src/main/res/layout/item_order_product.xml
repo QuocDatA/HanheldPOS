@@ -6,16 +6,16 @@
 
         <variable
             name="item"
-            type="com.hanheldpos.model.home.ProductModel" />
+            type="com.hanheldpos.model.home.order.ProductModel" />
     </data>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/_70sdp"
-        android:layout_marginTop="@dimen/_11sdp"
-        android:layout_marginBottom="@dimen/_11sdp"
         android:layout_marginStart="@dimen/_14sdp"
+        android:layout_marginTop="@dimen/_11sdp"
         android:layout_marginEnd="@dimen/_14sdp"
+        android:layout_marginBottom="@dimen/_11sdp"
         android:orientation="horizontal">
 
         <ImageView
@@ -23,49 +23,64 @@
             android:layout_width="@dimen/_70sdp"
             android:layout_height="match_parent"
             tools:ignore="ContentDescription"
-            tools:src="@drawable/ic_launcher_background"/>
+            tools:src="@drawable/bg_no_image" />
 
         <LinearLayout
-            android:layout_marginStart="@dimen/_8ssp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/_8ssp"
             android:orientation="vertical">
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:id="@+id/productText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_centerVertical="true"
-                    android:textColor="@color/textPrimary"
-                    android:text="@{item.text, default=`name`}"
-                    android:textSize="@dimen/_12ssp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:textColor="@color/textPrimary"
-                    priceView="@{item.price, default=0.0}"
-                    android:textSize="@dimen/_12ssp"
-                    tools:ignore="RelativeOverlap" />
-            </RelativeLayout>
-
-            <TextView
-                android:layout_marginTop="@dimen/_5ssp"
-                android:layout_width="wrap_content"
-                android:maxLines="2"
-                android:ellipsize="end"
                 android:layout_height="wrap_content"
-                android:textColor="@color/textSecondary"
-                android:textSize="@dimen/_10ssp"
-                android:text="@{item.description, default=`description`}"
-                />
+                android:orientation="vertical"
+                >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <com.diadiem.pos_components.PTextView
+                        android:id="@+id/productText"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:text="@{item.text, default=`name`}"
+                        android:textColor="@color/textPrimary"
+                        android:textSize="@dimen/_12ssp" />
+                    <com.diadiem.pos_components.PTextView
+                        priceView="@{item.price, default=0.0}"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:textColor="@color/textPrimary"
+                        android:textSize="@dimen/_12ssp"
+                        tools:ignore="RelativeOverlap" />
+
+                </LinearLayout>
+                <com.diadiem.pos_components.PTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5ssp"
+                    android:layout_marginEnd="@dimen/_40sdp"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:text="@{item.description, default=`description`}"
+                    android:textColor="@color/textSecondary"
+                    android:textSize="@dimen/_10ssp" />
+
+            </LinearLayout>
+
+
+
+
+
+
         </LinearLayout>
     </LinearLayout>
 </layout>

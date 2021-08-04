@@ -38,23 +38,24 @@
                 android:src="@drawable/ic_app"
                 tools:ignore="ContentDescription" />
 
-            <TextView
+            <com.diadiem.pos_components.PTextView
                 style="@style/Base.TextAppearance"
                 android:layout_marginTop="@dimen/_27sdp"
-                android:text="Diadiem Point of Sale"
+                android:text="@string/diadiem_point_of_sale"
                 android:textColor="@color/onPrimary"
                 android:textSize="@dimen/_22ssp"
                 android:textStyle="bold" />
 
-            <TextView
+            <com.diadiem.pos_components.PTextView
                 style="@style/Base.TextAppearance"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:text="@string/run_and_grow_your_business"
                 android:textColor="@color/onPrimary"
                 android:textSize="@dimen/_14ssp"/>
 
-            <com.google.android.material.button.MaterialButton
+            <com.diadiem.pos_components.PMaterialButton
                 style="@style/Base.MaterialButton"
+                android:background="@drawable/bg_primary_button"
                 android:layout_marginStart="@dimen/_14sdp"
                 android:layout_marginTop="@dimen/_58sdp"
                 android:layout_marginEnd="@dimen/_14sdp"

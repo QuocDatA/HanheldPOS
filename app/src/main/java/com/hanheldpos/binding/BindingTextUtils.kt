@@ -1,4 +1,4 @@
-package com.hanheldpos.utils.binding
+package com.hanheldpos.binding
 
 import android.widget.TextView
 import androidx.databinding.BindingAdapter

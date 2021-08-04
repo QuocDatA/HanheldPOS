@@ -4,11 +4,11 @@
 
     <data>
 
-        <import type="com.hanheldpos.ui.screens.home.HomeFragment.HomePage" />
+        <import type="com.hanheldpos.ui.screens.main.home.HomeFragment" />
 
         <variable
             name="viewModelHome"
-            type="com.hanheldpos.ui.screens.home.HomeVM" />
+            type="com.hanheldpos.ui.screens.main.home.HomeVM" />
     </data>
     <LinearLayout
         android:layout_width="match_parent"
@@ -26,10 +26,12 @@
                 android:layout_height="match_parent"
                 android:layout_alignParentStart="true"
                 android:adjustViewBounds="true"
-                android:src="@drawable/ic_menu"
+                android:src="@drawable/ic_toolbar_menu"
                 tools:ignore="ContentDescription" />
 
             <LinearLayout
+                android:layout_marginStart="@dimen/_3sdp"
+                android:layout_marginEnd="@dimen/_3sdp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_toStartOf="@+id/homeCart"

@@ -30,8 +30,7 @@ class AppFunctionDialog : BaseDialog() {
             val dialogBuilder =
                 MaterialAlertDialogBuilder(_context, R.style.Base_MaterialAlertDialog)
                     .apply {
-                        setCancelable(false)
-
+                        setCancelable(true)
                         // Custom View
                         setView(layoutBinding.root)
                     }

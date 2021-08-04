@@ -1,0 +1,55 @@
+{
+  "base_domain_api": "https://lin-dev-sys-oaa-api-1.diadiem.vn/",
+  "environment_key": "TXAnHIU7HqhH-HyJK7kQ69SO0tjXra7hwGcJums8BwpCjIW0Ed_MoALrlCf8CaRH",
+  "google_service_key": "",
+  "google_place_service_key": "",
+  "facebook_service_key": "",
+  "enable_login_method_facebook": true,
+  "enable_login_method_google": true,
+  "enable_login_method_phone_number": true,
+  "enable_login_method_apple": true,
+  "enable_screen_login_first_time": true,
+  "enable_screen_choose_language": true,
+  "enable_screen_intro": false,
+  "enable_log": true,
+  "category_item_expand_base_on_text":false,
+
+  "styles":{
+    "colors": {
+      "color_0": "#D8002B",
+      "color_1": "#35AF54",
+      "color_2": "#F8DC28",
+      "color_3": "#FFFFFF",
+      "color_4": "#000000",
+      "color_5": "#333333",
+      "color_6": "#777777",
+      "color_7": "#BFBFBF",
+      "color_8": "#999999",
+      "color_9": "#F6F6F6",
+      "color_10": "#CCCCCC",
+      "color_11": "#AAAAAA",
+      "color_12": "#EEEEEE",
+      "color_13": "#810019",
+      "color_14": "#F7CCD4",
+      "color_15": "#EAF7ED"
+    },
+
+    "fonts":{
+      "families":{
+        "normal":"SFProDisplay-Regular",
+        "bold":"SFProDisplay-Semibold",
+        "italic":"SFProDisplay-RegularItalic",
+        "fileType":".ttf"
+      },
+
+      "sizes":{
+        "h1":20.0,
+        "h2":17.0,
+        "h3":15.0,
+        "h4":12.0,
+        "h5":9.0,
+        "h6":7.0
+      }
+    }
+  }
+}

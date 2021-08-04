@@ -1,21 +1,14 @@
-package com.hanheldpos.ui.screens.home.table
+package com.hanheldpos.ui.screens.main.home.table
 
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.TableLayout
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentTableBinding
-import com.hanheldpos.model.home.TableModel
+import com.hanheldpos.model.home.table.TableModel
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
-import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
-import com.hanheldpos.ui.screens.home.table.adapter.TableAdapter
+import com.hanheldpos.ui.screens.main.home.table.adapter.TableAdapter
 
 
-class TableFragment : BaseFragment<FragmentTableBinding,TableVM>(), TableUV {
+class TableFragment : BaseFragment<FragmentTableBinding, TableVM>(), TableUV {
     override fun layoutRes() = R.layout.fragment_table;
 
     // Adapter

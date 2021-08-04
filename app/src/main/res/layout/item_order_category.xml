@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.hanheldpos.model.home.order.CategoryModel" />
+    </data>
+
+
+    <androidx.cardview.widget.CardView
+        tools:backgroundTint="@color/color_5"
+        backColor="@{item.color}"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_7sdp"
+        android:elevation="0dp"
+        app:cardCornerRadius="@dimen/_4sdp"
+        app:cardElevation="0dp"
+        >
+
+        <com.diadiem.pos_components.PTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/_9sdp"
+            android:text="@{item.groupName, default=`Category`}"
+            android:textAllCaps="true"
+            android:textColor="@color/color_3"
+            android:textSize="@dimen/_12ssp"
+            android:textStyle="bold" />
+    </androidx.cardview.widget.CardView>
+
+</layout>

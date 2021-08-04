@@ -2,27 +2,30 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
+
         <variable
             name="item"
-            type="com.hanheldpos.model.home.TableModel" />
+            type="com.hanheldpos.model.home.table.TableModel" />
 
     </data>
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/_100sdp"
         android:padding="@dimen/_3sdp">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center"
             android:background="#EEEEEE"
-            >
-            <TextView
-                android:text="@{item.name, default=`Table`}"
-                android:textSize="@dimen/_13ssp"
-                android:textColor="@color/textPrimary"
+            android:gravity="center">
+
+            <com.diadiem.pos_components.PTextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:text="@{item.name, default=`Table`}"
+                android:textColor="@color/textPrimary"
+                android:textSize="@dimen/_13ssp" />
         </LinearLayout>
     </FrameLayout>
 

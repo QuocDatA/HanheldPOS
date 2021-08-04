@@ -7,24 +7,117 @@
 
         <variable
             name="viewModel"
-            type="com.hanheldpos.ui.screens.home.order.OrderVM" />
+            type="com.hanheldpos.ui.screens.main.home.order.OrderVM" />
     </data>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
 
+        <FrameLayout
+            android:id="@+id/subToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_34sdp">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/orderProductList"
+            <LinearLayout
+
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <com.diadiem.pos_components.PMaterialButton
+                    style="@style/MaterialButton.Text"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_categories_dropdown"
+                    android:onClick="@{v -> viewModel.changeViewDropdown()}"
+                    android:paddingStart="@dimen/_15sdp"
+                    android:paddingTop="@dimen/_10sdp"
+                    android:paddingEnd="@dimen/_15sdp"
+                    android:paddingBottom="@dimen/_10sdp"
+                    android:text="All Categories"
+                    android:textAlignment="viewStart"
+                    android:textColor="@color/textPrimary"
+                    android:textSize="@dimen/_12sdp"
+                    android:textStyle="bold" />
+
+                <include layout="@layout/divider_horizontal" />
+
+                <ImageButton
+                    style="@style/MaterialButton.Icon"
+                    android:layout_width="@dimen/_34sdp"
+                    android:layout_height="match_parent"
+                    android:padding="@dimen/_10sdp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_search"
+                    tools:ignore="ContentDescription" />
+
+            </LinearLayout>
+
+            <include
+                layout="@layout/divider_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_gravity="bottom" />
+        </FrameLayout>
+
+
+
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/item_order_product"
-            />
+            android:layout_below="@+id/subToolbar">
 
-    </LinearLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/orderProductGroupList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/item_order_product_group" />
+
+            <RelativeLayout
+                visibleObject="@{viewModel.dropDownCategory}"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                >
+
+                <FrameLayout
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:onClick="@{v -> viewModel.changeViewDropdown()}"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/bg_categories_dropdown" />
+
+
+
+
+            </RelativeLayout>
+        </FrameLayout>
+
+        <LinearLayout
+            visibleObject="@{viewModel.dropDownCategory}"
+            android:layout_below="@+id/subToolbar"
+            android:id="@+id/layoutCategory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/color_3"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="@dimen/_7sdp">
+            <androidx.recyclerview.widget.RecyclerView
+                android:overScrollMode="never"
+                android:id="@+id/listCategories"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:spanCount="2"
+                tools:listitem="@layout/item_order_category"/>
+        </LinearLayout>
+
+    </RelativeLayout>
 </layout>

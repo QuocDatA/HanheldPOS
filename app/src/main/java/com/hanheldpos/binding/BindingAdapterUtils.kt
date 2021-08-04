@@ -1,6 +1,8 @@
-package com.hanheldpos.utils.binding
+package com.hanheldpos.binding
 
+import android.content.res.ColorStateList
 import android.graphics.Canvas
+import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Paint.FontMetricsInt
 import android.text.Editable
@@ -10,9 +12,31 @@ import android.text.TextWatcher
 import android.text.style.ReplacementSpan
 import android.view.View
 import androidx.databinding.BindingAdapter
+import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.textfield.TextInputEditText
 import java.util.regex.Pattern
 
+
+@BindingAdapter("useInputEnable")
+fun setUseInputEnable(view: ViewPager2, isSwipe: Boolean) {
+    view.isUserInputEnabled = isSwipe
+    if (!isSwipe)
+    {
+        class NoPageTransformer : ViewPager2.PageTransformer {
+            override fun transformPage( view: View, position: Float) {
+                view.translationX = view.width * -position
+                if (position <= -1.0f || position >= 1.0f) {
+                    view.visibility = View.GONE
+                } else if (position == 0.0f) {
+                    view.visibility = View.VISIBLE
+                } else {
+                    view.visibility = View.GONE
+                }
+            }
+        }
+        view.setPageTransformer(NoPageTransformer());
+    }
+}
 
 @BindingAdapter("visibleObject")
 fun setVisibleObject(view: View, `object`: Any?) {
@@ -109,4 +133,14 @@ fun setGroupSize(inputEditText: TextInputEditText?, groupSize: Int) {
             }
         }
     })
+}
+
+@BindingAdapter("backColor")
+fun setBackColor(view : View?, colorHex : String ){
+    if(view == null) return;
+    if(!TextUtils.isEmpty(colorHex)){
+        val color = Color.parseColor(colorHex)
+        view.backgroundTintList = ColorStateList.valueOf(color);
+    }
+
 }

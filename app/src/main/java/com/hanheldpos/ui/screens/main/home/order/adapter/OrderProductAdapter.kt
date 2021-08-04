@@ -1,9 +1,8 @@
-package com.hanheldpos.ui.screens.home.order.adapter
+package com.hanheldpos.ui.screens.main.home.order.adapter
 
 import androidx.recyclerview.widget.DiffUtil
 import com.hanheldpos.R
-import com.hanheldpos.model.home.MenuModel
-import com.hanheldpos.model.home.ProductModel
+import com.hanheldpos.model.home.order.ProductModel
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 

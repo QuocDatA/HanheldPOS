@@ -1,4 +1,4 @@
-package com.hanheldpos.model.home
+package com.hanheldpos.model.home.order
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
