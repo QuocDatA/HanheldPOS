@@ -1,4 +1,4 @@
-package com.hanheldpos.ui.screens.main.home.table.adapter
+package com.hanheldpos.ui.screens.home.table.adapter
 
 import androidx.recyclerview.widget.DiffUtil
 import com.hanheldpos.R

@@ -1,4 +1,4 @@
-package com.hanheldpos.ui.screens.main.home
+package com.hanheldpos.ui.screens.home
 
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
 

@@ -4,11 +4,11 @@
 
     <data>
 
-        <import type="com.hanheldpos.ui.screens.main.home.HomeFragment" />
+        <import type="com.hanheldpos.ui.screens.home.HomeFragment" />
 
         <variable
             name="viewModelHome"
-            type="com.hanheldpos.ui.screens.main.home.HomeVM" />
+            type="com.hanheldpos.ui.screens.home.HomeVM" />
     </data>
     <LinearLayout
         android:layout_width="match_parent"

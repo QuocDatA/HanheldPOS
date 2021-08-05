@@ -1,4 +1,4 @@
-package com.hanheldpos.model.home.order
+    package com.hanheldpos.model.home.order
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
@@ -69,6 +69,7 @@ data class CategoryModel(
 
 ) : Parcelable {
 
+    var childList : MutableList<ProductModel>? = null
 
 }
 

@@ -4,7 +4,7 @@ import com.hanheldpos.R
 import com.hanheldpos.databinding.ActivityMainBinding
 import com.hanheldpos.ui.base.activity.BaseFragmentBindingActivity
 import com.hanheldpos.ui.base.fragment.FragmentNavigator
-import com.hanheldpos.ui.screens.main.home.HomeFragment
+import com.hanheldpos.ui.screens.home.HomeFragment
 import com.hanheldpos.ui.screens.root.RootFragment
 
 class MainActivity : BaseFragmentBindingActivity<ActivityMainBinding, MainVM>(), MainUV {

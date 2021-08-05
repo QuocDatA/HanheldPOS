@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="com.hanheldpos.ui.screens.main.home.order.OrderVM" />
+            type="com.hanheldpos.ui.screens.home.order.OrderVM" />
     </data>
 
     <RelativeLayout
@@ -69,7 +69,6 @@
                 android:layout_height="1dp"
                 android:layout_gravity="bottom" />
         </FrameLayout>
-
 
         <FrameLayout
             android:layout_width="match_parent"

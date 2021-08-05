@@ -1,20 +1,18 @@
-package com.hanheldpos.ui.screens.main.home
+package com.hanheldpos.ui.screens.home
 
 import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import androidx.fragment.app.Fragment
-import android.widget.TableLayout
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentHomeBinding
-import com.hanheldpos.ui.base.activity.BaseFragmentBindingActivity
-import com.hanheldpos.ui.base.fragment.BaseFragment
-import com.hanheldpos.ui.base.fragment.FragmentNavigator
 import com.hanheldpos.ui.base.pager.FragmentPagerAdapter
 import com.hanheldpos.ui.screens.main.BaseMainFragment
-import com.hanheldpos.ui.screens.main.home.order.OrderFragment
-import com.hanheldpos.ui.screens.main.home.table.TableFragment
+import com.hanheldpos.ui.screens.home.order.OrderFragment
+import com.hanheldpos.ui.screens.home.table.TableFragment
 import com.hanheldpos.ui.screens.main.adapter.TabSpinnerAdapter
+import com.hanheldpos.ui.screens.home.order.PriceItem
+import com.hanheldpos.ui.screens.main.adapter.SubSpinnerAdapter
 
 
 class HomeFragment : BaseMainFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
@@ -27,8 +25,9 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
         Menu(2, R.string.menu);
     }
 
-    //properties
+    // Adapter
     private lateinit var paperAdapter: FragmentPagerAdapter
+    private lateinit var subSpinnerAdapter: SubSpinnerAdapter
 
     override fun layoutRes() = R.layout.fragment_home;
 
@@ -50,10 +49,7 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
         fragmentMap[HomePage.Table] = TableFragment();
         fragmentMap[HomePage.Menu] = OrderFragment();
 
-
         paperAdapter = FragmentPagerAdapter(requireActivity().supportFragmentManager,lifecycle);
-
-
 
         binding.homeViewPager.apply {
             adapter = paperAdapter;
@@ -94,20 +90,23 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
         tabSpinnerAdapter.submitList(HomePage.values().toMutableList())
         binding.toolbarLayout.spinnerMain.adapter = tabSpinnerAdapter
 
-
+        subSpinnerAdapter = SubSpinnerAdapter(requireContext());
+        binding.toolbarLayout.spnGroupBy.adapter = subSpinnerAdapter;
     }
 
     private fun switchToPage(page: HomePage?) {
         when (page) {
-
             HomePage.Table -> {
                 Log.d("home", "switchPage: page_table");
                 binding.homeViewPager.currentItem = 0;
+                subSpinnerAdapter.submitList(mutableListOf(PriceItem(name = "Group By")))
+
             }
 
             HomePage.Menu -> {
                 Log.d("home","switchPage: page_order")
                 binding.homeViewPager.currentItem = 1;
+                subSpinnerAdapter.submitList(mutableListOf(PriceItem(name = "Price List")));
             }
 
         }

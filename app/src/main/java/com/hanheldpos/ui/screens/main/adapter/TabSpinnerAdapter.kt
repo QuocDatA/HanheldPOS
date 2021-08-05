@@ -4,7 +4,7 @@ import android.content.Context
 import com.hanheldpos.R
 import com.hanheldpos.databinding.ItemDropdownSpinnerBinding
 import com.hanheldpos.ui.base.adapter.BaseSpinnerAdapter
-import com.hanheldpos.ui.screens.main.home.HomeFragment
+import com.hanheldpos.ui.screens.home.HomeFragment
 
 class TabSpinnerAdapter(context: Context) :
     BaseSpinnerAdapter<HomeFragment.HomePage, ItemDropdownSpinnerBinding>(

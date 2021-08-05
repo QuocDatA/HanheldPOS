@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.hanheldpos.ui.screens.main.home.HomeVM" />
+            type="com.hanheldpos.ui.screens.home.HomeVM" />
     </data>
 
     <LinearLayout style="@style/RootLayout">

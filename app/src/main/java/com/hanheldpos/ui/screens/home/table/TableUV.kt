@@ -1,4 +1,4 @@
-package com.hanheldpos.ui.screens.main.home.table
+package com.hanheldpos.ui.screens.home.table
 
 import com.hanheldpos.ui.base.BaseUserView
 

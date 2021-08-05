@@ -1,4 +1,4 @@
-package com.hanheldpos.ui.screens.main.home.order.adapter
+package com.hanheldpos.ui.screens.home.order.adapter
 
 import androidx.recyclerview.widget.DiffUtil
 import com.hanheldpos.R

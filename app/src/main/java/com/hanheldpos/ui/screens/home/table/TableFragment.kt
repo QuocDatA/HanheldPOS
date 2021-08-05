@@ -1,11 +1,11 @@
-package com.hanheldpos.ui.screens.main.home.table
+package com.hanheldpos.ui.screens.home.table
 
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentTableBinding
 import com.hanheldpos.model.home.table.TableModel
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
-import com.hanheldpos.ui.screens.main.home.table.adapter.TableAdapter
+import com.hanheldpos.ui.screens.home.table.adapter.TableAdapter
 
 
 class TableFragment : BaseFragment<FragmentTableBinding, TableVM>(), TableUV {

@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="item"
+            type="com.hanheldpos.model.home.order.CategoryModel" />
 
     </data>
 
@@ -28,7 +30,7 @@
                 android:textColor="@color/textPrimary"
                 android:textStyle="bold"
                 android:textAllCaps="true"
-
+                android:text="@{item.groupName}"
                 />
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/orderProductList"
