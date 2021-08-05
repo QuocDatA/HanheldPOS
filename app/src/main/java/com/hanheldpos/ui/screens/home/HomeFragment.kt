@@ -21,7 +21,7 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
 
 
     enum class HomePage(val pos: Int, val textId: Int) {
-        Table(0, R.string.table),
+        /*Table(0, R.string.table),*/
         Menu(2, R.string.menu);
     }
 
@@ -46,7 +46,7 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
 
     override fun initView() {
         // init fragment page
-        fragmentMap[HomePage.Table] = TableFragment();
+        /*fragmentMap[HomePage.Table] = TableFragment();*/
         fragmentMap[HomePage.Menu] = OrderFragment();
 
         paperAdapter = FragmentPagerAdapter(requireActivity().supportFragmentManager,lifecycle);
@@ -96,12 +96,12 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
 
     private fun switchToPage(page: HomePage?) {
         when (page) {
-            HomePage.Table -> {
+           /* HomePage.Table -> {
                 Log.d("home", "switchPage: page_table");
                 binding.homeViewPager.currentItem = 0;
                 subSpinnerAdapter.submitList(mutableListOf(PriceItem(name = "Group By")))
 
-            }
+            }*/
 
             HomePage.Menu -> {
                 Log.d("home","switchPage: page_order")

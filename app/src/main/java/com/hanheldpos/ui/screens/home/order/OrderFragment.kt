@@ -12,6 +12,7 @@ import com.hanheldpos.ui.screens.main.adapter.TabSpinnerAdapter
 import com.hanheldpos.ui.screens.home.HomeFragment
 import com.hanheldpos.ui.screens.home.order.adapter.OrderCategoryAdapter
 import com.hanheldpos.ui.screens.home.order.adapter.OrderGPProductAdapter
+import kotlinx.coroutines.*
 
 class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
     override fun layoutRes() = R.layout.fragment_order;
@@ -112,8 +113,11 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
     }
 
     override fun productListObserve(categoryListSelected: List<CategoryModel>) {
+
         productGroupAdapter.submitList(categoryListSelected);
         productGroupAdapter.notifyDataSetChanged();
+
+
     }
 
 

@@ -11,6 +11,8 @@ import com.hanheldpos.model.home.order.MenuModel
 import com.hanheldpos.model.home.order.ProductModel
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
 import com.hanheldpos.utils.screens.notifyValueChange
+import kotlinx.coroutines.*
+import okhttp3.internal.wait
 
 class OrderVM : BaseUiViewModel<OrderUV>() {
 
@@ -174,8 +176,18 @@ class OrderVM : BaseUiViewModel<OrderUV>() {
     fun categoryItemSelected(adapterPosition: Int, item: CategoryModel){
         if(isDropDownCategory) return;
         Log.d("OrderVM","Category : Select Item ${item.id}");
-        uiCallback?.productListObserve(mutableListOf(item));
         changeViewDropdown();
+
+        CoroutineScope(Dispatchers.IO).launch {
+            while (isDropDownCategory){
+                delay(500);
+            } ;
+            withContext(Dispatchers.Main){
+                uiCallback?.productListObserve(mutableListOf(item));
+            }
+        }
+
+
     }
 
 
