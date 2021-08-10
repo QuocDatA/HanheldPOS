@@ -7,7 +7,7 @@
 
         <variable
             name="item"
-            type="com.hanheldpos.model.home.order.CategoryModel" />
+            type="com.hanheldpos.data.api.pojo.CategoryItem" />
     </data>
 
 
@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_margin="@dimen/_9sdp"
-            android:text="@{item.groupName, default=`Category`}"
+            android:text="@{item.title, default=`Category`}"
             android:textAllCaps="true"
             android:textColor="@color/color_3"
             android:textSize="@dimen/_12ssp"

@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.hanheldpos.ui.screens.product.ProductDetailVM" />
+    </data>
+
+    <LinearLayout
+        style="@style/RootLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/appBarProductDetail"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_270sdp">
+
+                <com.google.android.material.appbar.CollapsingToolbarLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/color_3"
+                    app:contentScrim="@color/primary"
+                    app:layout_scrollFlags="exitUntilCollapsed|scroll"
+                    app:titleEnabled="false">
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <com.smarteist.autoimageslider.SliderView
+
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            app:sliderAnimationDuration="300"
+                            app:sliderAutoCycleDirection="back_and_forth"
+                            app:sliderAutoCycleEnabled="true"
+                            app:sliderIndicatorAnimationDuration="200"
+                            app:sliderIndicatorEnabled="true"
+                            app:sliderIndicatorGravity="center_horizontal|bottom"
+                            app:sliderIndicatorMarginBottom="@dimen/_19sdp"
+                            app:sliderIndicatorOrientation="horizontal"
+                            app:sliderIndicatorRadius="@dimen/_1sdp"
+                            app:sliderIndicatorSelectedColor="#40693B"
+                            app:sliderIndicatorUnselectedColor="#CCCCCC" />
+
+                        <com.diadiem.pos_components.PTextView
+                            android:layout_width="@dimen/_32sdp"
+                            android:layout_height="@dimen/_32sdp"
+                            android:layout_gravity="end"
+                            android:layout_marginTop="@dimen/_32sdp"
+                            android:layout_marginEnd="@dimen/_38sdp"
+                            android:background="@drawable/bg_product_discount"
+                            android:gravity="center"
+                            android:text="@{ `` , default=`-20%`}"
+                            android:textColor="@color/color_3"
+                            android:textSize="@dimen/_10ssp" />
+
+                    </FrameLayout>
+
+                    <androidx.appcompat.widget.Toolbar
+                        android:layout_width="match_parent"
+                        android:layout_height="?attr/actionBarSize"
+                        android:contentInsetStart="0dp"
+                        android:contentInsetLeft="0dp"
+                        android:contentInsetEnd="0dp"
+                        android:contentInsetRight="0dp"
+                        app:contentInsetEnd="0dp"
+                        app:contentInsetLeft="0dp"
+                        app:contentInsetRight="0dp"
+                        app:contentInsetStart="0dp"
+                        app:layout_collapseMode="pin">
+
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="@dimen/_12sdp"
+                            android:layout_marginEnd="@dimen/_12sdp">
+
+                            <ImageButton
+                                android:layout_width="@dimen/_15sdp"
+                                android:layout_height="@dimen/_15sdp"
+                                android:layout_gravity="center_vertical|start"
+                                android:background="@{ viewModel.isToolbarExpand ? @drawable/ic_close_dart : @drawable/ic_close_light}"
+                                android:onClick="@{v->viewModel.goBack()}"
+                                tools:ignore="ContentDescription" />
+
+                            <com.diadiem.pos_components.PTextView
+                                visibleObject="@{!viewModel.isToolbarExpand}"
+                                android:layout_width="@dimen/_160sdp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:ellipsize="end"
+                                android:maxLines="1"
+                                android:text="@{`Heello`,default=`Name`}"
+                                android:textAlignment="center"
+                                android:textColor="@color/color_3"
+                                android:textSize="@dimen/_15ssp"
+                                android:textStyle="bold" />
+                        </FrameLayout>
+
+                    </androidx.appcompat.widget.Toolbar>
+                </com.google.android.material.appbar.CollapsingToolbarLayout>
+            </com.google.android.material.appbar.AppBarLayout>
+
+            <androidx.core.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@{ viewModel.isToolbarExpand ? @drawable/bg_product_detail_expand : @drawable/bg_product_detail_default}"
+                android:overScrollMode="never"
+                app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingVertical="@dimen/_16sdp"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingHorizontal="@dimen/_12sdp">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <com.diadiem.pos_components.PTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:ellipsize="end"
+                                android:maxLines="2"
+                                android:text="@{`Product Name`, default=`Product Name`}"
+                                android:textColor="@color/textPrimary"
+                                android:textSize="@dimen/_12ssp" />
+
+                            <androidx.legacy.widget.Space
+                                android:layout_width="wrap_content"
+                                android:layout_height="@dimen/_3sdp" />
+
+                            <com.diadiem.pos_components.PTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@{`Description`,default=`Description`}"
+                                android:textColor="@color/textSecondary"
+                                android:textSize="@dimen/_10ssp" />
+
+                            <androidx.legacy.widget.Space
+                                android:layout_width="wrap_content"
+                                android:layout_height="@dimen/_8sdp" />
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+
+                                >
+
+                                <com.diadiem.pos_components.PTextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/bg_food_text"
+                                    android:paddingHorizontal="@dimen/_8sdp"
+                                    android:paddingVertical="@dimen/_1sdp"
+                                    android:text="@{`P1`,default=`P1`}"
+                                    android:textColor="@color/color_3"
+                                    android:textSize="@dimen/_10ssp" />
+
+                                <com.diadiem.pos_components.PTextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/_4sdp"
+                                    android:textColor="@color/textSecondary"
+                                    android:text="@{`4kg/bag` , default=`4kg/bag`}"/>
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <androidx.legacy.widget.Space
+                            android:layout_width="@dimen/_10sdp"
+                            android:layout_height="0dp" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="end"
+                            android:orientation="vertical">
+
+                            <com.diadiem.pos_components.PTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@{`70000đ`,default=`70000đ`}"
+                                android:textColor="@color/textPrimary"
+                                android:textSize="@dimen/_12ssp" />
+
+                            <com.diadiem.pos_components.PTextView
+                                bindStrike="@{true}"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@{`70000đ`,default=`70000đ`}"
+                                android:textColor="@color/textSecondary"
+                                android:textSize="@dimen/_10ssp" />
+
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <androidx.legacy.widget.Space
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/_14sdp"/>
+                    <LinearLayout
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        android:padding="@dimen/_12sdp"
+                        android:orientation="vertical"
+                        >
+                        <com.diadiem.pos_components.PTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/textPrimary"
+                            android:textSize="@dimen/_12ssp"
+                            android:text="@{`Choose size`, default=`Choose size`}"
+                            android:textAllCaps="true"
+                            />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:layout_marginTop="@dimen/_14sdp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                            app:spanCount="4"
+                            tools:itemCount="5"
+                            />
+                    </LinearLayout>
+                    <include layout="@layout/divider_vertical"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/_12sdp"
+                        android:orientation="vertical"
+                        >
+                        <com.diadiem.pos_components.PTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/textPrimary"
+                            android:textSize="@dimen/_12ssp"
+                            android:text="@{`How do you want to cook?`, default=`How do you want to cook?`}"
+                            android:textAllCaps="true"
+                            />
+
+                        <androidx.legacy.widget.Space
+                            android:layout_width="wrap_content"
+                            android:layout_height="@dimen/_14sdp"/>
+                        <androidx.recyclerview.widget.RecyclerView
+
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                            app:spanCount="4"
+                            tools:itemCount="5"
+                            />
+                    </LinearLayout>
+                    <include layout="@layout/divider_vertical"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/_12sdp"
+                        android:orientation="vertical"
+                        >
+                        <com.diadiem.pos_components.PTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/textPrimary"
+                            android:textSize="@dimen/_12ssp"
+                            android:text="@{`WHICH KIND OF SAUCE YOU WOULD LIKE TO?`, default=`WHICH KIND OF SAUCE YOU WOULD LIKE TO?`}"
+                            android:textAllCaps="true"
+                            />
+
+                        <androidx.legacy.widget.Space
+                            android:layout_width="wrap_content"
+                            android:layout_height="@dimen/_14sdp"/>
+                        <androidx.recyclerview.widget.RecyclerView
+
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                            app:spanCount="4"
+                            tools:itemCount="5"
+                            />
+                    </LinearLayout>
+                </LinearLayout>
+
+
+            </androidx.core.widget.NestedScrollView>
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </LinearLayout>
+</layout>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable
+            name="item"
+            type="com.hanheldpos.data.api.pojo.CategoryItem" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/_17sdp"
+            android:paddingEnd="@dimen/_17sdp"
+            android:paddingTop="@dimen/_10sdp"
+            android:paddingBottom="@dimen/_10sdp"
+            android:gravity="center_vertical">
+            <ImageView
+                imageUrl="@{``}"
+                android:layout_width="@dimen/_42sdp"
+                android:layout_height="@dimen/_42sdp"
+                tools:ignore="ContentDescription"
+                tools:src="@drawable/bg_no_image"/>
+            <androidx.legacy.widget.Space
+                android:layout_width="@dimen/_7sdp"
+                android:layout_height="0dp"/>
+            <com.diadiem.pos_components.PTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{item.title, default=`Category`}"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:textAllCaps="true"
+                android:textSize="@dimen/_12ssp"
+                android:textColor="@color/textPrimary"
+                />
+        </LinearLayout>
+        <include layout="@layout/divider_vertical"/>
+    </LinearLayout>
+
+</layout>

@@ -1,188 +1,222 @@
 package com.hanheldpos.ui.screens.home.order
 
-import android.annotation.SuppressLint
+import android.os.SystemClock
 import android.util.Log
-import androidx.constraintlayout.widget.ConstraintSet
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
-import com.hanheldpos.model.home.order.CategoryModel
-import com.hanheldpos.model.home.order.MenuModel
-import com.hanheldpos.model.home.order.ProductModel
+import com.hanheldpos.data.api.pojo.CategoryItem
+import com.hanheldpos.data.api.pojo.ModelItem
+import com.hanheldpos.data.api.pojo.OrderMenuResp
+import com.hanheldpos.data.api.pojo.ProductItem
+import com.hanheldpos.data.api.pojo.order.getCategoryList
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
 import com.hanheldpos.utils.screens.notifyValueChange
 import kotlinx.coroutines.*
-import okhttp3.internal.wait
 
 class OrderVM : BaseUiViewModel<OrderUV>() {
 
     // Value
     var dropDownCategory = MutableLiveData<Boolean>(false);
-    var isDropDownCategory : Boolean = false;
-    private val categoryList  = MutableLiveData<MutableList<CategoryModel>>(mutableListOf());
-
+    private var orderMenuResp: OrderMenuResp? = null;
+    private val categoryList = MutableLiveData<MutableList<CategoryItem>>(mutableListOf());
+    private val productList = MutableLiveData<MutableList<ProductItem>>(mutableListOf());
+    var mLastTimeClick: Long = 0
 
     init {
+        orderMenuResp = OrderMenuResp(
+            model = mutableListOf(
+                ModelItem(
+                    category = mutableListOf(
+                        CategoryItem(
+                            id = "Category/430214303",
+                            categoryId = 31,
+                            title = "PHO",
+                            handle = "pho-cb",
+                            description = "",
+                            orderNo = 0,
+                            visible = 1,
+                            color = "#3166FF"
+                        ),
+                        CategoryItem(
+                            id = "Category/430214303",
+                            categoryId = 31,
+                            title = "ALL DRINKS",
+                            handle = "pho-cb",
+                            description = "",
+                            orderNo = 0,
+                            visible = 1,
+                            color = "#2989A8"
+                        ), CategoryItem(
+                            id = "Category/430214303",
+                            categoryId = 31,
+                            title = "COM",
+                            handle = "pho-cb",
+                            description = "",
+                            orderNo = 0,
+                            visible = 1,
+                            color = "#3166FF"
+                        ), CategoryItem(
+                            id = "Category/430214303",
+                            categoryId = 31,
+                            title = "ALL STARTERS",
+                            handle = "pho-cb",
+                            description = "",
+                            orderNo = 0,
+                            visible = 1,
+                            color = "#2989A8"
+                        ), CategoryItem(
+                            id = "Category/430214303",
+                            categoryId = 31,
+                            title = "COMBO PHO",
+                            handle = "pho-cb",
+                            description = "",
+                            orderNo = 0,
+                            visible = 1,
+                            color = "#A61CD7"
+                        ), CategoryItem(
+                            id = "Category/430214303",
+                            categoryId = 31,
+                            title = "EXTRA",
+                            handle = "pho-cb",
+                            description = "",
+                            orderNo = 0,
+                            visible = 1,
+                            color = "#B58200"
+                        ), CategoryItem(
+                            id = "Category/430214303",
+                            categoryId = 31,
+                            title = "COMBO COM",
+                            handle = "pho-cb",
+                            description = "",
+                            orderNo = 0,
+                            visible = 1,
+                            color = "#A61CD7"
+                        ), CategoryItem(
+                            id = "Category/430214303",
+                            categoryId = 31,
+                            title = "ALL OTHER",
+                            handle = "pho-cb",
+                            description = "",
+                            orderNo = 0,
+                            visible = 1,
+                            color = "#B58200"
+                        ), CategoryItem(
+                            id = "Category/430214303",
+                            categoryId = 31,
+                            title = "MENU SANG",
+                            handle = "pho-cb",
+                            description = "",
+                            orderNo = 0,
+                            visible = 1,
+                            color = "#2A9C0E"
+                        ), CategoryItem(
+                            id = "Category/430214303",
+                            categoryId = 31,
+                            title = "PHO",
+                            handle = "pho-cb",
+                            description = "",
+                            orderNo = 0,
+                            visible = 1,
+                            color = "#3166FF"
+                        ), CategoryItem(
+                            id = "Category/430214303",
+                            categoryId = 31,
+                            title = "PHO BOGO",
+                            handle = "pho-cb",
+                            description = "",
+                            orderNo = 0,
+                            visible = 1,
+                            color = "#2A9C0E"
+                        ), CategoryItem(
+                            id = "Category/430214303",
+                            categoryId = 31,
+                            title = "PHO",
+                            handle = "pho-cb",
+                            description = "",
+                            orderNo = 0,
+                            visible = 1,
+                            color = "#3166FF"
+                        )
+
+                    )
+                )
+            )
+        );
+
         initCategories();
+
+
     }
 
-    fun initLifecycle(owner: LifecycleOwner) {
+    fun initLifeCycle(owner: LifecycleOwner) {
         owner.lifecycle.addObserver(this);
 
-        categoryList.observe(owner,{
+        categoryList.observe(owner, {
             uiCallback?.categoryListObserve(it);
         });
 
-        dropDownCategory.observe(owner,{
+        dropDownCategory.observe(owner, {
             uiCallback?.showDropdownCategories(it)
         })
+
     }
 
     // Category
-    private fun initCategories(){
-        categoryList.value?.add(CategoryModel("AccountGroup/159","Com",null,"",0,"#3166FF",null,0,1,"Customer/438227813"))
+    private fun initCategories() {
+        orderMenuResp?.getCategoryList()?.forEach {
+            if (it != null) {
+                it.productList = mutableListOf(
+                    ProductItem(
+                        name = "PHO",
+                        description = "Nước dùng thơm ngon nấu từ 100% xương ống bò trong 8 giờ",
+                        price = 39000.0,
+                        name3 = "500g/Tô"
+                    ),
+                    ProductItem(
+                        name = "PHO",
+                        description = "Nước dùng thơm ngon nấu từ 100% xương ống bò trong 8 giờ",
+                        price = 39000.0,
+                        name3 = "500g/Tô"
+                    ),
+                    ProductItem(
+                        name = "PHO",
+                        description = "Nước dùng thơm ngon nấu từ 100% xương ống bò trong 8 giờ",
+                        price = 39000.0,
+                        name3 = "500g/Tô"
+                    ),
+                    ProductItem(
+                        name = "PHO",
+                        description = "Nước dùng thơm ngon nấu từ 100% xương ống bò trong 8 giờ",
+                        price = 39000.0,
+                        name3 = "500g/Tô"
+                    ),
+                );
+                categoryList.value?.add(it)
+            };
+        }
 
-        categoryList.value?.get(0)?.childList = mutableListOf(
-            ProductModel("","Com",70000.0,"Pho ga (L) & Thuc uong"),
-            ProductModel("","Com",70000.0,"Pho ga (L) & Thuc uong"),
-            ProductModel("","Com",70000.0,"Pho ga (L) & Thuc uong"),
-            ProductModel("","Com",70000.0,"Pho ga (L) & Thuc uong"),
-            ProductModel("","Com",70000.0,"Pho ga (L) & Thuc uong"),
-            ProductModel("","Com",70000.0,"Pho ga (L) & Thuc uong"),
-            ProductModel("","Com",70000.0,"Pho ga (L) & Thuc uong"),
-        );
-
-        categoryList.value?.add(CategoryModel("AccountGroup/159","PHO",null,"",0,"#3166FF",null,0,1,"Customer/438227813"))
-
-        categoryList.value?.get(1)?.childList = mutableListOf(
-            ProductModel("","Combo Pho Ga L",70000.0,"Pho ga (L) & Thuc uong"),
-            ProductModel("","Combo Pho Ga L",70000.0,"Pho ga (L) & Thuc uong"),
-            ProductModel("","Combo Pho Ga L",70000.0,"Pho ga (L) & Thuc uong"),
-            ProductModel("","Combo Pho Ga L",70000.0,"Pho ga (L) & Thuc uong"),
-            ProductModel("","Combo Pho Ga L",70000.0,"Pho ga (L) & Thuc uong"),
-            ProductModel("","Combo Pho Ga L",70000.0,"Pho ga (L) & Thuc uong"),
-            ProductModel("","Combo Pho Ga L",70000.0,"Pho ga (L) & Thuc uong"),
-        );
-        categoryList.value?.add(CategoryModel("AccountGroup/159","BUN",null,"",0,"#3166FF",null,0,1,"Customer/438227813"))
-
-        categoryList.value?.get(2)?.childList = mutableListOf(
-            ProductModel("","Combo Pho Ga L",70000.0,"Pho ga (L) & Thuc uong"),
-            ProductModel("","Combo Pho Ga L",70000.0,"Pho ga (L) & Thuc uong"),
-            ProductModel("","Combo Pho Ga L",70000.0,"Pho ga (L) & Thuc uong"),
-            ProductModel("","Combo Pho Ga L",70000.0,"Pho ga (L) & Thuc uong"),
-            ProductModel("","Combo Pho Ga L",70000.0,"Pho ga (L) & Thuc uong"),
-            ProductModel("","Combo Pho Ga L",70000.0,"Pho ga (L) & Thuc uong"),
-            ProductModel("","Combo Pho Ga L",70000.0,"Pho ga (L) & Thuc uong"),
-        );
-        categoryList.value?.add(CategoryModel("AccountGroup/159","COMBO PHO",null,"",0,"#3166FF",null,0,1,"Customer/438227813"))
-
-        categoryList.value?.get(3)?.childList = mutableListOf(
-            ProductModel("","Combo Pho Ga L",70000.0,"Pho ga (L) & Thuc uong"),
-            ProductModel("","Combo Pho Ga L",70000.0,"Pho ga (L) & Thuc uong"),
-            ProductModel("","Combo Pho Ga L",70000.0,"Pho ga (L) & Thuc uong"),
-            ProductModel("","Combo Pho Ga L",70000.0,"Pho ga (L) & Thuc uong"),
-            ProductModel("","Combo Pho Ga L",70000.0,"Pho ga (L) & Thuc uong"),
-            ProductModel("","Combo Pho Ga L",70000.0,"Pho ga (L) & Thuc uong"),
-            ProductModel("","Combo Pho Ga L",70000.0,"Pho ga (L) & Thuc uong"),
-        );
-        categoryList.value?.add(CategoryModel("AccountGroup/159","COMBO COM",null,"",0,"#f9ad2e",null,0,1,"Customer/438227813"))
-        categoryList.value?.get(4)?.childList = mutableListOf(
-            ProductModel("","Combo Pho Ga L",70000.0,"Pho ga (L) & Thuc uong"),
-            ProductModel("","Combo Pho Ga L",70000.0,"Pho ga (L) & Thuc uong"),
-            ProductModel("","Combo Pho Ga L",70000.0,"Pho ga (L) & Thuc uong"),
-            ProductModel("","Combo Pho Ga L",70000.0,"Pho ga (L) & Thuc uong"),
-            ProductModel("","Combo Pho Ga L",70000.0,"Pho ga (L) & Thuc uong"),
-            ProductModel("","Combo Pho Ga L",70000.0,"Pho ga (L) & Thuc uong"),
-            ProductModel("","Combo Pho Ga L",70000.0,"Pho ga (L) & Thuc uong"),
-        );
-        categoryList.value?.add(CategoryModel("AccountGroup/159","COMBO BUN",null,"",0,"#f9ad2e",null,0,1,"Customer/438227813"))
-        categoryList.value?.get(5)?.childList = mutableListOf(
-            ProductModel("","Combo Pho Ga L",70000.0,"Pho ga (L) & Thuc uong"),
-            ProductModel("","Combo Pho Ga L",70000.0,"Pho ga (L) & Thuc uong"),
-            ProductModel("","Combo Pho Ga L",70000.0,"Pho ga (L) & Thuc uong"),
-            ProductModel("","Combo Pho Ga L",70000.0,"Pho ga (L) & Thuc uong"),
-            ProductModel("","Combo Pho Ga L",70000.0,"Pho ga (L) & Thuc uong"),
-            ProductModel("","Combo Pho Ga L",70000.0,"Pho ga (L) & Thuc uong"),
-            ProductModel("","Combo Pho Ga L",70000.0,"Pho ga (L) & Thuc uong"),
-        );
-        categoryList.value?.add(CategoryModel("AccountGroup/159","Com",null,"",0,"#f9ad2e",null,0,1,"Customer/438227813"))
-        categoryList.value?.get(6)?.childList = mutableListOf(
-            ProductModel("","Combo Pho Ga L",70000.0,"Pho ga (L) & Thuc uong"),
-            ProductModel("","Combo Pho Ga L",70000.0,"Pho ga (L) & Thuc uong"),
-            ProductModel("","Combo Pho Ga L",70000.0,"Pho ga (L) & Thuc uong"),
-            ProductModel("","Combo Pho Ga L",70000.0,"Pho ga (L) & Thuc uong"),
-            ProductModel("","Combo Pho Ga L",70000.0,"Pho ga (L) & Thuc uong"),
-            ProductModel("","Combo Pho Ga L",70000.0,"Pho ga (L) & Thuc uong"),
-            ProductModel("","Combo Pho Ga L",70000.0,"Pho ga (L) & Thuc uong"),
-        );
-        categoryList.value?.add(CategoryModel("AccountGroup/159","Com",null,"",0,"#f9ad2e",null,0,1,"Customer/438227813"))
-        categoryList.value?.get(7)?.childList = mutableListOf(
-            ProductModel("","Combo Pho Ga L",70000.0,"Pho ga (L) & Thuc uong"),
-            ProductModel("","Combo Pho Ga L",70000.0,"Pho ga (L) & Thuc uong"),
-            ProductModel("","Combo Pho Ga L",70000.0,"Pho ga (L) & Thuc uong"),
-            ProductModel("","Combo Pho Ga L",70000.0,"Pho ga (L) & Thuc uong"),
-            ProductModel("","Combo Pho Ga L",70000.0,"Pho ga (L) & Thuc uong"),
-            ProductModel("","Combo Pho Ga L",70000.0,"Pho ga (L) & Thuc uong"),
-            ProductModel("","Combo Pho Ga L",70000.0,"Pho ga (L) & Thuc uong"),
-        );
-        categoryList.value?.add(CategoryModel("AccountGroup/159","Com",null,"",0,"#2989A8",null,0,1,"Customer/438227813"))
-        categoryList.value?.get(8)?.childList = mutableListOf(
-            ProductModel("","Combo Pho Ga L",70000.0,"Pho ga (L) & Thuc uong"),
-            ProductModel("","Combo Pho Ga L",70000.0,"Pho ga (L) & Thuc uong"),
-            ProductModel("","Combo Pho Ga L",70000.0,"Pho ga (L) & Thuc uong"),
-            ProductModel("","Combo Pho Ga L",70000.0,"Pho ga (L) & Thuc uong"),
-            ProductModel("","Combo Pho Ga L",70000.0,"Pho ga (L) & Thuc uong"),
-            ProductModel("","Combo Pho Ga L",70000.0,"Pho ga (L) & Thuc uong"),
-            ProductModel("","Combo Pho Ga L",70000.0,"Pho ga (L) & Thuc uong"),
-        );
-        categoryList.value?.add(CategoryModel("AccountGroup/159","Com",null,"",0,"#2989A8",null,0,1,"Customer/438227813"))
-        categoryList.value?.get(9)?.childList = mutableListOf(
-            ProductModel("","Combo Pho Ga L",70000.0,"Pho ga (L) & Thuc uong"),
-            ProductModel("","Combo Pho Ga L",70000.0,"Pho ga (L) & Thuc uong"),
-            ProductModel("","Combo Pho Ga L",70000.0,"Pho ga (L) & Thuc uong"),
-            ProductModel("","Combo Pho Ga L",70000.0,"Pho ga (L) & Thuc uong"),
-            ProductModel("","Combo Pho Ga L",70000.0,"Pho ga (L) & Thuc uong"),
-            ProductModel("","Combo Pho Ga L",70000.0,"Pho ga (L) & Thuc uong"),
-            ProductModel("","Combo Pho Ga L",70000.0,"Pho ga (L) & Thuc uong"),
-        );
-        categoryList.value?.add(CategoryModel("AccountGroup/159","Com",null,"",0,"#007b80",null,0,1,"Customer/438227813"))
-        categoryList.value?.get(10)?.childList = mutableListOf(
-            ProductModel("","Combo Pho Ga L",70000.0,"Pho ga (L) & Thuc uong"),
-            ProductModel("","Combo Pho Ga L",70000.0,"Pho ga (L) & Thuc uong"),
-            ProductModel("","Combo Pho Ga L",70000.0,"Pho ga (L) & Thuc uong"),
-            ProductModel("","Combo Pho Ga L",70000.0,"Pho ga (L) & Thuc uong"),
-            ProductModel("","Combo Pho Ga L",70000.0,"Pho ga (L) & Thuc uong"),
-            ProductModel("","Combo Pho Ga L",70000.0,"Pho ga (L) & Thuc uong"),
-            ProductModel("","Combo Pho Ga L",70000.0,"Pho ga (L) & Thuc uong"),
-        );
-        categoryList.value?.add(CategoryModel("AccountGroup/159","Com",null,"",0,"#007b80",null,0,1,"Customer/438227813"))
-        categoryList.value?.get(11)?.childList = mutableListOf(
-            ProductModel("","Combo Pho Ga L",70000.0,"Pho ga (L) & Thuc uong"),
-            ProductModel("","Combo Pho Ga L",70000.0,"Pho ga (L) & Thuc uong"),
-            ProductModel("","Combo Pho Ga L",70000.0,"Pho ga (L) & Thuc uong"),
-            ProductModel("","Combo Pho Ga L",70000.0,"Pho ga (L) & Thuc uong"),
-            ProductModel("","Combo Pho Ga L",70000.0,"Pho ga (L) & Thuc uong"),
-            ProductModel("","Combo Pho Ga L",70000.0,"Pho ga (L) & Thuc uong"),
-            ProductModel("","Combo Pho Ga L",70000.0,"Pho ga (L) & Thuc uong"),
-        );
         categoryList.notifyValueChange();
     }
 
-    fun changeViewDropdown(){
-        if(isDropDownCategory) return;
-        dropDownCategory.value = !dropDownCategory.value!!;
+
+    fun initDataProductGroup() {
+        categoryList.value.let {
+            it?.let { it1 -> uiCallback?.productListObserve(it1) };
+        }
     }
 
-    fun categoryItemSelected(adapterPosition: Int, item: CategoryModel){
-        if(isDropDownCategory) return;
-        Log.d("OrderVM","Category : Select Item ${item.id}");
-        changeViewDropdown();
+    fun changeViewDropdown() {
+        if (SystemClock.elapsedRealtime() - mLastTimeClick > 500) {
+            mLastTimeClick = SystemClock.elapsedRealtime();
+            dropDownCategory.value = !dropDownCategory.value!!;
+        }
+    }
 
+    fun categoryItemSelected(adapterPosition: Int, item: CategoryItem) {
+        Log.d("OrderVM", "Category : Select Item");
+        changeViewDropdown();
         CoroutineScope(Dispatchers.IO).launch {
-            while (isDropDownCategory){
-                delay(500);
-            } ;
-            withContext(Dispatchers.Main){
+            withContext(Dispatchers.Main) {
                 uiCallback?.productListObserve(mutableListOf(item));
             }
         }
@@ -190,12 +224,10 @@ class OrderVM : BaseUiViewModel<OrderUV>() {
 
     }
 
-
-
     // Product
-    fun productItemSelected(adapterPosition: Int, item: ProductModel) {
+    fun productItemSelected(adapterPosition: Int, item: ProductItem) {
         Log.d("ProductItemModel", "ProductModel : ok");
-
+        uiCallback?.showProductSelected(item);
     }
 
 

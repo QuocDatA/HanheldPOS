@@ -2,25 +2,36 @@ package com.hanheldpos.ui.screens.home.order.adapter
 
 import androidx.recyclerview.widget.DiffUtil
 import com.hanheldpos.R
-import com.hanheldpos.model.home.order.CategoryModel
+import com.hanheldpos.data.api.pojo.CategoryItem
+import com.hanheldpos.model.home.order.type.OrderMenuModeViewType
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
+import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 
 class OrderCategoryAdapter (
-    private val listener : BaseItemClickListener<CategoryModel>
-        ) : BaseBindingListAdapter<CategoryModel>(DiffCallBack(),listener) {
+    private val mainType : OrderMenuModeViewType? = OrderMenuModeViewType.TextColor,
+    private val listener : BaseItemClickListener<CategoryItem>
+        ) : BaseBindingListAdapter<CategoryItem>(DiffCallBack(),listener) {
 
 
     override fun getItemViewType(position: Int): Int {
-        return R.layout.item_order_category;
+
+        return when(mainType){
+            OrderMenuModeViewType.TextColor -> R.layout.item_order_category_color_style;
+            OrderMenuModeViewType.TextImage -> R.layout.item_order_category_image_style;
+            else -> R.layout.item_order_category_color_style;
+        }
+
     }
 
-    private class DiffCallBack : DiffUtil.ItemCallback<CategoryModel>() {
-        override fun areItemsTheSame(oldItem: CategoryModel, newItem: CategoryModel): Boolean {
+
+
+    private class DiffCallBack : DiffUtil.ItemCallback<CategoryItem>() {
+        override fun areItemsTheSame(oldItem: CategoryItem, newItem: CategoryItem): Boolean {
             return oldItem == newItem;
         }
 
-        override fun areContentsTheSame(oldItem: CategoryModel, newItem: CategoryModel): Boolean {
+        override fun areContentsTheSame(oldItem: CategoryItem, newItem: CategoryItem): Boolean {
             return oldItem == newItem;
         }
 

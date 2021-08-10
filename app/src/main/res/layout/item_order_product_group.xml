@@ -6,7 +6,7 @@
     <data>
         <variable
             name="item"
-            type="com.hanheldpos.model.home.order.CategoryModel" />
+            type="com.hanheldpos.data.api.pojo.CategoryItem" />
 
     </data>
 
@@ -30,7 +30,7 @@
                 android:textColor="@color/textPrimary"
                 android:textStyle="bold"
                 android:textAllCaps="true"
-                android:text="@{item.groupName}"
+                android:text="@{item.title}"
                 />
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/orderProductList"

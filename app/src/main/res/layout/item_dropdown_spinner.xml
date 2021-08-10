@@ -16,6 +16,10 @@
     </data>
 
     <CheckedTextView
+        android:paddingBottom="@dimen/_9sdp"
+        android:paddingTop="@dimen/_9sdp"
+        android:paddingStart="@dimen/_8sdp"
+        android:paddingEnd="@dimen/_8sdp"
         android:id="@+id/text1"
         style="?android:attr/spinnerDropDownItemStyle"
         android:layout_width="match_parent"
@@ -23,7 +27,6 @@
         android:ellipsize="end"
         android:enabled="@{enable??true}"
         android:hint="@{hint}"
-        android:padding="@dimen/_5sdp"
         android:singleLine="true"
         android:text="@{text , default=`Item`}"
         android:textColor="@color/textPrimary"

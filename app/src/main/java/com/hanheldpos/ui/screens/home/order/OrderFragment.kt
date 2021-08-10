@@ -1,22 +1,31 @@
 package com.hanheldpos.ui.screens.home.order
 
+import android.os.SystemClock
 import android.view.View
+import androidx.core.view.setPadding
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.hanheldpos.R
+import com.hanheldpos.data.api.pojo.CategoryItem
+import com.hanheldpos.data.api.pojo.ProductItem
 import com.hanheldpos.databinding.FragmentOrderBinding
-import com.hanheldpos.model.home.order.CategoryModel
-import com.hanheldpos.model.home.order.MenuModel
-import com.hanheldpos.model.home.order.ProductModel
+import com.hanheldpos.model.home.order.type.OrderMenuModeViewType
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
-import com.hanheldpos.ui.screens.main.adapter.TabSpinnerAdapter
-import com.hanheldpos.ui.screens.home.HomeFragment
 import com.hanheldpos.ui.screens.home.order.adapter.OrderCategoryAdapter
 import com.hanheldpos.ui.screens.home.order.adapter.OrderGPProductAdapter
+import com.hanheldpos.ui.screens.product.ProductDetailFragment
 import kotlinx.coroutines.*
 
 class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
     override fun layoutRes() = R.layout.fragment_order;
 
+    // Temp style
+    /*
+    * - 1 : Color Style
+    * - 2 : Image Style
+    */
+    private val mainView = OrderMenuModeViewType.fromInt(2);
 
     // Sub spinner
     private val priceMap : MutableMap<SortPrice,Double> = mutableMapOf();
@@ -28,6 +37,9 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
     private lateinit var categoryAdapter: OrderCategoryAdapter;
     private lateinit var productGroupAdapter : OrderGPProductAdapter;
 
+
+
+
     override fun viewModelClass(): Class<OrderVM> {
         return OrderVM::class.java;
     }
@@ -35,7 +47,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
     override fun initViewModel(viewModel: OrderVM) {
         viewModel.run {
             init(this@OrderFragment);
-            initLifecycle(this@OrderFragment);
+            initLifeCycle(this@OrderFragment);
             binding.viewModel = this;
 
         }
@@ -47,77 +59,99 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
 
         // product group adapter vs lítener
         productGroupAdapter = OrderGPProductAdapter(
-            itemClickListener = object : BaseItemClickListener<ProductModel> {
-                override fun onItemClick(adapterPosition: Int, item: ProductModel) {
-                    viewModel.productItemSelected(adapterPosition, item);
+            itemClickListener = object : BaseItemClickListener<ProductItem> {
+                override fun onItemClick(adapterPosition: Int, item: ProductItem) {
+                    /*if(SystemClock.elapsedRealtime() - viewModel.mLastTimeClick >= 1000) {
+                        viewModel.mLastTimeClick = SystemClock.elapsedRealtime();
+                        viewModel.productItemSelected(adapterPosition, item);
+                    }*/
                 }
 
             }
         )
         binding.orderProductGroupList.adapter = productGroupAdapter;
+
+
         // menu adapter vs listener
 
         // category adapter vs listener
         categoryAdapter = OrderCategoryAdapter(
-            listener = object : BaseItemClickListener<CategoryModel> {
-                override fun onItemClick(adapterPosition: Int, item: CategoryModel) {
-                    viewModel.categoryItemSelected(adapterPosition,item);
+            mainType = mainView,
+            listener = object : BaseItemClickListener<CategoryItem> {
+                override fun onItemClick(adapterPosition: Int, item: CategoryItem) {
+                    if(SystemClock.elapsedRealtime() - viewModel.mLastTimeClick > 300){
+                        viewModel.categoryItemSelected(adapterPosition,item);
+                    }
                 }
 
             }
         )
 
-        binding.listCategories.adapter = categoryAdapter;
+        binding.listCategories.apply {
+            layoutManager = when(mainView) {
+                OrderMenuModeViewType.TextColor ->{
+                    setPadding(12);
+                    GridLayoutManager(context,2);
+                }
+                OrderMenuModeViewType.TextImage->{
+                    LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false)
+                }
+            }
+            adapter = categoryAdapter;
+        }
+
+
 
     }
 
     override fun initData() {
-
+        // Init data when create fragment
+        viewModel.initDataProductGroup();
     }
 
     override fun initAction() {
 
     }
 
-    override fun categoryListObserve(categoryList: List<CategoryModel>) {
+    override fun categoryListObserve(categoryList: List<CategoryItem>) {
         categoryAdapter.submitList(categoryList);
         categoryAdapter.notifyDataSetChanged();
     }
 
     override fun showDropdownCategories(isShowed: Boolean) {
-        viewModel.isDropDownCategory = true;
         if(isShowed){
-
             binding.layoutCategory.animate().apply {
+                binding.listCategories.smoothScrollToPosition(0);
                 binding.layoutCategory.visibility = View.VISIBLE;
                 binding.backgroundDropdown.visibility = View.VISIBLE;
                 duration = 300;
                 alpha(1f)
-                translationYBy(100f)
+                translationYBy(80f)
 
             }.withEndAction {
-                viewModel.isDropDownCategory = false;
+
             }.start();
         }
         else{
             binding.layoutCategory.animate().apply {
                 duration = 300;
                 alpha(0.5f)
-                translationYBy(-100f)
+                translationYBy(-80f)
             }.withEndAction {
                 binding.layoutCategory.visibility = View.GONE;
                 binding.backgroundDropdown.visibility = View.GONE;
-                viewModel.isDropDownCategory = false;
+
             }.start();
         }
     }
 
-    override fun productListObserve(categoryListSelected: List<CategoryModel>) {
-
+    override fun productListObserve(categoryListSelected: List<CategoryItem>) {
         productGroupAdapter.submitList(categoryListSelected);
         productGroupAdapter.notifyDataSetChanged();
+    }
 
-
+    override fun showProductSelected(productSelected: ProductItem) {
+        navigator.goTo(ProductDetailFragment());
     }
 
 

@@ -10,7 +10,7 @@
             <item android:gravity="center_vertical|end" android:right="27px" >
                 <rotate android:fromDegrees="180"
                     android:drawable="@drawable/ic_dropdown"
-                    android:pivotX="75%"
+                    android:pivotX="70%"
                     android:pivotY="55%"
                     />
             </item>

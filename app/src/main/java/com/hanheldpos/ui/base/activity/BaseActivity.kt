@@ -128,7 +128,7 @@ abstract class BaseActivity<T : ViewDataBinding, VM : BaseViewModel> : AppCompat
         if (show) {
             CoroutineScope(Dispatchers.IO)
                 .launch {
-                    delay(0L)
+                    delay(300L)
                     withContext(Dispatchers.Main) {
                         if (needShowLoading) {
                             AppLoadingDialog.get().show()

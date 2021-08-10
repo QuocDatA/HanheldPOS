@@ -12,8 +12,8 @@ plugins {
 
 // ----- Apk info
 String APK_NAME = "[DEV]HanheldPos"
-int VERSION_CODE = 1
-String VERSION_NAME = "0.0.1"
+int VERSION_CODE = 2
+String VERSION_NAME = "0.0.2"
 
 static def getDate() {
     return new Date().format("yyyyMMdd")
@@ -115,4 +115,8 @@ dependencies {
     // Custom Font
     implementation 'io.github.inflationx:calligraphy3:3.1.1'
     implementation 'io.github.inflationx:viewpump:2.0.3'
+
+    // SliderView
+    implementation 'com.github.smarteist:autoimageslider:1.4.0'
+
 }

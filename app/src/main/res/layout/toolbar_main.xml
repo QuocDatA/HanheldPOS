@@ -12,7 +12,7 @@
     </data>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize" android:orientation="vertical">
+        android:layout_height="@dimen/_50sdp" android:orientation="vertical">
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -22,7 +22,7 @@
             <ImageButton
                 android:id="@+id/homeMenu"
                 style="@style/Base.MaterialButton"
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/_48sdp"
                 android:layout_height="match_parent"
                 android:layout_alignParentStart="true"
                 android:adjustViewBounds="true"
@@ -65,6 +65,7 @@
             <ImageButton
                 android:id="@+id/homeCart"
                 style="@style/MaterialButton.Icon"
+                android:adjustViewBounds="true"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_alignParentEnd="true"

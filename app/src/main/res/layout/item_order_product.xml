@@ -6,87 +6,121 @@
 
         <variable
             name="item"
-            type="com.hanheldpos.model.home.order.ProductModel" />
+            type="com.hanheldpos.data.api.pojo.ProductItem" />
     </data>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_70sdp"
-        android:layout_marginStart="@dimen/_14sdp"
-        android:layout_marginTop="@dimen/_11sdp"
-        android:layout_marginEnd="@dimen/_14sdp"
-        android:layout_marginBottom="@dimen/_11sdp"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground"
+        android:orientation="vertical">
 
-        <ImageView
-            imageUrl="@{item.img}"
-            android:layout_width="@dimen/_70sdp"
-            android:layout_height="match_parent"
-            tools:ignore="ContentDescription"
-            tools:src="@drawable/bg_no_image" />
-
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/_8ssp"
-            android:orientation="vertical">
+            android:layout_height="@dimen/_70sdp"
+            android:layout_marginStart="@dimen/_14sdp"
+            android:layout_marginTop="@dimen/_11sdp"
+            android:layout_marginEnd="@dimen/_14sdp"
+            android:layout_marginBottom="@dimen/_11sdp"
 
-            <LinearLayout
+            android:orientation="horizontal">
+
+            <ImageView
+                imageUrl="@{``}"
+                android:layout_width="@dimen/_70sdp"
+                android:layout_height="match_parent"
+                tools:ignore="ContentDescription"
+                tools:src="@drawable/bg_no_image" />
+
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/_8ssp"
                 android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_alignParentTop="true"
+                    android:orientation="vertical">
 
-                    <com.diadiem.pos_components.PTextView
-                        android:id="@+id/productText"
-                        android:layout_width="0dp"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/_10sdp"
-                        android:layout_weight="1"
-                        android:ellipsize="end"
-                        android:maxLines="1"
-                        android:text="@{item.text, default=`name`}"
-                        android:textColor="@color/textPrimary"
-                        android:textSize="@dimen/_12ssp" />
+                        android:orientation="horizontal">
+
+                        <com.diadiem.pos_components.PTextView
+                            android:id="@+id/productText"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/_10sdp"
+                            android:layout_weight="1"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:text="@{item.name, default=`name`}"
+                            android:textColor="@color/textPrimary"
+                            android:textSize="@dimen/_12ssp" />
+
+                        <com.diadiem.pos_components.PTextView
+                            priceView="@{item.price, default=0.0}"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:textColor="@color/textPrimary"
+                            android:textSize="@dimen/_12ssp"
+                            tools:ignore="RelativeOverlap" />
+
+                    </LinearLayout>
 
                     <com.diadiem.pos_components.PTextView
-                        priceView="@{item.price, default=0.0}"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_4ssp"
+                        android:layout_marginEnd="@dimen/_40sdp"
                         android:ellipsize="end"
-                        android:maxLines="1"
-                        android:textColor="@color/textPrimary"
-                        android:textSize="@dimen/_12ssp"
-                        tools:ignore="RelativeOverlap" />
+                        android:maxLines="2"
+                        android:text="@{item.description, default=`description`}"
+                        android:textColor="@color/textSecondary"
+                        android:textSize="@dimen/_10ssp" />
 
                 </LinearLayout>
 
-                <com.diadiem.pos_components.PTextView
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_5ssp"
-                    android:layout_marginEnd="@dimen/_40sdp"
-                    android:ellipsize="end"
-                    android:maxLines="2"
-                    android:text="@{item.description, default=`description`}"
-                    android:textColor="@color/textSecondary"
-                    android:textSize="@dimen/_10ssp" />
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentBottom="true">
+                    <com.diadiem.pos_components.PTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_food_text"
+                        android:paddingHorizontal="@dimen/_8sdp"
+                        android:paddingVertical="@dimen/_1sdp"
+                        android:text="@{`P1`,default=`P1`}"
+                        android:textColor="@color/color_3"
+                        android:textSize="@dimen/_8ssp" />
 
-            </LinearLayout>
+                    <com.diadiem.pos_components.PTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_4sdp"
+                        android:textColor="@color/textSecondary"
+                        android:textSize="@dimen/_8ssp"
+                        android:text="@{item.name3 , default=`4kg/bag`}"/>
+                </LinearLayout>
+            </RelativeLayout>
+        </LinearLayout>
 
-            <LinearLayout
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentStart="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                >
+        <include
+            layout="@layout/divider_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="@dimen/_14sdp"
+            android:layout_marginEnd="@dimen/_14sdp" />
 
-            </LinearLayout>
-        </RelativeLayout>
     </LinearLayout>
+
 </layout>
