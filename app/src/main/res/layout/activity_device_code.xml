@@ -67,7 +67,7 @@
                 app:hintEnabled="false"
                 tools:ignore="LabelFor">
 
-                <com.google.android.material.textfield.TextInputEditText
+                <com.diadiem.pos_components.PTextInputEditText
                     style="@style/BaseTextInput"
                     groupSize="@{viewModel.pinGroupSize}"
                     android:hint="@string/device_code"
@@ -77,6 +77,7 @@
                     android:paddingEnd="@dimen/_10sdp"
                     android:paddingBottom="@dimen/_17sdp"
                     android:text="@{viewModel.pinTextLD}"
+                    android:focusableInTouchMode="true"
                     android:textAllCaps="true"
                     android:textSize="@dimen/_12ssp" />
             </com.google.android.material.textfield.TextInputLayout>

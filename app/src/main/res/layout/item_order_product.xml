@@ -28,7 +28,7 @@
             android:orientation="horizontal">
 
             <ImageView
-                imageUrl="@{``}"
+                imageUrl="@{`https://im.ge/i/91C4X`}"
                 android:layout_width="@dimen/_70sdp"
                 android:layout_height="match_parent"
                 tools:ignore="ContentDescription"

@@ -37,7 +37,6 @@
                         android:layout_height="match_parent">
 
                         <com.smarteist.autoimageslider.SliderView
-
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             app:sliderAnimationDuration="300"
@@ -49,10 +48,10 @@
                             app:sliderIndicatorMarginBottom="@dimen/_19sdp"
                             app:sliderIndicatorOrientation="horizontal"
                             app:sliderIndicatorRadius="@dimen/_1sdp"
-                            app:sliderIndicatorSelectedColor="#40693B"
-                            app:sliderIndicatorUnselectedColor="#CCCCCC" />
+                            app:sliderIndicatorSelectedColor="@color/primary"
+                            app:sliderIndicatorUnselectedColor="@color/textSecondary" />
 
-                        <com.diadiem.pos_components.PTextView
+                      <!--  <com.diadiem.pos_components.PTextView
                             android:layout_width="@dimen/_32sdp"
                             android:layout_height="@dimen/_32sdp"
                             android:layout_gravity="end"
@@ -62,7 +61,7 @@
                             android:gravity="center"
                             android:text="@{ `` , default=`-20%`}"
                             android:textColor="@color/color_3"
-                            android:textSize="@dimen/_10ssp" />
+                            android:textSize="@dimen/_10ssp" />-->
 
                     </FrameLayout>
 
@@ -100,7 +99,7 @@
                                 android:layout_gravity="center"
                                 android:ellipsize="end"
                                 android:maxLines="1"
-                                android:text="@{`Heello`,default=`Name`}"
+                                android:text="@{`Product Name`,default=`Name`}"
                                 android:textAlignment="center"
                                 android:textColor="@color/color_3"
                                 android:textSize="@dimen/_15ssp"
@@ -121,8 +120,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:paddingVertical="@dimen/_16sdp"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:paddingVertical="@dimen/_16sdp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -141,8 +140,9 @@
                                 android:ellipsize="end"
                                 android:maxLines="2"
                                 android:text="@{`Product Name`, default=`Product Name`}"
-                                android:textColor="@color/textPrimary"
-                                android:textSize="@dimen/_12ssp" />
+                                app:useTextHeader="h2"
+                                app:useTextColor="color5"
+                                />
 
                             <androidx.legacy.widget.Space
                                 android:layout_width="wrap_content"
@@ -152,8 +152,10 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@{`Description`,default=`Description`}"
-                                android:textColor="@color/textSecondary"
-                                android:textSize="@dimen/_10ssp" />
+
+                                app:useTextHeader="h4"
+                                app:useTextColor="color7"
+                                />
 
                             <androidx.legacy.widget.Space
                                 android:layout_width="wrap_content"
@@ -162,8 +164,8 @@
                             <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-
-                                >
+                                android:layout_alignParentStart="true"
+                                android:layout_alignParentBottom="true">
 
                                 <com.diadiem.pos_components.PTextView
                                     android:layout_width="wrap_content"
@@ -173,14 +175,15 @@
                                     android:paddingVertical="@dimen/_1sdp"
                                     android:text="@{`P1`,default=`P1`}"
                                     android:textColor="@color/color_3"
-                                    android:textSize="@dimen/_10ssp" />
+                                    android:textSize="@dimen/_8ssp" />
 
                                 <com.diadiem.pos_components.PTextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="@dimen/_4sdp"
-                                    android:textColor="@color/textSecondary"
-                                    android:text="@{`4kg/bag` , default=`4kg/bag`}"/>
+                                    android:text="@{`4kg/bag` , default=`4kg/bag`}"
+                                    app:useTextHeader="h4"
+                                    app:useTextColor="color7" />
                             </LinearLayout>
                         </LinearLayout>
 
@@ -198,16 +201,16 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@{`70000đ`,default=`70000đ`}"
-                                android:textColor="@color/textPrimary"
-                                android:textSize="@dimen/_12ssp" />
+                                app:useTextHeader="h2"
+                                app:useTextColor="color5"/>
 
                             <com.diadiem.pos_components.PTextView
                                 bindStrike="@{true}"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@{`70000đ`,default=`70000đ`}"
-                                android:textColor="@color/textSecondary"
-                                android:textSize="@dimen/_10ssp" />
+                                app:useTextHeader="h4"
+                                app:useTextColor="color7" />
 
 
                         </LinearLayout>
@@ -215,88 +218,89 @@
 
                     <androidx.legacy.widget.Space
                         android:layout_width="wrap_content"
-                        android:layout_height="@dimen/_14sdp"/>
+                        android:layout_height="@dimen/_14sdp" />
+
                     <LinearLayout
 
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
 
-                        android:padding="@dimen/_12sdp"
                         android:orientation="vertical"
-                        >
+                        android:padding="@dimen/_12sdp">
+
                         <com.diadiem.pos_components.PTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textColor="@color/textPrimary"
-                            android:textSize="@dimen/_12ssp"
                             android:text="@{`Choose size`, default=`Choose size`}"
                             android:textAllCaps="true"
-                            />
+                            android:textColor="@color/textPrimary"
+                            android:textSize="@dimen/_12ssp" />
 
                         <androidx.recyclerview.widget.RecyclerView
-                            android:layout_marginTop="@dimen/_14sdp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_14sdp"
                             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                             app:spanCount="4"
-                            tools:itemCount="5"
-                            />
+                            tools:itemCount="5" />
                     </LinearLayout>
-                    <include layout="@layout/divider_vertical"/>
+
+                    <include layout="@layout/divider_vertical" />
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="@dimen/_12sdp"
                         android:orientation="vertical"
-                        >
+                        android:padding="@dimen/_12sdp">
+
                         <com.diadiem.pos_components.PTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textColor="@color/textPrimary"
-                            android:textSize="@dimen/_12ssp"
                             android:text="@{`How do you want to cook?`, default=`How do you want to cook?`}"
                             android:textAllCaps="true"
-                            />
+                            android:textColor="@color/textPrimary"
+                            android:textSize="@dimen/_12ssp" />
 
                         <androidx.legacy.widget.Space
                             android:layout_width="wrap_content"
-                            android:layout_height="@dimen/_14sdp"/>
+                            android:layout_height="@dimen/_14sdp" />
+
                         <androidx.recyclerview.widget.RecyclerView
 
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                             app:spanCount="4"
-                            tools:itemCount="5"
-                            />
+                            tools:itemCount="5" />
                     </LinearLayout>
-                    <include layout="@layout/divider_vertical"/>
+
+                    <include layout="@layout/divider_vertical" />
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="@dimen/_12sdp"
                         android:orientation="vertical"
-                        >
+                        android:padding="@dimen/_12sdp">
+
                         <com.diadiem.pos_components.PTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textColor="@color/textPrimary"
-                            android:textSize="@dimen/_12ssp"
                             android:text="@{`WHICH KIND OF SAUCE YOU WOULD LIKE TO?`, default=`WHICH KIND OF SAUCE YOU WOULD LIKE TO?`}"
                             android:textAllCaps="true"
-                            />
+                            android:textColor="@color/textPrimary"
+                            android:textSize="@dimen/_12ssp" />
 
                         <androidx.legacy.widget.Space
                             android:layout_width="wrap_content"
-                            android:layout_height="@dimen/_14sdp"/>
+                            android:layout_height="@dimen/_14sdp" />
+
                         <androidx.recyclerview.widget.RecyclerView
 
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                             app:spanCount="4"
-                            tools:itemCount="5"
-                            />
+                            tools:itemCount="5" />
                     </LinearLayout>
                 </LinearLayout>
 

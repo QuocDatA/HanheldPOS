@@ -25,19 +25,19 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
     * - 1 : Color Style
     * - 2 : Image Style
     */
-    private val mainView = OrderMenuModeViewType.fromInt(2);
+    private val mainView = OrderMenuModeViewType.fromInt(1);
 
     // Sub spinner
-    private val priceMap : MutableMap<SortPrice,Double> = mutableMapOf();
-    enum class SortPrice(pos: Int,name: String){
-        PriceList(0,"Price List");
+    private val priceMap: MutableMap<SortPrice, Double> = mutableMapOf();
+
+
+    enum class SortPrice(pos: Int, name: String) {
+        PriceList(0, "Price List");
     }
 
     // Adapter
     private lateinit var categoryAdapter: OrderCategoryAdapter;
-    private lateinit var productGroupAdapter : OrderGPProductAdapter;
-
-
+    private lateinit var productGroupAdapter: OrderGPProductAdapter;
 
 
     override fun viewModelClass(): Class<OrderVM> {
@@ -61,7 +61,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
         productGroupAdapter = OrderGPProductAdapter(
             itemClickListener = object : BaseItemClickListener<ProductItem> {
                 override fun onItemClick(adapterPosition: Int, item: ProductItem) {
-                    /*if(SystemClock.elapsedRealtime() - viewModel.mLastTimeClick >= 1000) {
+                    /*if (SystemClock.elapsedRealtime() - viewModel.mLastTimeClick >= 1000) {
                         viewModel.mLastTimeClick = SystemClock.elapsedRealtime();
                         viewModel.productItemSelected(adapterPosition, item);
                     }*/
@@ -79,8 +79,8 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
             mainType = mainView,
             listener = object : BaseItemClickListener<CategoryItem> {
                 override fun onItemClick(adapterPosition: Int, item: CategoryItem) {
-                    if(SystemClock.elapsedRealtime() - viewModel.mLastTimeClick > 300){
-                        viewModel.categoryItemSelected(adapterPosition,item);
+                    if (SystemClock.elapsedRealtime() - viewModel.mLastTimeClick > 300) {
+                        viewModel.categoryItemSelected(adapterPosition, item);
                     }
                 }
 
@@ -88,18 +88,17 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
         )
 
         binding.listCategories.apply {
-            layoutManager = when(mainView) {
-                OrderMenuModeViewType.TextColor ->{
+            layoutManager = when (mainView) {
+                OrderMenuModeViewType.TextColor -> {
                     setPadding(12);
-                    GridLayoutManager(context,2);
+                    GridLayoutManager(context, 2);
                 }
-                OrderMenuModeViewType.TextImage->{
-                    LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false)
+                OrderMenuModeViewType.TextImage -> {
+                    LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
                 }
             }
             adapter = categoryAdapter;
         }
-
 
 
     }
@@ -119,7 +118,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
     }
 
     override fun showDropdownCategories(isShowed: Boolean) {
-        if(isShowed){
+        if (isShowed) {
             binding.layoutCategory.animate().apply {
                 binding.listCategories.smoothScrollToPosition(0);
                 binding.layoutCategory.visibility = View.VISIBLE;
@@ -131,8 +130,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
             }.withEndAction {
 
             }.start();
-        }
-        else{
+        } else {
             binding.layoutCategory.animate().apply {
                 duration = 300;
                 alpha(0.5f)

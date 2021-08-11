@@ -21,8 +21,8 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
 
 
     enum class HomePage(val pos: Int, val textId: Int) {
-        /*Table(0, R.string.table),*/
-        Menu(2, R.string.menu);
+        Menu(2, R.string.menu),
+        /*Table(0, R.string.table);*/
     }
 
     // Adapter
@@ -46,8 +46,9 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
 
     override fun initView() {
         // init fragment page
-        /*fragmentMap[HomePage.Table] = TableFragment();*/
         fragmentMap[HomePage.Menu] = OrderFragment();
+        /*fragmentMap[HomePage.Table] = TableFragment();*/
+
 
         paperAdapter = FragmentPagerAdapter(requireActivity().supportFragmentManager,lifecycle);
 
@@ -68,6 +69,7 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
     }
 
     override fun initAction() {
+
         binding.toolbarLayout.spinnerMain.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(
@@ -83,11 +85,13 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
                 override fun onNothingSelected(parent: AdapterView<*>?) {}
 
             }
+        binding.toolbarLayout.spinnerMain.setSelection(0);
     }
 
     private fun initSpinner() {
         val tabSpinnerAdapter = TabSpinnerAdapter(fragmentContext)
         tabSpinnerAdapter.submitList(HomePage.values().toMutableList())
+
         binding.toolbarLayout.spinnerMain.adapter = tabSpinnerAdapter
 
         subSpinnerAdapter = SubSpinnerAdapter(requireContext());
@@ -96,16 +100,16 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
 
     private fun switchToPage(page: HomePage?) {
         when (page) {
-           /* HomePage.Table -> {
+            /*HomePage.Table -> {
                 Log.d("home", "switchPage: page_table");
-                binding.homeViewPager.currentItem = 0;
+                binding.homeViewPager.currentItem = 1;
                 subSpinnerAdapter.submitList(mutableListOf(PriceItem(name = "Group By")))
 
             }*/
 
             HomePage.Menu -> {
                 Log.d("home","switchPage: page_order")
-                binding.homeViewPager.currentItem = 1;
+                binding.homeViewPager.currentItem = 0;
                 subSpinnerAdapter.submitList(mutableListOf(PriceItem(name = "Price List")));
             }
 

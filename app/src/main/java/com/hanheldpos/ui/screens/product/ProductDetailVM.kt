@@ -11,6 +11,7 @@ class ProductDetailVM : BaseUiViewModel<ProductDetailUV>() {
 
 
 
+
     fun initLifeCycle(owner: LifecycleOwner){
         owner.lifecycle.addObserver(this);
     }
