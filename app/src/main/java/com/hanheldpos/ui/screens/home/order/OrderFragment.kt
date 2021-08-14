@@ -2,7 +2,9 @@ package com.hanheldpos.ui.screens.home.order
 
 import android.os.SystemClock
 import android.view.View
+import android.view.ViewTreeObserver
 import androidx.core.view.setPadding
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hanheldpos.R
@@ -25,15 +27,11 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
     * - 1 : Color Style
     * - 2 : Image Style
     */
-    private val mainView = OrderMenuModeViewType.fromInt(1);
+    private val mainView = OrderMenuModeViewType.fromInt(2);
 
-    // Sub spinner
-    private val priceMap: MutableMap<SortPrice, Double> = mutableMapOf();
+    // ViewModel
+    private val dataVM by activityViewModels<OrderDataVM>()
 
-
-    enum class SortPrice(pos: Int, name: String) {
-        PriceList(0, "Price List");
-    }
 
     // Adapter
     private lateinit var categoryAdapter: OrderCategoryAdapter;
@@ -54,8 +52,6 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
     }
 
     override fun initView() {
-        // price map
-        priceMap[SortPrice.PriceList] = 0.0;
 
         // product group adapter vs lítener
         productGroupAdapter = OrderGPProductAdapter(
@@ -68,11 +64,9 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
                 }
 
             }
-        )
-        binding.orderProductGroupList.adapter = productGroupAdapter;
-
-
-        // menu adapter vs listener
+        ).also {
+            binding.orderProductGroupList.adapter = it;
+        }
 
         // category adapter vs listener
         categoryAdapter = OrderCategoryAdapter(
@@ -85,31 +79,45 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
                 }
 
             }
-        )
-
-        binding.listCategories.apply {
-            layoutManager = when (mainView) {
-                OrderMenuModeViewType.TextColor -> {
-                    setPadding(12);
-                    GridLayoutManager(context, 2);
+        ).also {
+            binding.listCategories.apply {
+                layoutManager = when (mainView) {
+                    OrderMenuModeViewType.TextColor -> {
+                        setPadding(12);
+                        GridLayoutManager(context, 2);
+                    }
+                    OrderMenuModeViewType.TextImage -> {
+                        LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+                    }
                 }
-                OrderMenuModeViewType.TextImage -> {
-                    LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-                }
+                adapter = it;
             }
-            adapter = categoryAdapter;
         }
 
 
     }
 
     override fun initData() {
-        // Init data when create fragment
-        viewModel.initDataProductGroup();
+
     }
 
     override fun initAction() {
+        dataVM.categoryList.observe(this,{
+            categoryListObserve(it);
+        })
 
+        // Wait for ui draw
+        binding.root.viewTreeObserver.addOnGlobalLayoutListener(object :
+            ViewTreeObserver.OnGlobalLayoutListener {
+            override fun onGlobalLayout() {
+                if (binding.root.height > 0) {
+                    binding.root.viewTreeObserver.removeOnGlobalLayoutListener(this);
+                    dataVM.initData();
+                    // Load All Data
+                    dataVM.categoryList.value?.let { productListObserve(it) };
+                }
+            }
+        })
     }
 
     override fun categoryListObserve(categoryList: List<CategoryItem>) {
@@ -126,7 +134,6 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
                 duration = 300;
                 alpha(1f)
                 translationYBy(80f)
-
             }.withEndAction {
 
             }.start();

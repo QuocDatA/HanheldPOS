@@ -7,7 +7,7 @@
                     <solid android:color="@color/color_3" />
                 </shape>
             </item>
-            <item android:drawable="@drawable/ic_dropdown" android:gravity="center_vertical|end" android:right="35px" />
+            <item android:drawable="@drawable/ic_arrow_down" android:gravity="center_vertical|end" android:right="27px" />
         </layer-list>
     </item>
 </selector>

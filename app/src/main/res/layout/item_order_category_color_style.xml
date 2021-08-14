@@ -12,8 +12,6 @@
 
 
     <androidx.cardview.widget.CardView
-        tools:backgroundTint="@color/color_5"
-        backColor="@{item.color}"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/_7sdp"
@@ -21,17 +19,24 @@
         app:cardCornerRadius="@dimen/_4sdp"
         app:cardElevation="0dp"
         >
+        <LinearLayout
+            tools:background="@color/color_5"
+            backColor="@{item.color}"
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:layout_height="match_parent">
+            <com.diadiem.pos_components.PTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/_9sdp"
+                android:text="@{item.title, default=`Category`}"
+                android:textAllCaps="true"
+                android:textColor="@color/color_3"
+                android:textSize="@dimen/_12ssp"
+                android:textStyle="bold" />
+        </LinearLayout>
 
-        <com.diadiem.pos_components.PTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_margin="@dimen/_9sdp"
-            android:text="@{item.title, default=`Category`}"
-            android:textAllCaps="true"
-            android:textColor="@color/color_3"
-            android:textSize="@dimen/_12ssp"
-            android:textStyle="bold" />
     </androidx.cardview.widget.CardView>
 
 </layout>

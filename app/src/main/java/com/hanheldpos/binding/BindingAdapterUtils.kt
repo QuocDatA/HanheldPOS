@@ -140,7 +140,8 @@ fun setBackColor(view : View?, colorHex : String ){
     if(view == null) return;
     if(!TextUtils.isEmpty(colorHex)){
         val color = Color.parseColor(colorHex)
-        view.backgroundTintList = ColorStateList.valueOf(color);
+        /*view.backgroundTintList = ColorStateList.valueOf(color);*/
+        view.setBackgroundColor(color);
     }
 
 }
