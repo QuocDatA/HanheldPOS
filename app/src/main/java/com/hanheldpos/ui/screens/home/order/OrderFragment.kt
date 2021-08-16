@@ -1,6 +1,7 @@
 package com.hanheldpos.ui.screens.home.order
 
 import android.os.SystemClock
+import android.util.Log
 import android.view.View
 import android.view.ViewTreeObserver
 import androidx.fragment.app.activityViewModels
@@ -10,6 +11,7 @@ import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.CategoryItem
 import com.hanheldpos.data.api.pojo.ProductItem
 import com.hanheldpos.databinding.FragmentOrderBinding
+import com.hanheldpos.model.home.order.product.ProductModeViewType
 import com.hanheldpos.model.home.order.type.OrderMenuModeViewType
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
@@ -63,8 +65,24 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
         productAdapter = OrderProductAdapter(
             listener = object : BaseItemClickListener<ProductItem> {
                 override fun onItemClick(adapterPosition: Int, item: ProductItem) {
+                    Log.d("OrderFragment","Product Selected");
                     if (SystemClock.elapsedRealtime() - viewModel.mLastTimeClick > 300) {
+                        when(item.uiType){
+                            ProductModeViewType.Product -> {
 
+                            }
+                            ProductModeViewType.PrevButton -> {
+                                if (dataVM.pageProductListSl.value!! > 1){
+                                    dataVM.pageProductListSl.value = dataVM.pageProductListSl.value!!.minus(1);
+                                }
+                            }
+                            ProductModeViewType.NextButton -> {
+                                if ((dataVM.pageProductListSl.value!! * 15) < dataVM.productListSl.value!!.size ){
+                                    dataVM.pageProductListSl.value = dataVM.pageProductListSl.value!!.plus(1);
+                                }
+                            }
+                            else -> {}
+                        }
                     }
                 }
 
@@ -87,25 +105,28 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
             categoryAdapter.notifyDataSetChanged();
         });
 
-        dataVM.productListSl.observe(this,{
+        dataVM.categorySelected.observe(this,{
+            dataVM.productListSl.value = dataVM.getProductByCategory(it)?.toMutableList();
             dataVM.pageProductListSl.value = 1;
+
         });
 
         dataVM.pageProductListSl.observe(this,{
-            productAdapter.submitList(dataVM.getProductByPage(it).toMutableList());
-            productAdapter.notifyDataSetChanged();
+            Log.d("OrderFragment","RecycleView Height:" + binding.productList.height);
+            if (binding.productList.height > 0) {
+                productAdapter.submitList(dataVM.getProductByPage(it).toMutableList());
+                productAdapter.notifyDataSetChanged();
+            }
+
         });
 
         // Wait for ui draw
         binding.root.viewTreeObserver.addOnGlobalLayoutListener(object :
             ViewTreeObserver.OnGlobalLayoutListener {
             override fun onGlobalLayout() {
-                if (binding.root.height > 0) {
+                if (binding.productList.height > 0) {
                     binding.root.viewTreeObserver.removeOnGlobalLayoutListener(this);
                     dataVM.initData();
-
-                    // Init First Page
-                    dataVM.pageCategoryList.value = 1;
                 }
             }
         })
@@ -128,8 +149,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
     }
 
     private fun categoryItemSelected(categoryItem: CategoryItem) {
-        dataVM.productListSl.value = dataVM.getProductByCategory(categoryItem)?.toMutableList();
-        View.VISIBLE
+        dataVM.categorySelected.value = categoryItem;
     }
 
 

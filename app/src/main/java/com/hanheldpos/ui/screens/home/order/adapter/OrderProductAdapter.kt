@@ -43,13 +43,14 @@ class OrderProductAdapter(
         }
     }
 
+
     private class DiffCallback : DiffUtil.ItemCallback<ProductItem>() {
         override fun areItemsTheSame(oldItem: ProductItem, newItem: ProductItem): Boolean {
-            return oldItem == newItem
+            return oldItem.id == newItem.id && oldItem.id != null && newItem.id != null;
         }
 
         override fun areContentsTheSame(oldItem: ProductItem, newItem: ProductItem): Boolean {
-            return oldItem == newItem
+            return false;
         }
 
     }

@@ -7,7 +7,7 @@ import java.text.DecimalFormat
 
 @BindingAdapter("priceView")
 fun setPriceView(view: TextView?, price : Double?) {
-    if(view == null) return;
+    if(view == null || price == null) return;
     val formatter = DecimalFormat("###,###,###");
     val rs = formatter.format(price?.toInt()) + "đ";
     view.text = rs;

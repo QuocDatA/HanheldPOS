@@ -30,8 +30,6 @@ class OrderCategoryAdapter (
     override fun submitList(list: MutableList<CategoryItem>?) {
         selectedItem.value = 0;
         super.submitList(list);
-
-
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -43,13 +41,12 @@ class OrderCategoryAdapter (
         parent: ViewGroup,
         viewType: Int
     ): BaseBindingViewHolder<CategoryItem> {
-
         DataBindingUtil.inflate<ViewDataBinding>(
             LayoutInflater.from(parent.context),
             viewType,
             parent, false
         ).also {
-            Log.d("OrderNormalCategoryAdapter","RecycleView Height:" + parent.height);
+            Log.d("OrderCategoryAdapter","RecycleView Height:" + parent.height);
             val height = ((parent.height) / OrderDataVM.maxItemViewCate ) - parent.resources.getDimension(R.dimen._2sdp);
             val params : LinearLayout.LayoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,height.toInt());
             (it as ItemOrderCategoryBinding).text.layoutParams = params;

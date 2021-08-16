@@ -5,8 +5,9 @@
 
     <data>
 
-        <import type="android.view.View"/>
-        <import type="com.hanheldpos.model.home.order.product.ProductModeViewType"/>
+        <import type="android.view.View" />
+
+        <import type="com.hanheldpos.model.home.order.product.ProductModeViewType" />
 
 
         <variable
@@ -15,66 +16,71 @@
     </data>
 
     <FrameLayout
+        android:clickable="@{item.uiType != ProductModeViewType.Empty}"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/_1sdp">
-        <FrameLayout
-            android:visibility="@{ item.uiType != ProductModeViewType.Empty ? View.VISIBLE : View.INVISIBLE }"
+        android:layout_margin="@dimen/_1sdp"
+        >
+        <LinearLayout
             android:id="@+id/layoutMain"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@{ item.uiType == ProductModeViewType.Product ? @color/_1067A7 : @color/_EEEEEE }"
-            android:clickable="true"
-            android:focusable="true"
-            tools:layout_height="@dimen/_50sdp">
-
+            android:layout_height="wrap_content">
             <RelativeLayout
-                visibleObject="@{item.uiType == ProductModeViewType.Product}"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <com.diadiem.pos_components.PTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/_4sdp"
-                    android:background="@drawable/bg_food_text"
-                    android:paddingHorizontal="@dimen/_6sdp"
-                    android:text="@{`P1`}"
-                    app:useTextColor="color4"
-                    app:useTextHeader="h4" />
+                android:layout_height="match_parent"
+                android:background="@{ item.uiType == ProductModeViewType.Product ? @color/_1067A7 : @color/_EEEEEE }"
+                android:visibility="@{ item.uiType != ProductModeViewType.Empty ? View.VISIBLE : View.INVISIBLE }"
+                tools:layout_height="@dimen/_50sdp">
 
-                <com.diadiem.pos_components.PTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                <RelativeLayout
+                    visibleObject="@{item.uiType == ProductModeViewType.Product}"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.diadiem.pos_components.PTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/_4sdp"
+                        android:background="@drawable/bg_food_text"
+                        android:paddingHorizontal="@dimen/_6sdp"
+                        android:text="@{`P1`}"
+                        app:useTextColor="color4"
+                        app:useTextHeader="h4" />
+
+                    <com.diadiem.pos_components.PTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:ellipsize="end"
+                        android:maxLines="2"
+                        android:text="@{item.name,default=`Product Name`}"
+                        app:useFontStyle="bold"
+                        app:useTextColor="color3"
+                        app:useTextHeader="h4" />
+
+                    <com.diadiem.pos_components.PTextView
+                        priceView="@{item.price}"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentBottom="true"
+                        android:padding="@dimen/_5sdp"
+                        app:useFontStyle="normal"
+                        app:useTextColor="color3"
+                        app:useTextHeader="h5" />
+                </RelativeLayout>
+
+                <ImageView
+                    visibleObject="@{item.uiType != ProductModeViewType.Product }"
+                    android:layout_width="@dimen/_14sdp"
+                    android:layout_height="@dimen/_14sdp"
+                    android:layout_gravity="center"
                     android:layout_centerInParent="true"
-                    android:ellipsize="end"
-                    android:maxLines="2"
-                    android:text="@{item.name,default=`Product Name`}"
-                    app:useFontStyle="bold"
-                    app:useTextColor="color3"
-                    app:useTextHeader="h4" />
+                    android:scaleType="centerInside"
+                    android:src="@{ item.uiType == ProductModeViewType.PrevButton ? @drawable/ic_direction_up : @drawable/ic_direction_down }" />
 
-                <com.diadiem.pos_components.PTextView
-                    priceView="@{item.price}"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentBottom="true"
-                    android:layout_margin="@dimen/_5sdp"
-                    app:useFontStyle="normal"
-                    app:useTextColor="color3"
-                    app:useTextHeader="h5" />
             </RelativeLayout>
-
-            <ImageView
-                visibleObject="@{item.uiType != ProductModeViewType.Product }"
-                android:layout_width="@dimen/_14sdp"
-                android:layout_height="@dimen/_14sdp"
-                android:scaleType="centerInside"
-                android:layout_gravity="center"
-                android:src="@{ item.uiType == ProductModeViewType.PrevButton ? @drawable/ic_direction_up : @drawable/ic_direction_down }"
-                />
-
-        </FrameLayout>
+        </LinearLayout>
     </FrameLayout>
 
 

@@ -4,19 +4,28 @@ import androidx.lifecycle.MutableLiveData
 import com.hanheldpos.data.api.pojo.*
 import com.hanheldpos.data.api.pojo.order.getCategoryList
 import com.hanheldpos.data.api.pojo.order.getProductWithCategoryGuid
+import com.hanheldpos.model.home.order.product.ProductModeViewType
 import com.hanheldpos.ui.base.viewmodel.BaseViewModel
 import com.hanheldpos.utils.screens.notifyValueChange
 
 class OrderDataVM : BaseViewModel() {
     private var orderMenuResp: OrderMenuResp? = null;
     val categoryList = MutableLiveData<MutableList<CategoryItem?>>(mutableListOf());
-    val pageCategoryList = MutableLiveData<Int>(1);
+    val categorySelected = MutableLiveData<CategoryItem>();
+    val pageCategoryList = MutableLiveData<Int>();
     val productListSl = MutableLiveData<MutableList<ProductItem?>>(mutableListOf());
-    val pageProductListSl = MutableLiveData<Int>(1);
+    val pageProductListSl = MutableLiveData<Int>();
 
     fun initData() {
         initMenus();
         initCategories();
+
+        // Init First Page
+
+        categorySelected.value = categoryList.value?.first();
+        pageCategoryList.value = 1;
+
+
     }
 
     // Menu
@@ -199,6 +208,7 @@ class OrderDataVM : BaseViewModel() {
                         ListProductItem(
                             product = mutableListOf(
                                 ProductItem(
+                                    id = "Product/438212511",
                                     name = "Pho Bo Tai (S)",
                                     description = "Nước dùng thơm ngon nấu từ 100% xương ống bò trong 8 giờ",
                                     price = 39000.0,
@@ -206,114 +216,133 @@ class OrderDataVM : BaseViewModel() {
                                     categoryGuid = "Category/430214303"
                                 ),
                                 ProductItem(
+                                    id = "Product/438212512",
                                     name = "Pho Bo Tai (S)",
                                     description = "Nước dùng thơm ngon nấu từ 100% xương ống bò trong 8 giờ",
                                     price = 39000.0,
                                     name3 = "500g/Tô",
                                     categoryGuid = "Category/430214303"
                                 ), ProductItem(
+                                    id = "Product/438212513",
                                     name = "Pho Bo Tai (S)",
                                     description = "Nước dùng thơm ngon nấu từ 100% xương ống bò trong 8 giờ",
                                     price = 39000.0,
                                     name3 = "500g/Tô",
                                     categoryGuid = "Category/430214303"
                                 ), ProductItem(
+                                    id = "Product/438212514",
                                     name = "Pho Bo Tai (S)",
                                     description = "Nước dùng thơm ngon nấu từ 100% xương ống bò trong 8 giờ",
                                     price = 39000.0,
                                     name3 = "500g/Tô",
                                     categoryGuid = "Category/430214303"
                                 ), ProductItem(
+                                    id = "Product/438212515",
                                     name = "Pho Bo Tai (S)",
                                     description = "Nước dùng thơm ngon nấu từ 100% xương ống bò trong 8 giờ",
                                     price = 39000.0,
                                     name3 = "500g/Tô",
                                     categoryGuid = "Category/430214303"
                                 ), ProductItem(
+                                    id = "Product/438212516",
                                     name = "Pho Bo Tai (S)",
                                     description = "Nước dùng thơm ngon nấu từ 100% xương ống bò trong 8 giờ",
                                     price = 39000.0,
                                     name3 = "500g/Tô",
                                     categoryGuid = "Category/430214303"
                                 ), ProductItem(
+                                    id = "Product/438212517",
                                     name = "Pho Bo Tai (S)",
                                     description = "Nước dùng thơm ngon nấu từ 100% xương ống bò trong 8 giờ",
                                     price = 39000.0,
                                     name3 = "500g/Tô",
                                     categoryGuid = "Category/430214303"
                                 ), ProductItem(
+                                    id = "Product/438212518",
                                     name = "Pho Bo Tai (S)",
                                     description = "Nước dùng thơm ngon nấu từ 100% xương ống bò trong 8 giờ",
                                     price = 39000.0,
                                     name3 = "500g/Tô",
                                     categoryGuid = "Category/430214303"
                                 ), ProductItem(
+                                    id = "Product/438212519",
                                     name = "Pho Bo Tai (S)",
                                     description = "Nước dùng thơm ngon nấu từ 100% xương ống bò trong 8 giờ",
                                     price = 39000.0,
                                     name3 = "500g/Tô",
                                     categoryGuid = "Category/430214303"
                                 ), ProductItem(
+                                    id = "Product/438212520",
                                     name = "Pho Bo Tai (S)",
                                     description = "Nước dùng thơm ngon nấu từ 100% xương ống bò trong 8 giờ",
                                     price = 39000.0,
                                     name3 = "500g/Tô",
                                     categoryGuid = "Category/430214303"
                                 ), ProductItem(
+                                    id = "Product/438212521",
                                     name = "Pho Bo Tai (S)",
                                     description = "Nước dùng thơm ngon nấu từ 100% xương ống bò trong 8 giờ",
                                     price = 39000.0,
                                     name3 = "500g/Tô",
                                     categoryGuid = "Category/430214303"
                                 ), ProductItem(
+                                    id = "Product/438212522",
                                     name = "Pho Bo Tai (S)",
                                     description = "Nước dùng thơm ngon nấu từ 100% xương ống bò trong 8 giờ",
                                     price = 39000.0,
                                     name3 = "500g/Tô",
                                     categoryGuid = "Category/430214303"
                                 ), ProductItem(
+                                    id = "Product/438212523",
                                     name = "Pho Bo Tai (S)",
                                     description = "Nước dùng thơm ngon nấu từ 100% xương ống bò trong 8 giờ",
                                     price = 39000.0,
                                     name3 = "500g/Tô",
                                     categoryGuid = "Category/430214303"
                                 ), ProductItem(
+                                    id = "Product/438212524",
                                     name = "Pho Bo Tai (S)",
                                     description = "Nước dùng thơm ngon nấu từ 100% xương ống bò trong 8 giờ",
                                     price = 39000.0,
                                     name3 = "500g/Tô",
                                     categoryGuid = "Category/430214303"
                                 ), ProductItem(
+                                    id = "Product/438212525",
                                     name = "Pho Bo Tai (S)",
                                     description = "Nước dùng thơm ngon nấu từ 100% xương ống bò trong 8 giờ",
                                     price = 39000.0,
                                     name3 = "500g/Tô",
                                     categoryGuid = "Category/430214303"
                                 ), ProductItem(
+                                    id = "Product/438212526",
                                     name = "Pho Bo Tai (S)",
                                     description = "Nước dùng thơm ngon nấu từ 100% xương ống bò trong 8 giờ",
                                     price = 39000.0,
                                     name3 = "500g/Tô",
                                     categoryGuid = "Category/430214303"
                                 ), ProductItem(
+                                    id = "Product/438212527",
                                     name = "Pho Bo Tai (S)",
                                     description = "Nước dùng thơm ngon nấu từ 100% xương ống bò trong 8 giờ",
                                     price = 39000.0,
                                     name3 = "500g/Tô",
                                     categoryGuid = "Category/430214303"
                                 ), ProductItem(
+                                    id = "Product/438212528",
                                     name = "Pho Bo Tai (S)",
                                     description = "Nước dùng thơm ngon nấu từ 100% xương ống bò trong 8 giờ",
                                     price = 39000.0,
                                     name3 = "500g/Tô",
                                     categoryGuid = "Category/430214303"
                                 ), ProductItem(
+                                    id = "Product/438212529",
                                     name = "Pho Bo Tai (S)",
                                     description = "Nước dùng thơm ngon nấu từ 100% xương ống bò trong 8 giờ",
                                     price = 39000.0,
                                     name3 = "500g/Tô",
                                     categoryGuid = "Category/430214303"
                                 ), ProductItem(
+                                    id = "Product/438212530",
                                     name = "Pho Bo Tai (S)",
                                     description = "Nước dùng thơm ngon nấu từ 100% xương ống bò trong 8 giờ",
                                     price = 39000.0,
@@ -350,15 +379,32 @@ class OrderDataVM : BaseViewModel() {
     }
 
     fun getProductByPage(pagePosition: Int) : List<ProductItem> {
+        val rs : MutableList<ProductItem> = mutableListOf();
         productListSl.value?.let {
             if(it.size != 0){
                 val start: Int = (pagePosition - 1) * maxItemViewProduct;
                 val end: Int =
                     if (it.size > maxItemViewProduct * pagePosition) maxItemViewProduct * pagePosition else it.size;
-                return it.toList().subList(start, end) as List<ProductItem>;
+                rs.addAll(it.toList().subList(start, end) as List<ProductItem>);
             }
         }
-        return mutableListOf();
+
+        // Add Empty
+        for (i in rs.size..15){
+            rs.add(ProductItem().apply {
+                uiType = ProductModeViewType.Empty;
+            })
+        }
+
+        // Add Direction Button
+        rs.addAll(listOf(
+            ProductItem().apply {
+                uiType = ProductModeViewType.PrevButton;
+            },ProductItem().apply {
+                uiType = ProductModeViewType.NextButton;
+            }))
+
+        return rs;
     }
 
     companion object {
