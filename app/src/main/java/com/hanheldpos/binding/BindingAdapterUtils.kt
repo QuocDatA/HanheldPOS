@@ -45,6 +45,7 @@ fun setVisibleObject(view: View, `object`: Any?) {
     else view.visibility = View.GONE
 }
 
+
 fun visibleObject(`object`: Any?): Boolean {
     var visibleObject = true
     if (`object` != null) {

@@ -23,4 +23,7 @@
     <color name="ripple">#D6D6D6</color>
     <color name="divider">#EFEFEF</color>
     <color name="disabled">#939393</color>
+    
+    <color name="_1067A7">#1067A7</color>
+    <color name="_EEEEEE">#EEEEEE</color>
 </resources>

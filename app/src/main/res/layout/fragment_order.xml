@@ -4,6 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <variable
+            name="dataVM"
+            type="com.hanheldpos.ui.screens.home.order.OrderDataVM" />
 
         <variable
             name="viewModel"
@@ -12,112 +15,132 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-
-        <FrameLayout
-            android:id="@+id/subToolbar"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_50sdp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-
-                <FrameLayout
-                    style="@style/Base.MaterialButton"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@{ viewModel.dropDownCategory ? @drawable/bg_categories_button_selected :  @drawable/bg_categories_button_unselected}"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:onClick="@{v -> viewModel.changeViewDropdown()}"
-                    android:paddingStart="@dimen/_15sdp"
-                    android:paddingEnd="@dimen/_15sdp">
-
-                    <com.diadiem.pos_components.PTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical|start"
-                        android:text="All Categories"
-                        android:textColor="@color/textPrimary"
-                        android:textSize="@dimen/_12sdp"
-                        android:textStyle="bold" />
-                </FrameLayout>
-
-
-                <include layout="@layout/divider_horizontal" />
-
-                <ImageButton
-                    style="@style/MaterialButton.Icon"
-                    android:layout_width="@dimen/_50sdp"
-                    android:layout_height="match_parent"
-                    android:padding="@dimen/_17sdp"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/ic_search"
-                    tools:ignore="ContentDescription" />
-
-            </LinearLayout>
-
-            <include
-                layout="@layout/divider_vertical"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_gravity="bottom" />
-        </FrameLayout>
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/subToolbar">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/orderProductGroupList"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/item_order_product_group" />
-
-            <RelativeLayout
-                android:id="@+id/backgroundDropdown"
-                visibleObject="@{false}"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/bg_categories_dropdown"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:onClick="@{v -> viewModel.changeViewDropdown()}" />
-
-
-            </RelativeLayout>
-        </FrameLayout>
+        android:layout_height="match_parent">
 
         <LinearLayout
-            android:id="@+id/layoutCategory"
-            visibleObject="@{false}"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/subToolbar"
-            android:background="@color/color_3"
-            android:clickable="true"
-            android:focusable="true">
+            android:layout_height="match_parent"
+            android:layout_above="@+id/toolbarCart"
+            android:layout_marginBottom="@dimen/_10sdp">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/listCategories"
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="4"
+                android:orientation="vertical">
 
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:overScrollMode="never"
-                tools:listitem="@layout/item_order_category_color_style" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/categoryList"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_above="@+id/categoryDir"
+                    android:nestedScrollingEnabled="false"
+                    android:orientation="vertical"
+                    android:overScrollMode="never"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/item_order_category" />
+
+                <LinearLayout
+                    android:id="@+id/categoryDir"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_30sdp"
+                    android:layout_alignParentBottom="true"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/_2sdp">
+
+                    <com.diadiem.pos_components.PMaterialButton
+                        android:id="@+id/categoryDirUp"
+                        style="@style/MaterialButton.Icon"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:enabled="@{ dataVM.pageCategoryList != 1 }"
+                        android:onClick="@{(v) -> viewModel.changeCategoryPageView(v)}"
+                        app:icon="@{ dataVM.pageCategoryList != 1 ? @drawable/ic_direction_up : @drawable/ic_direction_up_disable}"
+                        app:iconSize="@dimen/_10sdp"
+                        app:strokeColor="@color/color_9"
+                        app:strokeWidth="@dimen/_1sdp" />
+
+                    <androidx.legacy.widget.Space
+                        android:layout_width="@dimen/_5sdp"
+                        android:layout_height="wrap_content" />
+
+                    <com.diadiem.pos_components.PMaterialButton
+                        android:id="@+id/categoryDirDown"
+                        style="@style/MaterialButton.Icon"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:enabled="@{ !((dataVM.pageCategoryList * dataVM.Companion.maxItemViewCate) >= dataVM.categoryList.size)}"
+                        android:onClick="@{(v) -> viewModel.changeCategoryPageView(v)}"
+                        app:icon="@{ !((dataVM.pageCategoryList * dataVM.Companion.maxItemViewCate) >= dataVM.categoryList.size) ? @drawable/ic_direction_down : @drawable/ic_direction_down_disable}"
+                        app:iconSize="@dimen/_10sdp"
+                        app:strokeColor="@color/color_9"
+                        app:strokeWidth="@dimen/_1sdp" />
+                </LinearLayout>
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="11.6">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/productList"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_above="@+id/categoryDir"
+                    android:nestedScrollingEnabled="false"
+                    android:orientation="vertical"
+                    android:overScrollMode="never"
+                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                    app:spanCount="3"
+                    tools:listitem="@layout/item_order_product" />
+            </LinearLayout>
+
         </LinearLayout>
+
+
+        <include
+            layout="@layout/divider_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_1sdp"
+            android:layout_above="@id/toolbarCart" />
+
+        <RelativeLayout
+            android:id="@+id/toolbarCart"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_42sdp"
+            android:layout_alignParentBottom="true"
+            android:gravity="center_vertical">
+
+            <FrameLayout
+                android:layout_width="@dimen/_50sdp"
+                android:layout_height="@dimen/_42sdp"
+                android:layout_alignParentEnd="true">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/color_0"
+                    android:padding="@dimen/_7sdp"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_cart_light" />
+
+                <com.diadiem.pos_components.PTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    app:useTextColor="color0"
+                    app:useTextHeader="h5"
+                    tools:text="10"
+                    tools:textColor="@color/color_0" />
+            </FrameLayout>
+
+        </RelativeLayout>
 
     </RelativeLayout>
 </layout>

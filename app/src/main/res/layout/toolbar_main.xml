@@ -19,21 +19,21 @@
             android:background="#F6F6F6"
             android:orientation="horizontal">
 
-            <ImageButton
+            <ImageView
                 android:id="@+id/homeMenu"
-                style="@style/Base.MaterialButton"
                 android:layout_width="@dimen/_48sdp"
                 android:layout_height="match_parent"
                 android:layout_alignParentStart="true"
                 android:adjustViewBounds="true"
+                android:scaleType="centerInside"
                 android:src="@drawable/ic_toolbar_menu"
                 tools:ignore="ContentDescription" />
 
             <LinearLayout
-                android:layout_marginStart="@dimen/_3sdp"
-                android:layout_marginEnd="@dimen/_3sdp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/_3sdp"
+                android:layout_marginEnd="@dimen/_3sdp"
                 android:layout_toStartOf="@+id/homeCart"
                 android:layout_toEndOf="@+id/homeMenu"
                 android:gravity="center"
@@ -65,12 +65,11 @@
             <ImageButton
                 android:id="@+id/homeCart"
                 style="@style/MaterialButton.Icon"
-                android:adjustViewBounds="true"
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/_47sdp"
                 android:layout_height="match_parent"
                 android:layout_alignParentEnd="true"
                 android:scaleType="centerInside"
-                android:src="@drawable/ic_cart"
+
                 tools:ignore="ContentDescription" />
 
 

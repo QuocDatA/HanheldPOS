@@ -3,7 +3,6 @@ package com.hanheldpos.ui.screens.home.order
 import android.os.SystemClock
 import android.view.View
 import android.view.ViewTreeObserver
-import androidx.core.view.setPadding
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,19 +14,12 @@ import com.hanheldpos.model.home.order.type.OrderMenuModeViewType
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.home.order.adapter.OrderCategoryAdapter
-import com.hanheldpos.ui.screens.home.order.adapter.OrderGPProductAdapter
+import com.hanheldpos.ui.screens.home.order.adapter.OrderProductAdapter
 import com.hanheldpos.ui.screens.product.ProductDetailFragment
 import kotlinx.coroutines.*
 
 class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
     override fun layoutRes() = R.layout.fragment_order;
-
-    // Temp style
-    /*
-    * - 1 : Color Style
-    * - 2 : Image Style
-    */
-    private val mainView = OrderMenuModeViewType.fromInt(2);
 
     // ViewModel
     private val dataVM by activityViewModels<OrderDataVM>()
@@ -35,8 +27,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
 
     // Adapter
     private lateinit var categoryAdapter: OrderCategoryAdapter;
-    private lateinit var productGroupAdapter: OrderGPProductAdapter;
-
+    private lateinit var productAdapter: OrderProductAdapter;
 
     override fun viewModelClass(): Class<OrderVM> {
         return OrderVM::class.java;
@@ -47,52 +38,41 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
             init(this@OrderFragment);
             initLifeCycle(this@OrderFragment);
             binding.viewModel = this;
-
         }
+        binding.dataVM = this.dataVM;
     }
 
     override fun initView() {
 
-        // product group adapter vs lítener
-        productGroupAdapter = OrderGPProductAdapter(
-            itemClickListener = object : BaseItemClickListener<ProductItem> {
-                override fun onItemClick(adapterPosition: Int, item: ProductItem) {
-                    /*if (SystemClock.elapsedRealtime() - viewModel.mLastTimeClick >= 1000) {
-                        viewModel.mLastTimeClick = SystemClock.elapsedRealtime();
-                        viewModel.productItemSelected(adapterPosition, item);
-                    }*/
-                }
-
-            }
-        ).also {
-            binding.orderProductGroupList.adapter = it;
-        }
-
         // category adapter vs listener
         categoryAdapter = OrderCategoryAdapter(
-            mainType = mainView,
             listener = object : BaseItemClickListener<CategoryItem> {
                 override fun onItemClick(adapterPosition: Int, item: CategoryItem) {
                     if (SystemClock.elapsedRealtime() - viewModel.mLastTimeClick > 300) {
-                        viewModel.categoryItemSelected(adapterPosition, item);
+                        categoryItemSelected(item);
                     }
                 }
 
             }
         ).also {
-            binding.listCategories.apply {
-                layoutManager = when (mainView) {
-                    OrderMenuModeViewType.TextColor -> {
-                        setPadding(12);
-                        GridLayoutManager(context, 2);
-                    }
-                    OrderMenuModeViewType.TextImage -> {
-                        LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            binding.categoryList.adapter = it;
+        }
+
+        // product adapter vs listener
+
+        productAdapter = OrderProductAdapter(
+            listener = object : BaseItemClickListener<ProductItem> {
+                override fun onItemClick(adapterPosition: Int, item: ProductItem) {
+                    if (SystemClock.elapsedRealtime() - viewModel.mLastTimeClick > 300) {
+
                     }
                 }
-                adapter = it;
+
             }
-        }
+        ).also {
+            binding.productList.adapter = it;
+        };
+
 
 
     }
@@ -102,9 +82,19 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
     }
 
     override fun initAction() {
-        dataVM.categoryList.observe(this,{
-            categoryListObserve(it);
-        })
+        dataVM.pageCategoryList.observe(this, {
+            categoryAdapter.submitList(dataVM.getCategoryByPage(it).toMutableList());
+            categoryAdapter.notifyDataSetChanged();
+        });
+
+        dataVM.productListSl.observe(this,{
+            dataVM.pageProductListSl.value = 1;
+        });
+
+        dataVM.pageProductListSl.observe(this,{
+            productAdapter.submitList(dataVM.getProductByPage(it).toMutableList());
+            productAdapter.notifyDataSetChanged();
+        });
 
         // Wait for ui draw
         binding.root.viewTreeObserver.addOnGlobalLayoutListener(object :
@@ -113,50 +103,33 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
                 if (binding.root.height > 0) {
                     binding.root.viewTreeObserver.removeOnGlobalLayoutListener(this);
                     dataVM.initData();
-                    // Load All Data
-                    dataVM.categoryList.value?.let { productListObserve(it) };
+
+                    // Init First Page
+                    dataVM.pageCategoryList.value = 1;
                 }
             }
         })
+
+
     }
 
-    override fun categoryListObserve(categoryList: List<CategoryItem>) {
-        categoryAdapter.submitList(categoryList);
-        categoryAdapter.notifyDataSetChanged();
-    }
-
-    override fun showDropdownCategories(isShowed: Boolean) {
-        if (isShowed) {
-            binding.layoutCategory.animate().apply {
-                binding.listCategories.smoothScrollToPosition(0);
-                binding.layoutCategory.visibility = View.VISIBLE;
-                binding.backgroundDropdown.visibility = View.VISIBLE;
-                duration = 300;
-                alpha(1f)
-                translationYBy(80f)
-            }.withEndAction {
-
-            }.start();
-        } else {
-            binding.layoutCategory.animate().apply {
-                duration = 300;
-                alpha(0.5f)
-                translationYBy(-80f)
-            }.withEndAction {
-                binding.layoutCategory.visibility = View.GONE;
-                binding.backgroundDropdown.visibility = View.GONE;
-
-            }.start();
+    override fun changeCategoryPageView(view: View?) {
+        dataVM.pageCategoryList.value = when (view?.id) {
+            R.id.categoryDirDown -> if (dataVM.pageCategoryList.value!! * OrderDataVM.maxItemViewCate > dataVM.categoryList.value?.size!!)
+                dataVM.pageCategoryList.value
+            else
+                dataVM.pageCategoryList.value?.plus(1);
+            R.id.categoryDirUp -> if (dataVM.pageCategoryList.value?.minus(1)!! < 1)
+                dataVM.pageCategoryList.value
+            else
+                dataVM.pageCategoryList.value?.minus(1);
+            else -> 1;
         }
     }
 
-    override fun productListObserve(categoryListSelected: List<CategoryItem>) {
-        productGroupAdapter.submitList(categoryListSelected);
-        productGroupAdapter.notifyDataSetChanged();
-    }
-
-    override fun showProductSelected(productSelected: ProductItem) {
-        navigator.goTo(ProductDetailFragment());
+    private fun categoryItemSelected(categoryItem: CategoryItem) {
+        dataVM.productListSl.value = dataVM.getProductByCategory(categoryItem)?.toMutableList();
+        View.VISIBLE
     }
 
 

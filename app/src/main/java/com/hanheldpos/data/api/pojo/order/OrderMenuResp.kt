@@ -2,6 +2,7 @@ package com.hanheldpos.data.api.pojo
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import com.hanheldpos.model.home.order.product.ProductModeViewType
 import kotlinx.android.parcel.Parcelize
 import kotlinx.parcelize.IgnoredOnParcel
 
@@ -116,7 +117,11 @@ data class ProductItem(
 
     @field:SerializedName("Combo")
     val combo: String? = null
-) : Parcelable
+) : Parcelable {
+
+    @IgnoredOnParcel
+    var uiType : ProductModeViewType? = ProductModeViewType.Product;
+}
 
 @Parcelize
 data class ListToHierarchyItem(
@@ -196,11 +201,7 @@ data class CategoryItem(
 
     @field:SerializedName("Ansi")
     val ansi: String? = null
-) : Parcelable {
-    @IgnoredOnParcel
-    var productList : List<ProductItem>? = null;
-}
-
+) : Parcelable
 @Parcelize
 data class ProductModifierItem(
 

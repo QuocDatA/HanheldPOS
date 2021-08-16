@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="item"
+            type="com.hanheldpos.data.api.pojo.CategoryItem" />
+
+    </data>
+
+    <LinearLayout
+        app:cardCornerRadius="0dp"
+        android:elevation="0dp"
+        android:layout_margin="@dimen/_1sdp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:background="@color/color_5"
+        backColor="@{item.color}"
+        >
+        <LinearLayout
+            android:id="@+id/text"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            >
+            <com.diadiem.pos_components.PTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{item.title,default=`Category`}"
+                app:useTextColor="color3"
+                app:useTextHeader="h4"
+                app:useFontStyle="bold"
+                android:textAllCaps="true"
+                android:ellipsize="end"
+                android:maxEms="12"
+                android:maxLines="1"
+                android:minEms="7"
+                android:textAlignment="textStart"
+                android:paddingStart="@dimen/_6sdp"
+                android:paddingEnd="@dimen/_6sdp"
+                />
+        </LinearLayout>
+
+    </LinearLayout>
+</layout>

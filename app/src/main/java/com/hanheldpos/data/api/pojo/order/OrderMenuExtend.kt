@@ -68,7 +68,9 @@ internal fun OrderMenuResp.getProductWithItemGuid(itemGuid: String?) =
     this.getProductByListProduct()?.filter { it?.id == itemGuid }
 
 internal fun OrderMenuResp.getProductWithCategoryGuid(categoryGuid: String?) =
-    this.getProductByListProduct()?.filter { it?.categoryGuid == categoryGuid }
+    this.getProductByListProduct()?.filter {
+        it?.categoryGuid == categoryGuid
+    }
 
 
 internal fun OrderMenuResp.getProductImage() = this.getListProduct()?.productImages
