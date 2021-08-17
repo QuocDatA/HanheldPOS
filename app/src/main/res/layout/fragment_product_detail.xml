@@ -18,7 +18,10 @@
             <LinearLayout
                 style="@style/ProductInfoCartContainer"
                 android:orientation="horizontal">
-
+                <LinearLayout
+                    style="@style/ProductInfoCartContainer"
+                    android:layout_weight="2"
+                    android:orientation="horizontal">
                 <ImageButton
                     style="@style/ProductInfoButtonAdjust"
                     android:src="@drawable/ic_remove" />
@@ -31,6 +34,7 @@
                 <ImageButton
                     style="@style/ProductInfoButtonAdjust"
                     android:src="@drawable/ic_add" />
+                </LinearLayout>
 
                 <TextView
                     style="@style/ProductInfoBag"
