@@ -20,15 +20,15 @@ class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding,ProductD
     }
 
     override fun initViewModel(viewModel: ProductDetailVM) {
-        viewModel.apply {
+        /*viewModel.apply {
             init(this@ProductDetailFragment);
             initLifeCycle(this@ProductDetailFragment);
             binding.viewModel = this;
-        }
+        }*/
     }
 
     override fun initView() {
-        binding.appBarProductDetail.addOnOffsetChangedListener(object : AppBarStateChangeListener() {
+        /*binding.appBarProductDetail.addOnOffsetChangedListener(object : AppBarStateChangeListener() {
             override fun onStateChanged(appBarLayout: AppBarLayout?, state: State?) {
                 when(state) {
                     State.COLLAPSED ->{
@@ -41,7 +41,7 @@ class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding,ProductD
                 }
             }
 
-        })
+        })*/
     }
 
     override fun initData() {
