@@ -5,28 +5,35 @@
 
         <variable
             name="item"
-            type="com.hanheldpos.model.home.table.TableModel" />
+            type="com.hanheldpos.data.api.pojo.table.FloorTableItem" />
 
     </data>
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_100sdp"
-        android:padding="@dimen/_3sdp">
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_3sdp">
 
-        <LinearLayout
+        <FrameLayout
+            android:id="@+id/layoutMain"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#EEEEEE"
-            android:gravity="center">
+            android:layout_height="@dimen/_100sdp">
 
-            <com.diadiem.pos_components.PTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@{item.name, default=`Table`}"
-                android:textColor="@color/textPrimary"
-                android:textSize="@dimen/_13ssp" />
-        </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#EEEEEE"
+                android:gravity="center">
+
+                <com.diadiem.pos_components.PTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{item.tableName, default=`Table`}"
+                    android:textColor="@color/textPrimary"
+                    android:textSize="@dimen/_13ssp" />
+            </LinearLayout>
+        </FrameLayout>
     </FrameLayout>
+
 
 </layout>
