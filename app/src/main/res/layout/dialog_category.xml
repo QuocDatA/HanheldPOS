@@ -22,10 +22,8 @@
             android:layout_width="@dimen/_21sdp"
             android:layout_height="@dimen/_21sdp"
             android:layout_gravity="end"
-            android:layout_marginStart="@dimen/_15sdp"
-            android:layout_marginTop="@dimen/_15sdp"
             android:layout_marginEnd="@dimen/_15sdp"
-            android:layout_marginBottom="@dimen/_15sdp"
+            android:layout_marginBottom="@dimen/_6sdp"
             android:src="@drawable/ic_close" />
 
 

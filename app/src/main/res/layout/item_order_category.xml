@@ -22,15 +22,25 @@
             visibleObject="@{ item.uiType == CategoryModeViewType.Empty }"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/_8sdp"
             >
             <com.diadiem.pos_components.PTextView
+                android:visibility="invisible"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0"
-                app:useTextHeader="h3"
-                android:visibility="invisible"
-                />
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/_8sdp"
+                android:ellipsize="end"
+                android:maxEms="12"
+                android:maxLines="1"
+                android:minEms="7"
+                android:paddingStart="@dimen/_6sdp"
+                android:paddingEnd="@dimen/_6sdp"
+                android:text="@{item.title,default=`Category`}"
+                android:textAlignment="center"
+                android:textAllCaps="true"
+                app:useFontStyle="bold"
+                app:useTextColor="color2"
+                app:useTextHeader="h3" />
         </FrameLayout>
 
         <LinearLayout
@@ -48,14 +58,15 @@
                 android:elevation="0dp"
                 app:cardCornerRadius="@dimen/_3sdp"
                 app:cardElevation="0dp"
-                app:rippleColor="@color/color_2">
+                android:clickable="@{ item.uiType.pos == 2 ? true : item.uiType.pos == 3 ? true : false }"
+                app:rippleColor="@{ item.uiType.pos == 2 ? @color/color_2 : item.uiType.pos == 3 ? @color/color_2 : @android:color/transparent }">
 
                 <ImageView
                     android:layout_width="@dimen/_15sdp"
                     android:layout_height="@dimen/_15sdp"
                     android:layout_gravity="center"
                     android:layout_margin="@dimen/_8sdp"
-                    android:src="@drawable/ic_direction_up" />
+                    android:src="@{ item.uiType.pos == 2 ? @drawable/ic_direction_up : item.uiType.pos == 3 ? @drawable/ic_direction_up : @drawable/ic_direction_up_disable }" />
             </com.google.android.material.card.MaterialCardView>
 
             <androidx.legacy.widget.Space
@@ -71,14 +82,15 @@
                 android:elevation="0dp"
                 app:cardCornerRadius="@dimen/_3sdp"
                 app:cardElevation="0dp"
-                app:rippleColor="@color/color_2">
+                android:clickable="@{ item.uiType.pos == 1 ? true : item.uiType.pos == 3 ? true : false }"
+                app:rippleColor="@{ item.uiType.pos == 1 ? @color/color_2 : item.uiType.pos == 3 ? @color/color_2 : @android:color/transparent }">
 
                 <ImageView
                     android:layout_width="@dimen/_15sdp"
                     android:layout_height="@dimen/_15sdp"
                     android:layout_gravity="center"
                     android:layout_margin="@dimen/_8sdp"
-                    android:src="@drawable/ic_direction_down" />
+                    android:src="@{ item.uiType.pos == 1 ? @drawable/ic_direction_down : item.uiType.pos == 3 ? @drawable/ic_direction_down : @drawable/ic_direction_down_disable }" />
             </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
 

@@ -13,16 +13,16 @@ class OrderProductAdapterHelper(
 
     private var currentIndex: Int = 1;
 
-    private var list : MutableList<ProductItem?> = mutableListOf();
+    private var list: MutableList<ProductItem?> = mutableListOf();
 
-    fun submitList(list: MutableList<ProductItem?>){
+    fun submitList(list: MutableList<ProductItem?>) {
         this.list = list;
         currentIndex = 1;
         split(currentIndex);
     }
 
     fun next() {
-        if ((currentIndex!! * maxItemViewProduct) < list.size) {
+        if ((currentIndex * maxItemViewProduct) < list.size) {
             currentIndex = currentIndex.plus(1);
             split(currentIndex);
         }
@@ -57,11 +57,24 @@ class OrderProductAdapterHelper(
 
         // Add Direction Button
         rs.addAll(listOf(
+            /*
+            * 1 : Enable
+            * 2 : Disable
+            * */
             ProductItem().apply {
-                uiType = ProductModeViewType.PrevButton;
-            }, ProductItem().apply {
-                uiType = ProductModeViewType.NextButton;
-            })
+                uiType = ProductModeViewType.PrevButton.apply {
+                    pos = if (currentIndex > 1) {
+                        1
+                    } else 2
+                };
+            },
+            ProductItem().apply {
+                uiType = ProductModeViewType.NextButton.apply {
+                    pos = if ((currentIndex * maxItemViewProduct) < list.size) {
+                        1
+                    } else 2
+                };
+            } )
         )
         callBack.onListSplitCallBack(rs.toList());
     }

@@ -21,7 +21,7 @@
         android:elevation="0dp"
         app:cardCornerRadius="0dp"
         app:cardElevation="0dp"
-        app:rippleColor="@{ item.uiType != ProductModeViewType.Empty ? @color/color_2 : @android:color/transparent }">
+        app:rippleColor="@{ item.uiType != ProductModeViewType.Empty  ? ( item.uiType == ProductModeViewType.Product || item.uiType.pos == 1 ? @color/color_2 : @android:color/transparent )  : @android:color/transparent }">
 
         <LinearLayout
             android:id="@+id/layoutMain"
@@ -76,15 +76,21 @@
                 </RelativeLayout>
 
                 <ImageView
-
-                    visibleObject="@{item.uiType != ProductModeViewType.Product }"
+                    visibleObject="@{item.uiType == ProductModeViewType.PrevButton }"
                     android:layout_width="@dimen/_14sdp"
                     android:layout_height="@dimen/_14sdp"
                     android:layout_centerInParent="true"
                     android:layout_gravity="center"
                     android:scaleType="centerInside"
-                    android:src="@{ item.uiType == ProductModeViewType.PrevButton ? @drawable/ic_direction_up : @drawable/ic_direction_down }" />
-
+                    android:src="@{ item.uiType.pos == 1 ? @drawable/ic_direction_up : @drawable/ic_direction_up_disable}" />
+                <ImageView
+                    visibleObject="@{item.uiType == ProductModeViewType.NextButton }"
+                    android:layout_width="@dimen/_14sdp"
+                    android:layout_height="@dimen/_14sdp"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center"
+                    android:scaleType="centerInside"
+                    android:src="@{ item.uiType.pos == 1 ? @drawable/ic_direction_down : @drawable/ic_direction_down_disable }" />
             </RelativeLayout>
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>

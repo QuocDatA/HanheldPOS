@@ -18,7 +18,7 @@ class OrderCategoryAdapterHelper(private val callBack : AdapterCallBack) {
     }
 
     fun next(){
-        if ((currentIndex!! * maxItemViewCate) < list.size ){
+        if ((currentIndex * maxItemViewCate) < list.size ){
             currentIndex = currentIndex.plus(1);
             split(currentIndex);
         }
@@ -53,8 +53,27 @@ class OrderCategoryAdapterHelper(private val callBack : AdapterCallBack) {
 
         // Add Direction Button
         rs.addAll(listOf(
+            /*
+            * 0 : Disable All
+            * 1 : Enable Next
+            * 2 : Enable Previous
+            * 3 : Enable All
+            * */
             CategoryItem().apply {
-                uiType = CategoryModeViewType.DirectionButton;
+                uiType = CategoryModeViewType.DirectionButton.apply {
+                    var ss = 0;
+                    if ((currentIndex * maxItemViewCate) < list.size ){
+                        ss = 1;
+                    }
+                    if (currentIndex > 1){
+                        ss = when(ss){
+                            1->3
+                            0->2
+                            else -> 0
+                        };
+                    }
+                    pos = ss;
+                };
             }
         ));
 
