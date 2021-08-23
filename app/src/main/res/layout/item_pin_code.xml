@@ -11,8 +11,7 @@
     </data>
 
     <FrameLayout
-        android:layout_marginStart="@dimen/_5sdp"
-        android:layout_marginEnd="@dimen/_5sdp"
+
         android:layout_width="match_parent"
         android:layout_height="@dimen/_50sdp">
 
@@ -22,16 +21,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <com.google.android.material.button.MaterialButton
+                <com.diadiem.pos_components.PMaterialButton
                     android:id="@+id/btnPinItem"
                     style="@style/MaterialButton.Text"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:text="@{item.text}"
                     android:textColor="@color/textPrimary"
-                    android:textSize="@dimen/_17sdp" />
+                    android:textSize="@dimen/_17ssp" />
 
                 <ImageView
+                    visibleObject="@{item.resource != null}"
                     imgSrc="@{item.resource}"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -40,12 +40,14 @@
 
             </FrameLayout>
             <View
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
                 visibleObject="@{item.underline}"
                 android:id="@+id/underLine"
                 android:layout_width="fill_parent"
-                android:layout_height="1dp"
+                android:layout_height="0.7dp"
                 android:layout_alignParentBottom="true"
-                android:background="@color/textSecondary" />
+                android:background="@color/color_7" />
 
         </RelativeLayout>
     </FrameLayout>

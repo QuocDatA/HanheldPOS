@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import com.hanheldpos.ui.screens.home.HomeFragment
+import com.hanheldpos.ui.screens.home.order.PriceItem
 
 abstract class BaseSpinnerAdapter <T, V : ViewDataBinding>(
     context: Context,
@@ -28,7 +29,7 @@ abstract class BaseSpinnerAdapter <T, V : ViewDataBinding>(
         super.addAll(collection)
     }
 
-    open fun submitList(collection: Collection<T?>) {
+    open fun submitList(collection:  Collection<T?>) {
         clear()
         super.addAll(collection)
     }

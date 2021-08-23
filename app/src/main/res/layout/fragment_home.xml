@@ -14,8 +14,9 @@
             android:id="@+id/toolbarLayout"
             app:viewModelHome="@{viewModel}"
             layout="@layout/toolbar_main" />
-        <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/fragmentContainer"
+        <androidx.viewpager2.widget.ViewPager2
+            useInputEnable="@{false}"
+            android:id="@+id/homeViewPager"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </LinearLayout>

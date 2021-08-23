@@ -6,11 +6,13 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
+import com.hanheldpos.R
 
 abstract class BaseBindingListAdapter<T>(
     diffCallback: DiffUtil.ItemCallback<T>,
     private val itemClickListener: BaseItemClickListener<T>? = null
 ) : ListAdapter<T, BaseBindingViewHolder<T>>(diffCallback) {
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseBindingViewHolder<T> {
         DataBindingUtil.inflate<ViewDataBinding>(

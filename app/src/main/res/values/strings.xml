@@ -1,23 +1,25 @@
 <resources>
-    <string name="app_name">Hanheld POS</string>
+    <string name="app_name" translatable="false">Hanheld POS</string>
 
     <!-- Alert -->
-    <string name="alert_msg_an_error_has_occurred">Đã có lỗi xảy ra. Vui lòng thử lại</string>
-    <string name="alert_btn_positive">Đồng Ý</string>
-    <string name="alert_btn_negative">Huỷ</string>
-    <string name="alert_btn_go_to_settings">Mở Cài Đặt</string>
-    <string name="alert_msg_feature_is_temporary_close">Chức năng đang tạm đóng</string>
-    <string name="device_code">Device Code</string>
-    <string name="run_and_grow_your_business">Run and grow your business</string>
-    <string name="get_started">Get Started</string>
-    <string name="sign_in">Sign In</string>
-    <string name="enter_passcode">Enter Passcode</string>
+    <string name="alert_msg_an_error_has_occurred" translatable="false">An error has occurred. Please try again</string>
+    <string name="alert_btn_positive" translatable="false">Agree</string>
+    <string name="alert_btn_negative" translatable="false">Cancel</string>
+    <string name="alert_btn_go_to_settings" translatable="false">Open Settings</string>
+    <string name="alert_msg_feature_is_temporary_close" translatable="false">The function is temporarily closed</string>
+    <string name="device_code" translatable="false">Device Code</string>
+    <string name="run_and_grow_your_business" translatable="false">Run and grow your business</string>
+    <string name="get_started" translatable="false">Get Started</string>
+    <string name="sign_in" translatable="false">Sign In</string>
+    <string name="enter_passcode" translatable="false">Enter Passcode</string>
     <!-- Page-->
-    <string name="table">Table</string>
-    <string name="order">Order</string>
+    <string name="table" translatable="false">Table</string>
+    <string name="order" translatable="false">Order</string>
+    <string name="menu" translatable="false">Menu</string>
 
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
+    <string name="diadiem_point_of_sale" translatable="false">Diadiem Point of Sale</string>
 
 </resources>

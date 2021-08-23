@@ -6,6 +6,5 @@ fun <T> MutableLiveData<T>.notifyValueChange() {
     value = value
 }
 
-
 class ViewExtend {
 }

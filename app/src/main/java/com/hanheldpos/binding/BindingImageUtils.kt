@@ -1,4 +1,4 @@
-package com.hanheldpos.utils.binding
+package com.hanheldpos.binding
 
 import android.content.Context
 import android.view.View
@@ -17,7 +17,7 @@ import com.hanheldpos.R
                 .load(imageUrl ?: "")
                 .placeholder(startLoadingProgress(context))
                 .thumbnail(0.5f)
-                .error(R.drawable.ic_launcher_background)
+                .error(R.drawable.bg_no_image)
                 .centerCrop()
                 .into(this)
         }

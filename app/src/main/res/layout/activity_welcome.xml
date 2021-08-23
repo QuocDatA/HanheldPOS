@@ -33,33 +33,34 @@
             android:gravity="center_horizontal">
 
             <ImageView
-                android:layout_width="@dimen/_60sdp"
-                android:layout_height="@dimen/_60sdp"
+                android:layout_width="@dimen/_55sdp"
+                android:layout_height="@dimen/_55sdp"
                 android:src="@drawable/ic_app"
                 tools:ignore="ContentDescription" />
 
-            <TextView
+            <com.diadiem.pos_components.PTextView
                 style="@style/Base.TextAppearance"
-                android:layout_marginTop="@dimen/_20sdp"
-                android:text="Diadiem Point of Sale"
+                android:layout_marginTop="@dimen/_27sdp"
+                android:text="@string/diadiem_point_of_sale"
                 android:textColor="@color/onPrimary"
-                android:textSize="@dimen/_25ssp"
+                android:textSize="@dimen/_22ssp"
                 android:textStyle="bold" />
 
-            <TextView
+            <com.diadiem.pos_components.PTextView
                 style="@style/Base.TextAppearance"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:text="@string/run_and_grow_your_business"
                 android:textColor="@color/onPrimary"
-                android:textSize="@dimen/_15ssp"/>
+                android:textSize="@dimen/_14ssp"/>
 
-            <com.google.android.material.button.MaterialButton
+            <com.diadiem.pos_components.PMaterialButton
                 style="@style/Base.MaterialButton"
-                android:layout_marginStart="@dimen/_15sdp"
-                android:layout_marginTop="@dimen/_55sdp"
-                android:layout_marginEnd="@dimen/_15sdp"
+                android:background="@drawable/bg_primary_button"
+                android:layout_marginStart="@dimen/_14sdp"
+                android:layout_marginTop="@dimen/_58sdp"
+                android:layout_marginEnd="@dimen/_14sdp"
                 android:onClick="@{v -> viewModel.openDeviceCode()}"
-                android:padding="@dimen/_12sdp"
+                android:padding="@dimen/_13sdp"
                 android:textSize="@dimen/_15ssp"
                 android:text="@string/get_started" />
         </LinearLayout>

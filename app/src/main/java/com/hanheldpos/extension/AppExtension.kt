@@ -17,9 +17,14 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
  */
 fun <T> Activity.navigateTo(
     activityClass: Class<T>,
-    alsoFinishCurrentActivity: Boolean? = false
+    alsoFinishCurrentActivity: Boolean? = false,
+    alsoClearActivity: Boolean? = false
 ) {
-    startActivity(Intent(this, activityClass))
+    val intent = Intent(this, activityClass);
+    if (alsoClearActivity == true){
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK;
+    }
+    startActivity(intent);
     if (alsoFinishCurrentActivity == true) {
         finish()
     }

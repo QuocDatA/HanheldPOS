@@ -10,6 +10,15 @@ class FragmentPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycl
 
     private val fragmentList = mutableListOf<Fragment>()
 
+    fun submitList(collection: Collection<Fragment>?) {
+        fragmentList.clear()
+        collection?.let {
+            fragmentList.addAll(it)
+        }
+        notifyDataSetChanged()
+
+    }
+
     /**
      * Add fragment to list
      */

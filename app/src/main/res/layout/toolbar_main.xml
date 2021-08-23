@@ -3,61 +3,84 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <import type="com.hanheldpos.ui.screens.home.HomeFragment.HomePage"/>
+
+        <import type="com.hanheldpos.ui.screens.home.HomeFragment" />
+
         <variable
             name="viewModelHome"
             type="com.hanheldpos.ui.screens.home.HomeVM" />
     </data>
-
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="#E5E5E5"
-        android:orientation="horizontal">
-
-        <ImageButton
-            style="@style/Base.MaterialButton"
-            android:layout_width="wrap_content"
+        android:layout_height="@dimen/_50sdp" android:orientation="vertical">
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:adjustViewBounds="true"
-            android:src="@drawable/ic_menu"
-            tools:ignore="ContentDescription" />
+            android:background="#F6F6F6"
+            android:orientation="horizontal">
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:layout_weight="1">
+            <ImageView
+                android:id="@+id/homeMenu"
+                android:layout_width="@dimen/_48sdp"
+                android:layout_height="match_parent"
+                android:layout_alignParentStart="true"
+                android:adjustViewBounds="true"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_toolbar_menu"
+                tools:ignore="ContentDescription" />
 
-            <androidx.appcompat.widget.AppCompatSpinner
-                android:id="@+id/spinnerMain"
-                style="@style/Spinner.dropdown.notOverLap"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginEnd="@dimen/_5sdp"
-                android:minWidth="@dimen/_80sdp"
-                tools:listitem="@layout/item_dropdown_spinner" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/_3sdp"
+                android:layout_marginEnd="@dimen/_3sdp"
+                android:layout_toStartOf="@+id/homeCart"
+                android:layout_toEndOf="@+id/homeMenu"
+                android:gravity="center"
+                android:orientation="horizontal">
 
-            <androidx.appcompat.widget.AppCompatSpinner
-                android:id="@+id/spnGroupBy"
-                style="@style/Spinner.dropdown.notOverLap"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginStart="@dimen/_5sdp"
-                android:minWidth="@dimen/_80sdp"
-                tools:listitem="@layout/item_dropdown_spinner" />
-        </LinearLayout>
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/spinnerMain"
+                    style="@style/Spinner.dropdown.notOverLap"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="@dimen/_5sdp"
+                    android:layout_weight="1"
+                    android:minWidth="@dimen/_100sdp"
+                    tools:listitem="@layout/item_dropdown_spinner" />
 
-        <ImageButton
-            style="@style/MaterialButton.Icon"
-            android:scaleType="centerInside"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:src="@drawable/ic_cart"
-            tools:ignore="ContentDescription" />
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/spnGroupBy"
+                    style="@style/Spinner.dropdown.notOverLap"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:layout_weight="1"
+                    android:minWidth="@dimen/_100sdp"
+                    tools:listitem="@layout/item_dropdown_spinner" />
+            </LinearLayout>
 
+            <ImageButton
+                android:id="@+id/homeCart"
+                style="@style/MaterialButton.Icon"
+                android:layout_width="@dimen/_47sdp"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:scaleType="centerInside"
+
+                tools:ignore="ContentDescription" />
+
+
+
+        </RelativeLayout>
+        <include
+            layout="@layout/divider_ver"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
     </LinearLayout>
+
+
 </layout>

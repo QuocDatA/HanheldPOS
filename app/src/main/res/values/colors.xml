@@ -19,7 +19,11 @@
     <color name="onSurface">#000000</color>
     <color name="background">#FFFFFF</color>
     <color name="backgroundDim">#80000000</color>
+    <color name="backgroundSecondary">#F6F6F6</color>
     <color name="ripple">#D6D6D6</color>
     <color name="divider">#EFEFEF</color>
     <color name="disabled">#939393</color>
+    
+    <color name="_1067A7">#1067A7</color>
+    <color name="_EEEEEE">#EEEEEE</color>
 </resources>
