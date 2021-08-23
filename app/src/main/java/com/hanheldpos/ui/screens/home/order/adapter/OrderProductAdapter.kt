@@ -4,23 +4,21 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.FrameLayout
-import android.widget.LinearLayout
-import android.widget.RelativeLayout
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.DiffUtil
 import com.hanheldpos.R
-import com.hanheldpos.data.api.pojo.ProductItem
+import com.hanheldpos.data.api.pojo.order.ProductItem
 import com.hanheldpos.databinding.ItemOrderProductBinding
+import com.hanheldpos.model.home.order.product.ProductModeViewType
 
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
-import com.hanheldpos.ui.screens.home.order.OrderDataVM
 
 class OrderProductAdapter(
     private val listener: BaseItemClickListener<ProductItem>
-) : BaseBindingListAdapter<ProductItem>(DiffCallback(),listener) {
+) : BaseBindingListAdapter<ProductItem>(DiffCallback()) {
 
     override fun getItemViewType(position: Int): Int {
         return R.layout.item_order_product;
@@ -43,14 +41,22 @@ class OrderProductAdapter(
         }
     }
 
+    override fun onBindViewHolder(holder: BaseBindingViewHolder<ProductItem>, position: Int) {
+        val item = getItem(position);
+        holder.bindItem(item);
+        if (item.uiType != ProductModeViewType.Empty){
+            holder.binding.root.setOnClickListener { listener.onItemClick(position,item); }
+        }
+
+    }
 
     private class DiffCallback : DiffUtil.ItemCallback<ProductItem>() {
         override fun areItemsTheSame(oldItem: ProductItem, newItem: ProductItem): Boolean {
-            return oldItem.id == newItem.id && oldItem.id != null && newItem.id != null;
+            return oldItem.id.equals(newItem.id) && oldItem.uiType == newItem.uiType;
         }
 
         override fun areContentsTheSame(oldItem: ProductItem, newItem: ProductItem): Boolean {
-            return false;
+            return oldItem == newItem;
         }
 
     }

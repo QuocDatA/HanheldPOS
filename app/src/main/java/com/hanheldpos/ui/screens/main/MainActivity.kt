@@ -6,6 +6,7 @@ import com.hanheldpos.ui.base.activity.BaseFragmentBindingActivity
 import com.hanheldpos.ui.base.fragment.FragmentNavigator
 import com.hanheldpos.ui.screens.home.HomeFragment
 import com.hanheldpos.ui.screens.root.RootFragment
+import com.utils.helper.SystemHelper
 
 class MainActivity : BaseFragmentBindingActivity<ActivityMainBinding, MainVM>(), MainUV {
 
@@ -27,6 +28,7 @@ class MainActivity : BaseFragmentBindingActivity<ActivityMainBinding, MainVM>(),
     }
 
     override fun initView() {
+        SystemHelper.hideSystemUI(window);
         getNavigator().rootFragment = HomeFragment();
     }
 

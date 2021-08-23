@@ -1,20 +1,26 @@
 package com.hanheldpos.ui.screens.home.order
 
+import android.app.AlertDialog
 import android.os.SystemClock
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewTreeObserver
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import com.hanheldpos.R
-import com.hanheldpos.data.api.pojo.CategoryItem
-import com.hanheldpos.data.api.pojo.ProductItem
+import com.hanheldpos.data.api.pojo.order.CategoryItem
+import com.hanheldpos.data.api.pojo.order.ProductItem
+import com.hanheldpos.databinding.DialogCategoryBinding
 import com.hanheldpos.databinding.FragmentOrderBinding
+import com.hanheldpos.model.home.order.category.CategoryModeViewType
 import com.hanheldpos.model.home.order.product.ProductModeViewType
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.home.order.adapter.OrderCategoryAdapter
+import com.hanheldpos.ui.screens.home.order.adapter.OrderCategoryAdapterHelper
 import com.hanheldpos.ui.screens.home.order.adapter.OrderProductAdapter
-import com.hanheldpos.ui.screens.product.ProductDetailFragment
+import com.hanheldpos.ui.screens.home.order.adapter.OrderProductAdapterHelper
 import kotlinx.coroutines.*
 
 class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
@@ -25,8 +31,13 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
 
 
     // Adapter
-    private lateinit var categoryAdapter: OrderCategoryAdapter
-    private lateinit var productAdapter: OrderProductAdapter
+    private lateinit var categoryAdapter: OrderCategoryAdapter;
+    private lateinit var categoryAdapHelper: OrderCategoryAdapterHelper;
+    private lateinit var productAdapter: OrderProductAdapter;
+    private lateinit var productAdapHelper: OrderProductAdapterHelper;
+
+    // Dialog Category
+    private lateinit var dialogCategory: AlertDialog;
 
     override fun viewModelClass(): Class<OrderVM> {
         return OrderVM::class.java
@@ -44,49 +55,88 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
     override fun initView() {
 
         // category adapter vs listener
+
+        categoryAdapHelper = OrderCategoryAdapterHelper(callBack = object :
+            OrderCategoryAdapterHelper.AdapterCallBack {
+            override fun onListSplitCallBack(list: List<CategoryItem>) {
+                categoryAdapter.submitList(list);
+                categoryAdapter.notifyDataSetChanged();
+
+            }
+        });
+
         categoryAdapter = OrderCategoryAdapter(
             listener = object : BaseItemClickListener<CategoryItem> {
                 override fun onItemClick(adapterPosition: Int, item: CategoryItem) {
-                    if (SystemClock.elapsedRealtime() - viewModel.mLastTimeClick > 300) {
-                        categoryItemSelected(item)
+                    dialogCategory.dismiss();
+                    categoryItemSelected(item);
+                }
+
+            },
+            directionCallBack = object : OrderCategoryAdapter.Callback {
+                override fun directionSelectd(value: Int) {
+                    when (value) {
+                        1 -> categoryAdapHelper.previous();
+                        2 -> categoryAdapHelper.next();
                     }
                 }
 
             }
-        ).also {
-            binding.categoryList.adapter = it
-        }
+        )
+
+        // Init Dialog Category
+        val dialogCateBinding: DialogCategoryBinding = DataBindingUtil.inflate(
+            LayoutInflater.from(context),
+            R.layout.dialog_category,
+            null,
+            false
+        );
+        dialogCateBinding.categoryList.adapter = categoryAdapter;
+
+        val builder = AlertDialog.Builder(context);
+        builder.setView(dialogCateBinding.root);
+
+        dialogCategory = builder.create();
+
+        dialogCateBinding.closeBtn.setOnClickListener { dialogCategory.dismiss() }
 
         // product adapter vs listener
+
+        productAdapHelper = OrderProductAdapterHelper(
+            callBack = object : OrderProductAdapterHelper.AdapterCallBack {
+                override fun onListSplitCallBack(list: List<ProductItem>) {
+                    productAdapter.submitList(list);
+                    productAdapter.notifyDataSetChanged();
+                }
+            }
+        );
 
         productAdapter = OrderProductAdapter(
             listener = object : BaseItemClickListener<ProductItem> {
                 override fun onItemClick(adapterPosition: Int, item: ProductItem) {
-                    Log.d("OrderFragment","Product Selected")
-                    if (SystemClock.elapsedRealtime() - viewModel.mLastTimeClick > 300) {
-                        when(item.uiType){
+                    Log.d("OrderFragment", "Product Selected");
+                    if (SystemClock.elapsedRealtime() - viewModel.mLastTimeClick > 100) {
+                        when (item.uiType) {
                             ProductModeViewType.Product -> {
                                 navigator.goToWithCustomAnimation(ProductDetailFragment())
                             }
                             ProductModeViewType.PrevButton -> {
-                                if (dataVM.pageProductListSl.value!! > 1){
-                                    dataVM.pageProductListSl.value = dataVM.pageProductListSl.value!!.minus(1)
-                                }
+                                productAdapHelper.previous();
                             }
                             ProductModeViewType.NextButton -> {
-                                if ((dataVM.pageProductListSl.value!! * 15) < dataVM.productListSl.value!!.size ){
-                                    dataVM.pageProductListSl.value = dataVM.pageProductListSl.value!!.plus(1)
-                                }
+                                productAdapHelper.next();
                             }
-                            else -> {}
+                            else -> {
+                            }
                         }
                     }
                 }
 
             }
         ).also {
-            binding.productList.adapter = it
-        }
+            binding.productList.adapter = it;
+        };
+
     }
 
     override fun initData() {
@@ -94,25 +144,17 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
     }
 
     override fun initAction() {
-        dataVM.pageCategoryList.observe(this, {
-            categoryAdapter.submitList(dataVM.getCategoryByPage(it).toMutableList())
-            categoryAdapter.notifyDataSetChanged()
+
+
+        dataVM.categoryList.observe(this, {
+            categoryAdapHelper.submitList(it);
         })
 
-        dataVM.categorySelected.observe(this,{
-            dataVM.productListSl.value = dataVM.getProductByCategory(it)?.toMutableList()
-            dataVM.pageProductListSl.value = 1
+        dataVM.categorySelected.observe(this, {
+            dataVM.getProductByCategory(it)
+                ?.let { it1 -> productAdapHelper.submitList(it1.toMutableList()) }
+        });
 
-        })
-
-        dataVM.pageProductListSl.observe(this,{
-            Log.d("OrderFragment","RecycleView Height:" + binding.productList.height)
-            if (binding.productList.height > 0) {
-                productAdapter.submitList(dataVM.getProductByPage(it).toMutableList())
-                productAdapter.notifyDataSetChanged()
-            }
-
-        })
 
         // Wait for ui draw
         binding.root.viewTreeObserver.addOnGlobalLayoutListener(object :
@@ -124,23 +166,17 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
                 }
             }
         })
-    }
 
-    override fun changeCategoryPageView(view: View?) {
-        dataVM.pageCategoryList.value = when (view?.id) {
-            R.id.categoryDirDown -> if (dataVM.pageCategoryList.value!! * OrderDataVM.maxItemViewCate > dataVM.categoryList.value?.size!!)
-                dataVM.pageCategoryList.value
-            else
-                dataVM.pageCategoryList.value?.plus(1)
-            R.id.categoryDirUp -> if (dataVM.pageCategoryList.value?.minus(1)!! < 1)
-                dataVM.pageCategoryList.value
-            else
-                dataVM.pageCategoryList.value?.minus(1)
-            else -> 1
-        }
     }
 
     private fun categoryItemSelected(categoryItem: CategoryItem) {
         dataVM.categorySelected.value = categoryItem
     }
+
+    override fun showCategoryDialog() {
+        dataVM.categoryList.value?.let { categoryAdapHelper.submitList(it) }
+        dialogCategory.show();
+        dialogCategory.window?.setBackgroundDrawableResource(android.R.color.transparent)
+    }
+
 }

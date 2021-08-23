@@ -4,44 +4,130 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
+        <import type="com.hanheldpos.model.home.order.category.CategoryModeViewType" />
+
         <variable
             name="item"
-            type="com.hanheldpos.data.api.pojo.CategoryItem" />
+            type="com.hanheldpos.data.api.pojo.order.CategoryItem" />
 
     </data>
 
-    <LinearLayout
-        app:cardCornerRadius="0dp"
-        android:elevation="0dp"
-        android:layout_margin="@dimen/_1sdp"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:background="@color/color_5"
-        backColor="@{item.color}"
-        >
-        <LinearLayout
-            android:id="@+id/text"
+        android:layout_margin="@dimen/_6sdp">
+
+        <FrameLayout
+            visibleObject="@{ item.uiType == CategoryModeViewType.Empty }"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
+            android:layout_height="wrap_content"
             >
             <com.diadiem.pos_components.PTextView
-                android:layout_width="match_parent"
+                android:visibility="invisible"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{item.title,default=`Category`}"
-                app:useTextColor="color3"
-                app:useTextHeader="h4"
-                app:useFontStyle="bold"
-                android:textAllCaps="true"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/_8sdp"
                 android:ellipsize="end"
                 android:maxEms="12"
                 android:maxLines="1"
                 android:minEms="7"
-                android:textAlignment="textStart"
                 android:paddingStart="@dimen/_6sdp"
                 android:paddingEnd="@dimen/_6sdp"
-                />
+                android:text="@{item.title,default=`Category`}"
+                android:textAlignment="center"
+                android:textAllCaps="true"
+                app:useFontStyle="bold"
+                app:useTextColor="color2"
+                app:useTextHeader="h3" />
+        </FrameLayout>
+
+        <LinearLayout
+            visibleObject="@{ item.uiType == CategoryModeViewType.DirectionButton }"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/dirUp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:backgroundTint="@color/_EEEEEE"
+                android:elevation="0dp"
+                app:cardCornerRadius="@dimen/_3sdp"
+                app:cardElevation="0dp"
+                android:clickable="@{ item.uiType.pos == 2 ? true : item.uiType.pos == 3 ? true : false }"
+                app:rippleColor="@{ item.uiType.pos == 2 ? @color/color_2 : item.uiType.pos == 3 ? @color/color_2 : @android:color/transparent }">
+
+                <ImageView
+                    android:layout_width="@dimen/_15sdp"
+                    android:layout_height="@dimen/_15sdp"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/_8sdp"
+                    android:src="@{ item.uiType.pos == 2 ? @drawable/ic_direction_up : item.uiType.pos == 3 ? @drawable/ic_direction_up : @drawable/ic_direction_up_disable }" />
+            </com.google.android.material.card.MaterialCardView>
+
+            <androidx.legacy.widget.Space
+                android:layout_width="@dimen/_6sdp"
+                android:layout_height="wrap_content" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/dirDown"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:backgroundTint="@color/_EEEEEE"
+                android:elevation="0dp"
+                app:cardCornerRadius="@dimen/_3sdp"
+                app:cardElevation="0dp"
+                android:clickable="@{ item.uiType.pos == 1 ? true : item.uiType.pos == 3 ? true : false }"
+                app:rippleColor="@{ item.uiType.pos == 1 ? @color/color_2 : item.uiType.pos == 3 ? @color/color_2 : @android:color/transparent }">
+
+                <ImageView
+                    android:layout_width="@dimen/_15sdp"
+                    android:layout_height="@dimen/_15sdp"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/_8sdp"
+                    android:src="@{ item.uiType.pos == 1 ? @drawable/ic_direction_down : item.uiType.pos == 3 ? @drawable/ic_direction_down : @drawable/ic_direction_down_disable }" />
+            </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
 
-    </LinearLayout>
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/btnMain"
+            backColor="@{item.color}"
+            visibleObject="@{ item.uiType == CategoryModeViewType.Category }"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/color_2"
+            android:elevation="0dp"
+            app:cardCornerRadius="@dimen/_3sdp"
+            app:cardElevation="0dp"
+            app:rippleColor="@color/color_2">
+
+            <com.diadiem.pos_components.PTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/_8sdp"
+                android:ellipsize="end"
+                android:maxEms="12"
+                android:maxLines="1"
+                android:minEms="7"
+                android:paddingStart="@dimen/_6sdp"
+                android:paddingEnd="@dimen/_6sdp"
+                android:text="@{item.title,default=`Category`}"
+                android:textAlignment="center"
+                android:textAllCaps="true"
+                app:useFontStyle="bold"
+                app:useTextColor="color2"
+                app:useTextHeader="h3" />
+
+
+        </com.google.android.material.card.MaterialCardView>
+
+
+    </FrameLayout>
+
 </layout>

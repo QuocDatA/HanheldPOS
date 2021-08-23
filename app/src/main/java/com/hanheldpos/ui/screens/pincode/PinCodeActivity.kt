@@ -6,12 +6,13 @@ import com.hanheldpos.extension.navigateTo
 import com.hanheldpos.ui.base.activity.BaseActivity
 import com.hanheldpos.ui.screens.main.MainActivity
 import com.hanheldpos.ui.screens.pincode.adapter.PinCodeAdapter
+import com.utils.helper.SystemHelper
 
 class PinCodeActivity : BaseActivity<ActivityPinCodeBinding,PinCodeVM>(), PinCodeUV{
     override fun layoutRes() = R.layout.activity_pin_code;
 
     override fun initView() {
-
+        SystemHelper.hideSystemUI(this.window)
     }
 
     override fun initData() {

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -12,39 +11,45 @@
 
         <variable
             name="item"
-            type="com.hanheldpos.data.api.pojo.ProductItem" />
+            type="com.hanheldpos.data.api.pojo.order.ProductItem" />
     </data>
 
-    <FrameLayout
-        android:clickable="@{item.uiType != ProductModeViewType.Empty}"
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/_1sdp"
-        >
+        android:elevation="0dp"
+        app:cardCornerRadius="0dp"
+        app:cardElevation="0dp"
+        app:rippleColor="@{ item.uiType != ProductModeViewType.Empty  ? ( item.uiType == ProductModeViewType.Product || item.uiType.pos == 1 ? @color/color_2 : @android:color/transparent )  : @android:color/transparent }">
+
         <LinearLayout
             android:id="@+id/layoutMain"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="@dimen/_100sdp">
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@{ item.uiType == ProductModeViewType.Product ? @color/_1067A7 : @color/_EEEEEE }"
-                android:visibility="@{ item.uiType != ProductModeViewType.Empty ? View.VISIBLE : View.INVISIBLE }"
-                tools:layout_height="@dimen/_50sdp">
+                android:visibility="@{ item.uiType != ProductModeViewType.Empty ? View.VISIBLE : View.INVISIBLE }">
 
                 <RelativeLayout
                     visibleObject="@{item.uiType == ProductModeViewType.Product}"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="match_parent">
 
                     <com.diadiem.pos_components.PTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/_4sdp"
+                        android:layout_marginStart="@dimen/_4sdp"
+                        android:layout_marginTop="@dimen/_4sdp"
+                        android:layout_marginEnd="@dimen/_4sdp"
+                        android:layout_marginBottom="@dimen/_4sdp"
                         android:background="@drawable/bg_food_text"
                         android:paddingHorizontal="@dimen/_6sdp"
                         android:text="@{`P1`}"
-                        app:useTextColor="color4"
+                        app:useTextColor="color3"
                         app:useTextHeader="h4" />
 
                     <com.diadiem.pos_components.PTextView
@@ -55,7 +60,7 @@
                         android:maxLines="2"
                         android:text="@{item.name,default=`Product Name`}"
                         app:useFontStyle="bold"
-                        app:useTextColor="color3"
+                        app:useTextColor="color2"
                         app:useTextHeader="h4" />
 
                     <com.diadiem.pos_components.PTextView
@@ -66,22 +71,27 @@
                         android:layout_alignParentBottom="true"
                         android:padding="@dimen/_5sdp"
                         app:useFontStyle="normal"
-                        app:useTextColor="color3"
+                        app:useTextColor="color2"
                         app:useTextHeader="h5" />
                 </RelativeLayout>
 
                 <ImageView
-                    visibleObject="@{item.uiType != ProductModeViewType.Product }"
+                    visibleObject="@{item.uiType == ProductModeViewType.PrevButton }"
                     android:layout_width="@dimen/_14sdp"
                     android:layout_height="@dimen/_14sdp"
-                    android:layout_gravity="center"
                     android:layout_centerInParent="true"
+                    android:layout_gravity="center"
                     android:scaleType="centerInside"
-                    android:src="@{ item.uiType == ProductModeViewType.PrevButton ? @drawable/ic_direction_up : @drawable/ic_direction_down }" />
-
+                    android:src="@{ item.uiType.pos == 1 ? @drawable/ic_direction_up : @drawable/ic_direction_up_disable}" />
+                <ImageView
+                    visibleObject="@{item.uiType == ProductModeViewType.NextButton }"
+                    android:layout_width="@dimen/_14sdp"
+                    android:layout_height="@dimen/_14sdp"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center"
+                    android:scaleType="centerInside"
+                    android:src="@{ item.uiType.pos == 1 ? @drawable/ic_direction_down : @drawable/ic_direction_down_disable }" />
             </RelativeLayout>
         </LinearLayout>
-    </FrameLayout>
-
-
+    </com.google.android.material.card.MaterialCardView>
 </layout>

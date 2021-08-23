@@ -18,89 +18,78 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@+id/toolbarCart"
-            android:layout_marginBottom="@dimen/_10sdp">
-
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="4"
-                android:orientation="vertical">
-
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/categoryList"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_above="@+id/categoryDir"
-                    android:nestedScrollingEnabled="false"
-                    android:orientation="vertical"
-                    android:overScrollMode="never"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    tools:listitem="@layout/item_order_category" />
-
-                <LinearLayout
-                    android:id="@+id/categoryDir"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_30sdp"
-                    android:layout_alignParentBottom="true"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:padding="@dimen/_2sdp">
-
-                    <com.diadiem.pos_components.PMaterialButton
-                        android:id="@+id/categoryDirUp"
-                        style="@style/MaterialButton.Icon"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:enabled="@{ dataVM.pageCategoryList != 1 }"
-                        android:onClick="@{(v) -> viewModel.changeCategoryPageView(v)}"
-                        app:icon="@{ dataVM.pageCategoryList != 1 ? @drawable/ic_direction_up : @drawable/ic_direction_up_disable}"
-                        app:iconSize="@dimen/_10sdp"
-                        app:strokeColor="@color/color_9"
-                        app:strokeWidth="@dimen/_1sdp" />
-
-                    <androidx.legacy.widget.Space
-                        android:layout_width="@dimen/_5sdp"
-                        android:layout_height="wrap_content" />
-
-                    <com.diadiem.pos_components.PMaterialButton
-                        android:id="@+id/categoryDirDown"
-                        style="@style/MaterialButton.Icon"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:enabled="@{ !((dataVM.pageCategoryList * dataVM.Companion.maxItemViewCate) >= dataVM.categoryList.size)}"
-                        android:onClick="@{(v) -> viewModel.changeCategoryPageView(v)}"
-                        app:icon="@{ !((dataVM.pageCategoryList * dataVM.Companion.maxItemViewCate) >= dataVM.categoryList.size) ? @drawable/ic_direction_down : @drawable/ic_direction_down_disable}"
-                        app:iconSize="@dimen/_10sdp"
-                        app:strokeColor="@color/color_9"
-                        app:strokeWidth="@dimen/_1sdp" />
-                </LinearLayout>
-            </RelativeLayout>
+            android:layout_above="@+id/toolbarCart">
 
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="11.6">
+                android:layout_marginHorizontal="@dimen/_8sdp"
+                android:layout_marginVertical="@dimen/_5sdp">
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/productList"
-                    android:layout_width="match_parent"
+                <LinearLayout
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:nestedScrollingEnabled="false"
-                    android:orientation="vertical"
-                    android:overScrollMode="never"
-                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                    app:spanCount="3"
-                    tools:listitem="@layout/item_order_product" />
+                    android:layout_weight="11.6">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/productList"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:nestedScrollingEnabled="false"
+                        android:orientation="vertical"
+                        android:overScrollMode="never"
+                        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                        app:spanCount="4"
+                        tools:listitem="@layout/item_order_product" />
+                </LinearLayout>
+
             </LinearLayout>
 
-        </LinearLayout>
+            <androidx.cardview.widget.CardView
+                android:focusable="true"
+                android:clickable="true"
+                android:onClick="@{v-> viewModel.showCategoryDialog()}"
+                android:layout_width="@dimen/_42sdp"
+                android:layout_height="@dimen/_42sdp"
+                android:layout_alignParentBottom="true"
+                android:layout_marginHorizontal="@dimen/_9sdp"
+                android:layout_marginVertical="@dimen/_4sdp"
+                android:backgroundTint="@color/color_1"
+                android:elevation="0dp"
+                app:cardCornerRadius="@dimen/_3sdp"
+                app:cardElevation="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="@dimen/_17sdp"
+                        android:layout_height="@dimen/_17sdp"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/ic_menu" />
+
+                    <androidx.legacy.widget.Space
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/_3sdp" />
+
+                    <com.diadiem.pos_components.PTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Menu"
+                        android:textAllCaps="true"
+                        app:useTextColor="color2"
+                        app:useTextHeader="h4" />
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+        </RelativeLayout>
 
         <include
             layout="@layout/divider_vertical"

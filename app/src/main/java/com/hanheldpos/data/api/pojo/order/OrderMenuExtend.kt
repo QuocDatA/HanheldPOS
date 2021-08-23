@@ -1,7 +1,5 @@
 package com.hanheldpos.data.api.pojo.order
 
-import com.hanheldpos.data.api.pojo.OrderMenuResp
-
 internal fun OrderMenuResp.getModel() = this.model?.firstOrNull()
 
 internal fun OrderMenuResp.getListMenuGroupItemTree() = getModel()?.listMenusGroupItemTree

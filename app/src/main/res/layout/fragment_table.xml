@@ -4,6 +4,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
+        <variable
+            name="dataVM"
+            type="com.hanheldpos.ui.screens.home.table.TableDataVM" />
+
         <variable
             name="viewModel"
             type="com.hanheldpos.ui.screens.home.table.TableVM" />
@@ -15,9 +20,7 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerTable"
-            android:paddingStart="@dimen/_10sdp"
-            android:paddingEnd="@dimen/_10sdp"
-            android:paddingTop="@dimen/_5sdp"
+            android:layout_margin="@dimen/_10sdp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:overScrollMode="never"

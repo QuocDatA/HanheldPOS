@@ -43,6 +43,8 @@
                 android:layout_gravity="end"
                 android:gravity="center"
                 android:onClick="@{v -> viewModel.signIn()}"
+                android:paddingTop="0dp"
+                android:paddingBottom="0dp"
                 android:paddingStart="@dimen/_18sdp"
                 android:paddingEnd="@dimen/_18sdp"
                 android:text="@string/sign_in"
