@@ -1,14 +1,11 @@
 package com.hanheldpos.ui.screens.product
 
 import androidx.lifecycle.MutableLiveData
-import com.hanheldpos.data.api.pojo.CategoryItem
 import com.hanheldpos.data.api.pojo.product.*
 import com.hanheldpos.data.api.pojo.product.ProductDetailResp
 import com.hanheldpos.data.api.pojo.product.ProductOption
 import com.hanheldpos.data.api.pojo.product.ProductOptionExtra
-import com.hanheldpos.model.home.order.product.ProductModeViewType
 import com.hanheldpos.ui.base.viewmodel.BaseViewModel
-import com.hanheldpos.ui.screens.home.order.OrderDataVM
 
 class ProductDetailDataVM : BaseViewModel() {
     private var productDetailResp: ProductDetailResp? = null;

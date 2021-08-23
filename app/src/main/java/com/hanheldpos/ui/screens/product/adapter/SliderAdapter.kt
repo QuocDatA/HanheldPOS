@@ -6,8 +6,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.hanheldpos.data.api.pojo.product.SliderData
-import com.hanheldpos.ui.screens.home.order.OrderFragment
-import com.hanheldpos.ui.screens.product.ProductDetailFragment
 import com.smarteist.autoimageslider.SliderViewAdapter
 
 

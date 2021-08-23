@@ -2,18 +2,9 @@ package com.hanheldpos.ui.screens.product.adapter
 
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
-import android.view.LayoutInflater
-import android.view.ViewGroup
-import android.widget.FrameLayout
-import androidx.databinding.DataBindingUtil
-import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.DiffUtil
 import com.hanheldpos.R
-import com.hanheldpos.data.api.pojo.ProductItem
-import com.hanheldpos.data.api.pojo.product.ProductOption
 import com.hanheldpos.data.api.pojo.product.ProductOptionExtra
-import com.hanheldpos.databinding.ItemOrderProductBinding
 import com.hanheldpos.databinding.ItemProductOptionExtraBinding
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder

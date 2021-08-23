@@ -1,13 +1,11 @@
 package com.hanheldpos.ui.screens.product
 
-import android.R.attr.spacing
 import android.view.ViewTreeObserver
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
-import com.google.android.flexbox.JustifyContent
 import com.google.android.material.appbar.AppBarLayout
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.product.ProductOption

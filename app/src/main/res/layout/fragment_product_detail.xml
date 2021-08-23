@@ -152,7 +152,7 @@
                                 android:maxLines="1"
                                 android:text="@{`Pho Dac Biet`,default=`Name`}"
                                 android:textAlignment="center"
-                                android:textColor="@color/color_3"
+                                android:textColor="@android:color/white"
                                 android:textSize="@dimen/_17ssp"
                                 android:textStyle="bold" />
                         </FrameLayout>

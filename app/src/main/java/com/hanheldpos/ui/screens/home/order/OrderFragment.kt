@@ -21,6 +21,7 @@ import com.hanheldpos.ui.screens.home.order.adapter.OrderCategoryAdapter
 import com.hanheldpos.ui.screens.home.order.adapter.OrderCategoryAdapterHelper
 import com.hanheldpos.ui.screens.home.order.adapter.OrderProductAdapter
 import com.hanheldpos.ui.screens.home.order.adapter.OrderProductAdapterHelper
+import com.hanheldpos.ui.screens.product.ProductDetailFragment
 import kotlinx.coroutines.*
 
 class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
