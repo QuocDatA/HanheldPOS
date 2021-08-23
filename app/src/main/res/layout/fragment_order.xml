@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="dataVM"
             type="com.hanheldpos.ui.screens.home.order.OrderDataVM" />
@@ -101,7 +102,6 @@
 
         </LinearLayout>
 
-
         <include
             layout="@layout/divider_vertical"
             android:layout_width="match_parent"
@@ -140,6 +140,5 @@
             </FrameLayout>
 
         </RelativeLayout>
-
     </RelativeLayout>
 </layout>

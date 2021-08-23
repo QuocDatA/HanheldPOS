@@ -2,9 +2,9 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
     <item>
         <shape android:shape="rectangle" android:padding="10dp">
-            <solid android:color="@color/productInfoCart" />
+            <solid android:color="@color/primary" />
             <corners
-                android:radius="3dp"/>
+                android:radius="1dp"/>
         </shape>
     </item>
     <item android:drawable="@drawable/ic_tick" />

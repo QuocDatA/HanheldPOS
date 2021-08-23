@@ -4,6 +4,7 @@ import androidx.annotation.IdRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
+import com.hanheldpos.R
 import java.util.*
 
 class FragmentNavigator(
@@ -42,6 +43,34 @@ class FragmentNavigator(
         currentState = fragment.lifecycle.currentState
         mFragmentManager.beginTransaction()
             .apply {
+                addToBackStack(getTag(fragment))
+                add(mDefaultContainer, fragment, getTag(fragment))
+            }
+            .also {
+                if (currentState!!.isAtLeast(Lifecycle.State.CREATED)) {
+                    it.setMaxLifecycle(fragment, currentState!!)
+                }
+                it.commit()
+            }
+        mFragmentManager.executePendingTransactions()
+    }
+
+    /**
+     * Same as go to but use my custom animation, delete this fun if default is set
+     * it will be added to the transaction.
+     *
+     * @param fragment The fragment which will be added
+     */
+    fun goToWithCustomAnimation(fragment: Fragment) {
+        currentState = fragment.lifecycle.currentState
+        mFragmentManager.beginTransaction()
+            .apply {
+                setCustomAnimations(
+                    R.anim.slide_in_bottom,  // enter
+                    R.anim.slide_out_top,  // exit
+                    R.anim.slide_in_top,   // popEnter
+                    R.anim.slide_out_bottom  // popExit
+                )
                 addToBackStack(getTag(fragment))
                 add(mDefaultContainer, fragment, getTag(fragment))
             }

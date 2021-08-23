@@ -1,341 +1,326 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="dataVM"
+            type="com.hanheldpos.ui.screens.product.ProductDetailDataVM" />
+
+        <variable
+            name="viewModel"
+            type="com.hanheldpos.ui.screens.product.ProductDetailVM" />
+    </data>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/bg_pizza_behind">
+        android:background="@android:color/white">
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/container"
             android:layout_width="match_parent"
-            android:layout_height="66dp"
+            android:layout_height="80dp"
             android:layout_alignParentBottom="true"
-            android:background="@drawable/shape_border_top"
-            android:orientation="horizontal">
+            android:background="@drawable/shape_border_top">
 
-            <LinearLayout
-                style="@style/ProductInfoCartContainer"
-                android:orientation="horizontal">
-                <LinearLayout
-                    style="@style/ProductInfoCartContainer"
-                    android:layout_weight="2"
-                    android:orientation="horizontal">
-                <ImageButton
-                    style="@style/ProductInfoButtonAdjust"
-                    android:src="@drawable/ic_remove" />
-
-                <TextView
-                    android:id="@+id/btn_adjust_quantity"
-                    style="@style/ProductInfoQuantity"
-                    android:text="2" />
+            <LinearLayout style="@style/ProductInfoQuantityContainer">
 
                 <ImageButton
+                    android:id="@+id/btn_minus_quantity"
                     style="@style/ProductInfoButtonAdjust"
-                    android:src="@drawable/ic_add" />
-                </LinearLayout>
+                    android:src="@drawable/ic_remove_primary" />
 
                 <TextView
-                    style="@style/ProductInfoBag"
-                    android:text="Bag" />
+                    android:id="@+id/txt_quantity"
+                    style="@style/ProductInfoFood.FixedSize"
+                    android:layout_width="30dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:gravity="center"
+                    android:text="1" />
+
+                <ImageButton
+                    android:id="@+id/btn_add_quantity"
+                    style="@style/ProductInfoButtonAdjust"
+                    android:contentDescription="@string/app_name"
+                    android:src="@drawable/ic_add_primay" />
             </LinearLayout>
 
             <RelativeLayout
-                style="@style/ProductInfoCartContainer"
-                android:background="@color/productInfoCart">
+                android:layout_width="wrap_content"
+                android:layout_height="55dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/shape_product_btn_cart_background"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/add"
+                    style="@style/ProductInfoFood.AddCart"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="16dp"
+                    android:text="@string/AddCart"
+                    android:textSize="15sp" />
 
                 <TextView
                     style="@style/ProductInfoFood.AddCart"
-                    android:layout_alignParentStart="true"
-                    android:layout_marginLeft="16dp"
-                    android:text="ADD TO CART" />
-
-                <TextView
-                    style="@style/ProductInfoFood.AddCart"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginRight="20dp"
-                    android:text="đ500.000" />
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="15dp"
+                    android:layout_toEndOf="@id/add"
+                    android:text="₫300.000" />
             </RelativeLayout>
-        </LinearLayout>
+        </RelativeLayout>
 
-        <androidx.core.widget.NestedScrollView
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@+id/container">
 
-            <RelativeLayout
+            <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/appBarProductDetail"
+                android:layout_width="match_parent"
+                android:layout_height="400dp">
+
+                <com.google.android.material.appbar.CollapsingToolbarLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/color_3"
+                    app:contentScrim="@color/primary"
+                    app:layout_scrollFlags="exitUntilCollapsed|scroll"
+                    app:titleEnabled="false">
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <com.smarteist.autoimageslider.SliderView
+                            android:id="@+id/slider"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            app:sliderAnimationDuration="3000"
+                            app:sliderAutoCycleDirection="back_and_forth"
+                            app:sliderAutoCycleEnabled="true"
+                            app:sliderIndicatorAnimationDuration="3000"
+                            app:sliderIndicatorEnabled="true"
+                            app:sliderIndicatorGravity="center_horizontal|bottom"
+                            app:sliderIndicatorMarginBottom="@dimen/_19sdp"
+                            app:sliderIndicatorOrientation="horizontal"
+                            app:sliderIndicatorRadius="1.6dp"
+                            app:sliderIndicatorSelectedColor="@color/primary"
+                            app:sliderIndicatorUnselectedColor="@color/textSecondary" />
+
+                    </FrameLayout>
+
+                    <androidx.appcompat.widget.Toolbar
+                        android:layout_width="match_parent"
+                        android:layout_height="80dp"
+                        android:contentInsetStart="0dp"
+                        android:contentInsetLeft="0dp"
+                        android:contentInsetEnd="0dp"
+                        android:contentInsetRight="0dp"
+                        app:contentInsetEnd="0dp"
+                        app:contentInsetLeft="0dp"
+                        app:contentInsetRight="0dp"
+                        app:contentInsetStart="0dp"
+                        app:layout_collapseMode="pin">
+
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginEnd="@dimen/_12sdp">
+
+                            <ImageView
+                                android:id="@+id/btn_info_close"
+                                style="@style/ProductInfoClose"
+                                android:layout_gravity="center_vertical|start"
+                                android:background="@{ viewModel.isToolbarExpand ? @drawable/ic_close_dart : @drawable/ic_close_light}"
+                                android:contentDescription="@string/app_name"
+                                android:onClick="@{v->viewModel.goBack()}" />
+
+                            <com.diadiem.pos_components.PTextView
+                                visibleObject="@{!viewModel.isToolbarExpand}"
+                                android:layout_width="@dimen/_160sdp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:ellipsize="end"
+                                android:maxLines="1"
+                                android:text="@{`Pho Dac Biet`,default=`Name`}"
+                                android:textAlignment="center"
+                                android:textColor="@color/color_3"
+                                android:textSize="@dimen/_17ssp"
+                                android:textStyle="bold" />
+                        </FrameLayout>
+
+                    </androidx.appcompat.widget.Toolbar>
+                </com.google.android.material.appbar.CollapsingToolbarLayout>
+            </com.google.android.material.appbar.AppBarLayout>
+
+            <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="40dp"
-                android:background="@drawable/shape_product_info_background">
-
-                <ImageButton
-                    android:id="@+id/btn_info_close"
-                    android:layout_width="40dp"
-                    android:layout_height="5dp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/shape_product_info_close"
-                    tools:ignore="ContentDescription" />
-
-                <FrameLayout
-                    android:id="@+id/view_images_container"
-                    android:layout_width="match_parent"
-                    android:layout_height="440dp"
-                    android:layout_below="@+id/btn_info_close"
-                    android:layout_marginLeft="21dp"
-                    android:layout_marginTop="23dp"
-                    android:layout_marginRight="21dp">
-
-                    <ImageView
-                        android:id="@+id/viewImage"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/bg_pizza"
-                        tools:ignore="ContentDescription" />
-
-                    <TextView
-                        style="@style/ProductInfoImageLayout"
-                        android:text="BLOCK A"/>
-                </FrameLayout>
-
-                <LinearLayout
-                    android:id="@+id/paginationContainer"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/view_images_container"
-                    android:layout_centerInParent="true"
-                    android:layout_marginTop="11dp">
-
-                    <ImageView
-                        style="@style/ProductInfoPagination"
-                        android:background="@drawable/shape_selected_image"
-                        tools:ignore="ContentDescription" />
-
-                    <ImageView
-                        style="@style/ProductInfoPagination"
-                        android:background="@drawable/shape_unselected_image"
-                        tools:ignore="ContentDescription" />
-
-                    <ImageView
-                        style="@style/ProductInfoPagination"
-                        android:layout_marginEnd="0dp"
-                        android:background="@drawable/shape_unselected_image"
-                        tools:ignore="ContentDescription" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/infoContainer"
-                    style="@style/ProductInfoPart1">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <TextView
-                            style="@style/ProductInfoFood.Title"
-                            android:text="Del Sole" />
-
-                        <TextView
-                            style="@style/ProductInfoFood.Title"
-                            android:layout_alignParentEnd="true"
-                            android:text="₫250.000" />
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <TextView
-                            style="@style/ProductInfoFood.Intro"
-                            android:layout_width="200dp"
-                            android:text="@string/FoodDescription"
-                            android:textColor="@color/grayText" />
-
-                        <TextView
-                            style="@style/ProductInfoFood.Intro"
-                            android:layout_alignParentEnd="true"
-                            android:height="25dp"
-                            android:foreground="@drawable/bg_strike_through"
-                            android:text="300.000"
-                            android:textColor="@color/grayLighter" />
-
-                    </RelativeLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="15dp">
-
-                        <TextView
-                            style="@style/ProductInfoP"
-                            android:text="P5" />
-
-                        <TextView
-                            style="@style/ProductInfoFood.Intro"
-                            android:text="4 kg/bag"
-                            android:textColor="@color/grayText" />
-
-                    </LinearLayout>
-                </LinearLayout>
+                android:background="@{ viewModel.isToolbarExpand ? @drawable/bg_product_detail_expand : @drawable/bg_product_detail_default}"
+                android:overScrollMode="never"
+                app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/infoContainer"
-                    android:background="@color/backgroundSecondary"
-                    android:orientation="vertical"
-                    android:paddingBottom="60dp">
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
 
-                    <TextView
-                        style="@style/ProductInfoOptionAsk"
-                        android:layout_marginTop="15dp"
-                        android:text="@string/RequiredOption" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:orientation="horizontal">
+                        android:background="@drawable/shape_product_info_background"
+                        android:orientation="vertical"
+                        android:paddingBottom="10dp">
 
-                        <RadioButton
-                            style="@style/ProductInfoSelection"
-                            android:layout_marginStart="21dp"
-                            android:layout_marginEnd="18dp"
-                            android:text="Rare" />
+                        <LinearLayout style="@style/ProductInfoPart1">
 
-                        <RadioButton
-                            style="@style/ProductInfoSelection"
-                            android:layout_marginEnd="21dp"
-                            android:text="Medium" />
-                    </LinearLayout>
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
 
-                    <TextView
-                        style="@style/ProductInfoOptionAsk"
-                        android:layout_marginTop="30dp"
-                        android:text="@string/OptionalOption" />
+                                <com.diadiem.pos_components.PTextView
+                                    style="@style/ProductInfoFood.Title"
+                                    android:text="Pho Dac Biet" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:orientation="horizontal">
+                                <TextView
+                                    style="@style/ProductInfoFood.Title"
+                                    android:layout_alignParentEnd="true"
+                                    android:text="79.000₫" />
 
-                        <RadioButton
-                            style="@style/ProductInfoSelection"
-                            android:layout_marginStart="21dp"
-                            android:layout_marginEnd="18dp"
-                            android:text="Mushroom sauce" />
+                            </RelativeLayout>
 
-                        <RadioButton
-                            style="@style/ProductInfoSelection"
-                            android:layout_marginEnd="21dp"
-                            android:text="Pepper sauce" />
-                    </LinearLayout>
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
 
-                    <TextView
-                        style="@style/ProductInfoOptionAsk"
-                        android:layout_marginTop="30dp"
-                        android:text="@string/ExtraOption" />
+                                <com.diadiem.pos_components.PTextView
+                                    style="@style/ProductInfoFood.Intro"
+                                    android:layout_width="270dp"
+                                    android:text="@string/FoodDescription"
+                                    android:textColor="@color/grayText" />
 
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="15dp">
+                                <com.diadiem.pos_components.PTextView
+                                    style="@style/ProductInfoFood.Intro"
+                                    android:layout_alignParentEnd="true"
+                                    android:height="20dp"
+                                    android:foreground="@drawable/bg_strike_through"
+                                    android:text="85.000"
+                                    android:textColor="@color/grayLighter" />
 
-                        <CheckBox
-                            android:id="@+id/checkbox_extra"
-                            style="@style/ProductInfoSelectionWithCheckBox"
-                            android:layout_marginStart="21dp"
-                            android:layout_marginEnd="13dp"
-                            android:checked="false" />
+                            </RelativeLayout>
 
-                        <TextView
-                            style="@style/ProductInfoFood.FixedSize"
-                            android:layout_toRightOf="@id/checkbox_extra"
-                            android:text="@string/ExtraDescription" />
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="15dp">
 
-                        <TextView
-                            style="@style/ProductInfoFood.Intro"
-                            android:layout_alignParentEnd="true"
-                            android:layout_centerVertical="true"
-                            android:layout_marginEnd="50dp"
-                            android:text="50.000"
-                            android:textColor="@android:color/white" />
-                    </RelativeLayout>
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="2dp"
+                                    android:layout_marginRight="5dp"
+                                    android:background="@drawable/shape_background_p"
+                                    android:gravity="center">
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginStart="21dp"
-                        android:layout_marginTop="22dp"
-                        android:layout_marginEnd="21dp"
-                        android:background="@color/grayLighter" />
+                                    <com.diadiem.pos_components.PTextView
+                                        style="@style/ProductInfoP"
+                                        android:text="P5" />
+                                </LinearLayout>
 
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="15dp">
+                                <com.diadiem.pos_components.PTextView
+                                    style="@style/ProductInfoFood.Intro"
+                                    android:text="4 kg/bag"
+                                    android:textColor="@color/grayText" />
 
-                        <CheckBox
-                            android:id="@+id/checkbox_extra_option"
-                            style="@style/ProductInfoSelectionWithCheckBox"
-                            android:layout_marginStart="26dp"
-                            android:layout_marginEnd="15dp"
-                            android:checked="true" />
+                            </LinearLayout>
+                        </LinearLayout>
 
-                        <ImageView
-                            android:id="@+id/view_option_image"
-                            android:layout_width="26dp"
-                            android:layout_height="26dp"
-                            android:layout_marginEnd="7dp"
-                            android:layout_toEndOf="@id/checkbox_extra_option"
-                            android:src="@drawable/pizza" />
+                        <com.diadiem.pos_components.PTextView
+                            style="@style/ProductInfoOptionAsk"
+                            android:layout_marginTop="15dp"
+                            android:text="@string/SizeOption" />
 
-                        <TextView
-                            style="@style/ProductInfoFood.FixedSize"
-                            android:layout_toEndOf="@+id/view_option_image"
-                            android:text="Onion" />
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recyclerSizeOption"
+                            style="@style/ProductRecyclerOptions"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginEnd="0dp"/>
 
-                        <TextView
-                            style="@style/ProductInfoFood.Intro"
-                            android:layout_alignParentEnd="true"
-                            android:layout_centerVertical="true"
-                            android:layout_marginEnd="23dp"
-                            android:text="50.000" />
-                    </RelativeLayout>
+                        <View style="@style/OptionDivider" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="28dp"
-                        android:orientation="horizontal">
+                        <com.diadiem.pos_components.PTextView
+                            style="@style/ProductInfoOptionAsk"
+                            android:layout_marginTop="26dp"
+                            android:text="@string/RequiredOption" />
 
-                        <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recyclerCookOption"
+                            style="@style/ProductRecyclerOptions"
+                            tools:itemCount="2" />
+
+                        <View style="@style/OptionDivider" />
+
+                        <com.diadiem.pos_components.PTextView
+                            style="@style/ProductInfoOptionAsk"
+                            android:layout_marginTop="26dp"
+                            android:text="@string/OptionalOption" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recyclerSauceOption"
+                            style="@style/ProductRecyclerOptions"
+                            tools:itemCount="2" />
+
+                        <View style="@style/OptionDivider" />
+
+                        <com.diadiem.pos_components.PTextView
+                            style="@style/ProductInfoOptionAsk"
                             android:layout_marginStart="20dp"
-                            android:layout_marginEnd="7dp"
-                            android:src="@drawable/ic_note" />
+                            android:layout_marginTop="26dp"
+                            android:text="@string/ExtraOption"
+                            android:textSize="15sp" />
 
-                        <TextView
-                            style="@style/ProductInfoFood.FixedSizeSmallMedium"
-                            android:layout_marginEnd="11dp"
-                            android:text="@string/SpecialInstructions" />
+                        <include
+                            android:id="@+id/layout_extra_option"
+                            layout="@layout/view_extra_option" />
 
-                        <TextView
-                            style="@style/ProductInfoFood.Intro"
-                            android:text="@string/optional"
-                            android:textColor="@color/grayBorder"
-                            android:textSize="11sp" />
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="26dp"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="22dp"
+                                android:layout_height="22dp"
+                                android:layout_marginStart="20dp"
+                                android:layout_marginEnd="4dp"
+                                android:src="@drawable/ic_note" />
+
+                            <com.diadiem.pos_components.PTextView
+                                style="@style/ProductInfoFood.FixedSizeMediumSmall"
+                                android:layout_marginEnd="7dp"
+                                android:text="@string/SpecialInstructions" />
+
+                            <com.diadiem.pos_components.PTextView
+                                style="@style/ProductInfoFood.Intro"
+                                android:text="@string/optional"
+                                android:textColor="@color/grayBorder"
+                                android:textSize="13sp" />
+                        </LinearLayout>
+
+                        <EditText style="@style/ProductInfoNote" />
                     </LinearLayout>
-
-                    <EditText style="@style/ProductInfoNote" />
                 </LinearLayout>
-            </RelativeLayout>
-        </androidx.core.widget.NestedScrollView>
+            </androidx.core.widget.NestedScrollView>
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
     </RelativeLayout>
 </layout>
