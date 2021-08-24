@@ -11,29 +11,42 @@ class TableDataVM : BaseViewModel() {
     // Value
     private var tableResp: TableResp? = null;
     private val floorList = MutableLiveData<MutableList<FloorItem?>>(mutableListOf());
-    val floorItemSelected : MutableLiveData<FloorItem>? = null;
-    val floorTablePage = MutableLiveData<Int>();
+    val floorItemSelected = MutableLiveData<FloorItem>();
     val floorTableList = MutableLiveData<MutableList<FloorTableItem?>>(mutableListOf());
 
 
     fun initData() {
+        // Fake Data
+        val floorListT = MutableList(1){
+            FloorItem(
+                id = "Floor/90",
+                rev = "_cto8ANq---",
+                key = 90,
+                floorId = 11,
+                floorCode = "00000b",
+
+            )
+        }
+        val tableList = MutableList(30) {
+            FloorTableItem(
+                id = "FloorTable/" + (6824 + it).toString(),
+                floorGuid = "Floor/90",
+                tableTypeId = it,
+                tableName = it.toString(),
+                userGuid = "Customer/438227813"
+            )
+        }
+
         tableResp = TableResp(
             model = mutableListOf(
                 ModelItem(
-                    floorTable = MutableList(100) {
-                        FloorTableItem(
-                            id = "FloorTable/" + (6824 + it).toString(),
-                            floorGuid = "Floor/73",
-                            tableTypeId = it,
-                            tableName = it.toString(),
-                            userGuid = "Customer/438227813"
-                        )
-                    }
+                    floorTable = tableList,
+                    floor = floorListT
                 ),
             ),
         )
         initFloor();
-        floorItemSelected?.value = floorList.value?.firstOrNull();
+        floorItemSelected.value = floorList.value?.firstOrNull();
     }
 
 
@@ -47,35 +60,5 @@ class TableDataVM : BaseViewModel() {
         return tableResp?.getTableWithFloorGuid(floorGuid = floorItem.id);
     }
 
-    fun getTableListByPage(pagePosition: Int) : List<FloorTableItem?> {
-        val rs : MutableList<FloorTableItem> = mutableListOf();
-        floorTableList.value?.let {
-            if (it.size != 0){
-                val start: Int = (pagePosition - 1) * TableDataVM.maxItemViewTable;
-                val end: Int =
-                    if (it.size > TableDataVM.maxItemViewTable * pagePosition) TableDataVM.maxItemViewTable * pagePosition else it.size;
-            }
-        }
-        // Add Empty
-        for (i in rs.size..TableDataVM.maxItemViewTable){
-            rs.add(FloorTableItem().apply {
-                uiType = TableModeViewType.Empty;
-            })
-        }
 
-        // Add Direction Button
-        rs.addAll(listOf(
-            FloorTableItem().apply {
-                uiType = TableModeViewType.PrevButton;
-            }, FloorTableItem().apply {
-                uiType = TableModeViewType.NextButton;
-            }))
-
-        return rs;
-    }
-
-    companion object {
-        @JvmStatic
-        val maxItemViewTable : Int = 13;
-    }
 }

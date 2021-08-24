@@ -1,5 +1,6 @@
 package com.hanheldpos.ui.screens.pincode
 
+import android.view.WindowManager
 import com.hanheldpos.R
 import com.hanheldpos.databinding.ActivityPinCodeBinding
 import com.hanheldpos.extension.navigateTo
@@ -13,6 +14,9 @@ class PinCodeActivity : BaseActivity<ActivityPinCodeBinding,PinCodeVM>(), PinCod
 
     override fun initView() {
         SystemHelper.hideSystemUI(this.window)
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_FULLSCREEN,
+            WindowManager.LayoutParams.FLAG_FULLSCREEN);
     }
 
     override fun initData() {

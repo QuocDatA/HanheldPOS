@@ -54,6 +54,60 @@ class OrderDataVM : BaseViewModel() {
                 orderNo = 0,
                 visible = 1,
                 color = "#3166FF"
+            ),CategoryItem(
+                id = "Category/430214309",
+                categoryId = 37,
+                title = "COMBO PHO",
+                handle = "pho-cb",
+                description = "",
+                orderNo = 0,
+                visible = 1,
+                color = "#A61CD7"
+            ), CategoryItem(
+                id = "Category/430214310",
+                categoryId = 38,
+                title = "COMBO COM",
+                handle = "pho-cb",
+                description = "",
+                orderNo = 0,
+                visible = 1,
+                color = "#A61CD7"
+            ), CategoryItem(
+                id = "Category/430214311",
+                categoryId = 39,
+                title = "COMBO BUN",
+                handle = "pho-cb",
+                description = "",
+                orderNo = 0,
+                visible = 1,
+                color = "#A61CD7"
+            ),  CategoryItem(
+                id = "Category/430214315",
+                categoryId = 43,
+                title = "MENU SANG",
+                handle = "pho-cb",
+                description = "",
+                orderNo = 0,
+                visible = 1,
+                color = "#2A9C0E"
+            ), CategoryItem(
+                id = "Category/430214316",
+                categoryId = 44,
+                title = "PHO BOGO",
+                handle = "pho-cb",
+                description = "",
+                orderNo = 0,
+                visible = 1,
+                color = "#2A9C0E"
+            ), CategoryItem(
+                id = "Category/430214317",
+                categoryId = 45,
+                title = "PHO GOI",
+                handle = "pho-cb",
+                description = "",
+                orderNo = 0,
+                visible = 1,
+                color = "#2A9C0E"
             ),
             CategoryItem(
                 id = "Category/430214306",
@@ -82,34 +136,7 @@ class OrderDataVM : BaseViewModel() {
                 orderNo = 0,
                 visible = 1,
                 color = "#2989A8"
-            ), CategoryItem(
-                id = "Category/430214309",
-                categoryId = 37,
-                title = "COMBO PHO",
-                handle = "pho-cb",
-                description = "",
-                orderNo = 0,
-                visible = 1,
-                color = "#A61CD7"
-            ), CategoryItem(
-                id = "Category/430214310",
-                categoryId = 38,
-                title = "COMBO COM",
-                handle = "pho-cb",
-                description = "",
-                orderNo = 0,
-                visible = 1,
-                color = "#A61CD7"
-            ), CategoryItem(
-                id = "Category/430214311",
-                categoryId = 39,
-                title = "COMBO BUN",
-                handle = "pho-cb",
-                description = "",
-                orderNo = 0,
-                visible = 1,
-                color = "#A61CD7"
-            ), CategoryItem(
+            ),  CategoryItem(
                 id = "Category/430214312",
                 categoryId = 40,
                 title = "EXTRA",
@@ -137,33 +164,6 @@ class OrderDataVM : BaseViewModel() {
                 orderNo = 0,
                 visible = 1,
                 color = "#B58200"
-            ), CategoryItem(
-                id = "Category/430214315",
-                categoryId = 43,
-                title = "MENU SANG",
-                handle = "pho-cb",
-                description = "",
-                orderNo = 0,
-                visible = 1,
-                color = "#2A9C0E"
-            ), CategoryItem(
-                id = "Category/430214316",
-                categoryId = 44,
-                title = "PHO BOGO",
-                handle = "pho-cb",
-                description = "",
-                orderNo = 0,
-                visible = 1,
-                color = "#2A9C0E"
-            ), CategoryItem(
-                id = "Category/430214317",
-                categoryId = 45,
-                title = "PHO GOI",
-                handle = "pho-cb",
-                description = "",
-                orderNo = 0,
-                visible = 1,
-                color = "#2A9C0E"
             ), CategoryItem(
                 id = "Category/430214318",
                 categoryId = 46,

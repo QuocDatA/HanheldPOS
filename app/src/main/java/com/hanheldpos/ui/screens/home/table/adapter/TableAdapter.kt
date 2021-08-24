@@ -39,9 +39,11 @@ class TableAdapter(
         }
     }
 
+
+
     private class DiffCallBack : DiffUtil.ItemCallback<FloorTableItem>(){
         override fun areItemsTheSame(oldItem: FloorTableItem, newItem: FloorTableItem): Boolean {
-            return oldItem == newItem;
+            return oldItem.id.equals(newItem.id) && oldItem.uiType == newItem.uiType;
         }
 
         override fun areContentsTheSame(oldItem: FloorTableItem, newItem: FloorTableItem): Boolean {

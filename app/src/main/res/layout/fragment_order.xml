@@ -48,7 +48,7 @@
 
             </LinearLayout>
 
-            <androidx.cardview.widget.CardView
+            <com.google.android.material.card.MaterialCardView
                 android:focusable="true"
                 android:clickable="true"
                 android:onClick="@{v-> viewModel.showCategoryDialog()}"
@@ -58,9 +58,9 @@
                 android:layout_marginHorizontal="@dimen/_9sdp"
                 android:layout_marginVertical="@dimen/_4sdp"
                 android:backgroundTint="@color/color_1"
-                android:elevation="0dp"
+                android:elevation="3dp"
                 app:cardCornerRadius="@dimen/_3sdp"
-                app:cardElevation="0dp">
+                app:cardElevation="3dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -87,7 +87,7 @@
                         app:useTextHeader="h4" />
 
                 </LinearLayout>
-            </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
 
         </RelativeLayout>
 
