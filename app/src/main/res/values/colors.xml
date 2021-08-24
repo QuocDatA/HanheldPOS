@@ -26,4 +26,13 @@
     
     <color name="_1067A7">#1067A7</color>
     <color name="_EEEEEE">#EEEEEE</color>
+
+
+    <color name="nearlyBlack">#333333</color>
+    <color name="grayText">#777777</color>
+    <color name="productInfoCart">#D8002B</color>
+    <color name="grayBorder">#999999</color>
+    <color name="grayLighter">#AAAAAA</color>
+    <color name="extraAdjust">#40693B</color>
+    <color name="grayDivider">#CCCCCC</color>
 </resources>

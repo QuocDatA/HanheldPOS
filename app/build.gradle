@@ -119,4 +119,6 @@ dependencies {
     // SliderView
     implementation 'com.github.smarteist:autoimageslider:1.4.0'
 
+    //Flex-box
+    implementation 'com.google.android.flexbox:flexbox:3.0.0'
 }

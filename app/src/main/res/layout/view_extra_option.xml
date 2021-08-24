@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp">
+
+            <CheckBox
+                android:id="@+id/checkbox_extra"
+                style="@style/ProductInfoSelectionWithCheckBox"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="12dp"
+                android:checked="false" />
+
+            <com.diadiem.pos_components.PTextView
+                style="@style/ProductInfoFood.FixedSize"
+                android:layout_toRightOf="@id/checkbox_extra"
+                android:text="@string/ExtraDescription" />
+
+            <com.diadiem.pos_components.PTextView
+                style="@style/ProductInfoFood.FixedSize"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="7dp"
+                android:layout_toStartOf="@id/txt_extra_price"
+                android:foreground="@drawable/bg_strike_through"
+                android:text="25.000"
+                android:textColor="@color/grayLighter" />
+
+            <com.diadiem.pos_components.PTextView
+                android:id="@+id/txt_extra_price"
+                style="@style/ProductInfoFood.FixedSize"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="16dp"
+                android:text="20.000" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.6dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="20dp"
+            android:background="@color/grayLighter" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp">
+
+            <CheckBox
+                android:id="@+id/checkbox_extra1"
+                style="@style/ProductInfoSelectionWithCheckBox"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="17dp"
+                android:checked="true" />
+
+            <ImageView
+                android:id="@+id/view_option_image"
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:layout_marginEnd="8dp"
+                android:layout_toEndOf="@id/checkbox_extra1"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/pizza" />
+
+            <com.diadiem.pos_components.PTextView
+                style="@style/ProductInfoFood.FixedSize"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/view_option_image"
+                android:text="@string/ExtraDescription1" />
+
+            <com.diadiem.pos_components.PTextView
+                style="@style/ProductInfoFood.FixedSize"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="20dp"
+                android:text="20.000" />
+        </RelativeLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerExtraOption"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:itemCount="2"
+            tools:listitem="@layout/item_product_option_extra" />
+
+    </LinearLayout>
+</layout>

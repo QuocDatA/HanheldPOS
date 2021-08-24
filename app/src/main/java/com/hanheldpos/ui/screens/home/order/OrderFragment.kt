@@ -21,10 +21,11 @@ import com.hanheldpos.ui.screens.home.order.adapter.OrderCategoryAdapter
 import com.hanheldpos.ui.screens.home.order.adapter.OrderCategoryAdapterHelper
 import com.hanheldpos.ui.screens.home.order.adapter.OrderProductAdapter
 import com.hanheldpos.ui.screens.home.order.adapter.OrderProductAdapterHelper
+import com.hanheldpos.ui.screens.product.ProductDetailFragment
 import kotlinx.coroutines.*
 
 class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
-    override fun layoutRes() = R.layout.fragment_order;
+    override fun layoutRes() = R.layout.fragment_order
 
     // ViewModel
     private val dataVM by activityViewModels<OrderDataVM>()
@@ -39,18 +40,17 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
     // Dialog Category
     private lateinit var dialogCategory: AlertDialog;
 
-
     override fun viewModelClass(): Class<OrderVM> {
-        return OrderVM::class.java;
+        return OrderVM::class.java
     }
 
     override fun initViewModel(viewModel: OrderVM) {
         viewModel.run {
-            init(this@OrderFragment);
-            initLifeCycle(this@OrderFragment);
-            binding.viewModel = this;
+            init(this@OrderFragment)
+            initLifeCycle(this@OrderFragment)
+            binding.viewModel = this
         }
-        binding.dataVM = this.dataVM;
+        binding.dataVM = this.dataVM
     }
 
     override fun initView() {
@@ -101,7 +101,6 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
 
         dialogCateBinding.closeBtn.setOnClickListener { dialogCategory.dismiss() }
 
-
         // product adapter vs listener
 
         productAdapHelper = OrderProductAdapterHelper(
@@ -120,7 +119,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
                     if (SystemClock.elapsedRealtime() - viewModel.mLastTimeClick > 100) {
                         when (item.uiType) {
                             ProductModeViewType.Product -> {
-
+                                navigator.goToWithCustomAnimation(ProductDetailFragment())
                             }
                             ProductModeViewType.PrevButton -> {
                                 productAdapHelper.previous();
@@ -138,7 +137,6 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
         ).also {
             binding.productList.adapter = it;
         };
-
 
     }
 
@@ -164,8 +162,8 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
             ViewTreeObserver.OnGlobalLayoutListener {
             override fun onGlobalLayout() {
                 if (binding.productList.height > 0) {
-                    binding.root.viewTreeObserver.removeOnGlobalLayoutListener(this);
-                    dataVM.initData();
+                    binding.root.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                    dataVM.initData()
                 }
             }
         })
@@ -173,7 +171,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
     }
 
     private fun categoryItemSelected(categoryItem: CategoryItem) {
-        dataVM.categorySelected.value = categoryItem;
+        dataVM.categorySelected.value = categoryItem
     }
 
     override fun showCategoryDialog() {
@@ -181,6 +179,5 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
         dialogCategory.show();
         dialogCategory.window?.setBackgroundDrawableResource(android.R.color.transparent)
     }
-
 
 }

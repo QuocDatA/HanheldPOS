@@ -22,4 +22,19 @@
     <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
     <string name="diadiem_point_of_sale" translatable="false">Diadiem Point of Sale</string>
 
+    <string name="SizeOption">CHOOSE SIZE</string>
+    <string name="RequiredOption">HOW DO YOU WANT TO COOK?</string>
+    <string name="OptionalOption">WHICH KIND OF SAUCE YOU WOULD LIKE TO?</string>
+    <string name="ExtraOption">EXTRA</string>
+    <string name="SpecialInstructions">Special Instructions</string>
+    <string name="Optional">Optional</string>
+    <!-- PlaceHolder Product Info -->
+    <string name="FoodDescription">Tomato sauce, Fresh mozzarella, sun dried tomato and basil.</string>
+    <string name="ExtraDescription">Trung them</string>
+    <string name="ExtraDescription1">Thit bo them</string>
+    <string name="NoteHint">E.g No onions, cheese</string>
+    <string name="Option">Option</string>
+    <string name="ExtraName">Extra Name</string>
+    <string name="ExtraPrice">Extra Price</string>
+    <string name="AddCart">ADD</string>
 </resources>

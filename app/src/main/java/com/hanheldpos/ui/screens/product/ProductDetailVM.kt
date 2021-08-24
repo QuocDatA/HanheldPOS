@@ -7,17 +7,20 @@ import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
 class ProductDetailVM : BaseUiViewModel<ProductDetailUV>() {
 
     //Value
-    val isToolbarExpand = MutableLiveData<Boolean>(true);
+    val isToolbarExpand = MutableLiveData<Boolean>(true)
 
-
-
-
-    fun initLifeCycle(owner: LifecycleOwner){
-        owner.lifecycle.addObserver(this);
+    //Placeholder value
+    var url = "https://i.imgur.com/LhdRp3a.jpg"
+    var amount = MutableLiveData<Int>().apply {
+        value=1
     }
 
-    fun goBack()
-    {
+
+    fun initLifeCycle(owner: LifecycleOwner) {
+        owner.lifecycle.addObserver(this)
+    }
+
+    fun goBack() {
         uiCallback?.goBack();
     }
 }
