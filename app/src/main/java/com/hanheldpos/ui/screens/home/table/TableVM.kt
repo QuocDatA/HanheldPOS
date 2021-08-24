@@ -7,10 +7,12 @@ import com.hanheldpos.utils.screens.notifyValueChange
 
 class TableVM : BaseUiViewModel<TableUV>() {
 
+    var mLastTimeClick: Long = 0
 
     fun initLifecycle(owner: LifecycleOwner){
         owner.lifecycle.addObserver(this);
     }
+
 
 
 

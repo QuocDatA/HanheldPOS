@@ -69,8 +69,13 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
         categoryAdapter = OrderCategoryAdapter(
             listener = object : BaseItemClickListener<CategoryItem> {
                 override fun onItemClick(adapterPosition: Int, item: CategoryItem) {
-                    dialogCategory.dismiss();
                     categoryItemSelected(item);
+                    GlobalScope.launch(Dispatchers.IO) {
+                        delay(500);
+                        launch(Dispatchers.Main) {
+                            dialogCategory.dismiss();
+                        }
+                    }
                 }
 
             },
@@ -106,8 +111,11 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
         productAdapHelper = OrderProductAdapterHelper(
             callBack = object : OrderProductAdapterHelper.AdapterCallBack {
                 override fun onListSplitCallBack(list: List<ProductItem>) {
-                    productAdapter.submitList(list);
-                    productAdapter.notifyDataSetChanged();
+                    GlobalScope.launch(Dispatchers.Main) {
+                        productAdapter.submitList(list);
+                        productAdapter.notifyDataSetChanged();
+                    }
+
                 }
             }
         );
@@ -122,10 +130,16 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
                                 navigator.goToWithCustomAnimation(ProductDetailFragment())
                             }
                             ProductModeViewType.PrevButton -> {
-                                productAdapHelper.previous();
+                                GlobalScope.launch(Dispatchers.IO) {
+                                    productAdapHelper.previous();
+                                }
+
                             }
                             ProductModeViewType.NextButton -> {
-                                productAdapHelper.next();
+                                GlobalScope.launch(Dispatchers.IO) {
+                                    productAdapHelper.next();
+                                }
+
                             }
                             else -> {
                             }
@@ -153,7 +167,10 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
 
         dataVM.categorySelected.observe(this, {
             dataVM.getProductByCategory(it)
-                ?.let { it1 -> productAdapHelper.submitList(it1.toMutableList()) }
+                ?.let { it1->
+                    productAdapHelper.submitList(it1.toMutableList());
+
+                }
         });
 
 

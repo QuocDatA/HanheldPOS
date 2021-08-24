@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
+        <import type="com.hanheldpos.model.home.table.TableModeViewType" />
 
         <variable
             name="item"
@@ -9,31 +12,58 @@
 
     </data>
 
-    <FrameLayout
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/_3sdp">
+        android:layout_margin="@dimen/_3sdp"
+        android:elevation="0dp"
+        app:cardCornerRadius="0dp"
+        app:cardElevation="0dp"
+        app:rippleColor="@{ item.uiType != TableModeViewType.Empty  ? ( item.uiType == TableModeViewType.Table || item.uiType.pos == 1 ? @color/color_2 : @android:color/transparent )  : @android:color/transparent }">
 
-        <FrameLayout
+        <RelativeLayout
             android:id="@+id/layoutMain"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_100sdp">
-
-            <LinearLayout
+            android:layout_height="@dimen/_100sdp"
+            >
+            <RelativeLayout
+                visibleObject="@{item.uiType != TableModeViewType.Empty}"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#EEEEEE"
-                android:gravity="center">
-
+                android:background="#EEEEEE">
                 <com.diadiem.pos_components.PTextView
+                    visibleObject="@{item.uiType == TableModeViewType.Table}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{item.tableName, default=`Table`}"
-                    android:textColor="@color/textPrimary"
-                    android:textSize="@dimen/_13ssp" />
-            </LinearLayout>
-        </FrameLayout>
-    </FrameLayout>
+                    android:layout_centerInParent="true"
+                    android:text="@{item.tableName,default=`Table`}"
+                    app:useFontStyle="bold"
+                    app:useTextColor="color3"
+                    app:useTextHeader="h2" />
+                <ImageView
+                    visibleObject="@{item.uiType == TableModeViewType.PrevButton }"
+                    android:layout_width="@dimen/_14sdp"
+                    android:layout_height="@dimen/_14sdp"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center"
+                    android:scaleType="centerInside"
+                    android:src="@{ item.uiType.pos == 1 ? @drawable/ic_direction_up : @drawable/ic_direction_up_disable}" />
+
+                <ImageView
+                    visibleObject="@{item.uiType == TableModeViewType.NextButton }"
+                    android:layout_width="@dimen/_14sdp"
+                    android:layout_height="@dimen/_14sdp"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center"
+                    android:scaleType="centerInside"
+                    android:src="@{ item.uiType.pos == 1 ? @drawable/ic_direction_down : @drawable/ic_direction_down_disable }" />
+            </RelativeLayout>
+
+
+
+
+        </RelativeLayout>
+    </com.google.android.material.card.MaterialCardView>
 
 
 </layout>
