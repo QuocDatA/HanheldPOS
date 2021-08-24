@@ -2,7 +2,6 @@ package com.hanheldpos.ui.screens.product
 
 import android.view.ViewTreeObserver
 import androidx.fragment.app.activityViewModels
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
@@ -54,10 +53,10 @@ class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding, Product
             override fun onStateChanged(appBarLayout: AppBarLayout?, state: State?) {
                 when(state) {
                     State.COLLAPSED ->{
-                        viewModel.isToolbarExpand.value = false;
+                        viewModel.isToolbarExpand.value = false
                     }
                     else -> {
-                        viewModel.isToolbarExpand.value = true;
+                        viewModel.isToolbarExpand.value = true
 
                     }
                 }
@@ -135,9 +134,6 @@ class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding, Product
 
             }
         ).also {
-            val itemDecorator = DividerItemDecoration(
-                context, DividerItemDecoration.VERTICAL
-            )
             binding.layoutExtraOption.recyclerExtraOption.adapter = it
         }
     }

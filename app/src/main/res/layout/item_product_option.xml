@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp">
 
-        <RadioButton
+        <com.diadiem.pos_components.PRadioButton
             android:id="@+id/radio_btn_select"
             style="@style/ProductInfoSelection"
             android:checked="@{item.checked,default=false}"

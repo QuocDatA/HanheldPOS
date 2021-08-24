@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <style name="ProductInfoClose">
         <item name="android:layout_width">30dp</item>
         <item name="android:layout_height">30dp</item>
@@ -24,6 +25,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@color/nearlyBlack</item>
     </style>
+
     <style name="ProductInfoFood.Title">
         <item name="android:textSize">20sp</item>
         <item name="android:fontFamily">@font/sfpro_display_semibold</item>
@@ -73,12 +75,6 @@
         <item name="android:layout_marginTop">6dp</item>
     </style>
 
-    <style name="ProductInfoButtonAdjust">
-        <item name="android:layout_width">40dp</item>
-        <item name="android:layout_height">40dp</item>
-        <item name="android:background">@drawable/shape_product_quantity</item>
-    </style>
-
     <style name="ProductInfoQuantityContainer">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">match_parent</item>
@@ -126,28 +122,22 @@
         <item name="android:background">@drawable/selector_extra_option</item>
     </style>
 
-    <style name="ProductInfoNote">
+    <style name="ProductInfoNote" parent="BaseTextInput">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">59dp</item>
         <item name="android:background">@drawable/shape_product_quantity</item>
         <item name="android:layout_marginEnd">20dp</item>
         <item name="android:layout_marginStart">20dp</item>
         <item name="android:paddingLeft">12dp</item>
-        <item name="android:paddingTop">14dp</item>
+        <item name="android:paddingTop">17dp</item>
         <item name="android:paddingBottom">14dp</item>
         <item name="android:textSize">16sp</item>
         <item name="android:fontFamily">@font/sfpro_display_regular</item>
         <item name="android:textColor">@color/grayLighter</item>
         <item name="android:hint">@string/NoteHint</item>
         <item name="android:layout_marginTop">12dp</item>
-    </style>
-
-    <style name="ExtraRecylerAdjuster">
-        <item name="android:layout_width">23dp</item>
-        <item name="android:layout_height">23dp</item>
-        <item name="android:background">@drawable/shape_product_quantity</item>
-        <item name="android:layout_centerVertical">true</item>
-        <item name="android:layout_marginEnd">8dp</item>
+        <item name="android:focusableInTouchMode">true</item>
+        <item name="android:inputType">textMultiLine</item>
     </style>
 
     <style name="OptionDivider">
@@ -155,5 +145,37 @@
         <item name="android:layout_height">0.6dp</item>
         <item name="android:layout_marginTop">26dp</item>
         <item name="android:background">@color/grayDivider</item>
+    </style>
+
+    <style name="ShapeAppearance.App.SmallComponent" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+        <item name="android:layout_width">40dp</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="cornerFamily">cut</item>
+        <item name="cornerSize">1dp</item>
+    </style>
+
+    <style name="Widget.App.Button.IconOnly" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="iconPadding">0dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:insetRight">0dp</item>
+        <item name="android:insetLeft">0dp</item>
+        <item name="android:padding">0dp</item>
+        <item name="iconGravity">textStart</item>
+        <item name="cornerRadius">1dp</item>
+    </style>
+
+    <style name="ProductInfoOptionAdjust">
+        <item name="android:layout_width">23dp</item>
+        <item name="android:layout_height">23dp</item>
+        <item name="android:layout_marginEnd">8dp</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:background">@drawable/shape_product_quantity</item>
+        <item name="android:foreground">?attr/selectableItemBackgroundBorderless</item>
+    </style>
+
+    <style name="ProductInfoQuantityAdjust" parent="Widget.App.Button.IconOnly">
+        <item name="android:layout_width">40dp</item>
+        <item name="android:layout_height">40dp</item>
     </style>
 </resources>

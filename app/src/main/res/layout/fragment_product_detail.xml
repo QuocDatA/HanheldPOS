@@ -28,25 +28,24 @@
 
             <LinearLayout style="@style/ProductInfoQuantityContainer">
 
-                <ImageButton
+                <com.diadiem.pos_components.PMaterialButton
                     android:id="@+id/btn_minus_quantity"
-                    style="@style/ProductInfoButtonAdjust"
-                    android:src="@drawable/ic_remove_primary" />
+                    style="@style/ProductInfoQuantityAdjust"
+                    app:icon="@drawable/ic_remove_primary" />
 
-                <TextView
+                <com.diadiem.pos_components.PTextView
                     android:id="@+id/txt_quantity"
                     style="@style/ProductInfoFood.FixedSize"
                     android:layout_width="30dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:gravity="center"
-                    android:text="1" />
+                    android:text="@{`1`,default=`1`}" />
 
-                <ImageButton
+                <com.diadiem.pos_components.PMaterialButton
                     android:id="@+id/btn_add_quantity"
-                    style="@style/ProductInfoButtonAdjust"
-                    android:contentDescription="@string/app_name"
-                    android:src="@drawable/ic_add_primay" />
+                    style="@style/ProductInfoQuantityAdjust"
+                    app:icon="@drawable/ic_add_primay" />
             </LinearLayout>
 
             <RelativeLayout
@@ -58,7 +57,7 @@
                 android:background="@drawable/shape_product_btn_cart_background"
                 android:gravity="center">
 
-                <TextView
+                <com.diadiem.pos_components.PTextView
                     android:id="@+id/add"
                     style="@style/ProductInfoFood.AddCart"
                     android:layout_centerVertical="true"
@@ -67,12 +66,12 @@
                     android:text="@string/AddCart"
                     android:textSize="15sp" />
 
-                <TextView
+                <com.diadiem.pos_components.PTextView
                     style="@style/ProductInfoFood.AddCart"
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="15dp"
                     android:layout_toEndOf="@id/add"
-                    android:text="₫300.000" />
+                    android:text="@{`₫300.000`,default=`₫300.000`}" />
             </RelativeLayout>
         </RelativeLayout>
 
@@ -170,155 +169,153 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/shape_product_info_background"
+                    android:orientation="vertical"
+                    android:paddingBottom="10dp">
 
+                    <LinearLayout style="@style/ProductInfoPart1">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/shape_product_info_background"
-                        android:orientation="vertical"
-                        android:paddingBottom="10dp">
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
 
-                        <LinearLayout style="@style/ProductInfoPart1">
+                            <com.diadiem.pos_components.PTextView
+                                android:id="@+id/test"
+                                style="@style/ProductInfoFood.Title"
+                                android:text="@{`Pho Dac Biet`,default=`Pho Dac Biet`}" />
 
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content">
+                            <com.diadiem.pos_components.PTextView
+                                style="@style/ProductInfoFood.Title"
+                                android:layout_alignParentEnd="true"
+                                android:text="@{`79.000₫`,default=`79.000₫`}" />
 
-                                <com.diadiem.pos_components.PTextView
-                                    style="@style/ProductInfoFood.Title"
-                                    android:text="Pho Dac Biet" />
+                        </RelativeLayout>
 
-                                <TextView
-                                    style="@style/ProductInfoFood.Title"
-                                    android:layout_alignParentEnd="true"
-                                    android:text="79.000₫" />
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
 
-                            </RelativeLayout>
+                            <com.diadiem.pos_components.PTextView
+                                style="@style/ProductInfoFood.Intro"
+                                android:layout_width="270dp"
+                                android:text="@string/FoodDescription"
+                                android:textColor="@color/grayText" />
 
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content">
+                            <com.diadiem.pos_components.PTextView
+                                style="@style/ProductInfoFood.Intro"
+                                android:layout_alignParentEnd="true"
+                                android:height="20dp"
+                                android:foreground="@drawable/bg_strike_through"
+                                android:text="@{`85.000`,default=`85.000`}"
+                                android:textColor="@color/grayLighter" />
 
-                                <com.diadiem.pos_components.PTextView
-                                    style="@style/ProductInfoFood.Intro"
-                                    android:layout_width="270dp"
-                                    android:text="@string/FoodDescription"
-                                    android:textColor="@color/grayText" />
-
-                                <com.diadiem.pos_components.PTextView
-                                    style="@style/ProductInfoFood.Intro"
-                                    android:layout_alignParentEnd="true"
-                                    android:height="20dp"
-                                    android:foreground="@drawable/bg_strike_through"
-                                    android:text="85.000"
-                                    android:textColor="@color/grayLighter" />
-
-                            </RelativeLayout>
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="15dp">
-
-                                <LinearLayout
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="2dp"
-                                    android:layout_marginRight="5dp"
-                                    android:background="@drawable/shape_background_p"
-                                    android:gravity="center">
-
-                                    <com.diadiem.pos_components.PTextView
-                                        style="@style/ProductInfoP"
-                                        android:text="P5" />
-                                </LinearLayout>
-
-                                <com.diadiem.pos_components.PTextView
-                                    style="@style/ProductInfoFood.Intro"
-                                    android:text="4 kg/bag"
-                                    android:textColor="@color/grayText" />
-
-                            </LinearLayout>
-                        </LinearLayout>
-
-                        <com.diadiem.pos_components.PTextView
-                            style="@style/ProductInfoOptionAsk"
-                            android:layout_marginTop="15dp"
-                            android:text="@string/SizeOption" />
-
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/recyclerSizeOption"
-                            style="@style/ProductRecyclerOptions"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginEnd="0dp"/>
-
-                        <View style="@style/OptionDivider" />
-
-                        <com.diadiem.pos_components.PTextView
-                            style="@style/ProductInfoOptionAsk"
-                            android:layout_marginTop="26dp"
-                            android:text="@string/RequiredOption" />
-
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/recyclerCookOption"
-                            style="@style/ProductRecyclerOptions"
-                            tools:itemCount="2" />
-
-                        <View style="@style/OptionDivider" />
-
-                        <com.diadiem.pos_components.PTextView
-                            style="@style/ProductInfoOptionAsk"
-                            android:layout_marginTop="26dp"
-                            android:text="@string/OptionalOption" />
-
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/recyclerSauceOption"
-                            style="@style/ProductRecyclerOptions"
-                            tools:itemCount="2" />
-
-                        <View style="@style/OptionDivider" />
-
-                        <com.diadiem.pos_components.PTextView
-                            style="@style/ProductInfoOptionAsk"
-                            android:layout_marginStart="20dp"
-                            android:layout_marginTop="26dp"
-                            android:text="@string/ExtraOption"
-                            android:textSize="15sp" />
-
-                        <include
-                            android:id="@+id/layout_extra_option"
-                            layout="@layout/view_extra_option" />
+                        </RelativeLayout>
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="26dp"
-                            android:orientation="horizontal">
+                            android:layout_marginTop="15dp">
 
-                            <ImageView
-                                android:layout_width="22dp"
-                                android:layout_height="22dp"
-                                android:layout_marginStart="20dp"
-                                android:layout_marginEnd="4dp"
-                                android:src="@drawable/ic_note" />
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:layout_marginEnd="5dp"
+                                android:background="@drawable/shape_background_p"
+                                android:gravity="center">
 
-                            <com.diadiem.pos_components.PTextView
-                                style="@style/ProductInfoFood.FixedSizeMediumSmall"
-                                android:layout_marginEnd="7dp"
-                                android:text="@string/SpecialInstructions" />
+                                <com.diadiem.pos_components.PTextView
+                                    style="@style/ProductInfoP"
+                                    android:text="@{`P5`,default=`P5`}"
+                                    tools:ignore="TooDeepLayout" />
+                            </LinearLayout>
 
                             <com.diadiem.pos_components.PTextView
                                 style="@style/ProductInfoFood.Intro"
-                                android:text="@string/optional"
-                                android:textColor="@color/grayBorder"
-                                android:textSize="13sp" />
-                        </LinearLayout>
+                                android:text="@{`4 kg/bag`,default=`4 kg/bag`}"
+                                android:textColor="@color/grayText" />
 
-                        <EditText style="@style/ProductInfoNote" />
+                        </LinearLayout>
                     </LinearLayout>
+
+                    <com.diadiem.pos_components.PTextView
+                        style="@style/ProductInfoOptionAsk"
+                        android:layout_marginTop="15dp"
+                        android:text="@string/SizeOption" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerSizeOption"
+                        style="@style/ProductRecyclerOptions"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="0dp" />
+
+                    <View style="@style/OptionDivider" />
+
+                    <com.diadiem.pos_components.PTextView
+                        style="@style/ProductInfoOptionAsk"
+                        android:layout_marginTop="26dp"
+                        android:text="@string/RequiredOption" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerCookOption"
+                        style="@style/ProductRecyclerOptions"
+                        tools:itemCount="2" />
+
+                    <View style="@style/OptionDivider" />
+
+                    <com.diadiem.pos_components.PTextView
+                        style="@style/ProductInfoOptionAsk"
+                        android:layout_marginTop="26dp"
+                        android:text="@string/OptionalOption" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerSauceOption"
+                        style="@style/ProductRecyclerOptions"
+                        tools:itemCount="2" />
+
+                    <View style="@style/OptionDivider" />
+
+                    <com.diadiem.pos_components.PTextView
+                        style="@style/ProductInfoOptionAsk"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="26dp"
+                        android:text="@string/ExtraOption"
+                        android:textSize="15sp" />
+
+                    <include
+                        android:id="@+id/layout_extra_option"
+                        layout="@layout/view_extra_option" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="26dp"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginEnd="4dp"
+                            android:contentDescription="@string/app_name"
+                            android:src="@drawable/ic_note" />
+
+                        <com.diadiem.pos_components.PTextView
+                            style="@style/ProductInfoFood.FixedSizeMediumSmall"
+                            android:layout_marginEnd="7dp"
+                            android:text="@string/SpecialInstructions" />
+
+                        <com.diadiem.pos_components.PTextView
+                            style="@style/ProductInfoFood.Intro"
+                            android:text="@string/optional"
+                            android:textColor="@color/grayBorder"
+                            android:textSize="13sp" />
+                    </LinearLayout>
+
+                    <com.diadiem.pos_components.PTextInputEditText
+                        style="@style/ProductInfoNote"
+                        tools:ignore="Autofill,LabelFor,TextFields" />
                 </LinearLayout>
             </androidx.core.widget.NestedScrollView>
         </androidx.coordinatorlayout.widget.CoordinatorLayout>

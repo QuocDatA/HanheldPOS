@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -26,19 +27,18 @@
 
             <ImageButton
                 android:id="@+id/btn_minus_quantity"
-                style="@style/ExtraRecylerAdjuster"
-                android:contentDescription="@string/app_name"
+                style="@style/ProductInfoOptionAdjust"
                 android:src="@drawable/ic_remove_adjust" />
 
             <ImageButton
                 android:id="@+id/btn_add_quantity"
-                style="@style/ExtraRecylerAdjuster"
+                style="@style/ProductInfoOptionAdjust"
                 android:layout_toEndOf="@id/btn_minus_quantity"
-                android:contentDescription="@string/app_name"
-                android:src="@drawable/ic_add_adjust" />
+                android:src="@drawable/ic_add_adjust"/>
 
-            <EditText
+            <com.diadiem.pos_components.PTextInputEditText
                 android:id="@+id/txt_extra_quantity"
+                style="@style/BaseTextInput"
                 android:layout_width="40dp"
                 android:layout_height="23dp"
                 android:layout_centerVertical="true"
@@ -50,6 +50,7 @@
                 android:gravity="center"
                 android:inputType="number"
                 android:text="@{item.quantity.toString(),default=`0`}"
+                android:focusableInTouchMode="true"
                 android:textSize="15sp"
                 tools:ignore="Autofill,LabelFor,TextFields" />
 
