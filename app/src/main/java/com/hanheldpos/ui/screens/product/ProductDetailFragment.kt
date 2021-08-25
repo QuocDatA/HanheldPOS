@@ -96,7 +96,7 @@ class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding, Product
             binding.recyclerSizeOption.adapter = it
             binding.recyclerSizeOption.addItemDecoration(
                 GridSpacingItemDecoration(
-                    4, 50,
+                    4, 55,
                     false
                 )
             )
