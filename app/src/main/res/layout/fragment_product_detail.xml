@@ -202,9 +202,9 @@
 
                             <com.diadiem.pos_components.PTextView
                                 style="@style/ProductInfoFood.Intro"
+                                bindStrike="@{true}"
                                 android:layout_alignParentEnd="true"
                                 android:height="@dimen/_15sdp"
-                                bindStrike="@{true}"
                                 android:text="@{`85.000`,default=`85.000`}"
                                 app:useTextColor="color6" />
 
@@ -218,14 +218,13 @@
 
                                 <com.diadiem.pos_components.PTextView
                                     style="@style/ProductInfoP"
-
                                     android:text="@{`P5`,default=`P5`}"
                                     tools:ignore="TooDeepLayout" />
 
                             <com.diadiem.pos_components.PTextView
                                 style="@style/ProductInfoFood.Intro"
                                 android:text="@{`4 kg/bag`,default=`4 kg/bag`}"
-                                android:textColor="@color/grayText" />
+                                />
 
                         </LinearLayout>
                     </LinearLayout>

@@ -66,17 +66,17 @@
 
             <com.diadiem.pos_components.PTextView
                 style="@style/ProductInfoFood"
-                app:useTextHeader="h2"
                 android:layout_centerVertical="true"
                 android:layout_toEndOf="@+id/view_option_image"
-                android:text="@{item.name,default=`@string/ExtraName`}" />
+                android:text="@{item.name,default=`@string/ExtraName`}"
+                app:useTextHeader="h3" />
 
             <com.diadiem.pos_components.PTextView
                 style="@style/ProductInfoFood"
-                app:useTextHeader="h2"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:text="@{item.price,default=`@string/ExtraPrice`}" />
+                android:text="@{item.price,default=`@string/ExtraPrice`}"
+                app:useTextHeader="h3" />
         </RelativeLayout>
     </LinearLayout>
 </layout>

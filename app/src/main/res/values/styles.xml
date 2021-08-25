@@ -26,16 +26,17 @@
     </style>
 
     <style name="ProductInfoFood.Title">
-        <item name="useTextHeader">h1</item>
+        <item name="useTextHeader">h2</item>
         <item name="useFontStyle">bold</item>
     </style>
 
     <style name="ProductInfoFood.Intro">
-        <item name="useTextHeader">h3</item>
+        <item name="useTextHeader">h4</item>
+        <item name="useTextColor">color6</item>
     </style>
 
     <style name="ProductInfoFood.FixedSize">
-        <item name="useTextHeader">h2</item>
+        <item name="useTextHeader">h3</item>
     </style>
 
     <style name="ProductInfoFood.FixedSizeMedium">
@@ -85,6 +86,8 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_marginRight">@dimen/_12sdp</item>
         <item name="android:layout_marginLeft">@dimen/_13sdp</item>
+        <item name="useTextHeader">h3</item>
+        <item name="textAllCaps">true</item>
     </style>
 
     <style name="ProductInfoSelection" parent="ProductInfoFood.FixedSize">
