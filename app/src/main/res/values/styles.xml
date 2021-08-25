@@ -1,102 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <style name="ProductInfoClose">
         <item name="android:layout_width">@dimen/_17sdp</item>
         <item name="android:layout_height">@dimen/_17sdp</item>
-        <item name="android:scaleType">centerInside</item>
+        <item name="android:scaleType">centerCrop</item>
         <item name="android:padding">0dp</item>
         <item name="android:background">@drawable/ic_remove_info</item>
     </style>
 
-    <style name="ProductInfoPart">
+    <style name="ProductInfoName">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_margin">@dimen/_15sdp</item>
+        <item name="android:layout_below">@id/appBarProductDetail</item>
+        <item name="android:layout_marginStart">@dimen/_12sdp</item>
+        <item name="android:layout_marginTop">@dimen/_16sdp</item>
+        <item name="android:layout_marginEnd">@dimen/_12sdp</item>
         <item name="android:orientation">vertical</item>
     </style>
 
     <style name="ProductInfoFood">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">@color/nearlyBlack</item>
+        <item name="useTextColor">color4</item>
     </style>
 
+    <style name="ProductInfoFood.Title">
+        <item name="useTextHeader">h1</item>
+        <item name="useFontStyle">bold</item>
+    </style>
 
     <style name="ProductInfoFood.Intro">
-        <item name="android:textSize">15sp</item>
-        <item name="android:fontFamily">@font/sfpro_display_regular</item>
+        <item name="useTextHeader">h3</item>
     </style>
 
     <style name="ProductInfoFood.FixedSize">
-        <item name="android:textSize">17sp</item>
-        <item name="android:fontFamily">@font/sfpro_display_regular</item>
+        <item name="useTextHeader">h2</item>
     </style>
 
     <style name="ProductInfoFood.FixedSizeMedium">
-        <item name="android:textSize">17sp</item>
-        <item name="android:fontFamily">@font/sfpro_display_semibold</item>
+        <item name="useTextHeader">h2</item>
+        <item name="useFontStyle">bold</item>
     </style>
 
     <style name="ProductInfoFood.FixedSizeMediumSmall">
-        <item name="android:textSize">15sp</item>
-        <item name="android:fontFamily">@font/sfpro_display_semibold</item>
+        <item name="useTextHeader">h3</item>
+        <item name="useFontStyle">bold</item>
     </style>
 
     <style name="ProductInfoFood.AddCart">
-        <item name="android:textSize">17sp</item>
-        <item name="android:fontFamily">@font/sfpro_display_semibold</item>
-        <item name="android:textColor">@android:color/white</item>
+        <item name="useTextColor">color2</item>
+        <item name="useFontStyle">bold</item>
+        <item name="useTextHeader">h3</item>
     </style>
 
     <style name="ProductInfoP">
-        <item name="android:fontFamily">@font/sfpro_display_regular</item>
-        <item name="android:layout_width">35dp</item>
-        <item name="android:layout_height">20dp</item>
-        <item name="android:textSize">13sp</item>
+        <item name="android:layout_width">@dimen/_22sdp</item>
+        <item name="android:layout_height">@dimen/_13sdp</item>
+        <item name="useTextColor">color2</item>
+        <item name="useTextHeader">h4</item>
         <item name="android:gravity">center</item>
-        <item name="android:paddingBottom">2dp</item>
-        <item name="android:textColor">#FFFFFF</item>
     </style>
 
     <style name="ProductRecyclerOptions">
-        <item name="android:layout_marginStart">8dp</item>
-        <item name="android:layout_marginEnd">20dp</item>
+        <item name="android:layout_marginStart">@dimen/_4sdp</item>
+        <item name="android:layout_marginEnd">@dimen/_12sdp</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginTop">6dp</item>
-    </style>
-
-    <style name="ProductInfoButtonAdjust">
-        <item name="android:layout_width">40dp</item>
-        <item name="android:layout_height">40dp</item>
-        <item name="android:background">@drawable/shape_product_quantity</item>
+        <item name="android:layout_marginTop">@dimen/_5sdp</item>
     </style>
 
     <style name="ProductInfoQuantityContainer">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:gravity">center</item>
-        <item name="android:layout_marginStart">20dp</item>
-    </style>
-
-    <style name="ProductInfoBag" parent="ProductInfoFood.FixedSize">
-        <item name="android:textColor">@color/grayBorder</item>
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_weight">1</item>
-        <item name="android:gravity">center</item>
+        <item name="android:layout_marginStart">@dimen/_12sdp</item>
     </style>
 
     <style name="ProductInfoOptionAsk" parent="ProductInfoFood.FixedSizeMedium">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_marginRight">20dp</item>
-        <item name="android:layout_marginLeft">24dp</item>
+        <item name="android:layout_marginRight">@dimen/_12sdp</item>
+        <item name="android:layout_marginLeft">@dimen/_13sdp</item>
     </style>
 
     <style name="ProductInfoSelection" parent="ProductInfoFood.FixedSize">
         <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">42dp</item>
-        <item name="android:paddingLeft">22dp</item>
-        <item name="android:paddingRight">22dp</item>
+        <item name="android:layout_height">@dimen/_25sdp</item>
+        <item name="android:paddingLeft">@dimen/_12sdp</item>
+        <item name="android:paddingRight">@dimen/_12sdp</item>
         <item name="android:button">@null</item>
         <item name="android:gravity">center</item>
         <item name="android:background">@drawable/selector_product_option</item>
@@ -111,42 +102,60 @@
     </style>
 
     <style name="ProductInfoSelectionWithCheckBox" parent="ProductInfoFood.FixedSize">
-        <item name="android:layout_width">23dp</item>
-        <item name="android:layout_height">23dp</item>
+        <item name="android:layout_width">@dimen/_14sdp</item>
+        <item name="android:layout_height">@dimen/_14sdp</item>
         <item name="android:button">@null</item>
         <item name="android:layout_centerVertical">true</item>
-        <item name="android:textColor">@color/grayBorder</item>
+        <item name="useTextColor">color6</item>
         <item name="android:background">@drawable/selector_extra_option</item>
     </style>
 
-    <style name="ProductInfoNote">
+    <style name="ProductInfoNote" parent="BaseTextInput">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">59dp</item>
+        <item name="android:layout_height">@dimen/_33sdp</item>
         <item name="android:background">@drawable/shape_product_quantity</item>
-        <item name="android:layout_marginEnd">20dp</item>
-        <item name="android:layout_marginStart">20dp</item>
-        <item name="android:paddingLeft">12dp</item>
-        <item name="android:paddingTop">14dp</item>
-        <item name="android:paddingBottom">14dp</item>
-        <item name="android:textSize">16sp</item>
-        <item name="android:fontFamily">@font/sfpro_display_regular</item>
-        <item name="android:textColor">@color/grayLighter</item>
+        <item name="android:layout_marginEnd">@dimen/_12sdp</item>
+        <item name="android:layout_marginStart">@dimen/_12sdp</item>
+        <item name="android:paddingLeft">@dimen/_7sdp</item>
+        <item name="android:paddingTop">@dimen/_10sdp</item>
+        <item name="android:paddingBottom">@dimen/_11sdp</item>
+        <item name="useTextHeader">h3</item>
+        <item name="useTextColor">color11</item>
         <item name="android:hint">@string/NoteHint</item>
-        <item name="android:layout_marginTop">12dp</item>
-    </style>
-
-    <style name="ExtraRecylerAdjuster">
-        <item name="android:layout_width">23dp</item>
-        <item name="android:layout_height">23dp</item>
-        <item name="android:background">@drawable/shape_product_quantity</item>
-        <item name="android:layout_centerVertical">true</item>
-        <item name="android:layout_marginEnd">8dp</item>
+        <item name="android:layout_marginTop">@dimen/_7sdp</item>
+        <item name="android:focusableInTouchMode">true</item>
+        <item name="android:inputType">textMultiLine</item>
     </style>
 
     <style name="OptionDivider">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">0.6dp</item>
-        <item name="android:layout_marginTop">26dp</item>
-        <item name="android:background">@color/grayDivider</item>
+        <item name="android:layout_marginTop">@dimen/_16sdp</item>
+        <item name="android:background">@color/color_9</item>
+    </style>
+
+    <style name="Widget.App.Button.IconOnly" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="iconPadding">0dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:insetRight">0dp</item>
+        <item name="android:insetLeft">0dp</item>
+        <item name="android:padding">0dp</item>
+        <item name="iconGravity">textStart</item>
+        <item name="cornerRadius">1dp</item>
+    </style>
+
+    <style name="ProductInfoOptionAdjust">
+        <item name="android:layout_width">@dimen/_14sdp</item>
+        <item name="android:layout_height">@dimen/_14sdp</item>
+        <item name="android:layout_marginEnd">@dimen/_6sdp</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:background">@drawable/shape_product_quantity</item>
+        <item name="android:foreground">?attr/selectableItemBackgroundBorderless</item>
+    </style>
+
+    <style name="ProductInfoQuantityAdjust" parent="Widget.App.Button.IconOnly">
+        <item name="android:layout_width">@dimen/_25sdp</item>
+        <item name="android:layout_height">@dimen/_25sdp</item>
     </style>
 </resources>
