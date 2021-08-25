@@ -22,7 +22,7 @@
     <style name="ProductInfoFood">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="useTextColor">color4</item>
+        <item name="useTextColor">color5</item>
     </style>
 
     <style name="ProductInfoFood.Title">
@@ -55,11 +55,15 @@
     </style>
 
     <style name="ProductInfoP">
-        <item name="android:layout_width">@dimen/_22sdp</item>
-        <item name="android:layout_height">@dimen/_13sdp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
         <item name="useTextColor">color2</item>
         <item name="useTextHeader">h4</item>
         <item name="android:gravity">center</item>
+        <item name="android:paddingLeft">@dimen/_6sdp</item>
+        <item name="android:paddingRight">@dimen/_6sdp</item>
+        <item name="android:layout_marginEnd">@dimen/_4sdp</item>
+        <item name="android:background">@drawable/shape_background_p</item>
     </style>
 
     <style name="ProductRecyclerOptions">
@@ -100,6 +104,8 @@
         <item name="android:layout_height">match_parent</item>
         <item name="android:button">@null</item>
         <item name="android:gravity">center</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:padding">@dimen/_12sdp</item>
         <item name="android:background">@drawable/selector_option_size</item>
     </style>
 
