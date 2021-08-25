@@ -57,8 +57,8 @@
                 android:gravity="center">
 
                 <com.diadiem.pos_components.PTextView
-                    style="@style/ProductInfoFood.AddCart"
                     android:id="@+id/add"
+                    style="@style/ProductInfoFood.AddCart"
                     android:layout_centerVertical="true"
                     android:layout_marginStart="@dimen/_10sdp"
                     android:layout_marginEnd="@dimen/_11sdp"
@@ -149,9 +149,9 @@
                                 android:maxLines="1"
                                 android:text="@{`Pho Dac Biet`,default=`Name`}"
                                 android:textAlignment="center"
-                                app:useTextColor="color2"
                                 app:useFontStyle="bold"
-                                app:useTextHeader="h2" />
+                                app:useTextColor="color2"
+                                app:useTextHeader="h1" />
                         </FrameLayout>
 
                     </androidx.appcompat.widget.Toolbar>
@@ -215,19 +215,12 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_8sdp">
 
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/_1sdp"
-                                android:layout_marginEnd="@dimen/_4sdp"
-                                android:background="@drawable/shape_background_p"
-                                android:gravity="center">
 
                                 <com.diadiem.pos_components.PTextView
                                     style="@style/ProductInfoP"
+
                                     android:text="@{`P5`,default=`P5`}"
                                     tools:ignore="TooDeepLayout" />
-                            </LinearLayout>
 
                             <com.diadiem.pos_components.PTextView
                                 style="@style/ProductInfoFood.Intro"
@@ -245,8 +238,8 @@
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recyclerSizeOption"
                         style="@style/ProductRecyclerOptions"
-                        android:layout_marginTop="@dimen/_15sdp"
-                        android:layout_marginStart="@dimen/_12sdp"/>
+                        android:layout_marginStart="@dimen/_12sdp"
+                        android:layout_marginTop="@dimen/_15sdp" />
 
                     <View style="@style/OptionDivider" />
 
