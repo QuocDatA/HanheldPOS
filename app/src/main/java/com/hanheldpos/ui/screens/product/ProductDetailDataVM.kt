@@ -5,10 +5,16 @@ import com.hanheldpos.data.api.pojo.product.*
 import com.hanheldpos.data.api.pojo.product.ProductDetailResp
 import com.hanheldpos.data.api.pojo.product.ProductOption
 import com.hanheldpos.data.api.pojo.product.ProductOptionExtra
+import com.hanheldpos.model.product.ProductCompleteModel
 import com.hanheldpos.ui.base.viewmodel.BaseViewModel
 
 class ProductDetailDataVM : BaseViewModel() {
-    private var productDetailResp: ProductDetailResp? = null;
+    //
+    var productDetailResp = MutableLiveData<ProductDetailResp>();
+    var productCompleteLD = MutableLiveData<ProductCompleteModel>();
+    var numberQuantityLD = MutableLiveData<Int>(1);
+    var quantityCanChoose = MutableLiveData<Int>(1);
+
     val sizeOptionsList = MutableLiveData<MutableList<ProductOption?>>(mutableListOf());
     val cookOptionsList = MutableLiveData<MutableList<ProductOption?>>(mutableListOf());
     val sauceOptionsList = MutableLiveData<MutableList<ProductOption?>>(mutableListOf());
@@ -21,7 +27,7 @@ class ProductDetailDataVM : BaseViewModel() {
 
     // Menu
     private fun initMenus() {
-        productDetailResp = ProductDetailResp(
+        productDetailResp.value = ProductDetailResp(
             model = mutableListOf(
                 ModelItem(
                     listSizeOptions = mutableListOf(
@@ -84,10 +90,10 @@ class ProductDetailDataVM : BaseViewModel() {
     }
 
     private fun initOptions() {
-        sizeOptionsList.value = productDetailResp?.getSizeOptionsList()?.toMutableList();
-        cookOptionsList.value = productDetailResp?.getCookOptionsList()?.toMutableList();
-        sauceOptionsList.value = productDetailResp?.getSauceOptionsList()?.toMutableList();
-        extraOptionsList.value = productDetailResp?.getExtraOptionsList()?.toMutableList();
+        sizeOptionsList.value = productDetailResp.value?.getSizeOptionsList()?.toMutableList();
+        cookOptionsList.value = productDetailResp.value?.getCookOptionsList()?.toMutableList();
+        sauceOptionsList.value = productDetailResp.value?.getSauceOptionsList()?.toMutableList();
+        extraOptionsList.value = productDetailResp.value?.getExtraOptionsList()?.toMutableList();
     }
 
     fun getOptionList(str: String): List<ProductOption> {

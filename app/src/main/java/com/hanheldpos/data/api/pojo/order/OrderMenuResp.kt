@@ -118,10 +118,14 @@ data class ProductItem(
 
     @field:SerializedName("Combo")
     val combo: String? = null
-) : Parcelable {
+) : Parcelable,Cloneable {
 
     @IgnoredOnParcel
     var uiType : ProductModeViewType? = ProductModeViewType.Product;
+
+    override fun clone(): Any {
+        return copy()
+    }
 }
 
 @Parcelize
