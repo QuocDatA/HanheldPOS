@@ -102,6 +102,8 @@
         <item name="android:layout_height">match_parent</item>
         <item name="android:button">@null</item>
         <item name="android:gravity">center</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:padding">@dimen/_12sdp</item>
         <item name="android:background">@drawable/selector_option_size</item>
     </style>
 
