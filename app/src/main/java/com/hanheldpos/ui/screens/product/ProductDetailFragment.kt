@@ -1,6 +1,7 @@
 package com.hanheldpos.ui.screens.product
 
 import android.R.attr.spacing
+import android.os.Bundle
 import android.view.ViewTreeObserver
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
@@ -12,6 +13,7 @@ import com.hanheldpos.data.api.pojo.product.ProductOption
 import com.hanheldpos.data.api.pojo.product.ProductOptionExtra
 import com.hanheldpos.data.api.pojo.product.SliderData
 import com.hanheldpos.databinding.FragmentProductDetailBinding
+import com.hanheldpos.model.product.ProductCompleteModel
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.base.widget.AppBarStateChangeListener
@@ -22,7 +24,9 @@ import com.hanheldpos.ui.screens.product.adapter.SliderAdapter
 import com.smarteist.autoimageslider.SliderView
 
 
-class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding, ProductDetailVM>(),
+class ProductDetailFragment(
+    private val listener: ProductDetailListener? = null
+) : BaseFragment<FragmentProductDetailBinding, ProductDetailVM>(),
     ProductDetailUV {
 
     //View Model
@@ -146,23 +150,30 @@ class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding, Product
     }
 
     override fun initData() {
+        arguments?.let {
+            val a: ProductCompleteModel? = it.getParcelable(ARG_PRODUCT_DETAIL_FRAGMENT)
+            val quantityCanChoose: Int = it.getInt(ARG_PRODUCT_DETAIL_QUANTITY)
+            dataVM.quantityCanChoose.value = quantityCanChoose;
+            dataVM.productCompleteLD.value = a;
+            dataVM.productDetailResp.value = a?.productDetail;
 
+        }
     }
 
     override fun initAction() {
         //Quantity Setup
-        viewModel.amount.observe(this, {
+        dataVM.numberQuantityLD.observe(this, {
             binding.txtQuantity.text = it.toString()
         })
         binding.btnMinusQuantity.setOnClickListener {
-            viewModel.amount.value?.let { a ->
+            dataVM.numberQuantityLD.value?.let { a ->
                 if (a > 0)
-                    viewModel.amount.value = a - 1
+                    dataVM.numberQuantityLD.value = a - 1
             }
         }
         binding.btnAddQuantity.setOnClickListener {
-            viewModel.amount.value?.let { a ->
-                viewModel.amount.value = a + 1
+            dataVM.numberQuantityLD.value?.let { a ->
+                dataVM.numberQuantityLD.value = a + 1
             }
         }
 
@@ -197,5 +208,28 @@ class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding, Product
 
     override fun goBack() {
         navigator.goOneBack()
+    }
+
+    interface ProductDetailListener {
+        fun onAddCart(productComplete : ProductCompleteModel)
+    }
+
+    companion object {
+        private const val ARG_PRODUCT_DETAIL_FRAGMENT = "ARG_PRODUCT_DETAIL_FRAGMENT"
+        private const val ARG_PRODUCT_DETAIL_QUANTITY = "ARG_PRODUCT_DETAIL_QUANTITY"
+        fun instance(
+            item: ProductCompleteModel,
+            quantityCanChoose: Int = -1,
+            listener: ProductDetailListener? = null
+        ): ProductDetailFragment {
+            return ProductDetailFragment(
+                listener = listener
+            ).apply {
+                arguments = Bundle().apply {
+                    putParcelable(ARG_PRODUCT_DETAIL_FRAGMENT, item)
+                    putInt(ARG_PRODUCT_DETAIL_QUANTITY, quantityCanChoose)
+                }
+            }
+        }
     }
 }

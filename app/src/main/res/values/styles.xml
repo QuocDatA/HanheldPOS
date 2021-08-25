@@ -85,7 +85,9 @@
 
     <style name="ProductInfoSelection" parent="ProductInfoFood.FixedSize">
         <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">@dimen/_25sdp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingTop">@dimen/_7sdp</item>
+        <item name="android:paddingBottom">@dimen/_7sdp</item>
         <item name="android:paddingLeft">@dimen/_12sdp</item>
         <item name="android:paddingRight">@dimen/_12sdp</item>
         <item name="android:button">@null</item>
@@ -112,13 +114,14 @@
 
     <style name="ProductInfoNote" parent="BaseTextInput">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">@dimen/_33sdp</item>
+        <item name="android:layout_height">wrap_content</item>
         <item name="android:background">@drawable/shape_product_quantity</item>
         <item name="android:layout_marginEnd">@dimen/_12sdp</item>
         <item name="android:layout_marginStart">@dimen/_12sdp</item>
         <item name="android:paddingLeft">@dimen/_7sdp</item>
         <item name="android:paddingTop">@dimen/_10sdp</item>
-        <item name="android:paddingBottom">@dimen/_11sdp</item>
+        <item name="android:paddingBottom">@dimen/_10sdp</item>
+        <item name="android:paddingRight">@dimen/_7sdp</item>
         <item name="useTextHeader">h3</item>
         <item name="useTextColor">color11</item>
         <item name="android:hint">@string/NoteHint</item>

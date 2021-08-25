@@ -198,15 +198,15 @@
                                 style="@style/ProductInfoFood.Intro"
                                 android:layout_width="@dimen/_203sdp"
                                 android:text="@string/FoodDescription"
-                                android:textColor="@color/grayText" />
+                                app:useTextColor="color6" />
 
                             <com.diadiem.pos_components.PTextView
                                 style="@style/ProductInfoFood.Intro"
                                 android:layout_alignParentEnd="true"
                                 android:height="@dimen/_15sdp"
-                                android:foreground="@drawable/bg_strike_through"
+                                bindStrike="@{true}"
                                 android:text="@{`85.000`,default=`85.000`}"
-                                app:useTextColor="color11" />
+                                app:useTextColor="color6" />
 
                         </RelativeLayout>
 

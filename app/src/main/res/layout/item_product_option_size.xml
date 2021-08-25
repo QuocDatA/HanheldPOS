@@ -11,11 +11,14 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_37sdp">
+        android:layout_height="wrap_content"
+        >
 
             <com.diadiem.pos_components.PRadioButton
+                android:padding="@dimen/_12sdp"
                 android:id="@+id/radio_btn_select"
                 style="@style/ProductInfoSizeSelection"
+                android:textStyle="bold"
                 android:checked="@{item.checked,default=false}"
                 android:text="@{item.name,default=`S`}" />
         </LinearLayout>
