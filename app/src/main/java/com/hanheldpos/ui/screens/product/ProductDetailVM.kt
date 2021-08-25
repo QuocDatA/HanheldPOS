@@ -11,9 +11,6 @@ class ProductDetailVM : BaseUiViewModel<ProductDetailUV>() {
 
     //Placeholder value
     var url = "https://i.imgur.com/LhdRp3a.jpg"
-    var amount = MutableLiveData<Int>().apply {
-        value=1
-    }
 
 
     fun initLifeCycle(owner: LifecycleOwner) {

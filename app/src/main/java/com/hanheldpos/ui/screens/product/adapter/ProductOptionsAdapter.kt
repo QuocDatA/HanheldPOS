@@ -50,7 +50,7 @@ class ProductOptionsAdapter(
                 bindingHolder.radioBtnSelect.setTextColor(
                     ContextCompat.getColor(
                         context,
-                        R.color.nearlyBlack
+                        R.color.color_4
                     )
                 )
             }

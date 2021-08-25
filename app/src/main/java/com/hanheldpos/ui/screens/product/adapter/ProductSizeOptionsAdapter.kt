@@ -20,12 +20,12 @@ class ProductSizeOptionsAdapter(
     private val selectedItem: SelectedItem = SelectedItem(0)
 
     override fun submitList(list: MutableList<ProductOption>?) {
-        selectedItem.value = 0;
-        super.submitList(list);
+        selectedItem.value = 0
+        super.submitList(list)
     }
 
     override fun getItemViewType(position: Int): Int {
-        return R.layout.item_product_option_size;
+        return R.layout.item_product_option_size
     }
 
     override fun onBindViewHolder(holder: BaseBindingViewHolder<ProductOption>, position: Int) {
@@ -41,13 +41,16 @@ class ProductSizeOptionsAdapter(
             }
             if (selectedItem.value == position) {
                 isChecked = true
-                bindingHolder.radioBtnSelect.setTextColor(Color.WHITE)
+                bindingHolder.radioBtnSelect.setTextColor(ContextCompat.getColor(
+                    context,
+                    R.color.color_2
+                ))
             } else {
                 isChecked = false
                 bindingHolder.radioBtnSelect.setTextColor(
                     ContextCompat.getColor(
                         context,
-                        R.color.grayBorder
+                        R.color.color_6
                     )
                 )
             }
@@ -56,11 +59,11 @@ class ProductSizeOptionsAdapter(
 
     private class DiffCallBack : DiffUtil.ItemCallback<ProductOption>() {
         override fun areItemsTheSame(oldItem: ProductOption, newItem: ProductOption): Boolean {
-            return oldItem == newItem;
+            return oldItem == newItem
         }
 
         override fun areContentsTheSame(oldItem: ProductOption, newItem: ProductOption): Boolean {
-            return oldItem == newItem;
+            return oldItem == newItem
         }
 
     }

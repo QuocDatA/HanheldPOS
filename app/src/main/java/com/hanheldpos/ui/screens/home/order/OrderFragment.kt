@@ -15,6 +15,7 @@ import com.hanheldpos.databinding.DialogCategoryBinding
 import com.hanheldpos.databinding.FragmentOrderBinding
 import com.hanheldpos.model.home.order.category.CategoryModeViewType
 import com.hanheldpos.model.home.order.product.ProductModeViewType
+import com.hanheldpos.model.product.ProductCompleteModel
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.home.order.adapter.OrderCategoryAdapter
@@ -127,7 +128,12 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
                     if (SystemClock.elapsedRealtime() - viewModel.mLastTimeClick > 100) {
                         when (item.uiType) {
                             ProductModeViewType.Product -> {
-                                navigator.goToWithCustomAnimation(ProductDetailFragment())
+                                navigator.goToWithCustomAnimation(ProductDetailFragment.instance(
+                                    item = ProductCompleteModel(
+                                        productItem = item,
+                                    ),
+                                    quantityCanChoose = 5
+                                ))
                             }
                             ProductModeViewType.PrevButton -> {
                                 GlobalScope.launch(Dispatchers.IO) {
