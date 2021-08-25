@@ -18,12 +18,12 @@
 
         <View
             style="@style/OptionDivider"
-            android:layout_marginTop="16dp" />
+            android:layout_marginTop="@dimen/_12sdp" />
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp">
+            android:layout_marginTop="@dimen/_12sdp">
 
             <ImageButton
                 android:id="@+id/btn_minus_quantity"
@@ -39,11 +39,11 @@
             <com.diadiem.pos_components.PTextInputEditText
                 android:id="@+id/txt_extra_quantity"
                 style="@style/BaseTextInput"
-                android:layout_width="40dp"
-                android:layout_height="23dp"
+                android:layout_width="@dimen/_25sdp"
+                android:layout_height="@dimen/_14sdp"
                 android:layout_centerVertical="true"
-                android:layout_marginStart="3dp"
-                android:layout_marginEnd="13dp"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:layout_marginEnd="@dimen/_7sdp"
                 android:layout_toEndOf="@id/btn_add_quantity"
                 android:background="@drawable/shape_product_quantity_bolder"
                 android:checked="true"
@@ -51,27 +51,29 @@
                 android:inputType="number"
                 android:text="@{item.quantity.toString(),default=`0`}"
                 android:focusableInTouchMode="true"
-                android:textSize="15sp"
+                app:useTextHeader="h3"
                 tools:ignore="Autofill,LabelFor,TextFields" />
 
             <ImageView
                 android:id="@+id/view_option_image"
-                android:layout_width="26dp"
-                android:layout_height="26dp"
+                android:layout_width="@dimen/_17sdp"
+                android:layout_height="@dimen/_17sdp"
                 android:layout_centerVertical="true"
-                android:layout_marginEnd="8dp"
+                android:layout_marginEnd="@dimen/_4sdp"
                 android:layout_toEndOf="@id/txt_extra_quantity"
                 android:contentDescription="@string/app_name"
                 android:src="@drawable/pizza" />
 
             <com.diadiem.pos_components.PTextView
-                style="@style/ProductInfoFood.FixedSize"
+                style="@style/ProductInfoFood"
+                app:useTextHeader="h2"
                 android:layout_centerVertical="true"
                 android:layout_toEndOf="@+id/view_option_image"
                 android:text="@{item.name,default=`@string/ExtraName`}" />
 
             <com.diadiem.pos_components.PTextView
-                style="@style/ProductInfoFood.FixedSize"
+                style="@style/ProductInfoFood"
+                app:useTextHeader="h2"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:text="@{item.price,default=`@string/ExtraPrice`}" />

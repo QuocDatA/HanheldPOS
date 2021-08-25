@@ -41,13 +41,16 @@ class ProductSizeOptionsAdapter(
             }
             if (selectedItem.value == position) {
                 isChecked = true
-                bindingHolder.radioBtnSelect.setTextColor(Color.WHITE)
+                bindingHolder.radioBtnSelect.setTextColor(ContextCompat.getColor(
+                    context,
+                    R.color.color_2
+                ))
             } else {
                 isChecked = false
                 bindingHolder.radioBtnSelect.setTextColor(
                     ContextCompat.getColor(
                         context,
-                        R.color.grayBorder
+                        R.color.color_6
                     )
                 )
             }

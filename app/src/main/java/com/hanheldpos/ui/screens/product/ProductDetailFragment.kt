@@ -1,5 +1,6 @@
 package com.hanheldpos.ui.screens.product
 
+import android.R.attr.spacing
 import android.view.ViewTreeObserver
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
@@ -93,6 +94,12 @@ class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding, Product
         ).also {
             binding.recyclerSizeOption.layoutManager=GridLayoutManager(context,4)
             binding.recyclerSizeOption.adapter = it
+            binding.recyclerSizeOption.addItemDecoration(
+                GridSpacingItemDecoration(
+                    4, 55,
+                    false
+                )
+            )
         }
 
         // cook option adapter vs listener

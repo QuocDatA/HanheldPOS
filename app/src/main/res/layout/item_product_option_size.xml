@@ -11,10 +11,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="59dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="20dp">
+        android:layout_height="@dimen/_37sdp">
 
             <com.diadiem.pos_components.PRadioButton
                 android:id="@+id/radio_btn_select"
