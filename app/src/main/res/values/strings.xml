@@ -37,4 +37,6 @@
     <string name="ExtraName">Extra Name</string>
     <string name="ExtraPrice">Extra Price</string>
     <string name="AddCart">ADD</string>
+    <string name="delete">Delete</string>
+    <string name="cart">Cart</string>
 </resources>

@@ -4,7 +4,6 @@ import android.app.AlertDialog
 import android.os.SystemClock
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewTreeObserver
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
@@ -13,11 +12,12 @@ import com.hanheldpos.data.api.pojo.order.CategoryItem
 import com.hanheldpos.data.api.pojo.order.ProductItem
 import com.hanheldpos.databinding.DialogCategoryBinding
 import com.hanheldpos.databinding.FragmentOrderBinding
-import com.hanheldpos.model.home.order.category.CategoryModeViewType
+import com.hanheldpos.extension.notifyValueChange
 import com.hanheldpos.model.home.order.product.ProductModeViewType
 import com.hanheldpos.model.product.ProductCompleteModel
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
+import com.hanheldpos.ui.screens.cart.CartFragment
 import com.hanheldpos.ui.screens.home.order.adapter.OrderCategoryAdapter
 import com.hanheldpos.ui.screens.home.order.adapter.OrderCategoryAdapterHelper
 import com.hanheldpos.ui.screens.home.order.adapter.OrderProductAdapter
@@ -128,11 +128,18 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
                     if (SystemClock.elapsedRealtime() - viewModel.mLastTimeClick > 100) {
                         when (item.uiType) {
                             ProductModeViewType.Product -> {
-                                navigator.goToWithCustomAnimation(ProductDetailFragment.instance(
+                                navigator.goToWithCustomAnimation(ProductDetailFragment.getInstance(
                                     item = ProductCompleteModel(
-                                        productItem = item,
+                                        productItem = item.clone(),
                                     ),
-                                    quantityCanChoose = 5
+                                    quantityCanChoose = 5,
+                                    listener = object : ProductDetailFragment.ProductDetailListener {
+                                        override fun onAddCart(productComplete: ProductCompleteModel) {
+                                            OrderHelper.cart.add(productComplete);
+                                            dataVM.addProductCompleteToCart(productComplete);
+                                        }
+
+                                    }
                                 ))
                             }
                             ProductModeViewType.PrevButton -> {
@@ -201,6 +208,18 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
         dataVM.categoryList.value?.let { categoryAdapHelper.submitList(it) }
         dialogCategory.show();
         dialogCategory.window?.setBackgroundDrawableResource(android.R.color.transparent)
+    }
+
+    override fun showCart() {
+        navigator.goToWithCustomAnimation(CartFragment(
+            listener = object :CartFragment.CartListener {
+                override fun onDeleteCart() {
+                    OrderHelper.cart.clear();
+                    dataVM.deleteAllProductCart();
+                }
+
+            }
+        ));
     }
 
 }

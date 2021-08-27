@@ -7,8 +7,8 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class ProductCompleteModel(
-    var productItem: ProductItem? = null,
-    var productDetail : ProductDetailResp? = null,
-    var quantity : Int? = 0,
+    var productItem: ProductItem,
+    var productDetail: ProductDetailResp? = null,
+    var quantity: Int = 1,
 ) : Parcelable,Cloneable {
 }

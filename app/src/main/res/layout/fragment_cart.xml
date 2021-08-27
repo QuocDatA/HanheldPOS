@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.hanheldpos.ui.screens.cart.CartVM" />
+    </data>
+
+    <LinearLayout
+        style="@style/RootLayout">
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_42sdp"
+            >
+            <ImageButton
+                style="@style/MaterialButton.Icon"
+                android:layout_height="match_parent"
+                android:layout_gravity="center|start"
+                android:src="@drawable/ic_baseline_arrow_back_ios_24"
+                android:backgroundTint="@color/textPrimary"
+                android:onClick="@{v -> viewModel.backPress()}"
+                android:adjustViewBounds="true"
+                android:scaleType="centerInside"
+                tools:ignore="ContentDescription" />
+            <com.diadiem.pos_components.PTextView
+                style="@style/CartTitle"
+                android:text="@string/cart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+            <com.diadiem.pos_components.PTextView
+                android:focusable="true"
+                android:clickable="true"
+                android:onClick="@{v->viewModel.deleteCart()}"
+                style="@style/CartDelete"
+                android:text="@string/delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+        </FrameLayout>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_6sdp"
+            android:background="@color/color_9"
+            />
+
+    </LinearLayout>
+</layout>

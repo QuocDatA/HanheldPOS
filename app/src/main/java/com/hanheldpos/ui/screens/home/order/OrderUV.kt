@@ -5,4 +5,5 @@ import com.hanheldpos.ui.base.BaseUserView
 
 interface OrderUV : BaseUserView {
     fun showCategoryDialog()
+    fun showCart()
 }

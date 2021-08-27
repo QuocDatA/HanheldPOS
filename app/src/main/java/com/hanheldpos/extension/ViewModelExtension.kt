@@ -1,10 +1,8 @@
-package com.hanheldpos.utils.screens
+package com.hanheldpos.extension
 
 import androidx.lifecycle.MutableLiveData
 
+
 fun <T> MutableLiveData<T>.notifyValueChange() {
     value = value
-}
-
-class ViewExtend {
 }

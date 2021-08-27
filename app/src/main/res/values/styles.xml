@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    // Order
+    <style name="OrderTotalPrice">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="useTextColor">color5</item>
+        <item name="useFontStyle">bold</item>
+        <item name="useTextHeader">h2</item>
+        <item name="android:layout_marginEnd">@dimen/_11sdp</item>
+    </style>
 
+
+    // Product Detail
     <style name="ProductInfoClose">
         <item name="android:layout_width">@dimen/_17sdp</item>
         <item name="android:layout_height">@dimen/_17sdp</item>
@@ -169,5 +180,21 @@
     <style name="ProductInfoQuantityAdjust" parent="Widget.App.Button.IconOnly">
         <item name="android:layout_width">@dimen/_25sdp</item>
         <item name="android:layout_height">@dimen/_25sdp</item>
+    </style>
+
+    // Cart
+    <style name="CartTitle">
+        <item name="useTextHeader">h1</item>
+        <item name="useFontStyle">bold</item>
+        <item name="useTextColor">color6</item>
+        <item name="android:layout_gravity">center</item>
+    </style>
+
+    <style name="CartDelete">
+        <item name="useTextHeader">h2</item>
+        <item name="useFontStyle">normal</item>
+        <item name="android:textColor">@color/error</item>
+        <item name="android:layout_gravity">center|end</item>
+        <item name="android:layout_marginEnd">@dimen/_10sdp</item>
     </style>
 </resources>

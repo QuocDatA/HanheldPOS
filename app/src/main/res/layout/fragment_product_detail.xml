@@ -6,10 +6,6 @@
     <data>
 
         <variable
-            name="dataVM"
-            type="com.hanheldpos.ui.screens.product.ProductDetailDataVM" />
-
-        <variable
             name="viewModel"
             type="com.hanheldpos.ui.screens.product.ProductDetailVM" />
     </data>
@@ -48,6 +44,10 @@
             </LinearLayout>
 
             <RelativeLayout
+                android:focusable="true"
+                android:clickable="true"
+                android:onClick="@{v->viewModel.addProductToCart()}"
+                android:id="@+id/addCartBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/_33sdp"
                 android:layout_alignParentEnd="true"
@@ -181,12 +181,13 @@
                             <com.diadiem.pos_components.PTextView
                                 android:id="@+id/test"
                                 style="@style/ProductInfoFood.Title"
-                                android:text="@{`Pho Dac Biet`,default=`Pho Dac Biet`}" />
+                                android:text="@{viewModel.productCompleteLD.productItem.name,default=`Pho Dac Biet`}" />
 
                             <com.diadiem.pos_components.PTextView
                                 style="@style/ProductInfoFood.Title"
                                 android:layout_alignParentEnd="true"
-                                android:text="@{`79.000₫`,default=`79.000₫`}" />
+                                priceView="@{viewModel.productCompleteLD.productItem.price}"
+                                tools:text="@{`79.000₫`,default=`79.000₫`}" />
 
                         </RelativeLayout>
 
@@ -197,7 +198,7 @@
                             <com.diadiem.pos_components.PTextView
                                 style="@style/ProductInfoFood.Intro"
                                 android:layout_width="@dimen/_203sdp"
-                                android:text="@string/FoodDescription"
+                                android:text="@{viewModel.productCompleteLD.productItem.description,default=`@string/FoodDescription`}"
                                 app:useTextColor="color6" />
 
                             <com.diadiem.pos_components.PTextView
@@ -223,7 +224,7 @@
 
                             <com.diadiem.pos_components.PTextView
                                 style="@style/ProductInfoFood.Intro"
-                                android:text="@{`4 kg/bag`,default=`4 kg/bag`}"
+                                android:text="@{viewModel.productCompleteLD.productItem.name3,default=`4 kg/bag`}"
                                 />
 
                         </LinearLayout>
@@ -235,6 +236,7 @@
                         android:text="@string/SizeOption" />
 
                     <androidx.recyclerview.widget.RecyclerView
+                        android:overScrollMode="never"
                         android:id="@+id/recyclerSizeOption"
                         style="@style/ProductRecyclerOptions"
                         android:layout_marginStart="@dimen/_12sdp"
@@ -248,6 +250,7 @@
                         android:text="@string/RequiredOption" />
 
                     <androidx.recyclerview.widget.RecyclerView
+                        android:overScrollMode="never"
                         android:id="@+id/recyclerCookOption"
                         style="@style/ProductRecyclerOptions"
                         tools:itemCount="2" />
@@ -260,6 +263,7 @@
                         android:text="@string/OptionalOption" />
 
                     <androidx.recyclerview.widget.RecyclerView
+                        android:overScrollMode="never"
                         android:id="@+id/recyclerSauceOption"
                         style="@style/ProductRecyclerOptions"
                         tools:itemCount="2" />

@@ -123,7 +123,7 @@ data class ProductItem(
     @IgnoredOnParcel
     var uiType : ProductModeViewType? = ProductModeViewType.Product;
 
-    override fun clone(): Any {
+    public override fun clone(): ProductItem {
         return copy()
     }
 }

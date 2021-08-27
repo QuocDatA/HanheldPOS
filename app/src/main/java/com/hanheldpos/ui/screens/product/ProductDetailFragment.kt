@@ -29,9 +29,6 @@ class ProductDetailFragment(
 ) : BaseFragment<FragmentProductDetailBinding, ProductDetailVM>(),
     ProductDetailUV {
 
-    //View Model
-    private val dataVM by activityViewModels<ProductDetailDataVM>()
-
     // Adapter
     private lateinit var sizeOptionsAdapter: ProductSizeOptionsAdapter
     private lateinit var cookOptionsAdapter: ProductOptionsAdapter
@@ -50,7 +47,6 @@ class ProductDetailFragment(
             initLifeCycle(this@ProductDetailFragment)
             binding.viewModel = this
         }
-        binding.dataVM = this.dataVM
     }
 
     override fun initView() {
@@ -85,7 +81,7 @@ class ProductDetailFragment(
             sliderView.scrollTimeInSec = 3
             sliderView.isAutoCycle = true
 
-            sliderView.startAutoCycle()
+            /*sliderView.startAutoCycle()*/
         }
         // cook option adapter vs listener
         sizeOptionsAdapter = ProductSizeOptionsAdapter(
@@ -147,53 +143,59 @@ class ProductDetailFragment(
         ).also {
             binding.layoutExtraOption.recyclerExtraOption.adapter = it
         }
+
+        // Litener Add
+        binding.addCartBtn.setOnClickListener {
+
+            viewModel.productCompleteLD.value?.let { it1 -> listener?.onAddCart(it1) };
+        }
     }
 
     override fun initData() {
         arguments?.let {
             val a: ProductCompleteModel? = it.getParcelable(ARG_PRODUCT_DETAIL_FRAGMENT)
             val quantityCanChoose: Int = it.getInt(ARG_PRODUCT_DETAIL_QUANTITY)
-            dataVM.quantityCanChoose.value = quantityCanChoose;
-            dataVM.productCompleteLD.value = a;
-            dataVM.productDetailResp.value = a?.productDetail;
+            viewModel.quantityCanChoose.value = quantityCanChoose;
+            viewModel.productCompleteLD.value = a;
+            viewModel.productDetailResp.value = a?.productDetail;
 
         }
     }
 
     override fun initAction() {
         //Quantity Setup
-        dataVM.numberQuantityLD.observe(this, {
+        viewModel.numberQuantityLD.observe(this, {
             binding.txtQuantity.text = it.toString()
         })
         binding.btnMinusQuantity.setOnClickListener {
-            dataVM.numberQuantityLD.value?.let { a ->
+            viewModel.numberQuantityLD.value?.let { a ->
                 if (a > 0)
-                    dataVM.numberQuantityLD.value = a - 1
+                    viewModel.numberQuantityLD.value = a - 1
             }
         }
         binding.btnAddQuantity.setOnClickListener {
-            dataVM.numberQuantityLD.value?.let { a ->
-                dataVM.numberQuantityLD.value = a + 1
+            viewModel.numberQuantityLD.value?.let { a ->
+                viewModel.numberQuantityLD.value = a + 1
             }
         }
 
-        dataVM.sizeOptionsList.observe(this, {
-            sizeOptionsAdapter.submitList(dataVM.getOptionList("Size").toMutableList())
+        viewModel.sizeOptionsList.observe(this, {
+            sizeOptionsAdapter.submitList(viewModel.getOptionList("Size").toMutableList())
             sizeOptionsAdapter.notifyDataSetChanged()
         })
 
-        dataVM.cookOptionsList.observe(this, {
-            cookOptionsAdapter.submitList(dataVM.getOptionList("Cook").toMutableList())
+        viewModel.cookOptionsList.observe(this, {
+            cookOptionsAdapter.submitList(viewModel.getOptionList("Cook").toMutableList())
             cookOptionsAdapter.notifyDataSetChanged()
         })
 
-        dataVM.sauceOptionsList.observe(this, {
-            sauceOptionsAdapter.submitList(dataVM.getOptionList("Sauce").toMutableList())
+        viewModel.sauceOptionsList.observe(this, {
+            sauceOptionsAdapter.submitList(viewModel.getOptionList("Sauce").toMutableList())
             sauceOptionsAdapter.notifyDataSetChanged()
         })
 
-        dataVM.extraOptionsList.observe(this, {
-            extraOptionsAdapter.submitList(dataVM.getExtraOptionList().toMutableList())
+        viewModel.extraOptionsList.observe(this, {
+            extraOptionsAdapter.submitList(viewModel.getExtraOptionList().toMutableList())
             extraOptionsAdapter.notifyDataSetChanged()
         })
 
@@ -201,13 +203,22 @@ class ProductDetailFragment(
             ViewTreeObserver.OnGlobalLayoutListener {
             override fun onGlobalLayout() {
                 binding.root.viewTreeObserver.removeOnGlobalLayoutListener(this)
-                dataVM.initData()
+                viewModel.initData()
             }
         })
     }
 
     override fun goBack() {
         navigator.goOneBack()
+    }
+
+    override fun onAddCart() {
+        viewModel.productCompleteLD.value?.apply {
+            quantity = viewModel.numberQuantityLD.value!!;
+            productDetail = viewModel.productDetailResp.value?.clone();
+            listener?.onAddCart(this);
+        }
+        goBack();
     }
 
     interface ProductDetailListener {
@@ -217,7 +228,7 @@ class ProductDetailFragment(
     companion object {
         private const val ARG_PRODUCT_DETAIL_FRAGMENT = "ARG_PRODUCT_DETAIL_FRAGMENT"
         private const val ARG_PRODUCT_DETAIL_QUANTITY = "ARG_PRODUCT_DETAIL_QUANTITY"
-        fun instance(
+        fun getInstance(
             item: ProductCompleteModel,
             quantityCanChoose: Int = -1,
             listener: ProductDetailListener? = null

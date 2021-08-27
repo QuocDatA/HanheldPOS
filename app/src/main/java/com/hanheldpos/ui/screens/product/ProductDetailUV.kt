@@ -4,4 +4,5 @@ import com.hanheldpos.ui.base.BaseUserView
 
 interface ProductDetailUV : BaseUserView {
     fun goBack();
+    fun onAddCart();
 }

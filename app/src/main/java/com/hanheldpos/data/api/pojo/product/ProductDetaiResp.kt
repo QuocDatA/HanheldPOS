@@ -19,7 +19,12 @@ data class ProductDetailResp(
 
     @field:SerializedName("DidError")
     val didError: Boolean? = null
-) : Parcelable
+) : Parcelable , Cloneable{
+
+    public override fun clone(): ProductDetailResp {
+        return copy()
+    }
+}
 
 @Parcelize
 data class ProductOption(
@@ -58,4 +63,6 @@ data class ModelItem(
 
     @field:SerializedName("ExtraOption")
     val listExtraOptions: List<ProductOptionExtra?>? = null,
-) : Parcelable
+) : Parcelable {
+
+}

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <import type="com.hanheldpos.ui.screens.home.order.OrderHelper"/>
         <variable
             name="dataVM"
             type="com.hanheldpos.ui.screens.home.order.OrderDataVM" />
@@ -104,9 +104,21 @@
             android:layout_alignParentBottom="true"
             android:gravity="center_vertical">
 
+            <com.diadiem.pos_components.PTextView
+                style="@style/OrderTotalPrice"
+                android:layout_toStartOf="@id/cartBtn"
+                android:layout_centerVertical="true"
+                priceView="@{dataVM.productTotalPriceLD}"
+                />
+
             <FrameLayout
+                android:id="@+id/cartBtn"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="@{v->viewModel.showCart()}"
                 android:layout_width="@dimen/_50sdp"
                 android:layout_height="@dimen/_42sdp"
+                android:layout_centerVertical="true"
                 android:layout_alignParentEnd="true">
 
                 <ImageView
@@ -122,8 +134,10 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="@dimen/_2sdp"
+                    android:text="@{String.valueOf(dataVM.productQuantityInCartLD)}"
                     app:useTextColor="color0"
-                    app:useTextHeader="h5"
+                    app:useTextHeader="h4"
+                    app:useFontStyle="bold"
                     tools:text="10"
                     tools:textColor="@color/color_0" />
             </FrameLayout>

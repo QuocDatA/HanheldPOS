@@ -1,17 +1,35 @@
 package com.hanheldpos.ui.screens.home.order
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import com.hanheldpos.data.api.pojo.order.*
 import com.hanheldpos.data.api.pojo.order.ModelItem
 import com.hanheldpos.data.api.pojo.order.getCategoryList
 import com.hanheldpos.data.api.pojo.order.getProductWithCategoryGuid
+import com.hanheldpos.extension.notifyValueChange
 import com.hanheldpos.model.home.order.product.ProductModeViewType
+import com.hanheldpos.model.product.ProductCompleteModel
 import com.hanheldpos.ui.base.viewmodel.BaseViewModel
 
 class OrderDataVM : BaseViewModel() {
     private var orderMenuResp: OrderMenuResp? = null;
     val categoryList = MutableLiveData<MutableList<CategoryItem?>>(mutableListOf());
     val categorySelected = MutableLiveData<CategoryItem>();
+    val productInCartLD = MutableLiveData<MutableList<ProductCompleteModel>?>(mutableListOf())
+    val productQuantityInCartLD = Transformations.map(productInCartLD) {
+        return@map productInCartLD.value?.sumBy {
+            it.quantity
+        } ?: 0
+    }
+    val productTotalPriceLD = Transformations.map(productInCartLD) {
+        return@map productInCartLD.value?.sumByDouble {
+
+            it.productItem.price?.times(it.quantity)!!
+
+
+        }?:0.0
+    }
 
     fun initData() {
         initMenus();
@@ -54,7 +72,7 @@ class OrderDataVM : BaseViewModel() {
                 orderNo = 0,
                 visible = 1,
                 color = "#3166FF"
-            ),CategoryItem(
+            ), CategoryItem(
                 id = "Category/430214309",
                 categoryId = 37,
                 title = "COMBO PHO",
@@ -81,7 +99,7 @@ class OrderDataVM : BaseViewModel() {
                 orderNo = 0,
                 visible = 1,
                 color = "#A61CD7"
-            ),  CategoryItem(
+            ), CategoryItem(
                 id = "Category/430214315",
                 categoryId = 43,
                 title = "MENU SANG",
@@ -136,7 +154,7 @@ class OrderDataVM : BaseViewModel() {
                 orderNo = 0,
                 visible = 1,
                 color = "#2989A8"
-            ),  CategoryItem(
+            ), CategoryItem(
                 id = "Category/430214312",
                 categoryId = 40,
                 title = "EXTRA",
@@ -235,5 +253,14 @@ class OrderDataVM : BaseViewModel() {
         return orderMenuResp?.getProductWithCategoryGuid(categoryGuid = categoryItem.id);
     }
 
+    // Cart
+    fun addProductCompleteToCart(item : ProductCompleteModel){
+        productInCartLD.value?.add(item);
+        productInCartLD.notifyValueChange();
+    }
+    fun deleteAllProductCart(){
+        productInCartLD.value?.clear();
+        productInCartLD.notifyValueChange();
+    }
 
 }

@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.hanheldpos.R
+import com.hanheldpos.extension.notifyValueChange
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
-import com.hanheldpos.utils.screens.notifyValueChange
 import okhttp3.internal.notify
 import java.util.*
 
