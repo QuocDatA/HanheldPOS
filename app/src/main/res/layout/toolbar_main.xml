@@ -69,7 +69,8 @@
                 android:layout_height="match_parent"
                 android:layout_alignParentEnd="true"
                 android:scaleType="centerInside"
-
+                android:src="@drawable/ic_search"
+                android:padding="@dimen/_13sdp"
                 tools:ignore="ContentDescription" />
 
 

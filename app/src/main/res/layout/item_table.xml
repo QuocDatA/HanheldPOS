@@ -26,20 +26,23 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/_100sdp"
             >
+
             <RelativeLayout
                 visibleObject="@{item.uiType != TableModeViewType.Empty}"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="#EEEEEE">
+
                 <com.diadiem.pos_components.PTextView
                     visibleObject="@{item.uiType == TableModeViewType.Table}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:text="@{item.tableName,default=`Table`}"
-                    app:useFontStyle="bold"
+                    app:useFontStyle="normal"
                     app:useTextColor="color3"
-                    app:useTextHeader="h2" />
+                    app:useTextHeader="h4" />
+
                 <ImageView
                     visibleObject="@{item.uiType == TableModeViewType.PrevButton }"
                     android:layout_width="@dimen/_14sdp"

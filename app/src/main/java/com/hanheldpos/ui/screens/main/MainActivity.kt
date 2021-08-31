@@ -17,6 +17,8 @@ class MainActivity : BaseFragmentBindingActivity<ActivityMainBinding, MainVM>(),
 
     override fun layoutRes() = R.layout.activity_main
 
+
+
     override fun viewModelClass(): Class<MainVM> {
         return MainVM::class.java
     }

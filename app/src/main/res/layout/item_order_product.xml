@@ -49,8 +49,8 @@
                         android:background="@drawable/bg_food_text"
                         android:paddingHorizontal="@dimen/_6sdp"
                         android:text="@{`P1`}"
-                        app:useTextColor="color3"
-                        app:useTextHeader="h4" />
+                        app:useTextColor="color2"
+                        app:useTextHeader="h6" />
 
                     <com.diadiem.pos_components.PTextView
                         android:layout_width="wrap_content"
@@ -61,7 +61,7 @@
                         android:text="@{item.name,default=`Product Name`}"
                         app:useFontStyle="bold"
                         app:useTextColor="color2"
-                        app:useTextHeader="h4" />
+                        app:useTextHeader="h6" />
 
                     <com.diadiem.pos_components.PTextView
                         priceView="@{item.price}"
@@ -72,7 +72,7 @@
                         android:padding="@dimen/_5sdp"
                         app:useFontStyle="normal"
                         app:useTextColor="color2"
-                        app:useTextHeader="h5" />
+                        app:useTextHeader="h7" />
                 </RelativeLayout>
 
                 <ImageView

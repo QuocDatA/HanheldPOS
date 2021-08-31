@@ -20,7 +20,7 @@
                 style="@style/MaterialButton.Icon"
                 android:layout_height="match_parent"
                 android:layout_gravity="center|start"
-                android:src="@drawable/ic_baseline_arrow_back_ios_24"
+                android:src="@drawable/ic_baseline_arrow_back_ios_13"
                 android:backgroundTint="@color/textPrimary"
                 android:onClick="@{() -> viewModel.backPress()}"
                 android:adjustViewBounds="true"
@@ -32,8 +32,9 @@
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:text="@string/enter_passcode"
-                android:textSize="@dimen/_13ssp"
-                android:textStyle="bold" />
+                app:useTextHeader="h4"
+                app:useFontStyle="bold"
+                app:useTextColor="color4"/>
         </FrameLayout>
 
         <include layout="@layout/divider_ver" />

@@ -27,8 +27,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:text="@{item.text}"
-                    android:textColor="@color/textPrimary"
-                    android:textSize="@dimen/_17ssp" />
+                    app:pbtn_useTextColor="color4"
+                    app:pbtn_useFontStyle="normal"
+                    app:pbtn_useTextHeader="h2"/>
 
                 <ImageView
                     visibleObject="@{item.resource != null}"

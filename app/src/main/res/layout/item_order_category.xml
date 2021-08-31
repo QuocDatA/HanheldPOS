@@ -28,7 +28,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_margin="@dimen/_8sdp"
+                android:layout_margin="@dimen/_9sdp"
                 android:ellipsize="end"
                 android:maxEms="12"
                 android:maxLines="1"
@@ -40,7 +40,7 @@
                 android:textAllCaps="true"
                 app:useFontStyle="bold"
                 app:useTextColor="color2"
-                app:useTextHeader="h3" />
+                app:useTextHeader="h5" />
         </FrameLayout>
 
         <LinearLayout
@@ -65,7 +65,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_margin="@dimen/_8sdp"
+                    android:layout_margin="@dimen/_9sdp"
                     android:ellipsize="end"
                     android:maxEms="12"
                     android:maxLines="1"
@@ -75,10 +75,10 @@
                     android:textAllCaps="true"
                     app:useFontStyle="bold"
                     app:useTextColor="color2"
-                    app:useTextHeader="h3" />
+                    app:useTextHeader="h5" />
                 <ImageView
-                    android:layout_width="@dimen/_14sdp"
-                    android:layout_height="@dimen/_14sdp"
+                    android:layout_width="@dimen/_12sdp"
+                    android:layout_height="@dimen/_12sdp"
                     android:scaleType="centerInside"
                     android:layout_gravity="center"
                     android:src="@{ item.uiType.pos == 2 ? @drawable/ic_direction_up : item.uiType.pos == 3 ? @drawable/ic_direction_up : @drawable/ic_direction_up_disable }" />
@@ -104,7 +104,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_margin="@dimen/_8sdp"
+                    android:layout_margin="@dimen/_9sdp"
                     android:ellipsize="end"
                     android:maxEms="12"
                     android:maxLines="1"
@@ -114,10 +114,10 @@
                     android:textAllCaps="true"
                     app:useFontStyle="bold"
                     app:useTextColor="color2"
-                    app:useTextHeader="h3" />
+                    app:useTextHeader="h5" />
                 <ImageView
-                    android:layout_width="@dimen/_14sdp"
-                    android:layout_height="@dimen/_14sdp"
+                    android:layout_width="@dimen/_12sdp"
+                    android:layout_height="@dimen/_12sdp"
                     android:scaleType="centerInside"
                     android:layout_gravity="center"
                     android:src="@{ item.uiType.pos == 1 ? @drawable/ic_direction_down : item.uiType.pos == 3 ? @drawable/ic_direction_down : @drawable/ic_direction_down_disable }" />
@@ -140,7 +140,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_margin="@dimen/_8sdp"
+                android:layout_margin="@dimen/_9sdp"
                 android:ellipsize="end"
                 android:maxEms="12"
                 android:maxLines="1"
@@ -152,7 +152,8 @@
                 android:textAllCaps="true"
                 app:useFontStyle="bold"
                 app:useTextColor="color2"
-                app:useTextHeader="h3" />
+                app:useTextHeader="h5"
+                />
 
 
         </com.google.android.material.card.MaterialCardView>

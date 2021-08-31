@@ -32,7 +32,7 @@ class TableDataVM : BaseViewModel() {
                 id = "FloorTable/" + (6824 + it).toString(),
                 floorGuid = "Floor/90",
                 tableTypeId = it,
-                tableName = it.toString(),
+                tableName = "B$it",
                 userGuid = "Customer/438227813"
             )
         }
@@ -60,5 +60,7 @@ class TableDataVM : BaseViewModel() {
         return tableResp?.getTableWithFloorGuid(floorGuid = floorItem.id);
     }
 
+    fun onTableClick(item : FloorTableItem){
 
+    }
 }

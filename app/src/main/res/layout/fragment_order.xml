@@ -84,7 +84,7 @@
                         android:text="Menu"
                         android:textAllCaps="true"
                         app:useTextColor="color2"
-                        app:useTextHeader="h4" />
+                        app:useTextHeader="h6" />
 
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
@@ -106,10 +106,9 @@
 
             <com.diadiem.pos_components.PTextView
                 style="@style/OrderTotalPrice"
-                android:layout_toStartOf="@id/cartBtn"
-                android:layout_centerVertical="true"
                 priceView="@{dataVM.productTotalPriceLD}"
-                />
+                android:layout_centerVertical="true"
+                android:layout_toStartOf="@id/cartBtn" />
 
             <FrameLayout
                 android:id="@+id/cartBtn"
@@ -136,7 +135,7 @@
                     android:layout_marginTop="@dimen/_2sdp"
                     android:text="@{String.valueOf(dataVM.productQuantityInCartLD)}"
                     app:useTextColor="color0"
-                    app:useTextHeader="h4"
+                    app:useTextHeader="h6"
                     app:useFontStyle="bold"
                     tools:text="10"
                     tools:textColor="@color/color_0" />

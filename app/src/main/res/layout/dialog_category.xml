@@ -17,51 +17,48 @@
         android:gravity="center"
         android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/closeBtn"
-            android:layout_width="@dimen/_21sdp"
-            android:layout_height="@dimen/_21sdp"
-            android:layout_gravity="end"
-            android:layout_marginEnd="@dimen/_15sdp"
-            android:layout_marginBottom="@dimen/_6sdp"
-            android:src="@drawable/ic_close" />
-
-
-        <androidx.cardview.widget.CardView
-            android:layout_marginHorizontal="@dimen/_15sdp"
-            android:id="@+id/layoutMain"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_5sdp">
 
-            android:elevation="0dp"
-            app:cardCornerRadius="@dimen/_3sdp"
-            app:cardElevation="0dp">
-
-            <LinearLayout
+            <androidx.cardview.widget.CardView
+                android:id="@+id/layoutMain"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/color_2"
-                android:orientation="vertical"
-                android:padding="@dimen/_6sdp">
+                android:elevation="0dp"
+                android:layout_margin="@dimen/_10sdp"
+                app:cardCornerRadius="@dimen/_3sdp"
+                app:cardElevation="0dp">
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/categoryList"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:nestedScrollingEnabled="false"
+                    android:background="@color/color_2"
                     android:orientation="vertical"
-                    android:overScrollMode="never"
-                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                    app:spanCount="2"
-                    tools:itemCount="17"
-                    tools:listitem="@layout/item_order_category" />
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
+                    android:padding="@dimen/_6sdp">
 
-        <androidx.legacy.widget.Space
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_15sdp"
-            />
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/categoryList"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false"
+                        android:orientation="vertical"
+                        android:overScrollMode="never"
+                        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                        app:spanCount="2"
+                        tools:itemCount="17"
+                        tools:listitem="@layout/item_order_category" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+            <ImageView
+                android:layout_alignParentEnd="true"
+                android:id="@+id/closeBtn"
+                android:layout_width="@dimen/_21sdp"
+                android:layout_height="@dimen/_21sdp"
+                android:layout_gravity="end"
+                android:src="@drawable/ic_close_dialog" />
+        </RelativeLayout>
+
     </LinearLayout>
 </layout>

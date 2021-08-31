@@ -9,7 +9,7 @@ import java.text.DecimalFormat
 fun setPriceView(view: TextView?, price : Double?) {
     if(view == null || price == null) return;
     val formatter = DecimalFormat("###,###,###");
-    val rs = formatter.format(price?.toInt()) + "đ";
+    val rs = formatter.format(price?.toInt());
     view.text = rs;
 }
 

@@ -18,6 +18,7 @@ import com.hanheldpos.model.product.ProductCompleteModel
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.cart.CartFragment
+import com.hanheldpos.ui.screens.home.ScreenViewModel
 import com.hanheldpos.ui.screens.home.order.adapter.OrderCategoryAdapter
 import com.hanheldpos.ui.screens.home.order.adapter.OrderCategoryAdapterHelper
 import com.hanheldpos.ui.screens.home.order.adapter.OrderProductAdapter
@@ -30,6 +31,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
 
     // ViewModel
     private val dataVM by activityViewModels<OrderDataVM>()
+    private val screenViewModel by activityViewModels<ScreenViewModel>()
 
 
     // Adapter
@@ -128,19 +130,22 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
                     if (SystemClock.elapsedRealtime() - viewModel.mLastTimeClick > 100) {
                         when (item.uiType) {
                             ProductModeViewType.Product -> {
-                                navigator.goToWithCustomAnimation(ProductDetailFragment.getInstance(
+                                /*navigator.goToWithCustomAnimation(
+                                    ProductDetailFragment.getInstance(
                                     item = ProductCompleteModel(
                                         productItem = item.clone(),
                                     ),
                                     quantityCanChoose = 5,
                                     listener = object : ProductDetailFragment.ProductDetailListener {
                                         override fun onAddCart(productComplete: ProductCompleteModel) {
-                                            OrderHelper.cart.add(productComplete);
-                                            dataVM.addProductCompleteToCart(productComplete);
+                                            if (SystemClock.elapsedRealtime() - viewModel.mLastTimeClick > 500){
+                                                viewModel.mLastTimeClick = SystemClock.elapsedRealtime()
+                                                OrderHelper.cart.add(productComplete);
+                                                dataVM.addProductCompleteToCart(productComplete);
+                                            }
                                         }
-
                                     }
-                                ))
+                                ))*/
                             }
                             ProductModeViewType.PrevButton -> {
                                 GlobalScope.launch(Dispatchers.IO) {
@@ -211,15 +216,14 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
     }
 
     override fun showCart() {
-        navigator.goToWithCustomAnimation(CartFragment(
+        /*navigator.goToWithCustomAnimation(CartFragment(
             listener = object :CartFragment.CartListener {
                 override fun onDeleteCart() {
                     OrderHelper.cart.clear();
                     dataVM.deleteAllProductCart();
                 }
-
             }
-        ));
+        ));*/
     }
 
 }

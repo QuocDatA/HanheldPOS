@@ -4,14 +4,17 @@ import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentHomeBinding
 import com.hanheldpos.ui.base.pager.FragmentPagerAdapter
+import com.hanheldpos.ui.screens.home.order.OrderDataVM
 import com.hanheldpos.ui.screens.main.BaseMainFragment
 import com.hanheldpos.ui.screens.home.order.OrderFragment
 import com.hanheldpos.ui.screens.home.table.TableFragment
 import com.hanheldpos.ui.screens.main.adapter.TabSpinnerAdapter
 import com.hanheldpos.ui.screens.home.order.PriceItem
+import com.hanheldpos.ui.screens.home.table.TableDataVM
 import com.hanheldpos.ui.screens.main.adapter.SubSpinnerAdapter
 
 
@@ -21,9 +24,13 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
 
 
     enum class HomePage(val pos: Int, val textId: Int) {
-        Menu(2, R.string.menu),
-        /*Table(0, R.string.table);*/
+        Table(0, R.string.table),
+        Menu(1, R.string.menu);
     }
+
+    private val tableDataViewModel by activityViewModels<TableDataVM>()
+    private val orderDataViewModel by activityViewModels<OrderDataVM>()
+    private val screenViewModel by activityViewModels<ScreenViewModel>()
 
     // Adapter
     private lateinit var paperAdapter: FragmentPagerAdapter
@@ -46,11 +53,12 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
 
     override fun initView() {
         // init fragment page
+        fragmentMap[HomePage.Table] = TableFragment();
         fragmentMap[HomePage.Menu] = OrderFragment();
-        /*fragmentMap[HomePage.Table] = TableFragment();*/
 
 
-        paperAdapter = FragmentPagerAdapter(requireActivity().supportFragmentManager,lifecycle);
+
+        paperAdapter = FragmentPagerAdapter(requireActivity().supportFragmentManager, lifecycle);
 
         binding.homeViewPager.apply {
             adapter = paperAdapter;
@@ -69,6 +77,10 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
     }
 
     override fun initAction() {
+
+        screenViewModel.screenEvent.observe(this,{
+            binding.toolbarLayout.spinnerMain.setSelection(it.screen.pos);
+        })
 
         binding.toolbarLayout.spinnerMain.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
@@ -100,16 +112,16 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
 
     private fun switchToPage(page: HomePage?) {
         when (page) {
-           /* HomePage.Table -> {
+            HomePage.Table -> {
                 Log.d("home", "switchPage: page_table");
-                binding.homeViewPager.currentItem = 1;
+                binding.homeViewPager.currentItem = 0;
                 subSpinnerAdapter.submitList(mutableListOf(PriceItem(name = "Group By")))
 
-            }*/
+            }
 
             HomePage.Menu -> {
-                Log.d("home","switchPage: page_order")
-                binding.homeViewPager.currentItem = 0;
+                Log.d("home", "switchPage: page_order")
+                binding.homeViewPager.currentItem = 1;
                 subSpinnerAdapter.submitList(mutableListOf(PriceItem(name = "Price List")));
             }
 

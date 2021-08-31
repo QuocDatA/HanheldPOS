@@ -42,26 +42,29 @@
                 style="@style/Base.TextAppearance"
                 android:layout_marginTop="@dimen/_27sdp"
                 android:text="@string/diadiem_point_of_sale"
-                android:textColor="@color/onPrimary"
-                android:textSize="@dimen/_22ssp"
-                android:textStyle="bold" />
+                app:useTextColor="color2"
+                app:useFontStyle="bold"
+                app:useTextHeader="h1" />
 
             <com.diadiem.pos_components.PTextView
                 style="@style/Base.TextAppearance"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:text="@string/run_and_grow_your_business"
-                android:textColor="@color/onPrimary"
-                android:textSize="@dimen/_14ssp"/>
+                app:useTextColor="color2"
+                app:useTextHeader="h2"
+                app:useFontStyle="normal"/>
 
             <com.diadiem.pos_components.PMaterialButton
                 style="@style/Base.MaterialButton"
                 android:background="@drawable/bg_primary_button"
                 android:layout_marginStart="@dimen/_14sdp"
-                android:layout_marginTop="@dimen/_58sdp"
+                android:layout_marginTop="@dimen/_43sdp"
                 android:layout_marginEnd="@dimen/_14sdp"
                 android:onClick="@{v -> viewModel.openDeviceCode()}"
-                android:padding="@dimen/_13sdp"
-                android:textSize="@dimen/_15ssp"
+                android:padding="@dimen/_12sdp"
+                app:pbtn_useTextColor="color2"
+                app:pbtn_useFontStyle="bold"
+                app:pbtn_useTextHeader="h4"
                 android:text="@string/get_started" />
         </LinearLayout>
 

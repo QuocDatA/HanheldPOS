@@ -5,10 +5,7 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Paint.FontMetricsInt
-import android.text.Editable
-import android.text.Spanned
-import android.text.TextUtils
-import android.text.TextWatcher
+import android.text.*
 import android.text.style.ReplacementSpan
 import android.view.View
 import androidx.databinding.BindingAdapter
@@ -73,8 +70,11 @@ fun setGroupSize(inputEditText: TextInputEditText?, groupSize: Int) {
         override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
         override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
         override fun afterTextChanged(editable: Editable) {
-            val special = Pattern.compile("[^A-Z0-9]", Pattern.CASE_INSENSITIVE)
-            if (special.matcher(editable.toString()).find()) {
+            val regex = "[^A-Z0-9]".toRegex();
+            /*val special = Pattern.compile("[^A-Z0-9]", Pattern.CASE_INSENSITIVE)
+            val lastInput = editable.toString()[editable.toString().length-1].toString();*/
+            val check = regex.containsMatchIn(editable.toString());
+            if (check) {
                 val remain = editable.toString().replace("[^A-Z0-9]".toRegex(), "")
                 inputEditText.setText(remain)
                 inputEditText.setSelection(remain.length)
@@ -85,6 +85,7 @@ fun setGroupSize(inputEditText: TextInputEditText?, groupSize: Int) {
             for (span in paddingSpans) {
                 editable.removeSpan(span)
             }
+
             addSpans(editable)
         }
 

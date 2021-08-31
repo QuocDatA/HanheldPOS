@@ -165,6 +165,9 @@ class PAppCompatAutoCompleteTextView @JvmOverloads constructor(
                         TextHeaderEnum.H6 -> {
                             textSize = appConfig?.styles?.fonts?.sizes?.h6?.toFloat() ?: 0.0f
                         }
+                        TextHeaderEnum.H7 -> {
+                            textSize = appConfig?.styles?.fonts?.sizes?.h7?.toFloat() ?: 0.0f
+                        }
                         else -> {
                         }
                     }

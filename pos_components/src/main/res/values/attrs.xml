@@ -29,6 +29,7 @@
             <enum name="h4" value="4" />
             <enum name="h5" value="5" />
             <enum name="h6" value="6" />
+            <enum name="h7" value="7" />
         </attr>
 
         <attr name="useFontStyle" format="enum">
@@ -66,6 +67,7 @@
             <enum name="h4" value="4" />
             <enum name="h5" value="5" />
             <enum name="h6" value="6" />
+            <enum name="h7" value="7" />
         </attr>
 
         <attr name="pbtn_useFontStyle" format="enum">
@@ -127,6 +129,7 @@
             <enum name="h4" value="4" />
             <enum name="h5" value="5" />
             <enum name="h6" value="6" />
+            <enum name="h7" value="7" />
         </attr>
 
         <attr name="ipt_useFontStyle" format="enum">
@@ -186,6 +189,7 @@
             <enum name="h4" value="4" />
             <enum name="h5" value="5" />
             <enum name="h6" value="6" />
+            <enum name="h7" value="7" />
         </attr>
 
         <attr name="act_useFontStyle" format="enum">
