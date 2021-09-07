@@ -7,6 +7,7 @@ import android.os.SystemClock
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewTreeObserver
+import android.view.WindowManager
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import com.hanheldpos.R
@@ -118,7 +119,7 @@ class TableFragment : BaseFragment<FragmentTableBinding, TableVM>(), TableUV {
         dialogTable = builder.create();
         dialogTable.setCanceledOnTouchOutside(false);
         dialogTable.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
-
+        dialogTable.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
     }
 
     override fun initData() {

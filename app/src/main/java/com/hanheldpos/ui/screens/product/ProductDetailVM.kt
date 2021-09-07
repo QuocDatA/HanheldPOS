@@ -5,14 +5,19 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.hanheldpos.data.api.pojo.product.ProductDetailResp
+import com.hanheldpos.data.api.pojo.product.getPriceByExtra
+import com.hanheldpos.extension.notifyValueChange
 import com.hanheldpos.model.product.ProductCompleteModel
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
+import com.hanheldpos.ui.screens.product.adapter.modifier.ModifierSelectedItemModel
 
 class ProductDetailVM : BaseUiViewModel<ProductDetailUV>() {
 
     val productCompletelLD = MutableLiveData<ProductCompleteModel>();
     val productDetailLD = MutableLiveData<ProductDetailResp?>();
-    val numberQuantity = MutableLiveData(1);
+    val numberQuantity = Transformations.map(productCompletelLD) {
+        return@map it.quantity;
+    };
     val totalPriceLD = MutableLiveData(0.0);
     //
     var maxQuantity = -1;
@@ -20,7 +25,12 @@ class ProductDetailVM : BaseUiViewModel<ProductDetailUV>() {
 
     fun initLifeCycle(owner: LifecycleOwner) {
         owner.lifecycle.addObserver(this);
-
+        productCompletelLD.observe(owner,{
+            updateTotalPrice();
+        })
+        productDetailLD.observe(owner,{
+            updateTotalPrice();
+        })
     }
 
     fun onBack() {
@@ -28,11 +38,49 @@ class ProductDetailVM : BaseUiViewModel<ProductDetailUV>() {
     }
 
     fun onAddQuantity() {
-        if (numberQuantity.value!! < maxQuantity)
-            numberQuantity.value = numberQuantity.value?.plus(1);
+        if (numberQuantity.value!! < maxQuantity){
+            productCompletelLD.value?.quantity = numberQuantity.value?.plus(1)!!;
+            productCompletelLD.notifyValueChange();
+        }
+
     }
     fun onRemoveQuantity(){
-        if (numberQuantity.value!! > 0)
-            numberQuantity.value = numberQuantity.value?.minus(1);
+        if (numberQuantity.value!! > 0){
+            productCompletelLD.value?.quantity = numberQuantity.value?.minus(1)!!;
+            productCompletelLD.notifyValueChange();
+        }
+    }
+
+    fun updateTotalPrice(){
+        totalPriceLD.value =(productCompletelLD.value?.getPriceTotal() ?: 0.0);
+    }
+
+    fun onModifierQuantityChange(headerKey: String?, item: ModifierSelectedItemModel) {
+        if (headerKey == null) return
+
+        var modifierMap = productDetailLD.value?.selectedModifierGroup
+        if (modifierMap == null) {
+            modifierMap = mutableMapOf()
+        }
+
+        if (!modifierMap.containsKey(headerKey)) {
+            modifierMap[headerKey] = LinkedHashSet()
+        }
+
+        item.realItem?.let {
+            if (item.quantity == 0)
+                modifierMap[headerKey]?.remove(item)
+            else
+                modifierMap[headerKey]?.add(item)
+
+
+
+        }
+        productDetailLD.value?.selectedModifierGroup = modifierMap
+        productDetailLD.notifyValueChange()
+    }
+
+    fun onAddCart(){
+        uiCallback?.onAddCart(productCompletelLD.value!!);
     }
 }

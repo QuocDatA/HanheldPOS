@@ -11,21 +11,29 @@ class OptionsPagerAdapter(
     fragmentManager: FragmentManager,
     lifecycle: Lifecycle
 ) : FragmentStateAdapter(fragmentManager, lifecycle) {
+    private val fragmentList = mutableListOf<Fragment>()
+
+    fun submitList(collection: Collection<Fragment>?) {
+        fragmentList.clear()
+        collection?.let {
+            fragmentList.addAll(it)
+        }
+        notifyDataSetChanged()
+
+    }
+
+    /**
+     * Add fragment to list
+     */
+    fun addFragment(fragment: Fragment) {
+        fragmentList.add(fragment)
+    }
+
     override fun getItemCount(): Int {
-        return 2;
+        return fragmentList.size
     }
 
     override fun createFragment(position: Int): Fragment {
-        return when (position) {
-            0 -> {
-                VariantFragment();
-            }
-            1 -> {
-                ModifierFragment();
-            }
-            else -> {
-                Fragment();
-            }
-        }
+        return fragmentList[position]
     }
 }

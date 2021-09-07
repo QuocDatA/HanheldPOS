@@ -18,17 +18,14 @@ class OrderDataVM : BaseViewModel() {
     val categorySelected = MutableLiveData<CategoryItem>();
     val productInCartLD = MutableLiveData<MutableList<ProductCompleteModel>?>(mutableListOf())
     val productQuantityInCartLD = Transformations.map(productInCartLD) {
-        return@map productInCartLD.value?.sumBy {
+        return@map productInCartLD.value?.sumOf {
             it.quantity
         } ?: 0
     }
     val productTotalPriceLD = Transformations.map(productInCartLD) {
-        return@map productInCartLD.value?.sumByDouble {
-
-            it.productItem.price?.times(it.quantity)!!
-
-
-        }?:0.0
+        return@map productInCartLD.value?.sumOf {
+            it.getPriceTotal()
+        } ?: 0.0
     }
 
     fun initData() {
@@ -221,11 +218,104 @@ class OrderDataVM : BaseViewModel() {
                     description = "Nước dùng thơm ngon nấu từ 100% xương ống bò trong 8 giờ",
                     price = 39000.0,
                     name3 = "500g/Tô",
-                    categoryGuid = it.id
+                    categoryGuid = it.id,
+                    variants = "[{\"Option\":[{\"OptionName\":\"Choose Your Size\",\"OptionValue\":\"S,M,L\"},{\"OptionName\":\"Choose Your Color\",\"OptionValue\":\"Red,Blue,Yellow\"}]," +
+                            "\"Group\":[" +
+                            "{\"GroupId\":1,\"GroupName\":\"S•Red\",\"Price\":10000,\"ComparePrice\":0,\"CostPerItem\":0,\"Quantity\":0,\"Sku\":\"1\",\"Barcode\":\"\",\"Inventory\":\"0\",\"OrderNo\":0,\"Visible\":1}," +
+                            "{\"GroupId\":1,\"GroupName\":\"S•Blue\",\"Price\":10000,\"ComparePrice\":0,\"CostPerItem\":0,\"Quantity\":0,\"Sku\":\"1\",\"Barcode\":\"\",\"Inventory\":\"0\",\"OrderNo\":0,\"Visible\":1}," +
+                            "{\"GroupId\":1,\"GroupName\":\"S•Yellow\",\"Price\":10000,\"ComparePrice\":0,\"CostPerItem\":0,\"Quantity\":0,\"Sku\":\"1\",\"Barcode\":\"\",\"Inventory\":\"0\",\"OrderNo\":0,\"Visible\":1}," +
+                            "{\"GroupId\":1,\"GroupName\":\"M•Red\",\"Price\":10000,\"ComparePrice\":0,\"CostPerItem\":0,\"Quantity\":0,\"Sku\":\"1\",\"Barcode\":\"\",\"Inventory\":\"0\",\"OrderNo\":0,\"Visible\":1}," +
+                            "{\"GroupId\":1,\"GroupName\":\"M•Blue\",\"Price\":10000,\"ComparePrice\":0,\"CostPerItem\":0,\"Quantity\":0,\"Sku\":\"1\",\"Barcode\":\"\",\"Inventory\":\"0\",\"OrderNo\":0,\"Visible\":1}," +
+                            "{\"GroupId\":1,\"GroupName\":\"M•Yellow\",\"Price\":10000,\"ComparePrice\":0,\"CostPerItem\":0,\"Quantity\":0,\"Sku\":\"1\",\"Barcode\":\"\",\"Inventory\":\"0\",\"OrderNo\":0,\"Visible\":1}," +
+                            "{\"GroupId\":1,\"GroupName\":\"L•Red\",\"Price\":10000,\"ComparePrice\":0,\"CostPerItem\":0,\"Quantity\":0,\"Sku\":\"1\",\"Barcode\":\"\",\"Inventory\":\"0\",\"OrderNo\":0,\"Visible\":1}," +
+                            "{\"GroupId\":1,\"GroupName\":\"L•Blue\",\"Price\":10000,\"ComparePrice\":0,\"CostPerItem\":0,\"Quantity\":0,\"Sku\":\"1\",\"Barcode\":\"\",\"Inventory\":\"0\",\"OrderNo\":0,\"Visible\":1}," +
+                            "{\"GroupId\":1,\"GroupName\":\"L•Yellow\",\"Price\":10000,\"ComparePrice\":0,\"CostPerItem\":0,\"Quantity\":0,\"Sku\":\"1\",\"Barcode\":\"\",\"Inventory\":\"0\",\"OrderNo\":0,\"Visible\":1}," +
+                            "]}]",
+                    modifier = "[{\"ModifierGuid\":\"Modifier/438214200\",\"ModifierName\":\"Att Pho (không giá)\"},{\"ModifierGuid\":\"Modifier/438214201\",\"ModifierName\":\"Att Pho (có giá)\"}]"
                 )
             })
         }
 
+        var modifierItem = mutableListOf<ModifierItemItem>(
+            ModifierItemItem(
+                id = "ModifierItem/438214701",
+                modifierGuid = "Modifier/438214200",
+                modifier = "Không hanh",
+                price = 0.0,
+                modifierItemId = 500
+            ),
+            ModifierItemItem(
+                id = "ModifierItem/438214702",
+                modifierGuid = "Modifier/438214200",
+                modifier = "Không gia",
+                price = 0.0,
+                modifierItemId = 500
+            ),
+            ModifierItemItem(
+                id = "ModifierItem/438214703",
+                modifierGuid = "Modifier/438214200",
+                modifier = "It nuoc beo",
+                price = 0.0,
+                modifierItemId = 500
+            ),
+            ModifierItemItem(
+                id = "ModifierItem/438214704",
+                modifierGuid = "Modifier/438214200",
+                modifier = "Nhieu nuoc beo",
+                price = 0.0,
+                modifierItemId = 500
+            ),
+            ModifierItemItem(
+                id = "ModifierItem/438214705",
+                modifierGuid = "Modifier/438214200",
+                modifier = "Dau hanh trung",
+                price = 0.0,
+                modifierItemId = 500
+            ),
+            ModifierItemItem(
+                id = "ModifierItem/438214706",
+                modifierGuid = "Modifier/438214200",
+                modifier = "Gia trung",
+                price = 0.0,
+                modifierItemId = 500
+            ),
+            ModifierItemItem(
+                id = "ModifierItem/438214707",
+                modifierGuid = "Modifier/438214200",
+                modifier = "Khong tieu",
+                price = 0.0,
+                modifierItemId = 500
+            ),
+            ModifierItemItem(
+                id = "ModifierItem/438214708",
+                modifierGuid = "Modifier/438214200",
+                modifier = "It banh pho",
+                price = 0.0,
+                modifierItemId = 500
+            ),
+
+            ModifierItemItem(
+                id = "ModifierItem/438214709",
+                modifierGuid = "Modifier/438214201",
+                modifier = "Banh them",
+                price = 5000.0,
+                modifierItemId = 500
+            ),
+            ModifierItemItem(
+                id = "ModifierItem/438214710",
+                modifierGuid = "Modifier/438214201",
+                modifier = "Chen nuoc leo bo",
+                price = 10000.0,
+                modifierItemId = 500
+            ),
+            ModifierItemItem(
+                id = "ModifierItem/438214711",
+                modifierGuid = "Modifier/438214201",
+                modifier = "Trung them",
+                price = 10000.0,
+                modifierItemId = 500
+            ),
+        )
         // Fake data
         orderMenuResp = OrderMenuResp(
             model = mutableListOf(
@@ -234,13 +324,18 @@ class OrderDataVM : BaseViewModel() {
                     listProduct =
                     mutableListOf(
                         ListProductItem(
-                            product = products
+                            product = products,
+                            modifierItem = modifierItem
                         )
                     )
                 )
             )
         );
 
+    }
+
+    fun getOrderMenu() : OrderMenuResp? {
+        return this.orderMenuResp;
     }
 
     // Category
@@ -253,11 +348,12 @@ class OrderDataVM : BaseViewModel() {
     }
 
     // Cart
-    fun addProductCompleteToCart(item : ProductCompleteModel){
+    fun addProductCompleteToCart(item: ProductCompleteModel) {
         productInCartLD.value?.add(item);
         productInCartLD.notifyValueChange();
     }
-    fun deleteAllProductCart(){
+
+    fun deleteAllProductCart() {
         productInCartLD.value?.clear();
         productInCartLD.notifyValueChange();
     }

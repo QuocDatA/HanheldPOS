@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="item"
+            type="com.hanheldpos.ui.screens.product.adapter.variant.VariantLayoutItem" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.diadiem.pos_components.PRadioButton
+            android:id="@+id/optionBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_8sdp"
+            android:background="@drawable/select_option_item"
+            style="@style/OptionItemTitle"
+            android:checked="@{item.isSelected}"
+            android:textAlignment="center"
+            android:text="@{item.name}"
+
+            />
+    </LinearLayout>
+</layout>

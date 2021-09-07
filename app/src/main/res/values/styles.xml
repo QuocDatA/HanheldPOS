@@ -22,7 +22,7 @@
     <style name="ProductDetailCloseBtn">
         <item name="android:layout_width">@dimen/_20sdp</item>
         <item name="android:layout_height">@dimen/_20sdp</item>
-        <item name="android:background">@color/color_4</item>
+        <item name="android:background">@color/color_9</item>
     </style>
 
     <style name="ProductDetailText">
@@ -60,8 +60,18 @@
 
     <style name="ProductDetailTabTitle">
         <item name="android:textColor">@color/color_7</item>
-        <item name="android:textSize">@dimen/_10ssp</item>
+        <item name="android:textSize">@dimen/_11ssp</item>
     </style>
+
+    <style name="OptionItemTitle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="useTextColor">color4</item>
+        <item name="useTextHeader">h6</item>
+    </style>
+
+
+
 
     // Cart
     <style name="CartTitle">

@@ -10,6 +10,7 @@ import androidx.fragment.app.activityViewModels
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.order.CategoryItem
 import com.hanheldpos.data.api.pojo.order.ProductItem
+import com.hanheldpos.data.api.pojo.product.ProductDetailResp
 import com.hanheldpos.databinding.DialogCategoryBinding
 import com.hanheldpos.databinding.FragmentOrderBinding
 import com.hanheldpos.extension.notifyValueChange
@@ -130,10 +131,11 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
                     if (SystemClock.elapsedRealtime() - viewModel.mLastTimeClick > 100) {
                         when (item.uiType) {
                             ProductModeViewType.Product -> {
-                                /*navigator.goToWithCustomAnimation(
+                                navigator.goToWithCustomAnimation(
                                     ProductDetailFragment.getInstance(
                                     item = ProductCompleteModel(
                                         productItem = item.clone(),
+                                        productDetail = ProductDetailResp()
                                     ),
                                     quantityCanChoose = 5,
                                     listener = object : ProductDetailFragment.ProductDetailListener {
@@ -145,7 +147,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
                                             }
                                         }
                                     }
-                                ))*/
+                                ))
                             }
                             ProductModeViewType.PrevButton -> {
                                 GlobalScope.launch(Dispatchers.IO) {

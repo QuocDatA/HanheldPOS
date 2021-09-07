@@ -81,15 +81,19 @@
                 android:id="@+id/tabOption"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:tabTextAppearance="@style/ProductDetailTabTitle"
-                app:tabSelectedTextColor="@color/color_4"/>
+                app:tabSelectedTextColor="@color/color_4"
+                app:tabTextAppearance="@style/ProductDetailTabTitle" />
+
+            <include
+                layout="@layout/divider_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_1sdp" />
 
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/optionContainer"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1"
-                />
+                android:layout_weight="1" />
 
 
         </LinearLayout>
@@ -142,6 +146,7 @@
             </LinearLayout>
 
             <com.google.android.material.card.MaterialCardView
+                android:onClick="@{v->viewModel.onAddCart()}"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_alignParentEnd="true"

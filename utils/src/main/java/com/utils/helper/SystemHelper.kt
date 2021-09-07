@@ -18,6 +18,7 @@ object SystemHelper {
      */
     fun hideSystemUI(window: Window) {
         window.run {
+
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
                 decorView.systemUiVisibility = (
                         View.SYSTEM_UI_FLAG_FULLSCREEN
@@ -26,6 +27,7 @@ object SystemHelper {
                                 or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
                                 or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                                 or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION)
+
             } else {
                 setDecorFitsSystemWindows(false)
                 insetsController?.let { controller ->
