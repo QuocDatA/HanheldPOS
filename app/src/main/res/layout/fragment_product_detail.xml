@@ -73,7 +73,7 @@
             android:id="@+id/tabLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@id/dividerActin"
+            android:layout_above="@id/noteProduct"
             android:layout_below="@id/productInfo"
             android:orientation="vertical">
 
@@ -96,6 +96,63 @@
                 android:layout_weight="1" />
 
 
+        </LinearLayout>
+
+        <LinearLayout
+            android:background="@color/color_2"
+            android:id="@+id/noteProduct"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/dividerActin"
+            android:orientation="vertical"
+            android:paddingHorizontal="@dimen/_10sdp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/_14sdp"
+                    android:layout_height="@dimen/_14sdp"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    android:src="@drawable/ic_note" />
+
+                <com.diadiem.pos_components.PTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_4sdp"
+                    android:text="Special Instructions"
+                    app:useFontStyle="bold"
+                    app:useTextColor="color5"
+                    app:useTextHeader="h6" />
+
+                <com.diadiem.pos_components.PTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Optional"
+                    app:useFontStyle="normal"
+                    app:useTextColor="color8"
+
+                    app:useTextHeader="h7" />
+            </LinearLayout>
+
+            <com.diadiem.pos_components.PTextInputEditText
+
+                style="@style/BaseTextInput"
+                android:layout_marginVertical="@dimen/_8sdp"
+                android:background="@drawable/bg_outline"
+                android:focusableInTouchMode="true"
+                android:hint="E.g No onions, cheese"
+                android:inputType="text"
+                android:minHeight="@dimen/_34sdp"
+                android:paddingHorizontal="@dimen/_6sdp"
+                android:paddingVertical="@dimen/_10sdp"
+                app:ipt_useFontStyle="normal"
+                app:ipt_useHintTextColor="color8"
+                app:ipt_useTextColor="color4"
+                app:ipt_useTextHeader="h5" />
         </LinearLayout>
 
         <include
