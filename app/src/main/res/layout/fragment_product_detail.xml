@@ -63,9 +63,10 @@
 
             <com.diadiem.pos_components.PTextView
                 style="@style/ProductDetailSku"
-                android:layout_marginVertical="@dimen/_5sdp"
+                android:layout_marginVertical="@dimen/_3sdp"
                 android:background="@drawable/bg_food_detail_text"
-                android:paddingHorizontal="@dimen/_6sdp"
+                android:paddingHorizontal="@dimen/_8sdp"
+                android:paddingVertical="@dimen/_1sdp"
                 android:text="@{`P1`}" />
         </LinearLayout>
 

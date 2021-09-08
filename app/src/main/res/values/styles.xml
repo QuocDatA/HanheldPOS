@@ -45,7 +45,7 @@
     <style name="ProductDetailSku" parent="ProductDetailText">
         <item name="useTextColor">color2</item>
         <item name="useFontStyle">normal</item>
-        <item name="useTextHeader">h5</item>
+        <item name="useTextHeader">h6</item>
     </style>
 
     <style name="ProductDetailBtnQuantity">
@@ -70,7 +70,34 @@
         <item name="useTextHeader">h6</item>
     </style>
 
+    // Number Input
+    <style name="TableInputDialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowTitleStyle">@null</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+        <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
+    </style>
+    <style name="NumberPad">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/_34sdp</item>
+        <item name="android:background">@drawable/bg_ffffff_round_number_input</item>
+        <item name="android:gravity">center</item>
+        <item name="useTextHeader">h3</item>
+        <item name="useTextColor">color4</item>
+        <item name="useFontStyle">bold</item>
+        <item name="android:focusable">true</item>
+        <item name="android:clickable">true</item>
+    </style>
 
+    <style name="NumberOk" parent="NumberPad">
+        <item name="android:layout_height">@dimen/_78sdp</item>
+        <item name="android:background">@drawable/bg_007eff_round_number_input</item>
+        <item name="useTextColor">color2</item>
+    </style>
 
 
     // Cart

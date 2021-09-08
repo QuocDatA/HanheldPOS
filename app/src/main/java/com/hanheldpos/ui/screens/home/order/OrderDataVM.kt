@@ -240,14 +240,14 @@ class OrderDataVM : BaseViewModel() {
             ModifierItemItem(
                 id = "ModifierItem/438214701",
                 modifierGuid = "Modifier/438214200",
-                modifier = "Không hanh",
+                modifier = "Khong hanh",
                 price = 0.0,
                 modifierItemId = 500
             ),
             ModifierItemItem(
                 id = "ModifierItem/438214702",
                 modifierGuid = "Modifier/438214200",
-                modifier = "Không gia",
+                modifier = "Khong gia",
                 price = 0.0,
                 modifierItemId = 500
             ),
