@@ -17,16 +17,18 @@
         app:cardElevation="0dp"
         >
 
-        <LinearLayout
+        <RelativeLayout
             android:background="@{item.quantity > 0 ? @color/color_1 : @color/color_10}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
+
             android:orientation="horizontal"
             android:paddingHorizontal="@dimen/_5sdp"
             android:paddingVertical="@dimen/_6sdp">
 
             <FrameLayout
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
                 android:id="@+id/btnRemoveQuantity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -43,6 +45,7 @@
             </FrameLayout>
 
             <LinearLayout
+                android:layout_centerInParent="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -65,6 +68,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@{`(` + item.quantity + `)`}"
+
                         app:useTextColor="color2" />
                 </LinearLayout>
 
@@ -75,11 +79,14 @@
                     priceView="@{item.realItem.price}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+
                     android:textColor="@{item.quantity > 0 ? @color/color_2 :  @color/color_4 }" />
 
             </LinearLayout>
 
             <FrameLayout
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
                 android:id="@+id/btnAddQuantity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -92,6 +99,6 @@
                     android:layout_margin="@dimen/_4sdp"
                     android:src="@drawable/ic_add_primary" />
             </FrameLayout>
-        </LinearLayout>
+        </RelativeLayout>
     </androidx.cardview.widget.CardView>
 </layout>

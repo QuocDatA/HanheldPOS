@@ -82,8 +82,7 @@
                     groupSize="@{viewModel.pinGroupSize}"
                     android:hint="@string/device_code"
                     android:inputType="textCapCharacters"
-
-                    android:text="@{viewModel.pinTextLD}"
+                    android:text="@={viewModel.pinTextLD}"
                     android:focusableInTouchMode="true"
                     android:textAllCaps="true"
                     android:paddingVertical="@dimen/_17sdp"

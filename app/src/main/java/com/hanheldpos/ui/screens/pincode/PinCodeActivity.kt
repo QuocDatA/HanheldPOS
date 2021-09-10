@@ -9,14 +9,15 @@ import com.hanheldpos.ui.screens.main.MainActivity
 import com.hanheldpos.ui.screens.pincode.adapter.PinCodeAdapter
 import com.utils.helper.SystemHelper
 
-class PinCodeActivity : BaseActivity<ActivityPinCodeBinding,PinCodeVM>(), PinCodeUV{
+class PinCodeActivity : BaseActivity<ActivityPinCodeBinding, PinCodeVM>(), PinCodeUV {
     override fun layoutRes() = R.layout.activity_pin_code;
 
     override fun initView() {
         SystemHelper.hideSystemUI(this.window)
         window.setFlags(
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
-            WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            WindowManager.LayoutParams.FLAG_FULLSCREEN
+        );
     }
 
     override fun initData() {
@@ -51,10 +52,7 @@ class PinCodeActivity : BaseActivity<ActivityPinCodeBinding,PinCodeVM>(), PinCod
     }
 
     override fun goHome() {
-        navigateTo(MainActivity::class.java,
-            alsoFinishCurrentActivity = true,
-            alsoClearActivity = true
-        );
+        navigateTo(MainActivity::class.java, alsoFinishCurrentActivity = true, alsoClearActivity = true);
     }
 
 }

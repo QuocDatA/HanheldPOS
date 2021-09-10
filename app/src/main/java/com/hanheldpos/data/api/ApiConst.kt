@@ -7,7 +7,7 @@ object ApiConst {
 
     // Url
     private val BASE_DEV_URL = AppConfig.getBaseDomainAPI();
-    private const val BASE_PROD_URL = "/"
+    private  val BASE_PROD_URL = AppConfig.getBaseDomainAPI();
     val BASE_URL = if (Const.DEBUG_MODE) BASE_DEV_URL else BASE_PROD_URL
 
 }

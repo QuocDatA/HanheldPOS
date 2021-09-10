@@ -50,7 +50,7 @@
                     android:layout_marginVertical="@dimen/_20sdp"
                     android:background="@drawable/bg_outline"
                     android:focusableInTouchMode="true"
-                    android:hint="@string/device_code"
+                    android:hint="Enter number of customer"
                     android:focusable="false"
                     android:paddingHorizontal="@dimen/_13sdp"
                     android:paddingVertical="@dimen/_10sdp"
@@ -108,7 +108,7 @@
                             android:text="Ok"
                             android:textAlignment="center"
                             android:textAllCaps="true"
-                            app:useFontStyle="normal"
+                            app:useFontStyle="bold"
                             app:useTextColor="color0"
                             app:useTextHeader="h5" />
                     </LinearLayout>

@@ -10,6 +10,7 @@ import com.hanheldpos.ui.base.activity.BaseFragmentBindingActivity
 import com.hanheldpos.ui.base.fragment.FragmentNavigator
 import com.hanheldpos.ui.screens.devicecode.DeviceCodeActivity
 import com.hanheldpos.ui.screens.main.MainActivity
+import com.hanheldpos.ui.screens.pincode.PinCodeActivity
 import com.utils.helper.SystemHelper
 
 class WelcomeActivity : BaseActivity<ActivityWelcomeBinding,WelcomeVM>(), WelcomeUV {
@@ -30,6 +31,7 @@ class WelcomeActivity : BaseActivity<ActivityWelcomeBinding,WelcomeVM>(), Welcom
 
     override fun initView() {
         SystemHelper.hideSystemUI(window);
+
     }
 
     override fun initData() {
@@ -37,7 +39,7 @@ class WelcomeActivity : BaseActivity<ActivityWelcomeBinding,WelcomeVM>(), Welcom
     }
 
     override fun initAction() {
-
+        viewModel.checkDeviceCode();
     }
 
     override fun openDeviceCode() {
@@ -45,7 +47,7 @@ class WelcomeActivity : BaseActivity<ActivityWelcomeBinding,WelcomeVM>(), Welcom
     }
 
     override fun openPinCode() {
-
+        navigateTo(PinCodeActivity::class.java,true);
     }
 
 }

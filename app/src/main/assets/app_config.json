@@ -1,5 +1,5 @@
 {
-  "base_domain_api": "https://lin-dev-sys-oaa-api-1.diadiem.vn/",
+  "base_domain_api": "https://lin-dev-fro-api-1.diadiem.vn/api/",
   "environment_key": "TXAnHIU7HqhH-HyJK7kQ69SO0tjXra7hwGcJums8BwpCjIW0Ed_MoALrlCf8CaRH",
   "google_service_key": "",
   "google_place_service_key": "",
