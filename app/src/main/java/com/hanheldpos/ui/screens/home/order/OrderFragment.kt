@@ -128,7 +128,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
             listener = object : BaseItemClickListener<ProductItem> {
                 override fun onItemClick(adapterPosition: Int, item: ProductItem) {
                     Log.d("OrderFragment", "Product Selected");
-                    if (SystemClock.elapsedRealtime() - viewModel.mLastTimeClick > 500) {
+                    if (SystemClock.elapsedRealtime() - viewModel.mLastTimeClick > 1000) {
                         viewModel.mLastTimeClick = SystemClock.elapsedRealtime()
                         when (item.uiType) {
                             ProductModeViewType.Product -> {
@@ -141,7 +141,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
                                     quantityCanChoose = 5,
                                     listener = object : ProductDetailFragment.ProductDetailListener {
                                         override fun onAddCart(productComplete: ProductCompleteModel) {
-                                            if (SystemClock.elapsedRealtime() - viewModel.mLastTimeClick > 500){
+                                            if (SystemClock.elapsedRealtime() - viewModel.mLastTimeClick > 1000){
                                                 viewModel.mLastTimeClick = SystemClock.elapsedRealtime()
                                                 OrderHelper.cart.add(productComplete);
                                                 dataVM.addProductCompleteToCart(productComplete);

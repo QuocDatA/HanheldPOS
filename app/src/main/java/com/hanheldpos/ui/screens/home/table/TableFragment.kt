@@ -77,12 +77,13 @@ class TableFragment : BaseFragment<FragmentTableBinding, TableVM>(), TableUV {
                 override fun onItemClick(adapterPosition: Int, item: FloorTableItem) {
                     Log.d("OrderFragment", "Product Selected");
                     if (SystemClock.elapsedRealtime() - viewModel.mLastTimeClick > 1000) {
-                        viewModel.mLastTimeClick = SystemClock.elapsedRealtime();
                         when (item.uiType) {
                             TableModeViewType.Table -> {
+                                viewModel.mLastTimeClick = SystemClock.elapsedRealtime();
                                 openDialogInputCustomer(item);
                             }
                             TableModeViewType.PrevButton -> {
+
                                 tableAdapterHelper.previous();
                             }
                             TableModeViewType.NextButton -> {
