@@ -52,7 +52,7 @@ class PinCodeActivity : BaseActivity<ActivityPinCodeBinding, PinCodeVM>(), PinCo
     }
 
     override fun goHome() {
-        navigateTo(MainActivity::class.java, alsoFinishCurrentActivity = true, alsoClearActivity = true);
+        navigateTo(MainActivity::class.java, alsoFinishCurrentActivity = true, alsoClearActivity = false);
     }
 
 }
