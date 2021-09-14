@@ -13,6 +13,7 @@ import androidx.constraintlayout.solver.state.State
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import com.hanheldpos.R
+import com.hanheldpos.data.api.pojo.table.FloorItem
 import com.hanheldpos.data.api.pojo.table.FloorTableItem
 import com.hanheldpos.databinding.DialogCategoryBinding
 import com.hanheldpos.databinding.FragmentTableBinding
@@ -20,6 +21,7 @@ import com.hanheldpos.model.home.order.product.ProductModeViewType
 import com.hanheldpos.model.home.table.TableModeViewType
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
+import com.hanheldpos.ui.screens.home.HomeFragment
 import com.hanheldpos.ui.screens.home.ScreenViewModel
 import com.hanheldpos.ui.screens.home.table.adapter.TableAdapter
 import com.hanheldpos.ui.screens.home.table.adapter.TableAdapterHelper
@@ -74,7 +76,7 @@ class TableFragment : BaseFragment<FragmentTableBinding, TableVM>(), TableUV {
             listener = object : BaseItemClickListener<FloorTableItem> {
                 override fun onItemClick(adapterPosition: Int, item: FloorTableItem) {
                     Log.d("OrderFragment", "Product Selected");
-                    if (SystemClock.elapsedRealtime() - viewModel.mLastTimeClick > 100) {
+                    if (SystemClock.elapsedRealtime() - viewModel.mLastTimeClick > 1000) {
                         viewModel.mLastTimeClick = SystemClock.elapsedRealtime();
                         when (item.uiType) {
                             TableModeViewType.Table -> {
@@ -107,7 +109,16 @@ class TableFragment : BaseFragment<FragmentTableBinding, TableVM>(), TableUV {
     }
 
     override fun initAction() {
-
+        screenViewModel.dropDownSelected.observe(this, {
+            val screen = screenViewModel.screenEvent.value?.screen;
+            if (screen == HomeFragment.HomePage.Table) {
+                if (it.realItem is FloorItem) {
+                    dataVM.floorItemSelected.value = it.realItem as FloorItem;
+                } else if (it.realItem == null)
+                    dataVM.getTableList()?.toMutableList()
+                        ?.let { it1 -> tableAdapterHelper.submitList(it1); };
+            }
+        })
 
         dataVM.floorItemSelected.observe(this, {
             dataVM.floorTableList.value = dataVM.getTableListByFloor(it)?.toMutableList();
