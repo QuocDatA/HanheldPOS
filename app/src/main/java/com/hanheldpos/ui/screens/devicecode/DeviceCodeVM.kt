@@ -9,6 +9,7 @@ import com.hanheldpos.data.api.pojo.table.TableResp
 import com.hanheldpos.data.repository.base.BaseRepoCallback
 import com.hanheldpos.data.repository.devicecode.SettingRepo
 import com.hanheldpos.model.DataHelper
+import com.hanheldpos.model.home.order.OrderMenuDataMapper
 import com.hanheldpos.ui.base.viewmodel.BaseRepoViewModel
 import java.util.*
 
@@ -69,6 +70,7 @@ class DeviceCodeVM : BaseRepoViewModel<SettingRepo, DeviceCodeUV>() {
                         onDataFailure("Failed to load data");
                     } else {
                         DataHelper.orderMenuResp = data;
+
                         startMappingData();
                     }
 

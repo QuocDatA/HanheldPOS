@@ -11,6 +11,7 @@ import com.hanheldpos.data.repository.base.BaseRepoCallback
 import com.hanheldpos.data.repository.order.OrderRepo
 import com.hanheldpos.extension.notifyValueChange
 import com.hanheldpos.model.DataHelper
+import com.hanheldpos.model.home.order.OrderMenuDataMapper
 import com.hanheldpos.model.home.order.product.ProductModeViewType
 import com.hanheldpos.model.product.ProductCompleteModel
 import com.hanheldpos.ui.base.viewmodel.BaseRepoViewModel
@@ -33,6 +34,7 @@ class OrderDataVM : BaseRepoViewModel<OrderRepo, OrderUV>() {
     }
 
     fun initData() {
+        OrderMenuDataMapper.orderMenuResp = DataHelper.orderMenuResp!!;
         initMenus();
         initCategories();
         // Init First Page
@@ -41,7 +43,7 @@ class OrderDataVM : BaseRepoViewModel<OrderRepo, OrderUV>() {
 
     // Menu
     private fun initMenus() {
-        orderMenuResp = DataHelper.orderMenuResp;
+        orderMenuResp = OrderMenuDataMapper.orderMenuResp;
     }
 
     fun getOrderMenu(): OrderMenuResp? {

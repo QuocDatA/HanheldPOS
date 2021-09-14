@@ -13,11 +13,10 @@ class PinCodeActivity : BaseActivity<ActivityPinCodeBinding, PinCodeVM>(), PinCo
     override fun layoutRes() = R.layout.activity_pin_code;
 
     override fun initView() {
-        SystemHelper.hideSystemUI(this.window)
-        window.setFlags(
-            WindowManager.LayoutParams.FLAG_FULLSCREEN,
-            WindowManager.LayoutParams.FLAG_FULLSCREEN
-        );
+        binding.root.viewTreeObserver.addOnGlobalLayoutListener{
+            window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            SystemHelper.hideSystemUI(this.window);
+        }
     }
 
     override fun initData() {
