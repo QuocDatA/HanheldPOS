@@ -97,7 +97,7 @@ class PinCodeVM : BaseRepoViewModel<EmployeeRepo,PinCodeUV>() {
             repo?.getDataEmployee(userGuid,passCode,locationGuid,object : BaseRepoCallback<GDataResp<EmployeeResp>>{
                 override fun apiResponse(data: GDataResp<EmployeeResp>?) {
                     if (data == null || data.didError == true  || data.model.isNullOrEmpty()) {
-                        showError(data?.message);
+                        showError("Passcode does not exist!. Please try again");
                         lstResultLD.value?.clear();
                         lstResultLD.notifyValueChange();
                     } else {

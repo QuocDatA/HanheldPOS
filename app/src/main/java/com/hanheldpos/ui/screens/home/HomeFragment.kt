@@ -55,9 +55,7 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
         // init fragment page
         fragmentMap[HomePage.Table] = TableFragment();
         fragmentMap[HomePage.Menu] = OrderFragment();
-
         paperAdapter = FragmentPagerAdapter(requireActivity().supportFragmentManager, lifecycle);
-
         binding.homeViewPager.apply {
             adapter = paperAdapter;
             paperAdapter.submitList(fragmentMap.values)
@@ -85,14 +83,7 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
                     id: Long
                 ) {
                     val item = parent?.getItemAtPosition(position) as DropDownItem;
-                    when(selectedPage){
-                        HomePage.Table->{
-
-                        }
-                        HomePage.Menu->{
-
-                        }
-                    }
+                    screenViewModel.onChangeDropdown(item);
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>?) {

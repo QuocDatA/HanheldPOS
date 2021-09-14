@@ -110,7 +110,7 @@ fun setGroupSize(inputEditText: TextInputEditText?, groupSize: Int) {
                 end: Int,
                 fm: FontMetricsInt?
             ): Int {
-                val padding = paint.measureText(" ", 0, 1)
+                val padding = paint.measureText("  ", 0, 1)
                 val textSize = paint.measureText(text, start, end)
                 return (padding + textSize).toInt()
             }

@@ -49,7 +49,7 @@ class DeviceCodeVM : BaseRepoViewModel<SettingRepo, DeviceCodeUV>() {
 
         result?.let {
             if (it.didError == true) {
-                showError(it.message);
+                showError(it.message ?: "There was not found");
             } else {
                 DataHelper.deviceCodeResp = it;
                 fetchAllData();
