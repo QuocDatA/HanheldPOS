@@ -34,6 +34,9 @@ class MainActivity : BaseFragmentBindingActivity<ActivityMainBinding, MainVM>(),
     override fun initView() {
         binding.root.viewTreeObserver.addOnGlobalLayoutListener {
             SystemHelper.hideSystemUI(window);
+            window.setFlags(
+                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         }
         getNavigator().rootFragment = HomeFragment();
     }

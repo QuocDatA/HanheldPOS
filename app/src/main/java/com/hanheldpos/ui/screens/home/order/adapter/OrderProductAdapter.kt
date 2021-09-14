@@ -52,7 +52,7 @@ class OrderProductAdapter(
 
     private class DiffCallback : DiffUtil.ItemCallback<ProductItem>() {
         override fun areItemsTheSame(oldItem: ProductItem, newItem: ProductItem): Boolean {
-            return oldItem.id.equals(newItem.id) && oldItem.uiType == newItem.uiType;
+            return oldItem.id.equals(newItem.id) && oldItem.key == newItem.key && oldItem.uiType == newItem.uiType;
         }
 
         override fun areContentsTheSame(oldItem: ProductItem, newItem: ProductItem): Boolean {

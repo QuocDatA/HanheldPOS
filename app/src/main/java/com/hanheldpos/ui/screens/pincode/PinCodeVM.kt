@@ -84,12 +84,13 @@ class PinCodeVM : BaseRepoViewModel<EmployeeRepo,PinCodeUV>() {
                 }
             }
             // Fetch data
+            showLoading(true);
             fetchDataEmployee(passCodeBuilder.toString());
 
         }
     }
 
-    fun fetchDataEmployee(passCode : String){
+    private fun fetchDataEmployee(passCode : String){
         val userGuid = DataHelper.getUserGuidByDeviceCode();
         val locationGuid = DataHelper.getLocationGuidByDeviceCode();
         if (passCode != null && userGuid != null && locationGuid != null) {
@@ -97,13 +98,15 @@ class PinCodeVM : BaseRepoViewModel<EmployeeRepo,PinCodeUV>() {
                 override fun apiResponse(data: GDataResp<EmployeeResp>?) {
                     if (data == null || data.didError == true  || data.model.isNullOrEmpty()) {
                         showError(data?.message);
+                        lstResultLD.value?.clear();
+                        lstResultLD.notifyValueChange();
                     } else {
                         onEmployeeSuccess(data.model.first())
                     }
                 }
 
                 override fun showMessage(message: String?) {
-                    TODO("Not yet implemented")
+
                 }
             })
         }

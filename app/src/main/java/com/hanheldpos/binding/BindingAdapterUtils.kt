@@ -11,16 +11,16 @@ import android.view.View
 import androidx.databinding.BindingAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.textfield.TextInputEditText
+import java.lang.Exception
 import java.util.regex.Pattern
 
 
 @BindingAdapter("useInputEnable")
 fun setUseInputEnable(view: ViewPager2, isSwipe: Boolean) {
     view.isUserInputEnabled = isSwipe
-    if (!isSwipe)
-    {
+    if (!isSwipe) {
         class NoPageTransformer : ViewPager2.PageTransformer {
-            override fun transformPage( view: View, position: Float) {
+            override fun transformPage(view: View, position: Float) {
                 view.translationX = view.width * -position
                 if (position <= -1.0f || position >= 1.0f) {
                     view.visibility = View.GONE
@@ -138,11 +138,16 @@ fun setGroupSize(inputEditText: TextInputEditText?, groupSize: Int) {
 }
 
 @BindingAdapter("backColor")
-fun setBackColor(view : View?, colorHex : String? ){
-    if(view == null || colorHex == null) return;
-    if(!TextUtils.isEmpty(colorHex)){
-        val color = Color.parseColor(colorHex)
-        view.backgroundTintList = ColorStateList.valueOf(color);
+fun setBackColor(view: View?, colorHex: String?) {
+    if (view == null || colorHex == null) return;
+    if (!TextUtils.isEmpty(colorHex)) {
+        try {
+            val color = Color.parseColor(colorHex)
+            view.backgroundTintList = ColorStateList.valueOf(color);
+        } catch (e: Exception) {
+            val color = Color.parseColor("#8f8f8f");
+            view.backgroundTintList = ColorStateList.valueOf(color);
+        }
         /*view.setBackgroundColor(color);*/
     }
 

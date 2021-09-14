@@ -7,12 +7,16 @@ import com.hanheldpos.data.api.pojo.order.*
 import com.hanheldpos.data.api.pojo.order.ModelItem
 import com.hanheldpos.data.api.pojo.order.getCategoryList
 import com.hanheldpos.data.api.pojo.order.getProductWithCategoryGuid
+import com.hanheldpos.data.repository.base.BaseRepoCallback
+import com.hanheldpos.data.repository.order.OrderRepo
 import com.hanheldpos.extension.notifyValueChange
+import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.home.order.product.ProductModeViewType
 import com.hanheldpos.model.product.ProductCompleteModel
+import com.hanheldpos.ui.base.viewmodel.BaseRepoViewModel
 import com.hanheldpos.ui.base.viewmodel.BaseViewModel
 
-class OrderDataVM : BaseViewModel() {
+class OrderDataVM : BaseRepoViewModel<OrderRepo, OrderUV>() {
     private var orderMenuResp: OrderMenuResp? = null;
     val categoryList = MutableLiveData<MutableList<CategoryItem?>>(mutableListOf());
     val categorySelected = MutableLiveData<CategoryItem>();
@@ -29,6 +33,8 @@ class OrderDataVM : BaseViewModel() {
     }
 
     fun initData() {
+
+
         initMenus();
         initCategories();
 
@@ -39,7 +45,7 @@ class OrderDataVM : BaseViewModel() {
     // Menu
     private fun initMenus() {
 
-        val categorys = mutableListOf(
+        /*val categorys = mutableListOf(
             CategoryItem(
                 id = "Category/430214303",
                 categoryId = 31,
@@ -315,26 +321,13 @@ class OrderDataVM : BaseViewModel() {
                 price = 10000.0,
                 modifierItemId = 500
             ),
-        )
+        )*/
         // Fake data
-        orderMenuResp = OrderMenuResp(
-            model = mutableListOf(
-                ModelItem(
-                    category = categorys,
-                    listProduct =
-                    mutableListOf(
-                        ListProductItem(
-                            product = products,
-                            modifierItem = modifierItem
-                        )
-                    )
-                )
-            )
-        );
+        orderMenuResp = DataHelper.orderMenuResp;
 
     }
 
-    fun getOrderMenu() : OrderMenuResp? {
+    fun getOrderMenu(): OrderMenuResp? {
         return this.orderMenuResp;
     }
 
@@ -356,6 +349,10 @@ class OrderDataVM : BaseViewModel() {
     fun deleteAllProductCart() {
         productInCartLD.value?.clear();
         productInCartLD.notifyValueChange();
+    }
+
+    override fun createRepo(): OrderRepo {
+        return OrderRepo();
     }
 
 }

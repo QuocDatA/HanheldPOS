@@ -128,7 +128,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
             listener = object : BaseItemClickListener<ProductItem> {
                 override fun onItemClick(adapterPosition: Int, item: ProductItem) {
                     Log.d("OrderFragment", "Product Selected");
-                    if (SystemClock.elapsedRealtime() - viewModel.mLastTimeClick > 100) {
+                    if (SystemClock.elapsedRealtime() - viewModel.mLastTimeClick > 500) {
                         when (item.uiType) {
                             ProductModeViewType.Product -> {
                                 navigator.goToWithCustomAnimation(

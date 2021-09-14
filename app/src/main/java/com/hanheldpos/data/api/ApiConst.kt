@@ -5,6 +5,7 @@ import com.utils.constants.Const
 
 object ApiConst {
 
+    const val VISIBLE = 1
     // Url
     private val BASE_DEV_URL = AppConfig.getBaseDomainAPI();
     private  val BASE_PROD_URL = AppConfig.getBaseDomainAPI();

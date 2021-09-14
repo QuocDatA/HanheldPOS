@@ -58,6 +58,7 @@
                         android:layout_centerInParent="true"
                         android:ellipsize="end"
                         android:maxLines="2"
+                        android:textAlignment="center"
                         android:text="@{item.name,default=`Product Name`}"
                         app:useFontStyle="bold"
                         app:useTextColor="color2"

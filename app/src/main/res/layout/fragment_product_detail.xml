@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="viewModel"
             type="com.hanheldpos.ui.screens.product.ProductDetailVM" />
@@ -43,23 +42,23 @@
             android:paddingHorizontal="@dimen/_9sdp"
             android:paddingVertical="@dimen/_5sdp">
 
-            <RelativeLayout
-
+            <LinearLayout
+                android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <com.diadiem.pos_components.PTextView
+                    android:layout_weight="1"
+                    android:id="@+id/nameProduct"
                     style="@style/ProductDetailTitle"
-                    android:layout_alignParentStart="true"
-                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="@dimen/_10sdp"
                     android:text="@{viewModel.productCompletelLD.productItem.name}" />
 
                 <com.diadiem.pos_components.PTextView
                     style="@style/ProductDetailPrice"
                     priceView="@{viewModel.productCompletelLD.productItem.price}"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true" />
-            </RelativeLayout>
+                    />
+            </LinearLayout>
 
             <com.diadiem.pos_components.PTextView
                 style="@style/ProductDetailSku"

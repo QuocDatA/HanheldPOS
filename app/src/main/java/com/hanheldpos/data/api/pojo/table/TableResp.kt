@@ -133,7 +133,7 @@ data class FloorTableItem(
         val orderNo: Int? = null,
 
         @field:SerializedName("Visible")
-        val visible: Int? = null,
+        var visible: Int? = null,
 
         @field:SerializedName("UserGuid")
         val userGuid: String? = null,

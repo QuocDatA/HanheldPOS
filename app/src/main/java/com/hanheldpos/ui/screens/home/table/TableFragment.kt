@@ -132,6 +132,7 @@ class TableFragment : BaseFragment<FragmentTableBinding, TableVM>(), TableUV {
         navigator.goTo(TableInputFragment.getInstance(listener = object :
             TableInputFragment.TableInputListener {
             override fun onCompleteTable(numberCustomer: Int) {
+
                 screenViewModel.showOrderPage();
             }
         }));

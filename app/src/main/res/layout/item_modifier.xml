@@ -26,28 +26,12 @@
             android:paddingHorizontal="@dimen/_5sdp"
             android:paddingVertical="@dimen/_6sdp">
 
-            <FrameLayout
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
-                android:id="@+id/btnRemoveQuantity"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_quantity_btn"
-                android:clickable="true"
-                android:focusable="true">
 
-                <ImageView
-                    android:layout_width="@dimen/_11sdp"
-                    android:layout_height="@dimen/_11sdp"
-                    android:layout_gravity="center"
-                    android:layout_margin="@dimen/_4sdp"
-                    android:src="@{item.quantity > 0 ? @drawable/ic_remove_primary : @drawable/ic_remove_disable }" />
-            </FrameLayout>
 
             <LinearLayout
                 android:layout_centerInParent="true"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/_35sdp"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:orientation="vertical">
@@ -68,7 +52,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@{`(` + item.quantity + `)`}"
-
                         app:useTextColor="color2" />
                 </LinearLayout>
 
@@ -83,7 +66,23 @@
                     android:textColor="@{item.quantity > 0 ? @color/color_2 :  @color/color_4 }" />
 
             </LinearLayout>
+            <FrameLayout
+                android:id="@+id/btnRemoveQuantity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/bg_quantity_btn"
+                android:clickable="true"
+                android:focusable="true">
 
+                <ImageView
+                    android:layout_width="@dimen/_11sdp"
+                    android:layout_height="@dimen/_11sdp"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/_4sdp"
+                    android:src="@{item.quantity > 0 ? @drawable/ic_remove_primary : @drawable/ic_remove_disable }" />
+            </FrameLayout>
             <FrameLayout
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"

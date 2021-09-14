@@ -1,8 +1,8 @@
 package com.hanheldpos.data.api.base
 
 import com.hanheldpos.data.api.RetrofitService
-import com.hanheldpos.data.api.services.devicecode.SettingService
-import com.hanheldpos.data.api.services.employee.EmployeeService
+import com.hanheldpos.data.api.services.SettingService
+import com.hanheldpos.data.api.services.EmployeeService
 
 abstract class BaseApi : BaseApiError() {
 
