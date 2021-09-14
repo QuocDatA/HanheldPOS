@@ -4,6 +4,9 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-class DropDownItem(val name : String, val value : String) : Parcelable {
+class DropDownItem(
+    val name: String,
+    val realItem: Parcelable? = null,
+) : Parcelable {
 
 }

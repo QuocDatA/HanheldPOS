@@ -87,7 +87,8 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>?) {
-
+                    val item = parent?.selectedItem as DropDownItem;
+                    screenViewModel.onChangeDropdown(item);
                 }
 
             }
@@ -106,7 +107,7 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
                 override fun onNothingSelected(parent: AdapterView<*>?) {}
             }
         // Init Page
-        binding.toolbarLayout.spinnerMain.setSelection(0);
+        screenViewModel.showTablePage();
 
     }
 
@@ -125,16 +126,16 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
                 Log.d("home", "switchPage: page_table");
                 binding.homeViewPager.currentItem = 0;
                 DataHelper.tableResp?.getFloorList()?.map {
-                    DropDownItem(name = it?.name.toString(), value = it?.id.toString())
+                    DropDownItem(name = it?.name.toString(), realItem = it)
                 }?.let {
-                    listDropdown.add(DropDownItem(name = "All", value = ""))
+                    listDropdown.add(DropDownItem(name = "All"))
                     listDropdown.addAll(it)
                 }
             }
             HomePage.Menu -> {
                 Log.d("home", "switchPage: page_order")
                 binding.homeViewPager.currentItem = 1;
-                listDropdown.addAll(mutableListOf(DropDownItem(name = "Group Price", value = "")))
+                listDropdown.addAll(mutableListOf(DropDownItem(name = "Group Price")))
             }
         }
         subSpinnerAdapter.submitList(listDropdown);

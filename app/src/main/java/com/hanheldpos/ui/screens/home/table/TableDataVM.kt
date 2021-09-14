@@ -19,7 +19,7 @@ class TableDataVM : BaseViewModel() {
     fun initData() {
         tableResp = DataHelper.tableResp
         initFloor();
-        floorItemSelected.value = floorList.value?.firstOrNull();
+        /*floorItemSelected.value = floorList.value?.firstOrNull();*/
     }
 
 
@@ -31,6 +31,10 @@ class TableDataVM : BaseViewModel() {
 
     fun getTableListByFloor(floorItem : FloorItem ) : List<FloorTableItem?>?{
         return tableResp?.getTableWithFloorGuid(floorGuid = floorItem.id);
+    }
+
+    fun getTableList() :List<FloorTableItem?>?{
+        return tableResp?.getFloorTableList();
     }
 
     fun onTableClick(item : FloorTableItem){
