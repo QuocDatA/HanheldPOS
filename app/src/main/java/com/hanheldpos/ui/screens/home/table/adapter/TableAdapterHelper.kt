@@ -1,9 +1,7 @@
 package com.hanheldpos.ui.screens.home.table.adapter
 
 
-import com.hanheldpos.data.api.pojo.order.ProductItem
 import com.hanheldpos.data.api.pojo.table.FloorTableItem
-import com.hanheldpos.model.home.order.product.ProductModeViewType
 import com.hanheldpos.model.home.table.TableModeViewType
 
 

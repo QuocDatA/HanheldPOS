@@ -1,17 +1,14 @@
 package com.hanheldpos.ui.screens.home.order.adapter
 
-import com.hanheldpos.data.api.pojo.order.CategoryItem
-import com.hanheldpos.data.api.pojo.order.ProductItem
-import com.hanheldpos.model.home.order.category.CategoryModeViewType
-import com.hanheldpos.model.home.order.product.ProductModeViewType
-import com.hanheldpos.ui.screens.home.order.OrderDataVM
+import com.hanheldpos.model.home.order.menu.MenuModeViewType
+import com.hanheldpos.model.home.order.menu.OrderMenuItemModel
 
-class OrderCategoryAdapterHelper(private val callBack : AdapterCallBack) {
+class OrderMenuAdapterHelper(private val callBack : AdapterCallBack) {
 
     private var currentIndex : Int = 1;
-    private var list: MutableList<CategoryItem?> = mutableListOf();
+    private var list: MutableList<OrderMenuItemModel?> = mutableListOf();
 
-    fun submitList(list: MutableList<CategoryItem?>){
+    fun submitList(list: MutableList<OrderMenuItemModel?>){
         this.list = list;
         currentIndex = 1;
         split(currentIndex);
@@ -34,20 +31,20 @@ class OrderCategoryAdapterHelper(private val callBack : AdapterCallBack) {
     }
 
     private fun split(pagePosition: Int){
-        val rs: MutableList<CategoryItem> = mutableListOf();
+        val rs: MutableList<OrderMenuItemModel> = mutableListOf();
         list.let {
             if (it.size != 0) {
                 val start: Int = (pagePosition - 1) * maxItemViewCate;
                 val end: Int =
                     if (it.size > maxItemViewCate * pagePosition) maxItemViewCate * pagePosition else it.size;
-                rs.addAll(it.toList().subList(start, end) as List<CategoryItem>);
+                rs.addAll(it.toList().subList(start, end) as List<OrderMenuItemModel>);
             }
         }
 
         // Add Empty
         for (i in rs.size until maxItemViewCate) {
-            rs.add(CategoryItem().apply {
-                uiType = CategoryModeViewType.Empty;
+            rs.add(OrderMenuItemModel().apply {
+                uiType = MenuModeViewType.Empty;
             })
         }
 
@@ -59,8 +56,8 @@ class OrderCategoryAdapterHelper(private val callBack : AdapterCallBack) {
             * 2 : Enable Previous
             * 3 : Enable All
             * */
-            CategoryItem().apply {
-                uiType = CategoryModeViewType.DirectionButton.apply {
+            OrderMenuItemModel().apply {
+                uiType = MenuModeViewType.DirectionButton.apply {
                     var ss = 0;
                     if ((currentIndex * maxItemViewCate) < list.size ){
                         ss = 1;
@@ -80,7 +77,7 @@ class OrderCategoryAdapterHelper(private val callBack : AdapterCallBack) {
         val sub1 = rs.subList(0,itemPerCol);
         val sub2 = rs.subList(itemPerCol,rs.size);
 
-        val lastrs: MutableList<CategoryItem> = mutableListOf();
+        val lastrs: MutableList<OrderMenuItemModel> = mutableListOf();
 
         for (i in 0..itemPerCol.minus(1)){
             lastrs.addAll(
@@ -95,7 +92,7 @@ class OrderCategoryAdapterHelper(private val callBack : AdapterCallBack) {
 
 
     interface AdapterCallBack {
-        fun onListSplitCallBack(list: List<CategoryItem>)
+        fun onListSplitCallBack(list: List<OrderMenuItemModel>)
     }
 
 

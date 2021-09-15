@@ -48,7 +48,7 @@
                         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                         app:spanCount="2"
                         tools:itemCount="17"
-                        tools:listitem="@layout/item_order_category" />
+                        tools:listitem="@layout/item_order_menu" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
             <ImageView

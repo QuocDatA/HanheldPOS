@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.DiffUtil
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.order.ProductItem
 import com.hanheldpos.databinding.ItemOrderProductBinding
-import com.hanheldpos.model.home.order.product.ProductModeViewType
+import com.hanheldpos.model.home.order.ProductModeViewType
 
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
@@ -52,11 +52,14 @@ class OrderProductAdapter(
 
     private class DiffCallback : DiffUtil.ItemCallback<ProductItem>() {
         override fun areItemsTheSame(oldItem: ProductItem, newItem: ProductItem): Boolean {
-            return oldItem.id.equals(newItem.id) && oldItem.key == newItem.key && oldItem.uiType == newItem.uiType;
+            return when(oldItem.uiType){
+                ProductModeViewType.Product-> oldItem.id == newItem.id
+                else-> oldItem.uiType == newItem.uiType;
+            }
         }
 
         override fun areContentsTheSame(oldItem: ProductItem, newItem: ProductItem): Boolean {
-            return oldItem == newItem;
+            return oldItem.id != null &&  newItem.id != null;
         }
 
     }

@@ -1,7 +1,7 @@
 package com.hanheldpos.ui.screens.home.order.adapter
 
 import com.hanheldpos.data.api.pojo.order.ProductItem
-import com.hanheldpos.model.home.order.product.ProductModeViewType
+import com.hanheldpos.model.home.order.ProductModeViewType
 
 class OrderProductAdapterHelper(
     private val callBack: AdapterCallBack

@@ -5,11 +5,11 @@
 
     <data>
 
-        <import type="com.hanheldpos.model.home.order.category.CategoryModeViewType" />
+        <import type="com.hanheldpos.model.home.order.menu.MenuModeViewType" />
 
         <variable
             name="item"
-            type="com.hanheldpos.data.api.pojo.order.CategoryItem" />
+            type="com.hanheldpos.model.home.order.menu.OrderMenuItemModel" />
 
     </data>
 
@@ -19,7 +19,7 @@
         android:layout_margin="@dimen/_6sdp">
 
         <FrameLayout
-            visibleObject="@{ item.uiType == CategoryModeViewType.Empty }"
+            visibleObject="@{ item.uiType == MenuModeViewType.Empty }"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             >
@@ -35,7 +35,7 @@
                 android:minEms="7"
                 android:paddingStart="@dimen/_6sdp"
                 android:paddingEnd="@dimen/_6sdp"
-                android:text="@{item.title,default=`Category`}"
+                android:text="@{item.text,default=`Category`}"
                 android:textAlignment="center"
                 android:textAllCaps="true"
                 app:useFontStyle="bold"
@@ -44,7 +44,7 @@
         </FrameLayout>
 
         <LinearLayout
-            visibleObject="@{ item.uiType == CategoryModeViewType.DirectionButton }"
+            visibleObject="@{ item.uiType == MenuModeViewType.DirectionButton }"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -70,7 +70,7 @@
                     android:maxEms="12"
                     android:maxLines="1"
                     android:minEms="7"
-                    android:text="@{item.title,default=`C`}"
+                    android:text="@{item.text,default=`C`}"
                     android:textAlignment="center"
                     android:textAllCaps="true"
                     app:useFontStyle="bold"
@@ -109,7 +109,7 @@
                     android:maxEms="12"
                     android:maxLines="1"
                     android:minEms="7"
-                    android:text="@{item.title,default=`C`}"
+                    android:text="@{item.text,default=`C`}"
                     android:textAlignment="center"
                     android:textAllCaps="true"
                     app:useFontStyle="bold"
@@ -127,7 +127,7 @@
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/btnMain"
             backColor="@{item.color}"
-            visibleObject="@{ item.uiType == CategoryModeViewType.Category }"
+            visibleObject="@{ item.uiType == MenuModeViewType.Menu }"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/color_2"
@@ -147,7 +147,7 @@
                 android:minEms="7"
                 android:paddingStart="@dimen/_6sdp"
                 android:paddingEnd="@dimen/_6sdp"
-                android:text="@{item.title,default=`Category`}"
+                android:text="@{item.text,default=`Category`}"
                 android:textAlignment="center"
                 android:textAllCaps="true"
                 app:useFontStyle="bold"

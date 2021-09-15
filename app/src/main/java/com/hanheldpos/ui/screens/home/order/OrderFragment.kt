@@ -13,15 +13,14 @@ import com.hanheldpos.data.api.pojo.order.ProductItem
 import com.hanheldpos.data.api.pojo.product.ProductDetailResp
 import com.hanheldpos.databinding.DialogCategoryBinding
 import com.hanheldpos.databinding.FragmentOrderBinding
-import com.hanheldpos.extension.notifyValueChange
-import com.hanheldpos.model.home.order.product.ProductModeViewType
+import com.hanheldpos.model.home.order.ProductModeViewType
+import com.hanheldpos.model.home.order.menu.OrderMenuItemModel
 import com.hanheldpos.model.product.ProductCompleteModel
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
-import com.hanheldpos.ui.screens.cart.CartFragment
 import com.hanheldpos.ui.screens.home.ScreenViewModel
-import com.hanheldpos.ui.screens.home.order.adapter.OrderCategoryAdapter
-import com.hanheldpos.ui.screens.home.order.adapter.OrderCategoryAdapterHelper
+import com.hanheldpos.ui.screens.home.order.adapter.OrderMenuAdapter
+import com.hanheldpos.ui.screens.home.order.adapter.OrderMenuAdapterHelper
 import com.hanheldpos.ui.screens.home.order.adapter.OrderProductAdapter
 import com.hanheldpos.ui.screens.home.order.adapter.OrderProductAdapterHelper
 import com.hanheldpos.ui.screens.product.ProductDetailFragment
@@ -36,8 +35,8 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
 
 
     // Adapter
-    private lateinit var categoryAdapter: OrderCategoryAdapter;
-    private lateinit var categoryAdapHelper: OrderCategoryAdapterHelper;
+    private lateinit var menuAdapter: OrderMenuAdapter;
+    private lateinit var menuAdapHelper: OrderMenuAdapterHelper;
     private lateinit var productAdapter: OrderProductAdapter;
     private lateinit var productAdapHelper: OrderProductAdapterHelper;
 
@@ -61,19 +60,19 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
 
         // category adapter vs listener
 
-        categoryAdapHelper = OrderCategoryAdapterHelper(callBack = object :
-            OrderCategoryAdapterHelper.AdapterCallBack {
-            override fun onListSplitCallBack(list: List<CategoryItem>) {
-                categoryAdapter.submitList(list);
-                categoryAdapter.notifyDataSetChanged();
+        menuAdapHelper = OrderMenuAdapterHelper(callBack = object :
+            OrderMenuAdapterHelper.AdapterCallBack {
+            override fun onListSplitCallBack(list: List<OrderMenuItemModel>) {
+                menuAdapter.submitList(list);
+                menuAdapter.notifyDataSetChanged();
 
             }
         });
 
-        categoryAdapter = OrderCategoryAdapter(
-            listener = object : BaseItemClickListener<CategoryItem> {
-                override fun onItemClick(adapterPosition: Int, item: CategoryItem) {
-                    categoryItemSelected(item);
+        menuAdapter = OrderMenuAdapter(
+            listener = object : BaseItemClickListener<OrderMenuItemModel> {
+                override fun onItemClick(adapterPosition: Int, item: OrderMenuItemModel) {
+                    menuItemSelected(item);
                     GlobalScope.launch(Dispatchers.IO) {
                         delay(500);
                         launch(Dispatchers.Main) {
@@ -83,11 +82,11 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
                 }
 
             },
-            directionCallBack = object : OrderCategoryAdapter.Callback {
+            directionCallBack = object : OrderMenuAdapter.Callback {
                 override fun directionSelectd(value: Int) {
                     when (value) {
-                        1 -> categoryAdapHelper.previous();
-                        2 -> categoryAdapHelper.next();
+                        1 -> menuAdapHelper.previous();
+                        2 -> menuAdapHelper.next();
                     }
                 }
 
@@ -101,7 +100,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
             null,
             false
         );
-        dialogCateBinding.categoryList.adapter = categoryAdapter;
+        dialogCateBinding.categoryList.adapter = menuAdapter;
 
         val builder = AlertDialog.Builder(context);
         builder.setView(dialogCateBinding.root);
@@ -182,15 +181,14 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
     override fun initAction() {
 
 
-        dataVM.categoryList.observe(this, {
-            categoryAdapHelper.submitList(it);
+        dataVM.orderMenuLevel1.observe(this, {
+            menuAdapHelper.submitList(it);
         })
 
-        dataVM.categorySelected.observe(this, {
-            dataVM.getProductByCategory(it)
+        dataVM.orderMenuLevel1Selected.observe(this, {
+            dataVM.getProductByMenu(it)
                 ?.let { it1->
                     productAdapHelper.submitList(it1.toMutableList());
-
                 }
         });
 
@@ -208,12 +206,12 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
 
     }
 
-    private fun categoryItemSelected(categoryItem: CategoryItem) {
-        dataVM.categorySelected.value = categoryItem
+    private fun menuItemSelected(menuItem: OrderMenuItemModel) {
+        dataVM.orderMenuLevel1Selected.value = menuItem
     }
 
     override fun showCategoryDialog() {
-        dataVM.categoryList.value?.let { categoryAdapHelper.submitList(it) }
+        dataVM.orderMenuLevel1.value?.let { menuAdapHelper.submitList(it) }
         dialogCategory.show();
         dialogCategory.window?.setBackgroundDrawableResource(android.R.color.transparent)
     }

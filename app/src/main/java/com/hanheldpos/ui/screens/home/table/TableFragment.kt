@@ -1,23 +1,14 @@
 package com.hanheldpos.ui.screens.home.table
 
 import android.app.AlertDialog
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.SystemClock
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.ViewTreeObserver
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
-import android.view.WindowManager
-import androidx.constraintlayout.solver.state.State
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.table.FloorItem
 import com.hanheldpos.data.api.pojo.table.FloorTableItem
-import com.hanheldpos.databinding.DialogCategoryBinding
 import com.hanheldpos.databinding.FragmentTableBinding
-import com.hanheldpos.model.home.order.product.ProductModeViewType
 import com.hanheldpos.model.home.table.TableModeViewType
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment

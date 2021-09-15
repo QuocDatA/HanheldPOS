@@ -1,26 +1,24 @@
 package com.hanheldpos.ui.screens.home.order
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.hanheldpos.data.api.pojo.order.*
-import com.hanheldpos.data.api.pojo.order.ModelItem
 import com.hanheldpos.data.api.pojo.order.getCategoryList
 import com.hanheldpos.data.api.pojo.order.getProductWithCategoryGuid
-import com.hanheldpos.data.repository.base.BaseRepoCallback
 import com.hanheldpos.data.repository.order.OrderRepo
 import com.hanheldpos.extension.notifyValueChange
 import com.hanheldpos.model.DataHelper
-import com.hanheldpos.model.home.order.OrderMenuDataMapper
-import com.hanheldpos.model.home.order.product.ProductModeViewType
+import com.hanheldpos.model.home.order.menu.OrderMenuDataMapper
+import com.hanheldpos.model.home.order.menu.OrderMenuDataMapper.getChildList
+import com.hanheldpos.model.home.order.menu.OrderMenuItemModel
 import com.hanheldpos.model.product.ProductCompleteModel
 import com.hanheldpos.ui.base.viewmodel.BaseRepoViewModel
-import com.hanheldpos.ui.base.viewmodel.BaseViewModel
 
 class OrderDataVM : BaseRepoViewModel<OrderRepo, OrderUV>() {
     private var orderMenuResp: OrderMenuResp? = null;
-    val categoryList = MutableLiveData<MutableList<CategoryItem?>>(mutableListOf());
-    val categorySelected = MutableLiveData<CategoryItem>();
+    val orderMenuLevel1 = MutableLiveData<MutableList<OrderMenuItemModel?>>(mutableListOf());
+    val orderMenuLevel1Selected = MutableLiveData<OrderMenuItemModel>();
+
     val productInCartLD = MutableLiveData<MutableList<ProductCompleteModel>?>(mutableListOf())
     val productQuantityInCartLD = Transformations.map(productInCartLD) {
         return@map productInCartLD.value?.sumOf {
@@ -35,28 +33,18 @@ class OrderDataVM : BaseRepoViewModel<OrderRepo, OrderUV>() {
 
     fun initData() {
         OrderMenuDataMapper.orderMenuResp = DataHelper.orderMenuResp!!;
-        initMenus();
-        initCategories();
-        // Init First Page
-        categorySelected.value = categoryList.value?.first();
-    }
-
-    // Menu
-    private fun initMenus() {
         orderMenuResp = OrderMenuDataMapper.orderMenuResp;
+        orderMenuLevel1.value = OrderMenuDataMapper.getLevel_1(0).toMutableList();
+        // Init First Page
+        orderMenuLevel1Selected.value = orderMenuLevel1.value?.first();
     }
 
     fun getOrderMenu(): OrderMenuResp? {
         return this.orderMenuResp;
     }
-
-    // Category
-    private fun initCategories() {
-        categoryList.value = orderMenuResp?.getCategoryList()?.toMutableList();
-    }
-
-    fun getProductByCategory(categoryItem: CategoryItem): List<ProductItem?>? {
-        return orderMenuResp?.getProductWithCategoryGuid(categoryGuid = categoryItem.id);
+    fun getProductByMenu(menuItem: OrderMenuItemModel): List<ProductItem?>? {
+        /*return OrderMenuDataMapper.getLevel_2(categoryGuid = menuItem.id);*/
+        return menuItem.getChildList();
     }
 
     // Cart

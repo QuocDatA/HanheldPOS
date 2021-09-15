@@ -63,7 +63,9 @@ internal fun OrderMenuResp.getProductModifierByListProduct() =
 internal fun OrderMenuResp.getModifierItemByListProduct() = this.getListProduct()?.modifierItem
 
 internal fun OrderMenuResp.getProductWithItemGuid(itemGuid: String?) =
-    this.getProductByListProduct()?.filter { it?.id == itemGuid }
+    this.getProductByListProduct()?.filter {
+        it?.id == itemGuid
+    }
 
 internal fun OrderMenuResp.getProductWithCategoryGuid(categoryGuid: String?) =
     this.getProductByListProduct()?.filter {
