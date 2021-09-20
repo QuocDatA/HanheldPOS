@@ -25,6 +25,7 @@ class CartFragment(
             binding.viewModel = this;
             initLifeCycle(this@CartFragment);
         }
+        R.dimen._100ssp
     }
 
     override fun initView() {

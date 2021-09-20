@@ -19,12 +19,14 @@ import com.hanheldpos.model.home.order.menu.OrderMenuItemModel
 import com.hanheldpos.model.product.ProductCompleteModel
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
+import com.hanheldpos.ui.screens.cart.CartDataVM
 import com.hanheldpos.ui.screens.home.HomeFragment
 import com.hanheldpos.ui.screens.home.ScreenViewModel
 import com.hanheldpos.ui.screens.home.order.adapter.OrderMenuAdapter
 import com.hanheldpos.ui.screens.home.order.adapter.OrderMenuAdapterHelper
 import com.hanheldpos.ui.screens.home.order.adapter.OrderProductAdapter
 import com.hanheldpos.ui.screens.home.order.adapter.OrderProductAdapterHelper
+import com.hanheldpos.ui.screens.home.table.TableDataVM
 import com.hanheldpos.ui.screens.product.ProductDetailFragment
 import kotlinx.coroutines.*
 
@@ -34,7 +36,8 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
     // ViewModel
     private val dataVM by activityViewModels<OrderDataVM>()
     private val screenViewModel by activityViewModels<ScreenViewModel>()
-
+    private val tableDataVM by activityViewModels<TableDataVM>()
+    private val cartDataVM by activityViewModels<CartDataVM>()
 
     // Adapter
     private lateinit var menuAdapter: OrderMenuAdapter;
@@ -56,6 +59,8 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
             binding.viewModel = this
         }
         binding.dataVM = this.dataVM
+        binding.tableDataVM = this.tableDataVM
+        binding.cartDataVM = this.cartDataVM
     }
 
     override fun initView() {
@@ -197,8 +202,6 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
                     productAdapHelper.submitList(it1.toMutableList());
                 }
         });
-
-
 
     }
 

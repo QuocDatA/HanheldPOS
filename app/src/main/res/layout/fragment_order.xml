@@ -12,6 +12,15 @@
         <variable
             name="viewModel"
             type="com.hanheldpos.ui.screens.home.order.OrderVM" />
+
+        <variable
+            name="tableDataVM"
+            type="com.hanheldpos.ui.screens.home.table.TableDataVM" />
+
+        <variable
+            name="cartDataVM"
+            type="com.hanheldpos.ui.screens.cart.CartDataVM" />
+
     </data>
 
     <RelativeLayout
@@ -106,19 +115,27 @@
 
             <com.diadiem.pos_components.PTextView
                 style="@style/OrderTotalPrice"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/_13sdp"
+                android:text="@{tableDataVM.curTableLD.tableName + `-` + cartDataVM.diningOptionLD.title}"
+                app:useFontStyle="normal"
+                />
+
+            <com.diadiem.pos_components.PTextView
+                style="@style/OrderTotalPrice"
                 priceView="@{dataVM.productTotalPriceLD}"
                 android:layout_centerVertical="true"
                 android:layout_toStartOf="@id/cartBtn" />
 
             <FrameLayout
                 android:id="@+id/cartBtn"
-                android:clickable="true"
-                android:focusable="true"
-                android:onClick="@{v->viewModel.showCart()}"
                 android:layout_width="@dimen/_50sdp"
                 android:layout_height="@dimen/_42sdp"
+                android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:layout_alignParentEnd="true">
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="@{v->viewModel.showCart()}">
 
                 <ImageView
                     android:layout_width="match_parent"
@@ -134,9 +151,9 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="@dimen/_2sdp"
                     android:text="@{String.valueOf(dataVM.productQuantityInCartLD)}"
+                    app:useFontStyle="bold"
                     app:useTextColor="color0"
                     app:useTextHeader="h6"
-                    app:useFontStyle="bold"
                     tools:text="10"
                     tools:textColor="@color/color_0" />
             </FrameLayout>
