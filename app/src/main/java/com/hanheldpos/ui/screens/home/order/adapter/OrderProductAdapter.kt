@@ -8,7 +8,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.DiffUtil
 import com.hanheldpos.R
-import com.hanheldpos.data.api.pojo.order.ProductItem
+import com.hanheldpos.data.api.pojo.order.menu.ProductItem
 import com.hanheldpos.databinding.ItemOrderProductBinding
 import com.hanheldpos.model.home.order.ProductModeViewType
 

@@ -3,10 +3,10 @@ package com.hanheldpos.ui.screens.product.options.variant
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import com.diadiem.pos_config.utils.Const
-import com.hanheldpos.data.api.pojo.order.GroupItem
-import com.hanheldpos.data.api.pojo.order.VariantStrProduct
-import com.hanheldpos.data.api.pojo.order.splitListGroupNameValue
-import com.hanheldpos.data.api.pojo.order.splitListOptionValue
+import com.hanheldpos.data.api.pojo.order.menu.GroupItem
+import com.hanheldpos.data.api.pojo.order.menu.VariantStrProduct
+import com.hanheldpos.data.api.pojo.order.menu.splitListGroupNameValue
+import com.hanheldpos.data.api.pojo.order.menu.splitListOptionValue
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
 import com.hanheldpos.ui.screens.product.adapter.variant.VariantHeader
 import com.hanheldpos.ui.screens.product.adapter.variant.VariantLayoutItem

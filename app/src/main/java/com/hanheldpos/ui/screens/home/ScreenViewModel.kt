@@ -15,7 +15,7 @@ class ScreenViewModel : BaseViewModel() {
     val screenEvent: MutableLiveData<ScreenEvent> = MutableLiveData()
 
     fun showOrderPage(data: Parcelable? = null) {
-        screenEvent.value = ScreenEvent(HomeFragment.HomePage.Menu, data)
+        screenEvent.value = ScreenEvent(HomeFragment.HomePage.Order, data)
     }
 
     fun showTablePage(data: Parcelable? = null) {

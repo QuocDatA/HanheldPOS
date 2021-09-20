@@ -1,8 +1,8 @@
 package com.hanheldpos.model.home.order.menu
 
-import com.hanheldpos.data.api.pojo.order.*
-import com.hanheldpos.data.api.pojo.order.getCategoryItem
-import com.hanheldpos.data.api.pojo.order.getGroupItem
+import com.hanheldpos.data.api.pojo.order.menu.getCategoryItem
+import com.hanheldpos.data.api.pojo.order.menu.getGroupItem
+import com.hanheldpos.data.api.pojo.order.menu.*
 import com.hanheldpos.model.image.getImageUrl
 
 /**

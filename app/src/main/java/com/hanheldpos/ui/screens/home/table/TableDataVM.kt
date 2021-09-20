@@ -10,6 +10,7 @@ import com.hanheldpos.ui.screens.home.order.OrderDataVM
 class TableDataVM : BaseViewModel() {
 
     // Value
+    val curTableLD: MutableLiveData<FloorTableItem?> = MutableLiveData()
     private var tableResp: TableResp? = null;
     private val floorList = MutableLiveData<MutableList<FloorItem?>>(mutableListOf());
     val floorItemSelected = MutableLiveData<FloorItem>();
@@ -21,7 +22,6 @@ class TableDataVM : BaseViewModel() {
         initFloor();
         /*floorItemSelected.value = floorList.value?.firstOrNull();*/
     }
-
 
 
     private fun initFloor() {

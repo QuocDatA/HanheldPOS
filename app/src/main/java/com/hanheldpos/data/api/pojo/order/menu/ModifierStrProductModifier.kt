@@ -1,4 +1,4 @@
-package com.example.pos2.repo.order.menu
+package com.hanheldpos.data.api.pojo.order.menu
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName

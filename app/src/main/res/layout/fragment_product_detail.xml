@@ -61,12 +61,13 @@
             </LinearLayout>
 
             <com.diadiem.pos_components.PTextView
+                visibleObject="@{viewModel.productCompletelLD.productItem.sKU}"
                 style="@style/ProductDetailSku"
                 android:layout_marginVertical="@dimen/_3sdp"
                 android:background="@drawable/bg_food_detail_text"
                 android:paddingHorizontal="@dimen/_8sdp"
                 android:paddingVertical="@dimen/_1sdp"
-                android:text="@{`P1`}" />
+                android:text="@{viewModel.productCompletelLD.productItem.sKU}" />
         </LinearLayout>
 
         <LinearLayout
@@ -75,6 +76,7 @@
             android:layout_height="match_parent"
             android:layout_above="@id/noteProduct"
             android:layout_below="@id/productInfo"
+            android:background="@color/color_2"
             android:orientation="vertical">
 
             <com.google.android.material.tabs.TabLayout
@@ -90,6 +92,7 @@
                 android:layout_height="@dimen/_1sdp" />
 
             <androidx.viewpager2.widget.ViewPager2
+                useInputEnable="@{false}"
                 android:id="@+id/optionContainer"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -99,11 +102,11 @@
         </LinearLayout>
 
         <LinearLayout
-            android:background="@color/color_2"
             android:id="@+id/noteProduct"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_above="@+id/dividerActin"
+            android:background="@color/color_2"
             android:orientation="vertical"
             android:paddingHorizontal="@dimen/_10sdp">
 

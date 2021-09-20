@@ -3,8 +3,8 @@ package com.hanheldpos.ui.screens.home.order
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.hanheldpos.data.api.pojo.order.*
-import com.hanheldpos.data.api.pojo.order.getCategoryList
-import com.hanheldpos.data.api.pojo.order.getProductWithCategoryGuid
+import com.hanheldpos.data.api.pojo.order.menu.OrderMenuResp
+import com.hanheldpos.data.api.pojo.order.menu.ProductItem
 import com.hanheldpos.data.repository.order.OrderRepo
 import com.hanheldpos.extension.notifyValueChange
 import com.hanheldpos.model.DataHelper
@@ -13,6 +13,7 @@ import com.hanheldpos.model.home.order.menu.OrderMenuDataMapper.getChildList
 import com.hanheldpos.model.home.order.menu.OrderMenuItemModel
 import com.hanheldpos.model.product.ProductCompleteModel
 import com.hanheldpos.ui.base.viewmodel.BaseRepoViewModel
+import java.text.FieldPosition
 
 class OrderDataVM : BaseRepoViewModel<OrderRepo, OrderUV>() {
     private var orderMenuResp: OrderMenuResp? = null;
@@ -34,10 +35,15 @@ class OrderDataVM : BaseRepoViewModel<OrderRepo, OrderUV>() {
     fun initData() {
         OrderMenuDataMapper.orderMenuResp = DataHelper.orderMenuResp!!;
         orderMenuResp = OrderMenuDataMapper.orderMenuResp;
-        orderMenuLevel1.value = OrderMenuDataMapper.getLevel_1(0).toMutableList();
+    }
+
+    fun onMenuChange(position: Int){
+        orderMenuLevel1.value = OrderMenuDataMapper.getLevel_1(position).toMutableList();
         // Init First Page
         orderMenuLevel1Selected.value = orderMenuLevel1.value?.first();
     }
+
+
 
     fun getOrderMenu(): OrderMenuResp? {
         return this.orderMenuResp;

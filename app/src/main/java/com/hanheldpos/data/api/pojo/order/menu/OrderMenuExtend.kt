@@ -1,4 +1,4 @@
-package com.hanheldpos.data.api.pojo.order
+package com.hanheldpos.data.api.pojo.order.menu
 
 internal fun OrderMenuResp.getModel() = this.model?.firstOrNull()
 

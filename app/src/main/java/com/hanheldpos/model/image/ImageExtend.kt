@@ -1,9 +1,11 @@
 package com.hanheldpos.model.image
 
 import com.hanheldpos.data.api.ApiConst
-import com.hanheldpos.data.api.pojo.order.*
-import com.hanheldpos.data.api.pojo.order.getDomainImage
-import com.hanheldpos.data.api.pojo.order.getProductImageListWithId
+import com.hanheldpos.data.api.pojo.order.menu.getCategoryImageListWithId
+import com.hanheldpos.data.api.pojo.order.menu.getDomainImage
+import com.hanheldpos.data.api.pojo.order.menu.getGroupImageListWithId
+import com.hanheldpos.data.api.pojo.order.menu.getProductImageListWithId
+import com.hanheldpos.data.api.pojo.order.menu.*
 import com.hanheldpos.extension.isHTTP
 
 internal fun GroupsItem.getImageUrl(orderMenuResp: OrderMenuResp, groupGuid: String?): String? {

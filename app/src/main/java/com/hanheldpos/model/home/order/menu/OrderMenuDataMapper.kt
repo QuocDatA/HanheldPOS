@@ -1,9 +1,7 @@
 package com.hanheldpos.model.home.order.menu
 
-import android.util.Log
-import com.hanheldpos.data.api.pojo.order.*
-import com.hanheldpos.data.api.pojo.order.getHierarchyList
-import com.hanheldpos.data.api.pojo.order.getMenuList
+
+import com.hanheldpos.data.api.pojo.order.menu.*
 
 object OrderMenuDataMapper {
     lateinit var orderMenuResp: OrderMenuResp

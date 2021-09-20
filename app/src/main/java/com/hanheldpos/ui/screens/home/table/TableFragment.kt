@@ -71,6 +71,7 @@ class TableFragment : BaseFragment<FragmentTableBinding, TableVM>(), TableUV {
                         when (item.uiType) {
                             TableModeViewType.Table -> {
                                 viewModel.mLastTimeClick = SystemClock.elapsedRealtime();
+                                dataVM.curTableLD.value = item;
                                 openDialogInputCustomer(item);
                             }
                             TableModeViewType.PrevButton -> {
@@ -127,8 +128,6 @@ class TableFragment : BaseFragment<FragmentTableBinding, TableVM>(), TableUV {
                 }
             }
         })
-
-
     }
 
     private fun openDialogInputCustomer(item: FloorTableItem) {
@@ -139,6 +138,9 @@ class TableFragment : BaseFragment<FragmentTableBinding, TableVM>(), TableUV {
                 screenViewModel.showOrderPage();
             }
         }));
+    }
+    companion object {
+        var selectedSort : Int = 0;
     }
 
 }

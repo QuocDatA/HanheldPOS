@@ -1,5 +1,5 @@
 package com.hanheldpos.ui.screens.product.adapter.variant
-import com.hanheldpos.data.api.pojo.order.OptionItem
+import com.hanheldpos.data.api.pojo.order.menu.OptionItem
 
 data class VariantHeader(
     var name: String? = null,

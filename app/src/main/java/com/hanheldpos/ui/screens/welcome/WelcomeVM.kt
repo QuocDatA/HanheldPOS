@@ -2,7 +2,7 @@ package com.hanheldpos.ui.screens.welcome
 
 import android.util.Log
 import androidx.lifecycle.LifecycleOwner
-import com.hanheldpos.data.repository.devicecode.SettingRepo
+import com.hanheldpos.data.repository.settings.SettingRepo
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.ui.base.viewmodel.BaseRepoViewModel
 

@@ -11,7 +11,7 @@
 
         <variable
             name="item"
-            type="com.hanheldpos.data.api.pojo.order.ProductItem" />
+            type="com.hanheldpos.data.api.pojo.order.menu.ProductItem" />
     </data>
 
     <com.google.android.material.card.MaterialCardView

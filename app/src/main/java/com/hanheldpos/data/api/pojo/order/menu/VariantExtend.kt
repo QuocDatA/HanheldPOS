@@ -1,4 +1,4 @@
-package com.hanheldpos.data.api.pojo.order
+package com.hanheldpos.data.api.pojo.order.menu
 
 import com.diadiem.pos_config.utils.Const
 

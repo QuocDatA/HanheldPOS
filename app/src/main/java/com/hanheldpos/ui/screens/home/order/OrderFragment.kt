@@ -8,9 +8,10 @@ import android.view.ViewTreeObserver
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import com.hanheldpos.R
-import com.hanheldpos.data.api.pojo.order.CategoryItem
-import com.hanheldpos.data.api.pojo.order.ProductItem
+import com.hanheldpos.data.api.pojo.order.menu.MenusItem
+import com.hanheldpos.data.api.pojo.order.menu.ProductItem
 import com.hanheldpos.data.api.pojo.product.ProductDetailResp
+import com.hanheldpos.data.api.pojo.table.FloorItem
 import com.hanheldpos.databinding.DialogCategoryBinding
 import com.hanheldpos.databinding.FragmentOrderBinding
 import com.hanheldpos.model.home.order.ProductModeViewType
@@ -18,6 +19,7 @@ import com.hanheldpos.model.home.order.menu.OrderMenuItemModel
 import com.hanheldpos.model.product.ProductCompleteModel
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
+import com.hanheldpos.ui.screens.home.HomeFragment
 import com.hanheldpos.ui.screens.home.ScreenViewModel
 import com.hanheldpos.ui.screens.home.order.adapter.OrderMenuAdapter
 import com.hanheldpos.ui.screens.home.order.adapter.OrderMenuAdapterHelper
@@ -73,12 +75,8 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
             listener = object : BaseItemClickListener<OrderMenuItemModel> {
                 override fun onItemClick(adapterPosition: Int, item: OrderMenuItemModel) {
                     menuItemSelected(item);
-                    GlobalScope.launch(Dispatchers.IO) {
-                        delay(500);
-                        launch(Dispatchers.Main) {
-                            dialogCategory.dismiss();
-                        }
-                    }
+                    dialogCategory.dismiss();
+
                 }
 
             },
@@ -175,11 +173,19 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
     }
 
     override fun initData() {
-
+        dataVM.initData()
     }
 
     override fun initAction() {
-
+        screenViewModel.dropDownSelected.observe(this, {
+            val screen = screenViewModel.screenEvent.value?.screen;
+            if (screen == HomeFragment.HomePage.Order) {
+                if (it.realItem is MenusItem) {
+                    dataVM.onMenuChange(it.position);
+                } else if (it.realItem == null)
+                    dataVM.onMenuChange(0)
+            }
+        })
 
         dataVM.orderMenuLevel1.observe(this, {
             menuAdapHelper.submitList(it);
@@ -193,16 +199,6 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
         });
 
 
-        // Wait for ui draw
-        binding.root.viewTreeObserver.addOnGlobalLayoutListener(object :
-            ViewTreeObserver.OnGlobalLayoutListener {
-            override fun onGlobalLayout() {
-                if (binding.productList.height > 0) {
-                    binding.root.viewTreeObserver.removeOnGlobalLayoutListener(this)
-                    dataVM.initData()
-                }
-            }
-        })
 
     }
 
@@ -225,6 +221,10 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
                 }
             }
         ));*/
+    }
+
+    companion object {
+        var selectedSort : Int = 0;
     }
 
 }

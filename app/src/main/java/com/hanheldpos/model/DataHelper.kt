@@ -2,7 +2,8 @@ package com.hanheldpos.model
 
 import com.hanheldpos.data.api.ApiConst
 import com.hanheldpos.data.api.pojo.employee.EmployeeResp
-import com.hanheldpos.data.api.pojo.order.OrderMenuResp
+import com.hanheldpos.data.api.pojo.order.menu.OrderMenuResp
+import com.hanheldpos.data.api.pojo.order.settings.OrderSettingResp
 import com.hanheldpos.data.api.pojo.setting.devicecode.DeviceCodeResp
 import com.hanheldpos.data.api.pojo.table.TableResp
 import com.hanheldpos.prefs.PrefKey
@@ -34,7 +35,47 @@ object DataHelper {
         }
 
     //endregion
+    //region ### Order Settings
+    var orderSettingResp: OrderSettingResp? = null
+        get() {
+            if (field == null) {
+                field = AppPreferences.get().getParcelableObject(
+                    PrefKey.Order.ORDER_SETTING_RESP,
+                    OrderSettingResp::class.java
+                )
+            }
+            return field
+        }
+        set(value) {
+            field = value
+            AppPreferences.get()
+                .storeValue(PrefKey.Order.ORDER_SETTING_RESP, value)
+        }
 
+    private fun getOrderSettingModel() = orderSettingResp?.model?.firstOrNull()
+
+    private fun getVoidInfo() = getOrderSettingModel()?.listVoid?.firstOrNull()
+
+    fun getVoidList() = getVoidInfo()?.listReasons
+
+    fun getVoidItemById(voidId: Int) = getVoidList()?.find { it?.id == voidId }
+
+    private fun getCompInfo() = getOrderSettingModel()?.listComp?.firstOrNull()
+
+    fun getCompList() = getCompInfo()?.listReasons
+
+    fun getCompItemById(voidId: Int) = getCompList()?.find { it?.id == voidId }
+
+    fun getDiningOptionList() = getOrderSettingModel()?.listDiningOptions
+
+    fun getDiningOptionItem(diningOptionId: Int) =
+        getDiningOptionList()?.find { it?.id == diningOptionId }
+
+    fun getDiningOptionListByGroupId(groupId: Int) =
+        getDiningOptionList()?.filter { it?.groupId == groupId }
+
+    fun getDefaultDiningOptionItem() = getDiningOptionList()?.firstOrNull()
+    //endregion
     //region ## Device Code
     var deviceCodeResp: DeviceCodeResp? = null
         get() {

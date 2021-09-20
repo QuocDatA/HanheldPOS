@@ -1,14 +1,8 @@
 package com.hanheldpos.data.api.pojo.product
 
 import android.os.Parcelable
-import com.example.pos2.repo.order.menu.ModifierStrProduct
-import com.google.gson.annotations.SerializedName
-import com.hanheldpos.data.api.pojo.order.GroupItem
-import com.hanheldpos.data.api.pojo.order.ModifierItemItem
-import com.hanheldpos.data.api.pojo.order.ProductModifierItem
-import com.hanheldpos.data.api.pojo.order.VariantStrProduct
+import com.hanheldpos.data.api.pojo.order.menu.GroupItem
 
-import com.hanheldpos.data.api.pojo.product.*
 import com.hanheldpos.ui.screens.product.adapter.modifier.ModifierSelectedItemModel
 import kotlinx.android.parcel.Parcelize
 

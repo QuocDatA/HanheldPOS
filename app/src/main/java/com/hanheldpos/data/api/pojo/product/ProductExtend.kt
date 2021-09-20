@@ -1,10 +1,10 @@
 package com.hanheldpos.data.api.pojo.product
 
-import com.example.pos2.repo.order.menu.ModifierStrProduct
-import com.example.pos2.repo.order.menu.ModifierStrProductModifier
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.hanheldpos.data.api.pojo.order.*
+import com.hanheldpos.data.api.pojo.order.menu.getModifierItemByListProduct
+import com.hanheldpos.data.api.pojo.order.menu.getProductModifierByListProduct
+import com.hanheldpos.data.api.pojo.order.menu.*
 import java.lang.reflect.Type
 
 /**

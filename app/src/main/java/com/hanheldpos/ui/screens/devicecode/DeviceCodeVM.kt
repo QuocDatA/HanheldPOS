@@ -2,11 +2,12 @@ package com.hanheldpos.ui.screens.devicecode
 
 import android.os.SystemClock
 import androidx.lifecycle.MutableLiveData
-import com.hanheldpos.data.api.pojo.order.OrderMenuResp
+import com.hanheldpos.data.api.pojo.order.menu.OrderMenuResp
+import com.hanheldpos.data.api.pojo.order.settings.OrderSettingResp
 import com.hanheldpos.data.api.pojo.setting.devicecode.DeviceCodeResp
 import com.hanheldpos.data.api.pojo.table.TableResp
 import com.hanheldpos.data.repository.base.BaseRepoCallback
-import com.hanheldpos.data.repository.devicecode.SettingRepo
+import com.hanheldpos.data.repository.settings.SettingRepo
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.ui.base.viewmodel.BaseRepoViewModel
 import java.util.*
@@ -78,6 +79,27 @@ class DeviceCodeVM : BaseRepoViewModel<SettingRepo, DeviceCodeUV>() {
                     onDataFailure(message);
                 }
             });
+
+        repo?.getOrderSetting(
+            userGuid = userGuid,
+            locationGuid = location,
+            callback = object : BaseRepoCallback<OrderSettingResp?>{
+                override fun apiResponse(data: OrderSettingResp?) {
+                    if (data == null || data?.didError == true) {
+                        onDataFailure("Failed to load data");
+                    } else {
+                        DataHelper.orderSettingResp = data;
+
+                        startMappingData();
+                    }
+                }
+
+                override fun showMessage(message: String?) {
+                    onDataFailure(message)
+                }
+            }
+        )
+
         repo?.getPosFloor(
             userGuid = userGuid,
             locationGuid = location,

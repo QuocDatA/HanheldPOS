@@ -1,9 +1,9 @@
 package com.hanheldpos.model.product
 
 import android.os.Parcelable
-import com.example.pos2.repo.order.menu.ModifierStrProduct
-import com.hanheldpos.data.api.pojo.order.ModifierItemItem
-import com.hanheldpos.data.api.pojo.order.VariantStrProduct
+import com.hanheldpos.data.api.pojo.order.menu.ModifierStrProduct
+import com.hanheldpos.data.api.pojo.order.menu.ModifierItemItem
+import com.hanheldpos.data.api.pojo.order.menu.VariantStrProduct
 import com.hanheldpos.ui.screens.product.adapter.modifier.ModifierHeader
 import com.hanheldpos.ui.screens.product.adapter.modifier.ModifierSelectedItemModel
 import kotlinx.android.parcel.Parcelize
