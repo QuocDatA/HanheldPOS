@@ -15,4 +15,9 @@ class CartDataVM : BaseViewModel() {
     val diningOptionLD: LiveData<ListDiningOptionsItem> = Transformations.map(cartModelLD) {
         return@map it?.diningOption ?: DataHelper.getDefaultDiningOptionItem()
     }
+
+    val numberOfCustomer : LiveData<Int> = Transformations.map(cartModelLD) {
+        return@map it?.customerQuantity;
+    }
+
 }

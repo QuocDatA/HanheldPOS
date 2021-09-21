@@ -1,6 +1,7 @@
 package com.hanheldpos.ui.screens.home.table
 
 import android.app.AlertDialog
+import android.os.Bundle
 import android.os.SystemClock
 import android.util.Log
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
@@ -9,14 +10,17 @@ import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.table.FloorItem
 import com.hanheldpos.data.api.pojo.table.FloorTableItem
 import com.hanheldpos.databinding.FragmentTableBinding
+import com.hanheldpos.extension.notifyValueChange
 import com.hanheldpos.model.home.table.TableModeViewType
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
+import com.hanheldpos.ui.screens.cart.CartDataVM
 import com.hanheldpos.ui.screens.home.HomeFragment
 import com.hanheldpos.ui.screens.home.ScreenViewModel
 import com.hanheldpos.ui.screens.home.table.adapter.TableAdapter
 import com.hanheldpos.ui.screens.home.table.adapter.TableAdapterHelper
 import com.hanheldpos.ui.screens.home.table.input.TableInputFragment
+import com.hanheldpos.ui.screens.product.ProductDetailFragment
 
 
 class TableFragment : BaseFragment<FragmentTableBinding, TableVM>(), TableUV {
@@ -29,7 +33,7 @@ class TableFragment : BaseFragment<FragmentTableBinding, TableVM>(), TableUV {
     // ViewModel
     private val dataVM by activityViewModels<TableDataVM>()
     private val screenViewModel by activityViewModels<ScreenViewModel>()
-
+    private val cartDataVM by activityViewModels<CartDataVM>()
     // Dialog Category
     private lateinit var dialogTable: AlertDialog;
 
@@ -113,6 +117,11 @@ class TableFragment : BaseFragment<FragmentTableBinding, TableVM>(), TableUV {
             }
         })
 
+        dataVM.curTableLD.observe(this,{
+            if (it == null)
+                cartDataVM.cartModelLD.value = null
+        })
+
         dataVM.floorItemSelected.observe(this, {
             dataVM.floorTableList.value = dataVM.getTableListByFloor(it)?.toMutableList();
             dataVM.floorTableList.value?.let { it1 -> tableAdapterHelper.submitList(it1) };
@@ -134,13 +143,15 @@ class TableFragment : BaseFragment<FragmentTableBinding, TableVM>(), TableUV {
         navigator.goTo(TableInputFragment.getInstance(listener = object :
             TableInputFragment.TableInputListener {
             override fun onCompleteTable(numberCustomer: Int) {
-
+                cartDataVM.cartModelLD.value?.customerQuantity = numberCustomer;
+                cartDataVM.cartModelLD.notifyValueChange();
                 screenViewModel.showOrderPage();
             }
         }));
     }
     companion object {
         var selectedSort : Int = 0;
+
     }
 
 }

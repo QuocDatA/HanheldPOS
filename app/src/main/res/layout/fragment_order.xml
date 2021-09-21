@@ -117,9 +117,8 @@
                 style="@style/OrderTotalPrice"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="@dimen/_13sdp"
-                android:text="@{tableDataVM.curTableLD.tableName + `-` + cartDataVM.diningOptionLD.title}"
-                app:useFontStyle="normal"
-                />
+                android:text="@{tableDataVM.curTableLD.tableName + `-` + cartDataVM.diningOptionLD.title + ` (` + cartDataVM.numberOfCustomer + `)`}"
+                app:useFontStyle="normal" />
 
             <com.diadiem.pos_components.PTextView
                 style="@style/OrderTotalPrice"
