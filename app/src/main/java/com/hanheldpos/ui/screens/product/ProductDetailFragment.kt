@@ -88,18 +88,15 @@ class ProductDetailFragment(
         }
 
         GlobalScope.launch(Dispatchers.IO) {
-            ExtraData(
-                modifierMap = viewModel.productCompletelLD.value?.productItem?.getModifierList(
-                    orderDataVM.getOrderMenu()!!
-                ),
-                variantStrProductList = viewModel.productCompletelLD.value?.productItem?.getVariantList(orderDataVM.getOrderMenu()!!)
-            ).also {
+            viewModel.productCompletelLD.value?.productItem?.extraData?.let {
                 fragmentMap[OptionPage.Variant] = VariantFragment.getInstance(it);
                 fragmentMap[OptionPage.Modifier] = ModifierFragment.getInstance(it);
                 launch(Dispatchers.Main) {
                     optionsPagerAdapter.submitList(fragmentMap.values);
                 }
             }
+
+
         }
     }
 

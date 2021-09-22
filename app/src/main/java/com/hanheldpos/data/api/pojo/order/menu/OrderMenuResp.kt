@@ -119,9 +119,6 @@ data class ProductItem(
     val combo: String? = null
 ) : Parcelable,Cloneable {
 
-    @IgnoredOnParcel
-    var uiType : ProductModeViewType? = ProductModeViewType.Product;
-
     public override fun clone(): ProductItem {
         return copy()
     }

@@ -52,7 +52,7 @@
                     android:id="@+id/nameProduct"
                     style="@style/ProductDetailTitle"
                     android:layout_marginEnd="@dimen/_10sdp"
-                    android:text="@{viewModel.productCompletelLD.productItem.name}" />
+                    android:text="@{viewModel.productCompletelLD.productItem.text}" />
 
                 <com.diadiem.pos_components.PTextView
                     style="@style/ProductDetailPrice"
@@ -61,13 +61,13 @@
             </LinearLayout>
 
             <com.diadiem.pos_components.PTextView
-                visibleObject="@{viewModel.productCompletelLD.productItem.sKU}"
+                visibleObject="@{viewModel.productCompletelLD.productItem.sku}"
                 style="@style/ProductDetailSku"
                 android:layout_marginVertical="@dimen/_3sdp"
                 android:background="@drawable/bg_food_detail_text"
                 android:paddingHorizontal="@dimen/_8sdp"
                 android:paddingVertical="@dimen/_1sdp"
-                android:text="@{viewModel.productCompletelLD.productItem.sKU}" />
+                android:text="@{viewModel.productCompletelLD.productItem.sku}" />
         </LinearLayout>
 
         <LinearLayout

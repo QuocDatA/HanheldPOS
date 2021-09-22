@@ -8,7 +8,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class ProductCompleteModel(
-    var productItem: ProductItem,
+    var productItem: ProductOrderItem,
     var productDetail: ProductDetailResp? = null,
     var quantity: Int = 1,
     var note : String? = null

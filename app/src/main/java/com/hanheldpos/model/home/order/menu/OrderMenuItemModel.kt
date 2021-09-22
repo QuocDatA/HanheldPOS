@@ -2,6 +2,8 @@ package com.hanheldpos.model.home.order.menu
 
 import android.os.Parcelable
 import com.hanheldpos.model.home.order.menu.MenuType
+import com.hanheldpos.model.product.ExtraData
+import com.hanheldpos.model.product.ProductOrderItem
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 
@@ -16,7 +18,8 @@ data class OrderMenuItemModel(
     var nodeItem: Parcelable? = null,
     var color: String? = null,
 
-) : Parcelable {
+    var childList: MutableList<ProductOrderItem?>? = null,
+    ) : Parcelable {
     var uiType: MenuModeViewType? = MenuModeViewType.Menu;
 }
 

@@ -2,6 +2,8 @@ package com.hanheldpos.model.home.order.menu
 
 
 import com.hanheldpos.data.api.pojo.order.menu.*
+import com.hanheldpos.data.api.pojo.product.toProductOrderItem
+import com.hanheldpos.model.product.ProductOrderItem
 
 object OrderMenuDataMapper {
     lateinit var orderMenuResp: OrderMenuResp
@@ -11,8 +13,8 @@ object OrderMenuDataMapper {
      *  Get Menu Child List of a OrderMenuItem by find in the OrderMenuResp
      *  Note: this should call when an item is click in the OrderMenu list
      */
-    fun OrderMenuItemModel.getChildList(): MutableList<ProductItem?> {
-        var rs = mutableListOf<ProductItem?>()
+    fun OrderMenuItemModel.getChildList(): MutableList<ProductOrderItem?> {
+        var rs = mutableListOf<ProductOrderItem?>()
 
         if (this.nodeItem is ListToHierarchyItem) {
             val listToHierarchyItem = this.nodeItem as ListToHierarchyItem
@@ -20,13 +22,13 @@ object OrderMenuDataMapper {
                 1 -> { // is GroupItem
                     // Find all Product with sGroupItem
                     rs.addAll(
-                        getOrderMenuItemListByGroupGuid(listToHierarchyItem.groupGuid)
+                        getProductOrderItemListByGroupGuid(listToHierarchyItem.groupGuid)
                     )
                 }
                 2 -> { // is Category
                     // Find all product in category
                     rs.addAll(
-                        getOrderMenuItemListByCategoryGuid(listToHierarchyItem.groupGuid)
+                        getProductOrderItemListByCategoryGuid(listToHierarchyItem.groupGuid)
                     )
                 }
             }
@@ -34,13 +36,13 @@ object OrderMenuDataMapper {
             if (this.mappedItem is GroupsItem) {
                 val groupGuid = (this.mappedItem as GroupsItem).id
                 rs.addAll(
-                    getOrderMenuItemListByGroupGuid(groupGuid)
+                    getProductOrderItemListByGroupGuid(groupGuid)
                 )
 
             } else if (this.mappedItem is CategoryItem) {
                 val categoryGuid = (this.mappedItem as CategoryItem).id
                 rs.addAll(
-                    getOrderMenuItemListByCategoryGuid(categoryGuid)
+                    getProductOrderItemListByCategoryGuid(categoryGuid)
                 )
             }
         }
@@ -51,26 +53,26 @@ object OrderMenuDataMapper {
     /**
      * Find all product by @categoryGuid and transforms to OrderMenuItem List
      */
-    private fun getOrderMenuItemListByCategoryGuid(categoryGuid: String?): MutableList<ProductItem?> {
-        val rs: MutableList<ProductItem?> = mutableListOf()
+    private fun getProductOrderItemListByCategoryGuid(categoryGuid: String?): MutableList<ProductOrderItem?> {
+        val rs: MutableList<ProductOrderItem?> = mutableListOf()
 
-        orderMenuResp.getProductWithCategoryGuid(categoryGuid)?.let { rs.addAll(it) };
+        orderMenuResp.getProductWithCategoryGuid(categoryGuid)?.forEach {
+            rs.add(it?.toProductOrderItem(orderMenuResp))
+        };
         return rs
     }
 
     /**
      * Find all product by @groupGuid and transforms to OrderMenuItem List
      */
-    private fun getOrderMenuItemListByGroupGuid(groupGuid: String?): MutableList<ProductItem?> {
-        val rs: MutableList<ProductItem?> = mutableListOf()
+    private fun getProductOrderItemListByGroupGuid(groupGuid: String?): MutableList<ProductOrderItem?> {
+        val rs: MutableList<ProductOrderItem?> = mutableListOf()
 
         //todo(GroupItem): set Group type for product is here
         orderMenuResp.getMenuGroupItemListWithGroupId(groupGuid)?.forEach {
             it?.let { it1 ->
-                orderMenuResp.getProductWithItemGuid(it1.itemGuid)?.toMutableList()?.let { it2 ->
-                    rs.addAll(
-                        it2
-                    )
+                orderMenuResp.getProductWithItemGuid(it1.itemGuid)?.toMutableList()?.forEach { it2 ->
+                    rs.add(it2?.toProductOrderItem(orderMenuResp))
                 }
             }
         }
@@ -96,8 +98,14 @@ object OrderMenuDataMapper {
                 }
             }
         }
+
+        rs.forEach {
+            it.childList = it.getChildList();
+        }
+
         return rs
     }
+
 
     /**
      * Second level

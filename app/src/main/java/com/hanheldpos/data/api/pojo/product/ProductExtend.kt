@@ -1,17 +1,92 @@
 package com.hanheldpos.data.api.pojo.product
 
+import android.annotation.SuppressLint
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.hanheldpos.data.api.ApiConst
 import com.hanheldpos.data.api.pojo.order.menu.getModifierItemByListProduct
 import com.hanheldpos.data.api.pojo.order.menu.getProductModifierByListProduct
 import com.hanheldpos.data.api.pojo.order.menu.*
+import com.hanheldpos.model.UserHelper
+import com.hanheldpos.model.home.order.ProductModeViewType
+import com.hanheldpos.model.image.getImageUrl
+import com.hanheldpos.model.product.ExtraData
+import com.hanheldpos.model.product.ProductOrderItem
 import java.lang.reflect.Type
+
+fun ProductItem.toProductOrderItem(
+    orderMenuResp: OrderMenuResp
+) : ProductOrderItem? {
+    var productOrderItem  = ProductOrderItem();
+    productOrderItem.mappedItem = this
+    if (!this.checkValidProduct()) {
+        return null
+    }
+    productOrderItem.uiType = ProductModeViewType.Product;
+    productOrderItem.color = this.color
+    productOrderItem.id = this.id
+    productOrderItem.text = this.name
+    productOrderItem.sku = this.sKU
+    productOrderItem.description = this.description
+    productOrderItem.price = this.price
+    productOrderItem.comparePrice = this.comparePrice
+    productOrderItem.unitStr = orderMenuResp.getUnitList()?.find {
+        it?.systemUnitId == this.unitType
+    }?.abbreviation
+
+    productOrderItem.img = getImageUrl(orderMenuResp, this.id)
+
+    val extraData = ExtraData()
+    // Get Variant list
+    val variantStrProductList = this.getVariantList(orderMenuResp)
+    if (!variantStrProductList.isNullOrEmpty()) {
+        extraData.variantStrProductList = variantStrProductList
+        productOrderItem.extraData = extraData
+    }
+    // Get Modifier value
+    val modifierList = this.getModifierList(orderMenuResp)
+    if (!modifierList.isNullOrEmpty()) {
+        extraData.modifierMap = modifierList
+        productOrderItem.extraData = extraData
+    }
+    productOrderItem.extraData = extraData
+
+    return productOrderItem;
+}
+
+@SuppressLint("DefaultLocale")
+private fun ProductItem.checkValidProduct(): Boolean {
+    if (this.visible == ApiConst.IN_VISIBLE)
+        return false
+    if (location.isNullOrBlank())
+        return true
+    val upCase = location.toUpperCase()
+    if (upCase == ApiConst.Location.ALL)
+        return true
+    if (upCase == ApiConst.Location.NONE)
+        return false
+    try {
+        locationStrFromProduct(this.location)?.forEach {
+            if (it.locationGuid == UserHelper.getLocationGui()) {
+                return true
+            }
+        }
+    } catch (e: Exception) {
+        e.printStackTrace()
+    }
+    return false
+}
+
+private fun locationStrFromProduct(string: String?): List<LocationItem>? {
+    val listType: Type = object : TypeToken<List<LocationItem>?>() {}.type
+    return Gson().fromJson(string, listType)
+}
 
 /**
  * Variant
  */
 
-fun ProductItem.getVariantList(orderMenuResp: OrderMenuResp): List<VariantStrProduct>? {
+private fun ProductItem.getVariantList(orderMenuResp: OrderMenuResp): List<VariantStrProduct>? {
     if (!this.variants.isNullOrEmpty()) {
         val listType: Type = object : TypeToken<List<VariantStrProduct?>?>() {}.type
         return Gson().fromJson(this.variants, listType)
@@ -23,7 +98,7 @@ fun ProductItem.getVariantList(orderMenuResp: OrderMenuResp): List<VariantStrPro
  * Modifier
  */
 
-fun ProductItem.getModifierList(orderMenuResp: OrderMenuResp): MutableMap<ModifierStrProduct, MutableList<ModifierItemItem>> {
+private fun ProductItem.getModifierList(orderMenuResp: OrderMenuResp): MutableMap<ModifierStrProduct, MutableList<ModifierItemItem>> {
     // TODO: DONE FLOW
 
     val rs: MutableMap<ModifierStrProduct, MutableList<ModifierItemItem>> = mutableMapOf()

@@ -11,7 +11,7 @@
 
         <variable
             name="item"
-            type="com.hanheldpos.data.api.pojo.order.menu.ProductItem" />
+            type="com.hanheldpos.model.product.ProductOrderItem" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -42,7 +42,7 @@
                     android:layout_height="match_parent">
 
                     <com.diadiem.pos_components.PTextView
-                        visibleObject="@{item.sKU}"
+                        visibleObject="@{item.sku}"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_4sdp"
@@ -51,7 +51,7 @@
                         android:layout_marginBottom="@dimen/_4sdp"
                         android:background="@drawable/bg_food_text"
                         android:paddingHorizontal="@dimen/_6sdp"
-                        android:text="@{item.sKU}"
+                        android:text="@{item.sku}"
                         app:useTextColor="color2"
                         app:useTextHeader="h6" />
 
@@ -61,7 +61,7 @@
                         android:layout_centerInParent="true"
                         android:ellipsize="end"
                         android:maxLines="2"
-                        android:text="@{item.name,default=`Product Name`}"
+                        android:text="@{item.text,default=`Product Name`}"
                         android:textAlignment="center"
                         app:useFontStyle="bold"
                         app:useTextColor="color2"

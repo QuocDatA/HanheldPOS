@@ -9,7 +9,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.order.menu.MenusItem
-import com.hanheldpos.data.api.pojo.order.menu.ProductItem
 import com.hanheldpos.data.api.pojo.product.ProductDetailResp
 import com.hanheldpos.data.api.pojo.table.FloorItem
 import com.hanheldpos.databinding.DialogCategoryBinding
@@ -17,6 +16,7 @@ import com.hanheldpos.databinding.FragmentOrderBinding
 import com.hanheldpos.model.home.order.ProductModeViewType
 import com.hanheldpos.model.home.order.menu.OrderMenuItemModel
 import com.hanheldpos.model.product.ProductCompleteModel
+import com.hanheldpos.model.product.ProductOrderItem
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.cart.CartDataVM
@@ -116,7 +116,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
 
         productAdapHelper = OrderProductAdapterHelper(
             callBack = object : OrderProductAdapterHelper.AdapterCallBack {
-                override fun onListSplitCallBack(list: List<ProductItem>) {
+                override fun onListSplitCallBack(list: List<ProductOrderItem>) {
                     GlobalScope.launch(Dispatchers.Main) {
                         productAdapter.submitList(list);
                         productAdapter.notifyDataSetChanged();
@@ -127,8 +127,8 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
         );
 
         productAdapter = OrderProductAdapter(
-            listener = object : BaseItemClickListener<ProductItem> {
-                override fun onItemClick(adapterPosition: Int, item: ProductItem) {
+            listener = object : BaseItemClickListener<ProductOrderItem> {
+                override fun onItemClick(adapterPosition: Int, item: ProductOrderItem) {
                     Log.d("OrderFragment", "Product Selected");
                     if (SystemClock.elapsedRealtime() - viewModel.mLastTimeClick > 1000) {
                         viewModel.mLastTimeClick = SystemClock.elapsedRealtime()
@@ -137,7 +137,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
                                 navigator.goToWithCustomAnimation(
                                     ProductDetailFragment.getInstance(
                                     item = ProductCompleteModel(
-                                        productItem = item.clone(),
+                                        productItem = item,
                                         productDetail = ProductDetailResp()
                                     ),
                                     quantityCanChoose = 5,

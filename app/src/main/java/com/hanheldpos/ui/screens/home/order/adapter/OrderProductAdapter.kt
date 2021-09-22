@@ -11,14 +11,15 @@ import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.order.menu.ProductItem
 import com.hanheldpos.databinding.ItemOrderProductBinding
 import com.hanheldpos.model.home.order.ProductModeViewType
+import com.hanheldpos.model.product.ProductOrderItem
 
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 
 class OrderProductAdapter(
-    private val listener: BaseItemClickListener<ProductItem>
-) : BaseBindingListAdapter<ProductItem>(DiffCallback()) {
+    private val listener: BaseItemClickListener<ProductOrderItem>
+) : BaseBindingListAdapter<ProductOrderItem>(DiffCallback()) {
 
     override fun getItemViewType(position: Int): Int {
         return R.layout.item_order_product;
@@ -27,7 +28,7 @@ class OrderProductAdapter(
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): BaseBindingViewHolder<ProductItem> {
+    ): BaseBindingViewHolder<ProductOrderItem> {
         DataBindingUtil.inflate<ViewDataBinding>(
             LayoutInflater.from(parent.context),
             viewType,
@@ -41,7 +42,7 @@ class OrderProductAdapter(
         }
     }
 
-    override fun onBindViewHolder(holder: BaseBindingViewHolder<ProductItem>, position: Int) {
+    override fun onBindViewHolder(holder: BaseBindingViewHolder<ProductOrderItem>, position: Int) {
         val item = getItem(position);
         holder.bindItem(item);
         if (item.uiType != ProductModeViewType.Empty){
@@ -50,15 +51,15 @@ class OrderProductAdapter(
 
     }
 
-    private class DiffCallback : DiffUtil.ItemCallback<ProductItem>() {
-        override fun areItemsTheSame(oldItem: ProductItem, newItem: ProductItem): Boolean {
+    private class DiffCallback : DiffUtil.ItemCallback<ProductOrderItem>() {
+        override fun areItemsTheSame(oldItem: ProductOrderItem, newItem: ProductOrderItem): Boolean {
             return when(oldItem.uiType){
                 ProductModeViewType.Product-> oldItem.id == newItem.id
                 else-> oldItem.uiType == newItem.uiType;
             }
         }
 
-        override fun areContentsTheSame(oldItem: ProductItem, newItem: ProductItem): Boolean {
+        override fun areContentsTheSame(oldItem: ProductOrderItem, newItem: ProductOrderItem): Boolean {
             return oldItem.id != null &&  newItem.id != null;
         }
 

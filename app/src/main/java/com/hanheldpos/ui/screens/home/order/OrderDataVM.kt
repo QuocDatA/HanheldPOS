@@ -12,6 +12,7 @@ import com.hanheldpos.model.home.order.menu.OrderMenuDataMapper
 import com.hanheldpos.model.home.order.menu.OrderMenuDataMapper.getChildList
 import com.hanheldpos.model.home.order.menu.OrderMenuItemModel
 import com.hanheldpos.model.product.ProductCompleteModel
+import com.hanheldpos.model.product.ProductOrderItem
 import com.hanheldpos.ui.base.viewmodel.BaseRepoViewModel
 import java.text.FieldPosition
 
@@ -48,9 +49,9 @@ class OrderDataVM : BaseRepoViewModel<OrderRepo, OrderUV>() {
     fun getOrderMenu(): OrderMenuResp? {
         return this.orderMenuResp;
     }
-    fun getProductByMenu(menuItem: OrderMenuItemModel): List<ProductItem?>? {
+    fun getProductByMenu(menuItem: OrderMenuItemModel): List<ProductOrderItem?>? {
         /*return OrderMenuDataMapper.getLevel_2(categoryGuid = menuItem.id);*/
-        return menuItem.getChildList();
+        return menuItem.childList;
     }
 
     // Cart
