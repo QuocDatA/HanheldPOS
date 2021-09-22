@@ -9,8 +9,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import com.hanheldpos.R
-import com.hanheldpos.data.api.pojo.product.getModifierList
-import com.hanheldpos.data.api.pojo.product.getVariantList
 import com.hanheldpos.databinding.FragmentProductDetailBinding
 import com.hanheldpos.model.product.ExtraData
 import com.hanheldpos.model.product.ProductCompleteModel

@@ -11,6 +11,7 @@ import com.hanheldpos.model.UserHelper
 import com.hanheldpos.model.home.order.ProductModeViewType
 import com.hanheldpos.model.image.getImageUrl
 import com.hanheldpos.model.product.ExtraData
+import com.hanheldpos.model.product.ProductComboItem
 import com.hanheldpos.model.product.ProductOrderItem
 import java.lang.reflect.Type
 
@@ -50,8 +51,23 @@ fun ProductItem.toProductOrderItem(
         productOrderItem.extraData = extraData
     }
     productOrderItem.extraData = extraData
-
+    //Get Combo list
+    //Get ProductCombo list
+    val productComboList = getProductComboList(combo)
+    if (!productComboList.isNullOrEmpty()) {
+        productOrderItem.productComboList = productComboList
+        productOrderItem.uiType = ProductModeViewType.Combo
+    }
     return productOrderItem;
+}
+
+
+/**
+ * Get ProductCombo list by parse String model from api server
+ */
+private fun getProductComboList(comboStr: String?): MutableList<ProductComboItem> {
+    val listType: Type = object : TypeToken<List<ProductComboItem>?>() {}.type
+    return Gson().fromJson(comboStr, listType)
 }
 
 @SuppressLint("DefaultLocale")

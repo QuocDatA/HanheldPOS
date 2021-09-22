@@ -21,6 +21,9 @@ data class ProductOrderItem(
     var extraData: ExtraData? = null,
     var maxQuantity:Int = -1,
     var uiType : ProductModeViewType? = null,
+    // Combo
+    var productComboList: MutableList<ProductComboItem>? = mutableListOf(),
+    var listAllItemsInCombo: MutableList<ProductOrderItem>? = null,
 ) : Parcelable, Cloneable {
     var color: String? = null;
     fun getProductItem(): ProductItem? {
@@ -30,3 +33,4 @@ data class ProductOrderItem(
         return null
     }
 }
+

@@ -49,7 +49,50 @@ object OrderMenuDataMapper {
         return rs
     }
 
+    /**
+     *  Get Combo List of a Selected Combo by find in the OrderMenuResp
+     *  groupTab = id of group to get, if =0 means get all
+     *  Note: this should call when an item is click in the User selected Combo Type in Combo Group
+     */
+    fun ProductOrderItem.getComboList(groupTab: Int): MutableList<ProductOrderItem> {
+        val rs = mutableListOf<ProductOrderItem>()
+        if (groupTab == 0) {
+            this.productComboList?.map {
+                rs.addAll(getProductOrderItemListByComboGuid(it.comboGuid))
+            }
+        } else {
+            this.productComboList?.map {
+                if (it.id == groupTab) {
+                    rs.addAll(getProductOrderItemListByComboGuid(it.comboGuid))
+                    return@map
+                }
+            }
+        }
+        return rs
+    }
+    /**
+     * Find product list in groups by using @ComboGuid in combo
+     */
+    private fun getProductOrderItemListByComboGuid(comboGuid: String?): MutableList<ProductOrderItem> {
+        val rs: MutableList<ProductOrderItem> = mutableListOf()
 
+        val productIdList = mutableListOf<String>()
+        orderMenuResp.getMenuGroupItemListWithGroupId(comboGuid)?.forEach { it ->
+            //Get product id that enabled in combo hold in menu group
+            productIdList.add(it?.itemGuid!!)
+        }
+
+        productIdList.map {
+            orderMenuResp.getProductWithItemGuid(it)?.forEach { product ->
+                product?.toProductOrderItem(orderMenuResp).let { it1 ->
+                    if (it1 != null) {
+                        rs.add(it1)
+                    }
+                }
+            }
+        }
+        return rs
+    }
     /**
      * Find all product by @categoryGuid and transforms to OrderMenuItem List
      */
@@ -107,24 +150,6 @@ object OrderMenuDataMapper {
     }
 
 
-    /**
-     * Second level
-     *//*
-    fun getLevel_2(
-        item: ListToHierarchyItem,
-        parent: OrderMenuItemModel?
-    ): MutableList<OrderMenuItemModel> {
-        val rs = mutableListOf<OrderMenuItemModel>()
-        item.children?.forEach {
-            it?.let {
-                val orderMenuItemList = getOrderMenuItemList(it, parent)
-                if (!orderMenuItemList.isNullOrEmpty()) {
-                    rs.addAll(orderMenuItemList)
-                }
-            }
-        }
-        return rs
-    }*/
 
 
     /**

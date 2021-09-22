@@ -44,11 +44,6 @@ class OrderDataVM : BaseRepoViewModel<OrderRepo, OrderUV>() {
         orderMenuLevel1Selected.value = orderMenuLevel1.value?.first();
     }
 
-
-
-    fun getOrderMenu(): OrderMenuResp? {
-        return this.orderMenuResp;
-    }
     fun getProductByMenu(menuItem: OrderMenuItemModel): List<ProductOrderItem?>? {
         /*return OrderMenuDataMapper.getLevel_2(categoryGuid = menuItem.id);*/
         return menuItem.childList;
