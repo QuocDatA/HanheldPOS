@@ -4,18 +4,15 @@ import android.app.AlertDialog
 import android.os.SystemClock
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.ViewTreeObserver
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.order.menu.MenusItem
-import com.hanheldpos.data.api.pojo.product.ProductDetailResp
-import com.hanheldpos.data.api.pojo.table.FloorItem
 import com.hanheldpos.databinding.DialogCategoryBinding
 import com.hanheldpos.databinding.FragmentOrderBinding
 import com.hanheldpos.model.home.order.ProductModeViewType
 import com.hanheldpos.model.home.order.menu.OrderMenuItemModel
-import com.hanheldpos.model.product.ProductCompleteModel
+import com.hanheldpos.model.product.ExtraDoneModel
 import com.hanheldpos.model.product.ProductOrderItem
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
@@ -136,17 +133,16 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
                             ProductModeViewType.Product -> {
                                 navigator.goToWithCustomAnimation(
                                     ProductDetailFragment.getInstance(
-                                    item = ProductCompleteModel(
-                                        productItem = item,
-                                        productDetail = ProductDetailResp()
+                                    item = ExtraDoneModel(
+                                        productOrderItem = item,
                                     ),
                                     quantityCanChoose = 5,
                                     listener = object : ProductDetailFragment.ProductDetailListener {
-                                        override fun onAddCart(productComplete: ProductCompleteModel) {
+                                        override fun onAddCart(extraDoneModel: ExtraDoneModel) {
                                             if (SystemClock.elapsedRealtime() - viewModel.mLastTimeClick > 1000){
                                                 viewModel.mLastTimeClick = SystemClock.elapsedRealtime()
-                                                OrderHelper.cart.add(productComplete);
-                                                dataVM.addProductCompleteToCart(productComplete);
+                                                /*OrderHelper.cart.add(productComplete);
+                                                dataVM.addProductCompleteToCart(productComplete);*/
                                             }
                                         }
                                     }
@@ -196,10 +192,15 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
             menuAdapHelper.submitList(it);
         })
 
-        dataVM.orderMenuLevel1Selected.observe(this, {
-            dataVM.getProductByMenu(it)
+        dataVM.orderMenuLevel1Selected.observe(this, { orderMenuItemModel ->
+            dataVM.getProductByMenu(orderMenuItemModel)
                 ?.let { it1->
-                    productAdapHelper.submitList(it1.toMutableList());
+                    val rs : MutableList<ProductOrderItem> = mutableListOf();
+                    it1.forEach {
+
+                        it?.let { it2 -> rs.add(it2) }
+                    }
+                    productAdapHelper.submitList(rs.toMutableList());
                 }
         });
 

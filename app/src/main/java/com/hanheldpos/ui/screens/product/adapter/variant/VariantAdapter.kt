@@ -9,6 +9,7 @@ import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 
 class VariantAdapter(
+    private val level : Int? = 0,
     private val listener : BaseItemClickListener<VariantLayoutItem>
 ) : BaseBindingListAdapter<VariantLayoutItem>(DiffCallback(),listener) {
 
@@ -34,7 +35,7 @@ class VariantAdapter(
                 notifyItemChanged(selectedItem.value)
                 selectedItem.value = position
                 notifyItemChanged(position)
-                listener.onItemClick(position, item)
+
             }
             if (selectedItem.value == position) {
                 isChecked = true
@@ -44,6 +45,7 @@ class VariantAdapter(
                         R.color.color_2
                     )
                 )
+                listener.onItemClick(position, item)
             } else {
                 isChecked = false
                 binding.optionBtn.setTextColor(

@@ -49,6 +49,9 @@ internal fun OrderMenuResp.getMenuGroupItemList() = getModel()?.menusGroupItem
 internal fun OrderMenuResp.getMenuGroupItemListWithGroupId(groupGuid: String?) =
     this.getMenuGroupItemList()?.filter { it?.groupGuid == groupGuid }
 
+internal fun OrderMenuResp.getMenuGroupItemListWithItemId(itemGuid: String?) =
+    this.getMenuGroupItemList()?.filter { it?.itemGuid == itemGuid }
+
 //endregion
 
 //region Product

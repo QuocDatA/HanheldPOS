@@ -2,20 +2,14 @@ package com.hanheldpos.ui.screens.product
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
-import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import com.hanheldpos.R
+import com.hanheldpos.data.api.pojo.order.menu.GroupItem
 import com.hanheldpos.databinding.FragmentProductDetailBinding
-import com.hanheldpos.model.product.ExtraData
-import com.hanheldpos.model.product.ProductCompleteModel
+import com.hanheldpos.model.product.ExtraDoneModel
 import com.hanheldpos.ui.base.fragment.BaseFragment
-import com.hanheldpos.ui.screens.home.HomeFragment
 import com.hanheldpos.ui.screens.home.order.OrderDataVM
-import com.hanheldpos.ui.screens.home.order.OrderHelper
 import com.hanheldpos.ui.screens.product.adapter.OptionsPagerAdapter
 import com.hanheldpos.ui.screens.product.adapter.modifier.ModifierSelectedItemModel
 import com.hanheldpos.ui.screens.product.options.OptionVM
@@ -78,15 +72,14 @@ class ProductDetailFragment(
 
     override fun initData() {
         arguments?.let {
-            val a: ProductCompleteModel? = it.getParcelable(ARG_PRODUCT_DETAIL_FRAGMENT)
+            val a: ExtraDoneModel? = it.getParcelable(ARG_PRODUCT_DETAIL_FRAGMENT)
             val quantityCanChoose: Int = it.getInt(ARG_PRODUCT_DETAIL_QUANTITY)
-            viewModel.productCompletelLD.value = a;
-            viewModel.productDetailLD.value = a?.productDetail;
+            viewModel.extraDoneModel.value = a;
             viewModel.maxQuantity = quantityCanChoose;
         }
 
         GlobalScope.launch(Dispatchers.IO) {
-            viewModel.productCompletelLD.value?.productItem?.extraData?.let {
+            viewModel.extraDoneModel.value?.productOrderItem?.extraData?.let {
                 fragmentMap[OptionPage.Variant] = VariantFragment.getInstance(it);
                 fragmentMap[OptionPage.Modifier] = ModifierFragment.getInstance(it);
                 launch(Dispatchers.Main) {
@@ -103,14 +96,14 @@ class ProductDetailFragment(
     }
 
     interface ProductDetailListener {
-        fun onAddCart(item: ProductCompleteModel)
+        fun onAddCart(item: ExtraDoneModel)
     }
 
     companion object {
         private const val ARG_PRODUCT_DETAIL_FRAGMENT = "ARG_PRODUCT_DETAIL_FRAGMENT"
         private const val ARG_PRODUCT_DETAIL_QUANTITY = "ARG_PRODUCT_DETAIL_QUANTITY"
         fun getInstance(
-            item: ProductCompleteModel,
+            item: ExtraDoneModel,
             quantityCanChoose: Int = -1,
             listener: ProductDetailListener? = null
         ): ProductDetailFragment {
@@ -129,13 +122,17 @@ class ProductDetailFragment(
         navigator.goOneBack();
     }
 
-    override fun onAddCart(item: ProductCompleteModel) {
+    override fun onAddCart(item: ExtraDoneModel) {
         onBack()
         listener?.onAddCart(item);
     }
 
     override fun onModifierItemChange(item: ModifierSelectedItemModel) {
         viewModel.onModifierQuantityChange(item.realItem?.modifier,item);
+    }
+
+    override fun onVariantItemChange(item: GroupItem) {
+        viewModel.onVariantItemChange(item);
     }
 
 

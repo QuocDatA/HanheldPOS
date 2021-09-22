@@ -122,7 +122,7 @@
 
             <com.diadiem.pos_components.PTextView
                 style="@style/OrderTotalPrice"
-                priceView="@{dataVM.productTotalPriceLD}"
+
                 android:layout_centerVertical="true"
                 android:layout_toStartOf="@id/cartBtn" />
 
@@ -149,7 +149,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="@dimen/_2sdp"
-                    android:text="@{String.valueOf(dataVM.productQuantityInCartLD)}"
+                    android:text="@{`0`}"
                     app:useFontStyle="bold"
                     app:useTextColor="color0"
                     app:useTextHeader="h6"

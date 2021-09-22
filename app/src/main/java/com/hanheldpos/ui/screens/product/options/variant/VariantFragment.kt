@@ -1,26 +1,22 @@
 package com.hanheldpos.ui.screens.product.options.variant
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentVariantBinding
 import com.hanheldpos.model.product.ExtraData
-import com.hanheldpos.model.product.ProductCompleteModel
 import com.hanheldpos.model.product.getDefaultVariantProduct
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
-import com.hanheldpos.ui.screens.product.ProductDetailFragment
 import com.hanheldpos.ui.screens.product.adapter.variant.ContainerVariantAdapter
-import com.hanheldpos.ui.screens.product.adapter.variant.VariantAdapter
-import com.hanheldpos.ui.screens.product.adapter.variant.VariantHeader
 import com.hanheldpos.ui.screens.product.adapter.variant.VariantLayoutItem
-import com.hanheldpos.ui.screens.product.options.modifier.ModifierFragment
+import com.hanheldpos.ui.screens.product.options.OptionVM
 
 
-class VariantFragment : BaseFragment<FragmentVariantBinding,VariantVM>(),VariantUV {
+class VariantFragment : BaseFragment<FragmentVariantBinding, VariantVM>(), VariantUV {
+
+    //ViewModel
+    private val optionVM by activityViewModels<OptionVM>();
 
     // Adapter
     private lateinit var containerVariantAdapter: ContainerVariantAdapter;
@@ -41,9 +37,9 @@ class VariantFragment : BaseFragment<FragmentVariantBinding,VariantVM>(),Variant
     override fun initView() {
 
         containerVariantAdapter = ContainerVariantAdapter(
-            listener = object :BaseItemClickListener<VariantLayoutItem>{
-                override fun onItemClick(adapterPosition: Int, item: VariantLayoutItem) {
-
+            listener = object : BaseItemClickListener<String?> {
+                override fun onItemClick(adapterPosition: Int, item: String?) {
+                    viewModel.getGroupItemByGroupName(item)?.let { optionVM.variantItemChange(it) };
                 }
 
             }
@@ -52,7 +48,7 @@ class VariantFragment : BaseFragment<FragmentVariantBinding,VariantVM>(),Variant
         }
 
 
-        viewModel.listVariantHeader.observe(this,{
+        viewModel.listVariantHeader.observe(this, {
             containerVariantAdapter.submitList(it);
             containerVariantAdapter.notifyDataSetChanged();
         });
@@ -61,13 +57,15 @@ class VariantFragment : BaseFragment<FragmentVariantBinding,VariantVM>(),Variant
     override fun initData() {
         arguments?.let {
             val a: ExtraData? = it.getParcelable(ARG_PRODUCT_EXTRA_FRAGMENT)
-            viewModel.listVariantHeader.value = viewModel.initDefaultVariantHeaderList(a?.getDefaultVariantProduct());
+            viewModel.listVariantHeader.value =
+                viewModel.initDefaultVariantHeaderList(a?.getDefaultVariantProduct());
         }
     }
 
     override fun initAction() {
 
     }
+
     companion object {
         private const val ARG_PRODUCT_EXTRA_FRAGMENT = "ARG_PRODUCT_EXTRA_FRAGMENT"
         fun getInstance(

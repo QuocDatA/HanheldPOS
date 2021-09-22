@@ -1,21 +1,19 @@
 package com.hanheldpos.ui.screens.product
 
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import com.hanheldpos.data.api.pojo.product.ProductDetailResp
-import com.hanheldpos.data.api.pojo.product.getPriceByExtra
+import com.hanheldpos.data.api.pojo.order.menu.GroupItem
 import com.hanheldpos.extension.notifyValueChange
-import com.hanheldpos.model.product.ProductCompleteModel
+import com.hanheldpos.model.product.ExtraDoneModel
+import com.hanheldpos.model.product.getPriceByExtra
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
 import com.hanheldpos.ui.screens.product.adapter.modifier.ModifierSelectedItemModel
 
 class ProductDetailVM : BaseUiViewModel<ProductDetailUV>() {
 
-    val productCompletelLD = MutableLiveData<ProductCompleteModel>();
-    val productDetailLD = MutableLiveData<ProductDetailResp?>();
-    val numberQuantity = Transformations.map(productCompletelLD) {
+    val extraDoneModel = MutableLiveData<ExtraDoneModel>();
+    val numberQuantity = Transformations.map(extraDoneModel) {
         return@map it.quantity;
     };
     val totalPriceLD = MutableLiveData(0.0);
@@ -25,10 +23,7 @@ class ProductDetailVM : BaseUiViewModel<ProductDetailUV>() {
 
     fun initLifeCycle(owner: LifecycleOwner) {
         owner.lifecycle.addObserver(this);
-        productCompletelLD.observe(owner,{
-            updateTotalPrice();
-        })
-        productDetailLD.observe(owner,{
+        extraDoneModel.observe(owner,{
             updateTotalPrice();
         })
     }
@@ -39,26 +34,27 @@ class ProductDetailVM : BaseUiViewModel<ProductDetailUV>() {
 
     fun onAddQuantity() {
         if (numberQuantity.value!! < maxQuantity){
-            productCompletelLD.value?.quantity = numberQuantity.value?.plus(1)!!;
-            productCompletelLD.notifyValueChange();
+            extraDoneModel.value?.quantity = numberQuantity.value?.plus(1)!!;
+            extraDoneModel.notifyValueChange();
         }
 
     }
     fun onRemoveQuantity(){
         if (numberQuantity.value!! > 0){
-            productCompletelLD.value?.quantity = numberQuantity.value?.minus(1)!!;
-            productCompletelLD.notifyValueChange();
+            extraDoneModel.value?.quantity = numberQuantity.value?.minus(1)!!;
+            extraDoneModel.notifyValueChange();
         }
     }
 
     fun updateTotalPrice(){
-        totalPriceLD.value =(productCompletelLD.value?.getPriceTotal() ?: 0.0);
+        totalPriceLD.value =(extraDoneModel.value?.getPriceByExtra() ?: 0.0);
     }
 
+    //region Modifier
     fun onModifierQuantityChange(headerKey: String?, item: ModifierSelectedItemModel) {
         if (headerKey == null) return
 
-        var modifierMap = productDetailLD.value?.selectedModifierGroup
+        var modifierMap = extraDoneModel.value?.selectedModifierGroup
         if (modifierMap == null) {
             modifierMap = mutableMapOf()
         }
@@ -76,11 +72,19 @@ class ProductDetailVM : BaseUiViewModel<ProductDetailUV>() {
 
 
         }
-        productDetailLD.value?.selectedModifierGroup = modifierMap
-        productDetailLD.notifyValueChange()
+        extraDoneModel.value?.selectedModifierGroup = modifierMap
+        extraDoneModel.notifyValueChange()
     }
 
+    //endregion
+
+    //region Variant
+    fun onVariantItemChange(item : GroupItem){
+        extraDoneModel.value?.selectedVariant = item;
+        extraDoneModel.notifyValueChange();
+    }
+    //endregion
     fun onAddCart(){
-        uiCallback?.onAddCart(productCompletelLD.value!!);
+        uiCallback?.onAddCart(extraDoneModel.value!!);
     }
 }

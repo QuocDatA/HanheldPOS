@@ -1,37 +1,21 @@
 package com.hanheldpos.ui.screens.home.order
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
-import com.hanheldpos.data.api.pojo.order.*
 import com.hanheldpos.data.api.pojo.order.menu.OrderMenuResp
-import com.hanheldpos.data.api.pojo.order.menu.ProductItem
 import com.hanheldpos.data.repository.order.OrderRepo
-import com.hanheldpos.extension.notifyValueChange
 import com.hanheldpos.model.DataHelper
+import com.hanheldpos.model.cart.CartModel
+import com.hanheldpos.model.cart.order.OrderItemModel
 import com.hanheldpos.model.home.order.menu.OrderMenuDataMapper
-import com.hanheldpos.model.home.order.menu.OrderMenuDataMapper.getChildList
 import com.hanheldpos.model.home.order.menu.OrderMenuItemModel
-import com.hanheldpos.model.product.ProductCompleteModel
 import com.hanheldpos.model.product.ProductOrderItem
 import com.hanheldpos.ui.base.viewmodel.BaseRepoViewModel
-import java.text.FieldPosition
 
 class OrderDataVM : BaseRepoViewModel<OrderRepo, OrderUV>() {
     private var orderMenuResp: OrderMenuResp? = null;
     val orderMenuLevel1 = MutableLiveData<MutableList<OrderMenuItemModel?>>(mutableListOf());
     val orderMenuLevel1Selected = MutableLiveData<OrderMenuItemModel>();
-
-    val productInCartLD = MutableLiveData<MutableList<ProductCompleteModel>?>(mutableListOf())
-    val productQuantityInCartLD = Transformations.map(productInCartLD) {
-        return@map productInCartLD.value?.sumOf {
-            it.quantity
-        } ?: 0
-    }
-    val productTotalPriceLD = Transformations.map(productInCartLD) {
-        return@map productInCartLD.value?.sumOf {
-            it.getPriceTotal()
-        } ?: 0.0
-    }
+    val cartModelLD = MutableLiveData<CartModel>();
 
     fun initData() {
         OrderMenuDataMapper.orderMenuResp = DataHelper.orderMenuResp!!;
@@ -50,14 +34,12 @@ class OrderDataVM : BaseRepoViewModel<OrderRepo, OrderUV>() {
     }
 
     // Cart
-    fun addProductCompleteToCart(item: ProductCompleteModel) {
-        productInCartLD.value?.add(item);
-        productInCartLD.notifyValueChange();
+    fun addProductCompleteToCart(item: OrderItemModel) {
+
     }
 
     fun deleteAllProductCart() {
-        productInCartLD.value?.clear();
-        productInCartLD.notifyValueChange();
+
     }
 
     override fun createRepo(): OrderRepo {

@@ -141,4 +141,13 @@ class VariantVM : BaseUiViewModel<VariantUV>() {
         }
         return rs
     }
+    fun getGroupItemByGroupName(variantStr: String?): GroupItem? {
+        if (variantStr == null) return null
+        variantStrProduct?.group?.forEach {
+            if (it?.groupName == variantStr) {
+                return it
+            }
+        }
+        return null
+    }
 }

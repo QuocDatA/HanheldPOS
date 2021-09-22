@@ -1,23 +1,16 @@
 package com.hanheldpos.ui.screens.product.options.modifier
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentModifierBinding
 import com.hanheldpos.model.product.ExtraData
-import com.hanheldpos.model.product.ProductCompleteModel
 import com.hanheldpos.model.product.getDefaultModifierList
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
-import com.hanheldpos.ui.screens.product.ProductDetailFragment
 import com.hanheldpos.ui.screens.product.adapter.modifier.ContainerModifierAdapter
 import com.hanheldpos.ui.screens.product.adapter.modifier.ModifierSelectedItemModel
 import com.hanheldpos.ui.screens.product.options.OptionVM
-import com.hanheldpos.ui.screens.product.options.variant.VariantFragment
 
 
 class ModifierFragment : BaseFragment<FragmentModifierBinding,ModifierVM>(),ModifierUV {

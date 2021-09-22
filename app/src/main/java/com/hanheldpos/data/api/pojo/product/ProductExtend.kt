@@ -1,6 +1,7 @@
 package com.hanheldpos.data.api.pojo.product
 
 import android.annotation.SuppressLint
+import android.os.Parcelable
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.hanheldpos.data.api.ApiConst
@@ -13,6 +14,9 @@ import com.hanheldpos.model.image.getImageUrl
 import com.hanheldpos.model.product.ExtraData
 import com.hanheldpos.model.product.ProductComboItem
 import com.hanheldpos.model.product.ProductOrderItem
+import com.hanheldpos.ui.screens.product.adapter.modifier.ModifierHeader
+import com.hanheldpos.ui.screens.product.adapter.modifier.ModifierSelectedItemModel
+import kotlinx.android.parcel.Parcelize
 import java.lang.reflect.Type
 
 fun ProductItem.toProductOrderItem(
@@ -182,3 +186,5 @@ private fun modifierStrFromProductModifier(string: String?): List<ModifierStrPro
     val listType: Type = object : TypeToken<List<ModifierStrProductModifier>?>() {}.type
     return Gson().fromJson(string, listType)
 }
+
+

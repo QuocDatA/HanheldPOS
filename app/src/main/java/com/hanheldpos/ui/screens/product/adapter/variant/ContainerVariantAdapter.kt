@@ -1,7 +1,9 @@
 package com.hanheldpos.ui.screens.product.adapter.variant
 
 import androidx.recyclerview.widget.DiffUtil
+import com.diadiem.pos_config.utils.Const
 import com.hanheldpos.R
+import com.hanheldpos.data.api.pojo.order.menu.GroupItem
 import com.hanheldpos.databinding.ItemContainerVarientBinding
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
@@ -9,20 +11,33 @@ import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.screens.product.adapter.GridSpacingItemDecoration
 
 class ContainerVariantAdapter(
-    private val listener: BaseItemClickListener<VariantLayoutItem>
+    private val listener: BaseItemClickListener<String?>
 ) : BaseBindingListAdapter<VariantHeader>(DiffCallback()) {
 
     override fun getItemViewType(position: Int): Int {
         return R.layout.item_container_varient;
     }
 
+    private var level : Int = 0;
+    private var variantSelected : MutableMap<Int,String>? = null;
+
+    override fun submitList(list: MutableList<VariantHeader>?) {
+        this.level = 0;
+        variantSelected = mutableMapOf();
+        super.submitList(list)
+    }
+
     override fun onBindViewHolder(holder: BaseBindingViewHolder<VariantHeader>, position: Int) {
         val item = getItem(position);
         holder.bindItem(item);
         val binding = (holder.binding as ItemContainerVarientBinding);
-        VariantAdapter(listener = object : BaseItemClickListener<VariantLayoutItem> {
+        val itemLevel = ++this.level // Use level to check ordinal of variant string
+        VariantAdapter(
+            level = itemLevel,
+            listener = object : BaseItemClickListener<VariantLayoutItem> {
             override fun onItemClick(adapterPosition: Int, item: VariantLayoutItem) {
-                listener.onItemClick(adapterPosition, item);
+                variantSelected?.set(itemLevel, item.name);
+                listener.onItemClick(adapterPosition, getGroupItemFromVariantSelected());
             }
         }).also {
             binding.containerVariantItem.adapter = it;
@@ -42,5 +57,17 @@ class ContainerVariantAdapter(
             return oldItem == newItem;
         }
 
+    }
+
+    private fun getGroupItemFromVariantSelected() : String?{
+        val rs : MutableList<String> = mutableListOf();
+        for (i in 1..level){
+            if (variantSelected != null && variantSelected?.contains(i) == true)
+            {
+                variantSelected!!.get(i)?.let { rs.add(it) }
+            }
+            else return null;
+        }
+        return rs.joinToString(Const.SymBol.VariantSeparator)
     }
 }

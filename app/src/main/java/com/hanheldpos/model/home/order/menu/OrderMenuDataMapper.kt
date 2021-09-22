@@ -93,6 +93,11 @@ object OrderMenuDataMapper {
         }
         return rs
     }
+    fun getGroupNameFromGroupGuid(groupGuid: String?) =
+        orderMenuResp.getGroupItem(groupGuid)?.groupName
+
+    fun getMenuGroupItemListFromItemGuid(itemGuid: String?) =
+        orderMenuResp.getMenuGroupItemListWithItemId(itemGuid)
     /**
      * Find all product by @categoryGuid and transforms to OrderMenuItem List
      */

@@ -52,22 +52,22 @@
                     android:id="@+id/nameProduct"
                     style="@style/ProductDetailTitle"
                     android:layout_marginEnd="@dimen/_10sdp"
-                    android:text="@{viewModel.productCompletelLD.productItem.text}" />
+                    android:text="@{viewModel.extraDoneModel.getName()}" />
 
                 <com.diadiem.pos_components.PTextView
                     style="@style/ProductDetailPrice"
-                    priceView="@{viewModel.productCompletelLD.productItem.price}"
+                    priceView="@{viewModel.extraDoneModel.getPriceOrderItem()}"
                     />
             </LinearLayout>
 
             <com.diadiem.pos_components.PTextView
-                visibleObject="@{viewModel.productCompletelLD.productItem.sku}"
+                visibleObject="@{viewModel.extraDoneModel.getSku()}"
                 style="@style/ProductDetailSku"
                 android:layout_marginVertical="@dimen/_3sdp"
                 android:background="@drawable/bg_food_detail_text"
                 android:paddingHorizontal="@dimen/_8sdp"
                 android:paddingVertical="@dimen/_1sdp"
-                android:text="@{viewModel.productCompletelLD.productItem.sku}" />
+                android:text="@{viewModel.extraDoneModel.getSku()}" />
         </LinearLayout>
 
         <LinearLayout
