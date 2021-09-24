@@ -47,7 +47,6 @@ class OrderProductAdapter(
         if (item.uiType != ProductModeViewType.Empty){
             holder.binding.root.setOnClickListener { listener.onItemClick(position,item); }
         }
-
     }
 
     private class DiffCallback : DiffUtil.ItemCallback<ProductOrderItem>() {

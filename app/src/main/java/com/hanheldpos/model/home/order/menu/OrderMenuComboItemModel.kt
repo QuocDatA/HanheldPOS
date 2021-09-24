@@ -1,7 +1,9 @@
 package com.hanheldpos.model.home.order.menu
 
 import android.os.Parcelable
+import com.hanheldpos.model.product.ExtraDoneModel
 import com.hanheldpos.model.product.ProductComboItem
+import com.hanheldpos.model.product.ProductOrderItem
 import kotlinx.android.parcel.Parcelize
 import kotlinx.android.parcel.RawValue
 import kotlin.math.max
@@ -65,7 +67,8 @@ data class ComboPickedItemViewModel(
     /**
      * Selected products in combo list of this group
      */
-    var selectedComboItem: OrderMenuItemModel? = null,
+    var selectedComboItem: ProductOrderItem? = null,
+    var extraDoneComboItem : ExtraDoneModel? = null,
 ) : Parcelable {
 
     fun plusQuantity(number: Int = 1) {

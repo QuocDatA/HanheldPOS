@@ -15,6 +15,9 @@ data class CartModel(
     // Number of Customer
     var customerQuantity : Int = 0,
 
+    //order item list of Order
+
+
     //dining option of Order
     var diningOption: ListDiningOptionsItem? = getDefaultDiningOptionItem(),
 ) : Parcelable {}

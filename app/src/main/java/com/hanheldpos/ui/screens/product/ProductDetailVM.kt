@@ -17,7 +17,7 @@ class ProductDetailVM : BaseUiViewModel<ProductDetailUV>() {
         return@map it.quantity;
     };
     val totalPriceLD = MutableLiveData(0.0);
-    //
+
     var maxQuantity = -1;
 
 
@@ -85,6 +85,6 @@ class ProductDetailVM : BaseUiViewModel<ProductDetailUV>() {
     }
     //endregion
     fun onAddCart(){
-        uiCallback?.onAddCart(extraDoneModel.value!!);
+        /*uiCallback?.onAddCart(extraDoneModel.value!!);*/
     }
 }

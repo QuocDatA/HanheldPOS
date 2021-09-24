@@ -206,7 +206,6 @@
             </LinearLayout>
 
             <com.google.android.material.card.MaterialCardView
-                android:onClick="@{v->viewModel.onAddCart()}"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_alignParentEnd="true"
@@ -214,6 +213,7 @@
                 android:clickable="true"
                 android:elevation="0dp"
                 android:focusable="true"
+                android:onClick="@{v->viewModel.onAddCart()}"
                 app:cardCornerRadius="0dp"
                 app:cardElevation="0dp"
                 app:rippleColor="@color/color_2">

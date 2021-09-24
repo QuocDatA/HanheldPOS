@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.hanheldpos.model.home.order.menu.ItemComboGroupManager" />
+
+        <variable
+            name="name"
+            type="String" />
+
+        <variable
+            name="position"
+            type="String" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="@dimen/_7sdp"
+        android:paddingVertical="@dimen/_13sdp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <FrameLayout
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:background="@drawable/bg_outline_circle_fd2b70">
+
+                <com.diadiem.pos_components.PTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@{String.valueOf(position),default=`1`}"
+                    app:useFontStyle="normal"
+                    app:useTextColor="color0"
+                    app:useTextHeader="h5" />
+            </FrameLayout>
+
+            <com.diadiem.pos_components.PTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_7sdp"
+                android:text="@{name,default=`Group PHO`}"
+                app:useFontStyle="normal"
+                app:useTextColor="color4"
+                app:useTextHeader="h6" />
+
+            <com.diadiem.pos_components.PTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_7sdp"
+                app:useTextColor="color6"
+                app:useFontStyle="normal"
+                app:useTextHeader="h6"
+                android:text="@{`( ` + item.requireQuantity() + ` item requied)`,default=`(1 items required)`}"
+                />
+
+        </LinearLayout>
+    </LinearLayout>
+</layout>

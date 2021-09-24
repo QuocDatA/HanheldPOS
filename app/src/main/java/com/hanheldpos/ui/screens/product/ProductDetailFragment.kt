@@ -7,7 +7,9 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.order.menu.GroupItem
 import com.hanheldpos.databinding.FragmentProductDetailBinding
+import com.hanheldpos.model.cart.order.OrderItemModel
 import com.hanheldpos.model.product.ExtraDoneModel
+import com.hanheldpos.model.product.ProductOrderItem
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.home.order.OrderDataVM
 import com.hanheldpos.ui.screens.product.adapter.OptionsPagerAdapter
@@ -72,9 +74,11 @@ class ProductDetailFragment(
 
     override fun initData() {
         arguments?.let {
-            val a: ExtraDoneModel? = it.getParcelable(ARG_PRODUCT_DETAIL_FRAGMENT)
+            val a: ProductOrderItem? = it.getParcelable(ARG_PRODUCT_ITEM_FRAGMENT)
             val quantityCanChoose: Int = it.getInt(ARG_PRODUCT_DETAIL_QUANTITY)
-            viewModel.extraDoneModel.value = a;
+            viewModel.extraDoneModel.value = ExtraDoneModel(
+                productOrderItem = a,
+            );
             viewModel.maxQuantity = quantityCanChoose;
         }
 
@@ -100,10 +104,10 @@ class ProductDetailFragment(
     }
 
     companion object {
-        private const val ARG_PRODUCT_DETAIL_FRAGMENT = "ARG_PRODUCT_DETAIL_FRAGMENT"
+        private const val ARG_PRODUCT_ITEM_FRAGMENT = "ARG_PRODUCT_ITEM_FRAGMENT"
         private const val ARG_PRODUCT_DETAIL_QUANTITY = "ARG_PRODUCT_DETAIL_QUANTITY"
         fun getInstance(
-            item: ExtraDoneModel,
+            item: ProductOrderItem,
             quantityCanChoose: Int = -1,
             listener: ProductDetailListener? = null
         ): ProductDetailFragment {
@@ -111,7 +115,7 @@ class ProductDetailFragment(
                 listener = listener
             ).apply {
                 arguments = Bundle().apply {
-                    putParcelable(ARG_PRODUCT_DETAIL_FRAGMENT, item)
+                    putParcelable(ARG_PRODUCT_ITEM_FRAGMENT, item)
                     putInt(ARG_PRODUCT_DETAIL_QUANTITY, quantityCanChoose)
                 }
             };

@@ -10,6 +10,7 @@ import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.order.menu.MenusItem
 import com.hanheldpos.databinding.DialogCategoryBinding
 import com.hanheldpos.databinding.FragmentOrderBinding
+import com.hanheldpos.model.cart.order.OrderItemModel
 import com.hanheldpos.model.home.order.ProductModeViewType
 import com.hanheldpos.model.home.order.menu.OrderMenuItemModel
 import com.hanheldpos.model.product.ExtraDoneModel
@@ -23,6 +24,7 @@ import com.hanheldpos.ui.screens.home.order.adapter.OrderMenuAdapter
 import com.hanheldpos.ui.screens.home.order.adapter.OrderMenuAdapterHelper
 import com.hanheldpos.ui.screens.home.order.adapter.OrderProductAdapter
 import com.hanheldpos.ui.screens.home.order.adapter.OrderProductAdapterHelper
+import com.hanheldpos.ui.screens.home.order.combo.ComboFragment
 import com.hanheldpos.ui.screens.home.table.TableDataVM
 import com.hanheldpos.ui.screens.product.ProductDetailFragment
 import kotlinx.coroutines.*
@@ -133,20 +135,19 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
                             ProductModeViewType.Product -> {
                                 navigator.goToWithCustomAnimation(
                                     ProductDetailFragment.getInstance(
-                                    item = ExtraDoneModel(
-                                        productOrderItem = item,
-                                    ),
-                                    quantityCanChoose = 5,
-                                    listener = object : ProductDetailFragment.ProductDetailListener {
-                                        override fun onAddCart(extraDoneModel: ExtraDoneModel) {
-                                            if (SystemClock.elapsedRealtime() - viewModel.mLastTimeClick > 1000){
-                                                viewModel.mLastTimeClick = SystemClock.elapsedRealtime()
-                                                /*OrderHelper.cart.add(productComplete);
-                                                dataVM.addProductCompleteToCart(productComplete);*/
+                                        item = item,
+                                        quantityCanChoose = 5,
+                                        listener = object :
+                                            ProductDetailFragment.ProductDetailListener {
+                                            override fun onAddCart(extraDoneModel: ExtraDoneModel) {
+                                                if (SystemClock.elapsedRealtime() - viewModel.mLastTimeClick > 1000) {
+                                                    viewModel.mLastTimeClick = SystemClock.elapsedRealtime()
+                                                    /*OrderHelper.cart.add(productComplete);
+                                                    dataVM.addProductCompleteToCart(productComplete);*/
+                                                }
                                             }
                                         }
-                                    }
-                                ))
+                                    ))
                             }
                             ProductModeViewType.PrevButton -> {
                                 GlobalScope.launch(Dispatchers.IO) {
@@ -158,7 +159,17 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
                                 GlobalScope.launch(Dispatchers.IO) {
                                     productAdapHelper.next();
                                 }
+                            }
+                            ProductModeViewType.Combo -> {
+                                navigator.goToWithCustomAnimation(ComboFragment.getInstance(
+                                    item = item,
+                                    listener = object : ComboFragment.ComboListener {
+                                        override fun onAddToCart(item: OrderItemModel) {
 
+                                        }
+
+                                    }
+                                ));
                             }
                             else -> {
                             }
@@ -194,8 +205,8 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
 
         dataVM.orderMenuLevel1Selected.observe(this, { orderMenuItemModel ->
             dataVM.getProductByMenu(orderMenuItemModel)
-                ?.let { it1->
-                    val rs : MutableList<ProductOrderItem> = mutableListOf();
+                ?.let { it1 ->
+                    val rs: MutableList<ProductOrderItem> = mutableListOf();
                     it1.forEach {
 
                         it?.let { it2 -> rs.add(it2) }
@@ -228,7 +239,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
     }
 
     companion object {
-        var selectedSort : Int = 0;
+        var selectedSort: Int = 0;
     }
 
 }
