@@ -47,7 +47,7 @@ data class ItemComboGroupManager(
     private fun getAllItemQuantity(): Int {
         var total = 0
         listSelectedComboItems.map {
-            total += it?.quantity!!
+            total += it?.extraDoneModel?.quantity!!
         }
         return total
     }
@@ -64,15 +64,16 @@ data class ItemComboGroupManager(
 data class ComboPickedItemViewModel(
     var comboParentId: String? = null,
 
-    var quantity: Int = 1,
+    /*var quantity: Int = 1,*/
     /**
      * Selected products in combo list of this group
      */
     var selectedComboItem: ProductOrderItem? = null,
+    var extraDoneModel: ExtraDoneModel?= null,
 ) : Parcelable {
 
     fun plusQuantity(number: Int = 1) {
-        quantity += number
+        extraDoneModel?.quantity = extraDoneModel?.quantity!!.plus(number);
     }
 }
 

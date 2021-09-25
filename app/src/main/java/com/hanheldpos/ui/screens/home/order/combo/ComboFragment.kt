@@ -7,8 +7,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentComboBinding
 import com.hanheldpos.model.cart.order.OrderItemModel
+import com.hanheldpos.model.home.order.menu.ComboPickedItemViewModel
 import com.hanheldpos.model.product.ExtraDoneModel
 import com.hanheldpos.model.product.ProductOrderItem
+import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.home.order.combo.adapter.ComboGroupAdapter
 import com.hanheldpos.ui.screens.product.ProductDetailFragment
@@ -90,6 +92,18 @@ class ComboFragment(
 
     override fun onBack() {
         navigator.goOneBack();
+    }
+
+    override fun openProductDetail(maxQuantity: Int, item: ComboPickedItemViewModel) {
+        navigator.goToWithCustomAnimation(ProductDetailFragment.getInstance(
+            item = item.selectedComboItem!!.copy(),
+            quantityCanChoose = maxQuantity,
+            listener = object : ProductDetailFragment.ProductDetailListener{
+                override fun onAddCart(itemDone: ExtraDoneModel) {
+                    viewModel.onChooseItemComboSuccess(item.comboParentId,item.apply { extraDoneModel = itemDone });
+                }
+            }
+        ))
     }
 
 }

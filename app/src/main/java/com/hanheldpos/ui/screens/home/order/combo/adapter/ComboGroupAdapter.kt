@@ -39,7 +39,6 @@ class ComboGroupAdapter(
             if (!it.isMaxItemSelected() && groupTurn == null)
             {
                 groupTurn = it.productComboItem?.comboGuid;
-
             }
         }
 

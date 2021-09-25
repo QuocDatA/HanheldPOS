@@ -85,6 +85,6 @@ class ProductDetailVM : BaseUiViewModel<ProductDetailUV>() {
     }
     //endregion
     fun onAddCart(){
-        /*uiCallback?.onAddCart(extraDoneModel.value!!);*/
+        uiCallback?.onAddCart(extraDoneModel.value!!);
     }
 }

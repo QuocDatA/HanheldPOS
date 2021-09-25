@@ -50,13 +50,14 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
             comboGroupList.add(
                 ItemComboGroupManager(
                     productComboItem = it,
+                ).apply {
                     comboDetailAdapter = ComboItemAdapter(
                         listener = object : ComboItemAdapter.ComboItemListener {
                             override fun onComboItemChoose(
                                 action: ComboItemActionType,
                                 item: ComboPickedItemViewModel
                             ) {
-
+                                uiCallback?.openProductDetail(requireQuantity(), item);
                             }
 
                         }
@@ -64,15 +65,15 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
                         (it.id?.let { it1 ->
                             this.submitList(extraDoneModel.value?.productOrderItem?.getComboList(
                                 it1
-                            )?.map {it2->
+                            )?.map { it2 ->
                                 ComboPickedItemViewModel(
-                                    comboParentId =it.comboGuid,
+                                    comboParentId = it.comboGuid,
                                     selectedComboItem = it2
                                 )
                             })
                         })
                     }
-                )
+                }
             )
         }
 
@@ -105,6 +106,18 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
         if (numberQuantity.value!! > 0) {
             extraDoneModel.value?.quantity = numberQuantity.value?.minus(1)!!;
             extraDoneModel.notifyValueChange();
+        }
+    }
+
+    fun onChooseItemComboSuccess(comboParent: String? ,item: ComboPickedItemViewModel) {
+        selectedCombo.value?.data?.let {
+            it.listItemsByGroup?.forEach { it1 ->
+                if (it1?.productComboItem?.comboGuid == comboParent){
+                    it1?.listSelectedComboItems?.add(item)
+                    (it.comboAdapter as ComboGroupAdapter).notifyDataSetChanged()
+                    return;
+                }
+            }
         }
     }
 
