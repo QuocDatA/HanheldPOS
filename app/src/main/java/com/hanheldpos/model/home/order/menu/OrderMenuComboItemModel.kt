@@ -17,13 +17,7 @@ data class OrderMenuComboItemModel(
 
     var comboAdapter: @RawValue Any? = null,
 
-    var comboParentId: String? = null,
-
-    /**
-     * only show combo list when item in cart is focused by user
-     */
-    var isFocusedByUser: Boolean = false,
-
+    var comboParentId : String? = null,
     /**
      *  if this value is <0, mean its list is null
      */
@@ -42,7 +36,12 @@ data class ItemComboGroupManager(
 
     var listSelectedComboItems: MutableList<ComboPickedItemViewModel?> = mutableListOf(),
 
-    var modifiedItem: Int = -1
+    var modifiedItem: Int = -1,
+
+    /**
+     * only show combo list when item in cart is focused by user
+     */
+    var isFocused: Boolean = false,
 ) : Parcelable {
 
     private fun getAllItemQuantity(): Int {
@@ -63,12 +62,13 @@ data class ItemComboGroupManager(
 
 @Parcelize
 data class ComboPickedItemViewModel(
+    var comboParentId: String? = null,
+
     var quantity: Int = 1,
     /**
      * Selected products in combo list of this group
      */
     var selectedComboItem: ProductOrderItem? = null,
-    var extraDoneComboItem : ExtraDoneModel? = null,
 ) : Parcelable {
 
     fun plusQuantity(number: Int = 1) {

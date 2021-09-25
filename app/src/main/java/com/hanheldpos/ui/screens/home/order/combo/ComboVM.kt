@@ -60,7 +60,18 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
                             }
 
                         }
-                    )
+                    ).apply {
+                        (it.id?.let { it1 ->
+                            this.submitList(extraDoneModel.value?.productOrderItem?.getComboList(
+                                it1
+                            )?.map {it2->
+                                ComboPickedItemViewModel(
+                                    comboParentId =it.comboGuid,
+                                    selectedComboItem = it2
+                                )
+                            })
+                        })
+                    }
                 )
             )
         }
@@ -72,7 +83,7 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
                 listItemsByGroup = comboGroupList,
                 comboParentId = comboId,
                 comboAdapter = ComboGroupAdapter().apply {
-                    submitList(comboGroupList);
+                    submitList(comboGroupList as MutableList<ItemComboGroupManager>);
                 }
             )
         )

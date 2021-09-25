@@ -80,10 +80,18 @@
             android:id="@+id/comboGroupAdapter"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_above="@+id/actionBar"
             android:layout_below="@+id/toolbarContainer"
+            android:overScrollMode="never"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:itemCount="3"
             tools:listitem="@layout/item_combo_group" />
+        <include
+            android:id="@+id/dividerActin"
+            layout="@layout/divider_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_1sdp"
+            android:layout_above="@id/actionBar" />
         <RelativeLayout
             android:id="@+id/actionBar"
             android:layout_width="match_parent"
@@ -111,7 +119,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/_13sdp"
-                    android:text="@{String.valueOf(viewModel.numberQuantity)}" />
+                    android:text="@{String.valueOf(viewModel.numberQuantity)}"
+                    app:useTextHeader="h3"
+                    app:useFontStyle="normal"
+                    app:useTextColor="color5"/>
 
                 <ImageView
                     android:id="@+id/btnIncreaseQuantity"

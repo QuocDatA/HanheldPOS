@@ -192,7 +192,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/_13sdp"
-                    android:text="@{String.valueOf(viewModel.numberQuantity)}" />
+                    android:text="@{String.valueOf(viewModel.numberQuantity)}"
+                    app:useTextHeader="h3"
+                    app:useFontStyle="normal"
+                    app:useTextColor="color5"/>
 
                 <ImageView
                     android:id="@+id/btnIncreaseQuantity"
