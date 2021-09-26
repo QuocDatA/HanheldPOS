@@ -49,8 +49,12 @@ class ComboGroupAdapter(
         binding.position = (position + 1).toString();
         binding.name = item.getGroupName();
         binding.item = item;
+
         binding.itemForSelectAdapter.apply {
             adapter = item.comboDetailAdapter as ComboItemAdapter;
+        }
+        binding.itemSelectedAdapter.apply {
+            adapter = item.comboItemSelectedAdapter as ComboItemAdapter;
         }
 
     }

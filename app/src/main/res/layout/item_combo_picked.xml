@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.hanheldpos.model.home.order.menu.ComboPickedItemViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_marginVertical="@dimen/_2sdp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <com.diadiem.pos_components.PTextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@{item.extraDoneModel.description}"
+                app:useFontStyle="normal"
+                app:useTextColor="color4"
+                app:useTextHeader="h6" />
+
+            <com.diadiem.pos_components.PTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="@dimen/_4sdp"
+                android:paddingVertical="@dimen/_2sdp"
+                android:text="CHANGE"
+                android:textAllCaps="true"
+                app:useFontStyle="normal"
+                app:useTextColor="color2"
+                app:useTextHeader="h7"
+                android:background="@drawable/bg_combo_action_remove"/>
+
+            <androidx.legacy.widget.Space
+                android:layout_width="@dimen/_5sdp"
+                android:layout_height="wrap_content" />
+
+            <com.diadiem.pos_components.PTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="@dimen/_15sdp"
+                android:paddingVertical="@dimen/_2sdp"
+                android:text="EDIT"
+                android:textAllCaps="true"
+                app:useFontStyle="normal"
+                app:useTextColor="color2"
+                app:useTextHeader="h7"
+                android:background="@drawable/bg_combo_action_modifier"/>
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+</layout>

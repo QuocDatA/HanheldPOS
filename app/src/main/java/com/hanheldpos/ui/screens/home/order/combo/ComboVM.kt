@@ -52,6 +52,7 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
                     productComboItem = it,
                 ).apply {
                     comboDetailAdapter = ComboItemAdapter(
+                        modeViewType = ComboItemAdapter.ComboItemViewType.ForChoose,
                         listener = object : ComboItemAdapter.ComboItemListener {
                             override fun onComboItemChoose(
                                 action: ComboItemActionType,
@@ -73,6 +74,17 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
                             })
                         })
                     }
+                    comboItemSelectedAdapter = ComboItemAdapter(
+                        modeViewType = ComboItemAdapter.ComboItemViewType.Choosed,
+                        listener = object : ComboItemAdapter.ComboItemListener {
+                            override fun onComboItemChoose(
+                                action: ComboItemActionType,
+                                item: ComboPickedItemViewModel
+                            ) {
+
+                            }
+                        }
+                    )
                 }
             )
         }
@@ -113,7 +125,11 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
         selectedCombo.value?.data?.let {
             it.listItemsByGroup?.forEach { it1 ->
                 if (it1?.productComboItem?.comboGuid == comboParent){
-                    it1?.listSelectedComboItems?.add(item)
+                    it1?.listSelectedComboItems?.let {
+                        it.add(item)
+                        (it1.comboItemSelectedAdapter as ComboItemAdapter).submitList(it);
+                        (it1.comboItemSelectedAdapter as ComboItemAdapter).notifyDataSetChanged();
+                    }
                     (it.comboAdapter as ComboGroupAdapter).notifyDataSetChanged()
                     return;
                 }

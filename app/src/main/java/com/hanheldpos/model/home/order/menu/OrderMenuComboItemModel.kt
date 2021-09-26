@@ -17,7 +17,7 @@ data class OrderMenuComboItemModel(
 
     var comboAdapter: @RawValue Any? = null,
 
-    var comboParentId : String? = null,
+    var comboParentId: String? = null,
     /**
      *  if this value is <0, mean its list is null
      */
@@ -30,9 +30,14 @@ data class OrderMenuComboItemModel(
  */
 @Parcelize
 data class ItemComboGroupManager(
-    var productComboItem: ProductComboItem?=null,
+    var productComboItem: ProductComboItem? = null,
 
     var comboDetailAdapter: @RawValue Any? = null,
+
+    /**
+     * Show list of ComboPickedItem has been add to combo
+     */
+    var comboItemSelectedAdapter: @RawValue Any? = null,
 
     var listSelectedComboItems: MutableList<ComboPickedItemViewModel?> = mutableListOf(),
 
@@ -69,7 +74,7 @@ data class ComboPickedItemViewModel(
      * Selected products in combo list of this group
      */
     var selectedComboItem: ProductOrderItem? = null,
-    var extraDoneModel: ExtraDoneModel?= null,
+    var extraDoneModel: ExtraDoneModel? = null,
 ) : Parcelable {
 
     fun plusQuantity(number: Int = 1) {

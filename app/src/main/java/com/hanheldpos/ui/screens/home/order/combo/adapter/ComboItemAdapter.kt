@@ -8,6 +8,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.DiffUtil
 import com.hanheldpos.R
+import com.hanheldpos.databinding.ItemComboPickedBinding
 import com.hanheldpos.databinding.ItemOrderProductBinding
 import com.hanheldpos.model.home.order.combo.ComboItemActionType
 import com.hanheldpos.model.home.order.menu.ComboPickedItemViewModel
@@ -16,11 +17,19 @@ import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
 
 class ComboItemAdapter(
+    private val modeViewType: ComboItemViewType?= ComboItemViewType.ForChoose,
     private val listener: ComboItemListener
 ) : BaseBindingListAdapter<ComboPickedItemViewModel>(DiffCallback()) {
 
     override fun getItemViewType(position: Int): Int {
-        return R.layout.item_order_product;
+        return when(modeViewType){
+            ComboItemViewType.ForChoose->{
+                R.layout.item_order_product
+            }
+            else->{
+                R.layout.item_combo_picked
+            }
+        } ;
     }
 
     override fun onCreateViewHolder(
@@ -32,10 +41,16 @@ class ComboItemAdapter(
             viewType,
             parent, false
         ).also {
-            Log.d("OrderProductAdapter","RecycleView Height:" + parent.height);
-            val height = parent.resources.getDimension(R.dimen._75sdp);
-            val params : FrameLayout.LayoutParams = FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,height.toInt());
-            (it as ItemOrderProductBinding).layoutMain.layoutParams = params;
+
+            when(modeViewType){
+                ComboItemViewType.ForChoose->{
+                    Log.d("OrderProductAdapter","RecycleView Height:" + parent.height);
+                    val height = parent.resources.getDimension(R.dimen._75sdp);
+                    val params : FrameLayout.LayoutParams = FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,height.toInt());
+                    (it as ItemOrderProductBinding).layoutMain.layoutParams = params;
+                }
+            }
+
             return BaseBindingViewHolder(it)
         }
     }
@@ -45,11 +60,25 @@ class ComboItemAdapter(
         position: Int
     ) {
         val item = getItem(position);
-        val binding = holder.binding as ItemOrderProductBinding;
-        binding.item = item.selectedComboItem;
-        binding.root.setOnClickListener {
-            listener.onComboItemChoose(action = ComboItemActionType.Add,item);
+        when(modeViewType){
+            ComboItemViewType.ForChoose->{
+                val binding = holder.binding as ItemOrderProductBinding;
+                binding.item = item.selectedComboItem;
+                binding.root.setOnClickListener {
+                    listener.onComboItemChoose(action = ComboItemActionType.Add,item);
+                }
+            }
+            ComboItemViewType.Choosed->{
+                val binding = holder.binding as ItemComboPickedBinding;
+                binding.item = item;
+            }
         }
+
+    }
+
+    enum class ComboItemViewType(val value: Int) {
+        ForChoose(1),
+        Choosed(2),
     }
 
     interface ComboItemListener {

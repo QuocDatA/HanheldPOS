@@ -19,17 +19,17 @@
     </data>
 
     <LinearLayout
-        android:focusable="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:focusable="true"
         android:orientation="vertical"
         android:paddingHorizontal="@dimen/_7sdp"
         android:paddingVertical="@dimen/_13sdp">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
+
             android:orientation="horizontal">
 
             <FrameLayout
@@ -47,36 +47,59 @@
                     app:useTextHeader="h5" />
             </FrameLayout>
 
-            <com.diadiem.pos_components.PTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <LinearLayout
                 android:layout_marginStart="@dimen/_7sdp"
-                android:text="@{name,default=`Group PHO`}"
-                app:useFontStyle="normal"
-                app:useTextColor="color4"
-                app:useTextHeader="h6" />
-
-            <com.diadiem.pos_components.PTextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/_7sdp"
-                app:useTextColor="color6"
-                app:useFontStyle="normal"
-                app:useTextHeader="h6"
-                android:text="@{`( ` + item.requireQuantity() + ` item requied)`,default=`(1 items required)`}"
-                />
+                android:orientation="vertical">
+                <LinearLayout
+                    visibleObject="@{item.listSelectedComboItems.size() &lt;= 0}"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+                    <com.diadiem.pos_components.PTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{name,default=`Group PHO`}"
+                        app:useFontStyle="normal"
+                        app:useTextColor="color4"
+                        app:useTextHeader="h6" />
+                    <com.diadiem.pos_components.PTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_7sdp"
+                        android:text="@{`( ` + item.requireQuantity() + ` item requied)`,default=`(1 items required)`}"
+                        app:useFontStyle="normal"
+                        app:useTextColor="color6"
+                        app:useTextHeader="h6" />
+                </LinearLayout>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/itemSelectedAdapter"
+                    visibleObject="@{item.listSelectedComboItems.size() > 0}"
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:overScrollMode="never"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/item_combo_picked" />
+            </LinearLayout>
+
         </LinearLayout>
+
+
+
         <androidx.recyclerview.widget.RecyclerView
-            visibleObject="@{item.isFocused}"
-            android:overScrollMode="never"
             android:layout_marginTop="@dimen/_10sdp"
             android:id="@+id/itemForSelectAdapter"
+            visibleObject="@{item.isFocused}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:overScrollMode="never"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:spanCount="4"
             tools:itemCount="10"
-            tools:listitem="@layout/item_order_product"
-            />
+            tools:listitem="@layout/item_order_product" />
     </LinearLayout>
 </layout>

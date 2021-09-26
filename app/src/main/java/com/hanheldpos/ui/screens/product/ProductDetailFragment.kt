@@ -128,6 +128,7 @@ class ProductDetailFragment(
 
     override fun onAddCart(item: ExtraDoneModel) {
         onBack()
+        if (item.quantity > 0)
         listener?.onAddCart(item);
     }
 
