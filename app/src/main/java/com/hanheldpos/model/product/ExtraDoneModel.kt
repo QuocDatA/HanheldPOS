@@ -45,6 +45,21 @@ data class ExtraDoneModel(
 
         return rs
     }
+
+    fun getModifierStr(): String? {
+        return getModifierStr(Const.SymBol.CommaSeparator)
+    }
+
+    fun getModifierStr(separator: String) : String? {
+        var rs: MutableList<String> = mutableListOf()
+
+        selectedModifierGroup?.forEach { entry ->
+            val modifier : String = entry.key +  if (!entry.value.isNullOrEmpty() && entry.value?.sumOf { it.quantity }!! > 1) " (${entry.value?.sumOf { it.quantity }})" else ""
+            rs.add(modifier)
+        }
+        return rs.joinToString(separator = "${separator} ");
+    }
+
     fun getProductGuid(): String? {
         return productOrderItem?.getProductItem()?.id
     }

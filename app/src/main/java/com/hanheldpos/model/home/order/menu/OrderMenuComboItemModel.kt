@@ -75,7 +75,7 @@ data class ComboPickedItemViewModel(
      */
     var selectedComboItem: ProductOrderItem? = null,
     var extraDoneModel: ExtraDoneModel? = null,
-) : Parcelable {
+) : Parcelable,Cloneable {
 
     fun plusQuantity(number: Int = 1) {
         extraDoneModel?.quantity = extraDoneModel?.quantity!!.plus(number);

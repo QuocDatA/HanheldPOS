@@ -80,7 +80,7 @@ class ProductDetailVM : BaseUiViewModel<ProductDetailUV>() {
 
     //region Variant
     fun onVariantItemChange(item : GroupItem){
-        extraDoneModel.value?.selectedVariant = item;
+        extraDoneModel.value?.selectedVariant = item.copy();
         extraDoneModel.notifyValueChange();
     }
     //endregion

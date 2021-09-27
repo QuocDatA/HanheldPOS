@@ -58,7 +58,7 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
                                 action: ComboItemActionType,
                                 item: ComboPickedItemViewModel
                             ) {
-                                uiCallback?.openProductDetail(requireQuantity(), item);
+                                uiCallback?.openProductDetail(requireQuantity(), item.copy());
                             }
 
                         }
