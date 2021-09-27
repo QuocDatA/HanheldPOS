@@ -71,6 +71,12 @@ class ComboItemAdapter(
             ComboItemViewType.Choosed->{
                 val binding = holder.binding as ItemComboPickedBinding;
                 binding.item = item;
+                binding.itemComboModify.setOnClickListener {
+                    listener.onComboItemChoose(action = ComboItemActionType.Modify,item);
+                }
+                binding.itemComboRemove.setOnClickListener {
+                    listener.onComboItemChoose(action = ComboItemActionType.Remove,item);
+                }
             }
         }
 

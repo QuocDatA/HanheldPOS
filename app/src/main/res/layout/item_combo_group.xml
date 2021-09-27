@@ -70,7 +70,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_7sdp"
-                        android:text="@{`( ` + item.requireQuantity() + ` item requied)`,default=`(1 items required)`}"
+                        android:text="@{`( ` + item.requireQuantity() + ` item requied )`,default=`(1 items required)`}"
                         app:useFontStyle="normal"
                         app:useTextColor="color6"
                         app:useTextHeader="h6" />
@@ -84,6 +84,15 @@
                     android:overScrollMode="never"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:listitem="@layout/item_combo_picked" />
+                <com.diadiem.pos_components.PTextView
+                    visibleObject="@{!item.maxItemSelected &amp;&amp; item.listSelectedComboItems.size() > 0}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:useTextHeader="h7"
+                    app:useFontStyle="normal"
+                    android:textColor="#FF0000"
+                    android:text="@{`( ` + item.requireQuantity() + ` item requied )`,default=`(1 items required)`}"
+                    />
             </LinearLayout>
 
         </LinearLayout>

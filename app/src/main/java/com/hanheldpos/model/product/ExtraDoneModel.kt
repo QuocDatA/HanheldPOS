@@ -34,7 +34,7 @@ data class ExtraDoneModel(
     }
 
     fun getVariantStr(): String? {
-        return getVariantStr(Const.SymBol.SplashSeparator)
+        return getVariantStr(Const.SymBol.CommaSeparator)
     }
     fun getVariantStr(separator: String): String? {
         var rs: String? = null
