@@ -58,7 +58,12 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
                                 action: ComboItemActionType,
                                 item: ComboPickedItemViewModel
                             ) {
-                                uiCallback?.openProductDetail(requireQuantity(), item.copy());
+                                when(action){
+                                    ComboItemActionType.Add->{
+                                        uiCallback?.openProductDetail(requireQuantity(), item.copy());
+                                    }
+                                }
+
                             }
 
                         }
@@ -81,6 +86,25 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
                                 action: ComboItemActionType,
                                 item: ComboPickedItemViewModel
                             ) {
+                                when(action){
+                                    ComboItemActionType.Modify->{
+                                        uiCallback?.openProductDetail(requireQuantity(), item);
+                                    }
+                                    ComboItemActionType.Remove->{
+                                        selectedCombo.value?.data?.let {
+                                            it.listItemsByGroup?.forEach { it1 ->
+                                                if (it1?.productComboItem?.comboGuid == item.comboParentId){
+                                                    it1?.listSelectedComboItems?.let {
+                                                        it.remove(item)
+                                                        (it1.comboItemSelectedAdapter as ComboItemAdapter).submitList(it);
+                                                    }
+                                                    (it.comboAdapter as ComboGroupAdapter).notifyDataSetChanged()
+                                                    return;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
 
                             }
                         }
@@ -125,10 +149,19 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
         selectedCombo.value?.data?.let {
             it.listItemsByGroup?.forEach { it1 ->
                 if (it1?.productComboItem?.comboGuid == comboParent){
-                    it1?.listSelectedComboItems?.let {
-                        it.add(item)
+                    /**
+                     * Check for state change or edit
+                     */
+                    if (it1?.listSelectedComboItems!!.contains(item)){
+                        it1.listSelectedComboItems.let {
+                            it.set(it.indexOf(item),item);
+                        }
+                    }
+                    else{
+                        it1.listSelectedComboItems.add(item)
+                    }
+                    it1.listSelectedComboItems.let {
                         (it1.comboItemSelectedAdapter as ComboItemAdapter).submitList(it);
-                        (it1.comboItemSelectedAdapter as ComboItemAdapter).notifyDataSetChanged();
                     }
                     (it.comboAdapter as ComboGroupAdapter).notifyDataSetChanged()
                     return;
