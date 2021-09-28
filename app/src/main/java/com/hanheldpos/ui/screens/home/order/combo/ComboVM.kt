@@ -1,5 +1,6 @@
 package com.hanheldpos.ui.screens.home.order.combo
 
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
@@ -30,12 +31,17 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
     };
     var maxQuantity = -1;
     val totalPriceLD = MutableLiveData(0.0);
-    val extraDoneItemComboList = MutableLiveData<MutableList<ExtraDoneModel>>(mutableListOf())
 
     /**
      *  List name of selected products in combo list
      */
     val selectedCombo = MutableLiveData<ComboEvent>()
+    val isSelectedComplete : MutableLiveData<Boolean> = Transformations.map(selectedCombo){
+        val result = it.data?.listItemsByGroup?.sumOf {
+            it?.requireQuantity() ?: 0
+        }
+        return@map result == 0;
+    } as MutableLiveData<Boolean>
 
     fun initLifeCycle(owner: LifecycleOwner) {
         owner.lifecycle.addObserver(this);
@@ -99,10 +105,12 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
                                                         (it1.comboItemSelectedAdapter as ComboItemAdapter).submitList(it);
                                                     }
                                                     (it.comboAdapter as ComboGroupAdapter).notifyDataSetChanged()
+                                                    selectedCombo.notifyValueChange()
                                                     return;
                                                 }
                                             }
                                         }
+
                                     }
                                 }
 
@@ -164,10 +172,12 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
                         (it1.comboItemSelectedAdapter as ComboItemAdapter).submitList(it);
                     }
                     (it.comboAdapter as ComboGroupAdapter).notifyDataSetChanged()
+                    selectedCombo.notifyValueChange()
                     return;
                 }
             }
         }
+
     }
 
     fun onAddCart() {
