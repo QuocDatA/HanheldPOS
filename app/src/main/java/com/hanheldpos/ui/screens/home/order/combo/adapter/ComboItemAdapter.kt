@@ -96,7 +96,7 @@ class ComboItemAdapter(
             oldItem: ComboPickedItemViewModel,
             newItem: ComboPickedItemViewModel
         ): Boolean {
-            return false;
+            return oldItem == newItem;
         }
 
         override fun areContentsTheSame(

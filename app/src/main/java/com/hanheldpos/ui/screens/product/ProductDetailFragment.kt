@@ -7,7 +7,6 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.order.menu.GroupItem
 import com.hanheldpos.databinding.FragmentProductDetailBinding
-import com.hanheldpos.model.cart.order.OrderItemModel
 import com.hanheldpos.model.product.ExtraDoneModel
 import com.hanheldpos.model.product.ProductOrderItem
 import com.hanheldpos.ui.base.fragment.BaseFragment
@@ -74,11 +73,13 @@ class ProductDetailFragment(
 
     override fun initData() {
         arguments?.let {
-            val a: ProductOrderItem? = it.getParcelable(ARG_PRODUCT_ITEM_FRAGMENT)
+            val i: ProductOrderItem? = it.getParcelable(ARG_PRODUCT_ITEM_FRAGMENT)
+            val a: ExtraDoneModel? = it.getParcelable(ARG_EXTRAMODEL_FRAGMENT)
             val quantityCanChoose: Int = it.getInt(ARG_PRODUCT_DETAIL_QUANTITY)
-            viewModel.extraDoneModel.value = ExtraDoneModel(
-                productOrderItem = a,
-            );
+            optionVM.extraDoneModel = a;
+            viewModel.extraDoneModel.value = a ?: ExtraDoneModel(
+                productOrderItem = i
+            )
             viewModel.maxQuantity = quantityCanChoose;
         }
 
@@ -104,10 +105,12 @@ class ProductDetailFragment(
     }
 
     companion object {
+        private const val ARG_EXTRAMODEL_FRAGMENT = "ARG_EXTRAMODEL_FRAGMENT"
         private const val ARG_PRODUCT_ITEM_FRAGMENT = "ARG_PRODUCT_ITEM_FRAGMENT"
         private const val ARG_PRODUCT_DETAIL_QUANTITY = "ARG_PRODUCT_DETAIL_QUANTITY"
         fun getInstance(
             item: ProductOrderItem,
+            extra : ExtraDoneModel? = null,
             quantityCanChoose: Int = -1,
             listener: ProductDetailListener? = null
         ): ProductDetailFragment {
@@ -115,7 +118,8 @@ class ProductDetailFragment(
                 listener = listener
             ).apply {
                 arguments = Bundle().apply {
-                    putParcelable(ARG_PRODUCT_ITEM_FRAGMENT, item)
+                    putParcelable(ARG_PRODUCT_ITEM_FRAGMENT,item)
+                    putParcelable(ARG_EXTRAMODEL_FRAGMENT, extra)
                     putInt(ARG_PRODUCT_DETAIL_QUANTITY, quantityCanChoose)
                 }
             };
@@ -133,7 +137,7 @@ class ProductDetailFragment(
     }
 
     override fun onModifierItemChange(item: ModifierSelectedItemModel) {
-        viewModel.onModifierQuantityChange(item.realItem?.modifier,item);
+        viewModel.onModifierQuantityChange(item.realItem?.modifier,item, optionVM.extraDoneModel != null);
     }
 
     override fun onVariantItemChange(item: GroupItem) {

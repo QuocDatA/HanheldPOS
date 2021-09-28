@@ -71,7 +71,7 @@ class ComboGroupAdapter(
             oldItem: ItemComboGroupManager,
             newItem: ItemComboGroupManager
         ): Boolean {
-            return oldItem == newItem;
+            return false;
         }
 
     }

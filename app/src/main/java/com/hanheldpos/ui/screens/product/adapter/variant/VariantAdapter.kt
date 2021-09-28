@@ -15,7 +15,7 @@ class VariantAdapter(
 
     data class SelectedItem(var value: Int = 0)
 
-    private val selectedItem: SelectedItem = SelectedItem(0)
+    val selectedItem: SelectedItem = SelectedItem(0)
 
     override fun getItemViewType(position: Int): Int {
         return R.layout.item_variant;

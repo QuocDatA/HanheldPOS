@@ -37,6 +37,7 @@ class VariantFragment : BaseFragment<FragmentVariantBinding, VariantVM>(), Varia
     override fun initView() {
 
         containerVariantAdapter = ContainerVariantAdapter(
+            itemSelected = optionVM.extraDoneModel?.selectedVariant,
             listener = object : BaseItemClickListener<String?> {
                 override fun onItemClick(adapterPosition: Int, item: String?) {
                     viewModel.getGroupItemByGroupName(item)?.let { optionVM.variantItemChange(it) };
@@ -46,7 +47,6 @@ class VariantFragment : BaseFragment<FragmentVariantBinding, VariantVM>(), Varia
         ).also {
             binding.containerVariant.adapter = it;
         }
-
 
         viewModel.listVariantHeader.observe(this, {
             containerVariantAdapter.submitList(it);

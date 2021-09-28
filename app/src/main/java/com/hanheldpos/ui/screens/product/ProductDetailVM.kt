@@ -51,7 +51,7 @@ class ProductDetailVM : BaseUiViewModel<ProductDetailUV>() {
     }
 
     //region Modifier
-    fun onModifierQuantityChange(headerKey: String?, item: ModifierSelectedItemModel) {
+    fun onModifierQuantityChange(headerKey: String?, item: ModifierSelectedItemModel, isEdit : Boolean? = false) {
         if (headerKey == null) return
 
         var modifierMap = extraDoneModel.value?.selectedModifierGroup
@@ -64,12 +64,16 @@ class ProductDetailVM : BaseUiViewModel<ProductDetailUV>() {
         }
 
         item.realItem?.let {
-            if (item.quantity == 0)
+
+            if (item.quantity == 0){
                 modifierMap[headerKey]?.remove(item)
-            else
+                modifierMap.remove(headerKey);
+            }
+            else{
+                if (isEdit == true && modifierMap[headerKey]?.size!! >= 1)
+                    modifierMap[headerKey]?.clear()
                 modifierMap[headerKey]?.add(item)
-
-
+            }
 
         }
         extraDoneModel.value?.selectedModifierGroup = modifierMap

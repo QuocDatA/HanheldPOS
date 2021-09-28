@@ -40,7 +40,7 @@ data class ExtraDoneModel(
         var rs: String? = null
 
         selectedVariant?.let {
-            rs = it.groupName?.replace(Const.SymBol.VariantSeparator, separator)
+            rs = it.groupName?.replace(Const.SymBol.VariantSeparator, separator + " ")
         }
 
         return rs
@@ -57,7 +57,7 @@ data class ExtraDoneModel(
             val modifier : String = entry.key +  if (!entry.value.isNullOrEmpty() && entry.value?.sumOf { it.quantity }!! > 1) " (${entry.value?.sumOf { it.quantity }})" else ""
             rs.add(modifier)
         }
-        return rs.joinToString(separator = "${separator} ");
+        return rs.joinToString(separator = "$separator ");
     }
 
     fun getProductGuid(): String? {

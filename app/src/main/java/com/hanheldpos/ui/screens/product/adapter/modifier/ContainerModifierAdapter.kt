@@ -3,13 +3,16 @@ package com.hanheldpos.ui.screens.product.adapter.modifier
 import androidx.recyclerview.widget.DiffUtil
 import com.hanheldpos.R
 import com.hanheldpos.databinding.ItemContainerModifierBinding
+import com.hanheldpos.extension.mergeList
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.screens.product.adapter.GridSpacingItemDecoration
 import com.hanheldpos.ui.screens.product.adapter.variant.ContainerVariantAdapter
+import kotlinx.coroutines.flow.merge
 
 class ContainerModifierAdapter(
+    private val itemSeleted : List<ModifierSelectedItemModel>? = null,
     private val listener : BaseItemClickListener<ModifierSelectedItemModel>
     ) : BaseBindingListAdapter<ModifierHeader>(DiffCallback()) {
 
@@ -25,12 +28,27 @@ class ContainerModifierAdapter(
             override fun onItemClick(adapterPosition: Int, item: ModifierSelectedItemModel) {
                 listener.onItemClick(adapterPosition,item);
             }
-
-        }).also {
-            binding.containerModifierItem.adapter = it;
+        }).also { modifierAdapter ->
+            binding.containerModifierItem.adapter = modifierAdapter;
             binding.containerModifierItem.addItemDecoration(GridSpacingItemDecoration(2, 20, false));
-            it.submitList(item.childList);
-            it.notifyDataSetChanged()
+            /**
+             * Restore option choose
+            * */
+            var list = item.childList;
+            itemSeleted?.forEach {it1->
+                run lit@{
+                    list?.forEach { it2->
+                        if (it1.realItem?.id == it2.realItem?.id)
+                        {
+                            it2.quantity = it1.quantity;
+                            return@lit
+                        }
+                    }
+                }
+            }
+
+            modifierAdapter.submitList(item.childList);
+            modifierAdapter.notifyDataSetChanged()
         }
     }
 

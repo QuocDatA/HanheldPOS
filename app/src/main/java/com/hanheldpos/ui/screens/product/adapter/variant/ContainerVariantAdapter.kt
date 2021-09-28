@@ -11,6 +11,7 @@ import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.screens.product.adapter.GridSpacingItemDecoration
 
 class ContainerVariantAdapter(
+    private val itemSelected : GroupItem? = null,
     private val listener: BaseItemClickListener<String?>
 ) : BaseBindingListAdapter<VariantHeader>(DiffCallback()) {
 
@@ -39,11 +40,25 @@ class ContainerVariantAdapter(
                 variantSelected?.set(itemLevel, item.name);
                 listener.onItemClick(adapterPosition, getGroupItemFromVariantSelected());
             }
-        }).also {
-            binding.containerVariantItem.adapter = it;
+        }).also { variantAdapter ->
+            binding.containerVariantItem.adapter = variantAdapter;
             binding.containerVariantItem.addItemDecoration(GridSpacingItemDecoration(2, 20, false))
-            it.submitList(item.childList?.toMutableList());
-            it.notifyDataSetChanged();
+            val list = item.childList?.toMutableList();
+            variantAdapter.submitList(list);
+            /**
+             *  Restore option choosed
+            */
+            itemSelected?.groupName?.split("•")?.get(itemLevel-1).let { name ->
+                run lit@{
+                    list?.forEach {
+                        if (it.name == name){
+                            variantAdapter.selectedItem.value = list.indexOf(it);
+                            return@lit;
+                        }
+                    }
+                }
+            }
+            variantAdapter.notifyDataSetChanged();
         }
     }
 
