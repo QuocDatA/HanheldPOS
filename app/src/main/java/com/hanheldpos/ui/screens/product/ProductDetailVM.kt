@@ -6,7 +6,7 @@ import androidx.lifecycle.Transformations
 import com.hanheldpos.data.api.pojo.order.menu.GroupItem
 import com.hanheldpos.extension.notifyValueChange
 import com.hanheldpos.model.product.ExtraDoneModel
-import com.hanheldpos.model.product.getPriceByExtra
+import com.hanheldpos.model.product.getPriceLineSubTotal
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
 import com.hanheldpos.ui.screens.product.adapter.modifier.ModifierSelectedItemModel
 
@@ -47,7 +47,7 @@ class ProductDetailVM : BaseUiViewModel<ProductDetailUV>() {
     }
 
     fun updateTotalPrice(){
-        totalPriceLD.value =(extraDoneModel.value?.getPriceByExtra() ?: 0.0);
+        totalPriceLD.value =(extraDoneModel.value?.getPriceLineSubTotal() ?: 0.0);
     }
 
     //region Modifier

@@ -87,7 +87,6 @@ data class ExtraDoneModel(
 enum class ItemApplyToType {
     Normal,
     BuyXGetY_BUY,
-
     /**
      * @BuyXGetY_GET the price will be depend on @DiscountValueType and @DiscountValue inside DiscountCondition
      * right now the flow is not complete show we will set the price of the extra if it is this type = 0
@@ -97,30 +96,40 @@ enum class ItemApplyToType {
 }
 
 /**
- * The price return also check the variant price
+ * The price return LineSubTotal
  */
-fun ExtraDoneModel.getPriceByExtra(): Double {
-    return getPriceByExtra(
-        orderItemPrice = this.productOrderItem?.price,
-        itemApplyToType = this.itemApplyToType,
-        quantity = this.quantity,
-        selectedVariant = this.selectedVariant,
+fun ExtraDoneModel.getPriceLineSubTotal(): Double {
+    val subtotal = getPriceSubTotal();
+    return subtotal;
+}
+
+private fun ExtraDoneModel.getPriceModSubTotal(): Double {
+    return getPriceByModifier(
         groupSelectedModifier = this.selectedModifierGroup,
     )
 }
 
-fun getPriceByExtra(
-    orderItemPrice: Double?,
-    itemApplyToType: ItemApplyToType?,
-    quantity: Int,
-    selectedVariant: GroupItem?,
-    groupSelectedModifier: Map<String, Set<ModifierSelectedItemModel>?>?,
-): Double {
-    val price = getPriceByVariant(
-        orderItemPrice = orderItemPrice,
+private fun ExtraDoneModel.getPriceProModSubTotal(): Double {
+    val price = getPriceRegular();
+    return price + getPriceModSubTotal()
+}
+
+private fun ExtraDoneModel.getPriceSubTotal(): Double {
+    return getPriceProModSubTotal() * this.quantity;
+}
+
+private fun ExtraDoneModel.getPriceRegular(): Double {
+    return getPriceByVariant(
+        orderItemPrice = this.productOrderItem?.price,
         itemApplyToType = itemApplyToType,
         selectedVariant = selectedVariant,
     )
+}
+
+private fun getPriceByModifier(
+    groupSelectedModifier: Map<String, Set<ModifierSelectedItemModel>?>?,
+): Double {
+
 
     var totalModifier = 0.0
     groupSelectedModifier?.forEach { it ->
@@ -130,10 +139,10 @@ fun getPriceByExtra(
         }
     }
 
-    return quantity.times(price) + totalModifier
+    return totalModifier
 }
 
-fun getPriceByVariant(
+private fun getPriceByVariant(
     orderItemPrice: Double?,
     itemApplyToType: ItemApplyToType?,
     selectedVariant: GroupItem?,
@@ -150,3 +159,5 @@ fun getPriceByVariant(
 
     return price
 }
+
+

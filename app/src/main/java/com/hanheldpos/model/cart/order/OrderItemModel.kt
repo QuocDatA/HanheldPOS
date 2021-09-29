@@ -6,7 +6,7 @@ import com.hanheldpos.data.repository.GenerateId
 import com.hanheldpos.model.home.order.menu.OrderMenuComboItemModel
 import com.hanheldpos.model.product.ExtraDoneModel
 import com.hanheldpos.model.product.ProductOrderItem
-import com.hanheldpos.model.product.getPriceByExtra
+import com.hanheldpos.model.product.getPriceLineSubTotal
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -121,7 +121,7 @@ data class OrderItemModel(
 
     fun getOrderPrice(): Double? {
         return if (isProductItem()) {
-            extraDone?.getPriceByExtra()
+            extraDone?.getPriceLineSubTotal()
         } else {
             0.0
         }
