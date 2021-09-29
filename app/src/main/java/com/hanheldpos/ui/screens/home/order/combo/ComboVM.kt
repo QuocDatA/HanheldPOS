@@ -69,7 +69,6 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
                                         uiCallback?.openProductDetail(requireQuantity(), item.copy());
                                     }
                                 }
-
                             }
 
                         }
@@ -154,15 +153,25 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
     }
 
     fun onChooseItemComboSuccess(comboParent: String? ,item: ComboPickedItemViewModel) {
-        selectedCombo.value?.data?.let {
-            it.listItemsByGroup?.forEach { it1 ->
+        selectedCombo.value?.data?.let { orderMenuComboItemModel ->
+            orderMenuComboItemModel.listItemsByGroup?.forEach { it1 ->
                 if (it1?.productComboItem?.comboGuid == comboParent){
                     /**
                      * Check for state change or edit
                      */
                     if (it1?.listSelectedComboItems!!.contains(item)){
                         it1.listSelectedComboItems.let {
-                            it.set(it.indexOf(item),item);
+                            /**
+                             * check if item dont have extra
+                            */
+
+                            it[it.indexOf(item)]?.apply {
+                                if (extraDoneModel?.selectedVariant != null || extraDoneModel?.selectedModifierGroup != null)
+                                    extraDoneModel!!.quantity = extraDoneModel!!.quantity.plus(item.extraDoneModel?.quantity ?: 0);
+                                else
+                                    it.set(it.indexOf(item),item);
+                            }
+
                         }
                     }
                     else{
@@ -171,7 +180,7 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
                     it1.listSelectedComboItems.let {
                         (it1.comboItemSelectedAdapter as ComboItemAdapter).submitList(it);
                     }
-                    (it.comboAdapter as ComboGroupAdapter).notifyDataSetChanged()
+                    (orderMenuComboItemModel.comboAdapter as ComboGroupAdapter).notifyDataSetChanged()
                     selectedCombo.notifyValueChange()
                     return;
                 }
