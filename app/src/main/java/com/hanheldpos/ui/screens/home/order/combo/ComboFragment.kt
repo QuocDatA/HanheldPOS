@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentComboBinding
 import com.hanheldpos.model.cart.order.OrderItemModel
+import com.hanheldpos.model.home.order.combo.ComboItemActionType
 import com.hanheldpos.model.home.order.menu.ComboPickedItemViewModel
 import com.hanheldpos.model.product.ExtraDoneModel
 import com.hanheldpos.model.product.ProductOrderItem
@@ -54,7 +55,12 @@ class ComboFragment(
                         context,
                         LinearLayoutManager.VERTICAL
                     ).apply {
-                        setDrawable(ContextCompat.getDrawable(context, R.drawable.divider_vertical)!!)
+                        setDrawable(
+                            ContextCompat.getDrawable(
+                                context,
+                                R.drawable.divider_vertical
+                            )!!
+                        )
                     }
                 )
             }
@@ -94,14 +100,18 @@ class ComboFragment(
         navigator.goOneBack();
     }
 
-    override fun openProductDetail(maxQuantity: Int, item: ComboPickedItemViewModel) {
+    override fun openProductDetail(maxQuantity: Int, item: ComboPickedItemViewModel,action: ComboItemActionType?) {
         navigator.goToWithCustomAnimation(ProductDetailFragment.getInstance(
             item = item.selectedComboItem!!.copy(),
             extra = item.extraDoneModel,
             quantityCanChoose = maxQuantity,
-            listener = object : ProductDetailFragment.ProductDetailListener{
+            listener = object : ProductDetailFragment.ProductDetailListener {
                 override fun onAddCart(itemDone: ExtraDoneModel) {
-                    viewModel.onChooseItemComboSuccess(item.comboParentId,item.apply { extraDoneModel = itemDone });
+                    viewModel.onChooseItemComboSuccess(
+                        item.comboParentId,
+                        item.apply { extraDoneModel = itemDone },
+                        action
+                    );
                 }
             }
         ))

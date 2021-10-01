@@ -7,6 +7,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.order.menu.GroupItem
 import com.hanheldpos.databinding.FragmentProductDetailBinding
+import com.hanheldpos.model.home.order.combo.ComboItemActionType
 import com.hanheldpos.model.product.ExtraDoneModel
 import com.hanheldpos.model.product.ProductOrderItem
 import com.hanheldpos.ui.base.fragment.BaseFragment
@@ -23,13 +24,15 @@ import kotlinx.coroutines.launch
 
 class ProductDetailFragment(
     private val listener: ProductDetailListener? = null
-) : BaseFragment<FragmentProductDetailBinding, ProductDetailVM>(), ProductDetailUV , OptionVM.OptionListener {
+) : BaseFragment<FragmentProductDetailBinding, ProductDetailVM>(), ProductDetailUV,
+    OptionVM.OptionListener {
     enum class OptionPage(val pos: Int, val text: String) {
         Variant(0, "Variant"),
         Modifier(1, "Modifier");
     }
 
     private val fragmentMap: MutableMap<OptionPage, Fragment> = mutableMapOf()
+
     // ViewModel
     private val orderDataVM by activityViewModels<OrderDataVM>();
     private val optionVM by activityViewModels<OptionVM>();
@@ -110,7 +113,7 @@ class ProductDetailFragment(
         private const val ARG_PRODUCT_DETAIL_QUANTITY = "ARG_PRODUCT_DETAIL_QUANTITY"
         fun getInstance(
             item: ProductOrderItem,
-            extra : ExtraDoneModel? = null,
+            extra: ExtraDoneModel? = null,
             quantityCanChoose: Int = -1,
             listener: ProductDetailListener? = null
         ): ProductDetailFragment {
@@ -118,7 +121,7 @@ class ProductDetailFragment(
                 listener = listener
             ).apply {
                 arguments = Bundle().apply {
-                    putParcelable(ARG_PRODUCT_ITEM_FRAGMENT,item)
+                    putParcelable(ARG_PRODUCT_ITEM_FRAGMENT, item)
                     putParcelable(ARG_EXTRAMODEL_FRAGMENT, extra)
                     putInt(ARG_PRODUCT_DETAIL_QUANTITY, quantityCanChoose)
                 }
@@ -133,11 +136,15 @@ class ProductDetailFragment(
     override fun onAddCart(item: ExtraDoneModel) {
         onBack()
         if (item.quantity > 0)
-        listener?.onAddCart(item);
+            listener?.onAddCart(item);
     }
 
     override fun onModifierItemChange(item: ModifierSelectedItemModel) {
-        viewModel.onModifierQuantityChange(item.realItem?.modifier,item, optionVM.extraDoneModel != null);
+        viewModel.onModifierQuantityChange(
+            item.realItem?.modifier,
+            item,
+            optionVM.extraDoneModel != null
+        );
     }
 
     override fun onVariantItemChange(item: GroupItem) {

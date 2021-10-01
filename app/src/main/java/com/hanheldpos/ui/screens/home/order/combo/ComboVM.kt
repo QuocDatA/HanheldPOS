@@ -36,7 +36,7 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
      *  List name of selected products in combo list
      */
     val selectedCombo = MutableLiveData<ComboEvent>()
-    val isSelectedComplete : MutableLiveData<Boolean> = Transformations.map(selectedCombo){
+    val isSelectedComplete: MutableLiveData<Boolean> = Transformations.map(selectedCombo) {
         val result = it.data?.listItemsByGroup?.sumOf {
             it?.requireQuantity() ?: 0
         }
@@ -64,11 +64,7 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
                                 action: ComboItemActionType,
                                 item: ComboPickedItemViewModel
                             ) {
-                                when(action){
-                                    ComboItemActionType.Add->{
-                                        uiCallback?.openProductDetail(requireQuantity(), item.copy());
-                                    }
-                                }
+                                comboItemAction(this@apply, action, item);
                             }
 
                         }
@@ -91,28 +87,7 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
                                 action: ComboItemActionType,
                                 item: ComboPickedItemViewModel
                             ) {
-                                when(action){
-                                    ComboItemActionType.Modify->{
-                                        uiCallback?.openProductDetail(requireQuantity(), item);
-                                    }
-                                    ComboItemActionType.Remove->{
-                                        selectedCombo.value?.data?.let {
-                                            it.listItemsByGroup?.forEach { it1 ->
-                                                if (it1?.productComboItem?.comboGuid == item.comboParentId){
-                                                    it1?.listSelectedComboItems?.let {
-                                                        it.remove(item)
-                                                        (it1.comboItemSelectedAdapter as ComboItemAdapter).submitList(it);
-                                                    }
-                                                    (it.comboAdapter as ComboGroupAdapter).notifyDataSetChanged()
-                                                    selectedCombo.notifyValueChange()
-                                                    return;
-                                                }
-                                            }
-                                        }
-
-                                    }
-                                }
-
+                                comboItemAction(this@apply, action, item);
                             }
                         }
                     )
@@ -134,6 +109,79 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
 
     }
 
+    fun comboItemAction(
+        comboManager: ItemComboGroupManager,
+        action: ComboItemActionType,
+        item: ComboPickedItemViewModel
+    ) {
+        when (action) {
+            ComboItemActionType.Add -> {
+                uiCallback?.openProductDetail(comboManager.requireQuantity(), item.copy(),action);
+            }
+            ComboItemActionType.Modify -> {
+                uiCallback?.openProductDetail(comboManager.requireQuantity(), item,action);
+            }
+            ComboItemActionType.Remove -> {
+                selectedCombo.value?.data?.let {
+                    it.listItemsByGroup?.forEach { it1 ->
+                        if (it1?.productComboItem?.comboGuid == item.comboParentId) {
+                            it1?.listSelectedComboItems?.let {
+                                it.remove(item)
+                                (it1.comboItemSelectedAdapter as ComboItemAdapter).submitList(it);
+                            }
+                            (it.comboAdapter as ComboGroupAdapter).notifyDataSetChanged()
+                            selectedCombo.notifyValueChange()
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    fun onChooseItemComboSuccess(
+        comboParent: String?,
+        item: ComboPickedItemViewModel,
+        action: ComboItemActionType?
+    ) {
+        selectedCombo.value?.data?.let { orderMenuComboItemModel ->
+            orderMenuComboItemModel.listItemsByGroup?.forEach { it1 ->
+                if (it1?.productComboItem?.comboGuid == comboParent) {
+                    when (action) {
+                        ComboItemActionType.Add -> {
+                            /*
+                            * If in combo has the same item -> increase quantity
+                            * */
+                            if (it1?.listSelectedComboItems!!.contains(item)) {
+                                it1.listSelectedComboItems.let {
+                                    it[it.indexOf(item)]?.apply {
+                                        extraDoneModel!!.quantity = extraDoneModel!!.quantity.plus(
+                                            item.extraDoneModel!!.quantity
+                                        );
+                                    }
+                                }
+                            } else
+                                it1.listSelectedComboItems.add(item)
+                        }
+                        ComboItemActionType.Modify -> {
+                            if (it1?.listSelectedComboItems!!.contains(item)) {
+                                it1.listSelectedComboItems.let {
+                                    it.set(it.indexOf(item), item);
+                                }
+                            }
+                        }
+                    }
+                    it1?.listSelectedComboItems.let {
+                        (it1?.comboItemSelectedAdapter as ComboItemAdapter).submitList(it);
+                    }
+                    (orderMenuComboItemModel.comboAdapter as ComboGroupAdapter).notifyDataSetChanged()
+                    selectedCombo.notifyValueChange()
+                    return;
+                }
+            }
+        }
+    }
+
     fun getCombo(): MutableList<ProductComboItem>? {
         return extraDoneModel.value?.productOrderItem?.productComboList;
     }
@@ -152,34 +200,6 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
         }
     }
 
-    fun onChooseItemComboSuccess(comboParent: String? ,item: ComboPickedItemViewModel) {
-        selectedCombo.value?.data?.let { orderMenuComboItemModel ->
-            orderMenuComboItemModel.listItemsByGroup?.forEach { it1 ->
-                if (it1?.productComboItem?.comboGuid == comboParent){
-                    /**
-                     * Check for state change or edit
-                     */
-                    if (it1?.listSelectedComboItems!!.contains(item)){
-                        it1.listSelectedComboItems.let {
-
-                            it.set(it.indexOf(item), item);
-
-                        }
-                    }
-                    else{
-                        it1.listSelectedComboItems.add(item)
-                    }
-                    it1.listSelectedComboItems.let {
-                        (it1.comboItemSelectedAdapter as ComboItemAdapter).submitList(it);
-                    }
-                    (orderMenuComboItemModel.comboAdapter as ComboGroupAdapter).notifyDataSetChanged()
-                    selectedCombo.notifyValueChange()
-                    return;
-                }
-            }
-        }
-
-    }
 
     fun onAddCart() {
         /*uiCallback?.onAddCart(extraDoneModel.value!!);*/
