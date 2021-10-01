@@ -161,16 +161,8 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
                      */
                     if (it1?.listSelectedComboItems!!.contains(item)){
                         it1.listSelectedComboItems.let {
-                            /**
-                             * check if item dont have extra
-                            */
 
-                            it[it.indexOf(item)]?.apply {
-                                if (extraDoneModel?.selectedVariant != null || extraDoneModel?.selectedModifierGroup != null)
-                                    extraDoneModel!!.quantity = extraDoneModel!!.quantity.plus(item.extraDoneModel?.quantity ?: 0);
-                                else
-                                    it.set(it.indexOf(item),item);
-                            }
+                            it.set(it.indexOf(item), item);
 
                         }
                     }

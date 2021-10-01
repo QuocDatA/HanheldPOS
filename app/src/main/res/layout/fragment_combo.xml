@@ -94,7 +94,7 @@
                     android:layout_height="wrap_content"
                     android:overScrollMode="never"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    tools:itemCount="3"
+                    tools:itemCount="1"
                     tools:listitem="@layout/item_combo_group" />
                 <LinearLayout
                     visibleObject="@{viewModel.isSelectedComplete()}"
@@ -143,11 +143,11 @@
                         android:layout_marginVertical="@dimen/_8sdp"
                         android:background="@drawable/bg_outline"
                         android:focusableInTouchMode="true"
-                        android:hint="E.g No onions, cheese"
+                        android:hint="Special Instructions"
                         android:inputType="text"
-                        android:minHeight="@dimen/_34sdp"
+                        android:minHeight="@dimen/_40sdp"
                         android:paddingHorizontal="@dimen/_6sdp"
-                        android:paddingVertical="@dimen/_10sdp"
+                        android:paddingVertical="@dimen/_7sdp"
                         app:ipt_useFontStyle="normal"
                         app:ipt_useHintTextColor="color8"
                         app:ipt_useTextColor="color4"
