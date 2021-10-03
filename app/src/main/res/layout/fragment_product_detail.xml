@@ -178,6 +178,7 @@
                     android:layout_above="@id/actionBar" />
 
                 <RelativeLayout
+                    android:background="@color/color_2"
                     android:id="@+id/actionBar"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_40sdp"

@@ -20,7 +20,7 @@ data class GroupItem(
     val groupName: String? = null,
 
     @field:SerializedName("Price")
-    val price: Double? = null,
+    var price: Double? = null,
 
     @field:SerializedName("Barcode")
     val barcode: String? = null,

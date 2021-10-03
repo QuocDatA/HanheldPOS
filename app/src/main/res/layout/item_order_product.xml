@@ -70,6 +70,7 @@
                         app:useTextHeader="h6" />
 
                     <com.diadiem.pos_components.PTextView
+                        visibleObject="@{item.price != 0}"
                         priceView="@{item.price}"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

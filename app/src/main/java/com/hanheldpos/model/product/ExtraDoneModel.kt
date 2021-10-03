@@ -3,6 +3,7 @@ package com.hanheldpos.model.product
 import android.os.Parcelable
 import com.diadiem.pos_config.utils.Const
 import com.hanheldpos.data.api.pojo.order.menu.GroupItem
+import com.hanheldpos.data.api.pojo.order.settings.ListDiningOptionsItem
 import com.hanheldpos.ui.screens.product.adapter.modifier.ModifierSelectedItemModel
 import kotlinx.parcelize.Parcelize
 
@@ -15,6 +16,8 @@ data class ExtraDoneModel(
     var selectedVariant: GroupItem? = null,
     // String - key is name of the modifier group
     var selectedModifierGroup: MutableMap<String, LinkedHashSet<ModifierSelectedItemModel>?>? = null,
+
+    var diningOptions : ListDiningOptionsItem? = null
 ) : Parcelable {
     fun getName(): String? {
         return productOrderItem?.text

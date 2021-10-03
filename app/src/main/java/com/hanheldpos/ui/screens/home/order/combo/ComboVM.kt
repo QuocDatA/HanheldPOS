@@ -4,6 +4,7 @@ import androidx.constraintlayout.widget.ConstraintSet
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
+import com.hanheldpos.data.api.pojo.product.GroupPriceProductItem
 import com.hanheldpos.data.repository.GenerateId
 import com.hanheldpos.extension.notifyValueChange
 import com.hanheldpos.model.cart.order.OrderItemModel
@@ -52,11 +53,14 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
     ) {
         //Default requirements for selected product combo
         val comboGroupList: MutableList<ItemComboGroupManager?> = mutableListOf()
-        listProductComboItem.map {
+        listProductComboItem.map { productComboItem ->
+            // Get Group price folow combo group
+            val groupPrice = extraDoneModel.value?.productOrderItem?.listGroupPriceInCombo?.find { it.groupGUID == productComboItem.comboGuid };
             comboGroupList.add(
                 ItemComboGroupManager(
-                    productComboItem = it,
+                    productComboItem = productComboItem,
                 ).apply {
+
                     comboDetailAdapter = ComboItemAdapter(
                         modeViewType = ComboItemAdapter.ComboItemViewType.ForChoose,
                         listener = object : ComboItemAdapter.ComboItemListener {
@@ -69,13 +73,29 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
 
                         }
                     ).apply {
-                        (it.id?.let { it1 ->
+                        (productComboItem.id?.let { it1 ->
                             this.submitList(extraDoneModel.value?.productOrderItem?.getComboList(
                                 it1
-                            )?.map { it2 ->
+                            )?.map { productOrderItem ->
+                                // Change price product folow group price
+                                productOrderItem.apply {
+                                    val newProductPrice : GroupPriceProductItem? = groupPrice?.product?.find { it.productGUID == this.id };
+                                    if (newProductPrice != null){
+                                        sku = newProductPrice.productSKU;
+                                        price = newProductPrice.productAmount;
+                                        text = newProductPrice.productName;
+                                        if (newProductPrice.variants.isNotEmpty()){
+                                            extraData?.variantStrProductList?.first()?.group?.forEach {
+                                                 newProductPrice.variants.find { newItem->  newItem.groupID == it?.groupId ?: -1 }.let { findedItem->
+                                                       it?.price = findedItem?.groupAmount;
+                                                 }
+                                            }
+                                        }
+                                    }
+                                }
                                 ComboPickedItemViewModel(
-                                    comboParentId = it.comboGuid,
-                                    selectedComboItem = it2
+                                    comboParentId = productComboItem.comboGuid,
+                                    selectedComboItem = productOrderItem
                                 )
                             })
                         })
@@ -109,7 +129,7 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
 
     }
 
-    fun comboItemAction(
+    private fun comboItemAction(
         comboManager: ItemComboGroupManager,
         action: ComboItemActionType,
         item: ComboPickedItemViewModel

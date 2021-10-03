@@ -62,6 +62,12 @@ fun ProductItem.toProductOrderItem(
         productOrderItem.productComboList = productComboList
         productOrderItem.uiType = ProductModeViewType.Combo
     }
+    if (this.groupPrices != null){
+        productOrderItem.listGroupPriceInCombo = this.groupPrices?.toMutableList();
+    }
+
+
+
     return productOrderItem;
 }
 

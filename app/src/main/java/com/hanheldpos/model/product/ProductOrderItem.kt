@@ -6,6 +6,7 @@ import com.hanheldpos.data.api.pojo.order.menu.ModifierItemItem
 import com.hanheldpos.data.api.pojo.order.menu.ModifierStrProduct
 import com.hanheldpos.data.api.pojo.order.menu.ProductItem
 import com.hanheldpos.data.api.pojo.order.menu.VariantStrProduct
+import com.hanheldpos.data.api.pojo.product.GroupPriceItem
 import com.hanheldpos.model.home.order.ProductModeViewType
 import com.hanheldpos.ui.screens.product.adapter.modifier.ModifierHeader
 import com.hanheldpos.ui.screens.product.adapter.modifier.ModifierSelectedItemModel
@@ -28,7 +29,7 @@ data class ProductOrderItem(
     var uiType : ProductModeViewType? = null,
     // Combo
     var productComboList: MutableList<ProductComboItem>? = mutableListOf(),
-    var listAllItemsInCombo: MutableList<ProductOrderItem>? = null,
+    var listGroupPriceInCombo: MutableList<GroupPriceItem>? = null,
 ) : Parcelable, Cloneable {
     @IgnoredOnParcel
     var color: String? = null;

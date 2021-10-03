@@ -2,6 +2,7 @@ package com.hanheldpos.data.api.pojo.order.menu
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import com.hanheldpos.data.api.pojo.product.GroupPriceItem
 import com.hanheldpos.model.home.order.ProductModeViewType
 import kotlinx.android.parcel.Parcelize
 import kotlinx.parcelize.IgnoredOnParcel
@@ -116,7 +117,11 @@ data class ProductItem(
     val location: String? = null,
 
     @field:SerializedName("Combo")
-    val combo: String? = null
+    val combo: String? = null,
+
+    @field:SerializedName("GroupPrices")
+    val groupPrices: List<GroupPriceItem>? = null,
+
 ) : Parcelable,Cloneable {
 
     public override fun clone(): ProductItem {
