@@ -130,7 +130,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
             listener = object : BaseItemClickListener<ProductOrderItem> {
                 override fun onItemClick(adapterPosition: Int, item: ProductOrderItem) {
                     Log.d("OrderFragment", "Product Selected");
-                    if (SystemClock.elapsedRealtime() - viewModel.mLastTimeClick > 1000) {
+                    if (SystemClock.elapsedRealtime() - viewModel.mLastTimeClick > 500) {
                         viewModel.mLastTimeClick = SystemClock.elapsedRealtime()
                         when (item.uiType) {
                             ProductModeViewType.Product -> {

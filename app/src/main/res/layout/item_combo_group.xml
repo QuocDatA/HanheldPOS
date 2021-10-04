@@ -78,7 +78,6 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/itemSelectedAdapter"
                     visibleObject="@{item.listSelectedComboItems.size() > 0}"
-
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:overScrollMode="never"

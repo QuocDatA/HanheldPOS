@@ -10,9 +10,7 @@ import com.hanheldpos.model.product.ProductComboItem
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
 
-class ComboGroupAdapter(
-
-) : BaseBindingListAdapter<ItemComboGroupManager>(DiffCallback()) {
+class ComboGroupAdapter : BaseBindingListAdapter<ItemComboGroupManager>(DiffCallback()) {
 
     override fun getItemViewType(position: Int): Int {
         return R.layout.item_combo_group;
