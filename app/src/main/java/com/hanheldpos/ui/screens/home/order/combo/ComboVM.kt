@@ -47,7 +47,7 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
     fun initLifeCycle(owner: LifecycleOwner) {
         owner.lifecycle.addObserver(this);
 
-        selectedCombo.observe(owner,{
+        selectedCombo.observe(owner, {
             updateTotalPrice();
         });
     }
@@ -59,7 +59,8 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
         val comboGroupList: MutableList<ItemComboGroupManager?> = mutableListOf()
         listProductComboItem.map { productComboItem ->
             // Get Group price folow combo group
-            val groupPrice = extraDoneModel.value?.productOrderItem?.listGroupPriceInCombo?.find { it.groupGUID == productComboItem.comboGuid };
+            val groupPrice =
+                extraDoneModel.value?.productOrderItem?.listGroupPriceInCombo?.find { it.groupGUID == productComboItem.comboGuid };
             comboGroupList.add(
                 ItemComboGroupManager(
                     productComboItem = productComboItem,
@@ -81,18 +82,26 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
                             )?.map { productOrderItem ->
                                 // Change price product folow group price
                                 productOrderItem.apply {
-                                    val newProductPrice : GroupPriceProductItem? = groupPrice?.product?.find { it.productGUID == this.id };
-                                    if (newProductPrice != null){
+                                    val newProductPrice: GroupPriceProductItem? =
+                                        groupPrice?.product?.find { it.productGUID == this.id };
+                                    if (newProductPrice != null) {
                                         sku = newProductPrice.productSKU;
                                         price = newProductPrice.productAmount;
                                         text = newProductPrice.productName;
-                                        if (newProductPrice.variants.isNotEmpty()){
+                                        if (newProductPrice.variants.isNotEmpty()) {
                                             extraData?.variantStrProductList?.first()?.group?.forEach {
-                                                 newProductPrice.variants.find { newItem->  newItem.groupID == it?.groupId ?: -1 }.let { findedItem->
-                                                       it?.price = findedItem?.groupAmount;
-                                                 }
+                                                newProductPrice.variants.find { newItem -> newItem.groupID == it?.groupId ?: -1 }
+                                                    .let { findedItem ->
+                                                        it?.price = findedItem?.groupAmount;
+                                                    }
+                                            }
+                                        } else {
+                                            extraData?.variantStrProductList?.first()?.group?.forEach {
+                                                it?.price = 0.0;
                                             }
                                         }
+                                    } else {
+                                        price = 0.0;
                                     }
                                 }
                                 ComboPickedItemViewModel(
@@ -143,10 +152,10 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
     ) {
         when (action) {
             ComboItemActionType.Add -> {
-                uiCallback?.openProductDetail(comboManager.requireQuantity(), item.copy(),action);
+                uiCallback?.openProductDetail(comboManager.requireQuantity(), item.copy(), action);
             }
             ComboItemActionType.Modify -> {
-                uiCallback?.openProductDetail(comboManager.requireQuantity(), item,action);
+                uiCallback?.openProductDetail(comboManager.requireQuantity(), item, action);
             }
             ComboItemActionType.Remove -> {
 
@@ -236,7 +245,7 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
         }
     }
 
-    private fun updateTotalPrice(){
+    private fun updateTotalPrice() {
         totalPriceLD.value = orderItemModel.value?.getOrderPrice();
     }
 

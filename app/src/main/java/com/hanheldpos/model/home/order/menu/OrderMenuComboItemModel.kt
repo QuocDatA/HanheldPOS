@@ -76,6 +76,7 @@ data class ComboPickedItemViewModel(
      */
     var selectedComboItem: ProductOrderItem? = null,
     var extraDoneModel: ExtraDoneModel? = null,
+    var isChosen: Boolean = false
 ) : Parcelable,Cloneable {
     @IgnoredOnParcel
     var isChosen: Boolean=false;
