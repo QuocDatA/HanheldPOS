@@ -33,7 +33,7 @@
     <style name="ProductDetailTitle" parent="ProductDetailText">
         <item name="useTextColor">color4</item>
         <item name="useFontStyle">bold</item>
-        <item name="useTextHeader">h4</item>
+        <item name="useTextHeader">h5</item>
     </style>
 
     <style name="ProductDetailPrice" parent="ProductDetailText">

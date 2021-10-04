@@ -60,10 +60,12 @@
                         style="@style/ProductDetailTitle"
                         android:layout_marginEnd="@dimen/_10sdp"
                         android:layout_weight="1"
+                        app:useFontStyle="normal"
                         android:text="@{viewModel.extraDoneModel.getName()}" />
 
                     <com.diadiem.pos_components.PTextView
-                        style="@style/ProductDetailTitle"
+                        style="@style/ProductDetailPrice"
+                        app:useFontStyle="normal"
                         priceView="@{viewModel.extraDoneModel.getPriceOrderItem()}" />
                 </LinearLayout>
 
@@ -227,6 +229,7 @@
             </LinearLayout>
 
             <com.google.android.material.card.MaterialCardView
+                android:minWidth="@dimen/_95sdp"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_alignParentEnd="true"
@@ -255,11 +258,9 @@
                         app:useTextColor="color2"
                         app:useTextHeader="h5" />
 
-                    <androidx.legacy.widget.Space
-                        android:layout_width="@dimen/_20sdp"
-                        android:layout_height="wrap_content" />
-
                     <com.diadiem.pos_components.PTextView
+                        visibleObject="@{viewModel.totalPriceLD > 0}"
+                        android:layout_marginStart="@dimen/_25sdp"
                         style="@style/ProductDetailText"
                         priceView="@{viewModel.totalPriceLD}"
                         app:useFontStyle="bold"
