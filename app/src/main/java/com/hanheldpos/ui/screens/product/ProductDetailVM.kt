@@ -40,7 +40,7 @@ class ProductDetailVM : BaseUiViewModel<ProductDetailUV>() {
 
     }
     fun onRemoveQuantity(){
-        if (numberQuantity.value!! > 0){
+        if (numberQuantity.value!! > 1){
             extraDoneModel.value?.quantity = numberQuantity.value?.minus(1)!!;
             extraDoneModel.notifyValueChange();
         }

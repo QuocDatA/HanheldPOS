@@ -204,7 +204,7 @@
                     android:layout_alignParentStart="true"
                     android:layout_centerVertical="true"
                     android:onClick="@{v -> viewModel.onRemoveQuantity()}"
-                    android:src="@{viewModel.numberQuantity > 0 ? @drawable/ic_remove_primary : @drawable/ic_remove_disable}" />
+                    android:src="@{viewModel.numberQuantity > 1 ? @drawable/ic_remove_primary : @drawable/ic_remove_disable}" />
 
                 <com.diadiem.pos_components.PTextView
                     android:layout_width="wrap_content"
