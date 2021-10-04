@@ -12,7 +12,6 @@ import com.hanheldpos.databinding.ItemComboPickedBinding
 import com.hanheldpos.databinding.ItemOrderProductBinding
 import com.hanheldpos.model.home.order.combo.ComboItemActionType
 import com.hanheldpos.model.home.order.menu.ComboPickedItemViewModel
-import com.hanheldpos.model.product.ProductOrderItem
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
 
@@ -44,6 +43,7 @@ class ComboItemAdapter(
 
             when(modeViewType){
                 ComboItemViewType.ForChoose->{
+
                     Log.d("OrderProductAdapter","RecycleView Height:" + parent.height);
                     val height = parent.resources.getDimension(R.dimen._75sdp);
                     val params : FrameLayout.LayoutParams = FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,height.toInt());
@@ -67,8 +67,9 @@ class ComboItemAdapter(
                 binding.root.setOnClickListener {
                     listener.onComboItemChoose(action = ComboItemActionType.Add,item);
                 }
+                binding.isChosen=item.isChosen;
             }
-            ComboItemViewType.Choosed->{
+            ComboItemViewType.Chosen->{
                 val binding = holder.binding as ItemComboPickedBinding;
                 binding.item = item;
                 binding.itemComboModify.setOnClickListener {
@@ -84,7 +85,7 @@ class ComboItemAdapter(
 
     enum class ComboItemViewType(val value: Int) {
         ForChoose(1),
-        Choosed(2),
+        Chosen(2),
     }
 
     interface ComboItemListener {

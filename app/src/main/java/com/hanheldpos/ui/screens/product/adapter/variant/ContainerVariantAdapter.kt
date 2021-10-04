@@ -43,6 +43,9 @@ class ContainerVariantAdapter(
         }).also { variantAdapter ->
             binding.containerVariantItem.adapter = variantAdapter;
             binding.containerVariantItem.addItemDecoration(GridSpacingItemDecoration(2, 20, false))
+
+            binding.containerVariantItem.setHasFixedSize(true);
+
             val list = item.childList?.toMutableList();
             variantAdapter.submitList(list);
             /**

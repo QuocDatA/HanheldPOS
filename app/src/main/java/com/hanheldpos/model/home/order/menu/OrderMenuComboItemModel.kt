@@ -6,6 +6,7 @@ import com.hanheldpos.model.product.ProductComboItem
 import com.hanheldpos.model.product.ProductOrderItem
 import kotlinx.android.parcel.Parcelize
 import kotlinx.android.parcel.RawValue
+import kotlinx.parcelize.IgnoredOnParcel
 import kotlin.math.max
 
 @Parcelize
@@ -76,9 +77,12 @@ data class ComboPickedItemViewModel(
     var selectedComboItem: ProductOrderItem? = null,
     var extraDoneModel: ExtraDoneModel? = null,
 ) : Parcelable,Cloneable {
+    @IgnoredOnParcel
+    var isChosen: Boolean=false;
 
     fun plusQuantity(number: Int = 1) {
         extraDoneModel?.quantity = extraDoneModel?.quantity!!.plus(number);
+
     }
 }
 

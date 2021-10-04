@@ -1,6 +1,5 @@
 package com.hanheldpos.ui.screens.home.order.combo
 
-import androidx.constraintlayout.widget.ConstraintSet
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
@@ -76,7 +75,7 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
                             }
                         }
                     ).apply {
-                        (productComboItem.id?.let { it1 ->
+                        productComboItem.id?.let { it1 ->
                             this.submitList(extraDoneModel.value?.productOrderItem?.getComboList(
                                 it1
                             )?.map { productOrderItem ->
@@ -101,10 +100,10 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
                                     selectedComboItem = productOrderItem
                                 )
                             })
-                        })
+                        }
                     }
                     comboItemSelectedAdapter = ComboItemAdapter(
-                        modeViewType = ComboItemAdapter.ComboItemViewType.Choosed,
+                        modeViewType = ComboItemAdapter.ComboItemViewType.Chosen,
                         listener = object : ComboItemAdapter.ComboItemListener {
                             override fun onComboItemChoose(
                                 action: ComboItemActionType,
@@ -150,6 +149,14 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
                 uiCallback?.openProductDetail(comboManager.requireQuantity(), item,action);
             }
             ComboItemActionType.Remove -> {
+
+                /**
+                 * Delete green tick when remove item
+                 */
+                toggleItemSelected(comboManager.comboDetailAdapter,item,false);
+
+
+
                 selectedCombo.value?.data?.let {
                     it.listItemsByGroup?.forEach { it1 ->
                         if (it1?.productComboItem?.comboGuid == item.comboParentId) {
@@ -162,19 +169,38 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
                             return;
                         }
                     }
+
                 }
             }
         }
     }
 
+    /**
+     * toggle check icon visible/gone
+     */
+    private fun toggleItemSelected(comboGroup: Any?, currentItem:ComboPickedItemViewModel, value:Boolean){
+        (comboGroup as ComboItemAdapter).let {
+            val currentItem=it.currentList.find { temp->temp.selectedComboItem?.id==currentItem.selectedComboItem?.id };
+            val currentItemIndex= it.currentList.indexOf(currentItem);
+            currentItem?.isChosen=value;
+            it.notifyItemChanged(currentItemIndex);
+        };
+    }
     fun onChooseItemComboSuccess(
         comboParent: String?,
         item: ComboPickedItemViewModel,
         action: ComboItemActionType?
     ) {
+
         selectedCombo.value?.data?.let { orderMenuComboItemModel ->
             orderMenuComboItemModel.listItemsByGroup?.forEach { it1 ->
                 if (it1?.productComboItem?.comboGuid == comboParent) {
+                    /**
+                     * show check icon when add or modify item
+                     */
+                    toggleItemSelected(it1?.comboDetailAdapter,item,true);
+
+
                     when (action) {
                         ComboItemActionType.Add -> {
                             /*

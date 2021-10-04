@@ -11,6 +11,10 @@
         <variable
             name="item"
             type="com.hanheldpos.model.product.ProductOrderItem" />
+
+        <variable
+            name="isChosen"
+            type="Boolean" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -95,6 +99,15 @@
                     android:layout_gravity="center"
                     android:scaleType="centerInside"
                     android:src="@{ item.uiType.pos == 1 ? @drawable/ic_direction_down : @drawable/ic_direction_down_disable }" />
+                <ImageView
+                    visibleObject="@{isChosen}"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_width="@dimen/_12sdp"
+                    android:layout_height="@dimen/_12sdp"
+                    android:layout_marginEnd="@dimen/_4sdp"
+                    android:layout_marginTop="@dimen/_4sdp"
+                    android:src="@drawable/ic_check" />
             </RelativeLayout>
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
