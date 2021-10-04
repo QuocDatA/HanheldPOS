@@ -8,7 +8,6 @@
 
         <import type="com.hanheldpos.model.home.order.ProductModeViewType" />
 
-
         <variable
             name="item"
             type="com.hanheldpos.model.product.ProductOrderItem" />
@@ -30,9 +29,7 @@
             android:id="@+id/layoutMain"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_100sdp">
-
             <RelativeLayout
-
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@{ (item.uiType == ProductModeViewType.Product || item.uiType == ProductModeViewType.Combo) ? @android:color/transparent : @color/_EEEEEE }"

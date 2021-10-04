@@ -18,51 +18,39 @@ data class OrderItemModel(
 
     var productOrderItem: ProductOrderItem? = null,
 
+    var extraDone: ExtraDoneModel? = null,
+
     /**
      * If order item has combo list
      */
-    var productChoosedList: OrderMenuComboItemModel? = null, //Why choosed it must be chosen
-//    var orderMenuAction: OrderMenuAction = OrderMenuAction.Add,
+    var menuComboItem: OrderMenuComboItemModel? = null,
 
     var type: OrderItemType? = null,
 
-    var extraDone: ExtraDoneModel? = null,
 
-) : Parcelable {
+    ) : Parcelable {
 
-    fun isProductItem(): Boolean {
-        return true; /*discountDetailDone == null || discountDetailDone?.flowDiscountDone is ProductComboDoneModal*/
-    }
 
     /**
-    *  Quantity of order
-    */
+     *  Quantity of order
+     */
 
     fun getOrderQuantity(): Int {
-        return if (isProductItem()) {
-            extraDone?.quantity ?: 0
-        } else {
-            /*discountDetailDone?.getOrderQuantity() ?: 0*/
-            0
-        }
+        return extraDone?.quantity ?: 0;
     }
 
     fun plusOrderQuantity(num: Int) {
-        if (isProductItem()) {
-            extraDone?.quantity = (extraDone?.quantity ?: 0).plus(num)
-        }
+        extraDone?.quantity = (extraDone?.quantity ?: 0).plus(num)
     }
 
     fun minusOrderQuantity(num: Int) {
-        if (isProductItem()) {
-            var quantity = (extraDone?.quantity ?: 0);
-            extraDone?.quantity = if (quantity > 0) quantity.minus(num) else 0
-        }
+        var quantity = (extraDone?.quantity ?: 0);
+        extraDone?.quantity = if (quantity > 0) quantity.minus(num) else 0
     }
 
     /**
-    * Get Info of Order
-    */
+     * Get Info of Order
+     */
 
     fun getOrderName(): String? {
         /*var rs = discountDetailDone?.getName()
@@ -73,11 +61,7 @@ data class OrderItemModel(
     }
 
     fun getOrderImage(): String? {
-        return if (isProductItem()) {
-            productOrderItem?.img
-        } else {
-            null
-        }
+        return productOrderItem?.img
     }
 
     fun getOrderSku(): String? {
@@ -106,7 +90,7 @@ data class OrderItemModel(
         return getVariantStr(Const.SymBol.SplashSeparator)
     }
 
-    fun getVariantStr(separator: String): String? {
+    private fun getVariantStr(separator: String): String? {
         return extraDone?.getVariantStr(separator)
     }
 
@@ -114,16 +98,24 @@ data class OrderItemModel(
         return if (extraDone != null) {
             extraDone?.getDescription()
         } else {
-            /*discountDetailDone?.getDescription()*/
             ""
         }
     }
 
     fun getOrderPrice(): Double? {
-        return if (isProductItem()) {
-            extraDone?.getPriceLineSubTotal()
-        } else {
-            0.0
+        var sum : Double = 0.0;
+        // Get price of main product
+        sum = extraDone?.getPriceLineSubTotal() ?: 0.0;
+        /**
+         * get subtotal proce of each item in combo
+        */
+        if(menuComboItem != null){
+            menuComboItem!!.listItemsByGroup?.forEach {
+                it?.listSelectedComboItems?.forEach { itPicked->
+                    sum = sum.plus(itPicked?.extraDoneModel?.getPriceLineSubTotal() ?: 0.0);
+                }
+            }
         }
+        return sum;
     }
 }

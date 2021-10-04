@@ -8,6 +8,7 @@ import com.hanheldpos.data.api.pojo.product.GroupPriceProductItem
 import com.hanheldpos.data.repository.GenerateId
 import com.hanheldpos.extension.notifyValueChange
 import com.hanheldpos.model.cart.order.OrderItemModel
+import com.hanheldpos.model.cart.order.OrderItemType
 import com.hanheldpos.model.home.order.combo.ComboItemActionType
 import com.hanheldpos.model.home.order.menu.ComboPickedItemViewModel
 import com.hanheldpos.model.home.order.menu.ItemComboGroupManager
@@ -46,6 +47,10 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
 
     fun initLifeCycle(owner: LifecycleOwner) {
         owner.lifecycle.addObserver(this);
+
+        selectedCombo.observe(owner,{
+            updateTotalPrice();
+        });
     }
 
     fun initDefaultComboList(
@@ -60,7 +65,6 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
                 ItemComboGroupManager(
                     productComboItem = productComboItem,
                 ).apply {
-
                     comboDetailAdapter = ComboItemAdapter(
                         modeViewType = ComboItemAdapter.ComboItemViewType.ForChoose,
                         listener = object : ComboItemAdapter.ComboItemListener {
@@ -70,7 +74,6 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
                             ) {
                                 comboItemAction(this@apply, action, item);
                             }
-
                         }
                     ).apply {
                         (productComboItem.id?.let { it1 ->
@@ -126,7 +129,12 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
                 }
             )
         )
-
+        orderItemModel.value = OrderItemModel(
+            menuComboItem = selectedCombo.value!!.data,
+            productOrderItem = extraDoneModel.value?.productOrderItem,
+            extraDone = extraDoneModel.value,
+            type = OrderItemType.Combo
+        )
     }
 
     private fun comboItemAction(
@@ -200,6 +208,10 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
                 }
             }
         }
+    }
+
+    private fun updateTotalPrice(){
+        totalPriceLD.value = orderItemModel.value?.getOrderPrice();
     }
 
     fun getCombo(): MutableList<ProductComboItem>? {

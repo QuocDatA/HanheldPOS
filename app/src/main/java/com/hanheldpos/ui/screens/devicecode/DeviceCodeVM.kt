@@ -72,9 +72,7 @@ class DeviceCodeVM : BaseRepoViewModel<SettingRepo, DeviceCodeUV>() {
 
                         startMappingData();
                     }
-
                 }
-
                 override fun showMessage(message: String?) {
                     onDataFailure(message);
                 }
@@ -89,17 +87,14 @@ class DeviceCodeVM : BaseRepoViewModel<SettingRepo, DeviceCodeUV>() {
                         onDataFailure("Failed to load data");
                     } else {
                         DataHelper.orderSettingResp = data;
-
                         startMappingData();
                     }
                 }
-
                 override fun showMessage(message: String?) {
                     onDataFailure(message)
                 }
             }
         )
-
         repo?.getPosFloor(
             userGuid = userGuid,
             locationGuid = location,
@@ -111,7 +106,6 @@ class DeviceCodeVM : BaseRepoViewModel<SettingRepo, DeviceCodeUV>() {
                         DataHelper.tableResp = data;
                         startMappingData();
                     }
-
                 }
 
                 override fun showMessage(message: String?) {

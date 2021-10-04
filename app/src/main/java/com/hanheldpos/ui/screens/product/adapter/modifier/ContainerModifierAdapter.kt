@@ -46,7 +46,6 @@ class ContainerModifierAdapter(
                     }
                 }
             }
-
             modifierAdapter.submitList(item.childList);
             modifierAdapter.notifyDataSetChanged()
         }
