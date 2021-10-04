@@ -2,6 +2,7 @@ package com.hanheldpos.ui.screens.product.options.modifier
 
 import android.os.Bundle
 import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentModifierBinding
 import com.hanheldpos.model.product.ExtraData
@@ -80,3 +81,4 @@ class ModifierFragment : BaseFragment<FragmentModifierBinding,ModifierVM>(),Modi
     }
 
 }
+

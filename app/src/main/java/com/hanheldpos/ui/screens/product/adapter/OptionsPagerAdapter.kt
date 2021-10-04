@@ -19,7 +19,6 @@ class OptionsPagerAdapter(
             fragmentList.addAll(it)
         }
         notifyDataSetChanged()
-
     }
 
     /**
