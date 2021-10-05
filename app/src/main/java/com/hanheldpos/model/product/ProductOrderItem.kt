@@ -7,6 +7,7 @@ import com.hanheldpos.data.api.pojo.order.menu.ModifierStrProduct
 import com.hanheldpos.data.api.pojo.order.menu.ProductItem
 import com.hanheldpos.data.api.pojo.order.menu.VariantStrProduct
 import com.hanheldpos.data.api.pojo.product.GroupPriceItem
+import com.hanheldpos.data.api.pojo.product.GroupPriceProductItem
 import com.hanheldpos.model.home.order.ProductModeViewType
 import com.hanheldpos.ui.screens.product.adapter.modifier.ModifierHeader
 import com.hanheldpos.ui.screens.product.adapter.modifier.ModifierSelectedItemModel
@@ -38,6 +39,34 @@ data class ProductOrderItem(
             return mappedItem as ProductItem
         }
         return null
+    }
+}
+/*
+* Update price product folow GroupPrice of combo
+* */
+fun ProductOrderItem.updatePriceByGroupPrice(groupBundle : GroupPriceProductItem?){
+    if (groupBundle != null) {
+        sku = groupBundle.productSKU;
+        price = groupBundle.productAmount;
+        text = groupBundle.productName;
+        if (groupBundle.variants.isNotEmpty()) {
+            extraData?.variantStrProductList?.first()?.group?.forEach {
+                groupBundle.variants.find { newItem -> newItem.groupID == it?.groupId ?: -1 }
+                    .let { findedItem ->
+                        it?.price = findedItem?.groupAmount;
+                    }
+            }
+        } else {
+            extraData?.variantStrProductList?.first()?.group?.forEach {
+                it?.price = 0.0;
+            }
+        }
+    } else {
+        price = 0.0;
+
+        extraData?.variantStrProductList?.first()?.group?.forEach {
+            it?.price = 0.0;
+        }
     }
 }
 

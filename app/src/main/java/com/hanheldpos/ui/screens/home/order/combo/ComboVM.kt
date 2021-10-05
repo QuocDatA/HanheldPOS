@@ -15,6 +15,7 @@ import com.hanheldpos.model.home.order.menu.OrderMenuComboItemModel
 import com.hanheldpos.model.home.order.menu.OrderMenuDataMapper.getComboList
 import com.hanheldpos.model.product.ExtraDoneModel
 import com.hanheldpos.model.product.ProductComboItem
+import com.hanheldpos.model.product.updatePriceByGroupPrice
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
 import com.hanheldpos.ui.screens.home.order.combo.adapter.ComboGroupAdapter
 import com.hanheldpos.ui.screens.home.order.combo.adapter.ComboItemAdapter
@@ -84,25 +85,7 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
                                 productOrderItem.apply {
                                     val newProductPrice: GroupPriceProductItem? =
                                         groupPrice?.product?.find { it.productGUID == this.id };
-                                    if (newProductPrice != null) {
-                                        sku = newProductPrice.productSKU;
-                                        price = newProductPrice.productAmount;
-                                        text = newProductPrice.productName;
-                                        if (newProductPrice.variants.isNotEmpty()) {
-                                            extraData?.variantStrProductList?.first()?.group?.forEach {
-                                                newProductPrice.variants.find { newItem -> newItem.groupID == it?.groupId ?: -1 }
-                                                    .let { findedItem ->
-                                                        it?.price = findedItem?.groupAmount;
-                                                    }
-                                            }
-                                        } else {
-                                            extraData?.variantStrProductList?.first()?.group?.forEach {
-                                                it?.price = 0.0;
-                                            }
-                                        }
-                                    } else {
-                                        price = 0.0;
-                                    }
+                                    productOrderItem.updatePriceByGroupPrice(newProductPrice);
                                 }
                                 ComboPickedItemViewModel(
                                     comboParentId = productComboItem.comboGuid,
