@@ -155,7 +155,8 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
                 uiCallback?.openProductDetail(comboManager.requireQuantity(), item.copy(), action);
             }
             ComboItemActionType.Modify -> {
-                uiCallback?.openProductDetail(comboManager.requireQuantity(), item, action);
+                uiCallback?.openProductDetail(comboManager.requireQuantity() + (item.extraDoneModel?.quantity
+                    ?: 0), item, action);
             }
             ComboItemActionType.Remove -> {
 
@@ -261,7 +262,7 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
     }
 
     fun onRemoveQuantity() {
-        if (numberQuantity.value!! > 0) {
+        if (numberQuantity.value!! > 1) {
             extraDoneModel.value?.quantity = numberQuantity.value?.minus(1)!!;
             extraDoneModel.notifyValueChange();
         }
