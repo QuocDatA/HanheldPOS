@@ -4,9 +4,7 @@ import android.os.Parcelable
 import com.diadiem.pos_config.utils.Const
 import com.hanheldpos.data.repository.GenerateId
 import com.hanheldpos.model.home.order.menu.OrderMenuComboItemModel
-import com.hanheldpos.model.product.ExtraDoneModel
-import com.hanheldpos.model.product.ProductOrderItem
-import com.hanheldpos.model.product.getPriceLineSubTotal
+import com.hanheldpos.model.product.*
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -16,9 +14,9 @@ data class OrderItemModel(
      */
     val orderItemId: String = GenerateId.getOrderItemId(),
 
-    var productOrderItem: ProductOrderItem? = null,
+    var productOrderItem: ProductOrderItem ?= null,
 
-    var extraDone: ExtraDoneModel? = null,
+    var extraDone: ExtraDoneModel?= null,
 
     /**
      * If order item has combo list
@@ -102,17 +100,34 @@ data class OrderItemModel(
 
     fun getOrderPrice(): Double? {
         var sum : Double = 0.0;
-        // Get price of main product
-        sum = extraDone?.getPriceLineSubTotal() ?: 0.0;
-        /**
-         * get subtotal proce of each item in combo
-        */
         if(menuComboItem != null){
-            menuComboItem!!.listItemsByGroup?.forEach {
-                it?.listSelectedComboItems?.forEach { itPicked->
-                    sum = sum.plus(itPicked?.extraDoneModel?.getPriceLineSubTotal() ?: 0.0);
+            sum = productOrderItem?.price!!;
+
+            when(productOrderItem!!.pricingMethodType){
+                PricingMethodType.BasePrice->{
+                    sum = sum.plus(menuComboItem!!.listItemsByGroup?.sumOf {
+                        it!!.listSelectedComboItems.sumOf { itPicked->
+                            itPicked?.extraDoneModel?.getPriceModSubTotal()!!
+                        }
+                    } ?: 0.0);
+                }
+                PricingMethodType.GroupPrice->{
+                    sum = sum.plus(menuComboItem!!.listItemsByGroup?.sumOf {
+                        it!!.listSelectedComboItems.sumOf { itPicked->
+                            itPicked?.extraDoneModel?.getPriceLineTotal()!!
+                        }
+                    } ?: 0.0);
                 }
             }
+
+            menuComboItem!!.listItemsByGroup?.forEach {
+                it?.listSelectedComboItems?.forEach { itPicked->
+                    sum = sum.plus(itPicked?.extraDoneModel?.getPriceLineTotal() ?: 0.0);
+                }
+            }
+        }
+        else {
+            sum = extraDone?.getPriceLineTotal() ?: 0.0;
         }
         return sum;
     }

@@ -9,7 +9,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class ExtraDoneModel(
-    var productOrderItem: ProductOrderItem? = null,
+    var productOrderItem: ProductOrderItem?= null,
     var quantity: Int = 1,
     var note: String? = null,
     var itemApplyToType: ItemApplyToType = ItemApplyToType.Normal,
@@ -101,23 +101,26 @@ enum class ItemApplyToType {
 /**
  * The price return LineSubTotal
  */
-fun ExtraDoneModel.getPriceLineSubTotal(): Double {
+
+
+
+fun ExtraDoneModel.getPriceLineTotal(): Double {
     val subtotal = getPriceSubTotal();
     return subtotal;
 }
 
-private fun ExtraDoneModel.getPriceModSubTotal(): Double {
+fun ExtraDoneModel.getPriceModSubTotal(): Double {
     return getPriceByModifier(
         groupSelectedModifier = this.selectedModifierGroup,
     )
 }
 
-private fun ExtraDoneModel.getPriceProModSubTotal(): Double {
+fun ExtraDoneModel.getPriceProModSubTotal(): Double {
     val price = getPriceRegular();
     return price + getPriceModSubTotal()
 }
 
-private fun ExtraDoneModel.getPriceSubTotal(): Double {
+fun ExtraDoneModel.getPriceSubTotal(): Double {
     return getPriceProModSubTotal() * this.quantity;
 }
 

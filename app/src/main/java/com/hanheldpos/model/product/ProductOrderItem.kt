@@ -28,6 +28,8 @@ data class ProductOrderItem(
     var extraData: ExtraData? = null,
     var maxQuantity:Int = -1,
     var uiType : ProductModeViewType? = null,
+    var pricingMethodType: PricingMethodType? = null,
+    var modPricingType: ModPricingType? = null,
     // Combo
     var productComboList: MutableList<ProductComboItem>? = mutableListOf(),
     var listGroupPriceInCombo: MutableList<GroupPriceItem>? = null,
@@ -48,7 +50,6 @@ fun ProductOrderItem.updatePriceByGroupPrice(groupBundle : GroupPriceProductItem
     if (groupBundle != null) {
         sku = groupBundle.productSKU;
         price = groupBundle.productAmount;
-        text = groupBundle.productName;
         if (groupBundle.variants.isNotEmpty()) {
             extraData?.variantStrProductList?.first()?.group?.forEach {
                 groupBundle.variants.find { newItem -> newItem.groupID == it?.groupId ?: -1 }
