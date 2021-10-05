@@ -105,13 +105,15 @@ class ComboFragment(
     override fun openProductDetail(maxQuantity: Int, item: ComboPickedItemViewModel,action: ComboItemActionType?) {
         navigator.goToWithCustomAnimation(ProductDetailFragment.getInstance(
             item = item.selectedComboItem!!.copy(),
-            extra = item.extraDoneModel,
+            extra = item.extraDoneModel?.apply { itemApplyToType=ItemApplyToType.Combo },
             quantityCanChoose = maxQuantity,
             listener = object : ProductDetailFragment.ProductDetailListener {
                 override fun onAddCart(itemDone: ExtraDoneModel) {
                     viewModel.onChooseItemComboSuccess(
                         item.comboParentId,
-                        item.apply { extraDoneModel = itemDone },
+                        item.apply { extraDoneModel = itemDone.apply {
+                            itemApplyToType=ItemApplyToType.Combo
+                        } },
                         action
                     );
                 }

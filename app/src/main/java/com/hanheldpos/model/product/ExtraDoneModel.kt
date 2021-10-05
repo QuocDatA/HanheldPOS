@@ -1,6 +1,7 @@
 package com.hanheldpos.model.product
 
 import android.os.Parcelable
+import android.util.Log
 import com.diadiem.pos_config.utils.Const
 import com.hanheldpos.data.api.pojo.order.menu.GroupItem
 import com.hanheldpos.data.api.pojo.order.settings.ListDiningOptionsItem
@@ -150,22 +151,29 @@ private fun ExtraDoneModel.getPriceByModifier(
             totalModifier += modifierItemPrice
         }
     }
-    val  modifierPricingValue:Double=this.productOrderItem?.modPricingValue?:0.0;
+    val modifierPricingValue: Double = this.productOrderItem?.modPricingValue ?: 0.0;
     when (itemApplyToType) {
         ItemApplyToType.Combo -> {
             when (this.productOrderItem?.modPricingType) {
                 ModPricingType.FIX_AMOUNT -> {
-                    totalModifier= modifierPricingValue;
+                    totalModifier = modifierPricingValue;
+                    Log.d("CALC MODIFIER", "fix amount $totalModifier")
                 }
                 ModPricingType.DISCOUNT_AMOUNT -> {
-                        totalModifier=if(totalModifier-modifierPricingValue<0) 0.0 else modifierPricingValue;
+                    totalModifier =
+                        if (totalModifier - modifierPricingValue < 0) 0.0 else modifierPricingValue;
+                    Log.d("CALC MODIFIER", "Discount amount $totalModifier")
+
                 }
                 ModPricingType.DISCOUNT_PERCENT -> {
                     totalModifier *= (1.0 - modifierPricingValue / 100);
+                    Log.d("CALC MODIFIER", "Discount percent $totalModifier")
 
                 }
                 ModPricingType.NONE -> {
-                    totalModifier=0.0;
+                    totalModifier = 0.0;
+                    Log.d("CALC MODIFIER", "none $totalModifier")
+
                 }
 
             }
