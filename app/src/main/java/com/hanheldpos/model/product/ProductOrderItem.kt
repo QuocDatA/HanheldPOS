@@ -30,9 +30,12 @@ data class ProductOrderItem(
     var uiType : ProductModeViewType? = null,
     var pricingMethodType: PricingMethodType? = null,
     var modPricingType: ModPricingType? = null,
+    var modPricingValue: Double?=null,
+
     // Combo
     var productComboList: MutableList<ProductComboItem>? = mutableListOf(),
     var listGroupPriceInCombo: MutableList<GroupPriceItem>? = null,
+
 ) : Parcelable, Cloneable {
     @IgnoredOnParcel
     var color: String? = null;

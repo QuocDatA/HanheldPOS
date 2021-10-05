@@ -9,7 +9,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class ExtraDoneModel(
-    var productOrderItem: ProductOrderItem?= null,
+    var productOrderItem: ProductOrderItem? = null,
     var quantity: Int = 1,
     var note: String? = null,
     var itemApplyToType: ItemApplyToType = ItemApplyToType.Normal,
@@ -17,11 +17,12 @@ data class ExtraDoneModel(
     // String - key is name of the modifier group
     var selectedModifierGroup: MutableMap<String, LinkedHashSet<ModifierSelectedItemModel>?>? = null,
 
-    var diningOptions : ListDiningOptionsItem? = null
+    var diningOptions: ListDiningOptionsItem? = null
 ) : Parcelable {
     fun getName(): String? {
         return productOrderItem?.text
     }
+
     fun getSku(): String? {
         var sku = productOrderItem?.sku
 
@@ -32,13 +33,14 @@ data class ExtraDoneModel(
         return sku
     }
 
-    fun getPriceOrderItem() : Double{
+    fun getPriceOrderItem(): Double {
         return productOrderItem?.price ?: 0.0;
     }
 
     fun getVariantStr(): String? {
         return getVariantStr(Const.SymBol.CommaSeparator)
     }
+
     fun getVariantStr(separator: String): String? {
         var rs: String? = null
 
@@ -53,11 +55,12 @@ data class ExtraDoneModel(
         return getModifierStr(Const.SymBol.CommaSeparator)
     }
 
-    fun getModifierStr(separator: String) : String? {
+    fun getModifierStr(separator: String): String? {
         var rs: MutableList<String> = mutableListOf()
 
         selectedModifierGroup?.forEach { entry ->
-            val modifier : String = entry.key +  if (!entry.value.isNullOrEmpty() && entry.value?.sumOf { it.quantity }!! > 1) " (${entry.value?.sumOf { it.quantity }})" else ""
+            val modifier: String =
+                entry.key + if (!entry.value.isNullOrEmpty() && entry.value?.sumOf { it.quantity }!! > 1) " (${entry.value?.sumOf { it.quantity }})" else ""
             rs.add(modifier)
         }
         return rs.joinToString(separator = "$separator ");
@@ -86,10 +89,15 @@ data class ExtraDoneModel(
 
 /**
  *  Use this for Extra Fragment and Extra Done
+ *  [Normal] Regular item
+ *  [Combo] Combo item
+ *  [BuyXGetY_BUY]
+ *  [BuyXGetY_GET]
  */
 enum class ItemApplyToType {
     Normal,
     BuyXGetY_BUY,
+
     /**
      * @BuyXGetY_GET the price will be depend on @DiscountValueType and @DiscountValue inside DiscountCondition
      * right now the flow is not complete show we will set the price of the extra if it is this type = 0
@@ -101,7 +109,6 @@ enum class ItemApplyToType {
 /**
  * The price return LineSubTotal
  */
-
 
 
 fun ExtraDoneModel.getPriceLineTotal(): Double {
@@ -132,11 +139,10 @@ private fun ExtraDoneModel.getPriceRegular(): Double {
     )
 }
 
-private fun getPriceByModifier(
+private fun ExtraDoneModel.getPriceByModifier(
     groupSelectedModifier: Map<String, Set<ModifierSelectedItemModel>?>?,
-): Double {
 
-
+    ): Double {
     var totalModifier = 0.0
     groupSelectedModifier?.forEach { it ->
         it.value?.forEach {
@@ -144,6 +150,29 @@ private fun getPriceByModifier(
             totalModifier += modifierItemPrice
         }
     }
+    val  modifierPricingValue:Double=this.productOrderItem?.modPricingValue?:0.0;
+    when (itemApplyToType) {
+        ItemApplyToType.Combo -> {
+            when (this.productOrderItem?.modPricingType) {
+                ModPricingType.FIX_AMOUNT -> {
+                    totalModifier= modifierPricingValue;
+                }
+                ModPricingType.DISCOUNT_AMOUNT -> {
+                        totalModifier=if(totalModifier-modifierPricingValue<0) 0.0 else modifierPricingValue;
+                }
+                ModPricingType.DISCOUNT_PERCENT -> {
+                    totalModifier *= (1.0 - modifierPricingValue / 100);
+
+                }
+                ModPricingType.NONE -> {
+                    totalModifier=0.0;
+                }
+
+            }
+        }
+    }
+
+
 
     return totalModifier
 }

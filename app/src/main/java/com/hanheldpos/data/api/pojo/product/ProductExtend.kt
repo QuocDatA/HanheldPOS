@@ -11,9 +11,7 @@ import com.hanheldpos.data.api.pojo.order.menu.*
 import com.hanheldpos.model.UserHelper
 import com.hanheldpos.model.home.order.ProductModeViewType
 import com.hanheldpos.model.image.getImageUrl
-import com.hanheldpos.model.product.ExtraData
-import com.hanheldpos.model.product.ProductComboItem
-import com.hanheldpos.model.product.ProductOrderItem
+import com.hanheldpos.model.product.*
 import com.hanheldpos.ui.screens.product.adapter.modifier.ModifierHeader
 import com.hanheldpos.ui.screens.product.adapter.modifier.ModifierSelectedItemModel
 import kotlinx.android.parcel.Parcelize
@@ -21,8 +19,8 @@ import java.lang.reflect.Type
 
 fun ProductItem.toProductOrderItem(
     orderMenuResp: OrderMenuResp
-) : ProductOrderItem? {
-    var productOrderItem  = ProductOrderItem();
+): ProductOrderItem? {
+    var productOrderItem = ProductOrderItem();
     productOrderItem.mappedItem = this
     if (!this.checkValidProduct()) {
         return null
@@ -38,6 +36,12 @@ fun ProductItem.toProductOrderItem(
     productOrderItem.unitStr = orderMenuResp.getUnitList()?.find {
         it?.systemUnitId == this.unitType
     }?.abbreviation
+
+
+    productOrderItem.pricingMethodType = PricingMethodType.fromInt(this.pricingMethodType);
+    productOrderItem.modPricingType = ModPricingType.fromInt(this.modifierPricingType);
+    productOrderItem.modPricingValue = this.modifierPricingValue;
+
 
     productOrderItem.img = getImageUrl(orderMenuResp, this.id)
 
@@ -62,7 +66,7 @@ fun ProductItem.toProductOrderItem(
         productOrderItem.productComboList = productComboList
         productOrderItem.uiType = ProductModeViewType.Combo
     }
-    if (this.groupPrices != null){
+    if (this.groupPrices != null) {
         productOrderItem.listGroupPriceInCombo = this.groupPrices?.toMutableList();
     }
 

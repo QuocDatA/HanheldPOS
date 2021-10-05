@@ -10,6 +10,7 @@ import com.hanheldpos.model.cart.order.OrderItemModel
 import com.hanheldpos.model.home.order.combo.ComboItemActionType
 import com.hanheldpos.model.home.order.menu.ComboPickedItemViewModel
 import com.hanheldpos.model.product.ExtraDoneModel
+import com.hanheldpos.model.product.ItemApplyToType
 import com.hanheldpos.model.product.ProductOrderItem
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
@@ -43,6 +44,7 @@ class ComboFragment(
             val quantityCanChoose: Int = it.getInt(ARG_PRODUCT_DETAIL_QUANTITY)
             viewModel.extraDoneModel.value = ExtraDoneModel(
                 productOrderItem = a,
+                itemApplyToType=ItemApplyToType.Combo,
             );
             viewModel.maxQuantity = quantityCanChoose;
         }
