@@ -145,8 +145,10 @@ private fun ExtraDoneModel.getPriceByModifier(
 
     ): Double {
     var totalModifier = 0.0
+    var totalQuantityMod = 0;
     groupSelectedModifier?.forEach { it ->
         it.value?.forEach {
+            totalQuantityMod += it.quantity;
             val modifierItemPrice = it.realItem?.price?.times(it.quantity) ?: 0.0
             totalModifier += modifierItemPrice
         }
@@ -156,14 +158,13 @@ private fun ExtraDoneModel.getPriceByModifier(
         ItemApplyToType.Combo -> {
             when (this.productOrderItem?.modPricingType) {
                 ModPricingType.FIX_AMOUNT -> {
-                    totalModifier = modifierPricingValue;
+                    totalModifier = totalQuantityMod * modifierPricingValue;
                     Log.d("CALC MODIFIER", "fix amount $totalModifier")
                 }
                 ModPricingType.DISCOUNT_AMOUNT -> {
                     totalModifier =
-                        if (totalModifier - modifierPricingValue < 0) 0.0 else modifierPricingValue;
+                        if ((totalModifier - (modifierPricingValue * totalQuantityMod)) < 0) 0.0 else (modifierPricingValue * totalQuantityMod);
                     Log.d("CALC MODIFIER", "Discount amount $totalModifier")
-
                 }
                 ModPricingType.DISCOUNT_PERCENT -> {
                     totalModifier *= (1.0 - modifierPricingValue / 100);

@@ -135,10 +135,10 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
     ) {
         when (action) {
             ComboItemActionType.Add -> {
-                uiCallback?.openProductDetail(comboManager.requireQuantity(), item.copy(), action);
+                uiCallback?.openProductDetail(extraDoneModel.value?.productOrderItem,comboManager.requireQuantity(), item.copy(), action);
             }
             ComboItemActionType.Modify -> {
-                uiCallback?.openProductDetail(comboManager.requireQuantity() + (item.extraDoneModel?.quantity
+                uiCallback?.openProductDetail(extraDoneModel.value?.productOrderItem,comboManager.requireQuantity() + (item.extraDoneModel?.quantity
                     ?: 0), item, action);
             }
             ComboItemActionType.Remove -> {

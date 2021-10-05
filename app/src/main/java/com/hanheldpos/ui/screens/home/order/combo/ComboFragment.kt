@@ -102,18 +102,24 @@ class ComboFragment(
         navigator.goOneBack();
     }
 
-    override fun openProductDetail(maxQuantity: Int, item: ComboPickedItemViewModel,action: ComboItemActionType?) {
+    override fun openProductDetail(parent : ProductOrderItem?,maxQuantity: Int, item: ComboPickedItemViewModel,action: ComboItemActionType?) {
+        val cloneProductOrderItem = item.selectedComboItem!!.copy();
         navigator.goToWithCustomAnimation(ProductDetailFragment.getInstance(
-            item = item.selectedComboItem!!.copy(),
-            extra = item.extraDoneModel?.apply { itemApplyToType=ItemApplyToType.Combo },
+            item = cloneProductOrderItem,
+            extra = item.extraDoneModel ?: ExtraDoneModel().apply {
+                productOrderItem = cloneProductOrderItem.apply {
+                    modPricingType = parent!!.modPricingType;
+                    modPricingValue = parent!!.modPricingValue;
+                };
+                itemApplyToType = ItemApplyToType.Combo;
+
+            },
             quantityCanChoose = maxQuantity,
             listener = object : ProductDetailFragment.ProductDetailListener {
                 override fun onAddCart(itemDone: ExtraDoneModel) {
                     viewModel.onChooseItemComboSuccess(
                         item.comboParentId,
-                        item.apply { extraDoneModel = itemDone.apply {
-                            itemApplyToType=ItemApplyToType.Combo
-                        } },
+                        item.apply { extraDoneModel = itemDone },
                         action
                     );
                 }
