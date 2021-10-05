@@ -72,7 +72,7 @@ internal fun OrderMenuResp.getProductWithItemGuid(itemGuid: String?) =
 
 internal fun OrderMenuResp.getProductWithCategoryGuid(categoryGuid: String?) =
     this.getProductByListProduct()?.filter {
-        it?.categoryGuid == categoryGuid
+        it?.categoryGUID == categoryGuid
     }
 
 

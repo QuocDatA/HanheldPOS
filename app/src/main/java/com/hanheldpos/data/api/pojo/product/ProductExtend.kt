@@ -31,7 +31,7 @@ fun ProductItem.toProductOrderItem(
     productOrderItem.color = this.color
     productOrderItem.id = this.id
     productOrderItem.text = this.name
-    productOrderItem.sku = this.sKU
+    productOrderItem.sku = this.sku
     productOrderItem.description = this.description
     productOrderItem.price = this.price
     productOrderItem.comparePrice = this.comparePrice

@@ -7,8 +7,6 @@ import com.hanheldpos.data.api.pojo.order.settings.ListDiningOptionsItem
 import com.hanheldpos.ui.screens.product.adapter.modifier.ModifierSelectedItemModel
 import kotlinx.parcelize.Parcelize
 
-
-
 @Parcelize
 data class ExtraDoneModel(
     var productOrderItem: ProductOrderItem? = null,

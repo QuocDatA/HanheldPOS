@@ -26,7 +26,6 @@
         <androidx.recyclerview.widget.RecyclerView
             android:overScrollMode="never"
             android:layout_marginTop="@dimen/_9sdp"
-
             android:id="@+id/containerModifierItem"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

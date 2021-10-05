@@ -26,9 +26,7 @@ data class OrderItemModel(
     var menuComboItem: OrderMenuComboItemModel? = null,
 
     var type: OrderItemType? = null,
-
-
-    ) : Parcelable {
+) : Parcelable {
 
 
     /**

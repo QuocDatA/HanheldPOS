@@ -44,6 +44,9 @@ class ContainerVariantAdapter(
             binding.containerVariantItem.adapter = variantAdapter;
             binding.containerVariantItem.addItemDecoration(GridSpacingItemDecoration(2, 20, false))
 
+            /**
+             * Fix scroll when change type variant
+             */
             binding.containerVariantItem.setHasFixedSize(true);
 
             val list = item.childList?.toMutableList();
