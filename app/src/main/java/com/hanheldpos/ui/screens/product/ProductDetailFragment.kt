@@ -7,7 +7,6 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.order.menu.GroupItem
 import com.hanheldpos.databinding.FragmentProductDetailBinding
-import com.hanheldpos.model.home.order.combo.ComboItemActionType
 import com.hanheldpos.model.product.ExtraDoneModel
 import com.hanheldpos.model.product.ProductOrderItem
 import com.hanheldpos.ui.base.fragment.BaseFragment
@@ -104,7 +103,7 @@ class ProductDetailFragment(
     }
 
     interface ProductDetailListener {
-        fun onAddCart(item: ExtraDoneModel)
+        fun onCartAdded(item: ExtraDoneModel)
     }
 
     companion object {
@@ -136,7 +135,7 @@ class ProductDetailFragment(
     override fun onAddCart(item: ExtraDoneModel) {
         onBack()
         if (item.quantity > 0)
-            listener?.onAddCart(item);
+            listener?.onCartAdded(item);
     }
 
     override fun onModifierItemChange(item: ModifierSelectedItemModel) {

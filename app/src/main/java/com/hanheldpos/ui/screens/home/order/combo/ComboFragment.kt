@@ -76,7 +76,7 @@ class ComboFragment(
     }
 
     interface ComboListener {
-        fun onAddToCart(item: OrderItemModel)
+        fun onCartAdded(item: OrderItemModel)
     }
 
     companion object {
@@ -116,7 +116,7 @@ class ComboFragment(
             },
             quantityCanChoose = maxQuantity,
             listener = object : ProductDetailFragment.ProductDetailListener {
-                override fun onAddCart(itemDone: ExtraDoneModel) {
+                override fun onCartAdded(itemDone: ExtraDoneModel) {
                     viewModel.onChooseItemComboSuccess(
                         item.comboParentId,
                         item.apply { extraDoneModel = itemDone },

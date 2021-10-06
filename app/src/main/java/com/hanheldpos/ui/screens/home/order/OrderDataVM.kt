@@ -4,7 +4,6 @@ import androidx.lifecycle.MutableLiveData
 import com.hanheldpos.data.api.pojo.order.menu.OrderMenuResp
 import com.hanheldpos.data.repository.order.OrderRepo
 import com.hanheldpos.model.DataHelper
-import com.hanheldpos.model.cart.CartModel
 import com.hanheldpos.model.cart.order.OrderItemModel
 import com.hanheldpos.model.home.order.menu.OrderMenuDataMapper
 import com.hanheldpos.model.home.order.menu.OrderMenuItemModel
@@ -12,24 +11,20 @@ import com.hanheldpos.model.product.ProductOrderItem
 import com.hanheldpos.ui.base.viewmodel.BaseRepoViewModel
 
 class OrderDataVM : BaseRepoViewModel<OrderRepo, OrderUV>() {
-    private var orderMenuResp: OrderMenuResp? = null;
-    val orderMenuLevel1 = MutableLiveData<MutableList<OrderMenuItemModel?>>(mutableListOf());
-    val orderMenuLevel1Selected = MutableLiveData<OrderMenuItemModel>();
-    val cartModelLD = MutableLiveData<CartModel>();
+    val menus = MutableLiveData<MutableList<OrderMenuItemModel?>>(mutableListOf());
+    val selectedMenu = MutableLiveData<OrderMenuItemModel>();
 
     fun initData() {
-        OrderMenuDataMapper.orderMenuResp = DataHelper.orderMenuResp!!;
-        orderMenuResp = OrderMenuDataMapper.orderMenuResp;
+        OrderMenuDataMapper.menuDB = DataHelper.orderMenuResp!!;
     }
 
     fun onMenuChange(position: Int){
-        orderMenuLevel1.value = OrderMenuDataMapper.getLevel_1(position).toMutableList();
+        menus.value = OrderMenuDataMapper.getMenuByBranch(position).toMutableList();
         // Init First Page
-        orderMenuLevel1Selected.value = orderMenuLevel1.value?.first();
+        selectedMenu.value = menus.value?.first();
     }
 
     fun getProductByMenu(menuItem: OrderMenuItemModel): List<ProductOrderItem?>? {
-        /*return OrderMenuDataMapper.getLevel_2(categoryGuid = menuItem.id);*/
         return menuItem.childList;
     }
 
