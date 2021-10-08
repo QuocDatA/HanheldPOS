@@ -35,7 +35,13 @@ data class ExtraDoneModel(
     }
 
     fun getPriceOrderItem(): Double {
-        return productOrderItem?.price ?: 0.0;
+        val price: Double =
+            if (selectedVariant != null) {
+                selectedVariant!!.price!!;
+            } else {
+                productOrderItem?.price ?: 0.0;
+            }
+        return price;
     }
 
     fun getVariantStr(): String? {
