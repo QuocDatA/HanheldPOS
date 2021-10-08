@@ -4,6 +4,7 @@ import android.os.Parcelable
 import com.hanheldpos.data.api.pojo.order.settings.ListDiningOptionsItem
 import com.hanheldpos.data.api.pojo.table.FloorTableItem
 import com.hanheldpos.model.DataHelper.getDefaultDiningOptionItem
+import com.hanheldpos.model.cart.order.OrderItemModel
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -16,8 +17,17 @@ data class CartModel(
     var customerQuantity : Int = 0,
 
     //order item list of Order
-
+    var listOrderItem : MutableList<OrderItemModel> = mutableListOf(),
 
     //dining option of Order
     var diningOption: ListDiningOptionsItem? = getDefaultDiningOptionItem(),
-) : Parcelable {}
+) : Parcelable {
+    fun getQuantityCart() : Int {
+        return listOrderItem.sumOf {
+            it.getOrderQuantity()
+        }
+    }
+    fun getGrandTotal() = listOrderItem.sumOf {
+        it.getOrderPrice()
+    }
+}

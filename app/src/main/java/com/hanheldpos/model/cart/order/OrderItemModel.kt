@@ -97,7 +97,7 @@ data class OrderItemModel(
         }
     }
 
-    fun getOrderPrice(): Double? {
+    fun getOrderPrice(): Double {
         var sum : Double = 0.0;
         if(menuComboItem != null){
             sum = productOrderItem?.price!!;

@@ -8,9 +8,11 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.order.menu.MenusItem
+import com.hanheldpos.data.repository.GenerateId
 import com.hanheldpos.databinding.DialogCategoryBinding
 import com.hanheldpos.databinding.FragmentOrderBinding
 import com.hanheldpos.model.cart.order.OrderItemModel
+import com.hanheldpos.model.cart.order.OrderItemType
 import com.hanheldpos.model.home.order.ProductModeViewType
 import com.hanheldpos.model.home.order.menu.OrderMenuItemModel
 import com.hanheldpos.model.product.ExtraDoneModel
@@ -136,6 +138,14 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
                                 override fun onCartAdded(extraDoneModel: ExtraDoneModel) {
                                     if (SystemClock.elapsedRealtime() - viewModel.mLastTimeClick <= 1000) return;
                                     viewModel.mLastTimeClick = SystemClock.elapsedRealtime()
+                                    cartDataVM.addToCart(
+                                        OrderItemModel(
+                                            extraDone = extraDoneModel,
+                                            type = OrderItemType.Product,
+                                            orderItemId = GenerateId.getOrderItemId(),
+                                            productOrderItem = item
+                                        )
+                                    );
                                 }
                             }
 
@@ -160,7 +170,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
                         ProductModeViewType.Combo -> {
                             val onCartAdded = object : ComboFragment.ComboListener {
                                 override fun onCartAdded(item: OrderItemModel) {
-
+                                    cartDataVM.addToCart(item);
                                 }
                             }
                             navigator.goToWithCustomAnimation(

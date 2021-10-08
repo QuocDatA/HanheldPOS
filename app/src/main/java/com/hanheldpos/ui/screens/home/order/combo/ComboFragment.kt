@@ -127,4 +127,9 @@ class ComboFragment(
         ))
     }
 
+    override fun cartAdded(item: OrderItemModel) {
+        listener.onCartAdded(item);
+        onBack();
+    }
+
 }

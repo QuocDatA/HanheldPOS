@@ -229,7 +229,6 @@
             </LinearLayout>
 
             <com.google.android.material.card.MaterialCardView
-                android:minWidth="@dimen/_95sdp"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_alignParentEnd="true"
@@ -237,6 +236,7 @@
                 android:clickable="true"
                 android:elevation="0dp"
                 android:focusable="true"
+                android:minWidth="@dimen/_95sdp"
                 android:onClick="@{v->viewModel.onAddCart()}"
                 app:cardCornerRadius="0dp"
                 app:cardElevation="0dp"
@@ -259,10 +259,10 @@
                         app:useTextHeader="h5" />
 
                     <com.diadiem.pos_components.PTextView
-                        visibleObject="@{viewModel.totalPriceLD > 0}"
-                        android:layout_marginStart="@dimen/_25sdp"
                         style="@style/ProductDetailText"
                         priceView="@{viewModel.totalPriceLD}"
+                        visibleObject="@{viewModel.totalPriceLD > 0}"
+                        android:layout_marginStart="@dimen/_25sdp"
                         app:useFontStyle="bold"
                         app:useTextColor="color2"
                         app:useTextHeader="h5" />
