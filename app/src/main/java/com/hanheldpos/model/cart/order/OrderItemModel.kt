@@ -26,7 +26,6 @@ data class OrderItemModel(
     var type: OrderItemType? = null,
 ) : Parcelable {
 
-
     /**
      *  Quantity of order
      */

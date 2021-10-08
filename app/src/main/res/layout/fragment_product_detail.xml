@@ -65,13 +65,13 @@
                             android:layout_weight="1"
                             android:text="@{viewModel.extraDoneModel.getName()}"
                             app:useFontStyle="normal"
-                            tools:text="Produc name Produc name Produc name Produc name Produc name "
+                            tools:text="Produc name"
                             />
 
                         <com.diadiem.pos_components.PTextView
                             style="@style/ProductDetailPrice"
                             priceView="@{viewModel.extraDoneModel.getPriceOrderItem()}"
-                            tools:text="1313131311414141414141414141"
+                            tools:text="10,000"
 
                             />
                     </LinearLayout>

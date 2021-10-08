@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <import type="com.hanheldpos.ui.screens.home.order.OrderHelper"/>
         <variable
             name="dataVM"
             type="com.hanheldpos.ui.screens.home.order.OrderDataVM" />

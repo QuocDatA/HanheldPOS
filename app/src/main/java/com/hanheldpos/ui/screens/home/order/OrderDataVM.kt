@@ -28,15 +28,6 @@ class OrderDataVM : BaseRepoViewModel<OrderRepo, OrderUV>() {
         return menuItem.childList;
     }
 
-    // Cart
-    fun addProductCompleteToCart(item: OrderItemModel) {
-
-    }
-
-    fun deleteAllProductCart() {
-
-    }
-
     override fun createRepo(): OrderRepo {
         return OrderRepo();
     }

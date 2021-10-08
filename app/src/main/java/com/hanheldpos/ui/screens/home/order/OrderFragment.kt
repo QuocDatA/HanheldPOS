@@ -136,8 +136,6 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
                                 override fun onCartAdded(extraDoneModel: ExtraDoneModel) {
                                     if (SystemClock.elapsedRealtime() - viewModel.mLastTimeClick <= 1000) return;
                                     viewModel.mLastTimeClick = SystemClock.elapsedRealtime()
-                                    /*OrderHelper.cart.add(productComplete);
-                                    dataVM.addProductCompleteToCart(productComplete);*/
                                 }
                             }
 
