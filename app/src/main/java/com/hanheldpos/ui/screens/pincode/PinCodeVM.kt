@@ -119,8 +119,6 @@ class PinCodeVM : BaseRepoViewModel<EmployeeRepo, PinCodeUV>() {
 
     fun onEmployeeSuccess(result: EmployeeResp) {
         uiCallback?.showLoading(false)
-
-
 //        val model = result.model
         if (result.token != null) {
             UserHelper.curEmployee = result

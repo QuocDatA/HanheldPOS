@@ -37,7 +37,7 @@
                             android:clickable="true"
                             android:focusable="true"
                             android:onClick="@{v -> viewModel.onBack()}"
-                            android:padding="@dimen/_5sdp"
+                            android:padding="@dimen/_8sdp"
                             android:scaleType="centerInside"
                             android:src="@drawable/ic_close_light" />
                     </FrameLayout>

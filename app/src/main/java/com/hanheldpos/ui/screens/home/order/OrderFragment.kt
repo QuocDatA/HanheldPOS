@@ -140,6 +140,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
                                     dataVM.addProductCompleteToCart(productComplete);*/
                                 }
                             }
+
                             navigator.goToWithCustomAnimation(
                                 ProductDetailFragment.getInstance(
                                     item = item,
