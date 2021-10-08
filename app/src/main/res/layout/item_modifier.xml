@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -16,19 +17,34 @@
         app:cardCornerRadius="@dimen/_3sdp"
         app:cardElevation="0dp">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@{item.quantity > 0 ? @color/color_1 : @color/color_10}"
             android:orientation="horizontal"
             android:paddingHorizontal="@dimen/_5sdp"
+            android:gravity="center"
             android:paddingVertical="@dimen/_3sdp">
 
+            <FrameLayout
+                android:id="@+id/btnRemoveQuantity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_quantity_btn"
+                android:clickable="true"
+                android:focusable="true">
+
+                <ImageView
+                    android:layout_width="@dimen/_11sdp"
+                    android:layout_height="@dimen/_11sdp"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/_4sdp"
+                    android:src="@{item.quantity > 0 ? @drawable/ic_remove_primary : @drawable/ic_remove_disable }" />
+            </FrameLayout>
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="@dimen/_32sdp"
-                android:layout_centerInParent="true"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:orientation="vertical">
@@ -36,8 +52,11 @@
                 <com.diadiem.pos_components.PTextView
                     style="@style/OptionItemTitle"
                     android:layout_width="wrap_content"
+                    android:id="@+id/modifier_title"
                     android:layout_height="wrap_content"
                     android:text="@{item.realItem.modifier}"
+                    tools:text="Test"
+                    marquee="@{true}"
                     android:textColor="@{item.quantity > 0 ? @color/color_2 :  @color/color_4 }" />
 
                 <LinearLayout
@@ -53,6 +72,7 @@
                         visibleObject="@{item.realItem.price > 0}"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        tools:text="Test"
 
                         android:textColor="@{item.quantity > 0 ? @color/color_2 :  @color/color_4 }" />
 
@@ -68,30 +88,11 @@
 
             </LinearLayout>
 
-            <FrameLayout
-                android:id="@+id/btnRemoveQuantity"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
-                android:background="@drawable/bg_quantity_btn"
-                android:clickable="true"
-                android:focusable="true">
-
-                <ImageView
-                    android:layout_width="@dimen/_11sdp"
-                    android:layout_height="@dimen/_11sdp"
-                    android:layout_gravity="center"
-                    android:layout_margin="@dimen/_4sdp"
-                    android:src="@{item.quantity > 0 ? @drawable/ic_remove_primary : @drawable/ic_remove_disable }" />
-            </FrameLayout>
 
             <FrameLayout
                 android:id="@+id/btnAddQuantity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
                 android:background="@drawable/bg_quantity_btn">
 
                 <ImageView
@@ -101,6 +102,6 @@
                     android:layout_margin="@dimen/_4sdp"
                     android:src="@drawable/ic_add_primary" />
             </FrameLayout>
-        </RelativeLayout>
+        </LinearLayout>
     </androidx.cardview.widget.CardView>
 </layout>

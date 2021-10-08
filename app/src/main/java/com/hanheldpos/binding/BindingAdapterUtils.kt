@@ -8,6 +8,7 @@ import android.graphics.Paint.FontMetricsInt
 import android.text.*
 import android.text.style.ReplacementSpan
 import android.view.View
+import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.textfield.TextInputEditText
@@ -42,6 +43,17 @@ fun setVisibleObject(view: View, `object`: Any?) {
     else view.visibility = View.GONE
 }
 
+@BindingAdapter("marquee")
+fun setTextViewMarquee(textView: TextView, isMarquee: Boolean) {
+    if(isMarquee) {
+        textView.isSingleLine = true;
+        textView.ellipsize = TextUtils.TruncateAt.MARQUEE;
+        textView.isHorizontalFadingEdgeEnabled = true;
+        textView.marqueeRepeatLimit = -1;
+        textView.canScrollHorizontally(1);
+        textView.isSelected=true;
+    }
+}
 
 fun visibleObject(`object`: Any?): Boolean {
     var visibleObject = true

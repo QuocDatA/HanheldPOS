@@ -1,5 +1,6 @@
 package com.hanheldpos.ui.screens.product.adapter.modifier
 
+import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import com.hanheldpos.R
 import com.hanheldpos.databinding.ItemContainerModifierBinding
@@ -12,6 +13,8 @@ class ModifierAdapter(private val listener: BaseItemClickListener<ModifierSelect
     override fun getItemViewType(position: Int): Int {
         return R.layout.item_modifier;
     }
+
+
 
     override fun onBindViewHolder(holder: BaseBindingViewHolder<ModifierSelectedItemModel>, position: Int) {
         val item = getItem(position);
