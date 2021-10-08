@@ -1,6 +1,7 @@
 package com.hanheldpos.model.product
 
 import android.os.Parcelable
+import android.util.Log
 import androidx.core.graphics.ColorUtils
 import com.hanheldpos.data.api.pojo.order.menu.ModifierItemItem
 import com.hanheldpos.data.api.pojo.order.menu.ModifierStrProduct
@@ -24,19 +25,19 @@ data class ProductOrderItem(
     var comparePrice: Double? = null,
     var img: String? = null,
     var unitStr: String? = null,
-    var mappedItem : Parcelable? = null,
+    var mappedItem: Parcelable? = null,
     var extraData: ExtraData? = null,
-    var maxQuantity:Int = -1,
-    var uiType : ProductModeViewType? = null,
+    var maxQuantity: Int = -1,
+    var uiType: ProductModeViewType? = null,
     var pricingMethodType: PricingMethodType? = null,
     var modPricingType: ModPricingType? = null,
-    var modPricingValue: Double?=null,
+    var modPricingValue: Double? = null,
 
     // Combo
     var productComboList: MutableList<ProductComboItem>? = mutableListOf(),
     var listGroupPriceInCombo: MutableList<GroupPriceItem>? = null,
 
-) : Parcelable, Cloneable {
+    ) : Parcelable, Cloneable {
     @IgnoredOnParcel
     var color: String? = null;
     fun getProductItem(): ProductItem? {
@@ -46,10 +47,18 @@ data class ProductOrderItem(
         return null
     }
 }
-/*
-* Update price product folow GroupPrice of combo
-* */
-fun ProductOrderItem.updatePriceByGroupPrice(groupBundle : GroupPriceProductItem?){
+
+/**
+ * Update price product folow GroupPrice of combo
+ * @param parent Product Combo Item
+ * @param groupBundle The Group Price of Combo Item
+ */
+fun ProductOrderItem.updatePriceByGroupPrice(parent : ProductOrderItem,groupBundle: GroupPriceProductItem?) {
+
+    // Update child folow parent
+    this.modPricingType = parent.modPricingType;
+    this.modPricingValue = parent.modPricingValue;
+
     if (groupBundle != null) {
         sku = groupBundle.productSKU;
         price = groupBundle.productAmount;
@@ -67,12 +76,51 @@ fun ProductOrderItem.updatePriceByGroupPrice(groupBundle : GroupPriceProductItem
         }
     } else {
         price = 0.0;
-
         extraData?.variantStrProductList?.first()?.group?.forEach {
             it?.price = 0.0;
         }
     }
+    updateModifierPrice();
 }
+
+/**
+ * Update Modifier Price by Combo ModifierPricingType
+ */
+fun ProductOrderItem.updateModifierPrice() {
+    val modifierPricingValue: Double = modPricingValue ?: 0.0;
+    extraData?.modifierMap?.values?.forEach { currentModifierGroup ->
+        for (i in 0 until currentModifierGroup.size) {
+            val modifierItem = currentModifierGroup[i];
+            when (this.modPricingType) {
+                ModPricingType.FIX_AMOUNT -> {
+                    currentModifierGroup[i] = modifierItem.copy(price = modifierPricingValue);
+                    Log.d("CALC MODIFIER", "fix amount ${currentModifierGroup[i].price}");
+                }
+                ModPricingType.DISCOUNT_AMOUNT -> {
+                    val discountPrice = modifierItem.price?.minus(modifierPricingValue)!!;
+                    val newPrice =
+                        if (discountPrice < 0) 0.0 else discountPrice;
+                    currentModifierGroup[i] = modifierItem.copy(price = newPrice);
+                    Log.d("CALC MODIFIER", "Discount amount $newPrice")
+                }
+                ModPricingType.DISCOUNT_PERCENT -> {
+                    val newPrice =
+                        modifierItem.price!!.times((1.0 - modifierPricingValue / 100));
+                    currentModifierGroup[i] = modifierItem.copy(price = newPrice);
+                    Log.d("CALC MODIFIER", "Discount percent $newPrice")
+                }
+                ModPricingType.NONE -> {
+                    currentModifierGroup[i] = modifierItem.copy(price = 0.0);
+                    Log.d("CALC MODIFIER", "none ${currentModifierGroup[i].price}")
+                }
+            }
+        }
+
+    }
+
+
+}
+
 
 @Parcelize
 data class ExtraData(

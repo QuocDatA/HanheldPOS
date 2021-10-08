@@ -85,7 +85,7 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
                                 productOrderItem.apply {
                                     val newProductPrice: GroupPriceProductItem? =
                                         groupPrice?.product?.find { it.productGUID == this.id };
-                                    productOrderItem.updatePriceByGroupPrice(newProductPrice);
+                                    productOrderItem.updatePriceByGroupPrice(extraDoneModel.value?.productOrderItem!!,newProductPrice);
                                 }
                                 ComboPickedItemViewModel(
                                     comboParentId = productComboItem.comboGuid,
