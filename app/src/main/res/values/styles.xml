@@ -20,8 +20,8 @@
     </style>
 
     <style name="ProductDetailCloseBtn">
-        <item name="android:layout_width">@dimen/_20sdp</item>
-        <item name="android:layout_height">@dimen/_20sdp</item>
+        <item name="android:layout_width">@dimen/_23sdp</item>
+        <item name="android:layout_height">@dimen/_23sdp</item>
         <item name="android:background">@color/color_9</item>
     </style>
 

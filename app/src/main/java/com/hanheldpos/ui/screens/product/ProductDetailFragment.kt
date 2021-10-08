@@ -33,7 +33,6 @@ class ProductDetailFragment(
     private val fragmentMap: MutableMap<OptionPage, Fragment> = mutableMapOf()
 
     // ViewModel
-    private val orderDataVM by activityViewModels<OrderDataVM>();
     private val optionVM by activityViewModels<OptionVM>();
 
     // Adapter
