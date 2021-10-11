@@ -20,6 +20,7 @@ import com.hanheldpos.model.product.ProductOrderItem
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.cart.CartDataVM
+import com.hanheldpos.ui.screens.cart.CartFragment
 import com.hanheldpos.ui.screens.home.HomeFragment
 import com.hanheldpos.ui.screens.home.ScreenViewModel
 import com.hanheldpos.ui.screens.home.order.adapter.OrderMenuAdapter
@@ -233,7 +234,12 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
     }
 
     override fun showCart() {
+        navigator.goToWithCustomAnimation( CartFragment(object: CartFragment.CartListener{
+            override fun onDeleteCart() {
 
+            }
+
+        }));
     }
 
     companion object {

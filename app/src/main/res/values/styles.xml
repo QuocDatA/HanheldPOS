@@ -104,16 +104,16 @@
 
     // Cart
     <style name="CartTitle">
-        <item name="useTextHeader">h1</item>
+        <item name="useTextHeader">h4</item>
         <item name="useFontStyle">bold</item>
-        <item name="useTextColor">color6</item>
+        <item name="useTextColor">color4</item>
         <item name="android:layout_gravity">center</item>
     </style>
 
     <style name="CartDelete">
-        <item name="useTextHeader">h2</item>
+        <item name="useTextHeader">h6</item>
         <item name="useFontStyle">normal</item>
-        <item name="android:textColor">@color/error</item>
+        <item name="useTextColor">color0</item>
         <item name="android:layout_gravity">center|end</item>
         <item name="android:layout_marginEnd">@dimen/_10sdp</item>
     </style>
