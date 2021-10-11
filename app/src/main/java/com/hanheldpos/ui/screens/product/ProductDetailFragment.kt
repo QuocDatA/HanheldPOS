@@ -68,7 +68,9 @@ class ProductDetailFragment(
                     }
                 }
             }
-        }.attach()
+        }.let {
+            it.attach();
+        }
 
     }
 

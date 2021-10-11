@@ -22,9 +22,6 @@ import com.hanheldpos.ui.screens.home.order.combo.adapter.ComboItemAdapter
 
 class ComboVM : BaseUiViewModel<ComboUV>() {
 
-    data class ComboEvent(
-        var data: OrderMenuComboItemModel?
-    )
 
     val orderItemModel = MutableLiveData<OrderItemModel>();
     val extraDoneModel = MutableLiveData<ExtraDoneModel>();
@@ -37,6 +34,10 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
     /**
      *  List name of selected products in combo list
      */
+    data class ComboEvent(
+        var data: OrderMenuComboItemModel?
+    )
+
     val selectedCombo = MutableLiveData<ComboEvent>()
     val isSelectedComplete: MutableLiveData<Boolean> = Transformations.map(selectedCombo) {
         val result = it.data?.listItemsByGroup?.sumOf {
@@ -85,7 +86,10 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
                                 productOrderItem.apply {
                                     val newProductPrice: GroupPriceProductItem? =
                                         groupPrice?.product?.find { it.productGUID == this.id };
-                                    productOrderItem.updatePriceByGroupPrice(extraDoneModel.value?.productOrderItem!!,newProductPrice);
+                                    productOrderItem.updatePriceByGroupPrice(
+                                        extraDoneModel.value?.productOrderItem!!,
+                                        newProductPrice
+                                    );
                                 }
                                 ComboPickedItemViewModel(
                                     comboParentId = productComboItem.comboGuid,
@@ -135,20 +139,27 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
     ) {
         when (action) {
             ComboItemActionType.Add -> {
-                uiCallback?.openProductDetail(extraDoneModel.value?.productOrderItem,comboManager.requireQuantity(), item.copy(), action);
+                uiCallback?.openProductDetail(
+                    extraDoneModel.value?.productOrderItem,
+                    comboManager.requireQuantity(),
+                    item.copy(),
+                    action
+                );
             }
             ComboItemActionType.Modify -> {
-                uiCallback?.openProductDetail(extraDoneModel.value?.productOrderItem,comboManager.requireQuantity() + (item.extraDoneModel?.quantity
-                    ?: 0), item, action);
+                uiCallback?.openProductDetail(
+                    extraDoneModel.value?.productOrderItem,
+                    comboManager.requireQuantity() + (item.extraDoneModel?.quantity
+                        ?: 0),
+                    item,
+                    action
+                );
             }
             ComboItemActionType.Remove -> {
-
                 /**
                  * Delete green tick when remove item
                  */
-                toggleItemSelected(comboManager.comboDetailAdapter,item,false);
-
-
+                toggleItemSelected(comboManager.comboDetailAdapter, item, false);
 
                 selectedCombo.value?.data?.let {
                     it.listItemsByGroup?.forEach { it1 ->
@@ -171,14 +182,20 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
     /**
      * toggle check icon visible/gone
      */
-    private fun toggleItemSelected(comboGroup: Any?, currentItem:ComboPickedItemViewModel, value:Boolean){
+    private fun toggleItemSelected(
+        comboGroup: Any?,
+        currentItem: ComboPickedItemViewModel,
+        value: Boolean
+    ) {
         (comboGroup as ComboItemAdapter).let {
-            val currentItem=it.currentList.find { temp->temp.selectedComboItem?.id==currentItem.selectedComboItem?.id };
-            val currentItemIndex= it.currentList.indexOf(currentItem);
-            currentItem?.isChosen=value;
+            val currentItem =
+                it.currentList.find { temp -> temp.selectedComboItem?.id == currentItem.selectedComboItem?.id };
+            val currentItemIndex = it.currentList.indexOf(currentItem);
+            currentItem?.isChosen = value;
             it.notifyItemChanged(currentItemIndex);
         };
     }
+
     fun onChooseItemComboSuccess(
         comboParent: String?,
         item: ComboPickedItemViewModel,
@@ -191,7 +208,7 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
                     /**
                      * show check icon when add or modify item
                      */
-                    toggleItemSelected(it1?.comboDetailAdapter,item,true);
+                    toggleItemSelected(it1?.comboDetailAdapter, item, true);
 
 
                     when (action) {
@@ -250,7 +267,6 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
             extraDoneModel.notifyValueChange();
         }
     }
-
 
     fun onAddCart() {
         uiCallback?.cartAdded(orderItemModel.value!!);
