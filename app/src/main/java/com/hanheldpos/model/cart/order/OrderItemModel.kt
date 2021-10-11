@@ -24,12 +24,13 @@ data class OrderItemModel(
     var menuComboItem: OrderMenuComboItemModel? = null,
 
     var type: OrderItemType? = null,
+
+
 ) : Parcelable {
 
     /**
-     *  Quantity of order
+     * @return Quantity of order
      */
-
     fun getOrderQuantity(): Int {
         return extraDone?.quantity ?: 0;
     }
@@ -99,7 +100,7 @@ data class OrderItemModel(
 
     fun getOrderPrice(): Double {
         var sum : Double = 0.0;
-        if(menuComboItem != null){
+        if(type == OrderItemType.Combo){
             sum = productOrderItem?.price!!;
 
             when(productOrderItem!!.pricingMethodType){

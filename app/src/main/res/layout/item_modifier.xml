@@ -100,7 +100,7 @@
                     android:layout_height="@dimen/_11sdp"
                     android:layout_gravity="center"
                     android:layout_margin="@dimen/_4sdp"
-                    android:src="@drawable/ic_add_primary" />
+                    android:src="@{item.quantity &lt; item.maxQuantity ? @drawable/ic_add_primary : @drawable/ic_add_disable}" />
             </FrameLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>

@@ -69,8 +69,6 @@ data class ItemComboGroupManager(
 @Parcelize
 data class ComboPickedItemViewModel(
     var comboParentId: String? = null,
-
-    /*var quantity: Int = 1,*/
     /**
      * Selected products in combo list of this group
      */
@@ -79,11 +77,6 @@ data class ComboPickedItemViewModel(
 ) : Parcelable,Cloneable {
     @IgnoredOnParcel
     var isChosen: Boolean=false;
-
-    fun plusQuantity(number: Int = 1) {
-        extraDoneModel?.quantity = extraDoneModel?.quantity!!.plus(number);
-
-    }
 }
 
 

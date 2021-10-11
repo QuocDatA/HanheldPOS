@@ -153,7 +153,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
                             navigator.goToWithCustomAnimation(
                                 ProductDetailFragment.getInstance(
                                     item = item,
-                                    quantityCanChoose = 5,
+                                    quantityCanChoose = 100,
                                     listener = onCartAdded
                                 )
                             )

@@ -9,11 +9,16 @@ import kotlinx.android.parcel.Parcelize
  */
 @Parcelize
 data class ModifierStrProduct(
-
     //todo(ModifierModal): add more field modifier here
     @field:SerializedName("ModifierGuid")
     val modifierGuid: String? = null,
 
     @field:SerializedName("ModifierName")
     val modifierName: String? = null
-) : Parcelable
+) : Parcelable {
+
+    /**
+     * @noteItem is the ProductModifierItem that link to
+     */
+    var nodeItem : Any? = null
+}

@@ -27,7 +27,6 @@ data class ProductOrderItem(
     var unitStr: String? = null,
     var mappedItem: Parcelable? = null,
     var extraData: ExtraData? = null,
-    var maxQuantity: Int = -1,
     var uiType: ProductModeViewType? = null,
     var pricingMethodType: PricingMethodType? = null,
     var modPricingType: ModPricingType? = null,
@@ -37,6 +36,7 @@ data class ProductOrderItem(
     var productComboList: MutableList<ProductComboItem>? = mutableListOf(),
     var listGroupPriceInCombo: MutableList<GroupPriceItem>? = null,
 
+    var maxQuantity: Int = -1,
     ) : Parcelable, Cloneable {
     @IgnoredOnParcel
     var color: String? = null;
@@ -53,7 +53,10 @@ data class ProductOrderItem(
  * @param parent Product Combo Item
  * @param groupBundle The Group Price of Combo Item
  */
-fun ProductOrderItem.updatePriceByGroupPrice(parent : ProductOrderItem,groupBundle: GroupPriceProductItem?) {
+fun ProductOrderItem.updatePriceByGroupPrice(
+    parent: ProductOrderItem,
+    groupBundle: GroupPriceProductItem?
+) {
 
     // Update child folow parent
     this.modPricingType = parent.modPricingType;
@@ -65,8 +68,8 @@ fun ProductOrderItem.updatePriceByGroupPrice(parent : ProductOrderItem,groupBund
         if (groupBundle.variants.isNotEmpty()) {
             extraData?.variantStrProductList?.first()?.group?.forEach {
                 groupBundle.variants.find { newItem -> newItem.groupID == it?.groupId ?: -1 }
-                    .let { findedItem ->
-                        it?.price = findedItem?.groupAmount;
+                    .let { findItem ->
+                        it?.price = findItem?.groupAmount;
                     }
             }
         } else {
@@ -115,7 +118,6 @@ fun ProductOrderItem.updateModifierPrice() {
                 }
             }
         }
-
     }
 
 
@@ -143,7 +145,6 @@ fun ExtraData.getDefaultModifierList(): MutableList<ModifierHeader> {
             }
         ))
     }
-
     return listHeader
 }
 

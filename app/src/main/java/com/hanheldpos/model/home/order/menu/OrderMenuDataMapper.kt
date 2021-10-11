@@ -7,6 +7,7 @@ import com.hanheldpos.model.product.ProductOrderItem
 
 object OrderMenuDataMapper {
     lateinit var menuDB: OrderMenuResp
+
     /**
      *  Get Menu Child List of a OrderMenuItem by find in the OrderMenuResp
      *  Note: this should call when an item is click in the OrderMenu list
@@ -68,34 +69,33 @@ object OrderMenuDataMapper {
         }
         return rs
     }
+
     /**
      * Find product list in groups by using @ComboGuid in combo
      */
     private fun getProductOrderItemListByComboGuid(comboGuid: String?): MutableList<ProductOrderItem> {
         val rs: MutableList<ProductOrderItem> = mutableListOf()
-
-        val productIdList = mutableListOf<String>()
         menuDB.getMenuGroupItemListWithGroupId(comboGuid)?.forEach { it ->
             //Get product id that enabled in combo hold in menu group
-            productIdList.add(it?.itemGuid!!)
-        }
-
-        productIdList.map {
-            menuDB.getProductWithItemGuid(it)?.forEach { product ->
-                product?.toProductOrderItem(menuDB).let { it1 ->
-                    if (it1 != null) {
-                        rs.add(it1)
+            it?.itemGuid!!.let {
+                menuDB.getProductWithItemGuid(it)?.forEach { product ->
+                    product?.toProductOrderItem(menuDB).let { it1 ->
+                        if (it1 != null) {
+                            rs.add(it1)
+                        }
                     }
                 }
             }
         }
         return rs
     }
+
     fun getGroupNameFromGroupGuid(groupGuid: String?) =
         menuDB.getGroupItem(groupGuid)?.groupName
 
     fun getMenuGroupItemListFromItemGuid(itemGuid: String?) =
         menuDB.getMenuGroupItemListWithItemId(itemGuid)
+
     /**
      * Find all product by @categoryGuid and transforms to OrderMenuItem List
      */
@@ -149,8 +149,6 @@ object OrderMenuDataMapper {
 
         return rs
     }
-
-
 
 
     /**

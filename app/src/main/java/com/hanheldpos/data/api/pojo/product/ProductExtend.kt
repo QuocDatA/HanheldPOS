@@ -151,6 +151,7 @@ private fun ProductItem.getModifierList(orderMenuResp: OrderMenuResp): MutableMa
 
             // check custom first if have custom then get the modifier by the custom modifier
             if (modifierCustom != null) {
+
                 val modifierCustomList = modifierStrFromProductModifier(modifierCustom.modifierItem)
 
                 modifierCustomList?.forEach { it ->
