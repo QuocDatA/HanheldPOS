@@ -149,6 +149,9 @@ data class Families(
 	@field:SerializedName("bold")
 	val bold: String? = null,
 
+	@field:SerializedName("semibold")
+	val semibold: String? = null,
+
 	@field:SerializedName("italic")
 	val italic: String? = null,
 
