@@ -117,15 +117,16 @@
                 android:layout_centerVertical="true"
                 android:layout_marginStart="@dimen/_13sdp"
                 android:text="@{tableDataVM.curTableLD.tableName + `-` + cartDataVM.diningOptionLD.title + ` (` + cartDataVM.numberOfCustomer + `)`}"
-                app:useFontStyle="normal" />
+                app:useFontStyle="normal"
+                />
 
             <com.diadiem.pos_components.PTextView
                 style="@style/OrderTotalPrice"
-                visibleObject="@{cartDataVM.cartModelLD.grandTotal>0}"
                 priceView="@{cartDataVM.cartModelLD.grandTotal}"
-                tools:text="10,000"
+                visibleObject="@{cartDataVM.cartModelLD.grandTotal>0}"
                 android:layout_centerVertical="true"
-                android:layout_toStartOf="@id/cartBtn" />
+                android:layout_toStartOf="@id/cartBtn"
+                tools:text="10,000" />
 
             <FrameLayout
                 android:id="@+id/cartBtn"

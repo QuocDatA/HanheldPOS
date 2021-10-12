@@ -37,6 +37,8 @@
     <string name="ExtraName">Extra Name</string>
     <string name="ExtraPrice">Extra Price</string>
     <string name="AddCart">ADD</string>
-    <string name="delete">Delete</string>
+    <string name="delete">Delete cart</string>
     <string name="cart">Cart</string>
+    <string name="no_shipping_info">No shipping info, please add customer or shipping info</string>
+    <string name="add_customer">Add Customer</string>
 </resources>

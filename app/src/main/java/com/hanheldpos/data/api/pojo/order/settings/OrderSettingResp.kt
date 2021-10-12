@@ -21,22 +21,44 @@ data class OrderSettingResp(
 ) : Parcelable
 
 @Parcelize
-data class ListDiningOptionsItem(
-
-    @field:SerializedName("GroupText")
-    val groupText: String? = null,
-
-    @field:SerializedName("Title")
-    val title: String? = null,
-
-    @field:SerializedName("OrderNo")
-    val orderNo: Int? = null,
+data class DiningOptionItem(
 
     @field:SerializedName("Id")
     val id: Int? = null,
 
-    @field:SerializedName("GroupId")
-    val groupId: Int? = null
+    @field:SerializedName("Title")
+    val title: String? = null,
+
+    @field:SerializedName("Acronymn")
+    val acronymn: String? = null,
+
+    @field:SerializedName("OrderNo")
+    val orderNo: Int? = null,
+
+    @field:SerializedName("TypeId")
+    val typeId: Int? = null,
+
+    @field:SerializedName("TypeText")
+    val typeText: String? = null,
+
+    @field:SerializedName("SubDiningOption")
+    val subDiningOptions: List<SubDiningOptionItem>? = null,
+
+
+    ) : Parcelable
+
+@Parcelize
+data class SubDiningOptionItem(
+
+    @field:SerializedName("SubId")
+    val subId: Int? = null,
+
+    @field:SerializedName("SubTitle")
+    val subTitle: String? = null,
+
+    @field:SerializedName("Location")
+    val location: String? = null,
+
 ) : Parcelable
 
 @Parcelize
@@ -46,7 +68,7 @@ data class ModelItem(
     val listVoid: List<ListVoidItem?>? = null,
 
     @field:SerializedName("ListDiningOptions")
-    val listDiningOptions: List<ListDiningOptionsItem?>? = null,
+    val diningOptions: List<DiningOptionItem?>? = null,
 
     @field:SerializedName("ListComp")
     val listComp: List<ListCompItem?>? = null

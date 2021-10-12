@@ -66,13 +66,12 @@ object DataHelper {
 
     fun getCompItemById(voidId: Int) = getCompList()?.find { it?.id == voidId }
 
-    fun getDiningOptionList() = getOrderSettingModel()?.listDiningOptions
+    fun getDiningOptionList() = getOrderSettingModel()?.diningOptions
 
     fun getDiningOptionItem(diningOptionId: Int) =
         getDiningOptionList()?.find { it?.id == diningOptionId }
 
-    fun getDiningOptionListByGroupId(groupId: Int) =
-        getDiningOptionList()?.filter { it?.groupId == groupId }
+
 
     fun getDefaultDiningOptionItem() = getDiningOptionList()?.firstOrNull()
     //endregion
