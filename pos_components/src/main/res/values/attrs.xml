@@ -36,6 +36,7 @@
             <enum name="normal" value="1" />
             <enum name="italic" value="2" />
             <enum name="bold" value="3" />
+            <enum name="semi_bold" value="4" />
         </attr>
 
     </declare-styleable>
