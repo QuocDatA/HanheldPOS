@@ -38,9 +38,7 @@ class ModifierFragment : BaseFragment<FragmentModifierBinding,ModifierVM>(),Modi
     override fun initView() {
 
         containerModifierAdapter = ContainerModifierAdapter(
-            itemSeleted = optionVM.extraDoneModel?.selectedModifierGroup?.values?.map {
-                it?.first() as ModifierSelectedItemModel
-            },
+            itemSeleted = optionVM.extraDoneModel?.selectedModifierGroup,
             listener = object : BaseItemClickListener<ModifierSelectedItemModel>{
             override fun onItemClick(adapterPosition: Int, item: ModifierSelectedItemModel) {
                 optionVM.modifierItemChange(item);

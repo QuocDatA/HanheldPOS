@@ -1,6 +1,7 @@
 package com.hanheldpos.model.home.order.menu
 
 import android.os.Parcelable
+import com.hanheldpos.model.cart.order.OrderItemModel
 import com.hanheldpos.model.product.ExtraDoneModel
 import com.hanheldpos.model.product.ProductComboItem
 import com.hanheldpos.model.product.ProductOrderItem
@@ -53,7 +54,7 @@ data class ItemComboGroupManager(
     private fun getAllItemQuantity(): Int {
         var total = 0
         listSelectedComboItems.map {
-            total += it?.extraDoneModel?.quantity!!
+            total += it?.selectedComboItem!!.quantity;
         }
         return total
     }
@@ -72,8 +73,7 @@ data class ComboPickedItemViewModel(
     /**
      * Selected products in combo list of this group
      */
-    var selectedComboItem: ProductOrderItem? = null,
-    var extraDoneModel: ExtraDoneModel? = null,
+    var selectedComboItem: OrderItemModel? = null,
 ) : Parcelable,Cloneable {
     @IgnoredOnParcel
     var isChosen: Boolean=false;

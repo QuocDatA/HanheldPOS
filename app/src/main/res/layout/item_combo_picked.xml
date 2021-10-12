@@ -25,7 +25,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@{item.extraDoneModel.name}"
+                android:text="@{item.selectedComboItem.orderName}"
                 app:useFontStyle="normal"
                 app:useTextColor="color4"
                 app:useTextHeader="h6" />
@@ -33,7 +33,7 @@
             <com.diadiem.pos_components.PTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{`(`+ item.extraDoneModel.quantity + `x)`}"
+                android:text="@{`(`+ item.selectedComboItem.quantity + `x)`}"
                 app:useFontStyle="normal"
                 app:useTextColor="color4"
                 app:useTextHeader="h6" />
@@ -77,23 +77,23 @@
         </LinearLayout>
 
         <com.diadiem.pos_components.PTextView
-            visibleObject="@{item.extraDoneModel.getVariantStr()}"
+            visibleObject="@{item.selectedComboItem.getVariantStr()}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_3sdp"
             android:maxWidth="@dimen/_200sdp"
-            android:text="@{`• ` + item.extraDoneModel.getVariantStr()}"
+            android:text="@{`• ` + item.selectedComboItem.getVariantStr()}"
             app:useFontStyle="normal"
             app:useTextColor="color6"
             app:useTextHeader="h7" />
 
         <com.diadiem.pos_components.PTextView
-            visibleObject="@{item.extraDoneModel.getModifierStr()}"
+            visibleObject="@{item.selectedComboItem.getModifierStr()}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_3sdp"
             android:maxWidth="@dimen/_200sdp"
-            android:text="@{`• ` +item.extraDoneModel.getModifierStr()}"
+            android:text="@{`• ` +item.selectedComboItem.getModifierStr()}"
             app:useFontStyle="normal"
             app:useTextColor="color6"
             app:useTextHeader="h7" />

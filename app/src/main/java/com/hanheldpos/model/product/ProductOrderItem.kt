@@ -2,7 +2,6 @@ package com.hanheldpos.model.product
 
 import android.os.Parcelable
 import android.util.Log
-import androidx.core.graphics.ColorUtils
 import com.hanheldpos.data.api.pojo.order.menu.ModifierItemItem
 import com.hanheldpos.data.api.pojo.order.menu.ModifierStrProduct
 import com.hanheldpos.data.api.pojo.order.menu.ProductItem
@@ -16,16 +15,17 @@ import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class ProductOrderItem(
+data class ProductOrderItem (
     var id: String? = null,
     var text: String? = null,
     var sku: String? = null,
     var description: String? = null,
     var price: Double? = null,
+    var isPriceFixed : Boolean? = false,
     var comparePrice: Double? = null,
     var img: String? = null,
     var unitStr: String? = null,
-    var mappedItem: Parcelable? = null,
+    var mappedItem: ProductItem? = null,
     var extraData: ExtraData? = null,
     var uiType: ProductModeViewType? = null,
     var pricingMethodType: PricingMethodType? = null,
@@ -119,8 +119,6 @@ fun ProductOrderItem.updateModifierPrice() {
             }
         }
     }
-
-
 }
 
 

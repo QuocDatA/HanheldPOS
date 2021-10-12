@@ -1,7 +1,6 @@
 package com.hanheldpos.data.api.pojo.product
 
 import android.annotation.SuppressLint
-import android.os.Parcelable
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.hanheldpos.data.api.ApiConst
@@ -12,9 +11,6 @@ import com.hanheldpos.model.UserHelper
 import com.hanheldpos.model.home.order.ProductModeViewType
 import com.hanheldpos.model.image.getImageUrl
 import com.hanheldpos.model.product.*
-import com.hanheldpos.ui.screens.product.adapter.modifier.ModifierHeader
-import com.hanheldpos.ui.screens.product.adapter.modifier.ModifierSelectedItemModel
-import kotlinx.android.parcel.Parcelize
 import java.lang.reflect.Type
 
 fun ProductItem.toProductOrderItem(
@@ -32,6 +28,7 @@ fun ProductItem.toProductOrderItem(
     productOrderItem.sku = this.sku
     productOrderItem.description = this.description
     productOrderItem.price = this.price
+    productOrderItem.isPriceFixed = this.isPriceFixed;
     productOrderItem.comparePrice = this.comparePrice
     productOrderItem.unitStr = orderMenuResp.getUnitList()?.find {
         it?.systemUnitId == this.unitType
@@ -69,9 +66,6 @@ fun ProductItem.toProductOrderItem(
     if (this.groupPrices != null) {
         productOrderItem.listGroupPriceInCombo = this.groupPrices?.toMutableList();
     }
-
-
-
     return productOrderItem;
 }
 

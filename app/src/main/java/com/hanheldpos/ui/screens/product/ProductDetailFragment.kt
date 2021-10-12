@@ -7,6 +7,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.order.menu.GroupItem
 import com.hanheldpos.databinding.FragmentProductDetailBinding
+import com.hanheldpos.model.cart.order.OrderItemModel
 import com.hanheldpos.model.product.ExtraDoneModel
 import com.hanheldpos.model.product.ProductOrderItem
 import com.hanheldpos.ui.base.fragment.BaseFragment
@@ -76,18 +77,18 @@ class ProductDetailFragment(
 
     override fun initData() {
         arguments?.let {
-            val i: ProductOrderItem? = it.getParcelable(ARG_PRODUCT_ITEM_FRAGMENT)
-            val a: ExtraDoneModel? = it.getParcelable(ARG_EXTRAMODEL_FRAGMENT)
+            val i: OrderItemModel? = it.getParcelable(ARG_ORDER_ITEM_MODEL_FRAGMENT);
             val quantityCanChoose: Int = it.getInt(ARG_PRODUCT_DETAIL_QUANTITY)
-            optionVM.extraDoneModel = a;
-            viewModel.extraDoneModel.value = a ?: ExtraDoneModel(
-                productOrderItem = i
+            optionVM.extraDoneModel = i?.extraDone;
+            i?.extraDone = i?.extraDone ?: ExtraDoneModel(
+                productOrderItem = i?.productOrderItem,
             )
+            viewModel.orderItemModel.value = i;
             viewModel.maxQuantity = quantityCanChoose;
         }
 
         GlobalScope.launch(Dispatchers.IO) {
-            viewModel.extraDoneModel.value?.productOrderItem?.extraData?.let {
+            viewModel.orderItemModel.value?.productOrderItem?.extraData?.let {
                 fragmentMap[OptionPage.Variant] = VariantFragment.getInstance(it);
                 fragmentMap[OptionPage.Modifier] = ModifierFragment.getInstance(it);
                 launch(Dispatchers.Main) {
@@ -104,16 +105,14 @@ class ProductDetailFragment(
     }
 
     interface ProductDetailListener {
-        fun onCartAdded(item: ExtraDoneModel)
+        fun onCartAdded(item: OrderItemModel)
     }
 
     companion object {
-        private const val ARG_EXTRAMODEL_FRAGMENT = "ARG_EXTRAMODEL_FRAGMENT"
-        private const val ARG_PRODUCT_ITEM_FRAGMENT = "ARG_PRODUCT_ITEM_FRAGMENT"
+        private const val ARG_ORDER_ITEM_MODEL_FRAGMENT = "ARG_ORDER_ITEM_MODEL_FRAGMENT"
         private const val ARG_PRODUCT_DETAIL_QUANTITY = "ARG_PRODUCT_DETAIL_QUANTITY"
         fun getInstance(
-            item: ProductOrderItem,
-            extra: ExtraDoneModel? = null,
+            item: OrderItemModel,
             quantityCanChoose: Int = -1,
             listener: ProductDetailListener? = null
         ): ProductDetailFragment {
@@ -121,8 +120,7 @@ class ProductDetailFragment(
                 listener = listener
             ).apply {
                 arguments = Bundle().apply {
-                    putParcelable(ARG_PRODUCT_ITEM_FRAGMENT, item)
-                    putParcelable(ARG_EXTRAMODEL_FRAGMENT, extra)
+                    putParcelable(ARG_ORDER_ITEM_MODEL_FRAGMENT, item)
                     putInt(ARG_PRODUCT_DETAIL_QUANTITY, quantityCanChoose)
                 }
             };
@@ -133,7 +131,7 @@ class ProductDetailFragment(
         navigator.goOneBack();
     }
 
-    override fun onAddCart(item: ExtraDoneModel) {
+    override fun onAddCart(item: OrderItemModel) {
         onBack()
         if (item.quantity > 0)
             listener?.onCartAdded(item);

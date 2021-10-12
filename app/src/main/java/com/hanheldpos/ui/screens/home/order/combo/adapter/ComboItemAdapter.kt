@@ -63,7 +63,7 @@ class ComboItemAdapter(
         when(modeViewType){
             ComboItemViewType.ForChoose->{
                 val binding = holder.binding as ItemOrderProductBinding;
-                binding.item = item.selectedComboItem;
+                binding.item = item.selectedComboItem?.productOrderItem;
                 binding.root.setOnClickListener {
                     listener.onComboItemChoose(action = ComboItemActionType.Add,item);
                 }
