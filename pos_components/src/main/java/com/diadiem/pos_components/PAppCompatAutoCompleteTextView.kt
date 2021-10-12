@@ -244,6 +244,12 @@ class PAppCompatAutoCompleteTextView @JvmOverloads constructor(
                                 appConfig?.styles?.fonts?.families?.bold.plus(appConfig?.styles?.fonts?.families?.fileType)
                             )
                         }
+                        FontStyleEnum.SEMIBOLD->{
+                            typeface = FontManagement.getFontFromAssets(
+                                context,
+                                appConfig?.styles?.fonts?.families?.semibold.plus(appConfig?.styles?.fonts?.families?.fileType)
+                            )
+                        }
                         else -> {
                         }
                     }

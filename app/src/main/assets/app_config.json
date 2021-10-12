@@ -37,7 +37,8 @@
     "fonts":{
       "families":{
         "normal":"SFProDisplay-Regular",
-        "bold":"SFProDisplay-Semibold",
+        "bold":"SFProDisplay-Bold",
+        "semibold": "SFProDisplay-Semibold",
         "italic":"SFProDisplay-RegularItalic",
         "fileType":".ttf"
       },
