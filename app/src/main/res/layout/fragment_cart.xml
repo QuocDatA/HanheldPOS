@@ -49,16 +49,17 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:orientation="horizontal"
-            android:layout_height="@dimen/_32sdp">
+            android:layout_height="wrap_content"
+            android:paddingVertical="@dimen/_7sdp">
             <com.diadiem.pos_components.PTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/deliver_to"
                 app:useTextColor="color4"
-                app:useTextHeader="h6"
+                app:useTextHeader="h5"
                 android:layout_gravity="center"
                 app:useFontStyle="bold"
-                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginStart="@dimen/_9sdp"
                 />
             <Space
                 android:layout_width="0dp"
@@ -78,6 +79,8 @@
                 />
             
         </LinearLayout>
+
+
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/_1sdp"
@@ -86,33 +89,199 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:orientation="vertical"
-            android:paddingHorizontal="@dimen/_14sdp"
-            android:paddingTop="@dimen/_11sdp"
-            android:paddingBottom="@dimen/_13sdp"
-            android:layout_height="@dimen/_60sdp">
+            android:orientation="horizontal"
+            android:layout_height="wrap_content"
+            android:paddingVertical="@dimen/_11sdp">
             <com.diadiem.pos_components.PTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/no_shipping_info"
+                android:text="@string/customer_info"
                 app:useTextColor="color4"
-                app:useTextHeader="h6"
+                app:useTextHeader="h5"
+                android:layout_gravity="center"
+                app:useFontStyle="bold"
+                android:layout_marginStart="@dimen/_9sdp"
                 />
-            <LinearLayout
+            <Space
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"/>
+            <com.diadiem.pos_components.PTextView
                 android:layout_width="wrap_content"
-                android:orientation="horizontal"
-                android:layout_height="wrap_content">
-                <com.diadiem.pos_components.PTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/add_customer"
-                    app:useTextColor="color0"
-                    app:useTextHeader="h4"
-                    />
-
-            </LinearLayout>
+                android:layout_height="wrap_content"
+                app:useTextHeader="h5"
+                app:useTextColor="color0"
+                android:text="@string/add_customer"
+                android:layout_gravity="center"
+                android:layout_marginEnd="@dimen/_9sdp"
+                />
 
         </LinearLayout>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_1sdp"
+            android:background="@color/color_9"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_width="@dimen/_12sdp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_note"
+                android:layout_marginStart="@dimen/_9sdp"
+                app:tint="@color/color_0" />
+            <com.diadiem.pos_components.PTextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingVertical="@dimen/_11sdp"
+                android:hint="@string/special_instruction_for_order"
+                android:layout_marginStart="@dimen/_5sdp"
+                app:ipt_useTextColor="color9"
+                app:ipt_useTextHeader="h5"
+                android:focusableInTouchMode="true"
+                />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_4sdp"
+            android:background="@color/color_9"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_height="@dimen/_32sdp">
+            <com.diadiem.pos_components.PTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/items"
+                app:useTextColor="color4"
+                app:useTextHeader="h5"
+                android:layout_gravity="center"
+                app:useFontStyle="bold"
+                android:layout_marginStart="@dimen/_9sdp"
+                />
+            <Space
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"/>
+            <com.diadiem.pos_components.PTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:useTextHeader="h5"
+                app:useTextColor="color0"
+                android:text="@string/add_items"
+                android:layout_gravity="center"
+                android:layout_marginEnd="@dimen/_9sdp"
+                />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_10sdp"
+            android:background="@color/color_9"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content"
+            android:paddingVertical="@dimen/_8sdp">
+            <com.diadiem.pos_components.PTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/sub_total"
+                app:useTextColor="color4"
+                app:useTextHeader="h5"
+                android:layout_gravity="center"
+                app:useFontStyle="bold"
+                android:layout_marginStart="@dimen/_9sdp"
+                />
+            <Space
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"/>
+            <com.diadiem.pos_components.PTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:useTextHeader="h3"
+                app:useTextColor="color5"
+                tools:text="50.000"
+                android:layout_gravity="center"
+                android:layout_marginEnd="@dimen/_9sdp"
+                />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_1sdp"
+            android:background="@color/color_9"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/_10sdp"
+            android:paddingBottom="@dimen/_8sdp"
+            >
+            <com.diadiem.pos_components.PTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/discount"
+                app:useTextColor="color4"
+                app:useTextHeader="h5"
+                android:layout_gravity="center"
+                app:useFontStyle="bold"
+                android:layout_marginStart="@dimen/_9sdp"
+                />
+            <Space
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"/>
+            <com.diadiem.pos_components.PTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:useTextHeader="h3"
+                app:useTextColor="color5"
+                android:text="@string/add_items"
+                android:layout_gravity="center"
+                android:layout_marginEnd="@dimen/_9sdp"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content"
+            android:paddingVertical="@dimen/_10sdp">
+            <com.diadiem.pos_components.PTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/items"
+                app:useTextColor="color4"
+                app:useTextHeader="h5"
+                android:layout_gravity="center"
+                app:useFontStyle="bold"
+                android:layout_marginStart="@dimen/_9sdp"
+                />
+            <Space
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"/>
+            <com.diadiem.pos_components.PTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:useTextHeader="h3"
+                app:useTextColor="color5"
+                android:text="@string/add_items"
+                android:layout_gravity="center"
+                android:layout_marginEnd="@dimen/_9sdp"
+                />
+        </LinearLayout>
     </LinearLayout>
 </layout>

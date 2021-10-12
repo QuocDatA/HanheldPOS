@@ -165,7 +165,7 @@
                         android:layout_marginVertical="@dimen/_8sdp"
                         android:background="@drawable/bg_outline"
                         android:focusableInTouchMode="true"
-                        android:hint="Special Instructions"
+                        android:hint="@string/special_instructions"
                         android:inputType="text"
                         android:minHeight="@dimen/_40sdp"
                         android:paddingHorizontal="@dimen/_6sdp"

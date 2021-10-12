@@ -41,4 +41,7 @@
     <string name="cart">Cart</string>
     <string name="no_shipping_info">No shipping info, please add customer or shipping info</string>
     <string name="add_customer">Add Customer</string>
+    <string name="customer_info">Customer Info</string>
+    <string name="special_instruction_for_order">Special Instruction for Order</string>
+    <string name="items">Items</string>
 </resources>
