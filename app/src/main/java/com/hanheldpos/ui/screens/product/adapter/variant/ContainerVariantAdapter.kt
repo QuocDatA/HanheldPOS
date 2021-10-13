@@ -1,5 +1,6 @@
 package com.hanheldpos.ui.screens.product.adapter.variant
 
+import android.annotation.SuppressLint
 import androidx.recyclerview.widget.DiffUtil
 import com.diadiem.pos_config.utils.Const
 import com.hanheldpos.R
@@ -28,6 +29,7 @@ class ContainerVariantAdapter(
         super.submitList(list)
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onBindViewHolder(holder: BaseBindingViewHolder<VariantHeader>, position: Int) {
         val item = getItem(position);
         holder.bindItem(item);
@@ -85,7 +87,7 @@ class ContainerVariantAdapter(
         for (i in 1..level){
             if (variantSelected != null && variantSelected?.contains(i) == true)
             {
-                variantSelected!!.get(i)?.let { rs.add(it) }
+                variantSelected!![i]?.let { rs.add(it) }
             }
             else return null;
         }

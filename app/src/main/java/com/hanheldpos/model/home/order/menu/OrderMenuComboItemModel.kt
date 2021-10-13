@@ -74,9 +74,15 @@ data class ComboPickedItemViewModel(
      * Selected products in combo list of this group
      */
     var selectedComboItem: OrderItemModel? = null,
-) : Parcelable,Cloneable {
+) : Parcelable, Cloneable {
     @IgnoredOnParcel
-    var isChosen: Boolean=false;
+    var isChosen: Boolean = false;
+
+    public override fun clone(): ComboPickedItemViewModel {
+        return copy(
+            selectedComboItem = selectedComboItem?.clone()
+        )
+    }
 }
 
 

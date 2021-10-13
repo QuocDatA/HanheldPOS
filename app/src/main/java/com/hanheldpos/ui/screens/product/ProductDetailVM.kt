@@ -66,12 +66,14 @@ class ProductDetailVM : BaseUiViewModel<ProductDetailUV>() {
                      * If not exist , add to list
                      */
                     if (it != null) {
+                        if (item.quantity == 0){
+                            list.remove(it);
+                        }
+                        else
                         it.quantity = item.quantity;
                     } else list.add(item);
                 }
             }
-
-
         }
         orderItemModel.value!!.extraDone?.selectedModifierGroup = modifierList;
         orderItemModel.notifyValueChange()
