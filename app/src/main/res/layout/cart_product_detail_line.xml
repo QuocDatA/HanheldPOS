@@ -4,48 +4,60 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-            <variable
-                name="isDiscount"
-                type="Boolean" />
-            <variable
-                name="isOtherFee"
-                type="Boolean"
-                />
+
+        <variable
+            name="isDiscount"
+            type="Boolean" />
+
+        <variable
+            name="isOtherFee"
+            type="Boolean" />
+
+        <variable
+            name="isNote"
+            type="Boolean" />
+
+        <variable
+            name="lineText"
+            type="String" />
     </data>
 
     <LinearLayout
         android:layout_width="wrap_content"
-        android:orientation="horizontal"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
         <com.diadiem.pos_components.PTextView
+            visibleObject="@{isNote==false || isNote==null,default=true}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:useTextColor="color5"
-            app:useTextHeader="h6"
             android:text="•  "
-            />
-        <ImageView
-            android:layout_width="@dimen/_12sdp"
-            android:layout_height="@dimen/_13sdp"
-            android:layout_marginStart="@dimen/_9sdp"
-            android:src="@drawable/ic_note"
-            android:layout_gravity="center"
-            app:tint="@color/color_0"
-            android:layout_marginEnd="@dimen/_2sdp"/>
-        <com.diadiem.pos_components.PTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             app:useTextColor="color5"
-            app:useTextHeader="h6"
-            tools:text="Variant 1, Variant 2"
-            />
+            app:useTextHeader="h6" />
 
         <ImageView
+            visibleObject="@{isNote,default=false}"
+            android:layout_width="@dimen/_12sdp"
+            android:layout_height="@dimen/_13sdp"
+            android:layout_gravity="center"
+            android:layout_marginEnd="@dimen/_2sdp"
+            android:src="@drawable/ic_note"
+            app:tint="@color/color_0" />
+
+        <com.diadiem.pos_components.PTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{lineText}"
+            app:useTextColor="color5"
+            app:useTextHeader="h6"
+            tools:text="Variant 1, Variant 2" />
+
+        <ImageView
+            visibleObject="@{isDiscount || isOtherFee,default=false}"
             android:layout_width="@dimen/_10sdp"
             android:layout_height="@dimen/_10sdp"
             android:layout_gravity="center"
             android:layout_marginStart="@dimen/_4sdp"
-            visibleObject="@{isDiscount || isOtherFee,default=false}"
             android:src="@{isDiscount?@drawable/ic_delete: @drawable/ic_info,default=@drawable/ic_info}" />
 
     </LinearLayout>

@@ -209,6 +209,7 @@
                         android:overScrollMode="never"
                         android:paddingVertical="0dp"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:itemCount="3"
                         tools:listitem="@layout/item_cart_product" />
 
                     <androidx.legacy.widget.Space
@@ -240,7 +241,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_marginEnd="@dimen/_9sdp"
-                            app:useTextColor="color5"
+                            app:useTextColor="color4"
                             app:useTextHeader="h3"
                             tools:text="50.000" />
                     </LinearLayout>
@@ -276,7 +277,7 @@
                             android:layout_marginEnd="@dimen/_9sdp"
                             android:text="@string/add_discount"
                             app:useTextColor="color0"
-                            app:useTextHeader="h3" />
+                            app:useTextHeader="h5" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -310,7 +311,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_marginEnd="@dimen/_9sdp"
-                            app:useTextColor="color5"
+                            app:useTextColor="color4"
                             app:useTextHeader="h3"
                             tools:text="50.000" />
                     </LinearLayout>
@@ -331,7 +332,7 @@
                             android:layout_marginStart="@dimen/_9sdp"
                             android:text="@string/total"
                             app:useFontStyle="semi_bold"
-                            app:useTextColor="color5"
+                            app:useTextColor="color4"
                             app:useTextHeader="h2" />
 
                         <Space
@@ -345,7 +346,7 @@
                             android:layout_gravity="center"
                             android:layout_marginEnd="@dimen/_9sdp"
                             app:useFontStyle="semi_bold"
-                            app:useTextColor="color5"
+                            app:useTextColor="color4"
                             app:useTextHeader="h2"
                             tools:text="100.000" />
                     </LinearLayout>

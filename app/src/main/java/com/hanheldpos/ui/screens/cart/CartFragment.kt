@@ -1,6 +1,9 @@
 package com.hanheldpos.ui.screens.cart
 
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.order.settings.DiningOptionItem
 import com.hanheldpos.databinding.FragmentCartBinding
@@ -59,11 +62,24 @@ class CartFragment(
                 override fun onItemClick(adapterPosition: Int, item: OrderItemModel) {
                     TODO("Not yet implemented")
                 }
-
-
             },
-        )
-        binding.productRecyclerView.adapter = cartProductAdapter;
+        );
+        binding.productRecyclerView.apply {
+            addItemDecoration(
+                DividerItemDecoration(
+                    context,
+                    LinearLayoutManager.VERTICAL
+                ).apply {
+                    setDrawable(
+                        ContextCompat.getDrawable(
+                            context,
+                            R.drawable.divider_vertical
+                        )!!
+                    )
+                }
+            )
+            adapter = cartProductAdapter;
+        };
         //endregion
     }
 
