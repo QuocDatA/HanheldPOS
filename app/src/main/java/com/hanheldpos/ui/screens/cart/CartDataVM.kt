@@ -26,4 +26,8 @@ class CartDataVM : BaseViewModel() {
         this.cartModelLD.value!!.listOrderItem.add(item);
         this.cartModelLD.notifyValueChange();
     }
+    fun deleteCart(){
+        this.cartModelLD.value!!.listOrderItem.clear();
+        this.cartModelLD.notifyValueChange();
+    }
 }

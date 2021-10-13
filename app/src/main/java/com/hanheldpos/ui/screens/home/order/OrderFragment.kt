@@ -137,8 +137,6 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
                         ProductModeViewType.Product -> {
                             val onCartAdded = object : ProductDetailFragment.ProductDetailListener {
                                 override fun onCartAdded(orderItemModel: OrderItemModel) {
-                                    if (SystemClock.elapsedRealtime() - viewModel.mLastTimeClick <= 1000) return;
-                                    viewModel.mLastTimeClick = SystemClock.elapsedRealtime()
                                     cartDataVM.addToCart(orderItemModel);
                                 }
                             }
@@ -232,11 +230,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
     }
 
     override fun showCart() {
-        navigator.goToWithCustomAnimation( CartFragment(object: CartFragment.CartListener{
-            override fun onDeleteCart() {
-
-            }
-        }));
+        navigator.goToWithCustomAnimation( CartFragment.getIntance());
     }
 
     companion object {

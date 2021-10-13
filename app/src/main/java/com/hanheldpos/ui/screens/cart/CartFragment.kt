@@ -18,7 +18,6 @@ import com.hanheldpos.ui.screens.cart.adapter.CartProductAdapter
 
 
 class CartFragment(
-    private val listener: CartListener
 ) : BaseFragment<FragmentCartBinding, CartVM>(), CartUV {
     override fun layoutRes() = R.layout.fragment_cart;
 
@@ -116,20 +115,16 @@ class CartFragment(
     }
 
     override fun deleteCart() {
-        listener.onDeleteCart();
+        cartDataVM.deleteCart();
         getBack();
     }
 
-    interface CartListener {
-        fun onDeleteCart()
-    }
 
     companion object {
         fun getIntance(
-            listener: CartListener
         ): CartFragment {
             return CartFragment(
-                listener = listener
+
             ).apply {
 
             };
