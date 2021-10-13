@@ -95,8 +95,8 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
                                     comboParentId = productComboItem.comboGuid,
                                     selectedComboItem = OrderItemModel(
                                         productOrderItem = productOrderItem.apply {
-                                            modPricingType = productParent!!.modPricingType;
-                                            modPricingValue = productParent!!.modPricingValue;
+                                            modPricingType = productParent.modPricingType;
+                                            modPricingValue = productParent.modPricingValue;
                                         },
                                         type = OrderItemType.Product
                                     )
@@ -142,7 +142,7 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
             ComboItemActionType.Add -> {
                 uiCallback?.openProductDetail(
                     comboManager.requireQuantity(),
-                    item.copy(),
+                    item.clone(),
                     action
                 );
             }

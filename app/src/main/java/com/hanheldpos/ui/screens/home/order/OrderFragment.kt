@@ -142,7 +142,6 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
                                     cartDataVM.addToCart(orderItemModel);
                                 }
                             }
-
                             navigator.goToWithCustomAnimation(
                                 ProductDetailFragment.getInstance(
                                     item = OrderItemModel(
@@ -237,7 +236,6 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
             override fun onDeleteCart() {
 
             }
-
         }));
     }
 

@@ -28,7 +28,15 @@ data class OrderItemModel(
     var quantity: Int = 1,
     var note: String? = null,
 
-) : Parcelable {
+) : Parcelable, Cloneable {
+
+    public override fun clone(): OrderItemModel {
+        return copy(
+            productOrderItem = productOrderItem?.copy(),
+            extraDone = extraDone?.copy(),
+            menuComboItem = menuComboItem?.copy(),
+        )
+    }
 
     /**
      * @return Quantity of order

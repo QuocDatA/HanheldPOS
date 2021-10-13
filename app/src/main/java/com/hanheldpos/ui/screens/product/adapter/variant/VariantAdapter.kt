@@ -35,7 +35,6 @@ class VariantAdapter(
                 notifyItemChanged(selectedItem.value)
                 selectedItem.value = position
                 notifyItemChanged(position)
-                listener.onItemClick(position,item);
             }
             if (selectedItem.value == position) {
                 isChecked = true
@@ -45,6 +44,7 @@ class VariantAdapter(
                         R.color.color_2
                     )
                 )
+                listener.onItemClick(position,item);
             } else {
                 isChecked = false
                 binding.optionBtn.setTextColor(
