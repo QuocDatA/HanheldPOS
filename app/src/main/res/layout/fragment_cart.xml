@@ -8,6 +8,11 @@
         <variable
             name="viewModel"
             type="com.hanheldpos.ui.screens.cart.CartVM" />
+        <variable
+            name="cartDataVM"
+            type="com.hanheldpos.ui.screens.cart.CartDataVM" />        <variable
+            name="tableDataVM"
+            type="com.hanheldpos.ui.screens.home.table.TableDataVM" />
     </data>
 
     <LinearLayout
@@ -81,7 +86,7 @@
                             app:useTextColor="color4"
                             app:useTextHeader="h5" />
 
-                        <Space
+                        <androidx.legacy.widget.Space
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1" />
@@ -119,7 +124,7 @@
                             app:useTextColor="color4"
                             app:useTextHeader="h5" />
 
-                        <Space
+                        <androidx.legacy.widget.Space
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1" />
@@ -181,7 +186,7 @@
                             app:useTextColor="color4"
                             app:useTextHeader="h5" />
 
-                        <Space
+                        <androidx.legacy.widget.Space
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1" />
@@ -208,6 +213,7 @@
                         android:orientation="vertical"
                         android:overScrollMode="never"
                         android:paddingVertical="0dp"
+
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         tools:itemCount="3"
                         tools:listitem="@layout/item_cart_product" />
@@ -231,7 +237,7 @@
                             app:useTextColor="color4"
                             app:useTextHeader="h5" />
 
-                        <Space
+                        <androidx.legacy.widget.Space
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1" />
@@ -242,6 +248,7 @@
                             android:layout_gravity="center"
                             android:layout_marginEnd="@dimen/_9sdp"
                             app:useTextColor="color4"
+                            priceView="@{0.0}"
                             app:useTextHeader="h3"
                             tools:text="50.000" />
                     </LinearLayout>
@@ -265,7 +272,7 @@
                             app:useTextColor="color4"
                             app:useTextHeader="h5" />
 
-                        <Space
+                        <androidx.legacy.widget.Space
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1" />
@@ -301,7 +308,7 @@
                             android:layout_marginStart="@dimen/_4sdp"
                             android:src="@drawable/ic_info" />
 
-                        <Space
+                        <androidx.legacy.widget.Space
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1" />
@@ -312,6 +319,8 @@
                             android:layout_gravity="center"
                             android:layout_marginEnd="@dimen/_9sdp"
                             app:useTextColor="color4"
+                            priceView="@{0.0}"
+
                             app:useTextHeader="h3"
                             tools:text="50.000" />
                     </LinearLayout>
@@ -335,7 +344,7 @@
                             app:useTextColor="color4"
                             app:useTextHeader="h2" />
 
-                        <Space
+                        <androidx.legacy.widget.Space
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1" />
@@ -348,6 +357,8 @@
                             app:useFontStyle="semi_bold"
                             app:useTextColor="color4"
                             app:useTextHeader="h2"
+                            priceView="@{cartDataVM.cartModelLD.grandTotal}"
+
                             tools:text="100.000" />
                     </LinearLayout>
                 </LinearLayout>
@@ -443,6 +454,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/_7sdp"
                     app:useTextColor="color4"
+                    android:text="@{tableDataVM.curTableLD.tableName + `-` + cartDataVM.diningOptionLD.title + ` (` + cartDataVM.numberOfCustomer + `)`}"
+
                     app:useTextHeader="h5"
                     tools:text="B1-For Here (2)" />
 
@@ -453,6 +466,8 @@
                     android:paddingHorizontal="@dimen/_5sdp"
                     app:useTextColor="color2"
                     app:useTextHeader="h6"
+
+                    android:text="@{cartDataVM.linePerTotalQuantity}"
                     tools:text="8/10" />
 
             </LinearLayout>
@@ -477,9 +492,11 @@
                     app:useFontStyle="bold"
                     app:useTextColor="color4"
                     app:useTextHeader="h5"
+                    priceView="@{cartDataVM.cartModelLD.grandTotal}"
+                    visibleObject="@{cartDataVM.cartModelLD.grandTotal!=0}"
                     tools:text="1.000.000" />
 
-                <Space
+                <androidx.legacy.widget.Space
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1" />

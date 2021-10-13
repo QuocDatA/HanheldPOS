@@ -17,16 +17,21 @@ class CartDataVM : BaseViewModel() {
     val diningOptionLD: LiveData<DiningOptionItem> = Transformations.map(cartModelLD) {
         return@map it?.diningOption ?: DataHelper.getDefaultDiningOptionItem()
     }
+    val linePerTotalQuantity: LiveData<String> = Transformations.map(cartModelLD) {
+        return@map "${it.listOrderItem.size}/${it.listOrderItem.sumOf { it1->it1.quantity }}"
+    }
 
-    val numberOfCustomer : LiveData<Int> = Transformations.map(cartModelLD) {
+    val numberOfCustomer: LiveData<Int> = Transformations.map(cartModelLD) {
         return@map it?.customerQuantity;
     }
 
-    fun addToCart(item : OrderItemModel){
+
+    fun addToCart(item: OrderItemModel) {
         this.cartModelLD.value!!.listOrderItem.add(item);
         this.cartModelLD.notifyValueChange();
     }
-    fun deleteCart(){
+
+    fun deleteCart() {
         this.cartModelLD.value!!.listOrderItem.clear();
         this.cartModelLD.notifyValueChange();
     }

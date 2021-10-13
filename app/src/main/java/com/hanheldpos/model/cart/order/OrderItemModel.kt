@@ -83,7 +83,7 @@ data class OrderItemModel(
 
 
     fun getVariantStr(): String? {
-        return getVariantStr(Const.SymBol.SplashSeparator)
+        return getVariantStr(Const.SymBol.CommaSeparator)
     }
 
     private fun getVariantStr(separator: String): String? {

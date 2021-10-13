@@ -105,60 +105,104 @@
             android:layout_height="@dimen/_1sdp"
             android:layout_above="@id/toolbarCart" />
 
-        <RelativeLayout
-            android:id="@+id/toolbarCart"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_42sdp"
+            android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:gravity="center_vertical">
+            android:id="@+id/toolbarCart"
+            android:orientation="horizontal">
 
-            <com.diadiem.pos_components.PTextView
-                style="@style/OrderTotalPrice"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="@dimen/_13sdp"
-                android:text="@{tableDataVM.curTableLD.tableName + `-` + cartDataVM.diningOptionLD.title + ` (` + cartDataVM.numberOfCustomer + `)`}"
-                app:useFontStyle="normal"
-                />
-
-            <com.diadiem.pos_components.PTextView
-                style="@style/OrderTotalPrice"
-                priceView="@{cartDataVM.cartModelLD.grandTotal}"
-                visibleObject="@{cartDataVM.cartModelLD.grandTotal>0}"
-                android:layout_centerVertical="true"
-                android:layout_toStartOf="@id/cartBtn"
-                tools:text="10,000" />
-
-            <FrameLayout
-                android:id="@+id/cartBtn"
-                android:layout_width="@dimen/_50sdp"
-                android:layout_height="@dimen/_42sdp"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:clickable="true"
-                android:focusable="true"
-                android:onClick="@{v->viewModel.showCart()}">
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/color_0"
-                    android:padding="@dimen/_7sdp"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/ic_cart_light" />
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="@dimen/_12sdp">
 
                 <com.diadiem.pos_components.PTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="@dimen/_2sdp"
-                    android:text="@{String.valueOf(cartDataVM.cartModelLD.quantityCart)}"
-                    app:useFontStyle="bold"
-                    app:useTextColor="color0"
-                    app:useTextHeader="h6"
-                    tools:text="10"
-                    tools:textColor="@color/color_0" />
-            </FrameLayout>
+                    android:layout_marginEnd="@dimen/_7sdp"
+                    app:useTextColor="color4"
+                    android:text="@{tableDataVM.curTableLD.tableName + `-` + cartDataVM.diningOptionLD.title + ` (` + cartDataVM.numberOfCustomer + `)`}"
 
-        </RelativeLayout>
+                    app:useTextHeader="h5"
+                    tools:text="B1-For Here (2)" />
+
+                <com.diadiem.pos_components.PTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_color5_2444dp"
+                    android:paddingHorizontal="@dimen/_5sdp"
+                    app:useTextColor="color2"
+                    app:useTextHeader="h6"
+
+                    android:text="@{cartDataVM.linePerTotalQuantity}"
+                    tools:text="8/10" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="@dimen/_1sdp"
+                android:layout_height="match_parent"
+                android:layout_marginVertical="@dimen/_8sdp"
+                android:background="@color/color_10" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <com.diadiem.pos_components.PTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_12sdp"
+                    app:useFontStyle="bold"
+                    app:useTextColor="color4"
+                    app:useTextHeader="h5"
+                    priceView="@{cartDataVM.cartModelLD.grandTotal}"
+                    visibleObject="@{cartDataVM.cartModelLD.grandTotal!=0}"
+
+                    tools:text="1.000.000" />
+
+                <androidx.legacy.widget.Space
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <FrameLayout
+                    android:id="@+id/cartBtn"
+                    android:layout_width="@dimen/_50sdp"
+                    android:layout_height="match_parent"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:onClick="@{v->viewModel.showCart()}">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/color_0"
+                        android:padding="@dimen/_7sdp"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/ic_cart_light" />
+
+                    <com.diadiem.pos_components.PTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="@dimen/_2sdp"
+                        android:text="@{String.valueOf(cartDataVM.cartModelLD.quantityCart)}"
+                        app:useFontStyle="bold"
+                        app:useTextColor="color0"
+                        app:useTextHeader="h6"
+                        tools:text="10"
+                        tools:textColor="@color/color_0" />
+                </FrameLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+
+
     </RelativeLayout>
 </layout>

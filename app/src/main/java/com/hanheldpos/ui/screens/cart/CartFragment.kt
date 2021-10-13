@@ -15,6 +15,7 @@ import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.cart.adapter.CartDiningOptionAdapter
 import com.hanheldpos.ui.screens.cart.adapter.CartProductAdapter
+import com.hanheldpos.ui.screens.home.table.TableDataVM
 
 
 class CartFragment(
@@ -24,6 +25,7 @@ class CartFragment(
     private lateinit var cartDiningOptionAdapter: CartDiningOptionAdapter;
     private lateinit var cartProductAdapter: CartProductAdapter;
     private val cartDataVM by activityViewModels<CartDataVM>();
+    private val tableDataVM by activityViewModels<TableDataVM>();
 
     override fun viewModelClass(): Class<CartVM> {
         return CartVM::class.java;
@@ -35,7 +37,10 @@ class CartFragment(
             binding.viewModel = this;
             initLifeCycle(this@CartFragment);
         }
-        R.dimen._100ssp
+        binding.cartDataVM=cartDataVM;
+        binding.tableDataVM=tableDataVM;
+
+
     }
 
     override fun initView() {
