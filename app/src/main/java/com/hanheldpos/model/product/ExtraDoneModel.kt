@@ -11,7 +11,7 @@ import kotlinx.parcelize.Parcelize
 data class ExtraDoneModel(
     var productOrderItem: ProductOrderItem? = null,
     var selectedVariant: GroupItem? = null,
-    var selectedModifierGroup: MutableList<ModifierSelectedItemModel>? = null,
+    var selectedModifiers: MutableList<ModifierSelectedItemModel>? = null,
     var diningOption: DiningOptionItem? = null
 ) : Parcelable {
 
@@ -27,10 +27,10 @@ data class ExtraDoneModel(
 
 
     fun getModifierStr(separator: String): String? {
-        if (selectedModifierGroup == null) return null;
+        if (selectedModifiers == null) return null;
         val rs: MutableList<String> = mutableListOf()
 
-        selectedModifierGroup?.forEach { entry ->
+        selectedModifiers?.forEach { entry ->
             val modifier: String =
                 entry.realItem?.modifier + if (entry.quantity > 1) " (${entry.quantity})" else ""
             rs.add(modifier)

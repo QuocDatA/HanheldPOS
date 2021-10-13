@@ -123,26 +123,35 @@
 
                 <include
                     layout="@layout/cart_product_detail_line"
-                    app:lineText="@{`Variant nameee`}" />
+                    visibleObject="@{item.variantStr!=null}"
+                    app:lineText="@{item.variantStr}" />
 
                 <include
                     layout="@layout/cart_product_detail_line"
-                    app:lineText="@{`Modifier nameee`}" />
+                    visibleObject="@{item.modifierStr!=null}"
+                    app:lineText="@{item.modifierStr}"
+                    />
 
                 <include
                     layout="@layout/cart_product_detail_line"
                     app:isDiscount="@{true}"
+                    visibleObject="@{false}"
+
                     app:lineText="@{`Discount nameee`}" />
 
                 <include
                     layout="@layout/cart_product_detail_line"
                     app:isOtherFee="@{true}"
+                    visibleObject="@{false}"
+
                     app:lineText="@{`Other fees`}" />
 
                 <include
                     layout="@layout/cart_product_detail_line"
                     app:isNote="@{true}"
-                    app:lineText="@{`Note Note Note `}" />
+                    visibleObject="@{item.note!=null}"
+
+                    app:lineText="@{item.note}" />
             </LinearLayout>
 
         </LinearLayout>

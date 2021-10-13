@@ -2,7 +2,6 @@ package com.hanheldpos.ui.screens.product.options.modifier
 
 import android.os.Bundle
 import androidx.fragment.app.activityViewModels
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentModifierBinding
 import com.hanheldpos.model.product.ExtraData
@@ -38,7 +37,7 @@ class ModifierFragment : BaseFragment<FragmentModifierBinding,ModifierVM>(),Modi
     override fun initView() {
 
         containerModifierAdapter = ContainerModifierAdapter(
-            itemSeleted = optionVM.extraDoneModel?.selectedModifierGroup,
+            itemSeleted = optionVM.extraDoneModel?.selectedModifiers,
             listener = object : BaseItemClickListener<ModifierSelectedItemModel>{
             override fun onItemClick(adapterPosition: Int, item: ModifierSelectedItemModel) {
                 optionVM.modifierItemChange(item);

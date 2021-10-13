@@ -172,6 +172,7 @@
                         app:ipt_useFontStyle="normal"
                         app:ipt_useHintTextColor="color8"
                         app:ipt_useTextColor="color4"
+                        android:text="@={viewModel.orderItemModel.note}"
                         app:ipt_useTextHeader="h5" />
                 </LinearLayout>
 

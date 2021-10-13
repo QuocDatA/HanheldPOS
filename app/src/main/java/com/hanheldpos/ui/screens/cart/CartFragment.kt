@@ -59,7 +59,6 @@ class CartFragment(
         cartProductAdapter = CartProductAdapter(
             onProductClickListener = object : BaseItemClickListener<OrderItemModel> {
                 override fun onItemClick(adapterPosition: Int, item: OrderItemModel) {
-                    TODO("Not yet implemented")
                 }
             },
         );

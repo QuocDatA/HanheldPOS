@@ -1,6 +1,7 @@
 package com.hanheldpos.model.cart.order
 
 import android.os.Parcelable
+import android.util.Log
 import com.diadiem.pos_config.utils.Const
 import com.hanheldpos.data.repository.GenerateId
 import com.hanheldpos.model.home.order.menu.OrderMenuComboItemModel
@@ -78,9 +79,8 @@ data class OrderItemModel(
         return sku
     }
 
-    fun getNoteStr(): String? {
-        return note;
-    }
+
+
 
     fun getVariantStr(): String? {
         return getVariantStr(Const.SymBol.SplashSeparator)
@@ -91,6 +91,7 @@ data class OrderItemModel(
     }
 
     fun getModifierStr() : String? {
+
         return getModifierStr(Const.SymBol.CommaSeparator);
     }
 
@@ -111,7 +112,7 @@ data class OrderItemModel(
     }
 
     fun getPriceModSubTotal() : Double {
-        return extraDone?.selectedModifierGroup?.sumOf {
+        return extraDone?.selectedModifiers?.sumOf {
             it.getSubtotalModifier()
         } ?: 0.0;
     }

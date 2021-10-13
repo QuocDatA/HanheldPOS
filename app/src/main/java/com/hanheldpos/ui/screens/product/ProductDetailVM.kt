@@ -54,7 +54,7 @@ class ProductDetailVM : BaseUiViewModel<ProductDetailUV>() {
     ) {
         if (headerKey == null) return
 
-        var modifierList = orderItemModel.value!!.extraDone?.selectedModifierGroup;
+        var modifierList = orderItemModel.value!!.extraDone?.selectedModifiers;
         if (modifierList == null) {
             modifierList = mutableListOf();
         }
@@ -75,7 +75,7 @@ class ProductDetailVM : BaseUiViewModel<ProductDetailUV>() {
                 }
             }
         }
-        orderItemModel.value!!.extraDone?.selectedModifierGroup = modifierList;
+        orderItemModel.value!!.extraDone?.selectedModifiers = modifierList;
         orderItemModel.notifyValueChange()
     }
 
