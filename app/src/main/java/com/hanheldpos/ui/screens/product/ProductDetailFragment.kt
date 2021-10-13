@@ -8,6 +8,7 @@ import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.order.menu.GroupItem
 import com.hanheldpos.databinding.FragmentProductDetailBinding
 import com.hanheldpos.model.cart.order.OrderItemModel
+import com.hanheldpos.model.home.order.combo.ItemActionType
 import com.hanheldpos.model.product.ExtraDoneModel
 import com.hanheldpos.model.product.ProductOrderItem
 import com.hanheldpos.ui.base.fragment.BaseFragment
@@ -78,11 +79,13 @@ class ProductDetailFragment(
     override fun initData() {
         arguments?.let {
             val i: OrderItemModel? = it.getParcelable(ARG_ORDER_ITEM_MODEL_FRAGMENT);
-            val quantityCanChoose: Int = it.getInt(ARG_PRODUCT_DETAIL_QUANTITY)
+            val quantityCanChoose: Int = it.getInt(ARG_PRODUCT_DETAIL_QUANTITY);
+            val actionType : ItemActionType = it.getSerializable(ARG_ITEM_ACTION_TYPE) as ItemActionType;
             optionVM.extraDoneModel = i?.extraDone;
             i?.extraDone = i?.extraDone ?: ExtraDoneModel(
                 productOrderItem = i?.productOrderItem,
             )
+            viewModel.actionType.value = actionType;
             viewModel.orderItemModel.value = i;
             viewModel.maxQuantity = quantityCanChoose;
         }
@@ -105,22 +108,25 @@ class ProductDetailFragment(
     }
 
     interface ProductDetailListener {
-        fun onCartAdded(item: OrderItemModel)
+        fun onCartAdded(item: OrderItemModel,action: ItemActionType)
     }
 
     companion object {
         private const val ARG_ORDER_ITEM_MODEL_FRAGMENT = "ARG_ORDER_ITEM_MODEL_FRAGMENT"
         private const val ARG_PRODUCT_DETAIL_QUANTITY = "ARG_PRODUCT_DETAIL_QUANTITY"
+        private const val ARG_ITEM_ACTION_TYPE = "ARG_ITEM_ACTION_TYPE"
         fun getInstance(
             item: OrderItemModel,
             quantityCanChoose: Int = -1,
-            listener: ProductDetailListener? = null
+            action : ItemActionType,
+            listener: ProductDetailListener? = null,
         ): ProductDetailFragment {
             return ProductDetailFragment(
                 listener = listener
             ).apply {
                 arguments = Bundle().apply {
                     putParcelable(ARG_ORDER_ITEM_MODEL_FRAGMENT, item)
+                    putSerializable(ARG_ITEM_ACTION_TYPE,action);
                     putInt(ARG_PRODUCT_DETAIL_QUANTITY, quantityCanChoose)
                 }
             };
@@ -134,7 +140,7 @@ class ProductDetailFragment(
     override fun onAddCart(item: OrderItemModel) {
         onBack()
         if (item.quantity > 0)
-            listener?.onCartAdded(item);
+            listener?.onCartAdded(item,viewModel.actionType.value!!);
     }
 
     override fun onModifierItemChange(item: ModifierSelectedItemModel) {

@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.DiffUtil
 import com.hanheldpos.R
 import com.hanheldpos.databinding.ItemComboPickedBinding
 import com.hanheldpos.databinding.ItemOrderProductBinding
-import com.hanheldpos.model.home.order.combo.ComboItemActionType
+import com.hanheldpos.model.home.order.combo.ItemActionType
 import com.hanheldpos.model.home.order.menu.ComboPickedItemViewModel
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
@@ -65,7 +65,7 @@ class ComboItemAdapter(
                 val binding = holder.binding as ItemOrderProductBinding;
                 binding.item = item.selectedComboItem?.productOrderItem;
                 binding.root.setOnClickListener {
-                    listener.onComboItemChoose(action = ComboItemActionType.Add,item);
+                    listener.onComboItemChoose(action = ItemActionType.Add,item);
                 }
                 binding.isChosen=item.isChosen;
             }
@@ -73,10 +73,10 @@ class ComboItemAdapter(
                 val binding = holder.binding as ItemComboPickedBinding;
                 binding.item = item;
                 binding.itemComboModify.setOnClickListener {
-                    listener.onComboItemChoose(action = ComboItemActionType.Modify,item);
+                    listener.onComboItemChoose(action = ItemActionType.Modify,item);
                 }
                 binding.itemComboRemove.setOnClickListener {
-                    listener.onComboItemChoose(action = ComboItemActionType.Remove,item);
+                    listener.onComboItemChoose(action = ItemActionType.Remove,item);
                 }
             }
         }
@@ -89,7 +89,7 @@ class ComboItemAdapter(
     }
 
     interface ComboItemListener {
-        fun onComboItemChoose(action: ComboItemActionType, item : ComboPickedItemViewModel)
+        fun onComboItemChoose(action: ItemActionType, item : ComboPickedItemViewModel)
     }
 
     class DiffCallback : DiffUtil.ItemCallback<ComboPickedItemViewModel>() {

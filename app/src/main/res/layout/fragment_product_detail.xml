@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <import type="com.hanheldpos.model.home.order.combo.ItemActionType"/>
         <variable
             name="viewModel"
             type="com.hanheldpos.ui.screens.product.ProductDetailVM" />
@@ -204,7 +204,7 @@
                             android:layout_height="@dimen/_25sdp"
 
                             android:onClick="@{v -> viewModel.onQuantityRemoved()}"
-                            android:src="@{viewModel.numberQuantity > 1 ? @drawable/ic_remove_primary : @drawable/ic_remove_disable}"
+                            android:src="@{ viewModel.minQuantity &lt; viewModel.numberQuantity ? @drawable/ic_remove_primary : @drawable/ic_remove_disable}"
                             tools:ignore="ContentDescription" />
 
                         <com.diadiem.pos_components.PTextView

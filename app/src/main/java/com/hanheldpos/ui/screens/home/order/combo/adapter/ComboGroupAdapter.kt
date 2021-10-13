@@ -3,10 +3,7 @@ package com.hanheldpos.ui.screens.home.order.combo.adapter
 import androidx.recyclerview.widget.DiffUtil
 import com.hanheldpos.R
 import com.hanheldpos.databinding.ItemComboGroupBinding
-import com.hanheldpos.model.home.order.combo.ComboItemActionType
-import com.hanheldpos.model.home.order.menu.ComboPickedItemViewModel
 import com.hanheldpos.model.home.order.menu.ItemComboGroupManager
-import com.hanheldpos.model.product.ProductComboItem
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
 

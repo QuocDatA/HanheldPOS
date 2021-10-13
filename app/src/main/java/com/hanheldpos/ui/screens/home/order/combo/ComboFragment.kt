@@ -7,11 +7,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentComboBinding
 import com.hanheldpos.model.cart.order.OrderItemModel
-import com.hanheldpos.model.home.order.combo.ComboItemActionType
+import com.hanheldpos.model.home.order.combo.ItemActionType
 import com.hanheldpos.model.home.order.menu.ComboPickedItemViewModel
-import com.hanheldpos.model.product.ExtraDoneModel
-import com.hanheldpos.model.product.ProductOrderItem
-import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.home.order.combo.adapter.ComboGroupAdapter
 import com.hanheldpos.ui.screens.product.ProductDetailFragment
@@ -41,6 +38,8 @@ class ComboFragment(
         arguments?.let {
             val a: OrderItemModel? = it.getParcelable(ARG_ORDER_ITEM_MODEL_FRAGMENT)
             val quantityCanChoose: Int = it.getInt(ARG_PRODUCT_DETAIL_QUANTITY)
+            val actionType : ItemActionType = it.getSerializable(ARG_ITEM_ACTION_TYPE) as ItemActionType;
+            viewModel.actionType.value = actionType;
             viewModel.orderItemModel.value = a;
             viewModel.maxQuantity = quantityCanChoose;
         }
@@ -78,9 +77,11 @@ class ComboFragment(
     companion object {
         private const val ARG_ORDER_ITEM_MODEL_FRAGMENT = "ARG_ORDER_ITEM_MODEL_FRAGMENT"
         private const val ARG_PRODUCT_DETAIL_QUANTITY = "ARG_PRODUCT_DETAIL_QUANTITY"
+        private const val ARG_ITEM_ACTION_TYPE = "ARG_ITEM_ACTION_TYPE"
         fun getInstance(
             item: OrderItemModel,
             quantityCanChoose: Int = -1,
+            action : ItemActionType,
             listener: ComboListener
         ): ComboFragment {
             return ComboFragment(
@@ -88,6 +89,7 @@ class ComboFragment(
             ).apply {
                 arguments = Bundle().apply {
                     putParcelable(ARG_ORDER_ITEM_MODEL_FRAGMENT, item)
+                    putSerializable(ARG_ITEM_ACTION_TYPE,action);
                     putInt(ARG_PRODUCT_DETAIL_QUANTITY, quantityCanChoose)
                 }
             };
@@ -98,12 +100,13 @@ class ComboFragment(
         navigator.goOneBack();
     }
 
-    override fun openProductDetail(maxQuantity: Int, item: ComboPickedItemViewModel,action: ComboItemActionType?) {
+    override fun openProductDetail(maxQuantity: Int, item: ComboPickedItemViewModel,action: ItemActionType) {
         navigator.goToWithCustomAnimation(ProductDetailFragment.getInstance(
             item = item.selectedComboItem!!,
             quantityCanChoose = maxQuantity,
+            action = action,
             listener = object : ProductDetailFragment.ProductDetailListener {
-                override fun onCartAdded(itemDone: OrderItemModel) {
+                override fun onCartAdded(itemDone: OrderItemModel,action: ItemActionType) {
                     viewModel.onChooseItemComboSuccess(
                         item.comboParentId,
                         item.apply { selectedComboItem = itemDone },

@@ -1,6 +1,7 @@
 package com.hanheldpos.ui.screens.home.order.combo
 
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.hanheldpos.data.api.pojo.product.GroupPriceProductItem
@@ -8,12 +9,11 @@ import com.hanheldpos.data.repository.GenerateId
 import com.hanheldpos.extension.notifyValueChange
 import com.hanheldpos.model.cart.order.OrderItemModel
 import com.hanheldpos.model.cart.order.OrderItemType
-import com.hanheldpos.model.home.order.combo.ComboItemActionType
+import com.hanheldpos.model.home.order.combo.ItemActionType
 import com.hanheldpos.model.home.order.menu.ComboPickedItemViewModel
 import com.hanheldpos.model.home.order.menu.ItemComboGroupManager
 import com.hanheldpos.model.home.order.menu.OrderMenuComboItemModel
 import com.hanheldpos.model.home.order.menu.OrderMenuDataMapper.getComboList
-import com.hanheldpos.model.product.ExtraDoneModel
 import com.hanheldpos.model.product.ProductComboItem
 import com.hanheldpos.model.product.updatePriceByGroupPrice
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
@@ -24,10 +24,18 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
 
 
     val orderItemModel = MutableLiveData<OrderItemModel>();
+    val actionType = MutableLiveData<ItemActionType>();
     val numberQuantity = Transformations.map(orderItemModel) {
         return@map it.quantity;
     };
     var maxQuantity = -1;
+    var minQuantity : LiveData<Int> = Transformations.map(actionType) {
+        return@map  when(actionType.value){
+            ItemActionType.Modify->0;
+            ItemActionType.Add->1;
+            else->1;
+        } ;
+    };
     val totalPriceLD = MutableLiveData(0.0);
 
     /**
@@ -62,7 +70,7 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
             // Get Group price folow combo group
             val productParent = orderItemModel.value?.productOrderItem;
             val groupPrice =
-                productParent ?.listGroupPriceInCombo?.find { it.groupGUID == productComboItem.comboGuid };
+                productParent?.listGroupPriceInCombo?.find { it.groupGUID == productComboItem.comboGuid };
             comboGroupList.add(
                 ItemComboGroupManager(
                     productComboItem = productComboItem,
@@ -71,7 +79,7 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
                         modeViewType = ComboItemAdapter.ComboItemViewType.ForChoose,
                         listener = object : ComboItemAdapter.ComboItemListener {
                             override fun onComboItemChoose(
-                                action: ComboItemActionType,
+                                action: ItemActionType,
                                 item: ComboPickedItemViewModel
                             ) {
                                 comboItemAction(this@apply, action, item);
@@ -108,7 +116,7 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
                         modeViewType = ComboItemAdapter.ComboItemViewType.Chosen,
                         listener = object : ComboItemAdapter.ComboItemListener {
                             override fun onComboItemChoose(
-                                action: ComboItemActionType,
+                                action: ItemActionType,
                                 item: ComboPickedItemViewModel
                             ) {
                                 comboItemAction(this@apply, action, item);
@@ -135,18 +143,18 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
 
     private fun comboItemAction(
         comboManager: ItemComboGroupManager,
-        action: ComboItemActionType,
+        action: ItemActionType,
         item: ComboPickedItemViewModel
     ) {
         when (action) {
-            ComboItemActionType.Add -> {
+            ItemActionType.Add -> {
                 uiCallback?.openProductDetail(
                     comboManager.requireQuantity(),
                     item.clone(),
                     action
                 );
             }
-            ComboItemActionType.Modify -> {
+            ItemActionType.Modify -> {
                 uiCallback?.openProductDetail(
                     comboManager.requireQuantity() + (item.selectedComboItem?.quantity
                         ?: 0),
@@ -154,7 +162,7 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
                     action
                 );
             }
-            ComboItemActionType.Remove -> {
+            ItemActionType.Remove -> {
                 /**
                  * Delete green tick when remove item
                  */
@@ -198,7 +206,7 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
     fun onChooseItemComboSuccess(
         comboParent: String?,
         item: ComboPickedItemViewModel,
-        action: ComboItemActionType?
+        action: ItemActionType?
     ) {
 
         selectedCombo.value?.data?.let { orderMenuComboItemModel ->
@@ -211,7 +219,7 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
 
 
                     when (action) {
-                        ComboItemActionType.Add -> {
+                        ItemActionType.Add -> {
                             /*
                             * If in combo has the same item -> increase quantity
                             * */
@@ -224,7 +232,7 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
                             } else
                                 it1.listSelectedComboItems.add(item)
                         }
-                        ComboItemActionType.Modify -> {
+                        ItemActionType.Modify -> {
                             if (it1?.listSelectedComboItems!!.contains(item)) {
                                 it1.listSelectedComboItems.let {
                                     it.set(it.indexOf(item), item);
@@ -252,7 +260,8 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
     }
 
     fun onAddQuantity() {
-        orderItemModel.value?.plusOrderQuantity(1);
+        if (orderItemModel.value?.quantity!! < maxQuantity)
+            orderItemModel.value?.plusOrderQuantity(1);
         orderItemModel.notifyValueChange();
     }
 

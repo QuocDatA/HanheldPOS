@@ -1,24 +1,35 @@
 package com.hanheldpos.ui.screens.product
 
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.hanheldpos.data.api.pojo.order.menu.GroupItem
 import com.hanheldpos.extension.notifyValueChange
 import com.hanheldpos.model.cart.order.OrderItemModel
+import com.hanheldpos.model.home.order.combo.ItemActionType
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
 import com.hanheldpos.ui.screens.product.adapter.modifier.ModifierSelectedItemModel
 
 class ProductDetailVM : BaseUiViewModel<ProductDetailUV>() {
 
     val orderItemModel = MutableLiveData<OrderItemModel>();
+    val actionType = MutableLiveData<ItemActionType>();
+
+
     val numberQuantity = Transformations.map(orderItemModel) {
         return@map it.quantity;
     };
     val totalPriceLD = MutableLiveData(0.0);
 
     var maxQuantity = -1;
-
+    var minQuantity : LiveData<Int> = Transformations.map(actionType) {
+        return@map  when(actionType.value){
+            ItemActionType.Modify->0;
+            ItemActionType.Add->1;
+            else->1;
+        } ;
+    };
 
     fun initLifeCycle(owner: LifecycleOwner) {
         owner.lifecycle.addObserver(this);
@@ -32,12 +43,13 @@ class ProductDetailVM : BaseUiViewModel<ProductDetailUV>() {
     }
 
     fun onQuantityAdded() {
-        if (orderItemModel.value?.quantity!! < maxQuantity)
+        if (numberQuantity.value!! < maxQuantity)
             orderItemModel.value?.plusOrderQuantity(1);
         orderItemModel.notifyValueChange();
     }
 
     fun onQuantityRemoved() {
+        if(minQuantity.value == numberQuantity.value) return;
         orderItemModel.value?.minusOrderQuantity(1);
         orderItemModel.notifyValueChange();
     }

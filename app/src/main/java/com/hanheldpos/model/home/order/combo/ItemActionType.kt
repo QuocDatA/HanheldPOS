@@ -1,6 +1,6 @@
 package com.hanheldpos.model.home.order.combo
 
-enum class ComboItemActionType(
+enum class ItemActionType(
     val value: Int
 ) {
     Add(1),
@@ -8,7 +8,7 @@ enum class ComboItemActionType(
     Remove(3);
 
     companion object {
-        fun fromInt(value: Int): ComboItemActionType? {
+        fun fromInt(value: Int): ItemActionType? {
             values().forEach {
                 if (it.value == value) {
                     return it

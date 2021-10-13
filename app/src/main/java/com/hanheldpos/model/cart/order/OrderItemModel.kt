@@ -51,7 +51,6 @@ data class OrderItemModel(
     }
 
     fun minusOrderQuantity(num: Int) {
-        var quantity = (quantity ?: 0);
         quantity = if (quantity > 0) quantity.minus(num) else 0
     }
 

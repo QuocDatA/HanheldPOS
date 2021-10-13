@@ -14,6 +14,7 @@ import com.hanheldpos.databinding.FragmentOrderBinding
 import com.hanheldpos.model.cart.order.OrderItemModel
 import com.hanheldpos.model.cart.order.OrderItemType
 import com.hanheldpos.model.home.order.ProductModeViewType
+import com.hanheldpos.model.home.order.combo.ItemActionType
 import com.hanheldpos.model.home.order.menu.OrderMenuItemModel
 import com.hanheldpos.model.product.ExtraDoneModel
 import com.hanheldpos.model.product.ProductOrderItem
@@ -147,6 +148,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
                                         type = OrderItemType.Product
                                     ),
                                     quantityCanChoose = 100,
+                                    action = ItemActionType.Add,
                                     listener = onCartAdded
                                 )
                             )
@@ -173,6 +175,8 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
                                         productOrderItem = item,
                                         type = OrderItemType.Combo
                                     ),
+                                    action = ItemActionType.Add,
+                                    quantityCanChoose = 100,
                                     listener = onCartAdded
                                 )
                             );
