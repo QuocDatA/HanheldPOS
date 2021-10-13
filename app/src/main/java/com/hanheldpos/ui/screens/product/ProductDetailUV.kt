@@ -6,5 +6,5 @@ import com.hanheldpos.ui.base.BaseUserView
 
 interface ProductDetailUV : BaseUserView {
     fun onBack();
-    fun onAddCart(item: ExtraDoneModel);
+    fun onAddCart(item: OrderItemModel);
 }

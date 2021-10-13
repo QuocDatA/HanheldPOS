@@ -25,6 +25,8 @@ data class OrderItemModel(
 
     var type: OrderItemType? = null,
 
+    var quantity: Int = 1,
+    var note: String? = null,
 
 ) : Parcelable {
 
@@ -32,16 +34,16 @@ data class OrderItemModel(
      * @return Quantity of order
      */
     fun getOrderQuantity(): Int {
-        return extraDone?.quantity ?: 0;
+        return quantity ?: 0;
     }
 
     fun plusOrderQuantity(num: Int) {
-        extraDone?.quantity = (extraDone?.quantity ?: 0).plus(num)
+        quantity = (quantity ?: 0).plus(num);
     }
 
     fun minusOrderQuantity(num: Int) {
-        var quantity = (extraDone?.quantity ?: 0);
-        extraDone?.quantity = if (quantity > 0) quantity.minus(num) else 0
+        var quantity = (quantity ?: 0);
+        quantity = if (quantity > 0) quantity.minus(num) else 0
     }
 
     /**
@@ -49,11 +51,7 @@ data class OrderItemModel(
      */
 
     fun getOrderName(): String? {
-        /*var rs = discountDetailDone?.getName()
-        if (rs.isNullOrEmpty())
-            rs = productOrderItem?.text*/
-        var rs = productOrderItem?.text
-        return rs
+        return productOrderItem?.text;
     }
 
     fun getOrderImage(): String? {
@@ -73,13 +71,7 @@ data class OrderItemModel(
     }
 
     fun getNoteStr(): String? {
-        var noteStr: String? = null
-
-        extraDone?.let {
-            noteStr = it.note
-        }
-
-        return noteStr
+        return note;
     }
 
     fun getVariantStr(): String? {
@@ -90,31 +82,64 @@ data class OrderItemModel(
         return extraDone?.getVariantStr(separator)
     }
 
-    fun getDescription(): String? {
-        return if (extraDone != null) {
-            extraDone?.getDescription()
-        } else {
-            ""
+    fun getModifierStr() : String? {
+        return getModifierStr(Const.SymBol.CommaSeparator);
+    }
+
+    private fun getModifierStr(separator: String): String? {
+        return extraDone?.getModifierStr(separator)
+    }
+
+    fun getDescription(): String {
+        return "${productOrderItem?.text} x${quantity}"
+    }
+
+    fun getPriceRegular(): Double {
+        var price = productOrderItem?.price ?: 0.0
+        if (extraDone?.selectedVariant != null) {
+            price = extraDone?.selectedVariant!!.price!!
         }
+        return price
+    }
+
+    fun getPriceModSubTotal() : Double {
+        return extraDone?.selectedModifierGroup?.sumOf {
+            it.getSubtotalModifier()
+        } ?: 0.0;
+    }
+
+    fun getPriceProModSubTotal() : Double {
+        return getPriceRegular() + getPriceModSubTotal();
+    }
+
+    fun getPriceSubTotal() : Double {
+        return getPriceProModSubTotal() * quantity;
+    }
+
+    fun getPriceLineTotal() : Double {
+        val subtotal = getPriceSubTotal();
+        // TODO : add discount below
+        return  subtotal;
     }
 
     fun getOrderPrice(): Double {
         var sum : Double = 0.0;
         if(type == OrderItemType.Combo){
-            sum = productOrderItem?.price!!;
+
+            sum = if (productOrderItem?.isPriceFixed != true) productOrderItem?.price!! else productOrderItem?.comparePrice!!;
 
             when(productOrderItem!!.pricingMethodType){
                 PricingMethodType.BasePrice->{
                     sum = sum.plus(menuComboItem!!.listItemsByGroup?.sumOf {
                         it!!.listSelectedComboItems.sumOf { itPicked->
-                            itPicked?.extraDoneModel?.getPriceModSubTotal()!!
+                            itPicked?.selectedComboItem?.getPriceModSubTotal()!!
                         }
                     } ?: 0.0);
                 }
                 PricingMethodType.GroupPrice->{
                     sum = sum.plus(menuComboItem!!.listItemsByGroup?.sumOf {
                         it!!.listSelectedComboItems.sumOf { itPicked->
-                            itPicked?.extraDoneModel?.getPriceLineTotal()!!
+                            itPicked?.selectedComboItem?.getPriceLineTotal()!!
                         }
                     } ?: 0.0);
                 }
@@ -122,12 +147,12 @@ data class OrderItemModel(
 
             menuComboItem!!.listItemsByGroup?.forEach {
                 it?.listSelectedComboItems?.forEach { itPicked->
-                    sum = sum.plus(itPicked?.extraDoneModel?.getPriceLineTotal() ?: 0.0);
+                    sum = sum.plus(itPicked?.selectedComboItem?.getPriceLineTotal() ?: 0.0);
                 }
             }
         }
         else {
-            sum = extraDone?.getPriceLineTotal() ?: 0.0;
+            sum = getPriceLineTotal()
         }
         return sum;
     }

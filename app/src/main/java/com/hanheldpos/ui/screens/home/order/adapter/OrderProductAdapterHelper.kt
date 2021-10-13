@@ -1,6 +1,5 @@
 package com.hanheldpos.ui.screens.home.order.adapter
 
-import com.hanheldpos.data.api.pojo.order.menu.ProductItem
 import com.hanheldpos.model.home.order.ProductModeViewType
 import com.hanheldpos.model.product.ProductOrderItem
 

@@ -136,23 +136,19 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
                     when (item.uiType) {
                         ProductModeViewType.Product -> {
                             val onCartAdded = object : ProductDetailFragment.ProductDetailListener {
-                                override fun onCartAdded(extraDoneModel: ExtraDoneModel) {
+                                override fun onCartAdded(orderItemModel: OrderItemModel) {
                                     if (SystemClock.elapsedRealtime() - viewModel.mLastTimeClick <= 1000) return;
                                     viewModel.mLastTimeClick = SystemClock.elapsedRealtime()
-                                    cartDataVM.addToCart(
-                                        OrderItemModel(
-                                            extraDone = extraDoneModel,
-                                            type = OrderItemType.Product,
-                                            orderItemId = GenerateId.getOrderItemId(),
-                                            productOrderItem = item
-                                        )
-                                    );
+                                    cartDataVM.addToCart(orderItemModel);
                                 }
                             }
 
                             navigator.goToWithCustomAnimation(
                                 ProductDetailFragment.getInstance(
-                                    item = item,
+                                    item = OrderItemModel(
+                                        productOrderItem = item,
+                                        type = OrderItemType.Product
+                                    ),
                                     quantityCanChoose = 100,
                                     listener = onCartAdded
                                 )
@@ -176,7 +172,10 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
                             }
                             navigator.goToWithCustomAnimation(
                                 ComboFragment.getInstance(
-                                    item = item,
+                                    item =  OrderItemModel(
+                                        productOrderItem = item,
+                                        type = OrderItemType.Combo
+                                    ),
                                     listener = onCartAdded
                                 )
                             );

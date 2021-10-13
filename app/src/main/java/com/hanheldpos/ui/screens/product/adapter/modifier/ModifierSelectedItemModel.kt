@@ -10,8 +10,6 @@ data class ModifierSelectedItemModel(
     val modifierAvatar: String? = null,
     val maxQuantity : Int = 1,
     var quantity: Int = 0,
-
-
     ) : Parcelable, Cloneable {
     override fun equals(other: Any?): Boolean {
         return super.equals(other)
@@ -20,4 +18,9 @@ data class ModifierSelectedItemModel(
     override fun hashCode(): Int {
         return super.hashCode()
     }
+
+    fun getSubtotalModifier() : Double {
+        return realItem!!.price!!.times(quantity);
+    }
+
 }

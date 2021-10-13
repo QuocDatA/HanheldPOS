@@ -3,9 +3,7 @@ package com.hanheldpos.data.api.pojo.order.menu
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import com.hanheldpos.data.api.pojo.product.GroupPriceItem
-import com.hanheldpos.model.home.order.ProductModeViewType
 import kotlinx.android.parcel.Parcelize
-import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.RawValue
 
 @Parcelize

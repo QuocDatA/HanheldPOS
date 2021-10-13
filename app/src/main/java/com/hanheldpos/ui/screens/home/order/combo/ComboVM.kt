@@ -24,8 +24,7 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
 
 
     val orderItemModel = MutableLiveData<OrderItemModel>();
-    val extraDoneModel = MutableLiveData<ExtraDoneModel>();
-    val numberQuantity = Transformations.map(extraDoneModel) {
+    val numberQuantity = Transformations.map(orderItemModel) {
         return@map it.quantity;
     };
     var maxQuantity = -1;
@@ -61,8 +60,9 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
         val comboGroupList: MutableList<ItemComboGroupManager?> = mutableListOf()
         listProductComboItem.map { productComboItem ->
             // Get Group price folow combo group
+            val productParent = orderItemModel.value?.productOrderItem;
             val groupPrice =
-                extraDoneModel.value?.productOrderItem?.listGroupPriceInCombo?.find { it.groupGUID == productComboItem.comboGuid };
+                productParent ?.listGroupPriceInCombo?.find { it.groupGUID == productComboItem.comboGuid };
             comboGroupList.add(
                 ItemComboGroupManager(
                     productComboItem = productComboItem,
@@ -79,7 +79,7 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
                         }
                     ).apply {
                         productComboItem.id?.let { it1 ->
-                            this.submitList(extraDoneModel.value?.productOrderItem?.getComboList(
+                            this.submitList(productParent?.getComboList(
                                 it1
                             )?.map { productOrderItem ->
                                 // Change price product folow group price
@@ -87,13 +87,19 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
                                     val newProductPrice: GroupPriceProductItem? =
                                         groupPrice?.product?.find { it.productGUID == this.id };
                                     productOrderItem.updatePriceByGroupPrice(
-                                        extraDoneModel.value?.productOrderItem!!,
+                                        productParent!!,
                                         newProductPrice
                                     );
                                 }
                                 ComboPickedItemViewModel(
                                     comboParentId = productComboItem.comboGuid,
-                                    selectedComboItem = productOrderItem
+                                    selectedComboItem = OrderItemModel(
+                                        productOrderItem = productOrderItem.apply {
+                                            modPricingType = productParent!!.modPricingType;
+                                            modPricingValue = productParent!!.modPricingValue;
+                                        },
+                                        type = OrderItemType.Product
+                                    )
                                 )
                             })
                         }
@@ -124,12 +130,7 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
                 }
             )
         )
-        orderItemModel.value = OrderItemModel(
-            menuComboItem = selectedCombo.value!!.data,
-            productOrderItem = extraDoneModel.value?.productOrderItem,
-            extraDone = extraDoneModel.value,
-            type = OrderItemType.Combo
-        )
+        orderItemModel.value!!.menuComboItem = selectedCombo.value!!.data;
     }
 
     private fun comboItemAction(
@@ -140,7 +141,6 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
         when (action) {
             ComboItemActionType.Add -> {
                 uiCallback?.openProductDetail(
-                    extraDoneModel.value?.productOrderItem,
                     comboManager.requireQuantity(),
                     item.copy(),
                     action
@@ -148,8 +148,7 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
             }
             ComboItemActionType.Modify -> {
                 uiCallback?.openProductDetail(
-                    extraDoneModel.value?.productOrderItem,
-                    comboManager.requireQuantity() + (item.extraDoneModel?.quantity
+                    comboManager.requireQuantity() + (item.selectedComboItem?.quantity
                         ?: 0),
                     item,
                     action
@@ -189,7 +188,7 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
     ) {
         (comboGroup as ComboItemAdapter).let {
             val currentItem =
-                it.currentList.find { temp -> temp.selectedComboItem?.id == currentItem.selectedComboItem?.id };
+                it.currentList.find { temp -> temp.selectedComboItem?.productOrderItem?.id == currentItem.selectedComboItem?.productOrderItem?.id };
             val currentItemIndex = it.currentList.indexOf(currentItem);
             currentItem?.isChosen = value;
             it.notifyItemChanged(currentItemIndex);
@@ -219,9 +218,7 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
                             if (it1?.listSelectedComboItems!!.contains(item)) {
                                 it1.listSelectedComboItems.let {
                                     it[it.indexOf(item)]?.apply {
-                                        extraDoneModel!!.quantity = extraDoneModel!!.quantity.plus(
-                                            item.extraDoneModel!!.quantity
-                                        );
+                                        selectedComboItem!!.plusOrderQuantity(item.selectedComboItem!!.quantity);
                                     }
                                 }
                             } else
@@ -251,21 +248,17 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
     }
 
     fun getCombo(): MutableList<ProductComboItem>? {
-        return extraDoneModel.value?.productOrderItem?.productComboList;
+        return orderItemModel.value?.productOrderItem?.productComboList;
     }
 
     fun onAddQuantity() {
-        if (numberQuantity.value!! < maxQuantity) {
-            extraDoneModel.value?.quantity = numberQuantity.value?.plus(1)!!;
-            extraDoneModel.notifyValueChange();
-        }
+        orderItemModel.value?.plusOrderQuantity(1);
+        orderItemModel.notifyValueChange();
     }
 
     fun onRemoveQuantity() {
-        if (numberQuantity.value!! > 1) {
-            extraDoneModel.value?.quantity = numberQuantity.value?.minus(1)!!;
-            extraDoneModel.notifyValueChange();
-        }
+        orderItemModel.value?.minusOrderQuantity(1);
+        orderItemModel.notifyValueChange();
     }
 
     fun onAddCart() {

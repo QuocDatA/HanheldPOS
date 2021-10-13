@@ -10,7 +10,6 @@ import com.hanheldpos.model.cart.order.OrderItemModel
 import com.hanheldpos.model.home.order.combo.ComboItemActionType
 import com.hanheldpos.model.home.order.menu.ComboPickedItemViewModel
 import com.hanheldpos.model.product.ExtraDoneModel
-import com.hanheldpos.model.product.ItemApplyToType
 import com.hanheldpos.model.product.ProductOrderItem
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
@@ -40,12 +39,9 @@ class ComboFragment(
 
     override fun initData() {
         arguments?.let {
-            val a: ProductOrderItem? = it.getParcelable(ARG_PRODUCT_ITEM_FRAGMENT)
+            val a: OrderItemModel? = it.getParcelable(ARG_ORDER_ITEM_MODEL_FRAGMENT)
             val quantityCanChoose: Int = it.getInt(ARG_PRODUCT_DETAIL_QUANTITY)
-            viewModel.extraDoneModel.value = ExtraDoneModel(
-                productOrderItem = a,
-                itemApplyToType=ItemApplyToType.Combo,
-            );
+            viewModel.orderItemModel.value = a;
             viewModel.maxQuantity = quantityCanChoose;
         }
 
@@ -80,10 +76,10 @@ class ComboFragment(
     }
 
     companion object {
-        private const val ARG_PRODUCT_ITEM_FRAGMENT = "ARG_PRODUCT_ITEM_FRAGMENT"
+        private const val ARG_ORDER_ITEM_MODEL_FRAGMENT = "ARG_ORDER_ITEM_MODEL_FRAGMENT"
         private const val ARG_PRODUCT_DETAIL_QUANTITY = "ARG_PRODUCT_DETAIL_QUANTITY"
         fun getInstance(
-            item: ProductOrderItem,
+            item: OrderItemModel,
             quantityCanChoose: Int = -1,
             listener: ComboListener
         ): ComboFragment {
@@ -91,7 +87,7 @@ class ComboFragment(
                 listener = listener
             ).apply {
                 arguments = Bundle().apply {
-                    putParcelable(ARG_PRODUCT_ITEM_FRAGMENT, item)
+                    putParcelable(ARG_ORDER_ITEM_MODEL_FRAGMENT, item)
                     putInt(ARG_PRODUCT_DETAIL_QUANTITY, quantityCanChoose)
                 }
             };
@@ -102,24 +98,15 @@ class ComboFragment(
         navigator.goOneBack();
     }
 
-    override fun openProductDetail(parent : ProductOrderItem?,maxQuantity: Int, item: ComboPickedItemViewModel,action: ComboItemActionType?) {
-        val cloneProductOrderItem = item.selectedComboItem!!.copy();
+    override fun openProductDetail(maxQuantity: Int, item: ComboPickedItemViewModel,action: ComboItemActionType?) {
         navigator.goToWithCustomAnimation(ProductDetailFragment.getInstance(
-            item = cloneProductOrderItem,
-            extra = item.extraDoneModel ?: ExtraDoneModel().apply {
-                productOrderItem = cloneProductOrderItem.apply {
-                    modPricingType = parent!!.modPricingType;
-                    modPricingValue = parent!!.modPricingValue;
-                };
-                itemApplyToType = ItemApplyToType.Combo;
-
-            },
+            item = item.selectedComboItem!!,
             quantityCanChoose = maxQuantity,
             listener = object : ProductDetailFragment.ProductDetailListener {
-                override fun onCartAdded(itemDone: ExtraDoneModel) {
+                override fun onCartAdded(itemDone: OrderItemModel) {
                     viewModel.onChooseItemComboSuccess(
                         item.comboParentId,
-                        item.apply { extraDoneModel = itemDone },
+                        item.apply { selectedComboItem = itemDone },
                         action
                     );
                 }
