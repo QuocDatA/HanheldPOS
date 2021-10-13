@@ -18,9 +18,11 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:background="@color/color_10">
 
             <FrameLayout
+                android:background="@color/color_2"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_42sdp">
 
@@ -53,23 +55,21 @@
 
             <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                >
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <View
+                    <androidx.legacy.widget.Space
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/_6sdp"
-                        android:background="@color/color_10" />
+                        android:layout_height="@dimen/_6sdp" />
 
                     <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:paddingVertical="@dimen/_7sdp">
+                        style="@style/SingleLineItemCart"
+                        android:orientation="horizontal">
 
                         <com.diadiem.pos_components.PTextView
                             android:layout_width="wrap_content"
@@ -99,15 +99,13 @@
 
                     </LinearLayout>
 
-
-                    <View
+                    <androidx.legacy.widget.Space
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/_1sdp"
-                        android:background="@color/color_10" />
+                        android:layout_height="@dimen/_1sdp" />
 
                     <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+
+                        style="@style/SingleLineItemCart"
                         android:orientation="horizontal"
                         android:paddingVertical="@dimen/_11sdp">
 
@@ -137,15 +135,14 @@
 
                     </LinearLayout>
 
-                    <View
+                    <androidx.legacy.widget.Space
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/_1sdp"
-                        android:background="@color/color_10" />
+                        android:layout_height="@dimen/_1sdp" />
 
                     <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        style="@style/SingleLineItemCart"
+                        android:orientation="horizontal"
+                        android:paddingVertical="0dp">
 
                         <ImageView
                             android:layout_width="@dimen/_12sdp"
@@ -165,15 +162,14 @@
                             app:ipt_useTextHeader="h5" />
                     </LinearLayout>
 
-                    <View
+                    <androidx.legacy.widget.Space
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/_4sdp"
-                        android:background="@color/color_10" />
+                        android:layout_height="@dimen/_4sdp" />
 
                     <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/_32sdp"
-                        android:orientation="horizontal">
+                        style="@style/SingleLineItemCart"
+                        android:orientation="horizontal"
+                        android:paddingVertical="@dimen/_10sdp">
 
                         <com.diadiem.pos_components.PTextView
                             android:layout_width="wrap_content"
@@ -200,24 +196,27 @@
                             app:useTextHeader="h5" />
                     </LinearLayout>
 
+                    <androidx.legacy.widget.Space
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_1sdp" />
+
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/productRecyclerView"
+                        style="@style/SingleLineItemCart"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        tools:listitem="@layout/item_cart_product"
-                        android:overScrollMode="never"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         android:orientation="vertical"
-                        />
+                        android:overScrollMode="never"
+                        android:paddingVertical="0dp"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:listitem="@layout/item_cart_product" />
 
-                    <View
+                    <androidx.legacy.widget.Space
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/_10sdp"
-                        android:background="@color/color_10" />
+                        android:layout_height="@dimen/_10sdp" />
 
                     <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        style="@style/SingleLineItemCart"
                         android:orientation="horizontal"
                         android:paddingVertical="@dimen/_8sdp">
 
@@ -252,11 +251,8 @@
                         android:background="@color/color_10" />
 
                     <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:paddingTop="@dimen/_10sdp"
-                        android:paddingBottom="@dimen/_8sdp">
+                        style="@style/SingleLineItemCart"
+                        android:orientation="horizontal">
 
                         <com.diadiem.pos_components.PTextView
                             android:layout_width="wrap_content"
@@ -284,11 +280,8 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:paddingTop="@dimen/_8sdp"
-                        android:paddingBottom="@dimen/_10sdp">
+                        style="@style/SingleLineItemCart"
+                        android:orientation="horizontal">
 
                         <com.diadiem.pos_components.PTextView
                             android:layout_width="wrap_content"
@@ -322,14 +315,12 @@
                             tools:text="50.000" />
                     </LinearLayout>
 
-                    <View
+                    <androidx.legacy.widget.Space
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/_1sdp"
-                        android:background="@color/color_10" />
+                        android:layout_height="@dimen/_1sdp"/>
 
                     <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        style="@style/SingleLineItemCart"
                         android:orientation="horizontal"
                         android:paddingVertical="@dimen/_10sdp">
 
@@ -362,11 +353,6 @@
 
             </androidx.core.widget.NestedScrollView>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_4sdp"
-                android:background="@color/color_10" />
-
         </LinearLayout>
 
 
@@ -378,8 +364,8 @@
             <LinearLayout
                 android:id="@+id/btnPaymentMethod"
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?attr/selectableItemBackground"
@@ -411,8 +397,8 @@
             <LinearLayout
                 android:id="@+id/btnAddDiscount"
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?attr/selectableItemBackground"
@@ -447,8 +433,8 @@
 
             <LinearLayout
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:padding="@dimen/_12sdp">
 
                 <com.diadiem.pos_components.PTextView
@@ -503,9 +489,9 @@
                     android:background="@color/color_0"
                     android:clickable="true"
                     android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground"
                     android:gravity="center"
                     android:text="NEXT"
-                    android:foreground="?attr/selectableItemBackground"
 
                     app:pbtn_useBackgroundColor="true"
                     app:pbtn_useFontStyle="bold"
