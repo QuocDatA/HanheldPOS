@@ -87,14 +87,12 @@ data class OrderItemModel(
     }
 
     private fun getModifierStr(separator: String): String? {
-        return extraDone?.getVariantStr(separator)
+        return extraDone?.getModifierStr(separator)
     }
 
     fun getDescription(): String {
         return "${productOrderItem?.text} x${quantity}"
     }
-
-
 
     fun getPriceRegular(): Double {
         var price = productOrderItem?.price ?: 0.0

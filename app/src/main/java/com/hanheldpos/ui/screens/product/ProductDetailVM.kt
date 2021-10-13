@@ -59,11 +59,18 @@ class ProductDetailVM : BaseUiViewModel<ProductDetailUV>() {
         }
 
         item.realItem?.let { real ->
-            modifierList.find { it.realItem!!.modifierGuid == real.modifierGuid }.let {
-                if (it != null) {
-                    it.quantity = item.quantity;
+            modifierList.let { list ->
+                list.find { it.realItem!!.id == real.id }.let {
+                    /**
+                     * Check if modifier already exist ,will change quantity
+                     * If not exist , add to list
+                     */
+                    if (it != null) {
+                        it.quantity = item.quantity;
+                    } else list.add(item);
                 }
             }
+
 
         }
         orderItemModel.value!!.extraDone?.selectedModifierGroup = modifierList;
