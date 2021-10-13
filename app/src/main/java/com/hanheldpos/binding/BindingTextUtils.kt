@@ -22,7 +22,7 @@ fun setBasePriceView(view: TextView?, price: Double?) {
 }
 
 @BindingAdapter("bindStrike")
-fun bindStrike(textView: TextView, isBind: Boolean?) {
+fun setbindStrike(textView: TextView, isBind: Boolean?) {
     textView.apply {
         paintFlags = paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
     }

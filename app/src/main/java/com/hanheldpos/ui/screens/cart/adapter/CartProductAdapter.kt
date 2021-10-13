@@ -30,7 +30,7 @@ class CartProductAdapter(
         val item = getItem(position);
         holder.bindItem(item);
         val binding  = (holder.binding as ItemCartProductBinding);
-
+        binding.isShownDetail=false;
     }
     class DiffCallback : DiffUtil.ItemCallback<OrderItemModel>() {
         override fun areItemsTheSame(
