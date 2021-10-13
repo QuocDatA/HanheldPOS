@@ -23,7 +23,7 @@ data class OrderSettingResp(
 @Parcelize
 data class DiningOptionItem(
 
-    @field:SerializedName("Id")
+    @field:SerializedName("OrderItemModel")
     val id: Int? = null,
 
     @field:SerializedName("Title")

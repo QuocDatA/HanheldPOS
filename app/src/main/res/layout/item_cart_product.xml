@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+            <variable
+                name="item"
+                type="com.hanheldpos.model.cart.order.OrderItemModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:orientation="horizontal"
+            android:paddingHorizontal="@dimen/_14sdp">
+
+            <com.diadiem.pos_components.PTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/_4sdp"
+                app:useTextColor="color4"
+                app:useTextHeader="h5"
+                android:text="@{`(`+String.valueOf(item.orderQuantity)+`x)`}"
+                tools:text="(1x)" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:baselineAligned="false">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <com.diadiem.pos_components.PTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:useTextColor="color4"
+                        app:useTextHeader="h5"
+                        android:text="@{item.orderName}"
+                        tools:text="Pho Bo Tai" />
+                    <com.diadiem.pos_components.PTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:useTextHeader="h4"
+                        android:text="@string/view_details"
+                        app:useTextColor="color0" />
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:orientation="vertical">
+
+
+                    <com.diadiem.pos_components.PTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="textEnd"
+                        app:useTextColor="color5"
+                        app:useTextHeader="h3"
+                        priceView="@{item.orderPrice}"
+                        tools:text="137.000" />
+
+
+                    <com.diadiem.pos_components.PTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="textEnd"
+                        app:useTextColor="color7"
+                        app:useTextHeader="h5"
+                        visibleObject="@{item.menuComboItem!=null}"
+                        tools:text="(Base price: 240.000)" />
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</layout>

@@ -200,6 +200,16 @@
                             app:useTextHeader="h5" />
                     </LinearLayout>
 
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/productRecyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        tools:listitem="@layout/item_cart_product"
+                        android:overScrollMode="never"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        android:orientation="vertical"
+                        />
+
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_10sdp"
@@ -367,7 +377,8 @@
 
             <LinearLayout
                 android:id="@+id/btnPaymentMethod"
-                style="@style/WidthMatchWeight"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:clickable="true"
                 android:focusable="true"
@@ -399,7 +410,8 @@
 
             <LinearLayout
                 android:id="@+id/btnAddDiscount"
-                style="@style/WidthMatchWeight"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:clickable="true"
                 android:focusable="true"
@@ -434,7 +446,8 @@
             android:orientation="horizontal">
 
             <LinearLayout
-                style="@style/WidthMatchWeight"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/_12sdp">
 

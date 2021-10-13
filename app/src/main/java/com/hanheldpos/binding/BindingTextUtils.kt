@@ -6,11 +6,19 @@ import androidx.databinding.BindingAdapter
 import java.text.DecimalFormat
 
 @BindingAdapter("priceView")
-fun setPriceView(view: TextView?, price : Double?) {
-    if(view == null || price == null) return;
-    val formatter = DecimalFormat("###,###,###");
-    val rs = formatter.format(price?.toInt());
-    view.text = rs;
+fun setPriceView(view: TextView?, price: Double?) {
+    if (view == null || price == null) return
+    val formatter = DecimalFormat("###,###,###")
+    val rs = formatter.format(price.toInt())
+    view.text = rs
+}
+
+@BindingAdapter("basePriceView")
+fun setBasePriceView(view: TextView?, price: Double?) {
+    if (view == null || price == null) return
+    val formatter = DecimalFormat("###,###,###")
+    val rs = formatter.format(price.toInt())
+    view.text = "(Base price: $rs)"
 }
 
 @BindingAdapter("bindStrike")

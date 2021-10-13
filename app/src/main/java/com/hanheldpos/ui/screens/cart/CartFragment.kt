@@ -6,9 +6,12 @@ import com.hanheldpos.data.api.pojo.order.settings.DiningOptionItem
 import com.hanheldpos.databinding.FragmentCartBinding
 import com.hanheldpos.extension.notifyValueChange
 import com.hanheldpos.model.DataHelper
+import com.hanheldpos.model.cart.order.OrderItemModel
+import com.hanheldpos.model.home.order.menu.OrderMenuItemModel
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.cart.adapter.CartDiningOptionAdapter
+import com.hanheldpos.ui.screens.cart.adapter.CartProductAdapter
 
 
 class CartFragment(
@@ -17,6 +20,7 @@ class CartFragment(
     override fun layoutRes() = R.layout.fragment_cart;
 
     private lateinit var cartDiningOptionAdapter: CartDiningOptionAdapter;
+    private lateinit var cartProductAdapter: CartProductAdapter;
     private val cartDataVM by activityViewModels<CartDataVM>();
 
     override fun viewModelClass(): Class<CartVM> {
@@ -34,6 +38,7 @@ class CartFragment(
 
     override fun initView() {
 
+        //region setup dining option recyclerview
         cartDiningOptionAdapter =
             CartDiningOptionAdapter(
                 onItemClickListener = object : BaseItemClickListener<DiningOptionItem> {
@@ -45,10 +50,25 @@ class CartFragment(
                 },
             );
         binding.diningOptionRecyclerView.adapter = cartDiningOptionAdapter;
+        //endregion
 
+
+        //region setup product recycler view
+        cartProductAdapter = CartProductAdapter(
+            onProductClickListener = object : BaseItemClickListener<OrderItemModel> {
+                override fun onItemClick(adapterPosition: Int, item: OrderItemModel) {
+                    TODO("Not yet implemented")
+                }
+
+
+            },
+        )
+        binding.productRecyclerView.adapter = cartProductAdapter;
+        //endregion
     }
 
     override fun initData() {
+        //region init dining option data
         val diningOptions: MutableList<DiningOptionItem> =
             (DataHelper.getDiningOptionList() as List<DiningOptionItem>).toMutableList();
         val currentDiningOption: DiningOptionItem? = cartDataVM.diningOptionLD.value;
@@ -61,7 +81,14 @@ class CartFragment(
         }
         cartDiningOptionAdapter.setSelectedIndex(selectedIndex);
         cartDiningOptionAdapter.submitList(diningOptions);
+        //endregion
 
+        //init product data
+        val products: MutableList<OrderItemModel>? =
+            cartDataVM.cartModelLD.value?.listOrderItem?.toMutableList();
+
+        cartProductAdapter.submitList(products = products);
+        //endregion
     }
 
     override fun initAction() {
