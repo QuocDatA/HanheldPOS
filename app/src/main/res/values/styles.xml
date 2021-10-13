@@ -117,4 +117,8 @@
         <item name="android:layout_gravity">center|end</item>
         <item name="android:layout_marginEnd">@dimen/_10sdp</item>
     </style>
+
+
+
+
 </resources>
