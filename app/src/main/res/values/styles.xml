@@ -117,7 +117,13 @@
         <item name="android:layout_gravity">center|end</item>
         <item name="android:layout_marginEnd">@dimen/_10sdp</item>
     </style>
-
+    <style name="SingleLineItemCart">
+        <item name="android:background">@color/color_2</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingTop">@dimen/_7sdp</item>
+        <item name="android:paddingBottom">@dimen/_7sdp</item>
+    </style>
 
 
 
