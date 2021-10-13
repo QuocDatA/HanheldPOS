@@ -32,7 +32,8 @@ class ProductDetailVM : BaseUiViewModel<ProductDetailUV>() {
     }
 
     fun onQuantityAdded() {
-        orderItemModel.value?.plusOrderQuantity(1);
+        if (orderItemModel.value?.quantity!! < maxQuantity)
+            orderItemModel.value?.plusOrderQuantity(1);
         orderItemModel.notifyValueChange();
     }
 
@@ -66,11 +67,10 @@ class ProductDetailVM : BaseUiViewModel<ProductDetailUV>() {
                      * If not exist , add to list
                      */
                     if (it != null) {
-                        if (item.quantity == 0){
+                        if (item.quantity == 0) {
                             list.remove(it);
-                        }
-                        else
-                        it.quantity = item.quantity;
+                        } else
+                            it.quantity = item.quantity;
                     } else list.add(item);
                 }
             }

@@ -27,6 +27,7 @@ data class ExtraDoneModel(
 
 
     fun getModifierStr(separator: String): String? {
+        if (selectedModifierGroup == null) return null;
         val rs: MutableList<String> = mutableListOf()
 
         selectedModifierGroup?.forEach { entry ->
@@ -35,6 +36,7 @@ data class ExtraDoneModel(
             rs.add(modifier)
         }
         return rs.joinToString(separator = "$separator ");
+
     }
 }
 
