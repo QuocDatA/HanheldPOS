@@ -162,7 +162,6 @@
                     app:useTextColor="color4"
                     app:useTextHeader="h5"
                     priceView="@{cartDataVM.cartModelLD.grandTotal}"
-                    visibleObject="@{cartDataVM.cartModelLD.grandTotal!=0}"
 
                     tools:text="1.000.000" />
 

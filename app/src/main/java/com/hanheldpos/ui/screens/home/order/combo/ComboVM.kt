@@ -29,12 +29,12 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
         return@map it.quantity;
     };
     var maxQuantity = -1;
-    var minQuantity : LiveData<Int> = Transformations.map(actionType) {
-        return@map  when(actionType.value){
-            ItemActionType.Modify->0;
-            ItemActionType.Add->1;
-            else->1;
-        } ;
+    var minQuantity: LiveData<Int> = Transformations.map(actionType) {
+        return@map when (actionType.value) {
+            ItemActionType.Modify -> 0;
+            ItemActionType.Add -> 1;
+            else -> 1;
+        };
     };
     val totalPriceLD = MutableLiveData(0.0);
 
@@ -58,6 +58,9 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
 
         selectedCombo.observe(owner, {
             updateTotalPrice();
+        });
+        orderItemModel.observe(owner,{
+           updateTotalPrice();
         });
     }
 
@@ -268,13 +271,14 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
     }
 
     fun onAddQuantity() {
-        if (orderItemModel.value?.quantity!! < maxQuantity)
+        if (numberQuantity.value!! < maxQuantity)
             orderItemModel.value?.plusOrderQuantity(1);
         orderItemModel.notifyValueChange();
     }
 
     fun onRemoveQuantity() {
-        orderItemModel.value?.minusOrderQuantity(1);
+        if (minQuantity.value!! < numberQuantity.value!!)
+            orderItemModel.value?.minusOrderQuantity(1);
         orderItemModel.notifyValueChange();
     }
 

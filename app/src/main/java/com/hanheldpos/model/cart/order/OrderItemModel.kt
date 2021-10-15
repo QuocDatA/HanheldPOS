@@ -137,7 +137,8 @@ data class OrderItemModel(
         var sum : Double = 0.0;
         if(type == OrderItemType.Combo){
 
-            sum = if (productOrderItem?.isPriceFixed != true) productOrderItem?.price!! else productOrderItem?.comparePrice!!;
+           sum = if (productOrderItem?.isPriceFixed != true) productOrderItem?.price!! else productOrderItem?.comparePrice!!;
+
 
             when(productOrderItem!!.pricingMethodType){
                 PricingMethodType.BasePrice->{
@@ -156,14 +157,10 @@ data class OrderItemModel(
                 }
             }
 
-            menuComboItem!!.listItemsByGroup?.forEach {
-                it?.listSelectedComboItems?.forEach { itPicked->
-                    sum = sum.plus(itPicked?.selectedComboItem?.getPriceLineTotal() ?: 0.0);
-                }
-            }
+            sum *= quantity;
         }
         else {
-            sum = getPriceLineTotal()
+            sum = getPriceLineTotal();
         }
         return sum;
     }

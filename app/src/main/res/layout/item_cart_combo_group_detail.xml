@@ -16,14 +16,13 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginBottom="@dimen/_4sdp">
+        android:layout_marginBottom="@dimen/_4sdp"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-          >
+            android:orientation="horizontal">
 
             <com.diadiem.pos_components.PTextView
                 android:layout_width="wrap_content"
@@ -62,7 +61,6 @@
 
                     </LinearLayout>
 
-
                     <com.diadiem.pos_components.PTextView
                         android:id="@+id/priceTextView"
                         addPriceView="@{item.orderPrice}"
@@ -74,29 +72,33 @@
                         app:useTextHeader="h6"
                         tools:text="137.000" />
 
-
                 </LinearLayout>
 
-
+                <androidx.legacy.widget.Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_3sdp" />
 
                 <include
                     layout="@layout/cart_product_detail_line"
                     visibleObject="@{item.variantStr!=null}"
-                    app:lineText="@{item.variantStr}"
                     app:isHeaderH6="@{false}"
-                    />
+                    app:lineText="@{item.variantStr}" />
 
+                <androidx.legacy.widget.Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_3sdp" />
                 <include
                     layout="@layout/cart_product_detail_line"
                     visibleObject="@{item.modifierStr!=null}"
                     app:isHeaderH6="@{false}"
                     app:lineText="@{item.modifierStr}" />
-
+                <androidx.legacy.widget.Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_3sdp" />
                 <include
                     layout="@layout/cart_product_detail_line"
                     visibleObject="@{item.note!=null}"
                     app:isNote="@{true}"
-                    app:isHeaderH6="@{false}"
                     app:lineText="@{item.note}" />
             </LinearLayout>
 

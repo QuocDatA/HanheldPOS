@@ -205,7 +205,7 @@
                     android:layout_width="@dimen/_25sdp"
                     android:layout_height="@dimen/_25sdp"
                     android:onClick="@{v -> viewModel.onRemoveQuantity()}"
-                    android:src="@{viewModel.numberQuantity > 0 ? @drawable/ic_remove_primary : @drawable/ic_remove_disable}"
+                    android:src="@{viewModel.minQuantity &lt; viewModel.numberQuantity? @drawable/ic_remove_primary : @drawable/ic_remove_disable}"
                     tools:ignore="ContentDescription" />
 
                 <com.diadiem.pos_components.PTextView

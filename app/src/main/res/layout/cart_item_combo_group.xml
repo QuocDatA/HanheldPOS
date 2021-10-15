@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="item"
             type="com.hanheldpos.model.home.order.menu.ItemComboGroupManager" />
+
         <variable
             name="position"
             type="int" />
@@ -15,46 +17,51 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        >
+        android:orientation="vertical">
+
         <LinearLayout
             android:layout_width="wrap_content"
-            android:orientation="horizontal"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/_4sdp"
-            >
-            <com.diadiem.pos_components.PTextView
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <LinearLayout
                 android:layout_width="@dimen/_11sdp"
                 android:layout_height="@dimen/_11sdp"
-                tools:text="1"
-                app:useTextHeader="h7"
-                android:gravity="center"
-                android:layout_gravity="center"
-                app:useTextColor="color2"
                 android:background="@drawable/bg_cart_number"
-                android:text="@{String.valueOf(position)}"
-                />
+                android:gravity="center">
+
+                <com.diadiem.pos_components.PTextView
+                    android:includeFontPadding="false"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{String.valueOf(position)}"
+                    app:useTextColor="color2"
+                    app:useTextHeader="h7"
+                    tools:text="1" />
+            </LinearLayout>
+
             <com.diadiem.pos_components.PTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_3sdp"
-                tools:text="Group Pho"
+                android:text="@{item.groupName}"
                 app:useTextColor="color4"
                 app:useTextHeader="h6"
-                android:text="@{item.groupName}"
-                />
+                tools:text="Group Pho" />
         </LinearLayout>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/cartComboGroupDetailRecyclerView"
             android:layout_width="match_parent"
-            android:layout_marginStart="@dimen/_15sdp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_15sdp"
             android:orientation="vertical"
             android:overScrollMode="never"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:itemCount="3"
-            tools:listitem="@layout/item_cart_combo_group_detail"
-            />
+            tools:listitem="@layout/item_cart_combo_group_detail" />
 
     </LinearLayout>
 </layout>
