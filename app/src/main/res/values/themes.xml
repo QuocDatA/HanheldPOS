@@ -286,4 +286,17 @@
         <item name="android:spinnerMode">dropdown</item>
     </style>
 
+    <!-- Switch Material -->
+    <style name="SCBSwitch" parent="Theme.AppCompat.Light">
+        <!-- active thumb & track color (30% transparency) -->
+        <item name="colorControlActivated">@color/primary</item>
+
+        <!-- inactive thumb color -->
+        <item name="colorSwitchThumbNormal">#f1f1f1
+        </item>
+
+        <!-- inactive track color (30% transparency) -->
+        <item name="android:colorForeground">@color/color_9
+        </item>
+    </style>
 </resources>

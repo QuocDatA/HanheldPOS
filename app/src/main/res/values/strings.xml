@@ -47,4 +47,6 @@
     <string name="payment_method">Payment Method</string>
     <string name="view_details">View Details</string>
     <string name="asap_20_mins">ASAP (20 mins)</string>
+    <string name="door_to_door">Door-to-Door</string>
+    <string name="plastic_cutlery">Plastic cutlery</string>
 </resources>
