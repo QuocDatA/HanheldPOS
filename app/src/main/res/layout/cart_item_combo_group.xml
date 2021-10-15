@@ -42,15 +42,7 @@
                 android:text="@{item.groupName}"
                 />
         </LinearLayout>
-        <androidx.recyclerview.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_marginStart="@dimen/_15sdp"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:overScrollMode="never"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/item_cart_product"
-            />
+
 
     </LinearLayout>
 </layout>
