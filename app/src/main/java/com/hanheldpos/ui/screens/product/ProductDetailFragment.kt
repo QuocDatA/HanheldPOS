@@ -138,9 +138,8 @@ class ProductDetailFragment(
     }
 
     override fun onAddCart(item: OrderItemModel) {
-        onBack()
-        if (item.quantity > 0)
-            listener?.onCartAdded(item,viewModel.actionType.value!!);
+        onBack();
+        listener?.onCartAdded(item,viewModel.actionType.value!!);
     }
 
     override fun onModifierItemChange(item: ModifierSelectedItemModel) {

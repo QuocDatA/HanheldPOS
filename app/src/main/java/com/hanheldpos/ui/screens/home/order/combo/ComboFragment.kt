@@ -9,6 +9,7 @@ import com.hanheldpos.databinding.FragmentComboBinding
 import com.hanheldpos.model.cart.order.OrderItemModel
 import com.hanheldpos.model.home.order.combo.ItemActionType
 import com.hanheldpos.model.home.order.menu.ComboPickedItemViewModel
+import com.hanheldpos.model.home.order.menu.ItemComboGroupManager
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.home.order.combo.adapter.ComboGroupAdapter
 import com.hanheldpos.ui.screens.product.ProductDetailFragment
@@ -100,17 +101,21 @@ class ComboFragment(
         navigator.goOneBack();
     }
 
-    override fun openProductDetail(maxQuantity: Int, item: ComboPickedItemViewModel,action: ItemActionType) {
+    override fun openProductDetail(maxQuantity: Int, comboManager: ItemComboGroupManager , item: ComboPickedItemViewModel, action: ItemActionType) {
         navigator.goToWithCustomAnimation(ProductDetailFragment.getInstance(
             item = item.selectedComboItem!!,
             quantityCanChoose = maxQuantity,
             action = action,
             listener = object : ProductDetailFragment.ProductDetailListener {
                 override fun onCartAdded(itemDone: OrderItemModel,action: ItemActionType) {
+                    item.apply {
+                        selectedComboItem = itemDone
+                    }
                     viewModel.onChooseItemComboSuccess(
                         item.comboParentId,
-                        item.apply { selectedComboItem = itemDone },
-                        action
+                        comboManager,
+                        item,
+                        if (item.selectedComboItem!!.quantity > 0) action else ItemActionType.Remove
                     );
                 }
             }

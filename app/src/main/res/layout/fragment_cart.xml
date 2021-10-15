@@ -72,7 +72,7 @@
 
                     <androidx.legacy.widget.Space
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/_6sdp" />
+                        android:layout_height="@dimen/_4sdp" />
 
                     <LinearLayout
                         style="@style/SingleLineItemCart"
@@ -141,47 +141,52 @@
 
                     </LinearLayout>
 
-
-                    <androidx.legacy.widget.Space
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/_1sdp" />
-
                     <LinearLayout
-                        style="@style/SingleLineItemCart"
-                        android:orientation="horizontal"
                         visibleObject="@{cartDataVM.diningOptionLD.title.equals(`Delivery`)}"
-                        android:paddingVertical="@dimen/_11sdp">
-
-                        <ImageView
-                            android:layout_width="@dimen/_12sdp"
-                            android:layout_height="@dimen/_12sdp"
-                            android:layout_gravity="center"
-                            android:layout_marginStart="@dimen/_9sdp"
-                            android:layout_marginEnd="@dimen/_3sdp"
-                            android:src="@drawable/ic_clock" />
-
-                        <com.diadiem.pos_components.PTextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:text="@string/asap_20_mins"
-                            app:useFontStyle="bold"
-                            app:useTextColor="color4"
-                            app:useTextHeader="h5" />
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
 
                         <androidx.legacy.widget.Space
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1" />
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_1sdp" />
 
-                     <ImageView
-                         android:layout_width="wrap_content"
-                         android:layout_height="@dimen/_9sdp"
-                         android:src="@drawable/ic_baseline_arrow_back_ios_13"
-                         android:scaleX="-1"
-                         android:layout_marginEnd="@dimen/_8sdp"
-                         app:tint="@color/color_9" />
+                        <LinearLayout
+                            style="@style/SingleLineItemCart"
+                            android:orientation="horizontal"
+                            android:paddingVertical="@dimen/_11sdp">
 
+                            <ImageView
+                                android:layout_width="@dimen/_12sdp"
+                                android:layout_height="@dimen/_12sdp"
+                                android:layout_gravity="center"
+                                android:layout_marginStart="@dimen/_9sdp"
+                                android:layout_marginEnd="@dimen/_3sdp"
+                                android:src="@drawable/ic_clock" />
+
+                            <com.diadiem.pos_components.PTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:text="@string/asap_20_mins"
+                                app:useFontStyle="bold"
+                                app:useTextColor="color4"
+                                app:useTextHeader="h5" />
+
+                            <androidx.legacy.widget.Space
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1" />
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="@dimen/_9sdp"
+                                android:layout_marginEnd="@dimen/_8sdp"
+                                android:scaleX="-1"
+                                android:src="@drawable/ic_baseline_arrow_back_ios_13"
+                                app:tint="@color/color_9" />
+
+                        </LinearLayout>
                     </LinearLayout>
 
 
@@ -253,6 +258,7 @@
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/productRecyclerView"
                         style="@style/SingleLineItemCart"
+                        android:paddingVertical="0dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
@@ -263,13 +269,13 @@
 
                     <androidx.legacy.widget.Space
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/_10sdp" />
+                        android:layout_height="@dimen/_4sdp" />
 
                     <LinearLayout
                         style="@style/SingleLineItemCart"
                         android:orientation="horizontal"
-                        android:paddingVertical="@dimen/_8sdp"
-                        android:paddingHorizontal="@dimen/_9sdp">
+                        android:paddingHorizontal="@dimen/_9sdp"
+                        android:paddingVertical="@dimen/_8sdp">
 
                         <com.diadiem.pos_components.PTextView
                             android:layout_width="wrap_content"
@@ -364,10 +370,11 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        visibleObject="@{cartDataVM.diningOptionLD.title.equals(`Delivery`)}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        visibleObject="@{cartDataVM.diningOptionLD.title.equals(`Delivery`)}"
                         android:orientation="vertical">
+
                         <androidx.legacy.widget.Space
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/_1sdp" />
@@ -392,12 +399,13 @@
                                 android:layout_weight="1" />
 
                             <com.google.android.material.switchmaterial.SwitchMaterial
-                                android:layout_marginEnd="@dimen/_9sdp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:theme="@style/SCBSwitch"
-                                android:drawablePadding="0dp" />
+                                android:layout_marginEnd="@dimen/_9sdp"
+                                android:drawablePadding="0dp"
+                                android:theme="@style/SCBSwitch" />
                         </LinearLayout>
+
                         <androidx.legacy.widget.Space
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/_1sdp" />
@@ -425,8 +433,8 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginEnd="@dimen/_9sdp"
-                                android:theme="@style/SCBSwitch"
-                                android:drawablePadding="0dp" />
+                                android:drawablePadding="0dp"
+                                android:theme="@style/SCBSwitch" />
                         </LinearLayout>
                     </LinearLayout>
 
@@ -467,6 +475,10 @@
 
                             tools:text="100.000" />
                     </LinearLayout>
+
+                    <androidx.legacy.widget.Space
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_4sdp" />
                 </LinearLayout>
 
             </androidx.core.widget.NestedScrollView>

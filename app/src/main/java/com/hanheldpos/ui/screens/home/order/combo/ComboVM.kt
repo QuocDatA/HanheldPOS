@@ -150,6 +150,7 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
             ItemActionType.Add -> {
                 uiCallback?.openProductDetail(
                     comboManager.requireQuantity(),
+                    comboManager,
                     item.clone(),
                     action
                 );
@@ -158,6 +159,7 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
                 uiCallback?.openProductDetail(
                     comboManager.requireQuantity() + (item.selectedComboItem?.quantity
                         ?: 0),
+                    comboManager,
                     item,
                     action
                 );
@@ -168,20 +170,12 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
                  */
                 toggleItemSelected(comboManager.comboDetailAdapter, item, false);
 
-                selectedCombo.value?.data?.let {
-                    it.listItemsByGroup?.forEach { it1 ->
-                        if (it1?.productComboItem?.comboGuid == item.comboParentId) {
-                            it1?.listSelectedComboItems?.let {
-                                it.remove(item)
-                                (it1.comboItemSelectedAdapter as ComboItemAdapter).submitList(it);
-                            }
-                            (it.comboAdapter as ComboGroupAdapter).notifyDataSetChanged()
-                            selectedCombo.notifyValueChange()
-                            return;
-                        }
-                    }
-
+                comboManager.let {
+                    it.listSelectedComboItems.remove(item);
+                    (it.comboItemSelectedAdapter as ComboItemAdapter).notifyDataSetChanged();
                 }
+                selectedCombo.notifyValueChange()
+                return;
             }
         }
     }
@@ -205,6 +199,7 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
 
     fun onChooseItemComboSuccess(
         comboParent: String?,
+        comboManager: ItemComboGroupManager,
         item: ComboPickedItemViewModel,
         action: ItemActionType?
     ) {
@@ -238,6 +233,19 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
                                     it.set(it.indexOf(item), item);
                                 }
                             }
+                        }
+                        ItemActionType.Remove -> {
+                            /**
+                             * Delete green tick when remove item
+                             */
+                            toggleItemSelected(comboManager.comboDetailAdapter, item, false);
+
+                            comboManager.let {
+                                it.listSelectedComboItems.remove(item);
+                                (it.comboItemSelectedAdapter as ComboItemAdapter).notifyDataSetChanged();
+                            }
+                            selectedCombo.notifyValueChange()
+                            return;
                         }
                     }
                     it1?.listSelectedComboItems.let {

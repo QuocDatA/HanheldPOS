@@ -250,7 +250,7 @@
 
                             <com.diadiem.pos_components.PTextView
                                 style="@style/ProductDetailText"
-                                android:text="Add"
+                                android:text="@{viewModel.numberQuantity > 0 ? `Add` : `Remove`}"
                                 android:textAllCaps="true"
                                 app:useFontStyle="bold"
                                 app:useTextColor="color2"
