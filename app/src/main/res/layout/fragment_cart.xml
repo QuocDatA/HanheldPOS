@@ -242,6 +242,7 @@
                             android:layout_weight="1" />
 
                         <com.diadiem.pos_components.PTextView
+                            android:onClick="@{v -> viewModel.backPress()}"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
