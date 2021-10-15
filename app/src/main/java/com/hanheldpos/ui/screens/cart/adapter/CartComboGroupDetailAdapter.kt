@@ -2,6 +2,8 @@ package com.hanheldpos.ui.screens.cart.adapter
 
 import androidx.recyclerview.widget.DiffUtil
 import com.hanheldpos.R
+import com.hanheldpos.databinding.ItemCartComboGroupDetailBinding
+import com.hanheldpos.databinding.ItemCartComboGroupDetailBindingImpl
 import com.hanheldpos.databinding.ItemCartProductBinding
 import com.hanheldpos.databinding.ItemVariantBinding
 import com.hanheldpos.model.cart.order.OrderItemModel
@@ -10,11 +12,9 @@ import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 
 
-class CartProductAdapter(
-    private val onProductClickListener: BaseItemClickListener<OrderItemModel>,
+class CartComboGroupDetailAdapter(
 ) : BaseBindingListAdapter<OrderItemModel>(
     DiffCallback(),
-    itemClickListener = onProductClickListener,
 ) {
     override fun submitList(
         products: MutableList<OrderItemModel>?,
@@ -23,32 +23,17 @@ class CartProductAdapter(
     }
 
     override fun getItemViewType(position: Int): Int {
-        return R.layout.item_cart_product;
+        return R.layout.item_cart_combo_group_detail;
     }
 
     override fun onBindViewHolder(holder: BaseBindingViewHolder<OrderItemModel>, position: Int) {
         val item = getItem(position);
         holder.bindItem(item);
-        val binding  = (holder.binding as ItemCartProductBinding);
-        binding.isShownDetail=item.isShownDetail;
-        if(item.isCombo())
-        {
-            binding.viewDetailTextView.setOnClickListener {
-               item.isShownDetail= true;
-                notifyItemChanged(position);
-            }
-            binding.hideDetailTextView.setOnClickListener {
-                item.isShownDetail= false;
-                notifyItemChanged(position);
-            }
+        val binding  = (holder.binding as ItemCartComboGroupDetailBinding);
 
-            val cartComboGroupAdapter=CartComboGroupAdapter();
-            cartComboGroupAdapter.submitList(item.menuComboItem!!.listItemsByGroup!!.toMutableList())
-            binding.productComboGroupRecyclerView.adapter=cartComboGroupAdapter;
-        }
+
+
     }
-
-
     class DiffCallback : DiffUtil.ItemCallback<OrderItemModel>() {
         override fun areItemsTheSame(
             oldItem: OrderItemModel,

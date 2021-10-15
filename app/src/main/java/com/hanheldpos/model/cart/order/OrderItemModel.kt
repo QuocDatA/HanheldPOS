@@ -28,7 +28,7 @@ data class OrderItemModel(
 
     var quantity: Int = 1,
     var note: String? = null,
-
+    var isShownDetail:Boolean=false,
 ) : Parcelable, Cloneable {
 
     public override fun clone(): OrderItemModel {

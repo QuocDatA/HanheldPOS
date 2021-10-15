@@ -20,6 +20,9 @@
         <variable
             name="lineText"
             type="String" />
+        <variable
+            name="isHeaderH6"
+            type="Boolean" />
     </data>
 
     <LinearLayout
@@ -51,7 +54,16 @@
             android:layout_height="wrap_content"
             android:text="@{lineText}"
             app:useTextColor="color5"
+            visibleObject="@{isHeaderH6==true,default=true}"
             app:useTextHeader="h6"
+            tools:text="Variant 1, Variant 2" />
+        <com.diadiem.pos_components.PTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{lineText}"
+            visibleObject="@{isHeaderH6==false,default=false}"
+            app:useTextColor="color5"
+            app:useTextHeader="h7"
             tools:text="Variant 1, Variant 2" />
 
         <ImageView

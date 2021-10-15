@@ -3,9 +3,9 @@ package com.hanheldpos.ui.screens.cart.adapter
 import androidx.recyclerview.widget.DiffUtil
 import com.hanheldpos.R
 import com.hanheldpos.databinding.CartItemComboGroupBinding
-import com.hanheldpos.databinding.ItemCartProductBinding
 import com.hanheldpos.model.cart.order.OrderItemModel
 import com.hanheldpos.model.home.order.menu.ItemComboGroupManager
+import com.hanheldpos.model.home.order.menu.OrderMenuItemModel
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
 
@@ -18,9 +18,17 @@ class CartComboGroupAdapter :BaseBindingListAdapter<ItemComboGroupManager>(DiffC
         val item = getItem(position);
         holder.bindItem(item);
         val binding  = (holder.binding as CartItemComboGroupBinding);
+        binding.position=position+1;
+        val cartComboGroupDetailAdapter=CartComboGroupDetailAdapter().apply {
+            val selectedOrderMenuItems=item.listSelectedComboItems.map {
+                it!!.selectedComboItem as OrderItemModel
+            }.toMutableList();
+            submitList(selectedOrderMenuItems);
+        }
+        binding.cartComboGroupDetailRecyclerView.adapter=cartComboGroupDetailAdapter;
     }
     override fun submitList(
-        groups: MutableList<ItemComboGroupManager>?,
+        groups: MutableList<ItemComboGroupManager?>?,
     ) {
         super.submitList(groups)
     }

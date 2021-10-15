@@ -20,7 +20,9 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:orientation="horizontal"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_4sdp"
+            >
             <com.diadiem.pos_components.PTextView
                 android:layout_width="@dimen/_11sdp"
                 android:layout_height="@dimen/_11sdp"
@@ -28,7 +30,7 @@
                 app:useTextHeader="h7"
                 android:gravity="center"
                 android:layout_gravity="center"
-                app:useTextColor="color7"
+                app:useTextColor="color2"
                 android:background="@drawable/bg_cart_number"
                 android:text="@{String.valueOf(position)}"
                 />
@@ -42,7 +44,17 @@
                 android:text="@{item.groupName}"
                 />
         </LinearLayout>
-
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/cartComboGroupDetailRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:overScrollMode="never"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:itemCount="3"
+            tools:listitem="@layout/item_cart_combo_group_detail"
+            />
 
     </LinearLayout>
 </layout>
