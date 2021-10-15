@@ -120,6 +120,17 @@
 
                 </LinearLayout>
 
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    visibleObject="@{item.combo==true}"
+                    android:overScrollMode="never"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:itemCount="3"
+                    tools:listitem="@layout/cart_item_combo_group"
+                    />
+
                 <include
                     layout="@layout/cart_product_detail_line"
                     visibleObject="@{item.variantStr!=null}"

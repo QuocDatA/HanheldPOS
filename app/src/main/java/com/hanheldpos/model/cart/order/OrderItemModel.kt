@@ -80,6 +80,9 @@ data class OrderItemModel(
 
 
 
+    fun isCombo():Boolean{
+        return menuComboItem!=null;
+    }
 
     fun getVariantStr(): String? {
         return getVariantStr(Const.SymBol.CommaSeparator)

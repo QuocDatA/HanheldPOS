@@ -137,8 +137,12 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
                     when (item.uiType) {
                         ProductModeViewType.Product -> {
                             val onCartAdded = object : ProductDetailFragment.ProductDetailListener {
-                                override fun onCartAdded(orderItemModel: OrderItemModel) {
-                                    cartDataVM.addToCart(orderItemModel);
+                                override fun onCartAdded(
+                                    item: OrderItemModel,
+                                    action: ItemActionType
+                                ) {
+                                    cartDataVM.addToCart(item);
+
                                 }
                             }
                             navigator.goToWithCustomAnimation(
@@ -171,7 +175,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
                             }
                             navigator.goToWithCustomAnimation(
                                 ComboFragment.getInstance(
-                                    item =  OrderItemModel(
+                                    item = OrderItemModel(
                                         productOrderItem = item,
                                         type = OrderItemType.Combo
                                     ),
@@ -234,7 +238,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
     }
 
     override fun showCart() {
-        navigator.goToWithCustomAnimation( CartFragment.getIntance());
+        navigator.goToWithCustomAnimation(CartFragment.getIntance());
     }
 
     companion object {

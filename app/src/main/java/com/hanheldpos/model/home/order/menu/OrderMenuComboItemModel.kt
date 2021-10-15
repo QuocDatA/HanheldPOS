@@ -23,7 +23,7 @@ data class OrderMenuComboItemModel(
     /**
      *  if this value is <0, mean its list is null
      */
-    var modifiedGroup: Int = -1
+    var modifiedGroup: Int = -1,
 
 ) : Parcelable
 

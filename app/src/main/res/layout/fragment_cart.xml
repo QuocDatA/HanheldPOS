@@ -8,9 +8,12 @@
         <variable
             name="viewModel"
             type="com.hanheldpos.ui.screens.cart.CartVM" />
+
         <variable
             name="cartDataVM"
-            type="com.hanheldpos.ui.screens.cart.CartDataVM" />        <variable
+            type="com.hanheldpos.ui.screens.cart.CartDataVM" />
+
+        <variable
             name="tableDataVM"
             type="com.hanheldpos.ui.screens.home.table.TableDataVM" />
     </data>
@@ -23,13 +26,13 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:orientation="vertical"
-            android:background="@color/color_10">
+            android:background="@color/color_10"
+            android:orientation="vertical">
 
             <FrameLayout
-                android:background="@color/color_2"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_42sdp">
+                android:layout_height="@dimen/_42sdp"
+                android:background="@color/color_2">
 
                 <ImageButton
                     style="@style/MaterialButton.Icon"
@@ -60,8 +63,7 @@
 
             <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                >
+                android:layout_height="wrap_content">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -109,7 +111,6 @@
                         android:layout_height="@dimen/_1sdp" />
 
                     <LinearLayout
-
                         style="@style/SingleLineItemCart"
                         android:orientation="horizontal"
                         android:paddingVertical="@dimen/_11sdp">
@@ -139,6 +140,50 @@
                             app:useTextHeader="h5" />
 
                     </LinearLayout>
+
+
+                    <androidx.legacy.widget.Space
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_1sdp" />
+
+                    <LinearLayout
+                        style="@style/SingleLineItemCart"
+                        android:orientation="horizontal"
+                        visibleObject="@{cartDataVM.diningOptionLD.title.equals(`Delivery`)}"
+                        android:paddingVertical="@dimen/_11sdp">
+
+                        <ImageView
+                            android:layout_width="@dimen/_12sdp"
+                            android:layout_height="@dimen/_12sdp"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="@dimen/_9sdp"
+                            android:layout_marginEnd="@dimen/_3sdp"
+                            android:src="@drawable/ic_clock" />
+
+                        <com.diadiem.pos_components.PTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="@string/asap_20_mins"
+                            app:useFontStyle="bold"
+                            app:useTextColor="color4"
+                            app:useTextHeader="h5" />
+
+                        <androidx.legacy.widget.Space
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
+
+                     <ImageView
+                         android:layout_width="wrap_content"
+                         android:layout_height="@dimen/_9sdp"
+                         android:src="@drawable/ic_baseline_arrow_back_ios_13"
+                         android:scaleX="-1"
+                         android:layout_marginEnd="@dimen/_8sdp"
+                         app:tint="@color/color_9" />
+
+                    </LinearLayout>
+
 
                     <androidx.legacy.widget.Space
                         android:layout_width="match_parent"
@@ -212,8 +257,6 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:overScrollMode="never"
-                        android:paddingVertical="0dp"
-
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         tools:itemCount="3"
                         tools:listitem="@layout/item_cart_product" />
@@ -243,12 +286,12 @@
                             android:layout_weight="1" />
 
                         <com.diadiem.pos_components.PTextView
+                            priceView="@{0.0}"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_marginEnd="@dimen/_9sdp"
                             app:useTextColor="color4"
-                            priceView="@{0.0}"
                             app:useTextHeader="h3"
                             tools:text="50.000" />
                     </LinearLayout>
@@ -314,12 +357,12 @@
                             android:layout_weight="1" />
 
                         <com.diadiem.pos_components.PTextView
+                            priceView="@{0.0}"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_marginEnd="@dimen/_9sdp"
                             app:useTextColor="color4"
-                            priceView="@{0.0}"
 
                             app:useTextHeader="h3"
                             tools:text="50.000" />
@@ -327,7 +370,7 @@
 
                     <androidx.legacy.widget.Space
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/_1sdp"/>
+                        android:layout_height="@dimen/_1sdp" />
 
                     <LinearLayout
                         style="@style/SingleLineItemCart"
@@ -350,6 +393,7 @@
                             android:layout_weight="1" />
 
                         <com.diadiem.pos_components.PTextView
+                            priceView="@{cartDataVM.cartModelLD.grandTotal}"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -357,7 +401,6 @@
                             app:useFontStyle="semi_bold"
                             app:useTextColor="color4"
                             app:useTextHeader="h2"
-                            priceView="@{cartDataVM.cartModelLD.grandTotal}"
 
                             tools:text="100.000" />
                     </LinearLayout>
@@ -453,8 +496,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/_7sdp"
-                    app:useTextColor="color4"
                     android:text="@{tableDataVM.curTableLD.tableName + `-` + cartDataVM.diningOptionLD.title + ` (` + cartDataVM.numberOfCustomer + `)`}"
+                    app:useTextColor="color4"
 
                     app:useTextHeader="h5"
                     tools:text="B1-For Here (2)" />
@@ -464,10 +507,10 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_color5_2444dp"
                     android:paddingHorizontal="@dimen/_5sdp"
-                    app:useTextColor="color2"
-                    app:useTextHeader="h6"
-
                     android:text="@{cartDataVM.linePerTotalQuantity}"
+                    app:useTextColor="color2"
+
+                    app:useTextHeader="h6"
                     tools:text="8/10" />
 
             </LinearLayout>
@@ -486,14 +529,14 @@
                 android:orientation="horizontal">
 
                 <com.diadiem.pos_components.PTextView
+                    priceView="@{cartDataVM.cartModelLD.grandTotal}"
+                    visibleObject="@{cartDataVM.cartModelLD.grandTotal!=0}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_12sdp"
                     app:useFontStyle="bold"
                     app:useTextColor="color4"
                     app:useTextHeader="h5"
-                    priceView="@{cartDataVM.cartModelLD.grandTotal}"
-                    visibleObject="@{cartDataVM.cartModelLD.grandTotal!=0}"
                     tools:text="1.000.000" />
 
                 <androidx.legacy.widget.Space
