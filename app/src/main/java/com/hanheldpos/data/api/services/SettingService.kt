@@ -32,4 +32,5 @@ interface SettingService {
         @Query("userGuid") userGuid: String?,
         @Query("locationGuid") location: String?,
     ): Call<TableResp>
+
 }

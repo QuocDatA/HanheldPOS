@@ -292,11 +292,11 @@
                             android:layout_weight="1" />
 
                         <com.diadiem.pos_components.PTextView
-                            priceView="@{0.0}"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             app:useTextColor="color4"
+                            priceView="@{cartDataVM.cartModelLD.grandTotal}"
                             app:useTextHeader="h3"
                             tools:text="50.000" />
                     </LinearLayout>
