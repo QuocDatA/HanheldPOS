@@ -41,13 +41,10 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
     /**
      *  List name of selected products in combo list
      */
-    data class ComboEvent(
-        var data: OrderMenuComboItemModel?
-    )
 
-    val selectedCombo = MutableLiveData<ComboEvent>()
+    val selectedCombo = MutableLiveData<OrderMenuComboItemModel>()
     val isSelectedComplete: MutableLiveData<Boolean> = Transformations.map(selectedCombo) {
-        val result = it.data?.listItemsByGroup?.sumOf {
+        val result = it?.listItemsByGroup?.sumOf {
             it?.requireQuantity() ?: 0
         }
         return@map result == 0;
@@ -57,147 +54,64 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
         owner.lifecycle.addObserver(this);
 
         selectedCombo.observe(owner, {
+            uiCallback?.updateChangeCombo(it);
             updateTotalPrice();
         });
-        orderItemModel.observe(owner,{
-           updateTotalPrice();
+        orderItemModel.observe(owner, {
+            updateTotalPrice();
         });
     }
 
     fun initDefaultComboList(
         listProductComboItem: MutableList<ProductComboItem>
     ) {
-        //Default requirements for selected product combo
-        val comboGroupList: MutableList<ItemComboGroupManager?> = mutableListOf()
-        listProductComboItem.map { productComboItem ->
-            // Get Group price folow combo group
-            val productParent = orderItemModel.value?.productOrderItem;
-            val groupPrice =
-                productParent?.listGroupPriceInCombo?.find { it.groupGUID == productComboItem.comboGuid };
-            comboGroupList.add(
-                ItemComboGroupManager(
-                    productComboItem = productComboItem,
-                ).apply {
-                    comboDetailAdapter = ComboItemAdapter(
-                        modeViewType = ComboItemAdapter.ComboItemViewType.ForChoose,
-                        listener = object : ComboItemAdapter.ComboItemListener {
-                            override fun onComboItemChoose(
-                                action: ItemActionType,
-                                item: ComboPickedItemViewModel
-                            ) {
-                                comboItemAction(this@apply, action, item);
-                            }
-                        }
+        var comboMenuComboItemModel = orderItemModel.value?.menuComboItem;
+        if (comboMenuComboItemModel == null){
+            //Default requirements for selected product combo
+            val comboGroupList: MutableList<ItemComboGroupManager?> = mutableListOf()
+            listProductComboItem.map { productComboItem ->
+                // Get Group price folow combo group
+                val productParent = orderItemModel.value?.productOrderItem;
+                val groupPrice =
+                    productParent?.listGroupPriceInCombo?.find { it.groupGUID == productComboItem.comboGuid };
+                comboGroupList.add(
+                    ItemComboGroupManager(
+                        productComboItem = productComboItem,
                     ).apply {
-                        productComboItem.id?.let { it1 ->
-                            this.submitList(productParent?.getComboList(
-                                it1
-                            )?.map { productOrderItem ->
-                                // Change price product folow group price
-                                productOrderItem.apply {
-                                    val newProductPrice: GroupPriceProductItem? =
-                                        groupPrice?.product?.find { it.productGUID == this.id };
-                                    productOrderItem.updatePriceByGroupPrice(
-                                        productParent!!,
-                                        newProductPrice
-                                    );
-                                }
-                                ComboPickedItemViewModel(
-                                    comboParentId = productComboItem.comboGuid,
-                                    selectedComboItem = OrderItemModel(
-                                        productOrderItem = productOrderItem.apply {
-                                            modPricingType = productParent.modPricingType;
-                                            modPricingValue = productParent.modPricingValue;
-                                        },
-                                        type = OrderItemType.Product
-                                    )
-                                )
-                            })
-                        }
-                    }
-                    comboItemSelectedAdapter = ComboItemAdapter(
-                        modeViewType = ComboItemAdapter.ComboItemViewType.Chosen,
-                        listener = object : ComboItemAdapter.ComboItemListener {
-                            override fun onComboItemChoose(
-                                action: ItemActionType,
-                                item: ComboPickedItemViewModel
-                            ) {
-                                comboItemAction(this@apply, action, item);
+                        productsForChoose = productParent?.getComboList(productComboItem.id!!)?.map { productOrderItem ->
+                            // Change price product folow group price
+                            productOrderItem.apply {
+                                val newProductPrice: GroupPriceProductItem? =
+                                    groupPrice?.product?.find { it.productGUID == this.id };
+                                productOrderItem.updatePriceByGroupPrice(
+                                    productParent!!,
+                                    newProductPrice
+                                );
                             }
-                        }
-                    )
-                }
-            )
-        }
-
-        val comboId: String = GenerateId.getOrderItemId()
-
-        selectedCombo.value = ComboEvent(
-            data = OrderMenuComboItemModel(
+                            ComboPickedItemViewModel(
+                                comboParentId = productComboItem.comboGuid,
+                                selectedComboItem = OrderItemModel(
+                                    productOrderItem = productOrderItem.apply {
+                                        modPricingType = productParent.modPricingType;
+                                        modPricingValue = productParent.modPricingValue;
+                                    },
+                                    type = OrderItemType.Product
+                                )
+                            )
+                        }!!.toMutableList();
+                    }
+                )
+            }
+            val comboId: String = GenerateId.getOrderItemId()
+            comboMenuComboItemModel = OrderMenuComboItemModel(
                 listItemsByGroup = comboGroupList,
                 comboParentId = comboId,
-                comboAdapter = ComboGroupAdapter().apply {
-                    submitList(comboGroupList as MutableList<ItemComboGroupManager>);
-                }
             )
-        )
-        orderItemModel.value!!.menuComboItem = selectedCombo.value!!.data;
-    }
-
-    private fun comboItemAction(
-        comboManager: ItemComboGroupManager,
-        action: ItemActionType,
-        item: ComboPickedItemViewModel
-    ) {
-        when (action) {
-            ItemActionType.Add -> {
-                uiCallback?.openProductDetail(
-                    comboManager.requireQuantity(),
-                    comboManager,
-                    item.clone(),
-                    action
-                );
-            }
-            ItemActionType.Modify -> {
-                uiCallback?.openProductDetail(
-                    comboManager.requireQuantity() + (item.selectedComboItem?.quantity
-                        ?: 0),
-                    comboManager,
-                    item,
-                    action
-                );
-            }
-            ItemActionType.Remove -> {
-                /**
-                 * Delete green tick when remove item
-                 */
-                toggleItemSelected(comboManager.comboDetailAdapter, item, false);
-
-                comboManager.let {
-                    it.listSelectedComboItems.remove(item);
-                    (it.comboItemSelectedAdapter as ComboItemAdapter).notifyDataSetChanged();
-                }
-                selectedCombo.notifyValueChange()
-                return;
-            }
         }
-    }
 
-    /**
-     * toggle check icon visible/gone
-     */
-    private fun toggleItemSelected(
-        comboGroup: Any?,
-        currentItem: ComboPickedItemViewModel,
-        value: Boolean
-    ) {
-        (comboGroup as ComboItemAdapter).let {
-            val currentItem =
-                it.currentList.find { temp -> temp.selectedComboItem?.productOrderItem?.id == currentItem.selectedComboItem?.productOrderItem?.id };
-            val currentItemIndex = it.currentList.indexOf(currentItem);
-            currentItem?.isChosen = value;
-            it.notifyItemChanged(currentItemIndex);
-        };
+        selectedCombo.value = comboMenuComboItemModel;
+        if (orderItemModel.value!!.menuComboItem == null)
+            orderItemModel.value!!.menuComboItem = selectedCombo.value;
     }
 
     fun onChooseItemComboSuccess(
@@ -206,16 +120,12 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
         item: ComboPickedItemViewModel,
         action: ItemActionType?
     ) {
-
-        selectedCombo.value?.data?.let { orderMenuComboItemModel ->
+        selectedCombo.value?.let { orderMenuComboItemModel ->
             orderMenuComboItemModel.listItemsByGroup?.forEach { it1 ->
                 if (it1?.productComboItem?.comboGuid == comboParent) {
                     /**
                      * show check icon when add or modify item
                      */
-                    toggleItemSelected(it1?.comboDetailAdapter, item, true);
-
-
                     when (action) {
                         ItemActionType.Add -> {
                             /*
@@ -241,20 +151,11 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
                             /**
                              * Delete green tick when remove item
                              */
-                            toggleItemSelected(comboManager.comboDetailAdapter, item, false);
-
                             comboManager.let {
                                 it.listSelectedComboItems.remove(item);
-                                (it.comboItemSelectedAdapter as ComboItemAdapter).notifyDataSetChanged();
                             }
-                            selectedCombo.notifyValueChange()
-                            return;
                         }
                     }
-                    it1?.listSelectedComboItems.let {
-                        (it1?.comboItemSelectedAdapter as ComboItemAdapter).submitList(it);
-                    }
-                    (orderMenuComboItemModel.comboAdapter as ComboGroupAdapter).notifyDataSetChanged()
                     selectedCombo.notifyValueChange()
                     return;
                 }
@@ -283,7 +184,7 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
     }
 
     fun onAddCart() {
-        uiCallback?.cartAdded(orderItemModel.value!!,actionType.value!!);
+        uiCallback?.cartAdded(orderItemModel.value!!, actionType.value!!);
     }
 
     fun onBack() {

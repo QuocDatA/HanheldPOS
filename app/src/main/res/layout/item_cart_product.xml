@@ -113,7 +113,7 @@
                             android:layout_below="@+id/priceTextView"
                             android:textAlignment="textEnd"
                             app:useTextColor="color7"
-                            app:useTextHeader="h5"
+                            app:useTextHeader="h7"
                             tools:text="(Base price: 240.000)" />
 
 

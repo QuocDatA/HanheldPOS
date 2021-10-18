@@ -1,5 +1,6 @@
 package com.hanheldpos.ui.screens.home.order.combo
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -10,6 +11,7 @@ import com.hanheldpos.model.cart.order.OrderItemModel
 import com.hanheldpos.model.home.order.combo.ItemActionType
 import com.hanheldpos.model.home.order.menu.ComboPickedItemViewModel
 import com.hanheldpos.model.home.order.menu.ItemComboGroupManager
+import com.hanheldpos.model.home.order.menu.OrderMenuComboItemModel
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.home.order.combo.adapter.ComboGroupAdapter
 import com.hanheldpos.ui.screens.product.ProductDetailFragment
@@ -23,6 +25,8 @@ class ComboFragment(
         return ComboVM::class.java;
     }
 
+    private lateinit var comboGroupAdapter : ComboGroupAdapter;
+
     override fun initViewModel(viewModel: ComboVM) {
         viewModel.run {
             init(this@ComboFragment);
@@ -32,7 +36,33 @@ class ComboFragment(
     }
 
     override fun initView() {
+        comboGroupAdapter = ComboGroupAdapter(listener = object :ComboGroupAdapter.ItemListener{
+            override fun onProductSelect(
+                maxQuantity: Int,
+                comboManager: ItemComboGroupManager,
+                item: ComboPickedItemViewModel,
+                action: ItemActionType
+            ) {
+                openProductDetail(maxQuantity,comboManager, item, action);
+            }
+        });
 
+        binding.comboGroupAdapter.apply {
+            adapter = comboGroupAdapter;
+            addItemDecoration(
+                DividerItemDecoration(
+                    context,
+                    LinearLayoutManager.VERTICAL
+                ).apply {
+                    setDrawable(
+                        ContextCompat.getDrawable(
+                            context,
+                            R.drawable.divider_vertical
+                        )!!
+                    )
+                }
+            )
+        }
     }
 
     override fun initData() {
@@ -44,25 +74,6 @@ class ComboFragment(
             viewModel.orderItemModel.value = a;
             viewModel.maxQuantity = quantityCanChoose;
         }
-
-        viewModel.selectedCombo.observe(this, {
-            binding.comboGroupAdapter.apply {
-                adapter = it.data?.comboAdapter as ComboGroupAdapter
-                addItemDecoration(
-                    DividerItemDecoration(
-                        context,
-                        LinearLayoutManager.VERTICAL
-                    ).apply {
-                        setDrawable(
-                            ContextCompat.getDrawable(
-                                context,
-                                R.drawable.divider_vertical
-                            )!!
-                        )
-                    }
-                )
-            }
-        })
         viewModel.getCombo()?.let { viewModel.initDefaultComboList(it) };
 
     }
@@ -101,7 +112,7 @@ class ComboFragment(
         navigator.goOneBack();
     }
 
-    override fun openProductDetail(maxQuantity: Int, comboManager: ItemComboGroupManager , item: ComboPickedItemViewModel, action: ItemActionType) {
+    fun openProductDetail(maxQuantity: Int, comboManager: ItemComboGroupManager , item: ComboPickedItemViewModel, action: ItemActionType) {
         navigator.goToWithCustomAnimation(ProductDetailFragment.getInstance(
             item = item.selectedComboItem!!,
             quantityCanChoose = maxQuantity,
@@ -125,6 +136,12 @@ class ComboFragment(
     override fun cartAdded(item: OrderItemModel, action: ItemActionType) {
         onBack();
         listener.onCartAdded(item, action);
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    override fun updateChangeCombo(item : OrderMenuComboItemModel?) {
+        comboGroupAdapter.submitList(item?.listItemsByGroup  as MutableList<ItemComboGroupManager>?);
+        comboGroupAdapter.notifyDataSetChanged();
     }
 
 }

@@ -17,15 +17,10 @@ data class OrderMenuComboItemModel(
      */
     var listItemsByGroup: MutableList<ItemComboGroupManager?>? = null,
 
-    var comboAdapter: @RawValue Any? = null,
-
     var comboParentId: String? = null,
-    /**
-     *  if this value is <0, mean its list is null
-     */
-    var modifiedGroup: Int = -1,
 
-) : Parcelable
+) : Parcelable, Cloneable {
+}
 
 /**
  *  Hold essential info of items in combo separated by group
@@ -33,14 +28,10 @@ data class OrderMenuComboItemModel(
 @Parcelize
 data class ItemComboGroupManager(
     var productComboItem: ProductComboItem? = null,
-
-    var comboDetailAdapter: @RawValue Any? = null,
-
     /**
      * Show list of ComboPickedItem has been add to combo
      */
-    var comboItemSelectedAdapter: @RawValue Any? = null,
-
+    var productsForChoose : MutableList<ComboPickedItemViewModel> = mutableListOf(),
     var listSelectedComboItems: MutableList<ComboPickedItemViewModel?> = mutableListOf(),
 
     var modifiedItem: Int = -1,
@@ -49,7 +40,7 @@ data class ItemComboGroupManager(
      * only show combo list when item in cart is focused by user
      */
     var isFocused: Boolean = false,
-) : Parcelable {
+) : Parcelable ,Cloneable{
 
     private fun getAllItemQuantity(): Int {
         var total = 0

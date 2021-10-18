@@ -13,7 +13,7 @@ data class ExtraDoneModel(
     var selectedVariant: GroupItem? = null,
     var selectedModifiers: MutableList<ModifierSelectedItemModel>? = null,
     var diningOption: DiningOptionItem? = null
-) : Parcelable {
+) : Parcelable, Cloneable {
 
     fun getVariantStr(separator: String): String? {
         var rs: String? = null

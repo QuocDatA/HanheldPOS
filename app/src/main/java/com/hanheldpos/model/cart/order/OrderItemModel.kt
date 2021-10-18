@@ -18,7 +18,6 @@ data class OrderItemModel(
     var productOrderItem: ProductOrderItem ?= null,
 
     var extraDone: ExtraDoneModel?= null,
-
     /**
      * If order item has combo list
      */
