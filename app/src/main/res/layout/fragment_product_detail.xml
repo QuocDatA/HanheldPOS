@@ -102,6 +102,7 @@
                         app:tabMaxWidth="0dp"
                         app:tabGravity="fill"
                         app:tabMode="fixed"
+
                         app:tabTextAppearance="@style/ProductDetailTabTitle" />
 
                     <include

@@ -74,6 +74,7 @@ class ProductDetailFragment(
             it.attach();
         }
 
+
     }
 
     override fun initData() {
@@ -89,17 +90,19 @@ class ProductDetailFragment(
             viewModel.orderItemModel.value = i;
             viewModel.maxQuantity = quantityCanChoose;
         }
+        val extraData= viewModel.orderItemModel.value?.productOrderItem?.extraData;
 
         GlobalScope.launch(Dispatchers.IO) {
-            viewModel.orderItemModel.value?.productOrderItem?.extraData?.let {
+           extraData!!.let {
                 fragmentMap[OptionPage.Variant] = VariantFragment.getInstance(it);
                 fragmentMap[OptionPage.Modifier] = ModifierFragment.getInstance(it);
                 launch(Dispatchers.Main) {
                     optionsPagerAdapter.submitList(fragmentMap.values);
+                    if(it.variantStrProductList==null){
+                        binding.tabOption.getTabAt(1)?.select();
+                    }
                 }
             }
-
-
         }
     }
 
