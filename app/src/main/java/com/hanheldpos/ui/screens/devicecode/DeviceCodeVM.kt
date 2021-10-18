@@ -2,8 +2,8 @@ package com.hanheldpos.ui.screens.devicecode
 
 import android.os.SystemClock
 import androidx.lifecycle.MutableLiveData
+import com.hanheldpos.data.api.pojo.fee.FeeResp
 import com.hanheldpos.data.api.pojo.order.menu.OrderMenuResp
-import com.hanheldpos.data.api.pojo.order.settings.FeeResp
 import com.hanheldpos.data.api.pojo.order.settings.OrderSettingResp
 import com.hanheldpos.data.api.pojo.setting.DeviceCodeResp
 import com.hanheldpos.data.api.pojo.table.TableResp

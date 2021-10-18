@@ -2,11 +2,14 @@ package com.hanheldpos.model
 
 import com.hanheldpos.data.api.ApiConst
 import com.hanheldpos.data.api.pojo.employee.EmployeeResp
+import com.hanheldpos.data.api.pojo.fee.Fee
+import com.hanheldpos.data.api.pojo.fee.FeeAssignToProductItem
+import com.hanheldpos.data.api.pojo.fee.FeeResp
 import com.hanheldpos.data.api.pojo.order.menu.OrderMenuResp
-import com.hanheldpos.data.api.pojo.order.settings.FeeResp
 import com.hanheldpos.data.api.pojo.order.settings.OrderSettingResp
 import com.hanheldpos.data.api.pojo.setting.DeviceCodeResp
 import com.hanheldpos.data.api.pojo.table.TableResp
+import com.hanheldpos.model.cart.fee.FeeApplyToType
 import com.hanheldpos.prefs.PrefKey
 import com.utils.helper.AppPreferences
 
@@ -175,5 +178,22 @@ object DataHelper {
             AppPreferences.get()
                 .storeValue(PrefKey.Fee.FEE_RESP, value)
         }
+
+    /**
+     * Get FeeAssignToProductItem with [Fee.feeApplyToType] is Included or Not Included
+     */
+    fun getRegularProductIdFees():MutableList<FeeAssignToProductItem>{
+        val result= mutableListOf<FeeAssignToProductItem>();
+        val notIncluded = feeResp?.feeModel?.fees?.firstOrNull{
+            it.feeApplyToType==FeeApplyToType.NotIncluded
+        };
+        val included =feeResp?.feeModel?.fees?.firstOrNull{
+            it.feeApplyToType==FeeApplyToType.Included
+        };
+        notIncluded?.assignToProducts?.let { result.addAll(it) };
+        included?.assignToProducts?.let { result.addAll(it) };
+        return result;
+    }
+
     //endregion
 }
