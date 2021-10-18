@@ -4,6 +4,8 @@ import android.os.Parcelable
 import android.util.Log
 import com.diadiem.pos_config.utils.Const
 import com.hanheldpos.data.repository.GenerateId
+import com.hanheldpos.model.DataHelper
+import com.hanheldpos.model.cart.fee.FeeApplyToType
 import com.hanheldpos.model.home.order.menu.OrderMenuComboItemModel
 import com.hanheldpos.model.product.*
 import kotlinx.parcelize.Parcelize
@@ -28,6 +30,7 @@ data class OrderItemModel(
     var quantity: Int = 1,
     var note: String? = null,
     var isShownDetail:Boolean=false,
+    var otherFee : Double=0.0,
 ) : Parcelable, Cloneable {
 
     public override fun clone(): OrderItemModel {
@@ -163,4 +166,7 @@ data class OrderItemModel(
         }
         return sum;
     }
+
+
+
 }

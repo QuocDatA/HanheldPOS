@@ -22,4 +22,9 @@ object  PrefKey {
     object Table {
         const val TABLE_RESP = "TABLE_RESP"
     }
+
+    object Fee {
+        const val FEE_RESP = "FEE_RESP"
+
+    }
 }

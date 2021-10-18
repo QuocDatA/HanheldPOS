@@ -2,7 +2,8 @@ package com.hanheldpos.data.api.pojo.order.settings
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
-import kotlinx.android.parcel.Parcelize
+import com.hanheldpos.model.cart.fee.FeeType
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class OrderSettingResp(
