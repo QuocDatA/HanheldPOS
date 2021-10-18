@@ -3,6 +3,7 @@ package com.hanheldpos.ui.screens.devicecode
 import android.os.SystemClock
 import androidx.lifecycle.MutableLiveData
 import com.hanheldpos.data.api.pojo.order.menu.OrderMenuResp
+import com.hanheldpos.data.api.pojo.order.settings.FeeResp
 import com.hanheldpos.data.api.pojo.order.settings.OrderSettingResp
 import com.hanheldpos.data.api.pojo.setting.DeviceCodeResp
 import com.hanheldpos.data.api.pojo.table.TableResp
@@ -112,6 +113,23 @@ class DeviceCodeVM : BaseRepoViewModel<SettingRepo, DeviceCodeUV>() {
                     onDataFailure(message);
                 }
             });
+
+        repo?.getFees( userGuid = userGuid,
+            locationGuid = location,
+            callback = object : BaseRepoCallback<FeeResp?> {
+                override fun apiResponse(data: FeeResp?) {
+                    if (data == null || data.didError) {
+                        onDataFailure("Failed to load data");
+                    } else {
+                        DataHelper.feeResp = data;
+                        startMappingData();
+                    }
+                }
+
+                override fun showMessage(message: String?) {
+                }
+
+            },);
     }
 
 
@@ -121,7 +139,9 @@ class DeviceCodeVM : BaseRepoViewModel<SettingRepo, DeviceCodeUV>() {
     }
 
     private fun startMappingData() {
-        if (DataHelper.orderMenuResp != null && DataHelper.tableResp != null) {
+        if (DataHelper.orderMenuResp != null
+            && DataHelper.tableResp != null
+            && DataHelper.feeResp!=null) {
             uiCallback?.openPinCode();
         }
     }

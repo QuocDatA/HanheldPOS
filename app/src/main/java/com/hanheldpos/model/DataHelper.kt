@@ -3,6 +3,7 @@ package com.hanheldpos.model
 import com.hanheldpos.data.api.ApiConst
 import com.hanheldpos.data.api.pojo.employee.EmployeeResp
 import com.hanheldpos.data.api.pojo.order.menu.OrderMenuResp
+import com.hanheldpos.data.api.pojo.order.settings.FeeResp
 import com.hanheldpos.data.api.pojo.order.settings.OrderSettingResp
 import com.hanheldpos.data.api.pojo.setting.DeviceCodeResp
 import com.hanheldpos.data.api.pojo.table.TableResp
@@ -12,10 +13,11 @@ import com.utils.helper.AppPreferences
 object DataHelper {
 
     fun clearData() {
-        deviceCodeResp = null
-        orderMenuResp = null
-        tableResp = null
-        AppPreferences.get().storeValue(PrefKey.Setting.DEVICE_CODE, null)
+        deviceCodeResp = null;
+        orderMenuResp = null;
+        tableResp = null;
+        feeResp=null;
+        AppPreferences.get().storeValue(PrefKey.Setting.DEVICE_CODE, null);
     }
 
     //region ## Order Menu
@@ -156,5 +158,22 @@ object DataHelper {
     private fun getTableModel() = tableResp?.model?.firstOrNull()
     fun getTableStatus() = getTableModel()?.tableStatus
 
+    //endregion
+
+
+    //region ## Fee
+    var feeResp: FeeResp? = null
+        get() {
+            if (field == null) {
+                field = AppPreferences.get()
+                    .getParcelableObject(PrefKey.Fee.FEE_RESP, FeeResp::class.java)
+            }
+            return field
+        }
+        set(value) {
+            field = value
+            AppPreferences.get()
+                .storeValue(PrefKey.Fee.FEE_RESP, value)
+        }
     //endregion
 }

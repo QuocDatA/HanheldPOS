@@ -1,6 +1,8 @@
 package com.hanheldpos.data.repository.settings
 
 import com.hanheldpos.data.api.pojo.order.menu.OrderMenuResp
+import com.hanheldpos.data.api.pojo.order.settings.Fee
+import com.hanheldpos.data.api.pojo.order.settings.FeeResp
 import com.hanheldpos.data.api.pojo.order.settings.OrderSettingResp
 import com.hanheldpos.data.api.pojo.setting.DeviceCodeResp
 import com.hanheldpos.data.api.pojo.table.TableResp
@@ -98,6 +100,31 @@ class SettingRepo() : BaseRepo() {
                 t.printStackTrace();
                 callback.showMessage(t.message);
             }
+        })
+    }
+
+    fun getFees(
+        userGuid: String?,
+        locationGuid: String?,
+        callback: BaseRepoCallback<FeeResp?>
+    )
+    {
+        callback.apiRequesting(true);
+        settingService.getFees(
+            userGuid = userGuid,
+            location = locationGuid
+        ).enqueue(object : Callback<FeeResp> {
+            override fun onResponse(call: Call<FeeResp>, response: Response<FeeResp>) {
+                callback.apiRequesting(false);
+                callback.apiResponse(getBodyResponse(response))
+            }
+
+            override fun onFailure(call: Call<FeeResp>, t: Throwable) {
+                callback.apiRequesting(false);
+                t.printStackTrace();
+                callback.showMessage(t.message);
+            }
+
         })
     }
 
