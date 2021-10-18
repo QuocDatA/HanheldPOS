@@ -72,7 +72,7 @@ class ComboFragment(
     }
 
     interface ComboListener {
-        fun onCartAdded(item: OrderItemModel)
+        fun onCartAdded(item: OrderItemModel,action: ItemActionType)
     }
 
     companion object {
@@ -122,9 +122,9 @@ class ComboFragment(
         ))
     }
 
-    override fun cartAdded(item: OrderItemModel) {
-        listener.onCartAdded(item);
+    override fun cartAdded(item: OrderItemModel, action: ItemActionType) {
         onBack();
+        listener.onCartAdded(item, action);
     }
 
 }

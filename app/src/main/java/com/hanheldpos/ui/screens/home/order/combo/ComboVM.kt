@@ -283,7 +283,7 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
     }
 
     fun onAddCart() {
-        uiCallback?.cartAdded(orderItemModel.value!!);
+        uiCallback?.cartAdded(orderItemModel.value!!,actionType.value!!);
     }
 
     fun onBack() {

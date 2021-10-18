@@ -2,7 +2,7 @@ package com.hanheldpos.data.repository.settings
 
 import com.hanheldpos.data.api.pojo.order.menu.OrderMenuResp
 import com.hanheldpos.data.api.pojo.order.settings.OrderSettingResp
-import com.hanheldpos.data.api.pojo.setting.devicecode.DeviceCodeResp
+import com.hanheldpos.data.api.pojo.setting.DeviceCodeResp
 import com.hanheldpos.data.api.pojo.table.TableResp
 import com.hanheldpos.data.repository.base.BaseRepo
 import com.hanheldpos.data.repository.base.BaseRepoCallback
@@ -100,5 +100,7 @@ class SettingRepo() : BaseRepo() {
             }
         })
     }
+
+
 
 }

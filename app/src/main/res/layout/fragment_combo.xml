@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <import type="com.hanheldpos.model.home.order.combo.ItemActionType"/>
         <variable
             name="viewModel"
             type="com.hanheldpos.ui.screens.home.order.combo.ComboVM" />
@@ -252,7 +252,7 @@
 
                     <com.diadiem.pos_components.PTextView
                         style="@style/ProductDetailText"
-                        android:text="@{viewModel.numberQuantity > 0 ? `Add` : `Remove`}"
+                        android:text="@{viewModel.numberQuantity > 0 ? ( viewModel.actionType == ItemActionType.Add ? `Add` : `Edit` ) : `Remove`}"
                         android:textAllCaps="true"
                         app:useFontStyle="bold"
                         app:useTextColor="color2"

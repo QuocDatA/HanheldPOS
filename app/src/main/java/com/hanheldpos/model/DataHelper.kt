@@ -4,7 +4,7 @@ import com.hanheldpos.data.api.ApiConst
 import com.hanheldpos.data.api.pojo.employee.EmployeeResp
 import com.hanheldpos.data.api.pojo.order.menu.OrderMenuResp
 import com.hanheldpos.data.api.pojo.order.settings.OrderSettingResp
-import com.hanheldpos.data.api.pojo.setting.devicecode.DeviceCodeResp
+import com.hanheldpos.data.api.pojo.setting.DeviceCodeResp
 import com.hanheldpos.data.api.pojo.table.TableResp
 import com.hanheldpos.prefs.PrefKey
 import com.utils.helper.AppPreferences

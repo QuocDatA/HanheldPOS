@@ -169,7 +169,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
                         }
                         ProductModeViewType.Combo -> {
                             val onCartAdded = object : ComboFragment.ComboListener {
-                                override fun onCartAdded(item: OrderItemModel) {
+                                override fun onCartAdded(item: OrderItemModel,actionType: ItemActionType) {
                                     cartDataVM.addToCart(item);
                                 }
                             }
