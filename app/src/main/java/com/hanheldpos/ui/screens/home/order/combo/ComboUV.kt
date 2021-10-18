@@ -9,5 +9,5 @@ import com.hanheldpos.ui.base.BaseUserView
 interface ComboUV : BaseUserView {
     fun onBack();
     fun openProductDetail(maxQuantity : Int, comboManager: ItemComboGroupManager,item : ComboPickedItemViewModel, action: ItemActionType)
-    fun cartAdded(item : OrderItemModel)
+    fun cartAdded(item : OrderItemModel , action: ItemActionType);
 }

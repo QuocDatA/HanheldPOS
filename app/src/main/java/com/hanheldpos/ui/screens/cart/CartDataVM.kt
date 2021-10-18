@@ -31,6 +31,16 @@ class CartDataVM : BaseViewModel() {
         this.cartModelLD.notifyValueChange();
     }
 
+    fun updateItemInCart(index : Int , item : OrderItemModel){
+        if (item.quantity > 0){
+            cartModelLD.value!!.listOrderItem[index] = item;
+        }
+        else {
+            cartModelLD.value!!.listOrderItem.removeAt(index);
+        }
+        cartModelLD.notifyValueChange();
+    }
+
     fun deleteCart() {
         this.cartModelLD.value!!.listOrderItem.clear();
         this.cartModelLD.notifyValueChange();

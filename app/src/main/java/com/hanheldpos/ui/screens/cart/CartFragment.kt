@@ -1,5 +1,6 @@
 package com.hanheldpos.ui.screens.cart
 
+import android.annotation.SuppressLint
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -10,12 +11,17 @@ import com.hanheldpos.databinding.FragmentCartBinding
 import com.hanheldpos.extension.notifyValueChange
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.cart.order.OrderItemModel
+import com.hanheldpos.model.cart.order.OrderItemType
+import com.hanheldpos.model.home.order.combo.ItemActionType
 import com.hanheldpos.model.home.order.menu.OrderMenuItemModel
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.cart.adapter.CartDiningOptionAdapter
 import com.hanheldpos.ui.screens.cart.adapter.CartProductAdapter
+import com.hanheldpos.ui.screens.home.order.combo.ComboFragment
+import com.hanheldpos.ui.screens.home.order.combo.adapter.ComboItemAdapter
 import com.hanheldpos.ui.screens.home.table.TableDataVM
+import com.hanheldpos.ui.screens.product.ProductDetailFragment
 
 
 class CartFragment(
@@ -64,6 +70,7 @@ class CartFragment(
         cartProductAdapter = CartProductAdapter(
             onProductClickListener = object : BaseItemClickListener<OrderItemModel> {
                 override fun onItemClick(adapterPosition: Int, item: OrderItemModel) {
+                    onEditItemIntCart(adapterPosition,item);
                 }
             },
         );
@@ -103,10 +110,7 @@ class CartFragment(
         //endregion
 
         //init product data
-        val products: MutableList<OrderItemModel>? =
-            cartDataVM.cartModelLD.value?.listOrderItem?.toMutableList();
-
-        cartProductAdapter.submitList(products = products);
+        cartProductAdapter.submitList(products = cartDataVM.cartModelLD.value?.listOrderItem);
         //endregion
     }
 
@@ -123,6 +127,44 @@ class CartFragment(
         getBack();
     }
 
+    fun onEditItemIntCart(position: Int, item: OrderItemModel){
+        when(item.type){
+            OrderItemType.Product->{
+                navigator.goToWithCustomAnimation(
+                    ProductDetailFragment.getInstance(
+                        item = item.clone(),
+                        action = ItemActionType.Modify,
+                        quantityCanChoose = 100,
+                        listener = object :  ProductDetailFragment.ProductDetailListener {
+                            override fun onCartAdded(item: OrderItemModel, action: ItemActionType) {
+                                onUpdateItemInCart(position,item);
+                            }
+                        }
+                    )
+                )
+            }
+            OrderItemType.Combo->{
+                navigator.goToWithCustomAnimation(
+                    ComboFragment.getInstance(
+                        item = item.clone(),
+                        action = ItemActionType.Modify,
+                        quantityCanChoose = 100,
+                        listener = object : ComboFragment.ComboListener {
+                            override fun onCartAdded(item: OrderItemModel, action: ItemActionType) {
+                                onUpdateItemInCart(position,item);
+                            }
+                        }
+                    )
+                );
+            }
+        }
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun onUpdateItemInCart(position: Int, item: OrderItemModel){
+        cartDataVM.updateItemInCart(position,item);
+        cartProductAdapter.notifyDataSetChanged();
+    }
 
     companion object {
         fun getIntance(

@@ -4,7 +4,7 @@ import android.os.SystemClock
 import androidx.lifecycle.MutableLiveData
 import com.hanheldpos.data.api.pojo.order.menu.OrderMenuResp
 import com.hanheldpos.data.api.pojo.order.settings.OrderSettingResp
-import com.hanheldpos.data.api.pojo.setting.devicecode.DeviceCodeResp
+import com.hanheldpos.data.api.pojo.setting.DeviceCodeResp
 import com.hanheldpos.data.api.pojo.table.TableResp
 import com.hanheldpos.data.repository.base.BaseRepoCallback
 import com.hanheldpos.data.repository.settings.SettingRepo
