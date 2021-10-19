@@ -6,10 +6,6 @@
     <data>
 
         <variable
-            name="dataVM"
-            type="com.hanheldpos.ui.screens.home.table.TableDataVM" />
-
-        <variable
             name="viewModel"
             type="com.hanheldpos.ui.screens.home.table.TableVM" />
     </data>

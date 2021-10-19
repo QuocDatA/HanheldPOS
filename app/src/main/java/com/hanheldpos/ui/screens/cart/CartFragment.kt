@@ -13,14 +13,11 @@ import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.cart.order.OrderItemModel
 import com.hanheldpos.model.cart.order.OrderItemType
 import com.hanheldpos.model.home.order.combo.ItemActionType
-import com.hanheldpos.model.home.order.menu.OrderMenuItemModel
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.cart.adapter.CartDiningOptionAdapter
 import com.hanheldpos.ui.screens.cart.adapter.CartProductAdapter
 import com.hanheldpos.ui.screens.home.order.combo.ComboFragment
-import com.hanheldpos.ui.screens.home.order.combo.adapter.ComboItemAdapter
-import com.hanheldpos.ui.screens.home.table.TableDataVM
 import com.hanheldpos.ui.screens.product.ProductDetailFragment
 
 
@@ -31,7 +28,6 @@ class CartFragment(
     private lateinit var cartDiningOptionAdapter: CartDiningOptionAdapter;
     private lateinit var cartProductAdapter: CartProductAdapter;
     private val cartDataVM by activityViewModels<CartDataVM>();
-    private val tableDataVM by activityViewModels<TableDataVM>();
 
     override fun viewModelClass(): Class<CartVM> {
         return CartVM::class.java;
@@ -44,7 +40,6 @@ class CartFragment(
             initLifeCycle(this@CartFragment);
         }
         binding.cartDataVM=cartDataVM;
-        binding.tableDataVM=tableDataVM;
 
 
     }

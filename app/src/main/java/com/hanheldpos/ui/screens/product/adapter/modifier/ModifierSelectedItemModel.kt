@@ -8,7 +8,7 @@ import com.hanheldpos.data.api.pojo.order.menu.ModifierItemItem
 data class ModifierSelectedItemModel(
     val realItem: ModifierItemItem?,
     val modifierAvatar: String? = null,
-    val maxQuantity : Int = 1,
+    val maxQuantity : Int = 100,
     var quantity: Int = 0,
     ) : Parcelable, Cloneable {
     override fun equals(other: Any?): Boolean {

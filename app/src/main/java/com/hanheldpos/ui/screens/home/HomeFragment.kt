@@ -11,12 +11,10 @@ import com.hanheldpos.data.api.pojo.table.getFloorList
 import com.hanheldpos.databinding.FragmentHomeBinding
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.ui.base.pager.FragmentPagerAdapter
-import com.hanheldpos.ui.screens.home.order.OrderDataVM
 import com.hanheldpos.ui.screens.main.BaseMainFragment
 import com.hanheldpos.ui.screens.home.order.OrderFragment
 import com.hanheldpos.ui.screens.home.table.TableFragment
 import com.hanheldpos.ui.screens.main.adapter.TabSpinnerAdapter
-import com.hanheldpos.ui.screens.home.table.TableDataVM
 import com.hanheldpos.ui.screens.main.adapter.SubSpinnerAdapter
 
 

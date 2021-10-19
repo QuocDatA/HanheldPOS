@@ -12,9 +12,6 @@
             name="viewModel"
             type="com.hanheldpos.ui.screens.home.order.OrderVM" />
 
-        <variable
-            name="tableDataVM"
-            type="com.hanheldpos.ui.screens.home.table.TableDataVM" />
 
         <variable
             name="cartDataVM"
@@ -101,11 +98,7 @@
 
 
         
-        <include
-            layout="@layout/divider_vertical"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_1sdp"
-            android:layout_above="@id/toolbarCart" />
+
 
 
         <FrameLayout
@@ -126,6 +119,11 @@
                 app:useTextColor="color2"
                 app:useTextHeader="h5" />
         </FrameLayout>
+        <include
+            layout="@layout/divider_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_1sdp"
+            android:layout_above="@id/toolbarCart" />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -145,7 +143,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/_7sdp"
                     app:useTextColor="color4"
-                    android:text="@{tableDataVM.curTableLD.tableName + `-` + cartDataVM.diningOptionLD.title + ` (` + cartDataVM.numberOfCustomer + `)`}"
+                    android:text="@{cartDataVM.cartModelLD.table.tableName + `-` + cartDataVM.diningOptionLD.title + ` (` + cartDataVM.numberOfCustomer + `)`}"
 
                     app:useTextHeader="h5"
                     tools:text="B1-For Here (2)" />

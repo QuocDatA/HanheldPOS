@@ -31,7 +31,6 @@ class TableFragment : BaseFragment<FragmentTableBinding, TableVM>(), TableUV {
     private lateinit var tableAdapterHelper: TableAdapterHelper
 
     // ViewModel
-    private val dataVM by activityViewModels<TableDataVM>()
     private val screenViewModel by activityViewModels<ScreenViewModel>()
     private val cartDataVM by activityViewModels<CartDataVM>()
     // Dialog Category
@@ -48,11 +47,6 @@ class TableFragment : BaseFragment<FragmentTableBinding, TableVM>(), TableUV {
             binding.viewModel = this;
             initLifecycle(this@TableFragment);
         }
-
-        this.dataVM.run {
-            binding.dataVM = this;
-        }
-
     }
 
     override fun initView() {
@@ -75,7 +69,6 @@ class TableFragment : BaseFragment<FragmentTableBinding, TableVM>(), TableUV {
                         when (item.uiType) {
                             TableModeViewType.Table -> {
                                 viewModel.mLastTimeClick = SystemClock.elapsedRealtime();
-                                dataVM.curTableLD.value = item;
                                 openDialogInputCustomer(item);
                             }
                             TableModeViewType.PrevButton -> {
@@ -110,21 +103,16 @@ class TableFragment : BaseFragment<FragmentTableBinding, TableVM>(), TableUV {
             val screen = screenViewModel.screenEvent.value?.screen;
             if (screen == HomeFragment.HomePage.Table) {
                 if (it.realItem is FloorItem) {
-                    dataVM.floorItemSelected.value = it.realItem as FloorItem;
+                    viewModel.floorItemSelected.value = it.realItem as FloorItem;
                 } else if (it.realItem == null)
-                    dataVM.getTableList()?.toMutableList()
+                    viewModel.getTableList()?.toMutableList()
                         ?.let { it1 -> tableAdapterHelper.submitList(it1); };
             }
         })
 
-        dataVM.curTableLD.observe(this,{
-            if (it == null)
-                cartDataVM.cartModelLD.value = null
-        })
-
-        dataVM.floorItemSelected.observe(this, {
-            dataVM.floorTableList.value = dataVM.getTableListByFloor(it)?.toMutableList();
-            dataVM.floorTableList.value?.let { it1 -> tableAdapterHelper.submitList(it1) };
+        viewModel.floorItemSelected.observe(this, {
+            viewModel.floorTableList.value = viewModel.getTableListByFloor(it)?.toMutableList();
+            viewModel.floorTableList.value?.let { it1 -> tableAdapterHelper.submitList(it1) };
         });
 
 
@@ -133,7 +121,7 @@ class TableFragment : BaseFragment<FragmentTableBinding, TableVM>(), TableUV {
             override fun onGlobalLayout() {
                 if (binding.recyclerTable.height > 0) {
                     binding.root.viewTreeObserver.removeOnGlobalLayoutListener(this);
-                    dataVM.initData();
+                    viewModel.initData();
                 }
             }
         })
@@ -143,7 +131,10 @@ class TableFragment : BaseFragment<FragmentTableBinding, TableVM>(), TableUV {
         navigator.goTo(TableInputFragment.getInstance(listener = object :
             TableInputFragment.TableInputListener {
             override fun onCompleteTable(numberCustomer: Int) {
-                cartDataVM.cartModelLD.value?.customerQuantity = numberCustomer;
+                cartDataVM.cartModelLD.value?.let {
+                    it.table = item;
+                    it.customerQuantity = numberCustomer;
+                }
                 cartDataVM.cartModelLD.notifyValueChange();
                 screenViewModel.showOrderPage();
             }

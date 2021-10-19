@@ -12,10 +12,6 @@
         <variable
             name="cartDataVM"
             type="com.hanheldpos.ui.screens.cart.CartDataVM" />
-
-        <variable
-            name="tableDataVM"
-            type="com.hanheldpos.ui.screens.home.table.TableDataVM" />
     </data>
 
     <LinearLayout
@@ -571,7 +567,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/_7sdp"
-                    android:text="@{tableDataVM.curTableLD.tableName + `-` + cartDataVM.diningOptionLD.title + ` (` + cartDataVM.numberOfCustomer + `)`}"
+                    android:text="@{ cartDataVM.cartModelLD.table.tableName + `-` + cartDataVM.diningOptionLD.title + ` (` + cartDataVM.numberOfCustomer + `)`}"
                     app:useTextColor="color4"
 
                     app:useTextHeader="h5"
