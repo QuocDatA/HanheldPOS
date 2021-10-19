@@ -186,8 +186,8 @@
             android:layout_above="@id/actionBar" />
 
         <RelativeLayout
-            visibleObject="@{viewModel.isSelectedComplete()}"
             android:id="@+id/actionBar"
+            visibleObject="@{viewModel.isSelectedComplete()}"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_40sdp"
             android:layout_alignParentBottom="true">

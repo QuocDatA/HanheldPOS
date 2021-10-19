@@ -89,8 +89,6 @@ class ComboGroupAdapter(
                         itemClick: ComboPickedItemViewModel
                     ) {
                         comboItemAction(item, action, itemClick);
-                        notifyItemRangeChanged(position,1);
-                        notifyItemRangeChanged(selectedItem.value,1);
                     }
                 }
             ).apply {
@@ -132,7 +130,13 @@ class ComboGroupAdapter(
                 );
             }
             ItemActionType.Remove -> {
-                comboManager.listSelectedComboItems.remove(item)
+                listener.onProductSelect(
+                    comboManager.requireQuantity() + (item.selectedComboItem?.quantity
+                        ?: 0),
+                    comboManager,
+                    item,
+                    action
+                );
             }
         }
     }

@@ -25,7 +25,7 @@ class ComboFragment(
         return ComboVM::class.java;
     }
 
-    private lateinit var comboGroupAdapter : ComboGroupAdapter;
+    private lateinit var comboGroupAdapter: ComboGroupAdapter;
 
     override fun initViewModel(viewModel: ComboVM) {
         viewModel.run {
@@ -36,15 +36,26 @@ class ComboFragment(
     }
 
     override fun initView() {
-        comboGroupAdapter = ComboGroupAdapter(listener = object :ComboGroupAdapter.ItemListener{
+        comboGroupAdapter = ComboGroupAdapter(listener = object : ComboGroupAdapter.ItemListener {
             override fun onProductSelect(
                 maxQuantity: Int,
                 comboManager: ItemComboGroupManager,
                 item: ComboPickedItemViewModel,
                 action: ItemActionType
             ) {
-                openProductDetail(maxQuantity,comboManager, item, action);
+                when (action) {
+                    ItemActionType.Remove -> {
+                        viewModel.onChooseItemComboSuccess(
+                            item.comboParentId,
+                            comboManager,
+                            item, action
+                        );
+                    }
+                    else -> openProductDetail(maxQuantity, comboManager, item, action);
+                }
+
             }
+
         });
 
         binding.comboGroupAdapter.apply {
@@ -69,7 +80,8 @@ class ComboFragment(
         arguments?.let {
             val a: OrderItemModel? = it.getParcelable(ARG_ORDER_ITEM_MODEL_FRAGMENT)
             val quantityCanChoose: Int = it.getInt(ARG_PRODUCT_DETAIL_QUANTITY)
-            val actionType : ItemActionType = it.getSerializable(ARG_ITEM_ACTION_TYPE) as ItemActionType;
+            val actionType: ItemActionType =
+                it.getSerializable(ARG_ITEM_ACTION_TYPE) as ItemActionType;
             viewModel.actionType.value = actionType;
             viewModel.orderItemModel.value = a;
             viewModel.maxQuantity = quantityCanChoose;
@@ -83,7 +95,7 @@ class ComboFragment(
     }
 
     interface ComboListener {
-        fun onCartAdded(item: OrderItemModel,action: ItemActionType)
+        fun onCartAdded(item: OrderItemModel, action: ItemActionType)
     }
 
     companion object {
@@ -93,7 +105,7 @@ class ComboFragment(
         fun getInstance(
             item: OrderItemModel,
             quantityCanChoose: Int = -1,
-            action : ItemActionType,
+            action: ItemActionType,
             listener: ComboListener
         ): ComboFragment {
             return ComboFragment(
@@ -101,7 +113,7 @@ class ComboFragment(
             ).apply {
                 arguments = Bundle().apply {
                     putParcelable(ARG_ORDER_ITEM_MODEL_FRAGMENT, item)
-                    putSerializable(ARG_ITEM_ACTION_TYPE,action);
+                    putSerializable(ARG_ITEM_ACTION_TYPE, action);
                     putInt(ARG_PRODUCT_DETAIL_QUANTITY, quantityCanChoose)
                 }
             };
@@ -112,13 +124,18 @@ class ComboFragment(
         navigator.goOneBack();
     }
 
-    fun openProductDetail(maxQuantity: Int, comboManager: ItemComboGroupManager , item: ComboPickedItemViewModel, action: ItemActionType) {
+    fun openProductDetail(
+        maxQuantity: Int,
+        comboManager: ItemComboGroupManager,
+        item: ComboPickedItemViewModel,
+        action: ItemActionType
+    ) {
         navigator.goToWithCustomAnimation(ProductDetailFragment.getInstance(
             item = item.selectedComboItem!!,
             quantityCanChoose = maxQuantity,
             action = action,
             listener = object : ProductDetailFragment.ProductDetailListener {
-                override fun onCartAdded(itemDone: OrderItemModel,action: ItemActionType) {
+                override fun onCartAdded(itemDone: OrderItemModel, action: ItemActionType) {
                     item.apply {
                         selectedComboItem = itemDone
                     }
@@ -133,14 +150,15 @@ class ComboFragment(
         ))
     }
 
+
     override fun cartAdded(item: OrderItemModel, action: ItemActionType) {
         onBack();
         listener.onCartAdded(item, action);
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    override fun updateChangeCombo(item : OrderMenuComboItemModel?) {
-        comboGroupAdapter.submitList(item?.listItemsByGroup  as MutableList<ItemComboGroupManager>?);
+    override fun updateChangeCombo(item: OrderMenuComboItemModel?) {
+        comboGroupAdapter.submitList(item?.listItemsByGroup as MutableList<ItemComboGroupManager>?);
         comboGroupAdapter.notifyDataSetChanged();
     }
 
