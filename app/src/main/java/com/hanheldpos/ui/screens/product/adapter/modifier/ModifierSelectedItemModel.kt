@@ -19,6 +19,18 @@ data class ModifierSelectedItemModel(
         return super.hashCode()
     }
 
+    fun addQuantity(num : Int) {
+        if(quantity < maxQuantity){
+            quantity = quantity.plus(num);
+        }
+    }
+
+    fun deleteQuantity(num: Int){
+        if (quantity > 0) {
+            quantity = quantity.minus(1);
+        }
+    }
+
     fun getSubtotalModifier() : Double {
         return realItem!!.price!!.times(quantity);
     }

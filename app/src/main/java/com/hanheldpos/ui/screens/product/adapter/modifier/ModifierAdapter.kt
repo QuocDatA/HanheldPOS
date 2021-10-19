@@ -22,19 +22,15 @@ class ModifierAdapter(private val listener: BaseItemClickListener<ModifierSelect
         holder.bindItem(item);
         val binding = (holder.binding as ItemModifierBinding);
         binding.btnAddQuantity.setOnClickListener {
-            if(item.quantity < item.maxQuantity){
-                item.quantity = item.quantity.plus(1);
-                notifyItemChanged(position)
-                listener.onItemClick(position, item)
-            }
+            item.addQuantity(1);
+            notifyItemChanged(position)
+            listener.onItemClick(position, item)
 
         }
         binding.btnRemoveQuantity.setOnClickListener {
-            if (item.quantity > 0) {
-                item.quantity = item.quantity.minus(1);
-                notifyItemChanged(position)
-                listener.onItemClick(position, item)
-            }
+            item.deleteQuantity(1);
+            notifyItemChanged(position)
+            listener.onItemClick(position, item)
         }
     }
 

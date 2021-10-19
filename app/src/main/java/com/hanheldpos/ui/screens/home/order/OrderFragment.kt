@@ -1,9 +1,14 @@
 package com.hanheldpos.ui.screens.home.order
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.app.AlertDialog
 import android.os.SystemClock
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import com.hanheldpos.R
@@ -141,8 +146,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
                                     item: OrderItemModel,
                                     action: ItemActionType
                                 ) {
-                                    cartDataVM.addToCart(item);
-
+                                    showCartAnimation(item);
                                 }
                             }
                             navigator.goToWithCustomAnimation(
@@ -170,7 +174,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
                         ProductModeViewType.Combo -> {
                             val onCartAdded = object : ComboFragment.ComboListener {
                                 override fun onCartAdded(item: OrderItemModel,actionType: ItemActionType) {
-                                    cartDataVM.addToCart(item);
+                                    showCartAnimation(item);
                                 }
                             }
                             navigator.goToWithCustomAnimation(
@@ -226,6 +230,57 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
                 }
         });
     }
+
+    fun showCartAnimation(item: OrderItemModel) {
+
+        binding.txtProduct.text = String.format(
+            getString(R.string.added),
+            item.productOrderItem?.text
+        )
+        binding.rootPopup.visibility = View.VISIBLE
+        val animSlideIn = ObjectAnimator.ofFloat(
+            binding.rootPopup,
+            "translationY",
+            100f,
+            0f
+        ).apply {
+            duration = 500
+            addListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator?) {
+                    cartDataVM.addToCart(item);
+                }
+            })
+        }
+
+        val animSlideStand = ObjectAnimator.ofFloat(
+            binding.rootPopup,
+            "translationY",
+            0f,
+            0f
+        ).apply {
+            duration = 2000
+        }
+
+        val animSlideOut = ObjectAnimator.ofFloat(
+            binding.rootPopup,
+            "translationY",
+            0f,
+            100f
+        ).apply {
+            duration = 500
+        }
+
+        AnimatorSet().apply {
+            play(animSlideIn).before(animSlideStand)
+            play(animSlideStand).before(animSlideOut)
+            addListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator?) {
+                    binding.rootPopup.visibility = View.GONE
+                }
+            })
+        }.start()
+    }
+
 
     private fun menuItemSelected(menuItem: OrderMenuItemModel) {
         dataVM.selectedMenu.value = menuItem
