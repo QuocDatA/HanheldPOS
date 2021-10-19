@@ -1,19 +1,18 @@
 package com.hanheldpos.ui.screens.home.order.combo.adapter
 
-import android.annotation.SuppressLint
+import androidx.core.view.size
 import androidx.recyclerview.widget.DiffUtil
 import com.hanheldpos.R
 import com.hanheldpos.databinding.ItemComboGroupBinding
-import com.hanheldpos.extension.notifyValueChange
 import com.hanheldpos.model.home.order.combo.ItemActionType
 import com.hanheldpos.model.home.order.menu.ComboPickedItemViewModel
 import com.hanheldpos.model.home.order.menu.ItemComboGroupManager
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
-import kotlinx.parcelize.RawValue
+import kotlin.math.abs
 
 class ComboGroupAdapter(
-    private val listener : ItemListener,
+    private val listener: ItemListener,
 ) : BaseBindingListAdapter<ItemComboGroupManager>(DiffCallback()) {
 
     override fun getItemViewType(position: Int): Int {
@@ -35,23 +34,37 @@ class ComboGroupAdapter(
     ) {
         /**
          * Check tới lượt chọn
-        */
-        var groupTurn : String? = null
-        currentList.forEach {
-            if (!it.isMaxItemSelected() && groupTurn == null)
-            {
-                groupTurn = it.productComboItem?.comboGuid;
+         */
+        var positionFocus: Int = -1;
+        run checkFocus@{
+            currentList.forEachIndexed { index, itemComboGroupManager ->
+                if (!itemComboGroupManager.isMaxItemSelected()) {
+                    positionFocus = index;
+                    return@checkFocus;
+                }
             }
         }
-
         val item = getItem(position);
         // Ẩn thông tin combo khi chưa tới lượt
-        item.isFocused = groupTurn == item.productComboItem?.comboGuid
+        if (positionFocus == position) {
+            selectedItem.value = position;
+            item.isFocused = true;
+        } else item.isFocused = false;
+
         val binding = holder.binding as ItemComboGroupBinding
         binding.position = (position + 1).toString();
         binding.name = item.getGroupName();
         binding.item = item;
 
+        /*
+        * Green tick item has choosen in list
+        * */
+        item.productsForChoose.forEach { it.isChosen = false }
+        item.listSelectedComboItems.forEach {
+            item.productsForChoose.find { temp-> it?.selectedComboItem?.productOrderItem?.id == temp.selectedComboItem?.productOrderItem?.id }.let {
+                it?.isChosen = true;
+            }
+        }
         binding.itemForSelectAdapter.apply {
             adapter = ComboItemAdapter(
                 modeViewType = ComboItemAdapter.ComboItemViewType.ForChoose,
@@ -61,7 +74,6 @@ class ComboGroupAdapter(
                         itemClick: ComboPickedItemViewModel
                     ) {
                         comboItemAction(item, action, itemClick);
-                        notifyItemChanged(holder.bindingAdapterPosition);
                     }
                 }
             ).apply {
@@ -69,7 +81,7 @@ class ComboGroupAdapter(
             };
         }
         binding.itemSelectedAdapter.apply {
-            adapter =  ComboItemAdapter(
+            adapter = ComboItemAdapter(
                 modeViewType = ComboItemAdapter.ComboItemViewType.Chosen,
                 listener = object : ComboItemAdapter.ComboItemListener {
                     override fun onComboItemChoose(
@@ -77,7 +89,8 @@ class ComboGroupAdapter(
                         itemClick: ComboPickedItemViewModel
                     ) {
                         comboItemAction(item, action, itemClick);
-                        notifyDataSetChanged();
+                        notifyItemRangeChanged(position,1);
+                        notifyItemRangeChanged(selectedItem.value,1);
                     }
                 }
             ).apply {
@@ -87,7 +100,12 @@ class ComboGroupAdapter(
     }
 
     interface ItemListener {
-        fun onProductSelect(maxQuantity: Int, comboManager: ItemComboGroupManager , item: ComboPickedItemViewModel, action: ItemActionType);
+        fun onProductSelect(
+            maxQuantity: Int,
+            comboManager: ItemComboGroupManager,
+            item: ComboPickedItemViewModel,
+            action: ItemActionType
+        );
     }
 
     fun comboItemAction(
@@ -114,12 +132,7 @@ class ComboGroupAdapter(
                 );
             }
             ItemActionType.Remove -> {
-                /**
-                 * Delete green tick when remove item
-                 */
-                item.isChosen = false;
                 comboManager.listSelectedComboItems.remove(item)
-                return;
             }
         }
     }

@@ -1,8 +1,7 @@
 package com.hanheldpos.data.api.services
 
+import com.hanheldpos.data.api.pojo.fee.FeeResp
 import com.hanheldpos.data.api.pojo.order.menu.OrderMenuResp
-import com.hanheldpos.data.api.pojo.order.settings.Fee
-import com.hanheldpos.data.api.pojo.order.settings.FeeResp
 import com.hanheldpos.data.api.pojo.order.settings.OrderSettingResp
 import com.hanheldpos.data.api.pojo.setting.DeviceCodeResp
 import com.hanheldpos.data.api.pojo.table.TableResp
