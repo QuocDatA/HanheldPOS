@@ -244,7 +244,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
             100f,
             0f
         ).apply {
-            duration = 500
+            duration = 400
             addListener(object : AnimatorListenerAdapter() {
                 override fun onAnimationEnd(animation: Animator?) {
                     cartDataVM.addToCart(item);
@@ -258,7 +258,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
             0f,
             0f
         ).apply {
-            duration = 2000
+            duration = 1000
         }
 
         val animSlideOut = ObjectAnimator.ofFloat(
@@ -267,7 +267,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
             0f,
             100f
         ).apply {
-            duration = 500
+            duration = 400
         }
 
         AnimatorSet().apply {
@@ -322,22 +322,22 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
             )
 
             val animTranslateIn =
-                ObjectAnimator.ofFloat(rootView, "translationY", 100f, 0f).setDuration(500)
+                ObjectAnimator.ofFloat(rootView, "translationY", 100f, 0f).setDuration(400)
             val animScaleXUp =
-                ObjectAnimator.ofFloat(rootView, "scaleX", 0.0f, 1.0f).setDuration(500)
+                ObjectAnimator.ofFloat(rootView, "scaleX", 0.0f, 1.0f).setDuration(400)
             val animScaleYUp =
-                ObjectAnimator.ofFloat(rootView, "scaleY", 0.0f, 1.0f).setDuration(500)
-            val animPivotX = ObjectAnimator.ofFloat(rootView, "pivotX", 50f).setDuration(500)
-            val animPivotY = ObjectAnimator.ofFloat(rootView, "pivotY", 100f).setDuration(500)
+                ObjectAnimator.ofFloat(rootView, "scaleY", 0.0f, 1.0f).setDuration(400)
+            val animPivotX = ObjectAnimator.ofFloat(rootView, "pivotX", 50f).setDuration(400)
+            val animPivotY = ObjectAnimator.ofFloat(rootView, "pivotY", 100f).setDuration(400)
             val animScaleXDown =
-                ObjectAnimator.ofFloat(rootView, "scaleX", 1.0f, 0.0f).setDuration(500)
+                ObjectAnimator.ofFloat(rootView, "scaleX", 1.0f, 0.0f).setDuration(400)
             val animScaleYDown =
-                ObjectAnimator.ofFloat(rootView, "scaleY", 1.0f, 0.0f).setDuration(500)
+                ObjectAnimator.ofFloat(rootView, "scaleY", 1.0f, 0.0f).setDuration(400)
             val animStand =
-                ObjectAnimator.ofFloat(rootView, "translationY", 0f, 0f).setDuration(1000)
+                ObjectAnimator.ofFloat(rootView, "translationY", 0f, 0f).setDuration(700)
             val animTranslateOut =
                 ObjectAnimator.ofFloat(rootView, "translationY", 0f, 100f).apply {
-                    duration = 500
+                    duration = 400
                     addListener(object : AnimatorListenerAdapter() {
                         override fun onAnimationEnd(animation: Animator?) {
                             popupWindow.dismiss()
