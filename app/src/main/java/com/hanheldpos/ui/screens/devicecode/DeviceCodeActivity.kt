@@ -2,6 +2,7 @@ package com.hanheldpos.ui.screens.devicecode
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.WindowManager
 import com.hanheldpos.R
 import com.hanheldpos.databinding.ActivityDeviceCodeBinding
 import com.hanheldpos.extension.navigateTo
@@ -15,6 +16,10 @@ class DeviceCodeActivity : BaseActivity<ActivityDeviceCodeBinding,DeviceCodeVM>(
     override fun layoutRes() = R.layout.activity_device_code;
 
     override fun initView() {
+        binding.root.viewTreeObserver.addOnGlobalLayoutListener{
+            window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            SystemHelper.hideSystemUI(this.window);
+        }
 
     }
 

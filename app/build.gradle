@@ -12,8 +12,8 @@ plugins {
 
 // ----- Apk info
 String APK_NAME = "[DEV]HanheldPos"
-int VERSION_CODE = 3
-String VERSION_NAME = "0.0.3"
+int VERSION_CODE = 21
+String VERSION_NAME = "0.2.1"
 
 static def getDate() {
     return new Date().format("yyyyMMdd")
@@ -40,6 +40,14 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    lintOptions {
+        checkReleaseBuilds false
+        // Or, if you prefer, you can continue to check for errors in release builds,
+        // but continue the build even when errors are found:
+        abortOnError false
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -54,9 +62,11 @@ android {
 
 dependencies {
     // Modules
+
+    implementation project(path: ':utils')
     implementation project(path: ':pos_components')
     implementation project(path: ':pos_config')
-    implementation project(path: ':utils')
+
 
     // Android Core
     implementation "androidx.core:core-ktx:1.6.0"
@@ -106,6 +116,13 @@ dependencies {
 
     // Image
     implementation 'com.github.bumptech.glide:glide:4.12.0'
+    implementation project(path: ':utils')
+    implementation project(path: ':utils')
+    implementation project(path: ':utils')
+    implementation project(path: ':utils')
+    implementation project(path: ':utils')
+    implementation project(path: ':pos_config')
+    implementation project(path: ':utils')
     kapt 'com.github.bumptech.glide:compiler:4.12.0'
     implementation 'de.hdodenhof:circleimageview:3.1.0'
 
@@ -118,5 +135,16 @@ dependencies {
 
     // SliderView
     implementation 'com.github.smarteist:autoimageslider:1.4.0'
+
+    //Flex-box
+    implementation 'com.google.android.flexbox:flexbox:3.0.0'
+
+    // ReactiveX
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.20'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.9.0'
+
+    // Module that adds support for serialization/deserialization of Kotlin
+    implementation "com.fasterxml.jackson.module:jackson-module-kotlin:2.13.0"
 
 }

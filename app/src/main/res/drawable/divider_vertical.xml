@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:left="@dimen/_14ssp" android:right="@dimen/_14sdp" >
+    <item android:left="@dimen/_9ssp" android:right="@dimen/_9sdp" >
         <shape >
-            <size android:height="1dp"/>
+            <size android:height="0.5px"/>
             <solid android:color="@color/divider"/>
         </shape>
     </item>

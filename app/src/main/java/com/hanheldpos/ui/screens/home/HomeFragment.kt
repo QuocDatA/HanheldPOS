@@ -4,14 +4,19 @@ import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import com.hanheldpos.R
+import com.hanheldpos.data.api.pojo.order.menu.getMenuList
+import com.hanheldpos.data.api.pojo.table.getFloorList
 import com.hanheldpos.databinding.FragmentHomeBinding
+import com.hanheldpos.model.DataHelper
 import com.hanheldpos.ui.base.pager.FragmentPagerAdapter
+import com.hanheldpos.ui.screens.home.order.OrderDataVM
 import com.hanheldpos.ui.screens.main.BaseMainFragment
 import com.hanheldpos.ui.screens.home.order.OrderFragment
 import com.hanheldpos.ui.screens.home.table.TableFragment
 import com.hanheldpos.ui.screens.main.adapter.TabSpinnerAdapter
-import com.hanheldpos.ui.screens.home.order.PriceItem
+import com.hanheldpos.ui.screens.home.table.TableDataVM
 import com.hanheldpos.ui.screens.main.adapter.SubSpinnerAdapter
 
 
@@ -19,11 +24,13 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
 
     private val fragmentMap: MutableMap<HomePage, Fragment> = mutableMapOf()
 
-
     enum class HomePage(val pos: Int, val textId: Int) {
-        Menu(2, R.string.menu),
-        /*Table(0, R.string.table);*/
+        Table(0, R.string.table),
+        Order(1, R.string.order);
     }
+
+
+    private val screenViewModel by activityViewModels<ScreenViewModel>()
 
     // Adapter
     private lateinit var paperAdapter: FragmentPagerAdapter
@@ -46,30 +53,47 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
 
     override fun initView() {
         // init fragment page
-        fragmentMap[HomePage.Menu] = OrderFragment();
-        /*fragmentMap[HomePage.Table] = TableFragment();*/
-
-
-        paperAdapter = FragmentPagerAdapter(requireActivity().supportFragmentManager,lifecycle);
-
+        fragmentMap[HomePage.Table] = TableFragment();
+        fragmentMap[HomePage.Order] = OrderFragment();
+        paperAdapter = FragmentPagerAdapter(requireActivity().supportFragmentManager, lifecycle);
         binding.homeViewPager.apply {
             adapter = paperAdapter;
             paperAdapter.submitList(fragmentMap.values)
         }
-
-
-
         initSpinner();
     }
 
 
     override fun initData() {
 
-
     }
 
     override fun initAction() {
+        screenViewModel.screenEvent.observe(this, {
+            binding.toolbarLayout.spinnerMain.setSelection(it.screen.pos);
+        })
 
+        binding.toolbarLayout.spnGroupBy.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    p1: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    val item = parent?.getItemAtPosition(position) as DropDownItem;
+                    when (screenViewModel.screenEvent.value?.screen) {
+                        HomePage.Order -> OrderFragment.selectedSort = position;
+                        HomePage.Table -> TableFragment.selectedSort = position;
+                    }
+                    screenViewModel.onChangeDropdown(item);
+
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+                }
+
+            }
         binding.toolbarLayout.spinnerMain.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(
@@ -79,41 +103,62 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
                     id: Long
                 ) {
                     val item = parent?.getItemAtPosition(position) as HomePage;
+                    if (screenViewModel.screenEvent.value?.screen != item) {
+                        screenViewModel.screenEvent.value = ScreenViewModel.ScreenEvent(item, null)
+                    }
                     switchToPage(item);
+
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>?) {}
-
             }
-        binding.toolbarLayout.spinnerMain.setSelection(0);
+        // Init Page
+        screenViewModel.showTablePage();
+
     }
 
     private fun initSpinner() {
         val tabSpinnerAdapter = TabSpinnerAdapter(fragmentContext)
         tabSpinnerAdapter.submitList(HomePage.values().toMutableList())
-
         binding.toolbarLayout.spinnerMain.adapter = tabSpinnerAdapter
-
         subSpinnerAdapter = SubSpinnerAdapter(requireContext());
         binding.toolbarLayout.spnGroupBy.adapter = subSpinnerAdapter;
     }
 
     private fun switchToPage(page: HomePage?) {
+        val listDropdown: MutableList<DropDownItem> = mutableListOf();
         when (page) {
-            /*HomePage.Table -> {
+            HomePage.Table -> {
                 Log.d("home", "switchPage: page_table");
-                binding.homeViewPager.currentItem = 1;
-                subSpinnerAdapter.submitList(mutableListOf(PriceItem(name = "Group By")))
-
-            }*/
-
-            HomePage.Menu -> {
-                Log.d("home","switchPage: page_order")
                 binding.homeViewPager.currentItem = 0;
-                subSpinnerAdapter.submitList(mutableListOf(PriceItem(name = "Price List")));
+                var i = 1;
+                DataHelper.tableResp?.getFloorList()?.map {
+                    DropDownItem(name = it?.name.toString(), realItem = it, position = i++)
+                }?.let {
+                    listDropdown.add(DropDownItem(name = "All", position = 0))
+                    listDropdown.addAll(it)
+                }
             }
+            HomePage.Order -> {
+                Log.d("home", "switchPage: page_order")
+                binding.homeViewPager.currentItem = 1;
+                var i = 0;
+                DataHelper.orderMenuResp?.getMenuList()?.map {
+                    DropDownItem(name = it?.name.toString(), realItem = it, position = i++)
+                }?.let {
+                    listDropdown.addAll(it);
+                }
 
+            }
         }
+        subSpinnerAdapter.submitList(listDropdown);
+        binding.toolbarLayout.spnGroupBy.setSelection(
+            when (page) {
+                HomePage.Order -> OrderFragment.selectedSort;
+                HomePage.Table -> TableFragment.selectedSort;
+                else -> 0
+            }
+        )
     }
 
 }

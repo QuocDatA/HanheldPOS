@@ -6,7 +6,8 @@ enum class TextHeaderEnum(val value: Int) {
     H3(value = 3),
     H4(value = 4),
     H5(value = 5),
-    H6(value = 6);
+    H6(value = 6),
+    H7(value = 7);
 
     companion object{
         fun fromInt(value: Int): TextHeaderEnum?{

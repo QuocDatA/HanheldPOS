@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.hanheldpos.model.cart.order.OrderItemModel" />
+
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/_4sdp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.diadiem.pos_components.PTextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="@dimen/_4sdp"
+                android:text="@{`(`+String.valueOf(item.orderQuantity)+`x)`}"
+                app:useTextColor="color5"
+                app:useTextHeader="h6"
+                tools:text="(1x)" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:baselineAligned="false">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <com.diadiem.pos_components.PTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{item.orderName}"
+                            app:useTextColor="color5"
+                            app:useTextHeader="h6"
+                            tools:text="Pho Bo Tai" />
+
+
+                    </LinearLayout>
+
+                    <com.diadiem.pos_components.PTextView
+                        android:id="@+id/priceTextView"
+                        addPriceView="@{item.orderPrice}"
+                        visibleObject="@{item.orderPrice!=0}"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="textEnd"
+                        app:useTextColor="color5"
+                        app:useTextHeader="h6"
+                        tools:text="137.000" />
+
+                </LinearLayout>
+
+                <androidx.legacy.widget.Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_3sdp" />
+
+                <include
+                    layout="@layout/cart_product_detail_line"
+                    visibleObject="@{item.variantStr!=null}"
+                    app:isHeaderH6="@{false}"
+                    app:lineText="@{item.variantStr}" />
+
+                <androidx.legacy.widget.Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_3sdp" />
+                <include
+                    layout="@layout/cart_product_detail_line"
+                    visibleObject="@{item.modifierStr!=null}"
+                    app:isHeaderH6="@{false}"
+                    app:lineText="@{item.modifierStr}" />
+                <androidx.legacy.widget.Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_3sdp" />
+                <include
+                    layout="@layout/cart_product_detail_line"
+                    visibleObject="@{item.note!=null}"
+                    app:isNote="@{true}"
+                    app:lineText="@{item.note}" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</layout>

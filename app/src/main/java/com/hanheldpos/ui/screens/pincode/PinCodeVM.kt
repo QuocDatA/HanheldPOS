@@ -4,23 +4,33 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.hanheldpos.R
+import com.hanheldpos.data.api.pojo.employee.EmployeeResp
+import com.hanheldpos.data.repository.GDataResp
+import com.hanheldpos.data.repository.base.BaseRepoCallback
+import com.hanheldpos.data.repository.employee.EmployeeRepo
+import com.hanheldpos.extension.notifyValueChange
+import com.hanheldpos.model.DataHelper
+import com.hanheldpos.model.UserHelper
+
+import com.hanheldpos.ui.base.viewmodel.BaseRepoViewModel
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
-import com.hanheldpos.utils.screens.notifyValueChange
 import okhttp3.internal.notify
 import java.util.*
 
-class PinCodeVM : BaseUiViewModel<PinCodeUV>() {
+class PinCodeVM : BaseRepoViewModel<EmployeeRepo, PinCodeUV>() {
 
     // Data
     private val lstResultLD = MutableLiveData<MutableList<String>?>(mutableListOf())
+    var displayClockState = MutableLiveData(false)
 
-    val listSize: MutableLiveData<Int> = Transformations.map(lstResultLD) { listResult: List<String>? ->
-                if (listResult != null) {
-                    return@map listResult.size
-                } else {
-                    return@map -1
-                }
-            } as MutableLiveData<Int>
+    val listSize: MutableLiveData<Int> =
+        Transformations.map(lstResultLD) { listResult: List<String>? ->
+            if (listResult != null) {
+                return@map listResult.size
+            } else {
+                return@map -1
+            }
+        } as MutableLiveData<Int>
 
 
     fun backPress() {
@@ -42,8 +52,8 @@ class PinCodeVM : BaseUiViewModel<PinCodeUV>() {
         list.add(PinCodeRecyclerElement("8", null))
         list.add(PinCodeRecyclerElement("7", null))
         // Line 4
-        list.add(PinCodeRecyclerElement(null, R.drawable.ic_baseline_arrow_back_l,false))
-        list.add(PinCodeRecyclerElement("0", null,false))
+        list.add(PinCodeRecyclerElement(null, R.drawable.ic_baseline_arrow_back_l, false))
+        list.add(PinCodeRecyclerElement("0", null, false))
 
         return list;
     }
@@ -75,8 +85,51 @@ class PinCodeVM : BaseUiViewModel<PinCodeUV>() {
                 }
             }
             // Fetch data
-            uiCallback?.goHome();
+            showLoading(true);
+            fetchDataEmployee(passCodeBuilder.toString());
+
         }
+    }
+
+    private fun fetchDataEmployee(passCode: String) {
+        val userGuid = DataHelper.getUserGuidByDeviceCode();
+        val locationGuid = DataHelper.getLocationGuidByDeviceCode();
+        if (passCode != null && userGuid != null && locationGuid != null) {
+            repo?.getDataEmployee(
+                userGuid,
+                passCode,
+                locationGuid,
+                object : BaseRepoCallback<GDataResp<EmployeeResp>> {
+                    override fun apiResponse(data: GDataResp<EmployeeResp>?) {
+                        if (data == null || data.didError == true || data.model.isNullOrEmpty()) {
+                            showError("Passcode does not exist!. Please try again");
+                            lstResultLD.value?.clear();
+                            lstResultLD.notifyValueChange();
+                        } else {
+                            onEmployeeSuccess(data.model.first())
+                        }
+                    }
+
+                    override fun showMessage(message: String?) {
+
+                    }
+                })
+        }
+    }
+
+    fun onEmployeeSuccess(result: EmployeeResp) {
+        uiCallback?.showLoading(false)
+//        val model = result.model
+        if (result.token != null) {
+            UserHelper.curEmployee = result
+
+            if (displayClockState.value == true) {
+                /*checkClockInOut()*/
+            } else {
+                uiCallback?.goHome()
+            }
+        }
+        /*changeClockState()*/
     }
 
     fun onClick(item: PinCodeRecyclerElement?) {
@@ -97,6 +150,10 @@ class PinCodeVM : BaseUiViewModel<PinCodeUV>() {
 
     companion object {
         private const val PIN_MAX_LENGTH = 4
+    }
+
+    override fun createRepo(): EmployeeRepo {
+        return EmployeeRepo();
     }
 
 

@@ -21,6 +21,13 @@
     <color name="backgroundDim">#80000000</color>
     <color name="backgroundSecondary">#F6F6F6</color>
     <color name="ripple">#D6D6D6</color>
-    <color name="divider">#EFEFEF</color>
+    <color name="divider">#CCCCCC</color>
     <color name="disabled">#939393</color>
+    
+    <color name="_1067A7">#1067A7</color>
+    <color name="_EEEEEE">#EEEEEE</color>
+    <color name="radicalRed">#FD2B70</color>
+
+    <color name="grayText">#777777</color>
+    <color name="extraAdjust">#40693B</color>
 </resources>

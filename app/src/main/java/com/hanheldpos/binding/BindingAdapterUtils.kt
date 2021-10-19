@@ -5,25 +5,23 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Paint.FontMetricsInt
-import android.text.Editable
-import android.text.Spanned
-import android.text.TextUtils
-import android.text.TextWatcher
+import android.text.*
 import android.text.style.ReplacementSpan
 import android.view.View
+import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.textfield.TextInputEditText
+import java.lang.Exception
 import java.util.regex.Pattern
 
 
 @BindingAdapter("useInputEnable")
 fun setUseInputEnable(view: ViewPager2, isSwipe: Boolean) {
     view.isUserInputEnabled = isSwipe
-    if (!isSwipe)
-    {
+    if (!isSwipe) {
         class NoPageTransformer : ViewPager2.PageTransformer {
-            override fun transformPage( view: View, position: Float) {
+            override fun transformPage(view: View, position: Float) {
                 view.translationX = view.width * -position
                 if (position <= -1.0f || position >= 1.0f) {
                     view.visibility = View.GONE
@@ -43,6 +41,18 @@ fun setVisibleObject(view: View, `object`: Any?) {
     if (visibleObject(`object`))
         view.visibility = View.VISIBLE
     else view.visibility = View.GONE
+}
+
+@BindingAdapter("marquee")
+fun setTextViewMarquee(textView: TextView, isMarquee: Boolean) {
+    if(isMarquee) {
+        textView.isSingleLine = true;
+        textView.ellipsize = TextUtils.TruncateAt.MARQUEE;
+        textView.isHorizontalFadingEdgeEnabled = true;
+        textView.marqueeRepeatLimit = -1;
+        textView.canScrollHorizontally(1);
+        textView.isSelected=true;
+    }
 }
 
 fun visibleObject(`object`: Any?): Boolean {
@@ -72,8 +82,11 @@ fun setGroupSize(inputEditText: TextInputEditText?, groupSize: Int) {
         override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
         override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
         override fun afterTextChanged(editable: Editable) {
-            val special = Pattern.compile("[^A-Z0-9]", Pattern.CASE_INSENSITIVE)
-            if (special.matcher(editable.toString()).find()) {
+            val regex = "[^A-Z0-9]".toRegex();
+            /*val special = Pattern.compile("[^A-Z0-9]", Pattern.CASE_INSENSITIVE)
+            val lastInput = editable.toString()[editable.toString().length-1].toString();*/
+            val check = regex.containsMatchIn(editable.toString());
+            if (check) {
                 val remain = editable.toString().replace("[^A-Z0-9]".toRegex(), "")
                 inputEditText.setText(remain)
                 inputEditText.setSelection(remain.length)
@@ -84,6 +97,7 @@ fun setGroupSize(inputEditText: TextInputEditText?, groupSize: Int) {
             for (span in paddingSpans) {
                 editable.removeSpan(span)
             }
+
             addSpans(editable)
         }
 
@@ -108,7 +122,7 @@ fun setGroupSize(inputEditText: TextInputEditText?, groupSize: Int) {
                 end: Int,
                 fm: FontMetricsInt?
             ): Int {
-                val padding = paint.measureText(" ", 0, 1)
+                val padding = paint.measureText("  ", 0, 2)
                 val textSize = paint.measureText(text, start, end)
                 return (padding + textSize).toInt()
             }
@@ -136,12 +150,17 @@ fun setGroupSize(inputEditText: TextInputEditText?, groupSize: Int) {
 }
 
 @BindingAdapter("backColor")
-fun setBackColor(view : View?, colorHex : String ){
-    if(view == null) return;
-    if(!TextUtils.isEmpty(colorHex)){
-        val color = Color.parseColor(colorHex)
-        /*view.backgroundTintList = ColorStateList.valueOf(color);*/
-        view.setBackgroundColor(color);
+fun setBackColor(view: View?, colorHex: String?) {
+    if (view == null || colorHex == null) return;
+    if (!TextUtils.isEmpty(colorHex)) {
+        try {
+            val color = Color.parseColor(colorHex)
+            view.backgroundTintList = ColorStateList.valueOf(color);
+        } catch (e: Exception) {
+            val color = Color.parseColor("#8f8f8f");
+            view.backgroundTintList = ColorStateList.valueOf(color);
+        }
+        /*view.setBackgroundColor(color);*/
     }
 
 }

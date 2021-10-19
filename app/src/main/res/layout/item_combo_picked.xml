@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.hanheldpos.model.home.order.menu.ComboPickedItemViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/_2sdp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <com.diadiem.pos_components.PTextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@{item.selectedComboItem.orderName}"
+                app:useFontStyle="normal"
+                app:useTextColor="color4"
+                app:useTextHeader="h6" />
+
+            <com.diadiem.pos_components.PTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{`(`+ item.selectedComboItem.quantity + `x)`}"
+                app:useFontStyle="normal"
+                app:useTextColor="color4"
+                app:useTextHeader="h6" />
+
+            <com.diadiem.pos_components.PTextView
+                android:id="@+id/itemComboRemove"
+                android:focusable="true"
+                android:clickable="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:background="@drawable/bg_combo_action_remove"
+                android:paddingHorizontal="@dimen/_7sdp"
+                android:paddingVertical="@dimen/_2sdp"
+                android:text="CHANGE"
+                android:textAllCaps="true"
+                app:useFontStyle="bold"
+                app:useTextColor="color2"
+                app:useTextHeader="h7" />
+
+            <androidx.legacy.widget.Space
+                android:layout_width="@dimen/_5sdp"
+                android:layout_height="wrap_content" />
+
+            <com.diadiem.pos_components.PTextView
+                android:id="@+id/itemComboModify"
+                android:focusable="true"
+                android:clickable="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_combo_action_modifier"
+                android:paddingHorizontal="@dimen/_15sdp"
+                android:paddingVertical="@dimen/_2sdp"
+                android:text="EDIT"
+                android:textAllCaps="true"
+                app:useFontStyle="bold"
+                app:useTextColor="color2"
+                app:useTextHeader="h7" />
+
+
+        </LinearLayout>
+
+        <com.diadiem.pos_components.PTextView
+            visibleObject="@{item.selectedComboItem.getVariantStr()}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_3sdp"
+            android:layout_marginEnd="@dimen/_40sdp"
+
+            android:text="@{`• ` + item.selectedComboItem.getVariantStr()}"
+            app:useFontStyle="normal"
+            app:useTextColor="color6"
+            app:useTextHeader="h7" />
+
+        <com.diadiem.pos_components.PTextView
+            visibleObject="@{item.selectedComboItem.getModifierStr()}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_3sdp"
+            android:layout_marginEnd="@dimen/_40sdp"
+            android:text="@{`• ` +item.selectedComboItem.getModifierStr()}"
+            app:useFontStyle="normal"
+            app:useTextColor="color6"
+            app:useTextHeader="h7" />
+    </LinearLayout>
+</layout>

@@ -1,11 +1,14 @@
 package com.hanheldpos.ui.screens.main
 
+import android.view.ViewTreeObserver
+import android.view.WindowManager
 import com.hanheldpos.R
 import com.hanheldpos.databinding.ActivityMainBinding
 import com.hanheldpos.ui.base.activity.BaseFragmentBindingActivity
 import com.hanheldpos.ui.base.fragment.FragmentNavigator
 import com.hanheldpos.ui.screens.home.HomeFragment
 import com.hanheldpos.ui.screens.root.RootFragment
+import com.utils.helper.SystemHelper
 
 class MainActivity : BaseFragmentBindingActivity<ActivityMainBinding, MainVM>(), MainUV {
 
@@ -14,6 +17,8 @@ class MainActivity : BaseFragmentBindingActivity<ActivityMainBinding, MainVM>(),
     }
 
     override fun layoutRes() = R.layout.activity_main
+
+
 
     override fun viewModelClass(): Class<MainVM> {
         return MainVM::class.java
@@ -27,6 +32,12 @@ class MainActivity : BaseFragmentBindingActivity<ActivityMainBinding, MainVM>(),
     }
 
     override fun initView() {
+        binding.root.viewTreeObserver.addOnGlobalLayoutListener {
+            SystemHelper.hideSystemUI(window);
+            window.setFlags(
+                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        }
         getNavigator().rootFragment = HomeFragment();
     }
 
@@ -37,4 +48,5 @@ class MainActivity : BaseFragmentBindingActivity<ActivityMainBinding, MainVM>(),
     override fun initAction() {
 
     }
+
 }

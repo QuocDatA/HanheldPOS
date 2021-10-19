@@ -1,23 +1,106 @@
 package com.hanheldpos.ui.screens.product
 
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
+import com.hanheldpos.data.api.pojo.order.menu.GroupItem
+import com.hanheldpos.extension.notifyValueChange
+import com.hanheldpos.model.cart.order.OrderItemModel
+import com.hanheldpos.model.home.order.combo.ItemActionType
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
+import com.hanheldpos.ui.screens.product.adapter.modifier.ModifierSelectedItemModel
 
 class ProductDetailVM : BaseUiViewModel<ProductDetailUV>() {
 
-    //Value
-    val isToolbarExpand = MutableLiveData<Boolean>(true);
+    val orderItemModel = MutableLiveData<OrderItemModel>();
+    val actionType = MutableLiveData<ItemActionType>();
 
 
+    val numberQuantity = Transformations.map(orderItemModel) {
+        return@map it.quantity;
+    };
+    val totalPriceLD = MutableLiveData(0.0);
 
+    var maxQuantity = -1;
+    var minQuantity : LiveData<Int> = Transformations.map(actionType) {
+        return@map  when(actionType.value){
+            ItemActionType.Modify->0;
+            ItemActionType.Add->1;
+            else->1;
+        } ;
+    };
 
-    fun initLifeCycle(owner: LifecycleOwner){
+    fun initLifeCycle(owner: LifecycleOwner) {
         owner.lifecycle.addObserver(this);
+        orderItemModel.observe(owner, {
+            updateTotalPrice();
+        })
     }
 
-    fun goBack()
-    {
-        uiCallback?.goBack();
+    fun onBack() {
+        uiCallback?.onBack();
+    }
+
+    fun onQuantityAdded() {
+        if (numberQuantity.value!! < maxQuantity)
+            orderItemModel.value?.plusOrderQuantity(1);
+        orderItemModel.notifyValueChange();
+    }
+
+    fun onQuantityRemoved() {
+        if(minQuantity.value == numberQuantity.value) return;
+        orderItemModel.value?.minusOrderQuantity(1);
+        orderItemModel.notifyValueChange();
+    }
+
+    fun updateTotalPrice() {
+        totalPriceLD.value = (orderItemModel.value?.getPriceLineTotal() ?: 0.0);
+    }
+
+    //region Modifier
+    fun onModifierQuantityChange(
+        headerKey: String?,
+        item: ModifierSelectedItemModel,
+        isEdit: Boolean? = false
+    ) {
+        if (headerKey == null) return
+
+        var modifierList = orderItemModel.value!!.extraDone?.selectedModifiers;
+        if (modifierList == null) {
+            modifierList = mutableListOf();
+        }
+
+        item.realItem?.let { real ->
+            modifierList.let { list ->
+                list.find { it.realItem!!.id == real.id }.let {
+                    /**
+                     * Check if modifier already exist ,will change quantity
+                     * If not exist , add to list
+                     */
+                    if (it != null) {
+                        if (item.quantity == 0) {
+                            list.remove(it);
+                        } else
+                            it.quantity = item.quantity;
+                    } else list.add(item);
+                }
+            }
+        }
+        orderItemModel.value!!.extraDone?.selectedModifiers = modifierList;
+        orderItemModel.notifyValueChange()
+    }
+
+    //endregion
+
+    //region Variant
+    fun onVariantItemChange(item: GroupItem) {
+        orderItemModel.value!!.extraDone?.selectedVariant = item.copy();
+        orderItemModel.notifyValueChange();
+    }
+
+    //endregion
+    fun onAddCart() {
+        uiCallback?.onAddCart(orderItemModel.value!!);
     }
 }

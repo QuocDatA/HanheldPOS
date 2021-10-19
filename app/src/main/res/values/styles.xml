@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    // Order
+    <style name="OrderTotalPrice">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="useTextColor">color4</item>
+        <item name="useFontStyle">bold</item>
+        <item name="useTextHeader">h5</item>
+        <item name="android:layout_marginEnd">@dimen/_11sdp</item>
+    </style>
+
+
+    // Product Detail
+    <style name="ProductDetailRoot">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@color/color_11</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="ProductDetailCloseBtn">
+        <item name="android:layout_width">@dimen/_23sdp</item>
+        <item name="android:layout_height">@dimen/_23sdp</item>
+        <item name="android:background">@color/color_9</item>
+    </style>
+
+    <style name="ProductDetailText">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="ProductDetailTitle" parent="ProductDetailText">
+        <item name="useTextColor">color4</item>
+        <item name="useFontStyle">bold</item>
+        <item name="useTextHeader">h5</item>
+    </style>
+
+    <style name="ProductDetailPrice" parent="ProductDetailText">
+        <item name="useTextColor">color4</item>
+        <item name="useFontStyle">normal</item>
+        <item name="useTextHeader">h5</item>
+    </style>
+
+    <style name="ProductDetailSku" parent="ProductDetailText">
+        <item name="useTextColor">color2</item>
+        <item name="useFontStyle">normal</item>
+        <item name="useTextHeader">h6</item>
+    </style>
+
+    <style name="ProductDetailBtnQuantity">
+        <item name="android:layout_width">@dimen/_25sdp</item>
+        <item name="android:layout_height">@dimen/_25sdp</item>
+        <item name="android:background">@drawable/bg_outline_round</item>
+        <item name="android:scaleType">centerInside</item>
+        <item name="android:foreground">?attr/selectableItemBackground</item>
+        <item name="android:focusable">true</item>
+        <item name="android:clickable">true</item>
+    </style>
+
+    <style name="ProductDetailTabTitle">
+        <item name="android:textColor">@color/color_7</item>
+        <item name="android:textSize">@dimen/_11ssp</item>
+    </style>
+
+    <style name="OptionItemTitle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="useTextColor">color4</item>
+        <item name="useTextHeader">h6</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    // Number Input
+    <style name="TableInputDialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowTitleStyle">@null</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+        <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
+    </style>
+    <style name="NumberPad">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/_34sdp</item>
+        <item name="android:background">@drawable/bg_ffffff_round_number_input</item>
+        <item name="android:gravity">center</item>
+        <item name="useTextHeader">h3</item>
+        <item name="useTextColor">color4</item>
+        <item name="useFontStyle">bold</item>
+        <item name="android:focusable">true</item>
+        <item name="android:clickable">true</item>
+    </style>
+
+    <style name="NumberOk" parent="NumberPad">
+        <item name="android:layout_height">@dimen/_78sdp</item>
+        <item name="android:background">@drawable/bg_007eff_round_number_input</item>
+        <item name="useTextColor">color2</item>
+    </style>
+
+
+    // Cart
+    <style name="CartTitle">
+        <item name="useTextHeader">h4</item>
+        <item name="useFontStyle">bold</item>
+        <item name="useTextColor">color4</item>
+        <item name="android:layout_gravity">center</item>
+    </style>
+
+    <style name="CartDelete">
+        <item name="useTextHeader">h6</item>
+        <item name="useFontStyle">normal</item>
+        <item name="useTextColor">color0</item>
+        <item name="android:layout_gravity">center|end</item>
+        <item name="android:layout_marginEnd">@dimen/_10sdp</item>
+    </style>
+    <style name="SingleLineItemCart">
+        <item name="android:background">@color/color_2</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingTop">@dimen/_7sdp</item>
+        <item name="android:paddingBottom">@dimen/_7sdp</item>
+    </style>
+
+
+
+</resources>

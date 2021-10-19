@@ -1,17 +1,22 @@
 package com.hanheldpos.ui.screens.pincode
 
+import android.view.WindowManager
 import com.hanheldpos.R
 import com.hanheldpos.databinding.ActivityPinCodeBinding
 import com.hanheldpos.extension.navigateTo
 import com.hanheldpos.ui.base.activity.BaseActivity
 import com.hanheldpos.ui.screens.main.MainActivity
 import com.hanheldpos.ui.screens.pincode.adapter.PinCodeAdapter
+import com.utils.helper.SystemHelper
 
-class PinCodeActivity : BaseActivity<ActivityPinCodeBinding,PinCodeVM>(), PinCodeUV{
+class PinCodeActivity : BaseActivity<ActivityPinCodeBinding, PinCodeVM>(), PinCodeUV {
     override fun layoutRes() = R.layout.activity_pin_code;
 
     override fun initView() {
-
+        binding.root.viewTreeObserver.addOnGlobalLayoutListener{
+            window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            SystemHelper.hideSystemUI(this.window);
+        }
     }
 
     override fun initData() {
@@ -46,10 +51,7 @@ class PinCodeActivity : BaseActivity<ActivityPinCodeBinding,PinCodeVM>(), PinCod
     }
 
     override fun goHome() {
-        navigateTo(MainActivity::class.java,
-            alsoFinishCurrentActivity = true,
-            alsoClearActivity = true
-        );
+        navigateTo(MainActivity::class.java, alsoFinishCurrentActivity = true, alsoClearActivity = false);
     }
 
 }

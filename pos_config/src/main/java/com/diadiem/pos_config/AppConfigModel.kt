@@ -82,7 +82,10 @@ data class Sizes(
 	val h5: Double? = null,
 
 	@field:SerializedName("h6")
-	val h6: Double? = null
+	val h6: Double? = null,
+
+	@field:SerializedName("h7")
+	val h7: Double? = null
 ) : Parcelable
 
 @Parcelize
@@ -145,6 +148,9 @@ data class Families(
 
 	@field:SerializedName("bold")
 	val bold: String? = null,
+
+	@field:SerializedName("semibold")
+	val semibold: String? = null,
 
 	@field:SerializedName("italic")
 	val italic: String? = null,

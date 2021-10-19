@@ -1,232 +1,35 @@
 package com.hanheldpos.ui.screens.home.order
 
 import androidx.lifecycle.MutableLiveData
-import com.hanheldpos.data.api.pojo.CategoryItem
-import com.hanheldpos.data.api.pojo.ModelItem
-import com.hanheldpos.data.api.pojo.OrderMenuResp
-import com.hanheldpos.data.api.pojo.ProductItem
-import com.hanheldpos.data.api.pojo.order.getCategoryList
-import com.hanheldpos.ui.base.viewmodel.BaseViewModel
-import com.hanheldpos.utils.screens.notifyValueChange
+import com.hanheldpos.data.api.pojo.order.menu.OrderMenuResp
+import com.hanheldpos.data.repository.order.OrderRepo
+import com.hanheldpos.model.DataHelper
+import com.hanheldpos.model.cart.order.OrderItemModel
+import com.hanheldpos.model.home.order.menu.OrderMenuDataMapper
+import com.hanheldpos.model.home.order.menu.OrderMenuItemModel
+import com.hanheldpos.model.product.ProductOrderItem
+import com.hanheldpos.ui.base.viewmodel.BaseRepoViewModel
 
-class OrderDataVM : BaseViewModel() {
-    private var orderMenuResp: OrderMenuResp? = null;
-    val categoryList = MutableLiveData<MutableList<CategoryItem>>(mutableListOf());
-    val productList = MutableLiveData<MutableList<ProductItem>>(mutableListOf());
+class OrderDataVM : BaseRepoViewModel<OrderRepo, OrderUV>() {
+    val menus = MutableLiveData<MutableList<OrderMenuItemModel?>>(mutableListOf());
+    val selectedMenu = MutableLiveData<OrderMenuItemModel>();
 
     fun initData() {
-        orderMenuResp = OrderMenuResp(
-            model = mutableListOf(
-                ModelItem(
-                    category = mutableListOf(
-                        CategoryItem(
-                            id = "Category/430214303",
-                            categoryId = 31,
-                            title = "PHO",
-                            handle = "pho-cb",
-                            description = "",
-                            orderNo = 0,
-                            visible = 1,
-                            color = "#3166FF"
-                        ),
-                        CategoryItem(
-                            id = "Category/430214303",
-                            categoryId = 31,
-                            title = "ALL DRINKS",
-                            handle = "pho-cb",
-                            description = "",
-                            orderNo = 0,
-                            visible = 1,
-                            color = "#2989A8"
-                        ), CategoryItem(
-                            id = "Category/430214303",
-                            categoryId = 31,
-                            title = "COM",
-                            handle = "pho-cb",
-                            description = "",
-                            orderNo = 0,
-                            visible = 1,
-                            color = "#3166FF"
-                        ), CategoryItem(
-                            id = "Category/430214303",
-                            categoryId = 31,
-                            title = "ALL STARTERS",
-                            handle = "pho-cb",
-                            description = "",
-                            orderNo = 0,
-                            visible = 1,
-                            color = "#2989A8"
-                        ), CategoryItem(
-                            id = "Category/430214303",
-                            categoryId = 31,
-                            title = "BUN",
-                            handle = "pho-cb",
-                            description = "",
-                            orderNo = 0,
-                            visible = 1,
-                            color = "#3166FF"
-                        ), CategoryItem(
-                            id = "Category/430214303",
-                            categoryId = 31,
-                            title = "ALL DESSERT",
-                            handle = "pho-cb",
-                            description = "",
-                            orderNo = 0,
-                            visible = 1,
-                            color = "#2989A8"
-                        ), CategoryItem(
-                            id = "Category/430214303",
-                            categoryId = 31,
-                            title = "COMBO PHO",
-                            handle = "pho-cb",
-                            description = "",
-                            orderNo = 0,
-                            visible = 1,
-                            color = "#A61CD7"
-                        ), CategoryItem(
-                            id = "Category/430214303",
-                            categoryId = 31,
-                            title = "EXTRA",
-                            handle = "pho-cb",
-                            description = "",
-                            orderNo = 0,
-                            visible = 1,
-                            color = "#B58200"
-                        ), CategoryItem(
-                            id = "Category/430214303",
-                            categoryId = 31,
-                            title = "COMBO COM",
-                            handle = "pho-cb",
-                            description = "",
-                            orderNo = 0,
-                            visible = 1,
-                            color = "#A61CD7"
-                        ), CategoryItem(
-                            id = "Category/430214303",
-                            categoryId = 31,
-                            title = "ALL OTHER",
-                            handle = "pho-cb",
-                            description = "",
-                            orderNo = 0,
-                            visible = 1,
-                            color = "#B58200"
-                        ), CategoryItem(
-                            id = "Category/430214303",
-                            categoryId = 31,
-                            title = "COMBO BUN",
-                            handle = "pho-cb",
-                            description = "",
-                            orderNo = 0,
-                            visible = 1,
-                            color = "#A61CD7"
-                        ), CategoryItem(
-                            id = "Category/430214303",
-                            categoryId = 31,
-                            title = "ALL ON",
-                            handle = "pho-cb",
-                            description = "",
-                            orderNo = 0,
-                            visible = 1,
-                            color = "#B58200"
-                        ), CategoryItem(
-                            id = "Category/430214303",
-                            categoryId = 31,
-                            title = "MENU SANG",
-                            handle = "pho-cb",
-                            description = "",
-                            orderNo = 0,
-                            visible = 1,
-                            color = "#2A9C0E"
-                        ), CategoryItem(
-                            id = "Category/430214303",
-                            categoryId = 31,
-                            title = "PHO",
-                            handle = "pho-cb",
-                            description = "",
-                            orderNo = 0,
-                            visible = 1,
-                            color = "#3166FF"
-                        ), CategoryItem(
-                            id = "Category/430214303",
-                            categoryId = 31,
-                            title = "PHO BOGO",
-                            handle = "pho-cb",
-                            description = "",
-                            orderNo = 0,
-                            visible = 1,
-                            color = "#2A9C0E"
-                        ), CategoryItem(
-                            id = "Category/430214303",
-                            categoryId = 31,
-                            title = "PHO",
-                            handle = "pho-cb",
-                            description = "",
-                            orderNo = 0,
-                            visible = 1,
-                            color = "#3166FF"
-                        ),
-                        CategoryItem(
-                            id = "Category/430214303",
-                            categoryId = 31,
-                            title = "PHO GOI",
-                            handle = "pho-cb",
-                            description = "",
-                            orderNo = 0,
-                            visible = 1,
-                            color = "#2A9C0E"
-                        ), CategoryItem(
-                            id = "Category/430214303",
-                            categoryId = 31,
-                            title = "PHO",
-                            handle = "pho-cb",
-                            description = "",
-                            orderNo = 0,
-                            visible = 1,
-                            color = "#3166FF"
-                        )
-
-                    )
-                )
-            )
-        );
-        initCategories();
+        OrderMenuDataMapper.menuDB = DataHelper.orderMenuResp!!;
     }
 
-    // Category
-    private fun initCategories() {
-        orderMenuResp?.getCategoryList()?.forEach {
-            if (it != null) {
-                it.productList = mutableListOf(
-                    ProductItem(
-                        name = "PHO",
+    fun onMenuChange(position: Int){
+        menus.value = OrderMenuDataMapper.getMenuByBranch(position).toMutableList();
+        // Init First Page
+        selectedMenu.value = menus.value?.first();
+    }
 
-                        description = "Nước dùng thơm ngon nấu từ 100% xương ống bò trong 8 giờ",
-                        price = 39000.0,
-                        name3 = "500g/Tô"
-                    ),
-                    ProductItem(
-                        name = "PHO",
-                        description = "Nước dùng thơm ngon nấu từ 100% xương ống bò trong 8 giờ",
-                        price = 39000.0,
-                        name3 = "500g/Tô"
-                    ),
-                    ProductItem(
-                        name = "PHO",
-                        description = "Nước dùng thơm ngon nấu từ 100% xương ống bò trong 8 giờ",
-                        price = 39000.0,
-                        name3 = "500g/Tô"
-                    ),
-                    ProductItem(
-                        name = "PHO",
-                        description = "Nước dùng thơm ngon nấu từ 100% xương ống bò trong 8 giờ",
-                        price = 39000.0,
-                        name3 = "500g/Tô"
-                    ),
-                );
-                categoryList.value?.add(it)
-            };
-        }
-        categoryList.notifyValueChange();
+    fun getProductByMenu(menuItem: OrderMenuItemModel): List<ProductOrderItem?>? {
+        return menuItem.childList;
+    }
+
+    override fun createRepo(): OrderRepo {
+        return OrderRepo();
     }
 
 }
