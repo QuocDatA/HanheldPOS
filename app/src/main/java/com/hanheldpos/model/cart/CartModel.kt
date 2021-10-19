@@ -21,13 +21,32 @@ data class CartModel(
 
     //dining option of Order
     var diningOption: DiningOptionItem? = getDefaultDiningOptionItem(),
+
+
 ) : Parcelable {
     fun getQuantityCart() : Int {
         return listOrderItem.sumOf {
             it.getOrderQuantity()
         }
     }
-    fun getGrandTotal() = listOrderItem.sumOf {
+
+
+    fun getSubTotal() = listOrderItem.sumOf {
         it.getOrderPrice()
+    }
+
+    fun getTotalDisc() : Double {
+        return 0.0;
+    }
+
+    fun getPrice() : Double{
+        val subtotal = getSubTotal();
+        val totalDisc = getTotalDisc();
+        var subIncDisc = subtotal - totalDisc;
+        subIncDisc = if (subIncDisc < 0 ) 0.0 else subIncDisc;
+
+        //TODO : use FeeApplyToType to calculate price
+
+        return subIncDisc;
     }
 }
