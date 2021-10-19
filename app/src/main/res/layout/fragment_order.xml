@@ -100,127 +100,136 @@
         
 
 
-
-        <FrameLayout
-            android:id="@+id/rootPopup"
+        <LinearLayout
+            android:id="@+id/toolbarCart"
+            android:layout_alignParentBottom="true"
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_above="@id/toolbarCart"
-            android:background="@color/color_0"
-            android:visibility="gone">
-
-            <com.diadiem.pos_components.PTextView
-                android:id="@+id/txtProduct"
+            android:layout_height="wrap_content">
+            <FrameLayout
+                android:id="@+id/rootPopup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_12sdp"
-                android:layout_marginVertical="@dimen/_4sdp"
-                android:text="@string/added"
-                app:useTextColor="color2"
-                app:useTextHeader="h5" />
-        </FrameLayout>
-        <include
-            layout="@layout/divider_vertical"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_1sdp"
-            android:layout_above="@id/toolbarCart" />
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:id="@+id/toolbarCart"
-            android:background="@color/color_2"
-            android:orientation="horizontal">
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:padding="@dimen/_12sdp">
+                android:background="@color/color_0"
+                android:visibility="gone">
 
                 <com.diadiem.pos_components.PTextView
-                    android:layout_width="wrap_content"
+                    android:id="@+id/txtProduct"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/_7sdp"
-                    app:useTextColor="color4"
-                    android:text="@{cartDataVM.cartModelLD.table.tableName + `-` + cartDataVM.diningOptionLD.title + ` (` + cartDataVM.numberOfCustomer + `)`}"
-
-                    app:useTextHeader="h5"
-                    tools:text="B1-For Here (2)" />
-
-                <com.diadiem.pos_components.PTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_color5_2444dp"
-                    android:paddingHorizontal="@dimen/_5sdp"
+                    android:layout_marginHorizontal="@dimen/_12sdp"
+                    android:layout_marginVertical="@dimen/_4sdp"
+                    android:text="@string/added"
                     app:useTextColor="color2"
-                    app:useTextHeader="h6"
+                    app:useTextHeader="h5" />
+            </FrameLayout>
 
-                    android:text="@{cartDataVM.linePerTotalQuantity}"
-                    tools:text="8/10" />
-
-            </LinearLayout>
-
-            <View
-                android:layout_width="@dimen/_1sdp"
-                android:layout_height="match_parent"
-                android:layout_marginVertical="@dimen/_8sdp"
-                android:background="@color/color_10" />
-
+            <include
+                layout="@layout/divider_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_1sdp" />
             <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:background="@color/color_2"
                 android:orientation="horizontal">
 
-                <com.diadiem.pos_components.PTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_12sdp"
-                    app:useFontStyle="bold"
-                    app:useTextColor="color4"
-                    app:useTextHeader="h5"
-                    priceView="@{cartDataVM.cartModelLD.price}"
-
-                    tools:text="1.000.000" />
-
-                <androidx.legacy.widget.Space
+                <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-
-                <FrameLayout
-                    android:id="@+id/cartBtn"
-                    android:layout_width="@dimen/_50sdp"
-                    android:layout_height="match_parent"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:onClick="@{v->viewModel.showCart()}">
-
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@color/color_0"
-                        android:padding="@dimen/_7sdp"
-                        android:scaleType="centerInside"
-                        android:src="@drawable/ic_cart_light" />
+                    android:layout_weight="1"
+                    android:padding="@dimen/_12sdp">
 
                     <com.diadiem.pos_components.PTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="@dimen/_2sdp"
-                        android:text="@{String.valueOf(cartDataVM.cartModelLD.quantityCart)}"
-                        app:useFontStyle="bold"
-                        app:useTextColor="color0"
+                        android:layout_marginEnd="@dimen/_7sdp"
+                        app:useTextColor="color4"
+                        android:text="@{cartDataVM.cartModelLD.table.tableName + `-` + cartDataVM.diningOptionLD.title + ` (` + cartDataVM.numberOfCustomer + `)`}"
+
+                        app:useTextHeader="h5"
+                        tools:text="B1-For Here (2)" />
+
+                    <com.diadiem.pos_components.PTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_color5_2444dp"
+                        android:paddingHorizontal="@dimen/_5sdp"
+                        app:useTextColor="color2"
                         app:useTextHeader="h6"
-                        tools:text="10"
-                        tools:textColor="@color/color_0" />
-                </FrameLayout>
+                        android:text="@{cartDataVM.linePerTotalQuantity}"
+                        tools:text="8/10" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="@dimen/_1sdp"
+                    android:layout_height="match_parent"
+                    android:layout_marginVertical="@dimen/_8sdp"
+                    android:background="@color/color_10" />
+
+                <LinearLayout
+
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <com.diadiem.pos_components.PTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_12sdp"
+                        app:useFontStyle="bold"
+                        app:useTextColor="color4"
+                        app:useTextHeader="h5"
+                        priceView="@{cartDataVM.cartModelLD.price}"
+
+                        tools:text="1.000.000" />
+
+                    <androidx.legacy.widget.Space
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+
+                    <FrameLayout
+                        android:id="@+id/cartBtn"
+                        android:layout_width="@dimen/_50sdp"
+                        android:layout_height="match_parent"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:onClick="@{v->viewModel.showCart()}">
+
+                        <ImageView
+                            android:id="@+id/imgCart"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@color/color_0"
+                            android:padding="@dimen/_7sdp"
+                            android:scaleType="centerInside"
+                            android:src="@drawable/ic_cart_light" />
+
+                        <com.diadiem.pos_components.PTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="@dimen/_2sdp"
+                            android:text="@{String.valueOf(cartDataVM.cartModelLD.quantityCart)}"
+                            app:useFontStyle="bold"
+                            app:useTextColor="color0"
+                            app:useTextHeader="h6"
+                            tools:text="10"
+                            tools:textColor="@color/color_0" />
+                    </FrameLayout>
+                </LinearLayout>
+
             </LinearLayout>
 
+
         </LinearLayout>
+
 
 
     </RelativeLayout>

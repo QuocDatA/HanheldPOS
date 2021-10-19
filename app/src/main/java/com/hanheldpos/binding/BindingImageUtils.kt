@@ -45,6 +45,19 @@ fun setImgSrc(view: ImageView?, src: Int?) {
     }
 }
 
+@BindingAdapter("imageCircularUrl")
+fun loadImageFromUrlToCircular(imageView: ImageView, imageUrl: String? = null) {
+    imageView.apply {
+        Glide.with(context)
+            .load(imageUrl ?: "")
+            .placeholder(startLoadingProgress(context))
+            .thumbnail(0.5f)
+            .circleCrop()
+            .into(this)
+    }
+}
+
+
 private fun startLoadingProgress(context: Context): CircularProgressDrawable {
     return CircularProgressDrawable(context).apply {
         strokeWidth = 4f

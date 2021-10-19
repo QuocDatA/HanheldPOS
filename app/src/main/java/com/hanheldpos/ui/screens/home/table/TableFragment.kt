@@ -115,7 +115,6 @@ class TableFragment : BaseFragment<FragmentTableBinding, TableVM>(), TableUV {
             viewModel.floorTableList.value?.let { it1 -> tableAdapterHelper.submitList(it1) };
         });
 
-
         binding.root.viewTreeObserver.addOnGlobalLayoutListener(object :
             OnGlobalLayoutListener {
             override fun onGlobalLayout() {
@@ -131,11 +130,7 @@ class TableFragment : BaseFragment<FragmentTableBinding, TableVM>(), TableUV {
         navigator.goTo(TableInputFragment.getInstance(listener = object :
             TableInputFragment.TableInputListener {
             override fun onCompleteTable(numberCustomer: Int) {
-                cartDataVM.cartModelLD.value?.let {
-                    it.table = item;
-                    it.customerQuantity = numberCustomer;
-                }
-                cartDataVM.cartModelLD.notifyValueChange();
+                cartDataVM.initCart(numberCustomer,item);
                 screenViewModel.showOrderPage();
             }
         }));
