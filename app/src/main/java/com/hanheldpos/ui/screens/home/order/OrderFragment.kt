@@ -10,6 +10,7 @@ import android.util.Log
 import android.util.Size
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewTreeObserver
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.PopupWindow
@@ -28,6 +29,7 @@ import com.hanheldpos.model.home.order.combo.ItemActionType
 import com.hanheldpos.model.home.order.menu.OrderMenuItemModel
 import com.hanheldpos.model.product.ProductOrderItem
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
+import com.hanheldpos.ui.base.dialog.AppAlertDialog
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.cart.CartDataVM
 import com.hanheldpos.ui.screens.cart.CartFragment
@@ -174,7 +176,10 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
                         }
                         ProductModeViewType.Combo -> {
                             val onCartAdded = object : ComboFragment.ComboListener {
-                                override fun onCartAdded(item: OrderItemModel,actionType: ItemActionType) {
+                                override fun onCartAdded(
+                                    item: OrderItemModel,
+                                    actionType: ItemActionType
+                                ) {
                                     showCartAnimation(item);
                                 }
                             }
@@ -205,6 +210,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
     }
 
     override fun initAction() {
+
         screenViewModel.dropDownSelected.observe(this, {
             val screen = screenViewModel.screenEvent.value?.screen;
             if (screen == HomeFragment.HomePage.Order) {
@@ -229,6 +235,10 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
                     productAdapHelper.submitList(rs.toMutableList());
                 }
         });
+
+
+
+
     }
 
     fun showCartAnimation(item: OrderItemModel) {
@@ -237,11 +247,10 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
             getString(R.string.added),
             item.productOrderItem?.text
         )
-        CartPresenter.showCartAnimation(item,binding.rootPopup,binding.imgCart) {
+        CartPresenter.showCartAnimation(item, binding.rootPopup, binding.imgCart) {
             cartDataVM.addToCart(item);
         };
     }
-
 
 
     private fun menuItemSelected(menuItem: OrderMenuItemModel) {
@@ -259,6 +268,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
     }
 
     companion object {
+        // Position previous dropdown item
         var selectedSort: Int = 0;
     }
 
