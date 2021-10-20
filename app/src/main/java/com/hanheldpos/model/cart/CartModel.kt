@@ -5,6 +5,7 @@ import com.hanheldpos.data.api.pojo.order.settings.DiningOptionItem
 import com.hanheldpos.data.api.pojo.table.FloorTableItem
 import com.hanheldpos.model.DataHelper.getDefaultDiningOptionItem
 import com.hanheldpos.model.cart.order.OrderItemModel
+import com.hanheldpos.model.home.table.TableStatusType
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -21,6 +22,7 @@ data class CartModel(
 
     //dining option of Order
     var diningOption: DiningOptionItem? = getDefaultDiningOptionItem(),
+
 
 
 ) : Parcelable {

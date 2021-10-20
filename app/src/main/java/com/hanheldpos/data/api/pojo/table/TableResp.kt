@@ -3,7 +3,7 @@ package com.hanheldpos.data.api.pojo.table
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import com.hanheldpos.model.home.table.TableModeViewType
-import kotlinx.android.parcel.IgnoredOnParcel
+import com.hanheldpos.model.home.table.TableStatusType
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
@@ -138,8 +138,12 @@ data class FloorTableItem(
         @field:SerializedName("UserGuid")
         val userGuid: String? = null,
 ) : Parcelable {
-        @IgnoredOnParcel
+
+        @kotlinx.parcelize.IgnoredOnParcel
         var uiType : TableModeViewType? = TableModeViewType.Table;
+
+        var tableStatus : TableStatusType =  TableStatusType.Pending
+
 }
 
 @Parcelize

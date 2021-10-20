@@ -7,14 +7,20 @@ import android.animation.ObjectAnimator
 import android.app.AlertDialog
 import android.os.SystemClock
 import android.util.Log
+import android.util.Size
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.FrameLayout
+import android.widget.ImageView
+import android.widget.PopupWindow
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import com.hanheldpos.R
+import com.hanheldpos.binding.loadImageFromUrlToCircular
 import com.hanheldpos.data.api.pojo.order.menu.MenusItem
 import com.hanheldpos.databinding.DialogCategoryBinding
 import com.hanheldpos.databinding.FragmentOrderBinding
+import com.hanheldpos.model.cart.CartPresenter
 import com.hanheldpos.model.cart.order.OrderItemModel
 import com.hanheldpos.model.cart.order.OrderItemType
 import com.hanheldpos.model.home.order.ProductModeViewType
@@ -232,49 +238,11 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
             getString(R.string.added),
             item.productOrderItem?.text
         )
-        binding.rootPopup.visibility = View.VISIBLE
-        val animSlideIn = ObjectAnimator.ofFloat(
-            binding.rootPopup,
-            "translationY",
-            100f,
-            0f
-        ).apply {
-            duration = 500
-            addListener(object : AnimatorListenerAdapter() {
-                override fun onAnimationEnd(animation: Animator?) {
-                    cartDataVM.addToCart(item);
-                }
-            })
-        }
-
-        val animSlideStand = ObjectAnimator.ofFloat(
-            binding.rootPopup,
-            "translationY",
-            0f,
-            0f
-        ).apply {
-            duration = 2000
-        }
-
-        val animSlideOut = ObjectAnimator.ofFloat(
-            binding.rootPopup,
-            "translationY",
-            0f,
-            100f
-        ).apply {
-            duration = 500
-        }
-
-        AnimatorSet().apply {
-            play(animSlideIn).before(animSlideStand)
-            play(animSlideStand).before(animSlideOut)
-            addListener(object : AnimatorListenerAdapter() {
-                override fun onAnimationEnd(animation: Animator?) {
-                    binding.rootPopup.visibility = View.GONE
-                }
-            })
-        }.start()
+        CartPresenter.showCartAnimation(item,binding.rootPopup,binding.imgCart) {
+            cartDataVM.addToCart(item);
+        };
     }
+
 
 
     private fun menuItemSelected(menuItem: OrderMenuItemModel) {
