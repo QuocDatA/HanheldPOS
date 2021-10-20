@@ -20,6 +20,7 @@ import com.hanheldpos.binding.loadImageFromUrlToCircular
 import com.hanheldpos.data.api.pojo.order.menu.MenusItem
 import com.hanheldpos.databinding.DialogCategoryBinding
 import com.hanheldpos.databinding.FragmentOrderBinding
+import com.hanheldpos.model.cart.CartPresenter
 import com.hanheldpos.model.cart.order.OrderItemModel
 import com.hanheldpos.model.cart.order.OrderItemType
 import com.hanheldpos.model.home.order.ProductModeViewType
@@ -237,139 +238,12 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
             getString(R.string.added),
             item.productOrderItem?.text
         )
-        binding.rootPopup.visibility = View.VISIBLE
-        val animSlideIn = ObjectAnimator.ofFloat(
-            binding.rootPopup,
-            "translationY",
-            100f,
-            0f
-        ).apply {
-            duration = 400
-            addListener(object : AnimatorListenerAdapter() {
-                override fun onAnimationEnd(animation: Animator?) {
-                    cartDataVM.addToCart(item);
-                }
-            })
-        }
-
-        val animSlideStand = ObjectAnimator.ofFloat(
-            binding.rootPopup,
-            "translationY",
-            0f,
-            0f
-        ).apply {
-            duration = 1000
-        }
-
-        val animSlideOut = ObjectAnimator.ofFloat(
-            binding.rootPopup,
-            "translationY",
-            0f,
-            100f
-        ).apply {
-            duration = 400
-        }
-
-        AnimatorSet().apply {
-            play(animSlideIn).before(animSlideStand)
-            play(animSlideStand).before(animSlideOut)
-            addListener(object : AnimatorListenerAdapter() {
-                override fun onAnimationEnd(animation: Animator?) {
-                    binding.rootPopup.visibility = View.GONE
-                }
-            })
-        }.start()
-        showPopupWindowWithoutBinging(
-            binding.imgCart,
-            item.productOrderItem?.img
-        )
+        CartPresenter.showCartAnimation(item,binding.rootPopup,binding.imgCart) {
+            cartDataVM.addToCart(item);
+        };
     }
 
-    private fun showPopupWindowWithoutBinging(anchor: View, imgUrl: String?) {
-        PopupWindow(anchor.context).apply {
-            isOutsideTouchable = true
-            val inflater = LayoutInflater.from(anchor.context)
-            contentView = inflater.inflate(R.layout.popup_cart_added, null).apply {
-                measure(
-                    View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
-                    View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
-                )
-            }
-            setBackgroundDrawable(null)
 
-            val imgView: ImageView = contentView.findViewById(R.id.imgProductAdded)
-            loadImageFromUrlToCircular(imgView, imgUrl)
-//            animationStyle = R.style.popup_window_animation
-
-        }.also { popupWindow ->
-            // Absolute location of the anchor view
-//            popupWindow.animationStyle = R.style.popup_window_animation
-            val location = IntArray(2).apply {
-                anchor.getLocationOnScreen(this)
-            }
-
-            val rootView: FrameLayout = popupWindow.contentView.findViewById(R.id.rootPopup)
-
-            val size = Size(
-                popupWindow.contentView.measuredWidth,
-                popupWindow.contentView.measuredHeight
-            )
-            popupWindow.showAtLocation(
-                anchor,
-                0,
-                location[0] - size.width + anchor.width + (size.width - anchor.width) / 2,
-                location[1] - size.height/2
-            )
-
-            val animTranslateIn =
-                ObjectAnimator.ofFloat(rootView, "translationY", 100f, 0f).setDuration(400)
-            val animScaleXUp =
-                ObjectAnimator.ofFloat(rootView, "scaleX", 0.0f, 1.0f).setDuration(400)
-            val animScaleYUp =
-                ObjectAnimator.ofFloat(rootView, "scaleY", 0.0f, 1.0f).setDuration(400)
-            val animPivotX = ObjectAnimator.ofFloat(rootView, "pivotX", 50f).setDuration(400)
-            val animPivotY = ObjectAnimator.ofFloat(rootView, "pivotY", 100f).setDuration(400)
-            val animScaleXDown =
-                ObjectAnimator.ofFloat(rootView, "scaleX", 1.0f, 0.0f).setDuration(400)
-            val animScaleYDown =
-                ObjectAnimator.ofFloat(rootView, "scaleY", 1.0f, 0.0f).setDuration(400)
-            val animStand =
-                ObjectAnimator.ofFloat(rootView, "translationY", 0f, 0f).setDuration(700)
-            val animTranslateOut =
-                ObjectAnimator.ofFloat(rootView, "translationY", 0f, 100f).apply {
-                    duration = 400
-                    addListener(object : AnimatorListenerAdapter() {
-                        override fun onAnimationEnd(animation: Animator?) {
-                            popupWindow.dismiss()
-                        }
-                    })
-                }
-
-            AnimatorSet().apply {
-                playTogether(animTranslateIn, animScaleXUp, animScaleYUp)
-                play(animTranslateIn).before(animStand)
-                play(animStand).before(animTranslateOut)
-                playTogether(
-                    animTranslateOut,
-                    animScaleXDown,
-                    animScaleYDown,
-                    animPivotX,
-                    animPivotY
-                )
-            }.start()
-
-//            CoroutineScope(Dispatchers.IO).launch {
-//                delay(3000)
-//                withContext(Dispatchers.Main) {
-//
-//                    popupWindow.dismiss()
-//                }
-//            }
-//            Handler().postDelayed({
-//                popupWindow.dismiss()
-//            },1000)
-        }
-    }
 
     private fun menuItemSelected(menuItem: OrderMenuItemModel) {
         dataVM.selectedMenu.value = menuItem
