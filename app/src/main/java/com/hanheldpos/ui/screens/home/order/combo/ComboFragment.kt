@@ -1,12 +1,17 @@
 package com.hanheldpos.ui.screens.home.order.combo
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.os.Bundle
+import android.view.LayoutInflater
 import androidx.core.content.ContextCompat
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hanheldpos.R
+import com.hanheldpos.databinding.DialogPopupInputTextBinding
 import com.hanheldpos.databinding.FragmentComboBinding
+import com.hanheldpos.extension.notifyValueChange
 import com.hanheldpos.model.cart.order.OrderItemModel
 import com.hanheldpos.model.home.order.combo.ItemActionType
 import com.hanheldpos.model.home.order.menu.ComboPickedItemViewModel
@@ -26,6 +31,9 @@ class ComboFragment(
     }
 
     private lateinit var comboGroupAdapter: ComboGroupAdapter;
+
+    // Dialog Note
+    private lateinit var dialogCategory: AlertDialog;
 
     override fun initViewModel(viewModel: ComboVM) {
         viewModel.run {
@@ -74,6 +82,25 @@ class ComboFragment(
                 }
             )
         }
+
+        // Init Dialog Note
+        val dialogCateBinding: DialogPopupInputTextBinding = DataBindingUtil.inflate(
+            LayoutInflater.from(context),
+            R.layout.dialog_popup_input_text,
+            null,
+            false
+        );
+        dialogCateBinding.text = viewModel.orderItemModel.value?.note;
+
+        val builder = AlertDialog.Builder(context);
+        builder.setView(dialogCateBinding.root);
+
+        dialogCategory = builder.create();
+        dialogCateBinding.acceptBtn.setOnClickListener {
+            viewModel.orderItemModel.value?.note = dialogCateBinding.text
+            viewModel.orderItemModel.notifyValueChange();
+            dialogCategory.dismiss();
+        }
     }
 
     override fun initData() {
@@ -91,7 +118,9 @@ class ComboFragment(
     }
 
     override fun initAction() {
-
+        binding.noteInput.setOnClickListener {
+            onEditNote();
+        };
     }
 
     interface ComboListener {
@@ -162,4 +191,9 @@ class ComboFragment(
         comboGroupAdapter.notifyDataSetChanged();
     }
 
+
+    private fun onEditNote() {
+        dialogCategory.show();
+        dialogCategory.window?.setBackgroundDrawableResource(android.R.color.transparent)
+    }
 }

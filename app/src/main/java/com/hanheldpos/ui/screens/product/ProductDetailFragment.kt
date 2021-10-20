@@ -1,13 +1,19 @@
 package com.hanheldpos.ui.screens.product
 
+import android.app.AlertDialog
 import android.os.Bundle
+import android.view.LayoutInflater
 import androidx.core.view.get
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.google.android.material.tabs.TabLayoutMediator
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.order.menu.GroupItem
+import com.hanheldpos.databinding.DialogCategoryBinding
+import com.hanheldpos.databinding.DialogPopupInputTextBinding
 import com.hanheldpos.databinding.FragmentProductDetailBinding
+import com.hanheldpos.extension.notifyValueChange
 import com.hanheldpos.model.cart.order.OrderItemModel
 import com.hanheldpos.model.home.order.combo.ItemActionType
 import com.hanheldpos.model.product.ExtraDoneModel
@@ -40,6 +46,9 @@ class ProductDetailFragment(
 
     // Adapter
     private lateinit var optionsPagerAdapter: OptionsPagerAdapter;
+
+    // Dialog Note
+    private lateinit var dialogCategory: AlertDialog;
 
     override fun layoutRes() = R.layout.fragment_product_detail;
 
@@ -76,13 +85,33 @@ class ProductDetailFragment(
         }
 
 
+        // Init Dialog Note
+        val dialogCateBinding: DialogPopupInputTextBinding = DataBindingUtil.inflate(
+            LayoutInflater.from(context),
+            R.layout.dialog_popup_input_text,
+            null,
+            false
+        );
+        dialogCateBinding.text = viewModel.orderItemModel.value?.note;
+
+        val builder = AlertDialog.Builder(context);
+        builder.setView(dialogCateBinding.root);
+
+        dialogCategory = builder.create();
+        dialogCateBinding.acceptBtn.setOnClickListener {
+            viewModel.orderItemModel.value?.note = dialogCateBinding.text
+            viewModel.orderItemModel.notifyValueChange();
+            dialogCategory.dismiss();
+        }
+
     }
 
     override fun initData() {
         arguments?.let {
             val i: OrderItemModel? = it.getParcelable(ARG_ORDER_ITEM_MODEL_FRAGMENT);
             val quantityCanChoose: Int = it.getInt(ARG_PRODUCT_DETAIL_QUANTITY);
-            val actionType : ItemActionType = it.getSerializable(ARG_ITEM_ACTION_TYPE) as ItemActionType;
+            val actionType: ItemActionType =
+                it.getSerializable(ARG_ITEM_ACTION_TYPE) as ItemActionType;
             optionVM.extraDoneModel = i?.extraDone;
             i?.extraDone = i?.extraDone ?: ExtraDoneModel(
                 productOrderItem = i?.productOrderItem,
@@ -91,15 +120,15 @@ class ProductDetailFragment(
             viewModel.orderItemModel.value = i;
             viewModel.maxQuantity = quantityCanChoose;
         }
-        val extraData= viewModel.orderItemModel.value?.productOrderItem?.extraData;
+        val extraData = viewModel.orderItemModel.value?.productOrderItem?.extraData;
 
         GlobalScope.launch(Dispatchers.IO) {
-           extraData!!.let {
+            extraData!!.let {
                 fragmentMap[OptionPage.Variant] = VariantFragment.getInstance(it);
                 fragmentMap[OptionPage.Modifier] = ModifierFragment.getInstance(it);
                 launch(Dispatchers.Main) {
                     optionsPagerAdapter.submitList(fragmentMap.values);
-                    if(it.variantStrProductList==null){
+                    if (it.variantStrProductList == null) {
                         binding.tabOption.getTabAt(0)?.view?.isClickable = false;
                         binding.tabOption.getTabAt(1)?.select();
                     }
@@ -109,11 +138,13 @@ class ProductDetailFragment(
     }
 
     override fun initAction() {
-
+        binding.noteInput.setOnClickListener {
+                onEditNote();
+        };
     }
 
     interface ProductDetailListener {
-        fun onCartAdded(item: OrderItemModel,action: ItemActionType)
+        fun onCartAdded(item: OrderItemModel, action: ItemActionType)
     }
 
     companion object {
@@ -123,7 +154,7 @@ class ProductDetailFragment(
         fun getInstance(
             item: OrderItemModel,
             quantityCanChoose: Int = -1,
-            action : ItemActionType,
+            action: ItemActionType,
             listener: ProductDetailListener? = null,
         ): ProductDetailFragment {
             return ProductDetailFragment(
@@ -131,7 +162,7 @@ class ProductDetailFragment(
             ).apply {
                 arguments = Bundle().apply {
                     putParcelable(ARG_ORDER_ITEM_MODEL_FRAGMENT, item)
-                    putSerializable(ARG_ITEM_ACTION_TYPE,action);
+                    putSerializable(ARG_ITEM_ACTION_TYPE, action);
                     putInt(ARG_PRODUCT_DETAIL_QUANTITY, quantityCanChoose)
                 }
             };
@@ -144,7 +175,7 @@ class ProductDetailFragment(
 
     override fun onAddCart(item: OrderItemModel) {
         onBack();
-        listener?.onCartAdded(item,viewModel.actionType.value!!);
+        listener?.onCartAdded(item, viewModel.actionType.value!!);
     }
 
     override fun onModifierItemChange(item: ModifierSelectedItemModel) {
@@ -159,5 +190,9 @@ class ProductDetailFragment(
         viewModel.onVariantItemChange(item);
     }
 
+    private fun onEditNote() {
+        dialogCategory.show();
+        dialogCategory.window?.setBackgroundDrawableResource(android.R.color.transparent)
+    }
 
 }

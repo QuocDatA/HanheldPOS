@@ -8,6 +8,10 @@
         <import type="android.view.View" />
 
         <variable
+            name="title"
+            type="String" />
+
+        <variable
             name="message"
             type="String" />
 
@@ -41,6 +45,16 @@
             style="@style/RootLayout.WrapHeight"
             android:background="@color/surface"
             android:padding="@dimen/_8sdp">
+
+            <TextView
+                visibleObject="@{title != null}"
+                style="@style/TextAppearance.Primary"
+                android:layout_width="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="@{title}"
+                android:textStyle="bold"
+                tools:text="Title"/>
 
             <include layout="@layout/spacing_vertical" />
 

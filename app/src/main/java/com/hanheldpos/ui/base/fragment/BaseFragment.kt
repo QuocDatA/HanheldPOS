@@ -132,12 +132,14 @@ abstract class BaseFragment<T : ViewDataBinding, VM : BaseViewModel> : Fragment(
      * ------NEGATIVE BUTTON---POSITIVE BUTTON---
      */
     fun showAlert(
+        title: String? = null,
         message: String?,
         positiveText: String? = null,
         negativeText: String? = null,
         onClickListener: AppAlertDialog.AlertDialogOnClickListener? = null
     ) {
         (activity as? BaseActivity<*, *>)?.showAlert(
+            title,
             message,
             positiveText,
             negativeText,
@@ -159,10 +161,6 @@ abstract class BaseFragment<T : ViewDataBinding, VM : BaseViewModel> : Fragment(
             callback
         )
     }
-
-
-
-
 
 
 }
