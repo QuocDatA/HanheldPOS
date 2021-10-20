@@ -16,6 +16,7 @@
         android:background="@color/color_2"
         android:orientation="vertical">
         <androidx.recyclerview.widget.RecyclerView
+            android:overScrollMode="never"
             android:id="@+id/containerModifier"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
