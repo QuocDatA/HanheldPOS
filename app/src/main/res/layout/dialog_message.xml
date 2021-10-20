@@ -54,7 +54,8 @@
                 android:gravity="center"
                 android:text="@{title}"
                 android:textStyle="bold"
-                tools:text="Title"/>
+                android:visibility="@{title==null||title.empty?View.GONE:View.VISIBLE}"
+                tools:text="Title" />
 
             <include layout="@layout/spacing_vertical" />
 
