@@ -74,9 +74,7 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
             // Check cart initialized
             if (it.screen == HomePage.Order && cartDataVM.cartModelLD.value == null) {
                 showAlert(
-                    "Cart has not been initialized!",
-                    "OK",
-                    null,
+                    message =  "Cart has not been initialized!",
                     onClickListener = object : AppAlertDialog.AlertDialogOnClickListener {
                         override fun onPositiveClick() {
                             screenViewModel.showTablePage();
