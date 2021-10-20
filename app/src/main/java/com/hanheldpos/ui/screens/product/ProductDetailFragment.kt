@@ -1,6 +1,7 @@
 package com.hanheldpos.ui.screens.product
 
 import android.os.Bundle
+import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.google.android.material.tabs.TabLayoutMediator
@@ -99,6 +100,7 @@ class ProductDetailFragment(
                 launch(Dispatchers.Main) {
                     optionsPagerAdapter.submitList(fragmentMap.values);
                     if(it.variantStrProductList==null){
+                        binding.tabOption.getTabAt(0)?.view?.isClickable = false;
                         binding.tabOption.getTabAt(1)?.select();
                     }
                 }

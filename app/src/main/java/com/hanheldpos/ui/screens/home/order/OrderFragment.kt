@@ -224,7 +224,6 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
                 ?.let { it1 ->
                     val rs: MutableList<ProductOrderItem> = mutableListOf();
                     it1.forEach {
-
                         it?.let { it2 -> rs.add(it2) }
                     }
                     productAdapHelper.submitList(rs.toMutableList());
