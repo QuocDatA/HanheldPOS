@@ -34,6 +34,9 @@ data class ProductItem(
     @field:SerializedName("_key")
     val key: Int,
 
+    @field:SerializedName("Acronymn")
+    val acronymn: String? = null,
+
     @field:SerializedName("ProductId")
     val productID: Int,
 

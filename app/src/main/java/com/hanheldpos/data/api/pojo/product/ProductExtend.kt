@@ -27,6 +27,7 @@ fun ProductItem.toProductOrderItem(
     productOrderItem.text = this.name
     productOrderItem.sku = this.sku
     productOrderItem.description = this.description
+    productOrderItem.acronymn = this.acronymn;
     productOrderItem.price = this.price
     productOrderItem.isPriceFixed = this.isPriceFixed;
     productOrderItem.comparePrice = this.comparePrice

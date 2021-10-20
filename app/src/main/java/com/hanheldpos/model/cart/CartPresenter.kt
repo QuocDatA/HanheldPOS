@@ -10,8 +10,10 @@ import android.view.View
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.PopupWindow
+import com.diadiem.pos_components.PTextView
 import com.hanheldpos.R
 import com.hanheldpos.binding.loadImageFromUrlToCircular
+import com.hanheldpos.binding.setBackColor
 import com.hanheldpos.model.cart.order.OrderItemModel
 
 object CartPresenter {
@@ -62,11 +64,11 @@ object CartPresenter {
 
         showPopupWindowWithoutBinging(
             popupView,
-            item?.productOrderItem?.img
+            item
         )
     }
 
-    private fun showPopupWindowWithoutBinging(anchor: View, imgUrl: String?) {
+    private fun showPopupWindowWithoutBinging(anchor: View, item: OrderItemModel?) {
         PopupWindow(anchor.context).apply {
             isOutsideTouchable = true
             val inflater = LayoutInflater.from(anchor.context)
@@ -78,13 +80,12 @@ object CartPresenter {
             }
             setBackgroundDrawable(null)
 
-            val imgView: ImageView = contentView.findViewById(R.id.imgProductAdded)
-            loadImageFromUrlToCircular(imgView, imgUrl)
-//            animationStyle = R.style.popup_window_animation
+            val circle: View = contentView.findViewById(R.id.circleCartAnimation);
+            setBackColor(circle, item?.productOrderItem?.color);
+            val txt: PTextView = contentView.findViewById(R.id.txtProductAdded);
+            txt.text = item?.productOrderItem?.acronymn;
 
         }.also { popupWindow ->
-            // Absolute location of the anchor view
-//            popupWindow.animationStyle = R.style.popup_window_animation
             val location = IntArray(2).apply {
                 anchor.getLocationOnScreen(this)
             }

@@ -21,6 +21,7 @@ data class ProductOrderItem (
     var sku: String? = null,
     var description: String? = null,
     var price: Double? = null,
+    var acronymn : String? = null,
     var isPriceFixed : Boolean? = false,
     var comparePrice: Double? = null,
     var img: String? = null,
