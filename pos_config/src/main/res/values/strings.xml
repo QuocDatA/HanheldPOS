@@ -94,7 +94,7 @@
     <string name="cash">Cash</string>
     <string name="note">Note</string>
     <string name="total">Total</string>
-    <string name="delete_cart_waring">Would you like to delete all items in your cart?</string>
+    <string name="delete_cart_warning">Would you like to delete all items in your cart?</string>
     <string name="confirm">Confirmation</string>
     <string name="delete_cart">Delete Cart</string>
     <string name="ok">Ok</string>

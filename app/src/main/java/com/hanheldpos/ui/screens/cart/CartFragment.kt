@@ -39,7 +39,7 @@ class CartFragment(
             binding.viewModel = this;
             initLifeCycle(this@CartFragment);
         }
-        binding.cartDataVM=cartDataVM;
+        binding.cartDataVM = cartDataVM;
 
 
     }
@@ -65,7 +65,7 @@ class CartFragment(
         cartProductAdapter = CartProductAdapter(
             onProductClickListener = object : BaseItemClickListener<OrderItemModel> {
                 override fun onItemClick(adapterPosition: Int, item: OrderItemModel) {
-                    onEditItemIntCart(adapterPosition,item);
+                    onEditItemIntCart(adapterPosition, item);
                 }
             },
         );
@@ -114,31 +114,35 @@ class CartFragment(
     }
 
     override fun getBack() {
-        navigator.goOneBack();
+        onFragmentBackPressed()
     }
 
     override fun deleteCart() {
-        cartDataVM.deleteCart();
-        getBack();
+        cartDataVM.deleteCart(
+            getString(R.string.confirmation),
+            getString(R.string.delete_cart_warning),
+            getString(R.string.alert_btn_negative),
+            this::onFragmentBackPressed
+        )
     }
 
-    fun onEditItemIntCart(position: Int, item: OrderItemModel){
-        when(item.type){
-            OrderItemType.Product->{
+    fun onEditItemIntCart(position: Int, item: OrderItemModel) {
+        when (item.type) {
+            OrderItemType.Product -> {
                 navigator.goToWithCustomAnimation(
                     ProductDetailFragment.getInstance(
                         item = item.clone(),
                         action = ItemActionType.Modify,
                         quantityCanChoose = 100,
-                        listener = object :  ProductDetailFragment.ProductDetailListener {
+                        listener = object : ProductDetailFragment.ProductDetailListener {
                             override fun onCartAdded(item: OrderItemModel, action: ItemActionType) {
-                                onUpdateItemInCart(position,item);
+                                onUpdateItemInCart(position, item);
                             }
                         }
                     )
                 )
             }
-            OrderItemType.Combo->{
+            OrderItemType.Combo -> {
                 navigator.goToWithCustomAnimation(
                     ComboFragment.getInstance(
                         item = item.clone(),
@@ -146,7 +150,7 @@ class CartFragment(
                         quantityCanChoose = 100,
                         listener = object : ComboFragment.ComboListener {
                             override fun onCartAdded(item: OrderItemModel, action: ItemActionType) {
-                                onUpdateItemInCart(position,item);
+                                onUpdateItemInCart(position, item);
                             }
                         }
                     )
@@ -156,8 +160,8 @@ class CartFragment(
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun onUpdateItemInCart(position: Int, item: OrderItemModel){
-        cartDataVM.updateItemInCart(position,item);
+    fun onUpdateItemInCart(position: Int, item: OrderItemModel) {
+        cartDataVM.updateItemInCart(position, item);
         cartProductAdapter.notifyDataSetChanged();
     }
 

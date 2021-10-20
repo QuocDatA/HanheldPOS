@@ -160,6 +160,7 @@ abstract class BaseActivity<T : ViewDataBinding, VM : BaseViewModel> : AppCompat
      * ------NEGATIVE BUTTON---POSITIVE BUTTON---
      */
     fun showAlert(
+        title: String? = null,
         message: String?,
         positiveText: String? = null,
         negativeText: String? = null,
@@ -168,6 +169,7 @@ abstract class BaseActivity<T : ViewDataBinding, VM : BaseViewModel> : AppCompat
 
         dismissDialog()
         AppAlertDialog.get().show(
+            title,
             message,
             positiveText,
             negativeText,
@@ -219,6 +221,7 @@ abstract class BaseActivity<T : ViewDataBinding, VM : BaseViewModel> : AppCompat
         callback: RequestPermissionCallback
     ) {
         showAlert(
+            null,
             explainPermission,
             getString(R.string.alert_btn_go_to_settings),
             getString(R.string.alert_btn_negative),
