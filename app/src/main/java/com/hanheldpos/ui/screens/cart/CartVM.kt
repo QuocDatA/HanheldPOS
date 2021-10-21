@@ -5,15 +5,15 @@ import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
 
 class CartVM : BaseUiViewModel<CartUV>() {
 
-    fun initLifeCycle(owner: LifecycleOwner){
+    fun initLifeCycle(owner: LifecycleOwner) {
         owner.lifecycle.addObserver(this);
     }
 
-    fun backPress(){
+    fun backPress() {
         uiCallback?.getBack();
     }
 
-    fun deleteCart(){
+    fun deleteCart() {
         uiCallback?.deleteCart();
     }
 

@@ -13,14 +13,16 @@
     </data>
 
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true">
+    <RelativeLayout
+        style="@style/ProductDetailRoot"
+        android:fitsSystemWindows="true"
+        android:orientation="vertical">
 
-        <RelativeLayout
-            style="@style/ProductDetailRoot"
-            android:fitsSystemWindows="true">
+        <LinearLayout
+            android:id="@+id/productInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <FrameLayout
                 android:id="@+id/toolbarLayout"
@@ -43,15 +45,13 @@
                 </FrameLayout>
             </FrameLayout>
 
-
             <LinearLayout
-                android:id="@+id/productInfo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/toolbarLayout"
                 android:orientation="vertical"
                 android:paddingHorizontal="@dimen/_9sdp"
-                android:paddingVertical="@dimen/_5sdp">
+                android:paddingVertical="@dimen/_5sdp"
+                app:layout_constraintTop_toBottomOf="@+id/toolbarLayout">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -82,50 +82,57 @@
                     android:paddingVertical="@dimen/_1sdp"
                     android:text="@{viewModel.orderItemModel.orderSku}" />
             </LinearLayout>
+        </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/tabLayout"
+        <LinearLayout
+            android:id="@+id/tabLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/bottomAction"
+            android:layout_below="@+id/productInfo"
+            android:background="@color/color_2"
+            android:orientation="vertical">
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tabOption"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_above="@id/noteProduct"
-                android:layout_below="@id/productInfo"
-                android:background="@color/color_2"
-                android:orientation="vertical">
+                android:layout_height="wrap_content"
+                app:tabGravity="fill"
+                app:tabMaxWidth="0dp"
+                app:tabMode="fixed"
+                app:tabSelectedTextColor="@color/color_4"
 
-                <com.google.android.material.tabs.TabLayout
-                    android:id="@+id/tabOption"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:tabGravity="fill"
-                    app:tabMaxWidth="0dp"
-                    app:tabMode="fixed"
-                    app:tabSelectedTextColor="@color/color_4"
+                app:tabTextAppearance="@style/ProductDetailTabTitle" />
 
-                    app:tabTextAppearance="@style/ProductDetailTabTitle" />
+            <include
+                layout="@layout/divider_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_1sdp" />
 
-                <include
-                    layout="@layout/divider_vertical"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_1sdp" />
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/optionContainer"
+                useInputEnable="@{false}"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+        </LinearLayout>
 
-                <androidx.viewpager2.widget.ViewPager2
-                    android:id="@+id/optionContainer"
-                    useInputEnable="@{false}"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1" />
-
-
-            </LinearLayout>
+        <LinearLayout
+            android:id="@+id/bottomAction"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="vertical">
 
             <LinearLayout
                 android:id="@+id/noteProduct"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_above="@+id/dividerActin"
                 android:background="@color/color_2"
                 android:orientation="vertical"
-                android:paddingHorizontal="@dimen/_10sdp">
+                android:paddingHorizontal="@dimen/_10sdp"
+                app:layout_constraintBottom_toTopOf="@+id/dividerActin"
+                app:layout_constraintTop_toBottomOf="@+id/tabLayout">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -160,11 +167,13 @@
 
                 <com.diadiem.pos_components.PTextInputEditText
                     style="@style/BaseTextInput"
+                    android:id="@+id/noteInput"
                     android:layout_marginVertical="@dimen/_8sdp"
                     android:background="@drawable/bg_outline"
                     android:focusableInTouchMode="true"
                     android:hint="@string/special_instructions"
                     android:inputType="text"
+                    android:focusable="false"
                     android:minHeight="@dimen/_40sdp"
                     android:paddingHorizontal="@dimen/_6sdp"
                     android:paddingVertical="@dimen/_7sdp"
@@ -180,14 +189,16 @@
                 layout="@layout/divider_vertical"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_1sdp"
-                android:layout_above="@id/actionBar" />
+                app:layout_constraintBottom_toTopOf="@+id/actionBar" />
 
             <RelativeLayout
                 android:id="@+id/actionBar"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_40sdp"
-                android:layout_alignParentBottom="true"
-                android:background="@color/color_2">
+                android:background="@color/color_2"
+                android:clickable="true"
+                android:focusable="true"
+                app:layout_constraintBottom_toBottomOf="parent">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -249,7 +260,7 @@
 
                         <com.diadiem.pos_components.PTextView
                             style="@style/ProductDetailText"
-                            android:text="@{viewModel.numberQuantity > 0 ? ( viewModel.actionType == ItemActionType.Add ? `Add` : `Edit` ) : `Remove`}"
+                            android:text="@{viewModel.numberQuantity > 0 ? ( viewModel.actionType == ItemActionType.Add ? `Add` : `Update` ) : `Remove`}"
                             android:textAllCaps="true"
                             app:useFontStyle="bold"
                             app:useTextColor="color2"
@@ -267,10 +278,9 @@
 
                 </com.google.android.material.card.MaterialCardView>
             </RelativeLayout>
+        </LinearLayout>
 
-
-        </RelativeLayout>
-    </ScrollView>
+    </RelativeLayout>
 
 
 </layout>

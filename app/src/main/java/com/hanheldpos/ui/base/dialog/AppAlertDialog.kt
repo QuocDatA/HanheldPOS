@@ -3,6 +3,7 @@ package com.hanheldpos.ui.base.dialog
 import android.app.Activity
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.icu.text.CaseMap
 import android.view.LayoutInflater
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
@@ -35,6 +36,7 @@ class AppAlertDialog : BaseDialog() {
      */
     @JvmOverloads
     fun show(
+        title: String? = null,
         message: String?,
         positiveText: String? = null,
         negativeText: String? = null,
@@ -54,6 +56,7 @@ class AppAlertDialog : BaseDialog() {
 
                     binding.apply {
                         this.message = message
+                        this.title = title
 
                         // Confirm button
                         this.btnConfirmText = positiveText ?: context.getString(android.R.string.ok)

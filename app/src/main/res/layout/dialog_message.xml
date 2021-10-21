@@ -8,6 +8,10 @@
         <import type="android.view.View" />
 
         <variable
+            name="title"
+            type="String" />
+
+        <variable
             name="message"
             type="String" />
 
@@ -40,27 +44,45 @@
         <LinearLayout
             style="@style/RootLayout.WrapHeight"
             android:background="@color/surface"
-            android:padding="@dimen/_8sdp">
+            >
 
-            <include layout="@layout/spacing_vertical" />
-
-            <TextView
-                style="@style/TextAppearance.Primary"
+            <LinearLayout
+                android:orientation="vertical"
+                android:padding="@dimen/_8sdp"
                 android:layout_width="match_parent"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:text="@{message}"
-                tools:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s" />
+                android:layout_height="wrap_content">
+                <TextView
+                    visibleObject="@{title != null}"
+                    style="@style/TextAppearance.Primary"
+                    android:layout_width="match_parent"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="@{title}"
+                    android:textStyle="bold"
+                    tools:text="Title"/>
 
-            <include layout="@layout/spacing_vertical" />
+                <include layout="@layout/spacing_vertical" />
+
+                <TextView
+                    style="@style/TextAppearance.Primary"
+                    android:layout_width="match_parent"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="@{message}"
+                    tools:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s" />
+
+                <include
+                    layout="@layout/spacing_vertical"
+                    android:layout_width="3dp"
+                    android:layout_height="3dp" />
+            </LinearLayout>
+
 
             <LinearLayout
                 style="@style/RootLayout.WrapHeight"
-                android:layout_marginStart="@dimen/_8sdp"
-                android:layout_marginEnd="@dimen/_8sdp"
                 android:orientation="horizontal">
 
-                <com.google.android.material.button.MaterialButton
+                <!--<com.google.android.material.button.MaterialButton
                     style="@style/MaterialButton.Secondary"
                     android:layout_width="0dp"
                     android:layout_weight="1"
@@ -83,8 +105,50 @@
                     android:text="@{btnConfirmText}"
                     android:visibility="@{btnConfirmText == null || btnConfirmText.empty ? View.GONE : View.VISIBLE}"
                     app:cornerRadius="@dimen/_4sdp"
-                    tools:text="Yes" />
+                    tools:text="Yes" />-->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="@dimen/_32sdp"
+                    android:background="@drawable/bg_outline"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:gravity="center"
+                    android:onClick="@{btnDeniedOnClick}"
+                    android:visibility="@{btnDeniedText == null ? View.GONE : View.VISIBLE}">
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{btnDeniedText}"
+                        android:textAlignment="center"
+                        android:textAllCaps="true"
+                        android:textColor="@color/textSecondary"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="@dimen/_32sdp"
+                    android:background="@drawable/bg_outline"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:gravity="center"
+                    android:onClick="@{btnConfirmOnClick}"
+                    android:visibility="@{btnConfirmText == null || btnConfirmText.empty ? View.GONE : View.VISIBLE}">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{btnConfirmText}"
+                        android:textAlignment="center"
+                        android:textAllCaps="true"
+                        android:textColor="@color/primary"
+                        android:textStyle="bold" />
+                </LinearLayout>
             </LinearLayout>
 
         </LinearLayout>

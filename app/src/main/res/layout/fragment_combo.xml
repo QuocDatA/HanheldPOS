@@ -161,6 +161,8 @@
                         style="@style/BaseTextInput"
                         android:layout_marginVertical="@dimen/_8sdp"
                         android:background="@drawable/bg_outline"
+                        android:id="@+id/noteInput"
+                        android:focusable="false"
                         android:focusableInTouchMode="true"
                         android:hint="Special Instructions"
                         android:inputType="text"
@@ -252,7 +254,7 @@
 
                     <com.diadiem.pos_components.PTextView
                         style="@style/ProductDetailText"
-                        android:text="@{viewModel.numberQuantity > 0 ? ( viewModel.actionType == ItemActionType.Add ? `Add` : `Edit` ) : `Remove`}"
+                        android:text="@{viewModel.numberQuantity > 0 ? ( viewModel.actionType == ItemActionType.Add ? `Add` : `Update` ) : `Remove`}"
                         android:textAllCaps="true"
                         app:useFontStyle="bold"
                         app:useTextColor="color2"
