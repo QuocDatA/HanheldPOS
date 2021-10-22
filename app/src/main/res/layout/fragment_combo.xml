@@ -162,7 +162,7 @@
                         android:layout_marginVertical="@dimen/_8sdp"
                         android:background="@drawable/bg_outline"
                         android:id="@+id/noteInput"
-                        android:focusable="false"
+                        android:focusable="true"
                         android:focusableInTouchMode="true"
                         android:hint="Special Instructions"
                         android:inputType="text"

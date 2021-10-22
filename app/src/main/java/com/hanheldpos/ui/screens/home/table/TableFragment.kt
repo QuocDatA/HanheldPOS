@@ -34,8 +34,6 @@ class TableFragment : BaseFragment<FragmentTableBinding, TableVM>(), TableUV {
     // ViewModel
     private val screenViewModel by activityViewModels<ScreenViewModel>()
     private val cartDataVM by activityViewModels<CartDataVM>()
-    // Dialog Category
-    private lateinit var dialogTable: AlertDialog;
 
 
     override fun viewModelClass(): Class<TableVM> {
