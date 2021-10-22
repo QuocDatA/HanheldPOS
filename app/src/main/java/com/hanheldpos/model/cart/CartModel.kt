@@ -10,7 +10,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class CartModel(
-    var orderGuid: String? = null,
+    var orderCode: String? = null,
     //table info
     var table: FloorTableItem? = null,
 

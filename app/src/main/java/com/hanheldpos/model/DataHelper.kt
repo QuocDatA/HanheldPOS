@@ -161,6 +161,8 @@ object DataHelper {
     private fun getTableModel() = tableResp?.model?.firstOrNull()
     fun getTableStatus() = getTableModel()?.tableStatus
 
+
+
     //endregion
 
 
@@ -194,6 +196,6 @@ object DataHelper {
         included?.assignToProducts?.let { result.addAll(it) };
         return result;
     }
-
     //endregion
+
 }
