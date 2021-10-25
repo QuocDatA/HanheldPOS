@@ -459,7 +459,7 @@
                             android:layout_weight="1" />
 
                         <com.diadiem.pos_components.PTextView
-                            priceView="@{cartDataVM.cartModelLD.getPrice()}"
+                            priceView="@{cartDataVM.cartModelLD.price}"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -467,7 +467,6 @@
                             app:useFontStyle="semi_bold"
                             app:useTextColor="color4"
                             app:useTextHeader="h4"
-
                             tools:text="100.000" />
                     </LinearLayout>
 
@@ -599,7 +598,7 @@
                 android:orientation="horizontal">
 
                 <com.diadiem.pos_components.PTextView
-                    priceView="@{cartDataVM.cartModelLD.getPrice()}"
+                    priceView="@{cartDataVM.cartModelLD.price}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_12sdp"

@@ -103,7 +103,6 @@ class ProductDetailFragment(
             extraData!!.let {
                 fragmentMap[OptionPage.Variant] = VariantFragment.getInstance(it);
                 fragmentMap[OptionPage.Modifier] = ModifierFragment.getInstance(it);
-
                 launch(Dispatchers.Main) {
                     optionsPagerAdapter.submitList(fragmentMap.values);
                     if (it.variantStrProductList == null) {
