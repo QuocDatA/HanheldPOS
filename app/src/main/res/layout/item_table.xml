@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
+        <import type="com.hanheldpos.model.home.table.TableStatusType"/>
         <import type="com.hanheldpos.model.home.table.TableModeViewType" />
 
         <variable
@@ -31,7 +31,7 @@
                 visibleObject="@{item.uiType != TableModeViewType.Empty}"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#EEEEEE">
+                android:background="@{ item.tableStatus == TableStatusType.Available ? @color/_EEEEEE : item.tableStatus == TableStatusType.Unavailable ?  @color/_007EFF :  @color/_FBD536}">
 
                 <com.diadiem.pos_components.PTextView
                     visibleObject="@{item.uiType == TableModeViewType.Table}"

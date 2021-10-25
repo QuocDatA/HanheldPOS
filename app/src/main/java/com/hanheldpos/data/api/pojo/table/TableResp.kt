@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName
 import com.hanheldpos.model.home.table.TableModeViewType
 import com.hanheldpos.model.home.table.TableStatusType
 import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.IgnoredOnParcel
 
 @Parcelize
 data class TableResp(
@@ -142,7 +143,8 @@ data class FloorTableItem(
         @kotlinx.parcelize.IgnoredOnParcel
         var uiType : TableModeViewType? = TableModeViewType.Table;
 
-        var tableStatus : TableStatusType =  TableStatusType.Pending
+        @IgnoredOnParcel
+        var tableStatus : TableStatusType =  TableStatusType.Available;
 
 }
 

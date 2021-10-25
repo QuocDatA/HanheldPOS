@@ -11,7 +11,6 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.order.menu.GroupItem
 import com.hanheldpos.databinding.DialogCategoryBinding
-import com.hanheldpos.databinding.DialogPopupInputTextBinding
 import com.hanheldpos.databinding.FragmentProductDetailBinding
 import com.hanheldpos.extension.notifyValueChange
 import com.hanheldpos.model.cart.order.OrderItemModel
@@ -25,9 +24,7 @@ import com.hanheldpos.ui.screens.product.adapter.modifier.ModifierSelectedItemMo
 import com.hanheldpos.ui.screens.product.options.OptionVM
 import com.hanheldpos.ui.screens.product.options.modifier.ModifierFragment
 import com.hanheldpos.ui.screens.product.options.variant.VariantFragment
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 
 class ProductDetailFragment(
@@ -84,26 +81,6 @@ class ProductDetailFragment(
             it.attach();
         }
 
-
-        // Init Dialog Note
-        val dialogCateBinding: DialogPopupInputTextBinding = DataBindingUtil.inflate(
-            LayoutInflater.from(context),
-            R.layout.dialog_popup_input_text,
-            null,
-            false
-        );
-        dialogCateBinding.text = viewModel.orderItemModel.value?.note;
-
-        val builder = AlertDialog.Builder(context);
-        builder.setView(dialogCateBinding.root);
-
-        dialogCategory = builder.create();
-        dialogCateBinding.acceptBtn.setOnClickListener {
-            viewModel.orderItemModel.value?.note = dialogCateBinding.text
-            viewModel.orderItemModel.notifyValueChange();
-            dialogCategory.dismiss();
-        }
-
     }
 
     override fun initData() {
@@ -130,6 +107,7 @@ class ProductDetailFragment(
                     optionsPagerAdapter.submitList(fragmentMap.values);
                     if (it.variantStrProductList == null) {
                         binding.tabOption.getTabAt(0)?.view?.isClickable = false;
+                        delay(100);
                         binding.tabOption.getTabAt(1)?.select();
                     }
                 }
@@ -138,9 +116,6 @@ class ProductDetailFragment(
     }
 
     override fun initAction() {
-        binding.noteInput.setOnClickListener {
-                onEditNote();
-        };
     }
 
     interface ProductDetailListener {
@@ -188,11 +163,6 @@ class ProductDetailFragment(
 
     override fun onVariantItemChange(item: GroupItem) {
         viewModel.onVariantItemChange(item);
-    }
-
-    private fun onEditNote() {
-        dialogCategory.show();
-        dialogCategory.window?.setBackgroundDrawableResource(android.R.color.transparent)
     }
 
 }

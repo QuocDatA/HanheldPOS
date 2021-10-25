@@ -42,6 +42,7 @@ class CartDataVM : BaseViewModel() {
     }
 
     fun addToCart(item: OrderItemModel) {
+        item.otherFee = calculateFee(item)
         this.cartModelLD.value!!.listOrderItem.add(item);
         this.cartModelLD.notifyValueChange();
     }
@@ -69,5 +70,19 @@ class CartDataVM : BaseViewModel() {
                     }
                 }
             )
+    }
+
+    private fun calculateFee(item: OrderItemModel): Double {
+        var result = item.otherFee
+
+        val regularProductIdFees = DataHelper.getRegularProductIdFees()
+
+        regularProductIdFees.forEach {
+            if (it.productId == item.orderItemId) {
+                result += DataHelper.getRegularFee()
+            }
+        }
+
+        return result
     }
 }

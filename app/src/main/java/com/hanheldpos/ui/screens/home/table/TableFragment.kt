@@ -12,6 +12,7 @@ import com.hanheldpos.data.api.pojo.table.FloorTableItem
 import com.hanheldpos.databinding.FragmentTableBinding
 import com.hanheldpos.extension.notifyValueChange
 import com.hanheldpos.model.home.table.TableModeViewType
+import com.hanheldpos.model.home.table.TableStatusType
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.cart.CartDataVM
@@ -33,8 +34,6 @@ class TableFragment : BaseFragment<FragmentTableBinding, TableVM>(), TableUV {
     // ViewModel
     private val screenViewModel by activityViewModels<ScreenViewModel>()
     private val cartDataVM by activityViewModels<CartDataVM>()
-    // Dialog Category
-    private lateinit var dialogTable: AlertDialog;
 
 
     override fun viewModelClass(): Class<TableVM> {
@@ -68,11 +67,9 @@ class TableFragment : BaseFragment<FragmentTableBinding, TableVM>(), TableUV {
                     if (SystemClock.elapsedRealtime() - viewModel.mLastTimeClick > 1000) {
                         when (item.uiType) {
                             TableModeViewType.Table -> {
-                                viewModel.mLastTimeClick = SystemClock.elapsedRealtime();
-                                openDialogInputCustomer(item);
+                                onTableChoosen(adapterPosition,item);
                             }
                             TableModeViewType.PrevButton -> {
-
                                 tableAdapterHelper.previous();
                             }
                             TableModeViewType.NextButton -> {
@@ -126,14 +123,43 @@ class TableFragment : BaseFragment<FragmentTableBinding, TableVM>(), TableUV {
         })
     }
 
-    private fun openDialogInputCustomer(item: FloorTableItem) {
-        navigator.goTo(TableInputFragment.getInstance(listener = object :
-            TableInputFragment.TableInputListener {
-            override fun onCompleteTable(numberCustomer: Int) {
-                cartDataVM.initCart(numberCustomer,item);
-                screenViewModel.showOrderPage();
+    private fun onTableChoosen(adapterPosition: Int,item: FloorTableItem){
+        when(item.tableStatus){
+            TableStatusType.Available->{
+                // Check list has any pending table, if has change to available
+                tableAdapter.currentList.filter { it.tableStatus == TableStatusType.Pending }.let {
+                  if (it.isNotEmpty()){
+                      it.forEach { table-> table.tableStatus = TableStatusType.Available };
+                      tableAdapter.notifyDataSetChanged();
+                      return;
+                  }
+                };
+
+                viewModel.mLastTimeClick = SystemClock.elapsedRealtime();
+
+                // Show Table intput number customer
+                navigator.goTo(TableInputFragment.getInstance(listener = object :
+                    TableInputFragment.TableInputListener {
+                    override fun onCompleteTable(numberCustomer: Int) {
+                        item.tableStatus = TableStatusType.Pending;
+                        tableAdapter.notifyItemChanged(adapterPosition);
+
+                        // Init cart fisrt time
+                        cartDataVM.initCart(numberCustomer,item);
+                        screenViewModel.showOrderPage();
+                    }
+                }));
+
             }
-        }));
+            TableStatusType.Pending->{
+                item.tableStatus = TableStatusType.Available;
+                tableAdapter.notifyItemChanged(adapterPosition);
+            }
+            TableStatusType.Unavailable->{
+
+            }
+        }
+
     }
     companion object {
         var selectedSort : Int = 0;

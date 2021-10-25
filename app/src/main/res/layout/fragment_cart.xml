@@ -467,7 +467,6 @@
                             app:useFontStyle="semi_bold"
                             app:useTextColor="color4"
                             app:useTextHeader="h4"
-
                             tools:text="100.000" />
                     </LinearLayout>
 

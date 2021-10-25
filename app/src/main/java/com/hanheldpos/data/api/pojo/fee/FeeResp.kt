@@ -1,6 +1,8 @@
 package com.hanheldpos.data.api.pojo.fee
 
 import android.os.Parcelable
+import com.fasterxml.jackson.annotation.JsonEnumDefaultValue
+import com.fasterxml.jackson.annotation.JsonProperty
 import com.google.gson.annotations.SerializedName
 import com.hanheldpos.model.cart.fee.FeeApplyToType
 import com.hanheldpos.model.cart.fee.FeeType
@@ -8,14 +10,14 @@ import kotlinx.parcelize.Parcelize
 
 
 @Parcelize
-data class FeeResp (
+data class FeeResp(
 
-    @SerializedName("Message") var message : String,
-    @SerializedName("DidError") var didError : Boolean,
-    @SerializedName("ErrorMessage") var errorMessage : String,
-    @SerializedName("Model") var feeModel : FeeModel
+    @SerializedName("Message") var message: String,
+    @SerializedName("DidError") var didError: Boolean,
+    @SerializedName("ErrorMessage") var errorMessage: String,
+    @SerializedName("Model") var feeModel: FeeModel
 
-): Parcelable
+) : Parcelable
 
 /*
 data class DiscountList (
@@ -55,13 +57,13 @@ data class DiscountList (
 @Parcelize
 data class FeeModel(
     @SerializedName("FeesType")
-    val feesType: Map<String,String>,
+    val feesType: Map<String, String>,
 
-    @SerializedName("Fees") val fees : List<Fee>,
+    @SerializedName("Fees") val fees: List<Fee>,
 
 //    @SerializedName("DiscountList") val discounts : List<DiscountList>
 
-): Parcelable
+) : Parcelable
 
 @Parcelize
 data class Fee(
@@ -81,9 +83,9 @@ data class Fee(
     val feeType: FeeType,
 
     @field:SerializedName("AssignToProductList")
-    val assignToProducts:List<FeeAssignToProductItem>,
+    val assignToProducts: List<FeeAssignToProductItem>,
 
-    ): Parcelable
+    ) : Parcelable
 
 @Parcelize
 data class FeeAssignToProductItem(
@@ -92,4 +94,4 @@ data class FeeAssignToProductItem(
 
     @field:SerializedName("Visible")
     val visible: Int,
-): Parcelable
+) : Parcelable
