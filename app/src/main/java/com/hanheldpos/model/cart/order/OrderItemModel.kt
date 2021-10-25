@@ -1,7 +1,6 @@
 package com.hanheldpos.model.cart.order
 
 import android.os.Parcelable
-import android.util.Log
 import com.diadiem.pos_config.utils.Const
 import com.hanheldpos.data.repository.GenerateId
 import com.hanheldpos.model.DataHelper
@@ -30,7 +29,7 @@ data class OrderItemModel(
     var quantity: Int = 1,
     var note: String? = null,
     var isShownDetail: Boolean = false,
-    var otherFee: Double = 0.0,
+    var feeType : FeeApplyToType? = null,
 ) : Parcelable, Cloneable {
 
     public override fun clone(): OrderItemModel {
@@ -114,30 +113,53 @@ data class OrderItemModel(
         return price
     }
 
-    fun getPriceModSubTotal(): Double {
+    private fun getPriceModSubTotal(): Double {
         return extraDone?.selectedModifiers?.sumOf {
             it.getSubtotalModifier()
         } ?: 0.0;
     }
 
-    fun getPriceProModSubTotal(): Double {
+    private fun getPriceProModSubTotal(): Double {
         return getPriceRegular() + getPriceModSubTotal();
     }
 
-    fun getPriceSubTotal(): Double {
+    private fun getPriceSubTotal(): Double {
         return getPriceProModSubTotal() * quantity;
+    }
+
+    private fun getPriceTotalDisc() : Double {
+        return 0.0;
+    }
+
+    @JvmOverloads
+    fun getFee(subtotal: Double = getPriceSubTotal(), totalDisc: Double = getPriceTotalDisc()): Double {
+
+        var subIncDisc = subtotal - totalDisc
+
+        subIncDisc = if (subIncDisc < 0) 0.0 else subIncDisc
+
+
+        /// TODO dealing with missing Id and Value as suggested since these fields does not available in cart
+        val valueFee = DataHelper.getValueFee(feeType);
+        return when (feeType) {
+            FeeApplyToType.NotIncluded -> subIncDisc * ( valueFee/ 100)
+            FeeApplyToType.Included -> subIncDisc - (subIncDisc / ((valueFee + 100) / 100))
+            FeeApplyToType.Order -> subIncDisc * (valueFee / 100)
+            else-> 0.0
+        }
     }
 
     fun getPriceLineTotal(): Double {
         val subtotal = getPriceSubTotal();
         // TODO : add discount below
-        return subtotal;
+        val fee = getFee();
+        val disc = getPriceTotalDisc();
+        return subtotal - disc + fee;
     }
 
     fun getOrderPrice(): Double {
         var sum: Double = 0.0;
         if (type == OrderItemType.Combo) {
-
             sum =
                 if (productOrderItem?.isPriceFixed != true) productOrderItem?.price!! else productOrderItem?.comparePrice!!;
 

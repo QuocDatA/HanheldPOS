@@ -11,6 +11,7 @@ import com.hanheldpos.extension.notifyValueChange
 import com.hanheldpos.generated.callback.OnClickListener
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.cart.CartModel
+import com.hanheldpos.model.cart.fee.FeeApplyToType
 import com.hanheldpos.model.cart.order.OrderItemModel
 import com.hanheldpos.model.home.table.TableStatusType
 import com.hanheldpos.ui.base.dialog.AppAlertDialog
@@ -42,7 +43,7 @@ class CartDataVM : BaseViewModel() {
     }
 
     fun addToCart(item: OrderItemModel) {
-        item.otherFee = calculateFee(item)
+        item.feeType = DataHelper.getRegularProductIdTypeFee(item.productOrderItem?.id!!)
         this.cartModelLD.value!!.listOrderItem.add(item);
         this.cartModelLD.notifyValueChange();
     }
@@ -70,19 +71,5 @@ class CartDataVM : BaseViewModel() {
                     }
                 }
             )
-    }
-
-    private fun calculateFee(item: OrderItemModel): Double {
-        var result = item.otherFee
-
-        val regularProductIdFees = DataHelper.getRegularProductIdFees()
-
-        regularProductIdFees.forEach {
-            if (it.productId == item.orderItemId) {
-                result += DataHelper.getRegularFee()
-            }
-        }
-
-        return result
     }
 }

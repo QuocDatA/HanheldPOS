@@ -188,7 +188,7 @@
                     app:useFontStyle="bold"
                     app:useTextColor="color4"
                     app:useTextHeader="h5"
-                    priceView="@{cartDataVM.cartModelLD.price}"
+                    priceView="@{cartDataVM.cartModelLD.lineTotal}"
 
                     tools:text="1.000.000" />
 

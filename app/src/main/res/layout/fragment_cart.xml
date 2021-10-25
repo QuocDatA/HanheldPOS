@@ -354,7 +354,7 @@
                             android:layout_weight="1" />
 
                         <com.diadiem.pos_components.PTextView
-                            priceView="@{0.0}"
+                            priceView="@{cartDataVM.cartModelLD.fee}"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -459,7 +459,7 @@
                             android:layout_weight="1" />
 
                         <com.diadiem.pos_components.PTextView
-                            priceView="@{cartDataVM.cartModelLD.price}"
+                            priceView="@{cartDataVM.cartModelLD.lineTotal}"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -598,7 +598,7 @@
                 android:orientation="horizontal">
 
                 <com.diadiem.pos_components.PTextView
-                    priceView="@{cartDataVM.cartModelLD.price}"
+                    priceView="@{cartDataVM.cartModelLD.lineTotal}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_12sdp"

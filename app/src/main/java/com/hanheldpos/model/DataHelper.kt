@@ -179,29 +179,32 @@ object DataHelper {
                 .storeValue(PrefKey.Fee.FEE_RESP, value)
         }
 
+
     /**
-     * Get FeeAssignToProductItem with [Fee.feeApplyToType] is Included or Not Included
+     * Get Fee type [FeeApplyToType] with product id
      */
-    fun getRegularProductIdFees(): MutableList<FeeAssignToProductItem> {
-        val result = mutableListOf<FeeAssignToProductItem>();
-        val notIncluded = feeResp?.feeModel?.fees?.firstOrNull {
+    fun getRegularProductIdTypeFee(productGuid : String): FeeApplyToType? {
+
+        feeResp?.feeModel?.fees?.firstOrNull {
             it.feeApplyToType == FeeApplyToType.NotIncluded
+        }.let {
+            if (it?.assignToProducts?.find { it.productId == productGuid} != null) return  FeeApplyToType.NotIncluded;
         };
-        val included = feeResp?.feeModel?.fees?.firstOrNull {
+        feeResp?.feeModel?.fees?.firstOrNull {
             it.feeApplyToType == FeeApplyToType.Included
+        }.let {
+            if (it?.assignToProducts?.find { it.productId == productGuid} != null) return  FeeApplyToType.Included;
         };
-        notIncluded?.assignToProducts?.let { result.addAll(it) };
-        included?.assignToProducts?.let { result.addAll(it) };
-        return result;
+        return null;
     }
 
     /**
-    * Get regular fee value
-    * Regular [Fee] is fee where [Fee.feeApplyToType] = [FeeApplyToType.NotIncluded]
+    * Get  fee value
+    * Value [Fee] is fee  [Fee.feeApplyToType]
     * */
-    fun getRegularFee(): Double {
+    fun getValueFee(type : FeeApplyToType?): Double {
         val result: Double? = feeResp?.feeModel?.fees?.firstOrNull {
-            it.feeApplyToType == FeeApplyToType.NotIncluded
+            it.feeApplyToType == type
         }?.value
 
         return result ?: 0.0

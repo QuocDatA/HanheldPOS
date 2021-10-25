@@ -7,6 +7,7 @@ import com.hanheldpos.data.api.ApiConst
 import com.hanheldpos.data.api.pojo.order.menu.getModifierItemByListProduct
 import com.hanheldpos.data.api.pojo.order.menu.getProductModifierByListProduct
 import com.hanheldpos.data.api.pojo.order.menu.*
+import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.UserHelper
 import com.hanheldpos.model.home.order.ProductModeViewType
 import com.hanheldpos.model.image.getImageUrl
@@ -65,8 +66,9 @@ fun ProductItem.toProductOrderItem(
         productOrderItem.uiType = ProductModeViewType.Combo
     }
     if (this.groupPrices != null) {
-        productOrderItem.listGroupPriceInCombo = this.groupPrices?.toMutableList();
+        productOrderItem.listGroupPriceInCombo = this.groupPrices.toMutableList();
     }
+
     return productOrderItem;
 }
 

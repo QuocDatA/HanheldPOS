@@ -21,6 +21,7 @@ import com.hanheldpos.binding.loadImageFromUrlToCircular
 import com.hanheldpos.data.api.pojo.order.menu.MenusItem
 import com.hanheldpos.databinding.DialogCategoryBinding
 import com.hanheldpos.databinding.FragmentOrderBinding
+import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.cart.CartPresenter
 import com.hanheldpos.model.cart.order.OrderItemModel
 import com.hanheldpos.model.cart.order.OrderItemType
@@ -156,7 +157,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
                                 ProductDetailFragment.getInstance(
                                     item = OrderItemModel(
                                         productOrderItem = item,
-                                        type = OrderItemType.Product
+                                        type = OrderItemType.Product,
                                     ),
                                     quantityCanChoose = 100,
                                     action = ItemActionType.Add,
@@ -187,7 +188,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
                                 ComboFragment.getInstance(
                                     item = OrderItemModel(
                                         productOrderItem = item,
-                                        type = OrderItemType.Combo
+                                        type = OrderItemType.Combo,
                                     ),
                                     action = ItemActionType.Add,
                                     quantityCanChoose = 100,

@@ -8,6 +8,7 @@ import com.hanheldpos.data.api.pojo.order.menu.ProductItem
 import com.hanheldpos.data.api.pojo.order.menu.VariantStrProduct
 import com.hanheldpos.data.api.pojo.product.GroupPriceItem
 import com.hanheldpos.data.api.pojo.product.GroupPriceProductItem
+import com.hanheldpos.model.cart.fee.FeeApplyToType
 import com.hanheldpos.model.home.order.ProductModeViewType
 import com.hanheldpos.ui.screens.product.adapter.modifier.ModifierHeader
 import com.hanheldpos.ui.screens.product.adapter.modifier.ModifierSelectedItemModel
@@ -29,6 +30,8 @@ data class ProductOrderItem (
     var mappedItem: ProductItem? = null,
     var extraData: ExtraData? = null,
     var uiType: ProductModeViewType? = null,
+
+
     var pricingMethodType: PricingMethodType? = null,
     var modPricingType: ModPricingType? = null,
     var modPricingValue: Double? = null,

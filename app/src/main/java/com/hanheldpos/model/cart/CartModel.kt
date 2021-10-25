@@ -42,31 +42,26 @@ data class CartModel(
     }
 
     @JvmOverloads
-    fun getPrice(subtotal: Double = getSubTotal(), totalDisc: Double = getTotalDisc()): Double {
-
+    fun getFee(subtotal: Double = getSubTotal(), totalDisc: Double = getTotalDisc()): Double {
         var subIncDisc = subtotal - totalDisc
 
         subIncDisc = if (subIncDisc < 0) 0.0 else subIncDisc
 
-
         /// TODO dealing with missing Id and Value as suggested since these fields does not available in cart
-        val Id: FeeApplyToType = FeeApplyToType.Included
+        val Id: FeeApplyToType? = FeeApplyToType.Order;
         val Value: Double = 0.0
 
         return when (Id) {
             FeeApplyToType.NotIncluded -> subIncDisc * (Value / 100)
             FeeApplyToType.Included -> subIncDisc - (subIncDisc / ((Value + 100) / 100))
             FeeApplyToType.Order -> subIncDisc * (Value / 100)
+            else->0.0
         }
-
-
-//        val subtotal = getSubTotal();
-//        val totalDisc = getTotalDisc();
-//        var subIncDisc = subtotal - totalDisc;
-//        subIncDisc = if (subIncDisc < 0) 0.0 else subIncDisc;
-//
-//        //TODO : use FeeApplyToType to calculate price
-//
-//        return subIncDisc;
     }
+
+    fun getLineTotal() : Double{
+        return getSubTotal() - getTotalDisc() + getFee();
+    }
+
+
 }
