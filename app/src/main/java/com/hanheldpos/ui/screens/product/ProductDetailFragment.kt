@@ -24,9 +24,7 @@ import com.hanheldpos.ui.screens.product.adapter.modifier.ModifierSelectedItemMo
 import com.hanheldpos.ui.screens.product.options.OptionVM
 import com.hanheldpos.ui.screens.product.options.modifier.ModifierFragment
 import com.hanheldpos.ui.screens.product.options.variant.VariantFragment
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 
 class ProductDetailFragment(
@@ -105,10 +103,12 @@ class ProductDetailFragment(
             extraData!!.let {
                 fragmentMap[OptionPage.Variant] = VariantFragment.getInstance(it);
                 fragmentMap[OptionPage.Modifier] = ModifierFragment.getInstance(it);
+
                 launch(Dispatchers.Main) {
                     optionsPagerAdapter.submitList(fragmentMap.values);
                     if (it.variantStrProductList == null) {
                         binding.tabOption.getTabAt(0)?.view?.isClickable = false;
+                        delay(100);
                         binding.tabOption.getTabAt(1)?.select();
                     }
                 }
