@@ -41,6 +41,7 @@ data class CartModel(
         return 0.0;
     }
 
+    @JvmOverloads
     fun getPrice(subtotal: Double = getSubTotal(), totalDisc: Double = getTotalDisc()): Double {
 
         var subIncDisc = subtotal - totalDisc
