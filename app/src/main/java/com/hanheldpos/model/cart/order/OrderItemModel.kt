@@ -37,7 +37,7 @@ data class OrderItemModel(
         return copy(
             productOrderItem = productOrderItem?.copy(),
             extraDone = extraDone?.copy(),
-            menuComboItem = menuComboItem?.copy(),
+            menuComboItem = menuComboItem?.clone(),
         )
     }
 

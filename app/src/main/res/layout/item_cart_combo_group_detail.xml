@@ -6,11 +6,10 @@
 
     <data>
 
+        <import type="android.text.TextUtils"/>
         <variable
             name="item"
             type="com.hanheldpos.model.cart.order.OrderItemModel" />
-
-
     </data>
 
     <LinearLayout
@@ -100,7 +99,7 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    visibleObject="@{item.note!=null}"
+                    visibleObject="@{item.note!=null &amp;&amp;TextUtils.isEmpty(item.note)}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">

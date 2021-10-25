@@ -20,6 +20,15 @@ data class OrderMenuComboItemModel(
     var comboParentId: String? = null,
 
 ) : Parcelable, Cloneable {
+    public override fun clone(): OrderMenuComboItemModel {
+        return copy(
+            listItemsByGroup = listItemsByGroup?.toMutableList().also {
+            for (i in 0 until it!!.size) {
+                it.set(i, it[i]!!.clone())
+            }
+        }
+        )
+    }
 }
 
 /**
@@ -42,6 +51,13 @@ data class ItemComboGroupManager(
     var isFocused: Boolean = false,
 ) : Parcelable ,Cloneable{
 
+    public override fun clone(): ItemComboGroupManager {
+        return copy(
+            productsForChoose = productsForChoose.toMutableList(),
+            listSelectedComboItems = listSelectedComboItems.toMutableList(),
+        )
+    }
+
     private fun getAllItemQuantity(): Int {
         var total = 0
         listSelectedComboItems.map {
@@ -56,6 +72,8 @@ data class ItemComboGroupManager(
 
     fun getGroupName() =
         OrderMenuDataMapper.getGroupNameFromGroupGuid(productComboItem?.comboGuid)
+
+
 }
 
 @Parcelize
