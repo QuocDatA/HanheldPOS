@@ -19,7 +19,7 @@ object DataHelper {
         deviceCodeResp = null;
         orderMenuResp = null;
         tableResp = null;
-        feeResp=null;
+        feeResp = null;
         AppPreferences.get().storeValue(PrefKey.Setting.DEVICE_CODE, null);
     }
 
@@ -77,8 +77,8 @@ object DataHelper {
         getDiningOptionList()?.find { it?.id == diningOptionId }
 
 
-
     fun getDefaultDiningOptionItem() = getDiningOptionList()?.firstOrNull()
+
     //endregion
     //region ## Device Code
     var deviceCodeResp: DeviceCodeResp? = null
@@ -161,8 +161,6 @@ object DataHelper {
     private fun getTableModel() = tableResp?.model?.firstOrNull()
     fun getTableStatus() = getTableModel()?.tableStatus
 
-
-
     //endregion
 
 
@@ -184,18 +182,30 @@ object DataHelper {
     /**
      * Get FeeAssignToProductItem with [Fee.feeApplyToType] is Included or Not Included
      */
-    fun getRegularProductIdFees():MutableList<FeeAssignToProductItem>{
-        val result= mutableListOf<FeeAssignToProductItem>();
-        val notIncluded = feeResp?.feeModel?.fees?.firstOrNull{
-            it.feeApplyToType==FeeApplyToType.NotIncluded
+    fun getRegularProductIdFees(): MutableList<FeeAssignToProductItem> {
+        val result = mutableListOf<FeeAssignToProductItem>();
+        val notIncluded = feeResp?.feeModel?.fees?.firstOrNull {
+            it.feeApplyToType == FeeApplyToType.NotIncluded
         };
-        val included =feeResp?.feeModel?.fees?.firstOrNull{
-            it.feeApplyToType==FeeApplyToType.Included
+        val included = feeResp?.feeModel?.fees?.firstOrNull {
+            it.feeApplyToType == FeeApplyToType.Included
         };
         notIncluded?.assignToProducts?.let { result.addAll(it) };
         included?.assignToProducts?.let { result.addAll(it) };
         return result;
     }
-    //endregion
 
+    /**
+    * Get regular fee value
+    * Regular [Fee] is fee where [Fee.feeApplyToType] = [FeeApplyToType.NotIncluded]
+    * */
+    fun getRegularFee(): Double {
+        val result: Double? = feeResp?.feeModel?.fees?.firstOrNull {
+            it.feeApplyToType == FeeApplyToType.NotIncluded
+        }?.value
+
+        return result ?: 0.0
+    }
+
+    //endregion
 }
