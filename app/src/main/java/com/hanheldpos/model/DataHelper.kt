@@ -179,19 +179,20 @@ object DataHelper {
                 .storeValue(PrefKey.Fee.FEE_RESP, value)
         }
 
-
+    fun getListFee() : List<Fee>? = feeResp?.feeModel?.fees;
+    fun isIncludedFeeOrder() : Boolean = getListFee()?.firstOrNull{it.feeApplyToType == FeeApplyToType.Order.value} != null
     /**
      * Get Fee type [FeeApplyToType] with product id
      */
     fun getRegularProductIdTypeFee(productGuid : String): FeeApplyToType? {
 
-        feeResp?.feeModel?.fees?.firstOrNull {
-            it.feeApplyToType == FeeApplyToType.NotIncluded
+        getListFee()?.firstOrNull {
+            it.feeApplyToType == FeeApplyToType.NotIncluded.value
         }.let {
             if (it?.assignToProducts?.find { it.productId == productGuid} != null) return  FeeApplyToType.NotIncluded;
         };
-        feeResp?.feeModel?.fees?.firstOrNull {
-            it.feeApplyToType == FeeApplyToType.Included
+        getListFee()?.firstOrNull {
+            it.feeApplyToType == FeeApplyToType.Included.value
         }.let {
             if (it?.assignToProducts?.find { it.productId == productGuid} != null) return  FeeApplyToType.Included;
         };
@@ -204,7 +205,7 @@ object DataHelper {
     * */
     fun getValueFee(type : FeeApplyToType?): Double {
         val result: Double? = feeResp?.feeModel?.fees?.firstOrNull {
-            it.feeApplyToType == type
+            it.feeApplyToType == type?.value
         }?.value
 
         return result ?: 0.0

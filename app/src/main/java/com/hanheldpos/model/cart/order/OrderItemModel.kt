@@ -123,7 +123,7 @@ data class OrderItemModel(
         return getPriceRegular() + getPriceModSubTotal();
     }
 
-    private fun getPriceSubTotal(): Double {
+    fun getPriceSubTotal(): Double {
         return getPriceProModSubTotal() * quantity;
     }
 
@@ -144,7 +144,6 @@ data class OrderItemModel(
         return when (feeType) {
             FeeApplyToType.NotIncluded -> subIncDisc * ( valueFee/ 100)
             FeeApplyToType.Included -> subIncDisc - (subIncDisc / ((valueFee + 100) / 100))
-            FeeApplyToType.Order -> subIncDisc * (valueFee / 100)
             else-> 0.0
         }
     }

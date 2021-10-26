@@ -3,6 +3,7 @@ package com.hanheldpos.model.cart
 import android.os.Parcelable
 import com.hanheldpos.data.api.pojo.order.settings.DiningOptionItem
 import com.hanheldpos.data.api.pojo.table.FloorTableItem
+import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.DataHelper.getDefaultDiningOptionItem
 import com.hanheldpos.model.cart.fee.FeeApplyToType
 import com.hanheldpos.model.cart.order.OrderItemModel
@@ -24,7 +25,7 @@ data class CartModel(
     //dining option of Order
     var diningOption: DiningOptionItem? = getDefaultDiningOptionItem(),
 
-
+    val feeType : FeeApplyToType? = null,
     ) : Parcelable {
     fun getQuantityCart(): Int {
         return listOrderItem.sumOf {
@@ -47,14 +48,9 @@ data class CartModel(
 
         subIncDisc = if (subIncDisc < 0) 0.0 else subIncDisc
 
-        /// TODO dealing with missing Id and Value as suggested since these fields does not available in cart
-        val Id: FeeApplyToType? = FeeApplyToType.Order;
-        val Value: Double = 0.0
-
-        return when (Id) {
-            FeeApplyToType.NotIncluded -> subIncDisc * (Value / 100)
-            FeeApplyToType.Included -> subIncDisc - (subIncDisc / ((Value + 100) / 100))
-            FeeApplyToType.Order -> subIncDisc * (Value / 100)
+        val valueFee = DataHelper.getValueFee(feeType);
+        return when (feeType) {
+            FeeApplyToType.Order -> subIncDisc * (valueFee / 100);
             else->0.0
         }
     }

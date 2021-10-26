@@ -71,7 +71,7 @@ data class Fee(
     val _id: String,
 
     @field:SerializedName("Id")
-    val feeApplyToType: FeeApplyToType,
+    val feeApplyToType: Int,
 
     @field:SerializedName("Name")
     val name: String,

@@ -90,15 +90,13 @@
                             tools:text="137.000" />
 
                         <com.diadiem.pos_components.PTextView
-
                             bindStrike="true"
-                            priceView="@{item.orderPrice}"
+                            priceView="@{item.productOrderItem.comparePrice}"
                             visibleObject="@{item.productOrderItem.isPriceFixed==true}"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/_2sdp"
                             android:layout_toEndOf="@+id/priceTextView"
-                            android:text="@{String.valueOf(item.productOrderItem.comparePrice)}"
                             android:textAlignment="textEnd"
                             app:useTextColor="color8"
                             app:useTextHeader="h6"
@@ -158,9 +156,9 @@
                         <include
                             layout="@layout/cart_product_detail_line"
                             app:isOtherFee="@{true}"
-                            visibleObject="@{false}"
-
-                            app:lineText="@{`Other fees`}" />
+                            visibleObject="@{item.feeType != null}"
+                            app:lineText="@{`Other fees `}"
+                            app:priceDisc="@{item.fee}"/>
 
                         <include
                             layout="@layout/cart_product_detail_line"

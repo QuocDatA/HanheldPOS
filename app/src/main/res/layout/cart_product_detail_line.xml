@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="isDiscount"
             type="Boolean" />
@@ -20,6 +19,11 @@
         <variable
             name="lineText"
             type="String" />
+
+        <variable
+            name="priceDisc"
+            type="Double" />
+
         <variable
             name="isHeaderH6"
             type="Boolean" />
@@ -29,7 +33,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/_40sdp"
-
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <com.diadiem.pos_components.PTextView
@@ -56,7 +60,7 @@
             app:useTextColor="color5"
             visibleObject="@{isHeaderH6==true,default=true}"
             app:useTextHeader="h6"
-            tools:text="Variant 1, Variant 2" />
+            tools:text="Variant 1" />
         <com.diadiem.pos_components.PTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -64,15 +68,26 @@
             visibleObject="@{isHeaderH6==false,default=false}"
             app:useTextColor="color5"
             app:useTextHeader="h7"
-            tools:text="Variant 1, Variant 2" />
-
-        <ImageView
+            tools:text="Variant 1" />
+        <LinearLayout
             visibleObject="@{isDiscount || isOtherFee,default=false}"
-            android:layout_width="@dimen/_10sdp"
-            android:layout_height="@dimen/_10sdp"
-            android:layout_gravity="center"
-            android:layout_marginStart="@dimen/_4sdp"
-            android:src="@{isDiscount?@drawable/ic_delete: @drawable/ic_info,default=@drawable/ic_info}" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <com.diadiem.pos_components.PTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:useTextColor="color5"
+                app:useTextHeader="h6"
+                priceDisc="@{priceDisc}"/>
+            <ImageView
+                android:layout_width="@dimen/_10sdp"
+                android:layout_height="@dimen/_10sdp"
+                android:layout_gravity="center"
+                android:layout_marginStart="@dimen/_4sdp"
+                android:src="@{isDiscount?@drawable/ic_delete: @drawable/ic_info,default=@drawable/ic_info}" />
+        </LinearLayout>
+
 
     </LinearLayout>
 </layout>

@@ -39,6 +39,7 @@ class CartDataVM : BaseViewModel() {
         cartModelLD.value = CartModel(
             customerQuantity = numberCustomer,
             table = table,
+            feeType = if (DataHelper.isIncludedFeeOrder()) FeeApplyToType.Order else null
         );
     }
 
