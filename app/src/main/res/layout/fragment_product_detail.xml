@@ -176,6 +176,7 @@
                     android:focusableInTouchMode="true"
                     android:hint="@string/special_instructions"
                     android:inputType="text"
+                    android:maxLines="3"
                     android:focusable="true"
                     android:minHeight="@dimen/_40sdp"
                     android:paddingHorizontal="@dimen/_6sdp"

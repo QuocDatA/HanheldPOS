@@ -33,6 +33,7 @@ class MainActivity : BaseFragmentBindingActivity<ActivityMainBinding, MainVM>(),
         binding.root.viewTreeObserver.addOnGlobalLayoutListener {
             SystemHelper.hideSystemUI(window);
         }
+
         getNavigator().rootFragment = HomeFragment();
     }
 
