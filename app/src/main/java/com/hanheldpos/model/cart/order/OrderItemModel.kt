@@ -105,12 +105,39 @@ data class OrderItemModel(
         return "${productOrderItem?.text} x${quantity}"
     }
 
+    fun getBasePrice() : Double {
+        return productOrderItem?.price!!;
+    }
+
     fun getPriceRegular(): Double {
-        var price = productOrderItem?.price ?: 0.0
-        if (extraDone?.selectedVariant != null) {
-            price = extraDone?.selectedVariant!!.price!!
+        var sum: Double = 0.0;
+        if (type == OrderItemType.Combo) {
+            sum =
+                if (productOrderItem?.isPriceFixed != true) getBasePrice() else productOrderItem?.comparePrice!!;
+
+            when (productOrderItem!!.pricingMethodType) {
+                PricingMethodType.BasePrice -> {
+                    sum = sum.plus(menuComboItem!!.listItemsByGroup?.sumOf {
+                        it!!.listSelectedComboItems.sumOf { itPicked ->
+                            itPicked?.selectedComboItem?.getPriceModSubTotal()!!
+                        }
+                    } ?: 0.0);
+                }
+                PricingMethodType.GroupPrice -> {
+                    sum = sum.plus(menuComboItem!!.listItemsByGroup?.sumOf {
+                        it!!.listSelectedComboItems.sumOf { itPicked ->
+                            itPicked?.selectedComboItem?.getPriceLineTotal()!!
+                        }
+                    } ?: 0.0);
+                }
+            }
+        } else {
+            sum = getBasePrice() ?: 0.0
+            if (extraDone?.selectedVariant != null) {
+                sum = extraDone?.selectedVariant!!.price!!
+            }
         }
-        return price
+        return sum
     }
 
     private fun getPriceModSubTotal(): Double {
@@ -154,36 +181,6 @@ data class OrderItemModel(
         val fee = getFee();
         val disc = getPriceTotalDisc();
         return subtotal - disc + fee;
-    }
-
-    fun getOrderPrice(): Double {
-        var sum: Double = 0.0;
-        if (type == OrderItemType.Combo) {
-            sum =
-                if (productOrderItem?.isPriceFixed != true) productOrderItem?.price!! else productOrderItem?.comparePrice!!;
-
-            when (productOrderItem!!.pricingMethodType) {
-                PricingMethodType.BasePrice -> {
-                    sum = sum.plus(menuComboItem!!.listItemsByGroup?.sumOf {
-                        it!!.listSelectedComboItems.sumOf { itPicked ->
-                            itPicked?.selectedComboItem?.getPriceModSubTotal()!!
-                        }
-                    } ?: 0.0);
-                }
-                PricingMethodType.GroupPrice -> {
-                    sum = sum.plus(menuComboItem!!.listItemsByGroup?.sumOf {
-                        it!!.listSelectedComboItems.sumOf { itPicked ->
-                            itPicked?.selectedComboItem?.getPriceLineTotal()!!
-                        }
-                    } ?: 0.0);
-                }
-            }
-
-            sum *= quantity;
-        } else {
-            sum = getPriceLineTotal();
-        }
-        return sum;
     }
 
 

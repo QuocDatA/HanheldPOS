@@ -164,7 +164,7 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
     }
 
     private fun updateTotalPrice() {
-        totalPriceLD.value = orderItemModel.value?.getOrderPrice();
+        totalPriceLD.value = orderItemModel.value?.getPriceLineTotal();
     }
 
     fun getCombo(): MutableList<ProductComboItem>? {

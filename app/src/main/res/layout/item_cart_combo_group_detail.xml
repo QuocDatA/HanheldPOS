@@ -15,7 +15,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/_4sdp"
+        android:layout_marginBottom="@dimen/_2sdp"
         android:orientation="vertical">
 
         <LinearLayout
@@ -62,8 +62,8 @@
 
                     <com.diadiem.pos_components.PTextView
                         android:id="@+id/priceTextView"
-                        addPriceView="@{item.orderPrice}"
-                        visibleObject="@{item.orderPrice!=0}"
+                        addPriceView="@{item.priceLineTotal}"
+                        visibleObject="@{item.priceLineTotal!=0}"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textAlignment="textEnd"

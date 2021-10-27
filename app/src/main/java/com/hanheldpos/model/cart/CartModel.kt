@@ -35,7 +35,7 @@ data class CartModel(
 
 
     fun getSubTotal() = listOrderItem.sumOf {
-        it.getOrderPrice()
+        it.getPriceLineTotal()
     }
 
     fun getTotalDisc(): Double {

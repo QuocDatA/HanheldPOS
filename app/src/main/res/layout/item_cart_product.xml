@@ -78,33 +78,38 @@
                         android:layoutDirection="rtl"
                         android:orientation="vertical">
 
-
-                        <com.diadiem.pos_components.PTextView
+                        <LinearLayout
                             android:id="@+id/priceTextView"
-                            priceView="@{item.orderPrice}"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textAlignment="textEnd"
-                            app:useTextColor="color4"
-                            app:useTextHeader="h5"
-                            tools:text="137.000" />
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+                            <com.diadiem.pos_components.PTextView
+                                priceView="@{item.priceLineTotal}"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textAlignment="textEnd"
+                                app:useTextColor="color4"
+                                app:useTextHeader="h5"
+                                tools:text="137.000" />
+
+                            <com.diadiem.pos_components.PTextView
+                                bindStrike="@{true}"
+                                priceView="@{item.priceRegular}"
+                                visibleObject="@{item.productOrderItem.isPriceFixed==true || item.feeType != null}"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/_2sdp"
+                                android:layout_toEndOf="@+id/priceTextView"
+                                android:textAlignment="textEnd"
+                                app:useTextColor="color8"
+                                app:useTextHeader="h6"
+                                tools:text="60.000" />
+                        </LinearLayout>
+
 
                         <com.diadiem.pos_components.PTextView
-                            bindStrike="true"
-                            priceView="@{item.productOrderItem.comparePrice}"
-                            visibleObject="@{item.productOrderItem.isPriceFixed==true}"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/_2sdp"
-                            android:layout_toEndOf="@+id/priceTextView"
-                            android:textAlignment="textEnd"
-                            app:useTextColor="color8"
-                            app:useTextHeader="h6"
-                            tools:text="60.000" />
-
-
-                        <com.diadiem.pos_components.PTextView
-                            basePriceView="@{item.priceRegular}"
+                            basePriceView="@{item.basePrice}"
                             visibleObject="@{item.menuComboItem!=null}"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
