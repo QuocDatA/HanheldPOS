@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="android.text.TextUtils"/>
         <variable
             name="item"
             type="com.hanheldpos.model.cart.order.OrderItemModel" />
@@ -168,7 +169,7 @@
                         <include
                             layout="@layout/cart_product_detail_line"
                             app:isNote="@{true}"
-                            visibleObject="@{item.note!=null}"
+                            visibleObject="@{item.note!=null &amp;&amp; !TextUtils.isEmpty(item.note) }"
                             app:lineText="@{item.note}" />
                     </LinearLayout>
 

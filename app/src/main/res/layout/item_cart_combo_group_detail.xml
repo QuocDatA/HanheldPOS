@@ -99,7 +99,7 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    visibleObject="@{item.note!=null &amp;&amp;TextUtils.isEmpty(item.note)}"
+                    visibleObject="@{item.note!=null &amp;&amp; !TextUtils.isEmpty(item.note)}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
