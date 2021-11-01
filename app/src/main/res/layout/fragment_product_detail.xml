@@ -103,8 +103,7 @@
                 app:tabMaxWidth="0dp"
                 app:tabMode="fixed"
                 app:tabSelectedTextColor="@color/color_4"
-
-                app:tabTextAppearance="@style/ProductDetailTabTitle" />
+                app:tabTextAppearance="@style/TabTitleStyle" />
 
             <include
                 layout="@layout/divider_vertical"

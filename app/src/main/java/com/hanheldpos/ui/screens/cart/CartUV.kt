@@ -5,4 +5,5 @@ import com.hanheldpos.ui.base.BaseUserView
 interface CartUV : BaseUserView {
     fun getBack();
     fun deleteCart();
+    fun onOpenDiscount();
 }

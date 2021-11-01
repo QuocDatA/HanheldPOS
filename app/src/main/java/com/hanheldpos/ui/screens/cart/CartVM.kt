@@ -17,4 +17,8 @@ class CartVM : BaseUiViewModel<CartUV>() {
         uiCallback?.deleteCart();
     }
 
+    fun openDiscount(){
+        uiCallback?.onOpenDiscount();
+    }
+
 }

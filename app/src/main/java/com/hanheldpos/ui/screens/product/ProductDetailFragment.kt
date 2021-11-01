@@ -77,9 +77,7 @@ class ProductDetailFragment(
                     }
                 }
             }
-        }.let {
-            it.attach();
-        }
+        }.attach()
 
     }
 
@@ -98,21 +96,22 @@ class ProductDetailFragment(
             viewModel.maxQuantity = quantityCanChoose;
         }
         val extraData = viewModel.orderItemModel.value?.productOrderItem?.extraData;
+        extraData!!.let {
+            fragmentMap[OptionPage.Variant] = VariantFragment.getInstance(it);
+            fragmentMap[OptionPage.Modifier] = ModifierFragment.getInstance(it);
 
-        GlobalScope.launch(Dispatchers.IO) {
-            extraData!!.let {
-                fragmentMap[OptionPage.Variant] = VariantFragment.getInstance(it);
-                fragmentMap[OptionPage.Modifier] = ModifierFragment.getInstance(it);
-                launch(Dispatchers.Main) {
-                    optionsPagerAdapter.submitList(fragmentMap.values);
-                    if (it.variantStrProductList == null) {
-                        binding.tabOption.getTabAt(0)?.view?.isClickable = false;
-                        delay(100);
+            optionsPagerAdapter.submitList(fragmentMap.values);
+            if (it.variantStrProductList == null) {
+                binding.tabOption.getTabAt(0)?.view?.isClickable = false;
+                GlobalScope.launch(Dispatchers.IO) {
+                    delay(300);
+                    launch(Dispatchers.Main) {
                         binding.tabOption.getTabAt(1)?.select();
                     }
                 }
             }
         }
+
     }
 
     override fun initAction() {

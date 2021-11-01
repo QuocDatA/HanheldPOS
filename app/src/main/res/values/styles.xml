@@ -58,7 +58,7 @@
         <item name="android:clickable">true</item>
     </style>
 
-    <style name="ProductDetailTabTitle">
+    <style name="TabTitleStyle">
         <item name="android:textColor">@color/color_7</item>
         <item name="android:textSize">@dimen/_11ssp</item>
     </style>

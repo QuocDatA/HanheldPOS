@@ -29,7 +29,6 @@ class EmployeeRepo() : BaseRepo() {
                 t.printStackTrace();
                 callback.showMessage(t.message);
             }
-
         });
     }
 }

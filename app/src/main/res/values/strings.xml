@@ -50,4 +50,13 @@
     <string name="door_to_door">Door-to-Door</string>
     <string name="plastic_cutlery">Plastic cutlery</string>
     <string name="hide_details">Hide Details</string>
+    <string name="add_discount">Add Discount</string>
+    <string name="item_discount">ITEM DISCOUNT</string>
+    <string name="order_discount">ORDER DISCOUNT</string>
+    <string name="amount">Amount</string>
+    <string name="title">Title</string>
+    <string name="required">Required</string>
+    <string name="percentage">Percentage</string>
+    <string name="reason_for_comp">REASON FOR COMP</string>
+    <string name="remove_comp">Remove Comp</string>
 </resources>
