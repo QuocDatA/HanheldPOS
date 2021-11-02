@@ -1,11 +1,6 @@
 package com.hanheldpos.ui.screens.discount.discounttype
 
-import android.os.Bundle
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.viewpager2.widget.ViewPager2
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentDiscountTypeBinding
 import com.hanheldpos.model.discount.DiscountType
@@ -13,12 +8,11 @@ import com.hanheldpos.model.discount.DiscountTypeFor
 import com.hanheldpos.model.discount.DiscountTypeTab
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
-import com.hanheldpos.ui.screens.discount.DiscountFragment
 import com.hanheldpos.ui.screens.discount.discounttype.adapter.DiscountTabAdapter
 import com.hanheldpos.ui.screens.discount.discounttype.amount.DiscountAmountFragment
 import com.hanheldpos.ui.screens.discount.discounttype.comp.DiscountCompFragment
+import com.hanheldpos.ui.screens.discount.discounttype.discount_code.DiscountCodeFragment
 import com.hanheldpos.ui.screens.discount.discounttype.percentage.DiscountPercentageFragment
-import com.hanheldpos.ui.screens.home.HomeFragment
 import com.hanheldpos.ui.screens.product.adapter.OptionsPagerAdapter
 
 class DiscountTypeFragment(private val type: DiscountType) :
@@ -80,6 +74,7 @@ class DiscountTypeFragment(private val type: DiscountType) :
         // Data Container Fragment Type
         fragmentMap[DiscountTypeFor.AMOUNT] = DiscountAmountFragment();
         fragmentMap[DiscountTypeFor.PERCENTAGE] = DiscountPercentageFragment();
+        fragmentMap[DiscountTypeFor.DISCOUNT_CODE] = DiscountCodeFragment();
         fragmentMap[DiscountTypeFor.COMP] = DiscountCompFragment();
         optionsPagerAdapter.submitList(fragmentMap.values);
 

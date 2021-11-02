@@ -61,7 +61,7 @@ object DataHelper {
 
     private fun getVoidInfo() = getOrderSettingModel()?.listVoid?.firstOrNull()
 
-    fun getVoidList() = getVoidInfo()?.listReasons
+    private fun getVoidList() = getVoidInfo()?.listReasons
 
     fun getVoidItemById(voidId: Int) = getVoidList()?.find { it?.id == voidId }
 
