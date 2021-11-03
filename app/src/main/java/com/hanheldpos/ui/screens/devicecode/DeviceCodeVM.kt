@@ -8,17 +8,30 @@ import com.hanheldpos.data.api.pojo.order.settings.OrderSettingResp
 import com.hanheldpos.data.api.pojo.setting.DeviceCodeResp
 import com.hanheldpos.data.api.pojo.table.TableResp
 import com.hanheldpos.data.repository.base.BaseRepoCallback
-import com.hanheldpos.data.repository.settings.SettingRepo
+import com.hanheldpos.data.repository.device.DeviceRepo
+import com.hanheldpos.data.repository.fee.FeeRepo
+import com.hanheldpos.data.repository.floor.FloorRepo
+import com.hanheldpos.data.repository.menu.MenuRepo
+import com.hanheldpos.data.repository.order.OrderRepo
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.ui.base.viewmodel.BaseRepoViewModel
 import java.util.*
 
-class DeviceCodeVM : BaseRepoViewModel<SettingRepo, DeviceCodeUV>() {
+class DeviceCodeVM : BaseRepoViewModel<DeviceRepo, DeviceCodeUV>() {
 
     val pinGroupSize = 4;
     val pinTextLD = MutableLiveData<String>();
 
     private var mLastTimeClick: Long = 0;
+
+    private var menuRepo : MenuRepo = MenuRepo();
+    private var orderRepo: OrderRepo = OrderRepo();
+    private var floorRepo: FloorRepo = FloorRepo();
+    private var feeResp: FeeRepo = FeeRepo();
+
+    override fun createRepo(): DeviceRepo {
+        return DeviceRepo();
+    }
 
     fun signIn() {
         if (SystemClock.elapsedRealtime() - mLastTimeClick < 1000) return;
@@ -35,6 +48,8 @@ class DeviceCodeVM : BaseRepoViewModel<SettingRepo, DeviceCodeUV>() {
             }
         })
     }
+
+
 
     private fun getPinWithSymbol(pinTextStr: String): String {
         val charList = LinkedList(pinTextStr.toList())
@@ -61,7 +76,7 @@ class DeviceCodeVM : BaseRepoViewModel<SettingRepo, DeviceCodeUV>() {
     private fun fetchAllData() {
         val location = DataHelper.getLocationGuidByDeviceCode()
         val userGuid = DataHelper.getUserGuidByDeviceCode()
-        repo?.getOrderMenu(
+        menuRepo.getOrderMenu(
             userGuid = userGuid,
             locationGuid = location,
             callback = object : BaseRepoCallback<OrderMenuResp?> {
@@ -79,7 +94,7 @@ class DeviceCodeVM : BaseRepoViewModel<SettingRepo, DeviceCodeUV>() {
                 }
             });
 
-        repo?.getOrderSetting(
+        orderRepo.getOrderSetting(
             userGuid = userGuid,
             locationGuid = location,
             callback = object : BaseRepoCallback<OrderSettingResp?>{
@@ -96,7 +111,7 @@ class DeviceCodeVM : BaseRepoViewModel<SettingRepo, DeviceCodeUV>() {
                 }
             }
         )
-        repo?.getPosFloor(
+        floorRepo.getPosFloor(
             userGuid = userGuid,
             locationGuid = location,
             callback = object : BaseRepoCallback<TableResp?> {
@@ -114,7 +129,7 @@ class DeviceCodeVM : BaseRepoViewModel<SettingRepo, DeviceCodeUV>() {
                 }
             });
 
-        repo?.getFees( userGuid = userGuid,
+        feeResp.getFees( userGuid = userGuid,
             locationGuid = location,
             callback = object : BaseRepoCallback<FeeResp?> {
                 override fun apiResponse(data: FeeResp?) {
@@ -150,9 +165,7 @@ class DeviceCodeVM : BaseRepoViewModel<SettingRepo, DeviceCodeUV>() {
         uiCallback?.goBack();
     }
 
-    override fun createRepo(): SettingRepo {
-        return SettingRepo();
-    }
+
 
 
 }
