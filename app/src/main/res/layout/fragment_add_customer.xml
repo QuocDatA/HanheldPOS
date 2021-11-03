@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.hanheldpos.ui.screens.cart.customer.AddCustomerVM" />
+    </data>
+
+    <LinearLayout style="@style/RootLayout">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_42sdp"
+            android:background="@color/color_2">
+
+            <ImageButton
+                style="@style/MaterialButton.Icon"
+                android:layout_height="match_parent"
+                android:layout_gravity="center|start"
+                android:adjustViewBounds="true"
+                android:backgroundTint="@color/textPrimary"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="@{v -> viewModel.backPress()}"
+                android:padding="@dimen/_14sdp"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_close"
+                tools:ignore="ContentDescription" />
+
+            <com.diadiem.pos_components.PTextView
+                style="@style/CartTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/add_customer" />
+        </FrameLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_4sdp"
+            android:background="@color/color_10" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:background="@drawable/bg_outline"
+            app:boxBackgroundColor="@android:color/transparent"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_marginHorizontal="@dimen/_9sdp"
+            android:layout_marginVertical="@dimen/_14sdp"
+            android:backgroundTint="@android:color/transparent"
+            android:importantForAutofill="no"
+            app:boxCornerRadiusBottomEnd="0dp"
+            app:boxCornerRadiusBottomStart="0dp"
+            app:boxCornerRadiusTopEnd="0dp"
+            app:boxCornerRadiusTopStart="0dp"
+            app:startIconDrawable="@drawable/ic_search_customer"
+            app:endIconDrawable="@drawable/ic_remove_10dp"
+            app:endIconMode="clear_text"
+            app:endIconTint="@color/textSecondary"
+            app:hintEnabled="false"
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="0dp"
+            tools:ignore="LabelFor">
+
+            <com.diadiem.pos_components.PTextInputEditText
+                style="@style/BaseTextInput"
+                android:id="@+id/searchInput"
+                android:background="@drawable/bg_outline"
+                android:layout_margin="0dp"
+                android:focusableInTouchMode="true"
+                android:hint="@string/device_code"
+                android:inputType="text"
+                android:padding="@dimen/_10sdp"
+                app:ipt_useHintTextColor="color8"
+                app:ipt_useTextColor="color4"
+                app:ipt_useFontStyle="normal"
+                app:ipt_useTextHeader="h5" />
+        </com.google.android.material.textfield.TextInputLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/customerContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:itemCount="3"
+            tools:listitem="@layout/item_customer"
+            />
+    </LinearLayout>
+</layout>

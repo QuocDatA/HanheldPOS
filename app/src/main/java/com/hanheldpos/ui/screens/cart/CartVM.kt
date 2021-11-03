@@ -25,4 +25,8 @@ class CartVM : BaseUiViewModel<CartUV>() {
         uiCallback?.openSelectPayment();
     }
 
+    fun onOpenAddCustomer(){
+        uiCallback?.onOpenAddCustomer();
+    }
+
 }

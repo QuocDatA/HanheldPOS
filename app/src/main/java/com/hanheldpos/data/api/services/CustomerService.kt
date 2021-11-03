@@ -1,16 +1,17 @@
 package com.hanheldpos.data.api.services
 
+import com.hanheldpos.data.api.pojo.customer.CustomerSearchResp
 import com.hanheldpos.data.api.pojo.discount.DiscountResp
-import com.hanheldpos.data.api.pojo.fee.FeeResp
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-interface DiscountService {
-    @GET("discounts/list")
-    fun getDiscounts(
+interface CustomerService {
+    @GET("Customers/search")
+    fun getCustomerFromSearch(
         @Query("userGuid") userGuid: String?,
-        @Query("locationGuid") location: String?,
+        @Query("keyword") location: String?,
+        @Query("pageNo") pageNo : Int? = 1,
         @Query("locationGuid") language: String? = "en",
-    ): Call<DiscountResp>
+    ): Call<CustomerSearchResp>
 }

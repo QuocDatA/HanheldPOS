@@ -17,6 +17,7 @@ import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.cart.adapter.CartDiningOptionAdapter
 import com.hanheldpos.ui.screens.cart.adapter.CartProductAdapter
+import com.hanheldpos.ui.screens.cart.customer.AddCustomerFragment
 import com.hanheldpos.ui.screens.cart.payment.PaymentFragment
 import com.hanheldpos.ui.screens.discount.DiscountFragment
 import com.hanheldpos.ui.screens.home.order.combo.ComboFragment
@@ -141,6 +142,10 @@ class CartFragment(
 
     override fun openSelectPayment() {
         navigator.goToWithCustomAnimation(PaymentFragment());
+    }
+
+    override fun onOpenAddCustomer() {
+        navigator.goToWithCustomAnimation(AddCustomerFragment());
     }
 
     fun onEditItemIntCart(position: Int, item: OrderItemModel) {

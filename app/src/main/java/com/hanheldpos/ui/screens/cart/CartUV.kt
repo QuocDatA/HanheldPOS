@@ -7,4 +7,5 @@ interface CartUV : BaseUserView {
     fun deleteCart();
     fun onOpenDiscount();
     fun openSelectPayment();
+    fun onOpenAddCustomer();
 }

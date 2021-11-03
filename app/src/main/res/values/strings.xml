@@ -61,4 +61,5 @@
     <string name="remove_comp">Remove Comp</string>
     <string name="dining_option">Dining option</string>
     <string name="bill">Bill</string>
+    <string name="search_customer">Search Customer</string>
 </resources>
