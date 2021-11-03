@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <import type="android.text.TextUtils"/>
+
+        <import type="android.text.TextUtils" />
+
         <variable
             name="viewModel"
             type="com.hanheldpos.ui.screens.discount.discounttype.percentage.DiscountPercentageVM" />
@@ -97,13 +99,15 @@
             android:layout_marginHorizontal="@dimen/_9sdp"
             android:background="@color/color_0"
             android:clickable="true"
+            android:enabled="@{!viewModel.percent.equals(`0`) &amp;&amp; !TextUtils.isEmpty(viewModel.title)}"
             android:focusable="true"
             android:foreground="?attr/selectableItemBackground"
-            android:enabled="@{!viewModel.percent.equals(`0`) &amp;&amp; !TextUtils.isEmpty(viewModel.title)}"
             android:gravity="center"
             android:padding="@dimen/_5sdp"
             android:text="@string/save"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:pbtn_useTextColor="color2" />
+            app:pbtn_useFontStyle="bold"
+            app:pbtn_useTextColor="color2"
+            app:pbtn_useTextHeader="h5" />
     </RelativeLayout>
 </layout>

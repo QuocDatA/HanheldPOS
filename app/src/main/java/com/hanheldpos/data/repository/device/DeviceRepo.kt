@@ -1,6 +1,6 @@
 package com.hanheldpos.data.repository.device
 
-import com.hanheldpos.data.api.pojo.setting.DeviceCodeResp
+import com.hanheldpos.data.api.pojo.device.DeviceCodeResp
 import com.hanheldpos.data.repository.base.BaseRepo
 import com.hanheldpos.data.repository.base.BaseRepoCallback
 import retrofit2.Call

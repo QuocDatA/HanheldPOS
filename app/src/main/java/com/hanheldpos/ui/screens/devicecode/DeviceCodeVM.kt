@@ -5,10 +5,12 @@ import androidx.lifecycle.MutableLiveData
 import com.hanheldpos.data.api.pojo.fee.FeeResp
 import com.hanheldpos.data.api.pojo.order.menu.OrderMenuResp
 import com.hanheldpos.data.api.pojo.order.settings.OrderSettingResp
-import com.hanheldpos.data.api.pojo.setting.DeviceCodeResp
+import com.hanheldpos.data.api.pojo.device.DeviceCodeResp
+import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.data.api.pojo.table.TableResp
 import com.hanheldpos.data.repository.base.BaseRepoCallback
 import com.hanheldpos.data.repository.device.DeviceRepo
+import com.hanheldpos.data.repository.discount.DiscountRepo
 import com.hanheldpos.data.repository.fee.FeeRepo
 import com.hanheldpos.data.repository.floor.FloorRepo
 import com.hanheldpos.data.repository.menu.MenuRepo
@@ -28,6 +30,7 @@ class DeviceCodeVM : BaseRepoViewModel<DeviceRepo, DeviceCodeUV>() {
     private var orderRepo: OrderRepo = OrderRepo();
     private var floorRepo: FloorRepo = FloorRepo();
     private var feeResp: FeeRepo = FeeRepo();
+    private var discountResp : DiscountRepo = DiscountRepo();
 
     override fun createRepo(): DeviceRepo {
         return DeviceRepo();
@@ -145,6 +148,23 @@ class DeviceCodeVM : BaseRepoViewModel<DeviceRepo, DeviceCodeUV>() {
                 }
 
             },);
+
+        discountResp.getDiscountList(userGuid = userGuid,
+            locationGuid = location,
+            callback = object : BaseRepoCallback<DiscountResp> {
+                override fun apiResponse(data: DiscountResp?) {
+                    if (data == null || data.DidError) {
+                        onDataFailure("Failed to load data");
+                    } else {
+                        DataHelper.discountResp = data;
+                        startMappingData();
+                    }
+                }
+
+                override fun showMessage(message: String?) {
+                }
+
+            },);
     }
 
 
@@ -154,11 +174,13 @@ class DeviceCodeVM : BaseRepoViewModel<DeviceRepo, DeviceCodeUV>() {
     }
 
     private fun startMappingData() {
-        if (DataHelper.orderMenuResp != null
-            && DataHelper.tableResp != null
-            && DataHelper.feeResp!=null) {
-            uiCallback?.openPinCode();
+        DataHelper.let {
+            it.orderMenuResp?:return;
+            it.tableResp?:return;
+            it.feeResp?:return;
+            it.discountResp?:return;
         }
+        uiCallback?.openPinCode();
     }
 
     fun backPress() {

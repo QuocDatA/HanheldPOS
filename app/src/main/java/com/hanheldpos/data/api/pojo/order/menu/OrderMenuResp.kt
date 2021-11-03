@@ -41,7 +41,7 @@ data class ProductItem(
     val productID: Int,
 
     @field:SerializedName("Detail")
-    val detail:@RawValue Any? = null,
+    val detail: @RawValue Any? = null,
 
     @field:SerializedName("CategoryGuid")
     val categoryGUID: String,
@@ -179,7 +179,7 @@ data class ProductItem(
 //    val variantPriceOverrideList: List<Any?>,
 
     @field:SerializedName("VariantsGroup")
-    val variantsGroup:@RawValue Any? = null,
+    val variantsGroup: VariantsGroup? = null,
 
     @field:SerializedName("VariantsGroupNameDefault")
     val variantsGroupNameDefault: String? = null,
@@ -205,11 +205,53 @@ data class ProductItem(
     @field:SerializedName("Parent_id")
     val parentID: String? = null,
 
-    ) : Parcelable,Cloneable {
+    ) : Parcelable, Cloneable {
 
     public override fun clone(): ProductItem {
         return copy()
     }
+}
+
+@Parcelize
+data class VariantsGroup(
+    val DisplayName: String?,
+    val IsDisplayName: Boolean?,
+    val OptionName: String?,
+    val OptionValueList: List<OptionValueVariantsGroup>?,
+    val VariantOptionType: Int?
+) : Parcelable {
+    @Parcelize
+    data class OptionValueVariantsGroup(
+        val Id: Int,
+        val Level: Int,
+        val Value: String,
+        val Variant: Variant,
+        val Visible: Int
+    ) : Parcelable
+
+    @Parcelize
+    data class Variant(
+        val DisplayName: String,
+        val IsDisplayName: Boolean,
+        val OptionName: String,
+        val OptionValueList: List<OptionValueVariant>,
+        val VariantOptionType: Int
+    ) : Parcelable
+    @Parcelize
+    data class OptionValueVariant(
+        val Barcode: String,
+        val ComparePrice: Double,
+        val CostPerItem: Double,
+        val Discount: Double,
+        val GroupValue: String,
+        val Id: Int,
+        val Inventory: Int,
+        val Level: Int,
+        val Price: Double,
+        val Sku: String,
+        val Value: String,
+        val Visible: Int
+    ) : Parcelable
 }
 
 @Parcelize
@@ -293,6 +335,7 @@ data class CategoryItem(
 ) : Parcelable {
 
 }
+
 @Parcelize
 data class ProductModifierItem(
 

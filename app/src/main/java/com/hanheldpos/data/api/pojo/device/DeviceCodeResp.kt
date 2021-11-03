@@ -1,4 +1,4 @@
-package com.hanheldpos.data.api.pojo.setting
+package com.hanheldpos.data.api.pojo.device
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName

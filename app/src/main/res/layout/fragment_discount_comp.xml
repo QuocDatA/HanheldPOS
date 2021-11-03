@@ -16,9 +16,9 @@
         android:paddingBottom="@dimen/_9sdp">
 
         <LinearLayout
-            android:layout_above="@id/saveBtn"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_above="@id/saveBtn"
             android:layout_marginHorizontal="@dimen/_8sdp"
             android:orientation="vertical"
             app:layout_constraintTop_toTopOf="parent">
@@ -57,11 +57,11 @@
                 android:background="@color/color_6" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:overScrollMode="never"
                 android:id="@+id/reasonContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                android:overScrollMode="never"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:itemCount="3"
                 tools:listitem="@layout/item_discount_comp" />
@@ -76,8 +76,8 @@
             android:layout_marginEnd="@dimen/_9sdp"
             android:background="@color/color_0"
             android:clickable="true"
-            android:focusable="true"
             android:enabled="@{viewModel.reasonChosen !=null}"
+            android:focusable="true"
             android:foreground="?attr/selectableItemBackground"
             android:gravity="center"
             android:padding="@dimen/_5sdp"

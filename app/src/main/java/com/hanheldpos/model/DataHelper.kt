@@ -3,11 +3,11 @@ package com.hanheldpos.model
 import com.hanheldpos.data.api.ApiConst
 import com.hanheldpos.data.api.pojo.employee.EmployeeResp
 import com.hanheldpos.data.api.pojo.fee.Fee
-import com.hanheldpos.data.api.pojo.fee.FeeAssignToProductItem
 import com.hanheldpos.data.api.pojo.fee.FeeResp
 import com.hanheldpos.data.api.pojo.order.menu.OrderMenuResp
 import com.hanheldpos.data.api.pojo.order.settings.OrderSettingResp
-import com.hanheldpos.data.api.pojo.setting.DeviceCodeResp
+import com.hanheldpos.data.api.pojo.device.DeviceCodeResp
+import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.data.api.pojo.table.TableResp
 import com.hanheldpos.model.cart.fee.FeeApplyToType
 import com.hanheldpos.prefs.PrefKey
@@ -179,7 +179,7 @@ object DataHelper {
                 .storeValue(PrefKey.Fee.FEE_RESP, value)
         }
 
-    fun getListFee() : List<Fee>? = feeResp?.feeModel?.fees;
+    private fun getListFee() : List<Fee>? = feeResp?.feeModel?.fees;
     fun isIncludedFeeOrder() : Boolean = getListFee()?.firstOrNull{it.feeApplyToType == FeeApplyToType.Order.value} != null
     /**
      * Get Fee type [FeeApplyToType] with product id
@@ -210,6 +210,24 @@ object DataHelper {
 
         return result ?: 0.0
     }
+
+    //endregion
+
+    //region Discount
+
+    var discountResp: DiscountResp? = null
+        get() {
+            if (field == null) {
+                field = AppPreferences.get()
+                    .getParcelableObject(PrefKey.Discount.DISCOUNT_RESP, DiscountResp::class.java)
+            }
+            return field
+        }
+        set(value) {
+            field = value
+            AppPreferences.get()
+                .storeValue(PrefKey.Discount.DISCOUNT_RESP, value)
+        }
 
     //endregion
 }

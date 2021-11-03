@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.hanheldpos.ui.screens.cart.CartVM" />
@@ -191,8 +192,8 @@
 
                     <LinearLayout
                         style="@style/SingleLineItemCart"
-                        android:orientation="horizontal"
                         android:gravity="center_vertical"
+                        android:orientation="horizontal"
                         android:paddingVertical="0dp">
 
                         <ImageView
@@ -238,11 +239,11 @@
                             android:layout_weight="1" />
 
                         <com.diadiem.pos_components.PTextView
-                            android:onClick="@{v -> viewModel.backPress()}"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_marginEnd="@dimen/_9sdp"
+                            android:onClick="@{v -> viewModel.backPress()}"
                             android:text="@string/add_items"
                             app:useTextColor="color0"
                             app:useTextHeader="h5" />
@@ -255,11 +256,11 @@
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/productRecyclerView"
                         style="@style/SingleLineItemCart"
-                        android:paddingVertical="0dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:overScrollMode="never"
+                        android:paddingVertical="0dp"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         tools:itemCount="1"
                         tools:listitem="@layout/item_cart_product" />
@@ -288,11 +289,11 @@
                             android:layout_weight="1" />
 
                         <com.diadiem.pos_components.PTextView
+                            priceView="@{cartDataVM.cartModelLD.subTotal}"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             app:useTextColor="color4"
-                            priceView="@{cartDataVM.cartModelLD.subTotal}"
                             app:useTextHeader="h5"
                             tools:text="50.000" />
                     </LinearLayout>
@@ -321,12 +322,12 @@
                             android:layout_weight="1" />
 
                         <com.diadiem.pos_components.PTextView
-                            android:focusable="true"
-                            android:clickable="true"
-                            android:onClick="@{()->viewModel.openDiscount()}"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:onClick="@{()->viewModel.openDiscount()}"
                             android:text="@string/add_discount"
                             app:useTextColor="color0"
                             app:useTextHeader="h5" />
@@ -496,8 +497,8 @@
                 android:layout_weight="1"
                 android:clickable="true"
                 android:focusable="true"
-                android:onClick="@{v->viewModel.openSelectPayment()}"
                 android:foreground="?attr/selectableItemBackground"
+                android:onClick="@{v->viewModel.openSelectPayment()}"
                 android:padding="@dimen/_12sdp">
 
                 <ImageView
@@ -531,6 +532,7 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?attr/selectableItemBackground"
+                android:onClick="@{()->viewModel.openDiscount()}"
                 android:padding="@dimen/_12sdp">
 
                 <ImageView
@@ -560,16 +562,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/color_0"
-                android:padding="@dimen/_5sdp"
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?attr/selectableItemBackground"
                 android:gravity="center"
+                android:padding="@dimen/_5sdp"
+                android:text="@string/bill"
                 android:textAllCaps="true"
                 app:pbtn_useFontStyle="bold"
                 app:pbtn_useTextColor="color2"
-                app:pbtn_useTextHeader="h5"
-                android:text="@string/bill"/>
+                app:pbtn_useTextHeader="h5" />
         </LinearLayout>
     </LinearLayout>
 </layout>

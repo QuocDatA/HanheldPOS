@@ -16,7 +16,6 @@ object  PrefKey {
     object Order {
         const val ORDER_MENU_RESP = "ORDER_MENU_RESP"
         const val ORDER_SETTING_RESP = "ORDER_SETTING_RESP"
-        const val FEE_RESP = "FEE_RESP"
     }
 
     object Table {
@@ -25,6 +24,9 @@ object  PrefKey {
 
     object Fee {
         const val FEE_RESP = "FEE_RESP"
+    }
 
+    object Discount {
+        const val DISCOUNT_RESP = "DISCOUNT_RESP"
     }
 }

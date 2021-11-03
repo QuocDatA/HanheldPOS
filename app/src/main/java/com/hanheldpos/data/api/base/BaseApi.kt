@@ -14,5 +14,6 @@ abstract class BaseApi : BaseApiError() {
     protected val feeService : FeeService = retrofit.createService(FeeService::class.java);
     protected val floorService: FloorService = retrofit.createService(FloorService::class.java);
     protected val menuService : MenuService = retrofit.createService(MenuService::class.java);
+    protected val discountService : DiscountService = retrofit.createService(DiscountService::class.java);
 
 }

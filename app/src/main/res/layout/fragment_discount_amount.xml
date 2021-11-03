@@ -3,7 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <import type="android.text.TextUtils"/>
+
+        <import type="android.text.TextUtils" />
+
         <variable
             name="viewModel"
             type="com.hanheldpos.ui.screens.discount.discounttype.amount.DiscountAmountVM" />
@@ -103,6 +105,8 @@
             android:padding="@dimen/_5sdp"
             android:text="@string/save"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:pbtn_useTextColor="color2" />
+            app:pbtn_useFontStyle="bold"
+            app:pbtn_useTextColor="color2"
+            app:pbtn_useTextHeader="h5" />
     </RelativeLayout>
 </layout>
