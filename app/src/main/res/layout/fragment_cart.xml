@@ -495,6 +495,7 @@
                 android:layout_weight="1"
                 android:clickable="true"
                 android:focusable="true"
+                android:onClick="@{v->viewModel.openSelectPayment();}"
                 android:foreground="?attr/selectableItemBackground"
                 android:padding="@dimen/_12sdp">
 
