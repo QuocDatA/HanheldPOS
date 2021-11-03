@@ -498,7 +498,6 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?attr/selectableItemBackground"
-                android:onClick="@{v->viewModel.openSelectPayment()}"
                 android:padding="@dimen/_12sdp">
 
                 <ImageView
