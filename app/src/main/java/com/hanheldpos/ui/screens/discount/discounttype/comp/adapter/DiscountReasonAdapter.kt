@@ -14,9 +14,9 @@ class DiscountReasonAdapter(
     private val listener: BaseItemClickListener<ListReasonsItem>
 ) : BaseBindingListAdapter<ListReasonsItem>(DiffCallback()) {
 
-    data class SelectedItem(var value: Int = 0)
+    data class SelectedItem(var value: Int = -1)
 
-    private var selectedItem: SelectedItem = SelectedItem(0)
+    private var selectedItem: SelectedItem = SelectedItem(-1)
 
     override fun getItemViewType(position: Int): Int = R.layout.item_discount_comp;
 

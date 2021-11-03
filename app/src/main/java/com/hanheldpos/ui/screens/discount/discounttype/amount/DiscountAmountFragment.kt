@@ -24,7 +24,7 @@ class DiscountAmountFragment : BaseFragment<FragmentDiscountAmountBinding, Disco
     override fun initViewModel(viewModel: DiscountAmountVM) {
         viewModel.run {
             init(this@DiscountAmountFragment);
-            binding.viewModel =this;
+            binding.viewModel = this;
         }
 
     }
@@ -33,16 +33,20 @@ class DiscountAmountFragment : BaseFragment<FragmentDiscountAmountBinding, Disco
         binding.amountDiscount.let { input ->
             var isEditing = false
             input.doAfterTextChanged {
-                if (it.toString().isEmpty() || isEditing) return@doAfterTextChanged;
-                isEditing = true;
-                val dfSymbols = DecimalFormatSymbols()
-                dfSymbols.decimalSeparator = '.'
-                dfSymbols.groupingSeparator = ','
-                val df = DecimalFormat("###", dfSymbols)
-                df.groupingSize = 3
-                df.isGroupingUsed = true
-                val text = df.format(it.toString().replace(",", "").toDouble());
-                input.setText(text);
+                if (isEditing) return@doAfterTextChanged;
+                if (it.toString().isEmpty()) input.setText("0");
+                else {
+                    isEditing = true;
+                    val dfSymbols = DecimalFormatSymbols()
+                    dfSymbols.decimalSeparator = '.'
+                    dfSymbols.groupingSeparator = ','
+                    val df = DecimalFormat("###", dfSymbols)
+                    df.groupingSize = 3
+                    df.isGroupingUsed = true
+                    val text = df.format(it.toString().replace(",", "").toDouble());
+                    input.setText(text);
+
+                }
                 input.setSelection(input.length());
                 isEditing = false;
             }

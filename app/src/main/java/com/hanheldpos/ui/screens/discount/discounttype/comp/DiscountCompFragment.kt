@@ -36,6 +36,7 @@ class DiscountCompFragment : BaseFragment<FragmentDiscountCompBinding,DiscountCo
         adapter = DiscountReasonAdapter(listener = object : BaseItemClickListener<ListReasonsItem>{
             override fun onItemClick(adapterPosition: Int, item: ListReasonsItem) {
                 // Dealing with item selected;
+                viewModel.reasonChosen.postValue(item);
             }
         })
         binding.reasonContainer.adapter = adapter;
