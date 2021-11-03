@@ -78,7 +78,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_marginStart="@dimen/_9sdp"
-                            android:text="@string/deliver_to"
+                            android:text="@string/dining_option"
                             app:useFontStyle="bold"
                             app:useTextColor="color4"
                             app:useTextHeader="h5" />
@@ -192,6 +192,7 @@
                     <LinearLayout
                         style="@style/SingleLineItemCart"
                         android:orientation="horizontal"
+                        android:gravity="center_vertical"
                         android:paddingVertical="0dp">
 
                         <ImageView
