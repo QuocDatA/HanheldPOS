@@ -123,6 +123,7 @@ class CartFragment(
         cartDataVM.deleteCart(
             getString(R.string.confirmation),
             getString(R.string.delete_cart_warning),
+            getString(R.string.delete),
             getString(R.string.alert_btn_negative),
             this::onFragmentBackPressed
         )
@@ -182,7 +183,7 @@ class CartFragment(
     }
 
     companion object {
-        fun getIntance(
+        fun getInstance(
         ): CartFragment {
             return CartFragment(
 

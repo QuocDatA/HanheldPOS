@@ -58,11 +58,12 @@ class CartDataVM : BaseViewModel() {
         cartModelLD.notifyValueChange();
     }
 
-    fun deleteCart(title: String, message: String, negativeText: String, callback: () -> Unit) {
+    fun deleteCart(title: String, message: String, positiveText : String , negativeText: String, callback: () -> Unit) {
         AppAlertDialog.get()
             .show(
                 title,
                 message,
+                positiveText = positiveText,
                 negativeText = negativeText,
                 onClickListener = object : AppAlertDialog.AlertDialogOnClickListener {
                     override fun onPositiveClick() {

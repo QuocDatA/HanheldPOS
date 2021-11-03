@@ -1,27 +1,15 @@
 package com.hanheldpos.ui.screens.home.order
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
-import android.animation.AnimatorSet
-import android.animation.ObjectAnimator
 import android.app.AlertDialog
 import android.os.SystemClock
 import android.util.Log
-import android.util.Size
 import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewTreeObserver
-import android.widget.FrameLayout
-import android.widget.ImageView
-import android.widget.PopupWindow
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import com.hanheldpos.R
-import com.hanheldpos.binding.loadImageFromUrlToCircular
 import com.hanheldpos.data.api.pojo.order.menu.MenusItem
 import com.hanheldpos.databinding.DialogCategoryBinding
 import com.hanheldpos.databinding.FragmentOrderBinding
-import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.cart.CartPresenter
 import com.hanheldpos.model.cart.order.OrderItemModel
 import com.hanheldpos.model.cart.order.OrderItemType
@@ -30,7 +18,6 @@ import com.hanheldpos.model.home.order.combo.ItemActionType
 import com.hanheldpos.model.home.order.menu.OrderMenuItemModel
 import com.hanheldpos.model.product.ProductOrderItem
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
-import com.hanheldpos.ui.base.dialog.AppAlertDialog
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.cart.CartDataVM
 import com.hanheldpos.ui.screens.cart.CartFragment
@@ -265,7 +252,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
     }
 
     override fun showCart() {
-        navigator.goToWithCustomAnimation(CartFragment.getIntance());
+        navigator.goToWithCustomAnimation(CartFragment.getInstance());
     }
 
     companion object {

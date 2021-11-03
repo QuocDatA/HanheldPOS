@@ -49,7 +49,7 @@
                         android:hint="@{`0`}"
                         android:text="@={viewModel.amount}"
                         android:inputType="numberDecimal"
-                        android:digits="0123456789"
+                        android:digits="0123456789,"
                         android:textColorHint="@color/color_4"
                         app:ipt_useFontStyle="normal"
                         app:ipt_useTextColor="color4"

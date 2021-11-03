@@ -7,17 +7,9 @@
         name="viewModel"
         type="com.hanheldpos.ui.screens.discount.discounttype.discount_code.DiscountCodeVM" />
     </data>
+    <LinearLayout
+        style="@style/RootLayout"
+        >
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".ui.screens.discount.discounttype.discount_code.DiscountCodeFragment">
-
-        <!-- TODO: Update blank fragment layout -->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="@string/hello_blank_fragment" />
-
-    </FrameLayout>
+    </LinearLayout>
 </layout>

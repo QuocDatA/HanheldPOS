@@ -53,7 +53,7 @@
                     android:clickable="true"
                     android:focusable="true"
                     android:onClick="@{v->viewModel.deleteCart()}"
-                    android:text="@string/delete" />
+                    android:text="@string/delete_cart" />
             </FrameLayout>
 
             <androidx.core.widget.NestedScrollView

@@ -9,9 +9,9 @@ import androidx.core.widget.addTextChangedListener
 import androidx.core.widget.doAfterTextChanged
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentDiscountAmountBinding
-import com.hanheldpos.databinding.FragmentDiscountBinding
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
 
 class DiscountAmountFragment : BaseFragment<FragmentDiscountAmountBinding, DiscountAmountVM>(),
     DiscountAmountUV {
@@ -35,8 +35,14 @@ class DiscountAmountFragment : BaseFragment<FragmentDiscountAmountBinding, Disco
             input.doAfterTextChanged {
                 if (it.toString().isEmpty() || isEditing) return@doAfterTextChanged;
                 isEditing = true;
-                val formatter = DecimalFormat("###,###,###.###")
-                input.setText(formatter.format(it.toString().replace(",", "").toDouble()));
+                val dfSymbols = DecimalFormatSymbols()
+                dfSymbols.decimalSeparator = '.'
+                dfSymbols.groupingSeparator = ','
+                val df = DecimalFormat("###", dfSymbols)
+                df.groupingSize = 3
+                df.isGroupingUsed = true
+                val text = df.format(it.toString().replace(",", "").toDouble());
+                input.setText(text);
                 input.setSelection(input.length());
                 isEditing = false;
             }
