@@ -496,7 +496,7 @@
                 android:layout_weight="1"
                 android:clickable="true"
                 android:focusable="true"
-                android:onClick="@{v->viewModel.openSelectPayment();}"
+                android:onClick="@{v->viewModel.openSelectPayment()}"
                 android:foreground="?attr/selectableItemBackground"
                 android:padding="@dimen/_12sdp">
 
@@ -550,89 +550,26 @@
 
         </LinearLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_5sdp"
-            android:background="@color/color_10" />
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:padding="@dimen/_8sdp">
 
-            <LinearLayout
-                android:layout_width="0dp"
+            <com.diadiem.pos_components.PMaterialButton
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:padding="@dimen/_12sdp">
-
-                <com.diadiem.pos_components.PTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/_7sdp"
-                    android:text="@{ cartDataVM.cartModelLD.table.tableName + `-` + cartDataVM.diningOptionLD.title + ` (` + cartDataVM.numberOfCustomer + `)`}"
-                    app:useTextColor="color4"
-
-                    app:useTextHeader="h5"
-                    tools:text="B1-For Here (2)" />
-
-                <com.diadiem.pos_components.PTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_color5_2444dp"
-                    android:paddingHorizontal="@dimen/_5sdp"
-                    android:text="@{cartDataVM.linePerTotalQuantity}"
-                    app:useTextColor="color2"
-
-                    app:useTextHeader="h6"
-                    tools:text="8/10" />
-
-            </LinearLayout>
-
-            <View
-                android:layout_width="@dimen/_1sdp"
-                android:layout_height="match_parent"
-                android:layout_marginVertical="@dimen/_8sdp"
-                android:background="@color/color_10" />
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <com.diadiem.pos_components.PTextView
-                    priceView="@{cartDataVM.cartModelLD.lineTotal}"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_12sdp"
-                    app:useFontStyle="bold"
-                    app:useTextColor="color4"
-                    app:useTextHeader="h5"
-                    tools:text="1.000.000" />
-
-                <androidx.legacy.widget.Space
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-
-                <com.diadiem.pos_components.PMaterialButton
-                    android:layout_width="@dimen/_56sdp"
-                    android:layout_height="match_parent"
-                    android:background="@color/color_0"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:foreground="?attr/selectableItemBackground"
-                    android:gravity="center"
-                    android:text="NEXT"
-
-                    app:pbtn_useBackgroundColor="true"
-                    app:pbtn_useFontStyle="bold"
-                    app:pbtn_useTextColor="color2"
-                    app:pbtn_useTextHeader="h5" />
-            </LinearLayout>
-
+                android:background="@color/color_0"
+                android:padding="@dimen/_5sdp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                android:gravity="center"
+                android:textAllCaps="true"
+                app:pbtn_useFontStyle="bold"
+                app:pbtn_useTextColor="color2"
+                app:pbtn_useTextHeader="h5"
+                android:text="@string/bill"/>
         </LinearLayout>
     </LinearLayout>
 </layout>
