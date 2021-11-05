@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.hanheldpos.ui.screens.cart.payment.PaymentFragment.FakeMethodModel" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/btnPaymentSuggestion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/_2sdp"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground"
+
+        app:cardCornerRadius="@dimen/_3sdp"
+        app:cardElevation="@dimen/_3sdp">
+
+        <com.diadiem.pos_components.PTextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/color_11"
+            android:gravity="center"
+            android:padding="@dimen/_10sdp"
+            android:text="@{item.text}"
+            app:useFontStyle="bold"
+            app:useTextColor="color4"
+            app:useTextHeader="h5"
+            tools:text="50,000" />
+
+    </com.google.android.material.card.MaterialCardView>
+</layout>
+
+

@@ -1,14 +1,141 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
+        <variable
+            name="viewModel"
+            type="com.hanheldpos.ui.screens.cart.payment.PaymentVM" />
     </data>
 
     <LinearLayout
         style="@style/RootLayout"
-        >
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@color/color_10"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_42sdp"
+                android:background="@color/color_2">
+
+                <ImageButton
+                    style="@style/MaterialButton.Icon"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center|start"
+                    android:adjustViewBounds="true"
+                    android:backgroundTint="@color/textPrimary"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:onClick="@{v -> viewModel.backPress()}"
+                    android:padding="@dimen/_14sdp"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_close"
+                    tools:ignore="ContentDescription" />
+
+                <com.diadiem.pos_components.PTextView
+                    style="@style/CartTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/payment_method" />
+
+            </FrameLayout>
+
+            <androidx.core.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <androidx.legacy.widget.Space
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_4sdp" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/paymentMethodContainer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/color_2"
+                        android:paddingHorizontal="@dimen/_8sdp"
+                        android:paddingVertical="@dimen/_15sdp"
+                        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                        app:spanCount="2" />
+                </LinearLayout>
+
+
+            </androidx.core.widget.NestedScrollView>
+
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_4sdp"
+                android:background="@color/color_10"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_8sdp"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
+
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/paymentSuggestionContainer"
+                    style="@style/SingleLineItemCart"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingVertical="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:layout_marginBottom="@dimen/_15sdp"
+                    android:orientation="vertical"
+                    android:overScrollMode="never"
+                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                    app:spanCount="4"
+                    tools:itemCount="4" />
+
+
+                <com.diadiem.pos_components.PMaterialButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/_14sdp"
+                    android:background="@color/color_0"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:gravity="center"
+                    android:paddingVertical="@dimen/_6sdp"
+
+                    android:text="55,000"
+
+                    app:pbtn_useBackgroundColor="true"
+                    app:pbtn_useFontStyle="bold"
+                    app:pbtn_useTextColor="color2"
+                    app:pbtn_useTextHeader="h5" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
 
     </LinearLayout>
 </layout>
