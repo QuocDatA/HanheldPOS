@@ -1,7 +1,7 @@
 package com.hanheldpos.data.api.pojo.customer
 
 import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 @Parcelize
 data class CustomerSearchResp(
     val DidError: Boolean,
