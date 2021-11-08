@@ -236,7 +236,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
             item.productOrderItem?.text
         )
         CartPresenter.showCartAnimation(item, binding.rootPopup, binding.imgCart) {
-            cartDataVM.addToCart(item);
+            cartDataVM.addItemToCart(item);
         };
     }
 
