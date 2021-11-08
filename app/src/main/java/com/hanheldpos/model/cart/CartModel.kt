@@ -1,6 +1,7 @@
 package com.hanheldpos.model.cart
 
 import android.os.Parcelable
+import com.hanheldpos.data.api.pojo.customer.CustomerResp
 import com.hanheldpos.data.api.pojo.order.settings.DiningOptionItem
 import com.hanheldpos.data.api.pojo.table.FloorTableItem
 import com.hanheldpos.model.DataHelper
@@ -19,6 +20,9 @@ data class CartModel(
     // Number of Customer
     var customerQuantity: Int = 0,
 
+    // customer
+    var customer : CustomerResp?= null,
+
     //order item list of Order
     var listOrderItem: MutableList<OrderItemModel> = mutableListOf(),
 
@@ -26,6 +30,8 @@ data class CartModel(
     var diningOption: DiningOptionItem? = getDefaultDiningOptionItem(),
 
     val feeType : FeeApplyToType? = null,
+
+
     ) : Parcelable {
     fun getQuantityCart(): Int {
         return listOrderItem.sumOf {
@@ -59,5 +65,9 @@ data class CartModel(
         return getSubTotal() - getTotalDisc() + getFee();
     }
 
+    fun clearCart() {
+        listOrderItem.clear();
+        customer = null;
+    }
 
 }

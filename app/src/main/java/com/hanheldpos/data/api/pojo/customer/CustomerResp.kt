@@ -4,7 +4,7 @@ import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class CustomerResp (
+data class CustomerResp(
     val Acronymn: String,
     val Address1: String,
     val Address2: String,
@@ -57,4 +57,54 @@ data class CustomerResp (
     val _key: Int,
     val _rev: String,
 //    val grant_type: Any
-) : Parcelable
+) : Parcelable {
+    fun getFullAddressWithLineBreaker(): String {
+        return getFullAddress(true)
+    }
+
+    private fun getFullAddress(isLineBreaked: Boolean = false): String {
+
+        return StringBuilder().apply {
+            if (Address1.isNotEmpty()) {
+                append(Address1)
+                if (isLineBreaked) {
+                    append("\n")
+                } else {
+                    append(", ")
+                }
+            }
+            if (Address2.isNotEmpty()) {
+                append(Address2)
+                if (isLineBreaked) {
+                    append("\n")
+                } else {
+                    append(", ")
+                }
+            }
+            if (WardName.isNotEmpty()) {
+                append(WardName)
+                if (isLineBreaked) {
+                    append("\n")
+                } else {
+                    append(", ")
+                }
+            }
+            if (CityName.isNotEmpty()) {
+                append(CityName)
+                if (isLineBreaked) {
+                    append("\n")
+                } else {
+                    append(", ")
+                }
+            }
+            if (Company?.isNotEmpty()) {
+                if (isLineBreaked) {
+                    append("\n")
+                } else {
+                    append(", ")
+                }
+                append(Company)
+            }
+        }.toString()
+    }
+}

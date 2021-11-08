@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <import type="android.text.TextUtils"/>
+        <variable
+            name="customer"
+            type="com.hanheldpos.data.api.pojo.customer.CustomerResp" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content">
+            <com.diadiem.pos_components.PTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:useTextColor="color4"
+                app:useTextHeader="h5"
+                app:useFontStyle="normal"
+                android:text="@{customer.fullName, default=`Name`}"
+                />
+            <com.diadiem.pos_components.PTextView
+                visibleObject="@{!TextUtils.isEmpty(customer.phone)}"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:useTextColor="color6"
+                app:useTextHeader="h5"
+                app:useFontStyle="normal"
+                android:text="@{customer.fullAddressWithLineBreaker, default=`Tropic Garden Apartment\nBlock A2, Floor 5, Room 123\n215 Nguyen Van Huong\nThao Dien Ward, District 2, HCMC`}"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="end"
+            android:orientation="vertical">
+            <com.diadiem.pos_components.PTextView
+                visibleObject="@{!TextUtils.isEmpty(customer.phone)}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:useTextColor="color4"
+                app:useTextHeader="h5"
+                app:useFontStyle="normal"
+                android:text="@{customer.phone, default = `Phone`}"
+                />
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+                <ImageView
+                    android:layout_width="@dimen/_6sdp"
+                    android:layout_height="@dimen/_10sdp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_arrow_forward_color9" />
+
+            </FrameLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+</layout>

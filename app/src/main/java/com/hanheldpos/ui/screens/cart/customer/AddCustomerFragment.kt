@@ -17,9 +17,11 @@ import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.cart.customer.adapter.CustomerAdapter
 
 
-class AddCustomerFragment : BaseFragment<FragmentAddCustomerBinding,AddCustomerVM>(),AddCustomerUV {
+class AddCustomerFragment(
+    private val listener: CustomerEvent
+) : BaseFragment<FragmentAddCustomerBinding, AddCustomerVM>(), AddCustomerUV {
     //Adapter
-    private lateinit var adapterCustomer : CustomerAdapter;
+    private lateinit var adapterCustomer: CustomerAdapter;
 
     override fun layoutRes(): Int = R.layout.fragment_add_customer;
 
@@ -35,12 +37,14 @@ class AddCustomerFragment : BaseFragment<FragmentAddCustomerBinding,AddCustomerV
     }
 
     override fun initView() {
-        adapterCustomer = CustomerAdapter(listener = object : BaseItemClickListener<CustomerResp>{
+        adapterCustomer = CustomerAdapter(listener = object : BaseItemClickListener<CustomerResp> {
             override fun onItemClick(adapterPosition: Int, item: CustomerResp) {
                 // Dealing with select customer
+                listener.onSelectedCustomer(item);
+                getBack();
             }
         })
-        binding.customerContainer.apply{
+        binding.customerContainer.apply {
             adapter = adapterCustomer;
             addItemDecoration(
                 DividerItemDecoration(
@@ -58,6 +62,7 @@ class AddCustomerFragment : BaseFragment<FragmentAddCustomerBinding,AddCustomerV
         }
 
         binding.searchInput.doAfterTextChanged {
+            binding.customerContainer.smoothScrollToPosition(0);
             viewModel.searchCustomer(it.toString());
         }
     }
@@ -76,5 +81,11 @@ class AddCustomerFragment : BaseFragment<FragmentAddCustomerBinding,AddCustomerV
 
     override fun loadCustomer(list: List<CustomerResp>) {
         adapterCustomer.submitList(list);
+    }
+
+    interface CustomerEvent {
+        fun onSelectedCustomer(item: CustomerResp): Unit {
+            /* default implementation */
+        }
     }
 }

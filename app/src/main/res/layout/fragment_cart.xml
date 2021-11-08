@@ -108,35 +108,50 @@
 
                     <LinearLayout
                         style="@style/SingleLineItemCart"
-                        android:orientation="horizontal"
+                        android:orientation="vertical"
                         android:paddingVertical="@dimen/_11sdp">
 
-                        <com.diadiem.pos_components.PTextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginStart="@dimen/_9sdp"
-                            android:text="@string/customer_info"
-                            app:useFontStyle="bold"
-                            app:useTextColor="color4"
-                            app:useTextHeader="h5" />
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
 
-                        <androidx.legacy.widget.Space
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1" />
+                            <com.diadiem.pos_components.PTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginStart="@dimen/_9sdp"
+                                android:text="@string/customer_info"
+                                app:useFontStyle="bold"
+                                app:useTextColor="color4"
+                                app:useTextHeader="h5" />
 
-                        <com.diadiem.pos_components.PTextView
-                            android:focusable="true"
-                            android:clickable="true"
-                            android:onClick="@{v->viewModel.onOpenAddCustomer()}"
-                            android:layout_width="wrap_content"
+                            <androidx.legacy.widget.Space
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1" />
+
+                            <com.diadiem.pos_components.PTextView
+                                visibleObject="@{cartDataVM.cartModelLD.customer == null}"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginEnd="@dimen/_9sdp"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:onClick="@{v->viewModel.onOpenAddCustomer()}"
+                                android:text="@string/add_customer"
+                                app:useTextColor="color0"
+                                app:useTextHeader="h5" />
+                        </LinearLayout>
+
+                        <include
+                            layout="@layout/item_cart_customer"
+                            visibleObject="@{cartDataVM.cartModelLD.customer != null}"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginEnd="@dimen/_9sdp"
-                            android:text="@string/add_customer"
-                            app:useTextColor="color0"
-                            app:useTextHeader="h5" />
+                            android:layout_marginHorizontal="@dimen/_9sdp"
+                            android:layout_marginTop="@dimen/_7sdp"
+                            app:customer="@{cartDataVM.cartModelLD.customer}" />
 
                     </LinearLayout>
 

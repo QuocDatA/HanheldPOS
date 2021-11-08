@@ -8,6 +8,7 @@ import com.hanheldpos.data.api.pojo.order.menu.OrderMenuResp
 import com.hanheldpos.data.api.pojo.order.settings.OrderSettingResp
 import com.hanheldpos.data.api.pojo.device.DeviceCodeResp
 import com.hanheldpos.data.api.pojo.discount.DiscountResp
+import com.hanheldpos.data.api.pojo.payment.PaymentsResp
 import com.hanheldpos.data.api.pojo.table.TableResp
 import com.hanheldpos.model.cart.fee.FeeApplyToType
 import com.hanheldpos.prefs.PrefKey
@@ -20,6 +21,7 @@ object DataHelper {
         orderMenuResp = null;
         tableResp = null;
         feeResp = null;
+        discountResp = null;
         AppPreferences.get().storeValue(PrefKey.Setting.DEVICE_CODE, null);
     }
 
@@ -230,4 +232,20 @@ object DataHelper {
         }
 
     //endregion
+
+    //region Payment
+
+    var paymentsResp : PaymentsResp? = null
+        get() {
+            if (field == null) {
+                field = AppPreferences.get()
+                    .getParcelableObject(PrefKey.Payment.PAYMENTS_RESP, PaymentsResp::class.java)
+            }
+            return field
+        }
+        set(value) {
+            field = value
+            AppPreferences.get()
+                .storeValue(PrefKey.Payment.PAYMENTS_RESP, value)
+        }
 }

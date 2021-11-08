@@ -6,6 +6,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hanheldpos.R
+import com.hanheldpos.data.api.pojo.customer.CustomerResp
 import com.hanheldpos.data.api.pojo.order.settings.DiningOptionItem
 import com.hanheldpos.databinding.FragmentCartBinding
 import com.hanheldpos.extension.notifyValueChange
@@ -145,7 +146,11 @@ class CartFragment(
     }
 
     override fun onOpenAddCustomer() {
-        navigator.goToWithCustomAnimation(AddCustomerFragment());
+        navigator.goToWithCustomAnimation(AddCustomerFragment(listener = object : AddCustomerFragment.CustomerEvent{
+            override fun onSelectedCustomer(item: CustomerResp) {
+                cartDataVM.addCustomerToCart(item);
+            }
+        }));
     }
 
     fun onEditItemIntCart(position: Int, item: OrderItemModel) {

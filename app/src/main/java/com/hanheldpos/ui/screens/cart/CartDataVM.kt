@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.hanheldpos.R
+import com.hanheldpos.data.api.pojo.customer.CustomerResp
 import com.hanheldpos.data.api.pojo.order.settings.DiningOptionItem
 import com.hanheldpos.data.api.pojo.table.FloorTableItem
 import com.hanheldpos.extension.notifyValueChange
@@ -43,7 +44,12 @@ class CartDataVM : BaseViewModel() {
         );
     }
 
-    fun addToCart(item: OrderItemModel) {
+    fun addCustomerToCart(customer : CustomerResp){
+        this.cartModelLD.value!!.customer = customer;
+        this.cartModelLD.notifyValueChange();
+    }
+
+    fun addItemToCart(item: OrderItemModel) {
         item.feeType = DataHelper.getRegularProductIdTypeFee(item.productOrderItem?.id!!)
         this.cartModelLD.value!!.listOrderItem.add(item);
         this.cartModelLD.notifyValueChange();
@@ -67,7 +73,7 @@ class CartDataVM : BaseViewModel() {
                 negativeText = negativeText,
                 onClickListener = object : AppAlertDialog.AlertDialogOnClickListener {
                     override fun onPositiveClick() {
-                        this@CartDataVM.cartModelLD.value!!.listOrderItem.clear()
+                        this@CartDataVM.cartModelLD.value!!.clearCart();
                         this@CartDataVM.cartModelLD.notifyValueChange()
                         callback()
                     }
