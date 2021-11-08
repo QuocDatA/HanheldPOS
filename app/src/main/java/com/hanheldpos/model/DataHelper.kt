@@ -248,4 +248,8 @@ object DataHelper {
             AppPreferences.get()
                 .storeValue(PrefKey.Payment.PAYMENTS_RESP, value)
         }
+
+    private fun getPaymentModel() = this.paymentsResp?.Model?.firstOrNull();
+
+    fun getPaymentsMethodList() = getPaymentModel()?.ListPayment;
 }
