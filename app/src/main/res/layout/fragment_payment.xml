@@ -8,6 +8,10 @@
         <variable
             name="viewModel"
             type="com.hanheldpos.ui.screens.cart.payment.PaymentVM" />
+
+        <variable
+            name="cartDataVMPayment"
+            type="com.hanheldpos.ui.screens.cart.CartDataVM" />
     </data>
 
     <LinearLayout
@@ -110,10 +114,12 @@
                     android:overScrollMode="never"
                     app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                     app:spanCount="4"
-                    tools:itemCount="4" />
+                    tools:itemCount="4"
+                    tools:listitem="@layout/item_payment_suggestion"/>
 
 
                 <com.diadiem.pos_components.PMaterialButton
+                    android:id="@+id/totalPriceButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/_14sdp"
@@ -123,8 +129,7 @@
                     android:foreground="?attr/selectableItemBackground"
                     android:gravity="center"
                     android:paddingVertical="@dimen/_6sdp"
-
-                    android:text="55,000"
+                    priceView="@{cartDataVMPayment.cartModelLD.lineTotal}"
 
                     app:pbtn_useBackgroundColor="true"
                     app:pbtn_useFontStyle="bold"

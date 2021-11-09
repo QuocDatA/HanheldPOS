@@ -1,16 +1,13 @@
 package com.hanheldpos.ui.screens.cart.payment
 
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.hanheldpos.R
-import com.hanheldpos.data.api.pojo.order.settings.DiningOptionItem
+import com.hanheldpos.data.api.pojo.payment.PaymentMethodResp
+import com.hanheldpos.data.api.pojo.payment.PaymentSuggestionItem
 import com.hanheldpos.databinding.FragmentPaymentBinding
-import com.hanheldpos.model.cart.order.OrderItemModel
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
-import com.hanheldpos.ui.screens.cart.adapter.CartProductAdapter
+import com.hanheldpos.ui.screens.cart.CartDataVM
 import com.hanheldpos.ui.screens.cart.payment.adapter.PaymentMethodAdapter
 import com.hanheldpos.ui.screens.cart.payment.adapter.PaymentSuggestionAdapter
 import com.hanheldpos.ui.screens.product.adapter.GridSpacingItemDecoration
@@ -23,6 +20,7 @@ class PaymentFragment : BaseFragment<FragmentPaymentBinding,PaymentVM>(), Paymen
     private lateinit var paymentSuggestionAdapter: PaymentSuggestionAdapter
 
     private val paymentVM by activityViewModels<PaymentVM>();
+    private val cartDataVM by activityViewModels<CartDataVM>();
 
     override fun viewModelClass(): Class<PaymentVM> {
         return PaymentVM::class.java;
@@ -33,14 +31,15 @@ class PaymentFragment : BaseFragment<FragmentPaymentBinding,PaymentVM>(), Paymen
             init(this@PaymentFragment);
             binding.viewModel = this;
         }
+        binding.cartDataVMPayment = cartDataVM;
     }
 
     override fun initView() {
 
         //region setup payment method recycler view
         paymentMethodAdapter = PaymentMethodAdapter(
-            onPaymentMethodClickListener = object : BaseItemClickListener<FakeMethodModel> {
-                override fun onItemClick(adapterPosition: Int, item: FakeMethodModel) {
+            onPaymentMethodClickListener = object : BaseItemClickListener<PaymentMethodResp> {
+                override fun onItemClick(adapterPosition: Int, item: PaymentMethodResp) {
                 }
             },
         );
@@ -54,8 +53,8 @@ class PaymentFragment : BaseFragment<FragmentPaymentBinding,PaymentVM>(), Paymen
 
         //region setup payment suggestion pay in cash recycler view
         paymentSuggestionAdapter = PaymentSuggestionAdapter(
-            onPaymentSuggestionClickListener = object : BaseItemClickListener<FakeMethodModel> {
-                override fun onItemClick(adapterPosition: Int, item: FakeMethodModel) {
+            onPaymentSuggestionClickListener = object : BaseItemClickListener<PaymentSuggestionItem> {
+                override fun onItemClick(adapterPosition: Int, item: PaymentSuggestionItem) {
                 }
             },
         );
@@ -72,14 +71,13 @@ class PaymentFragment : BaseFragment<FragmentPaymentBinding,PaymentVM>(), Paymen
     override fun initData() {
 
         //region init payment method data
-        val paymentMethod: MutableList<FakeMethodModel> = (paymentVM.initPaymentMethod() as List<FakeMethodModel>).toMutableList() ;
-
-        paymentMethodAdapter.submitList(paymentMethod);
+        val paymentMethods = viewModel.getPaymentMethods();
+        paymentMethodAdapter.submitList(paymentMethods)
         //endregion
 
         //region init payment suggestion data
-        val paymentSuggestion: MutableList<FakeMethodModel> = (paymentVM.initPaymentSuggestion() as List<FakeMethodModel>).toMutableList() ;
-
+        val paymentSuggestion: MutableList<PaymentSuggestionItem> =
+            (paymentVM.initPaymentSuggestion() as List<PaymentSuggestionItem>).toMutableList();
         paymentSuggestionAdapter.submitList(paymentSuggestion);
         //endregion
     }
@@ -91,7 +89,5 @@ class PaymentFragment : BaseFragment<FragmentPaymentBinding,PaymentVM>(), Paymen
     override fun getBack() {
         onFragmentBackPressed()
     }
-
-    data class FakeMethodModel(val text: String? = null, val color: String? = null)
 }
 
