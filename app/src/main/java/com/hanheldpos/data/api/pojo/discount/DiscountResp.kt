@@ -1,8 +1,8 @@
 package com.hanheldpos.data.api.pojo.discount
 
 import android.os.Parcelable
-import com.hanheldpos.data.api.pojo.order.menu.ProductItem
-import com.hanheldpos.data.api.pojo.order.menu.VariantsGroup
+import com.hanheldpos.data.api.pojo.product.ProductItem
+import com.hanheldpos.data.api.pojo.product.VariantsGroup
 import kotlinx.parcelize.Parcelize
 
 @Parcelize

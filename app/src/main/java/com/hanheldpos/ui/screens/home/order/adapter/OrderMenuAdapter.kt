@@ -4,15 +4,15 @@ import androidx.recyclerview.widget.DiffUtil
 import com.hanheldpos.R
 import com.hanheldpos.databinding.ItemOrderMenuBinding
 import com.hanheldpos.model.home.order.menu.MenuModeViewType
-import com.hanheldpos.model.home.order.menu.OrderMenuItemModel
+import com.hanheldpos.model.home.order.menu.OrderMenuItem
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 
 class OrderMenuAdapter(
     private val directionCallBack: Callback,
-    private val listener: BaseItemClickListener<OrderMenuItemModel>
-) : BaseBindingListAdapter<OrderMenuItemModel>(DiffCallBack()) {
+    private val listener: BaseItemClickListener<OrderMenuItem>
+) : BaseBindingListAdapter<OrderMenuItem>(DiffCallBack()) {
 
     override fun getItemViewType(position: Int): Int {
         return R.layout.item_order_menu;
@@ -20,7 +20,7 @@ class OrderMenuAdapter(
 
 
     override fun onBindViewHolder(
-        holder: BaseBindingViewHolder<OrderMenuItemModel>,
+        holder: BaseBindingViewHolder<OrderMenuItem>,
         position: Int
     ) {
         val item = getItem(position);
@@ -43,17 +43,17 @@ class OrderMenuAdapter(
 
     }
 
-    private class DiffCallBack : DiffUtil.ItemCallback<OrderMenuItemModel>() {
+    private class DiffCallBack : DiffUtil.ItemCallback<OrderMenuItem>() {
         override fun areItemsTheSame(
-            oldItem: OrderMenuItemModel,
-            newItem: OrderMenuItemModel
+            oldItem: OrderMenuItem,
+            newItem: OrderMenuItem
         ): Boolean {
             return oldItem.id.equals(newItem.id) && oldItem.uiType == newItem.uiType;
         }
 
         override fun areContentsTheSame(
-            oldItem: OrderMenuItemModel,
-            newItem: OrderMenuItemModel
+            oldItem: OrderMenuItem,
+            newItem: OrderMenuItem
         ): Boolean {
             return oldItem == newItem;
         }

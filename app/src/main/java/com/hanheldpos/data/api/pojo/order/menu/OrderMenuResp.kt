@@ -660,21 +660,21 @@ data class ListProductItem(
     val productModifier: List<ProductModifierItem?>? = null,
 
     @field:SerializedName("Product")
-    val product: List<ProductItem?>? = null,
+    val product: List<ProductItem>? = null,
 
     @field:SerializedName("ModifierItem")
-    val modifierItem: List<ModifierItemItem?>? = null,
+    val modifierItem: List<ModifierItemItem>? = null,
 
     @field:SerializedName("Units")
-    val units: List<UnitsItem?>? = null
+    val units: List<UnitsItem>? = null
 ) : Parcelable
 
 @Parcelize
 data class ListMenusGroupItemTree(
 
     @field:SerializedName("ListToHierarchy")
-    val listToHierarchy: List<ListToHierarchyItem?>? = null,
+    val listToHierarchy: List<ListToHierarchyItem>? = null,
 
     @field:SerializedName("ListToArray")
-    val listToArray: List<ListToArrayItem?>? = null
+    val listToArray: List<ListToArrayItem>? = null
 ) : Parcelable

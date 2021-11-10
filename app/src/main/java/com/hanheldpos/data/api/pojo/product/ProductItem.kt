@@ -4,6 +4,9 @@ import android.os.Parcelable
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 import com.google.gson.reflect.TypeToken
+import com.hanheldpos.model.home.order.ProductModeViewType
+import com.hanheldpos.model.product.ProductComboItem
+import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
 
@@ -196,7 +199,14 @@ data class ProductItem(
         return copy()
     }
 
+    fun isBundle() : Boolean {
+        return groupComboList != null && groupComboList!!.any()
+    }
+
+    val groupComboList : List<ProductComboItem>? get() = Gson().fromJson(combo, object : TypeToken<List<ProductComboItem>?>() {}.type)
+
     val skuDefault get() = if (variantsGroup ==null) sku else variantsGroupSkuDefault
+
     val variantDefault get() = if (variantsGroup == null) "" else variantsGroupNameDefault
 
     fun priceOverride(locationId : String?,sku : String?, priceDefault : Double) : Double{
@@ -209,6 +219,8 @@ data class ProductItem(
         }
         return productPriceOverrideList?.firstOrNull { it.LocationGuid.equals(locationId) }?.Price?: price
     }
+
+
 }
 
 @Parcelize

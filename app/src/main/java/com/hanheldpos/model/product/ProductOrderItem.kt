@@ -4,10 +4,10 @@ import android.os.Parcelable
 import android.util.Log
 import com.hanheldpos.data.api.pojo.order.menu.ModifierItemItem
 import com.hanheldpos.data.api.pojo.order.menu.ModifierStrProduct
-import com.hanheldpos.data.api.pojo.order.menu.ProductItem
 import com.hanheldpos.data.api.pojo.order.menu.VariantStrProduct
 import com.hanheldpos.data.api.pojo.product.GroupPriceItem
 import com.hanheldpos.data.api.pojo.product.GroupPriceProductItem
+import com.hanheldpos.data.api.pojo.product.ProductItem
 import com.hanheldpos.model.cart.fee.FeeApplyToType
 import com.hanheldpos.model.home.order.ProductModeViewType
 import com.hanheldpos.ui.screens.product.adapter.modifier.ModifierHeader

@@ -14,78 +14,11 @@ import com.hanheldpos.model.image.getImageUrl
 import com.hanheldpos.model.product.*
 import java.lang.reflect.Type
 
-fun ProductItem.toProductOrderItem(
-    orderMenuResp: OrderMenuResp
-): ProductOrderItem? {
-    var productOrderItem = ProductOrderItem();
-    productOrderItem.mappedItem = this
-    if (!this.checkValidProduct()) {
-        return null
-    }
-    productOrderItem.uiType = ProductModeViewType.Product;
-    productOrderItem.color = this.color
-    productOrderItem.id = this.id
-    productOrderItem.text = this.name
-    productOrderItem.sku = this.sku
-    productOrderItem.description = this.description
-    productOrderItem.acronymn = this.acronymn;
-    productOrderItem.price = this.price
-    productOrderItem.isPriceFixed = this.isPriceFixed;
-    productOrderItem.comparePrice = this.comparePrice
-    productOrderItem.unitStr = orderMenuResp.getUnitList()?.find {
-        it?.systemUnitId == this.unitType
-    }?.abbreviation
-
-
-    productOrderItem.pricingMethodType = PricingMethodType.fromInt(this.pricingMethodType);
-    productOrderItem.modPricingType = ModPricingType.fromInt(this.modifierPricingType);
-    productOrderItem.modPricingValue = this.modifierPricingValue;
-
-
-    productOrderItem.img = getImageUrl(orderMenuResp, this.id)
-
-    val extraData = ExtraData()
-    // Get Variant list
-    val variantStrProductList = this.getVariantList(orderMenuResp)
-    if (!variantStrProductList.isNullOrEmpty()) {
-        extraData.variantStrProductList = variantStrProductList
-        productOrderItem.extraData = extraData
-    }
-    // Get Modifier value
-    val modifierList = this.getModifierList(orderMenuResp)
-    if (!modifierList.isNullOrEmpty()) {
-        extraData.modifierMap = modifierList
-        productOrderItem.extraData = extraData
-    }
-    productOrderItem.extraData = extraData
-    //Get Combo list
-    //Get ProductCombo list
-    val productComboList = getProductComboList(combo)
-    if (!productComboList.isNullOrEmpty()) {
-        productOrderItem.productComboList = productComboList
-        productOrderItem.uiType = ProductModeViewType.Combo
-    }
-    if (this.groupPrices != null) {
-        productOrderItem.listGroupPriceInCombo = this.groupPrices.toMutableList();
-    }
-
-    return productOrderItem;
-}
-
-
-/**
- * Get ProductCombo list by parse String model from api server
- */
-private fun getProductComboList(comboStr: String?): MutableList<ProductComboItem> {
-    val listType: Type = object : TypeToken<List<ProductComboItem>?>() {}.type
-    return Gson().fromJson(comboStr, listType)
-}
-
 @SuppressLint("DefaultLocale")
 private fun ProductItem.checkValidProduct(): Boolean {
     if (this.visible == ApiConst.IN_VISIBLE)
         return false
-    if (location.isNullOrBlank())
+    if (location.isBlank())
         return true
     val upCase = location.toUpperCase()
     if (upCase == ApiConst.Location.ALL)

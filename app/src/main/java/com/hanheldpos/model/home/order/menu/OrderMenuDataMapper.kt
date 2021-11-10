@@ -2,8 +2,7 @@ package com.hanheldpos.model.home.order.menu
 
 
 import com.hanheldpos.data.api.pojo.order.menu.*
-import com.hanheldpos.data.api.pojo.product.toProductOrderItem
-import com.hanheldpos.model.product.ProductOrderItem
+import com.hanheldpos.data.api.pojo.product.ProductItem
 
 object OrderMenuDataMapper {
     lateinit var menuDB: OrderMenuResp
@@ -12,8 +11,8 @@ object OrderMenuDataMapper {
      *  Get Menu Child List of a OrderMenuItem by find in the OrderMenuResp
      *  Note: this should call when an item is click in the OrderMenu list
      */
-    private fun OrderMenuItemModel.getChildList(): MutableList<ProductOrderItem?> {
-        val rs = mutableListOf<ProductOrderItem?>()
+    private fun OrderMenuItem.getChildList(): MutableList<ProductMenuItem> {
+        val rs = mutableListOf<ProductMenuItem>()
 
         if (this.nodeItem is ListToHierarchyItem) {
             val listToHierarchyItem = this.nodeItem as ListToHierarchyItem
@@ -21,13 +20,13 @@ object OrderMenuDataMapper {
                 1 -> { // is GroupItem
                     // Find all Product with sGroupItem
                     rs.addAll(
-                        getProductOrderItemListByGroupGuid(listToHierarchyItem.groupGuid)
+                        getProductItemListByGroupGuid(listToHierarchyItem.groupGuid)
                     )
                 }
                 2 -> { // is Category
                     // Find all product in category
                     rs.addAll(
-                        getProductOrderItemListByCategoryGuid(listToHierarchyItem.groupGuid)
+                        getProductItemListByCategoryGuid(listToHierarchyItem.groupGuid)
                     )
                 }
             }
@@ -35,13 +34,13 @@ object OrderMenuDataMapper {
             if (this.mappedItem is GroupsItem) {
                 val groupGuid = (this.mappedItem as GroupsItem).id
                 rs.addAll(
-                    getProductOrderItemListByGroupGuid(groupGuid)
+                    getProductItemListByGroupGuid(groupGuid)
                 )
 
             } else if (this.mappedItem is CategoryItem) {
                 val categoryGuid = (this.mappedItem as CategoryItem).id
                 rs.addAll(
-                    getProductOrderItemListByCategoryGuid(categoryGuid)
+                    getProductItemListByCategoryGuid(categoryGuid)
                 )
             }
         }
@@ -53,37 +52,34 @@ object OrderMenuDataMapper {
      *  groupTab = id of group to get, if =0 means get all
      *  Note: this should call when an item is click in the User selected Combo Type in Combo Group
      */
-    fun ProductOrderItem.getComboList(groupTab: Int): MutableList<ProductOrderItem> {
-        val rs = mutableListOf<ProductOrderItem>()
-        if (groupTab == 0) {
-            this.productComboList?.map {
-                rs.addAll(getProductOrderItemListByComboGuid(it.comboGuid))
-            }
-        } else {
-            this.productComboList?.map {
-                if (it.id == groupTab) {
-                    rs.addAll(getProductOrderItemListByComboGuid(it.comboGuid))
-                    return@map
-                }
-            }
-        }
-        return rs
-    }
+//    fun ProductItem.getComboList(groupTab: Int): MutableList<ProductItem> {
+//        val rs = mutableListOf<ProductItem>()
+//        val productComboList = getProductComboList(combo)
+//        if (groupTab == 0) {
+//            this.productComboList?.map {
+//                rs.addAll(getProductItemListByComboGuid(it.comboGuid))
+//            }
+//        } else {
+//            this.productComboList?.map {
+//                if (it.id == groupTab) {
+//                    rs.addAll(getProductItemListByComboGuid(it.comboGuid))
+//                    return@map
+//                }
+//            }
+//        }
+//        return rs
+//    }
 
     /**
      * Find product list in groups by using @ComboGuid in combo
      */
-    private fun getProductOrderItemListByComboGuid(comboGuid: String?): MutableList<ProductOrderItem> {
-        val rs: MutableList<ProductOrderItem> = mutableListOf()
+    private fun getProductItemListByComboGuid(comboGuid: String?): MutableList<ProductItem> {
+        val rs: MutableList<ProductItem> = mutableListOf()
         menuDB.getMenuGroupItemListWithGroupId(comboGuid)?.forEach { it ->
             //Get product id that enabled in combo hold in menu group
             it?.itemGuid!!.let {
                 menuDB.getProductWithItemGuid(it)?.forEach { product ->
-                    product?.toProductOrderItem(menuDB).let { it1 ->
-                        if (it1 != null) {
-                            rs.add(it1)
-                        }
-                    }
+                    rs.add(product)
                 }
             }
         }
@@ -99,11 +95,11 @@ object OrderMenuDataMapper {
     /**
      * Find all product by @categoryGuid and transforms to OrderMenuItem List
      */
-    private fun getProductOrderItemListByCategoryGuid(categoryGuid: String?): MutableList<ProductOrderItem?> {
-        val rs: MutableList<ProductOrderItem?> = mutableListOf()
+    private fun getProductItemListByCategoryGuid(categoryGuid: String?): MutableList<ProductMenuItem> {
+        val rs: MutableList<ProductMenuItem> = mutableListOf()
 
         menuDB.getProductWithCategoryGuid(categoryGuid)?.forEach {
-            rs.add(it?.toProductOrderItem(menuDB))
+            rs.add(ProductMenuItem(it))
         };
         return rs
     }
@@ -111,14 +107,14 @@ object OrderMenuDataMapper {
     /**
      * Find all product by @groupGuid and transforms to OrderMenuItem List
      */
-    private fun getProductOrderItemListByGroupGuid(groupGuid: String?): MutableList<ProductOrderItem?> {
-        val rs: MutableList<ProductOrderItem?> = mutableListOf()
+    private fun getProductItemListByGroupGuid(groupGuid: String?): MutableList<ProductMenuItem> {
+        val rs: MutableList<ProductMenuItem> = mutableListOf()
 
         //todo(GroupItem): set Group type for product is here
         menuDB.getMenuGroupItemListWithGroupId(groupGuid)?.forEach {
             it?.let { it1 ->
                 menuDB.getProductWithItemGuid(it1.itemGuid)?.toMutableList()?.forEach { it2 ->
-                    rs.add(it2?.toProductOrderItem(menuDB))
+                    rs.add(ProductMenuItem(it2))
                 }
             }
         }
@@ -127,13 +123,12 @@ object OrderMenuDataMapper {
 
     //region ### Get ProductItem by ListToHierarchyItem
 
-    fun getMenuByBranch(branchIndex: Int): List<OrderMenuItemModel> {
-        val rs = mutableListOf<OrderMenuItemModel>()
+    fun getMenuByBranch(branchIndex: Int): List<OrderMenuItem> {
+        val rs = mutableListOf<OrderMenuItem>()
         menuDB.getHierarchyList()?.forEach {
-            it?.let {
+            it.let {
                 val menuIdInMenuList = menuDB.getMenuList()?.get(branchIndex)?.id
                 if (it.menusGuid == menuIdInMenuList) {
-
                     val orderMenuItemList = getOrderMenuItemList(it, null)
 
                     if (!orderMenuItemList.isNullOrEmpty()) {
@@ -156,10 +151,10 @@ object OrderMenuDataMapper {
      */
     private fun getOrderMenuItemList(
         listToHierarchyItem: ListToHierarchyItem,
-        parent: OrderMenuItemModel?
-    ): List<OrderMenuItemModel>? {
-        val rs: MutableList<OrderMenuItemModel> = mutableListOf()
-        val orderItem = OrderMenuItemModel()
+        parent: OrderMenuItem?
+    ): List<OrderMenuItem>? {
+        val rs: MutableList<OrderMenuItem> = mutableListOf()
+        val orderItem = OrderMenuItem()
 
         orderItem.nodeItem = listToHierarchyItem
 

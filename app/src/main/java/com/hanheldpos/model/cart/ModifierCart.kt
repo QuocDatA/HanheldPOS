@@ -1,7 +1,7 @@
 package com.hanheldpos.model.cart
 
 import android.util.Log
-import com.hanheldpos.data.api.pojo.order.menu.ProductItem
+import com.hanheldpos.data.api.pojo.product.ProductItem
 import com.hanheldpos.model.product.ModPricingType
 import com.hanheldpos.model.product.updateModifierPrice
 

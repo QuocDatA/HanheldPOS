@@ -13,7 +13,6 @@ import com.hanheldpos.model.home.order.combo.ItemActionType
 import com.hanheldpos.model.home.order.menu.ComboPickedItemViewModel
 import com.hanheldpos.model.home.order.menu.ItemComboGroupManager
 import com.hanheldpos.model.home.order.menu.OrderMenuComboItemModel
-import com.hanheldpos.model.home.order.menu.OrderMenuDataMapper.getComboList
 import com.hanheldpos.model.product.ProductComboItem
 import com.hanheldpos.model.product.updatePriceByGroupPrice
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
@@ -78,7 +77,7 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
                     ItemComboGroupManager(
                         productComboItem = productComboItem,
                     ).apply {
-                        productsForChoose = productParent?.getComboList(productComboItem.id!!)?.map { productOrderItem ->
+                        /*productsForChoose = productParent?.getComboList(productComboItem.id!!)?.map { productOrderItem ->
                             // Change price product folow group price
                             productOrderItem.apply {
                                 val newProductPrice: GroupPriceProductItem? =
@@ -98,7 +97,7 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
                                     type = OrderItemType.Product
                                 )
                             )
-                        }!!.toMutableList();
+                        }!!.toMutableList();*/
                     }
                 )
             }

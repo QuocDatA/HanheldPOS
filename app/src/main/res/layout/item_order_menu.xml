@@ -9,7 +9,7 @@
 
         <variable
             name="item"
-            type="com.hanheldpos.model.home.order.menu.OrderMenuItemModel" />
+            type="com.hanheldpos.model.home.order.menu.OrderMenuItem" />
 
     </data>
 

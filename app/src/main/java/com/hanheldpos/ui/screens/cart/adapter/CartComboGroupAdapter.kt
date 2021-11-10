@@ -5,7 +5,6 @@ import com.hanheldpos.R
 import com.hanheldpos.databinding.CartItemComboGroupBinding
 import com.hanheldpos.model.cart.order.OrderItemModel
 import com.hanheldpos.model.home.order.menu.ItemComboGroupManager
-import com.hanheldpos.model.home.order.menu.OrderMenuItemModel
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
 

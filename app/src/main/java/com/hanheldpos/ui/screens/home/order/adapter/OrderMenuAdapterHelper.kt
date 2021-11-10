@@ -1,14 +1,14 @@
 package com.hanheldpos.ui.screens.home.order.adapter
 
 import com.hanheldpos.model.home.order.menu.MenuModeViewType
-import com.hanheldpos.model.home.order.menu.OrderMenuItemModel
+import com.hanheldpos.model.home.order.menu.OrderMenuItem
 
 class OrderMenuAdapterHelper(private val callBack : AdapterCallBack) {
 
     private var currentIndex : Int = 1;
-    private var list: MutableList<OrderMenuItemModel?> = mutableListOf();
+    private var list: MutableList<OrderMenuItem?> = mutableListOf();
 
-    fun submitList(list: MutableList<OrderMenuItemModel?>){
+    fun submitList(list: MutableList<OrderMenuItem?>){
         this.list = list;
         currentIndex = 1;
         split(currentIndex);
@@ -31,19 +31,19 @@ class OrderMenuAdapterHelper(private val callBack : AdapterCallBack) {
     }
 
     private fun split(pagePosition: Int){
-        val rs: MutableList<OrderMenuItemModel> = mutableListOf();
+        val rs: MutableList<OrderMenuItem> = mutableListOf();
         list.let {
             if (it.size != 0) {
                 val start: Int = (pagePosition - 1) * maxItemViewCate;
                 val end: Int =
                     if (it.size > maxItemViewCate * pagePosition) maxItemViewCate * pagePosition else it.size;
-                rs.addAll(it.toList().subList(start, end) as List<OrderMenuItemModel>);
+                rs.addAll(it.toList().subList(start, end) as List<OrderMenuItem>);
             }
         }
 
         // Add Empty
         for (i in rs.size until maxItemViewCate) {
-            rs.add(OrderMenuItemModel().apply {
+            rs.add(OrderMenuItem().apply {
                 uiType = MenuModeViewType.Empty;
             })
         }
@@ -56,7 +56,7 @@ class OrderMenuAdapterHelper(private val callBack : AdapterCallBack) {
             * 2 : Enable Previous
             * 3 : Enable All
             * */
-            OrderMenuItemModel().apply {
+            OrderMenuItem().apply {
                 uiType = MenuModeViewType.DirectionButton.apply {
                     var ss = 0;
                     if ((currentIndex * maxItemViewCate) < list.size ){
@@ -77,7 +77,7 @@ class OrderMenuAdapterHelper(private val callBack : AdapterCallBack) {
         val sub1 = rs.subList(0,itemPerCol);
         val sub2 = rs.subList(itemPerCol,rs.size);
 
-        val lastrs: MutableList<OrderMenuItemModel> = mutableListOf();
+        val lastrs: MutableList<OrderMenuItem> = mutableListOf();
 
         for (i in 0..itemPerCol.minus(1)){
             lastrs.addAll(
@@ -92,7 +92,7 @@ class OrderMenuAdapterHelper(private val callBack : AdapterCallBack) {
 
 
     interface AdapterCallBack {
-        fun onListSplitCallBack(list: List<OrderMenuItemModel>)
+        fun onListSplitCallBack(list: List<OrderMenuItem>)
     }
 
 
