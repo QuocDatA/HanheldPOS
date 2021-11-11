@@ -213,8 +213,8 @@ data class ProductItem(
         if (locationId.isNullOrEmpty()) return price?: 0.0
         if (variantsGroup != null) {
             val priceOverride = variantPriceOverrideList?.firstOrNull { it.VariationSku.equals(sku) }
-            val listPriceOverride : List<VariantsPriceOverrideLocation> = Gson().fromJson(priceOverride?.PriceOverride, object : TypeToken<List<VariantsPriceOverrideLocation>>() {}.type)
-            val priceOverrideOfLocation : VariantsPriceOverrideLocation? = listPriceOverride.firstOrNull { it.LocationGuid.equals(locationId) }
+            val listPriceOverride : List<VariantsPriceOverrideLocation>? = Gson().fromJson(priceOverride?.PriceOverride, object : TypeToken<List<VariantsPriceOverrideLocation>>() {}.type)
+            val priceOverrideOfLocation : VariantsPriceOverrideLocation? = listPriceOverride?.firstOrNull { it.LocationGuid.equals(locationId) }
             return if (priceOverrideOfLocation != null) priceOverrideOfLocation.Price ?: 0.0 else priceDefault
         }
         return productPriceOverrideList?.firstOrNull { it.LocationGuid.equals(locationId) }?.Price?: price
@@ -251,30 +251,14 @@ data class VariantsGroup(
     val DisplayName: String?,
     val IsDisplayName: Boolean?,
     val OptionName: String?,
-    val OptionValueList: List<OptionValueVariantsGroup>?,
+    val OptionValueList: List<OptionValueVariantsGroup>? = null,
     val VariantOptionType: Int?
 ) : Parcelable {
     @Parcelize
     data class OptionValueVariantsGroup(
-        val Id: Int,
-        val Level: Int,
-        val Value: String,
-        val Variant: Variant,
-        val Visible: Int
-    ) : Parcelable
-
-    @Parcelize
-    data class Variant(
-        val DisplayName: String,
-        val IsDisplayName: Boolean,
-        val OptionName: String,
-        val OptionValueList: List<OptionValueVariant>,
-        val VariantOptionType: Int
-    ) : Parcelable
-    @Parcelize
-    data class OptionValueVariant(
         val Barcode: String,
         val ComparePrice: Double,
+        var OptionName: String?,
         val CostPerItem: Double,
         val Discount: Double,
         val GroupValue: String,
@@ -284,6 +268,13 @@ data class VariantsGroup(
         val Price: Double,
         val Sku: String,
         val Value: String,
-        val Visible: Int
+        val Visible: Int,
+        val Variant: VariantsGroup?,
     ) : Parcelable
+
+    fun subOptionValueList() : List<OptionValueVariantsGroup>? {
+        return OptionValueList?.map { option_value ->
+            option_value.apply { this.OptionName = this@VariantsGroup.OptionName }
+        }
+    }
 }

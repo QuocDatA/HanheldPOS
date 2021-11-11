@@ -16,8 +16,6 @@ data class OrderItemModel(
      */
     val orderItemId: String = GenerateId.getOrderItemId(),
 
-    var productOrderItem: ProductOrderItem? = null,
-
     var extraDone: ExtraDoneModel? = null,
     /**
      * If order item has combo list
@@ -34,7 +32,6 @@ data class OrderItemModel(
 
     public override fun clone(): OrderItemModel {
         return copy(
-            productOrderItem = productOrderItem?.copy(),
             extraDone = extraDone?.copy(),
             menuComboItem = menuComboItem?.clone(),
         )
@@ -60,15 +57,15 @@ data class OrderItemModel(
      */
 
     fun getOrderName(): String? {
-        return productOrderItem?.text;
+        return "productOrderItem?.text;"
     }
 
     fun getOrderImage(): String? {
-        return productOrderItem?.img
+        return ""
     }
 
     fun getOrderSku(): String? {
-        var sku = productOrderItem?.sku
+        var sku = ""
 
         extraDone?.let { it ->
             it.selectedVariant?.sku?.let {
@@ -102,41 +99,15 @@ data class OrderItemModel(
     }
 
     fun getDescription(): String {
-        return "${productOrderItem?.text} x${quantity}"
+        return ""
     }
 
     fun getBasePrice() : Double {
-        return productOrderItem?.price!!;
+        return 0.0
     }
 
     fun getPriceRegular(): Double {
         var sum: Double = 0.0;
-        if (type == OrderItemType.Combo) {
-            sum =
-                if (productOrderItem?.isPriceFixed != true) getBasePrice() else productOrderItem?.comparePrice!!;
-
-            when (productOrderItem!!.pricingMethodType) {
-                PricingMethodType.BasePrice -> {
-                    sum = sum.plus(menuComboItem!!.listItemsByGroup?.sumOf {
-                        it!!.listSelectedComboItems.sumOf { itPicked ->
-                            itPicked?.selectedComboItem?.getPriceModSubTotal()!!
-                        }
-                    } ?: 0.0);
-                }
-                PricingMethodType.GroupPrice -> {
-                    sum = sum.plus(menuComboItem!!.listItemsByGroup?.sumOf {
-                        it!!.listSelectedComboItems.sumOf { itPicked ->
-                            itPicked?.selectedComboItem?.getPriceLineTotal()!!
-                        }
-                    } ?: 0.0);
-                }
-            }
-        } else {
-            sum = getBasePrice() ?: 0.0
-            if (extraDone?.selectedVariant != null) {
-                sum = extraDone?.selectedVariant!!.price!!
-            }
-        }
         return sum
     }
 

@@ -5,6 +5,7 @@ import com.hanheldpos.data.api.pojo.order.settings.DiningOptionItem
 import com.hanheldpos.data.api.pojo.order.settings.ListReasonsItem
 import com.hanheldpos.data.api.pojo.product.ProductItem
 import com.hanheldpos.model.cart.ModifierCart
+import com.hanheldpos.model.cart.VariantCart
 
 abstract class BaseProductInCart {
     open var productType: ProductType = ProductType.NOT_FOUND;
@@ -18,6 +19,7 @@ abstract class BaseProductInCart {
     open var diningOption: DiningOptionItem? = null
     open var fees : List<Fee>? = null
     val modifierList : MutableList<ModifierCart> = mutableListOf();
+    val variantList : MutableList<VariantCart>? = null
 
     val name get() = getProductName();
     val feeStringValue get() = getFeeString();

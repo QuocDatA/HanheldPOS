@@ -10,10 +10,8 @@ import com.hanheldpos.model.product.BaseProductInCart
 import com.hanheldpos.model.product.ProductType
 import kotlinx.parcelize.Parcelize
 
-
-class Regular(): BaseProductInCart() {
-
-
+@Parcelize
+class Regular() : BaseProductInCart(), Parcelable {
     constructor(
         productItem: ProductItem,
         diningOptionItem: DiningOptionItem,
@@ -69,10 +67,12 @@ class Regular(): BaseProductInCart() {
     }
 
     private fun totalTemp(productPricing: ProductItem): Double {
-        var subtotal = subTotal(productPricing);
+        val subtotal = subTotal(productPricing);
         val totalDiscPrice = 0.0;
         val totalFeePrice = totalFee(subtotal, totalDiscPrice);
-        return totalFeePrice;
+        var total = subtotal - totalDiscPrice +totalFeePrice;
+        total = if (total < 0) 0.0 else total;
+        return total
     }
 
     fun totalComp(productPricing: ProductItem): Double {
@@ -134,5 +134,13 @@ class Regular(): BaseProductInCart() {
     fun totalGroupPrice(group : GroupBundle, productBundle : ProductItem) : Double {
         val totalGroupPrice = groupPrice(group,productBundle) * (quantity?: 0);
         return totalGroupPrice;
+    }
+
+    fun plusOrderQuantity(num: Int) {
+        quantity = (quantity ?: 0).plus(num);
+    }
+
+    fun minusOrderQuantity(num: Int) {
+        quantity = if (quantity!! > 0) quantity!!.minus(num) else 0
     }
 }

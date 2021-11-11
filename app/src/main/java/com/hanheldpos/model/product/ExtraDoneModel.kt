@@ -9,7 +9,6 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class ExtraDoneModel(
-    var productOrderItem: ProductOrderItem? = null,
     var selectedVariant: GroupItem? = null,
     var selectedModifiers: MutableList<ModifierSelectedItemModel>? = null,
     var diningOption: DiningOptionItem? = null

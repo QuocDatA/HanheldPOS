@@ -5,8 +5,6 @@ import com.hanheldpos.data.api.pojo.product.ProductItem
 import com.hanheldpos.model.home.order.ProductModeViewType
 import com.hanheldpos.model.home.order.menu.MenuType
 import com.hanheldpos.model.product.BaseProductInCart
-import com.hanheldpos.model.product.ExtraData
-import com.hanheldpos.model.product.ProductOrderItem
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 

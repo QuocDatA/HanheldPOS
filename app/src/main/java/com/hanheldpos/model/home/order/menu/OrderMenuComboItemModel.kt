@@ -2,13 +2,9 @@ package com.hanheldpos.model.home.order.menu
 
 import android.os.Parcelable
 import com.hanheldpos.model.cart.order.OrderItemModel
-import com.hanheldpos.model.product.ExtraDoneModel
 import com.hanheldpos.model.product.ProductComboItem
-import com.hanheldpos.model.product.ProductOrderItem
 import kotlinx.android.parcel.Parcelize
-import kotlinx.android.parcel.RawValue
 import kotlinx.parcelize.IgnoredOnParcel
-import kotlin.math.max
 
 @Parcelize
 data class OrderMenuComboItemModel(

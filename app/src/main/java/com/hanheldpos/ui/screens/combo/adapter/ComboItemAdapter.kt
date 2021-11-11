@@ -1,4 +1,4 @@
-package com.hanheldpos.ui.screens.home.order.combo.adapter
+package com.hanheldpos.ui.screens.combo.adapter
 
 import android.util.Log
 import android.view.LayoutInflater
@@ -22,7 +22,7 @@ class ComboItemAdapter(
 
     override fun getItemViewType(position: Int): Int {
         return when(modeViewType){
-            ComboItemViewType.ForChoose->{
+            ComboItemViewType.ForChoose ->{
                 R.layout.item_order_product
             }
             else->{
@@ -42,7 +42,7 @@ class ComboItemAdapter(
         ).also {
 
             when(modeViewType){
-                ComboItemViewType.ForChoose->{
+                ComboItemViewType.ForChoose ->{
 
                     Log.d("OrderProductAdapter","RecycleView Height:" + parent.height);
                     val height = parent.resources.getDimension(R.dimen._75sdp);
@@ -61,7 +61,7 @@ class ComboItemAdapter(
     ) {
         val item = getItem(position);
         when(modeViewType){
-            ComboItemViewType.ForChoose->{
+            ComboItemViewType.ForChoose ->{
                 val binding = holder.binding as ItemOrderProductBinding;
                 //TODO fix this item
 //                binding.item = item.selectedComboItem?.productOrderItem;
@@ -70,7 +70,7 @@ class ComboItemAdapter(
                 }
                 binding.isChosen=item.isChosen;
             }
-            ComboItemViewType.Chosen->{
+            ComboItemViewType.Chosen ->{
                 val binding = holder.binding as ItemComboPickedBinding;
                 binding.item = item;
                 binding.itemComboModify.setOnClickListener {

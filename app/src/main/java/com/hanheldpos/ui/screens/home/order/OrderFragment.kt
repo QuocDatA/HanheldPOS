@@ -8,17 +8,16 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.order.menu.MenusItem
-import com.hanheldpos.data.api.pojo.product.ProductItem
 import com.hanheldpos.databinding.DialogCategoryBinding
 import com.hanheldpos.databinding.FragmentOrderBinding
 import com.hanheldpos.model.cart.CartPresenter
+import com.hanheldpos.model.cart.Regular
 import com.hanheldpos.model.cart.order.OrderItemModel
-import com.hanheldpos.model.cart.order.OrderItemType
 import com.hanheldpos.model.home.order.ProductModeViewType
 import com.hanheldpos.model.home.order.combo.ItemActionType
 import com.hanheldpos.model.home.order.menu.OrderMenuItem
 import com.hanheldpos.model.home.order.menu.ProductMenuItem
-import com.hanheldpos.model.product.ProductOrderItem
+import com.hanheldpos.model.product.BaseProductInCart
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.cart.CartDataVM
@@ -29,7 +28,6 @@ import com.hanheldpos.ui.screens.home.order.adapter.OrderMenuAdapter
 import com.hanheldpos.ui.screens.home.order.adapter.OrderMenuAdapterHelper
 import com.hanheldpos.ui.screens.home.order.adapter.OrderProductAdapter
 import com.hanheldpos.ui.screens.home.order.adapter.OrderProductAdapterHelper
-import com.hanheldpos.ui.screens.home.order.combo.ComboFragment
 import com.hanheldpos.ui.screens.product.ProductDetailFragment
 import kotlinx.coroutines.*
 
@@ -132,61 +130,9 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
                     Log.d("OrderFragment", "Product Selected");
                     if (SystemClock.elapsedRealtime() - viewModel.mLastTimeClick <= 500) return;
                     viewModel.mLastTimeClick = SystemClock.elapsedRealtime();
-                    when (item.uiType) {
-//                        ProductModeViewType.Product -> {
-//                            val onCartAdded = object : ProductDetailFragment.ProductDetailListener {
-//                                override fun onCartAdded(
-//                                    item: OrderItemModel,
-//                                    action: ItemActionType
-//                                ) {
-//                                    showCartAnimation(item);
-//                                }
-//                            }
-//                            navigator.goToWithCustomAnimation(
-//                                ProductDetailFragment.getInstance(
-//                                    item = OrderItemModel(
-//                                        productOrderItem = item,
-//                                        type = OrderItemType.Product,
-//                                    ),
-//                                    quantityCanChoose = 100,
-//                                    action = ItemActionType.Add,
-//                                    listener = onCartAdded
-//                                )
-//                            )
-//                        }
-//                        ProductModeViewType.PrevButton -> {
-//                            GlobalScope.launch(Dispatchers.IO) {
-//                                productAdapHelper.previous();
-//                            }
-//                        }
-//                        ProductModeViewType.NextButton -> {
-//                            GlobalScope.launch(Dispatchers.IO) {
-//                                productAdapHelper.next();
-//                            }
-//                        }
-//                        ProductModeViewType.Combo -> {
-//                            val onCartAdded = object : ComboFragment.ComboListener {
-//                                override fun onCartAdded(
-//                                    item: OrderItemModel,
-//                                    actionType: ItemActionType
-//                                ) {
-//                                    showCartAnimation(item);
-//                                }
-//                            }
-//                            navigator.goToWithCustomAnimation(
-//                                ComboFragment.getInstance(
-//                                    item = OrderItemModel(
-//                                        productOrderItem = item,
-//                                        type = OrderItemType.Combo,
-//                                    ),
-//                                    action = ItemActionType.Add,
-//                                    quantityCanChoose = 100,
-//                                    listener = onCartAdded
-//                                )
-//                            );
-//                        }
-                    }
+                    onProductMenuSelected(item);
                 }
+
 
             }
         ).also {
@@ -226,16 +172,66 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
                 }
         });
 
+    }
 
-
-
+    fun onProductMenuSelected(item: ProductMenuItem) {
+        when (item.uiType) {
+            ProductModeViewType.Product -> {
+                val onCartAdded = object : ProductDetailFragment.ProductDetailListener {
+                    override fun onCartAdded(item: BaseProductInCart, action: ItemActionType) {
+                        TODO("Not yet implemented")
+                    }
+                }
+                item.proOriginal!!.let {
+                    navigator.goToWithCustomAnimation(
+                        ProductDetailFragment(
+                            item = Regular(it,cartDataVM.diningOptionLD.value!!,1,it.skuDefault,it.variantDefault,it.price,null),
+                            quantityCanChoose = 100,
+                            action = ItemActionType.Add,
+                            listener = onCartAdded
+                        )
+                    )
+                }
+            }
+//            ProductModeViewType.PrevButton -> {
+//                GlobalScope.launch(Dispatchers.IO) {
+//                    productAdapHelper.previous();
+//                }
+//            }
+//            ProductModeViewType.NextButton -> {
+//                GlobalScope.launch(Dispatchers.IO) {
+//                    productAdapHelper.next();
+//                }
+//            }
+//            ProductModeViewType.Combo -> {
+//                val onCartAdded = object : ComboFragment.ComboListener {
+//                    override fun onCartAdded(
+//                        item: OrderItemModel,
+//                        actionType: ItemActionType
+//                    ) {
+//                        showCartAnimation(item);
+//                    }
+//                }
+//                navigator.goToWithCustomAnimation(
+//                    ComboFragment.getInstance(
+//                        item = OrderItemModel(
+//                            productOrderItem = item,
+//                            type = OrderItemType.Combo,
+//                        ),
+//                        action = ItemActionType.Add,
+//                        quantityCanChoose = 100,
+//                        listener = onCartAdded
+//                    )
+//                );
+//            }
+        }
     }
 
     fun showCartAnimation(item: OrderItemModel) {
 
         binding.txtProduct.text = String.format(
             getString(R.string.added),
-            item.productOrderItem?.text
+//            item.productOrderItem?.text
         )
         CartPresenter.showCartAnimation(item, binding.rootPopup, binding.imgCart) {
             cartDataVM.addItemToCart(item);

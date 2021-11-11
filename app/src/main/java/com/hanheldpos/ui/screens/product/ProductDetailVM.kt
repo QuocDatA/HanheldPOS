@@ -4,20 +4,20 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import com.hanheldpos.data.api.pojo.order.menu.GroupItem
+import com.hanheldpos.data.api.pojo.product.VariantsGroup
 import com.hanheldpos.extension.notifyValueChange
-import com.hanheldpos.model.cart.order.OrderItemModel
+import com.hanheldpos.model.cart.Regular
+import com.hanheldpos.model.cart.VariantCart
 import com.hanheldpos.model.home.order.combo.ItemActionType
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
-import com.hanheldpos.ui.screens.product.adapter.modifier.ModifierSelectedItemModel
 
 class ProductDetailVM : BaseUiViewModel<ProductDetailUV>() {
 
-    val orderItemModel = MutableLiveData<OrderItemModel>();
+    val regularInCart = MutableLiveData<Regular>();
     val actionType = MutableLiveData<ItemActionType>();
 
 
-    val numberQuantity = Transformations.map(orderItemModel) {
+    val numberQuantity = Transformations.map(regularInCart) {
         return@map it.quantity;
     };
     val totalPriceLD = MutableLiveData(0.0);
@@ -33,7 +33,7 @@ class ProductDetailVM : BaseUiViewModel<ProductDetailUV>() {
 
     fun initLifeCycle(owner: LifecycleOwner) {
         owner.lifecycle.addObserver(this);
-        orderItemModel.observe(owner, {
+        regularInCart.observe(owner, {
             updateTotalPrice();
         })
     }
@@ -44,63 +44,35 @@ class ProductDetailVM : BaseUiViewModel<ProductDetailUV>() {
 
     fun onQuantityAdded() {
         if (numberQuantity.value!! < maxQuantity)
-            orderItemModel.value?.plusOrderQuantity(1);
-        orderItemModel.notifyValueChange();
+            regularInCart.value?.plusOrderQuantity(1);
+        regularInCart.notifyValueChange();
     }
 
     fun onQuantityRemoved() {
         if(minQuantity.value == numberQuantity.value) return;
-        orderItemModel.value?.minusOrderQuantity(1);
-        orderItemModel.notifyValueChange();
+        regularInCart.value?.minusOrderQuantity(1);
+        regularInCart.notifyValueChange();
     }
 
-    fun updateTotalPrice() {
-        totalPriceLD.value = (orderItemModel.value?.getPriceLineTotal() ?: 0.0);
-    }
-
-    //region Modifier
-    fun onModifierQuantityChange(
-        headerKey: String?,
-        item: ModifierSelectedItemModel,
-        isEdit: Boolean? = false
-    ) {
-        if (headerKey == null) return
-
-        var modifierList = orderItemModel.value!!.extraDone?.selectedModifiers;
-        if (modifierList == null) {
-            modifierList = mutableListOf();
-        }
-
-        item.realItem?.let { real ->
-            modifierList.let { list ->
-                list.find { it.realItem!!.id == real.id }.let {
-                    /**
-                     * Check if modifier already exist ,will change quantity
-                     * If not exist , add to list
-                     */
-                    if (it != null) {
-                        if (item.quantity == 0) {
-                            list.remove(it);
-                        } else
-                            it.quantity = item.quantity;
-                    } else list.add(item);
-                }
-            }
-        }
-        orderItemModel.value!!.extraDone?.selectedModifiers = modifierList;
-        orderItemModel.notifyValueChange()
+    private fun updateTotalPrice() {
+        totalPriceLD.value = (regularInCart.value?.total() ?: 0.0);
     }
 
     //endregion
 
     //region Variant
-    fun onVariantItemChange(item: GroupItem) {
-        orderItemModel.value!!.extraDone?.selectedVariant = item.copy();
-        orderItemModel.notifyValueChange();
+    fun onVariantItemChange(item : List<VariantCart>, groupValue : String, priceOverride: Double, sku : String) {
+        regularInCart.value?.apply {
+            variantList?.clear()
+            variantList?.addAll(item);
+            this.sku = sku
+            this.priceOverride = priceOverride
+        }
+        regularInCart.notifyValueChange();
     }
 
     //endregion
     fun onAddCart() {
-        uiCallback?.onAddCart(orderItemModel.value!!);
+//        uiCallback?.onAddCart(orderItemModel.value!!);
     }
 }

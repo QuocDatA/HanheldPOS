@@ -1,4 +1,4 @@
-package com.hanheldpos.ui.screens.home.order.combo.adapter
+package com.hanheldpos.ui.screens.combo.adapter
 
 import androidx.core.view.size
 import androidx.recyclerview.widget.DiffUtil
@@ -61,9 +61,9 @@ class ComboGroupAdapter(
         * */
         item.productsForChoose.forEach { it.isChosen = false }
         item.listSelectedComboItems.forEach {
-            item.productsForChoose.find { temp-> it?.selectedComboItem?.productOrderItem?.id == temp.selectedComboItem?.productOrderItem?.id }.let {
-                it?.isChosen = true;
-            }
+//            item.productsForChoose.find { temp-> it?.selectedComboItem?.productOrderItem?.id == temp.selectedComboItem?.productOrderItem?.id }.let {
+//                it?.isChosen = true;
+//            }
         }
         binding.itemForSelectAdapter.apply {
             adapter = ComboItemAdapter(

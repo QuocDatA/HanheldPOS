@@ -97,7 +97,7 @@
                             <com.diadiem.pos_components.PTextView
                                 bindStrike="@{true}"
                                 priceView="@{item.priceRegular}"
-                                visibleObject="@{item.productOrderItem.isPriceFixed==true || item.feeType != null}"
+                                visibleObject="@{ item.feeType != null}"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/_2sdp"

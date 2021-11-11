@@ -1,23 +1,18 @@
-package com.hanheldpos.ui.screens.home.order.combo
+package com.hanheldpos.ui.screens.combo
 
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import com.hanheldpos.data.api.pojo.product.GroupPriceProductItem
 import com.hanheldpos.data.repository.GenerateId
 import com.hanheldpos.extension.notifyValueChange
 import com.hanheldpos.model.cart.order.OrderItemModel
-import com.hanheldpos.model.cart.order.OrderItemType
 import com.hanheldpos.model.home.order.combo.ItemActionType
 import com.hanheldpos.model.home.order.menu.ComboPickedItemViewModel
 import com.hanheldpos.model.home.order.menu.ItemComboGroupManager
 import com.hanheldpos.model.home.order.menu.OrderMenuComboItemModel
 import com.hanheldpos.model.product.ProductComboItem
-import com.hanheldpos.model.product.updatePriceByGroupPrice
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
-import com.hanheldpos.ui.screens.home.order.combo.adapter.ComboGroupAdapter
-import com.hanheldpos.ui.screens.home.order.combo.adapter.ComboItemAdapter
 
 class ComboVM : BaseUiViewModel<ComboUV>() {
 
@@ -70,36 +65,16 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
             val comboGroupList: MutableList<ItemComboGroupManager?> = mutableListOf()
             listProductComboItem.map { productComboItem ->
                 // Get Group price folow combo group
-                val productParent = orderItemModel.value?.productOrderItem;
-                val groupPrice =
-                    productParent?.listGroupPriceInCombo?.find { it.groupGUID == productComboItem.comboGuid };
-                comboGroupList.add(
-                    ItemComboGroupManager(
-                        productComboItem = productComboItem,
-                    ).apply {
-                        /*productsForChoose = productParent?.getComboList(productComboItem.id!!)?.map { productOrderItem ->
-                            // Change price product folow group price
-                            productOrderItem.apply {
-                                val newProductPrice: GroupPriceProductItem? =
-                                    groupPrice?.product?.find { it.productGUID == this.id };
-                                productOrderItem.updatePriceByGroupPrice(
-                                    productParent!!,
-                                    newProductPrice
-                                );
-                            }
-                            ComboPickedItemViewModel(
-                                comboParentId = productComboItem.comboGuid,
-                                selectedComboItem = OrderItemModel(
-                                    productOrderItem = productOrderItem.apply {
-                                        modPricingType = productParent.modPricingType;
-                                        modPricingValue = productParent.modPricingValue;
-                                    },
-                                    type = OrderItemType.Product
-                                )
-                            )
-                        }!!.toMutableList();*/
-                    }
-                )
+//                val productParent = orderItemModel.value?.productOrderItem;
+//                val groupPrice =
+//                    productParent?.listGroupPriceInCombo?.find { it.groupGUID == productComboItem.comboGuid };
+//                comboGroupList.add(
+//                    ItemComboGroupManager(
+//                        productComboItem = productComboItem,
+//                    ).apply {
+//
+//                    }
+//                )
             }
             val comboId: String = GenerateId.getOrderItemId()
             comboMenuComboItemModel = OrderMenuComboItemModel(
@@ -167,7 +142,8 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
     }
 
     fun getCombo(): MutableList<ProductComboItem>? {
-        return orderItemModel.value?.productOrderItem?.productComboList;
+//        return orderItemModel.value?.productOrderItem?.productComboList;
+        return  mutableListOf();
     }
 
     fun onAddQuantity() {

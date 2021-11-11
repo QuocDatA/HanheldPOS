@@ -3,7 +3,6 @@ package com.hanheldpos.ui.screens.cart.adapter
 import androidx.recyclerview.widget.DiffUtil
 import com.hanheldpos.R
 import com.hanheldpos.databinding.ItemCartProductBinding
-import com.hanheldpos.databinding.ItemVariantBinding
 import com.hanheldpos.model.cart.order.OrderItemModel
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder

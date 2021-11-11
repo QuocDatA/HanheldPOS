@@ -46,8 +46,8 @@ private fun locationStrFromProduct(string: String?): List<LocationItem>? {
  * Variant
  */
 
-private fun ProductItem.getVariantList(orderMenuResp: OrderMenuResp): List<VariantStrProduct>? {
-    if (!this.variants.isNullOrEmpty()) {
+fun ProductItem.getVariantList(): List<VariantStrProduct>? {
+    if (this.variants.isNotEmpty()) {
         val listType: Type = object : TypeToken<List<VariantStrProduct?>?>() {}.type
         return Gson().fromJson(this.variants, listType)
     }
@@ -58,12 +58,12 @@ private fun ProductItem.getVariantList(orderMenuResp: OrderMenuResp): List<Varia
  * Modifier
  */
 
-private fun ProductItem.getModifierList(orderMenuResp: OrderMenuResp): MutableMap<ModifierStrProduct, MutableList<ModifierItemItem>> {
+fun ProductItem.getModifierList(orderMenuResp: OrderMenuResp): MutableMap<ModifierStrProduct, MutableList<ModifierItemItem>> {
     // TODO: DONE FLOW
 
     val rs: MutableMap<ModifierStrProduct, MutableList<ModifierItemItem>> = mutableMapOf()
 
-    if (!this.modifier.isNullOrEmpty()) {
+    if (this.modifier.isNotEmpty()) {
         val modifierByStrProductList: List<ModifierStrProduct>? =
             modifierStrFromProduct(this.modifier)
 

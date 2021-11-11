@@ -8,7 +8,6 @@ import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.DataHelper.getDefaultDiningOptionItem
 import com.hanheldpos.model.cart.fee.FeeApplyToType
 import com.hanheldpos.model.cart.order.OrderItemModel
-import com.hanheldpos.model.home.table.TableStatusType
 import kotlinx.parcelize.Parcelize
 
 @Parcelize

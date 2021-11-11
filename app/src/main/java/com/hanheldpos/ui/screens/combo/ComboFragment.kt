@@ -1,23 +1,21 @@
-package com.hanheldpos.ui.screens.home.order.combo
+package com.hanheldpos.ui.screens.combo
 
 import android.annotation.SuppressLint
-import android.app.AlertDialog
 import android.os.Bundle
-import android.view.LayoutInflater
 import androidx.core.content.ContextCompat
-import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentComboBinding
-import com.hanheldpos.extension.notifyValueChange
+import com.hanheldpos.model.cart.Regular
 import com.hanheldpos.model.cart.order.OrderItemModel
 import com.hanheldpos.model.home.order.combo.ItemActionType
 import com.hanheldpos.model.home.order.menu.ComboPickedItemViewModel
 import com.hanheldpos.model.home.order.menu.ItemComboGroupManager
 import com.hanheldpos.model.home.order.menu.OrderMenuComboItemModel
+import com.hanheldpos.model.product.BaseProductInCart
 import com.hanheldpos.ui.base.fragment.BaseFragment
-import com.hanheldpos.ui.screens.home.order.combo.adapter.ComboGroupAdapter
+import com.hanheldpos.ui.screens.combo.adapter.ComboGroupAdapter
 import com.hanheldpos.ui.screens.product.ProductDetailFragment
 
 class ComboFragment(
@@ -133,21 +131,25 @@ class ComboFragment(
         item: ComboPickedItemViewModel,
         action: ItemActionType
     ) {
-        navigator.goToWithCustomAnimation(ProductDetailFragment.getInstance(
-            item = item.selectedComboItem!!,
+        navigator.goToWithCustomAnimation(ProductDetailFragment(
+            item = Regular(),
             quantityCanChoose = maxQuantity,
             action = action,
             listener = object : ProductDetailFragment.ProductDetailListener {
-                override fun onCartAdded(itemDone: OrderItemModel, action: ItemActionType) {
-                    item.apply {
-                        selectedComboItem = itemDone
-                    }
-                    viewModel.onChooseItemComboSuccess(
-                        item.comboParentId,
-                        comboManager,
-                        item,
-                        if (item.selectedComboItem!!.quantity > 0) action else ItemActionType.Remove
-                    );
+//                override fun onCartAdded(itemDone: OrderItemModel, action: ItemActionType) {
+//                    item.apply {
+//                        selectedComboItem = itemDone
+//                    }
+//                    viewModel.onChooseItemComboSuccess(
+//                        item.comboParentId,
+//                        comboManager,
+//                        item,
+//                        if (item.selectedComboItem!!.quantity > 0) action else ItemActionType.Remove
+//                    );
+//                }
+
+                override fun onCartAdded(item: BaseProductInCart, action: ItemActionType) {
+                    TODO("Not yet implemented")
                 }
             }
         ))

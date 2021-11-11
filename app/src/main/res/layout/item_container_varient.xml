@@ -5,7 +5,7 @@
     <data>
         <variable
             name="item"
-            type="com.hanheldpos.ui.screens.product.adapter.variant.VariantHeader" />
+            type="com.hanheldpos.data.api.pojo.product.VariantsGroup" />
     </data>
 
     <LinearLayout
@@ -21,7 +21,7 @@
             app:useTextColor="color4"
             app:useFontStyle="bold"
             app:useTextHeader="h6"
-            android:text="@{item.name}"
+            android:text="@{item.optionName}"
             />
         <androidx.recyclerview.widget.RecyclerView
             android:overScrollMode="never"

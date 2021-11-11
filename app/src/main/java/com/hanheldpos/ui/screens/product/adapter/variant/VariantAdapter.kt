@@ -3,15 +3,15 @@ package com.hanheldpos.ui.screens.product.adapter.variant
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import com.hanheldpos.R
+import com.hanheldpos.data.api.pojo.product.VariantsGroup
 import com.hanheldpos.databinding.ItemVariantBinding
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 
 class VariantAdapter(
-    private val level : Int? = 0,
-    private val listener : BaseItemClickListener<VariantLayoutItem>
-) : BaseBindingListAdapter<VariantLayoutItem>(DiffCallback(),listener) {
+    private val listener : BaseItemClickListener<VariantsGroup.OptionValueVariantsGroup>
+) : BaseBindingListAdapter<VariantsGroup.OptionValueVariantsGroup>(DiffCallback(),listener) {
 
     data class SelectedItem(var value: Int = 0)
 
@@ -21,19 +21,19 @@ class VariantAdapter(
         return R.layout.item_variant;
     }
 
-    override fun submitList(list: MutableList<VariantLayoutItem>?) {
+    override fun submitList(list: MutableList<VariantsGroup.OptionValueVariantsGroup>?) {
         selectedItem.value = 0
         super.submitList(list)
     }
 
-    override fun onBindViewHolder(holder: BaseBindingViewHolder<VariantLayoutItem>, position: Int) {
+    override fun onBindViewHolder(holder: BaseBindingViewHolder<VariantsGroup.OptionValueVariantsGroup>, position: Int) {
         val item = getItem(position);
         holder.bindItem(item);
         val binding  = (holder.binding as ItemVariantBinding);
         binding.optionBtn.apply {
             setOnClickListener {
                 notifyItemChanged(selectedItem.value)
-                selectedItem.value = position
+                selectedItem.value = position;
                 notifyItemChanged(position)
             }
             if (selectedItem.value == position) {
@@ -57,19 +57,19 @@ class VariantAdapter(
         }
     }
 
-    class DiffCallback : DiffUtil.ItemCallback<VariantLayoutItem>() {
+    class DiffCallback : DiffUtil.ItemCallback<VariantsGroup.OptionValueVariantsGroup>() {
         override fun areItemsTheSame(
-            oldItem: VariantLayoutItem,
-            newItem: VariantLayoutItem
+            oldItem: VariantsGroup.OptionValueVariantsGroup,
+            newItem: VariantsGroup.OptionValueVariantsGroup
         ): Boolean {
-            return oldItem == newItem;
+            return oldItem.Id == newItem.Id;
         }
 
         override fun areContentsTheSame(
-            oldItem: VariantLayoutItem,
-            newItem: VariantLayoutItem
+            oldItem: VariantsGroup.OptionValueVariantsGroup,
+            newItem: VariantsGroup.OptionValueVariantsGroup
         ): Boolean {
-            return oldItem == newItem;
+            return true;
         }
 
     }

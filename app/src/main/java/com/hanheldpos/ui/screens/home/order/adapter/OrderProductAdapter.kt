@@ -11,7 +11,6 @@ import com.hanheldpos.R
 import com.hanheldpos.databinding.ItemOrderProductBinding
 import com.hanheldpos.model.home.order.ProductModeViewType
 import com.hanheldpos.model.home.order.menu.ProductMenuItem
-import com.hanheldpos.model.product.ProductOrderItem
 
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder

@@ -11,9 +11,11 @@ import com.hanheldpos.data.api.pojo.order.settings.DiningOptionItem
 import com.hanheldpos.databinding.FragmentCartBinding
 import com.hanheldpos.extension.notifyValueChange
 import com.hanheldpos.model.DataHelper
+import com.hanheldpos.model.cart.Regular
 import com.hanheldpos.model.cart.order.OrderItemModel
 import com.hanheldpos.model.cart.order.OrderItemType
 import com.hanheldpos.model.home.order.combo.ItemActionType
+import com.hanheldpos.model.product.BaseProductInCart
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.cart.adapter.CartDiningOptionAdapter
@@ -21,7 +23,7 @@ import com.hanheldpos.ui.screens.cart.adapter.CartProductAdapter
 import com.hanheldpos.ui.screens.cart.customer.AddCustomerFragment
 import com.hanheldpos.ui.screens.cart.payment.PaymentFragment
 import com.hanheldpos.ui.screens.discount.DiscountFragment
-import com.hanheldpos.ui.screens.home.order.combo.ComboFragment
+import com.hanheldpos.ui.screens.combo.ComboFragment
 import com.hanheldpos.ui.screens.product.ProductDetailFragment
 
 
@@ -157,13 +159,20 @@ class CartFragment(
         when (item.type) {
             OrderItemType.Product -> {
                 navigator.goToWithCustomAnimation(
-                    ProductDetailFragment.getInstance(
-                        item = item.clone(),
+                    ProductDetailFragment(
+                        item = Regular(),
                         action = ItemActionType.Modify,
                         quantityCanChoose = 100,
                         listener = object : ProductDetailFragment.ProductDetailListener {
-                            override fun onCartAdded(item: OrderItemModel, action: ItemActionType) {
-                                onUpdateItemInCart(position, item);
+//                            override fun onCartAdded(item: OrderItemModel, action: ItemActionType) {
+//                                onUpdateItemInCart(position, item);
+//                            }
+
+                            override fun onCartAdded(
+                                item: BaseProductInCart,
+                                action: ItemActionType
+                            ) {
+
                             }
                         }
                     )

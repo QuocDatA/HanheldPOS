@@ -3,9 +3,13 @@ package com.hanheldpos.ui.screens.product.options.variant
 import android.os.Bundle
 import androidx.fragment.app.activityViewModels
 import com.hanheldpos.R
+import com.hanheldpos.data.api.pojo.order.menu.VariantStrProduct
+import com.hanheldpos.data.api.pojo.product.ProductItem
+import com.hanheldpos.data.api.pojo.product.VariantsGroup
 import com.hanheldpos.databinding.FragmentVariantBinding
-import com.hanheldpos.model.product.ExtraData
-import com.hanheldpos.model.product.getDefaultVariantProduct
+import com.hanheldpos.extension.notifyValueChange
+import com.hanheldpos.model.UserHelper
+import com.hanheldpos.model.cart.VariantCart
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.product.adapter.variant.ContainerVariantAdapter
@@ -13,7 +17,15 @@ import com.hanheldpos.ui.screens.product.adapter.variant.VariantLayoutItem
 import com.hanheldpos.ui.screens.product.options.OptionVM
 
 
-class VariantFragment : BaseFragment<FragmentVariantBinding, VariantVM>(), VariantUV {
+class VariantFragment(
+    private val item: VariantsGroup?,
+    private val variantCart: List<VariantCart>?,
+    private val product: ProductItem
+) : BaseFragment<FragmentVariantBinding, VariantVM>(), VariantUV {
+
+    init {
+
+    }
 
     //ViewModel
     private val optionVM by activityViewModels<OptionVM>();
@@ -37,46 +49,67 @@ class VariantFragment : BaseFragment<FragmentVariantBinding, VariantVM>(), Varia
     override fun initView() {
 
         containerVariantAdapter = ContainerVariantAdapter(
-            itemSelected = optionVM.extraDoneModel?.selectedVariant,
-            listener = object : BaseItemClickListener<String?> {
-                override fun onItemClick(adapterPosition: Int, item: String?) {
-                    viewModel.getGroupItemByGroupName(item)?.let { optionVM.variantItemChange(it) };
+            listener = object : BaseItemClickListener<VariantsGroup.OptionValueVariantsGroup> {
+                override fun onItemClick(
+                    adapterPosition: Int,
+                    item: VariantsGroup.OptionValueVariantsGroup
+                ) {
+                    onSelectedItem(item);
                 }
-
             }
         ).also {
             binding.containerVariant.adapter = it;
         }
 
-        viewModel.listVariantHeader.observe(this, {
-            containerVariantAdapter.submitList(it);
-            containerVariantAdapter.notifyDataSetChanged();
-        });
+        containerVariantAdapter.submitList(viewModel.listVariantGroups);
+    }
+
+    fun onSelectedItem(item: VariantsGroup.OptionValueVariantsGroup) {
+
+        // Add variant selected
+        if (viewModel.listVariants.size >= item.Level) {
+            viewModel.listVariants[item.Level-1] = VariantCart(item.Id,item.Value);
+        } else{
+            viewModel.listVariants.add(VariantCart(item.Id,item.Value))
+        }
+        containerVariantAdapter.itemSelected = viewModel.listVariants
+
+        // Last level variant
+        if (item.Variant?.OptionValueList == null || !item.Variant.OptionValueList.any()) {
+            val priceOverride =
+                product.priceOverride(UserHelper.getLocationGui(), item.Sku, item.Price)
+            optionVM.variantItemChange(
+                viewModel.listVariants,
+                item.GroupValue,
+                priceOverride,
+                item.Sku
+            );
+            return;
+        }
+        item.Variant.let { group ->
+            if (viewModel.listVariantGroups.size > item.Level) {
+                viewModel.listVariantGroups[item.Level] = group
+                binding.containerVariant.post {
+                    containerVariantAdapter.notifyItemChanged(item.Level);
+                }
+            } else{
+                viewModel.listVariantGroups.add(group)
+                binding.containerVariant.post{
+                    containerVariantAdapter.notifyItemInserted(item.Level);
+                }
+
+            }
+
+        }
     }
 
     override fun initData() {
-        arguments?.let {
-            val a: ExtraData? = it.getParcelable(ARG_PRODUCT_EXTRA_FRAGMENT)
-            viewModel.listVariantHeader.value =
-                viewModel.initDefaultVariantHeaderList(a?.getDefaultVariantProduct());
-        }
+        item?.let { viewModel.listVariantGroups.add(it) }
+        variantCart?.let { viewModel.listVariants.addAll(it) };
     }
 
     override fun initAction() {
 
-    }
-
-    companion object {
-        private const val ARG_PRODUCT_EXTRA_FRAGMENT = "ARG_PRODUCT_EXTRA_FRAGMENT"
-        fun getInstance(
-            item: ExtraData,
-        ): VariantFragment {
-            return VariantFragment().apply {
-                arguments = Bundle().apply {
-                    putParcelable(ARG_PRODUCT_EXTRA_FRAGMENT, item)
-                }
-            };
-        }
     }
 
 }

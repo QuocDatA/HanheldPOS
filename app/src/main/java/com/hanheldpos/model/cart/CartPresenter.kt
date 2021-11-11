@@ -8,11 +8,9 @@ import android.util.Size
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
-import android.widget.ImageView
 import android.widget.PopupWindow
 import com.diadiem.pos_components.PTextView
 import com.hanheldpos.R
-import com.hanheldpos.binding.loadImageFromUrlToCircular
 import com.hanheldpos.binding.setBackColor
 import com.hanheldpos.model.cart.order.OrderItemModel
 
@@ -81,9 +79,9 @@ object CartPresenter {
             setBackgroundDrawable(null)
 
             val circle: View = contentView.findViewById(R.id.circleCartAnimation);
-            setBackColor(circle, item?.productOrderItem?.color);
-            val txt: PTextView = contentView.findViewById(R.id.txtProductAdded);
-            txt.text = item?.productOrderItem?.acronymn;
+//            setBackColor(circle, item?.productOrderItem?.color);
+//            val txt: PTextView = contentView.findViewById(R.id.txtProductAdded);
+//            txt.text = item?.productOrderItem?.acronymn;
 
         }.also { popupWindow ->
             val location = IntArray(2).apply {
