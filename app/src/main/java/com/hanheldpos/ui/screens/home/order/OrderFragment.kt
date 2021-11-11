@@ -68,7 +68,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
 
         menuAdapHelper = OrderMenuAdapterHelper(callBack = object :
             OrderMenuAdapterHelper.AdapterCallBack {
-            override fun onListSplitCallBack(list: List<OrderMenuItemModel>) {
+            override fun onListSplitCallBack(list: List<OrderMenuItemModel?>) {
                 menuAdapter.submitList(list);
                 menuAdapter.notifyDataSetChanged();
 
@@ -105,8 +105,8 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
 
         val builder = AlertDialog.Builder(context);
         builder.setView(dialogCateBinding.root);
-
         dialogCategory = builder.create();
+        dataVM.menus.value?.let { menuAdapHelper.submitList(it) }
 
         dialogCateBinding.closeBtn.setOnClickListener { dialogCategory.dismiss() }
 
@@ -246,7 +246,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
     }
 
     override fun showCategoryDialog() {
-        dataVM.menus.value?.let { menuAdapHelper.submitList(it) }
+        //dataVM.menus.value?.let { menuAdapHelper.submitList(it) }
         dialogCategory.show();
         dialogCategory.window?.setBackgroundDrawableResource(android.R.color.transparent)
     }

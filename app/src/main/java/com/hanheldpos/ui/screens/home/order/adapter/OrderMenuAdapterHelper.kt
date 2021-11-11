@@ -7,31 +7,47 @@ class OrderMenuAdapterHelper(private val callBack : AdapterCallBack) {
 
     private var currentIndex : Int = 1;
     private var list: MutableList<OrderMenuItemModel?> = mutableListOf();
+    private var listOfPage: MutableList<List<OrderMenuItemModel?>> = mutableListOf();
 
-    fun submitList(list: MutableList<OrderMenuItemModel?>){
-        this.list = list;
-        currentIndex = 1;
-        split(currentIndex);
+    fun submitList(list: MutableList<OrderMenuItemModel?>) {
+        this.list = list
+        listOfPage.clear()
+        var temp: Int = this.list.size
+        var tempCurrentIndex: Int = 1
+        currentIndex = 1
+        if (temp > 0) {
+            while (temp > 0) {
+                var tempList = split(tempCurrentIndex)
+                listOfPage.add(tempList)
+                temp -= tempList.size
+                tempCurrentIndex++
+            }
+            callBack.onListSplitCallBack(listOfPage[currentIndex - 1])
+        }
+
     }
 
     fun next(){
-        if ((currentIndex * maxItemViewCate) < list.size ){
+        if ((currentIndex * maxItemViewCate) < list.size ) {
             currentIndex = currentIndex.plus(1);
-            split(currentIndex);
+            callBack.onListSplitCallBack(listOfPage[currentIndex - 1])
+            //split(currentIndex);
         }
 
     }
 
     fun previous(){
-        if (currentIndex > 1){
+        if (currentIndex > 1) {
             currentIndex = currentIndex.minus(1);
-            split(currentIndex);
+            callBack.onListSplitCallBack(listOfPage[currentIndex - 1])
+            //split(currentIndex);
         }
 
     }
 
-    private fun split(pagePosition: Int){
+    private fun split(pagePosition: Int): MutableList<OrderMenuItemModel?> {
         val rs: MutableList<OrderMenuItemModel> = mutableListOf();
+
         list.let {
             if (it.size != 0) {
                 val start: Int = (pagePosition - 1) * maxItemViewCate;
@@ -44,40 +60,34 @@ class OrderMenuAdapterHelper(private val callBack : AdapterCallBack) {
         // Add Empty
         for (i in rs.size until maxItemViewCate) {
             rs.add(OrderMenuItemModel().apply {
-                uiType = MenuModeViewType.Empty;
+                uiType = MenuModeViewType.Empty
             })
         }
 
+        var menuItemType = MenuModeViewType.DirectionDisableUpDown;
+        if ((pagePosition * maxItemViewCate) < list.size ){
+            menuItemType = MenuModeViewType.DirectionEnableDown;
+        }
+        if (pagePosition > 1){
+            menuItemType = when(menuItemType){
+                MenuModeViewType.DirectionEnableDown->MenuModeViewType.DirectionEnableUpDown
+                MenuModeViewType.DirectionDisableUpDown->MenuModeViewType.DirectionEnableUp
+                else -> MenuModeViewType.DirectionDisableUpDown
+            };
+        }
+
         // Add Direction Button
-        rs.addAll(listOf(
-            /*
-            * 0 : Disable All
-            * 1 : Enable Next
-            * 2 : Enable Previous
-            * 3 : Enable All
-            * */
+        rs.add(
             OrderMenuItemModel().apply {
-                uiType = MenuModeViewType.DirectionButton.apply {
-                    var ss = 0;
-                    if ((currentIndex * maxItemViewCate) < list.size ){
-                        ss = 1;
-                    }
-                    if (currentIndex > 1){
-                        ss = when(ss){
-                            1->3
-                            0->2
-                            else -> 0
-                        };
-                    }
-                    pos = ss;
-                };
+                uiType = menuItemType
+
             }
-        ));
+        )
 
         val sub1 = rs.subList(0,itemPerCol);
         val sub2 = rs.subList(itemPerCol,rs.size);
 
-        val lastrs: MutableList<OrderMenuItemModel> = mutableListOf();
+        val lastrs: MutableList<OrderMenuItemModel?> = mutableListOf();
 
         for (i in 0..itemPerCol.minus(1)){
             lastrs.addAll(
@@ -88,11 +98,12 @@ class OrderMenuAdapterHelper(private val callBack : AdapterCallBack) {
             )
         }
         callBack.onListSplitCallBack(lastrs.toList());
+        return lastrs
     }
 
 
     interface AdapterCallBack {
-        fun onListSplitCallBack(list: List<OrderMenuItemModel>)
+        fun onListSplitCallBack(list: List<OrderMenuItemModel?>)
     }
 
 
