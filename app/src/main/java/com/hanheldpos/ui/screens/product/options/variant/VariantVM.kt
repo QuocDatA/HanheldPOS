@@ -10,9 +10,7 @@ import com.hanheldpos.data.api.pojo.order.menu.splitListOptionValue
 import com.hanheldpos.data.api.pojo.product.VariantsGroup
 import com.hanheldpos.model.cart.VariantCart
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
-import com.hanheldpos.ui.screens.product.adapter.variant.VariantHeader
-import com.hanheldpos.ui.screens.product.adapter.variant.VariantLayoutItem
-import java.lang.ref.WeakReference
+
 
 class VariantVM : BaseUiViewModel<VariantUV>() {
 

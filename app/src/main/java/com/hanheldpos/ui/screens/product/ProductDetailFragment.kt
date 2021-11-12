@@ -88,7 +88,7 @@ class ProductDetailFragment(
             fragmentMap[OptionPage.Modifier] = ModifierFragment();
 
             optionsPagerAdapter.submitList(fragmentMap.values);
-            if (it?.proOriginal?.variantsGroup == null) {
+            if (it.proOriginal?.variantsGroup == null) {
                 binding.tabOption.getTabAt(0)?.view?.isClickable = false;
                 GlobalScope.launch(Dispatchers.IO) {
                     delay(300);
@@ -98,9 +98,6 @@ class ProductDetailFragment(
                 }
             }
         }
-
-
-
     }
 
     override fun initAction() {

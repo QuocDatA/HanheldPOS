@@ -1,13 +1,11 @@
 package com.hanheldpos.data.api.pojo.order.menu
 
 import android.os.Parcelable
-import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
-import com.google.gson.reflect.TypeToken
-import com.hanheldpos.data.api.pojo.product.GroupPriceItem
 import com.hanheldpos.data.api.pojo.product.ProductItem
+import com.hanheldpos.model.product.ModPricingType
+import com.hanheldpos.model.product.PricingMethodType
 import kotlinx.parcelize.Parcelize
-import kotlinx.parcelize.RawValue
 
 @Parcelize
 data class OrderMenuResp(
@@ -24,12 +22,6 @@ data class OrderMenuResp(
     @field:SerializedName("DidError")
     val didError: Boolean? = null
 ) : Parcelable
-
-
-
-
-
-
 
 @Parcelize
 data class ListToHierarchyItem(
@@ -293,7 +285,7 @@ data class MenusGroupItem(
 ) : Parcelable
 
 @Parcelize
-data class ModifierItemItem(
+data class ModifierItem(
 
     @field:SerializedName("ModifierGuid")
     val modifierGuid: String? = null,
@@ -324,7 +316,34 @@ data class ModifierItemItem(
 
     @field:SerializedName("CreateDate")
     val createDate: String? = null
-) : Parcelable
+) : Parcelable {
+    fun pricing(productPricing : ProductItem) : Double{
+        val pricingType = productPricing.modifierPricingType ?: -1;
+        val pricingValue = productPricing.modifierPricingValue ?: 0.0;
+        when (ModPricingType.fromInt(pricingType)) {
+            ModPricingType.FIX_AMOUNT -> {
+                return pricingValue;
+            }
+            ModPricingType.USED_DEFAULT_PRICE -> {
+                return price ?: 0.0;
+            }
+            ModPricingType.DISCOUNT_AMOUNT -> {
+                val pricingPrice = (price ?: 0.0).minus(pricingValue);
+                return if (pricingPrice < 0) 0.0 else pricingPrice;
+            }
+            ModPricingType.DISCOUNT_PERCENT -> {
+                val pricingPrice = (price ?: 0.0).minus((price ?: 0.0) * pricingValue / 100);
+                return pricingPrice;
+            }
+            ModPricingType.NONE -> {
+                return 0.0;
+            }
+            else -> {
+                return price ?: 0.0;
+            }
+        }
+    }
+}
 
 @Parcelize
 data class MenusGroupShowInItem(
@@ -663,7 +682,7 @@ data class ListProductItem(
     val product: List<ProductItem>? = null,
 
     @field:SerializedName("ModifierItem")
-    val modifierItem: List<ModifierItemItem>? = null,
+    val modifierItem: List<ModifierItem>? = null,
 
     @field:SerializedName("Units")
     val units: List<UnitsItem>? = null

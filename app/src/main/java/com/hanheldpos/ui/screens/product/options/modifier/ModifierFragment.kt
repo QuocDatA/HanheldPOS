@@ -54,10 +54,10 @@ class ModifierFragment(
     }
 
     override fun initData() {
-//        arguments?.let {
-//            val a: ExtraData? = it.getParcelable(ARG_PRODUCT_EXTRA_FRAGMENT)
-//            viewModel.defaultModifierListLD.value = (a?.getDefaultModifierList());
-//        }
+        arguments?.let {
+            val a: ExtraData? = it.getParcelable(ARG_PRODUCT_EXTRA_FRAGMENT)
+            viewModel.defaultModifierListLD.value = (a?.getDefaultModifierList());
+        }
     }
 
     override fun initAction() {

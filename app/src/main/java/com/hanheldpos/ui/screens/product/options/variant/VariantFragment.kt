@@ -1,19 +1,15 @@
 package com.hanheldpos.ui.screens.product.options.variant
 
-import android.os.Bundle
 import androidx.fragment.app.activityViewModels
 import com.hanheldpos.R
-import com.hanheldpos.data.api.pojo.order.menu.VariantStrProduct
 import com.hanheldpos.data.api.pojo.product.ProductItem
 import com.hanheldpos.data.api.pojo.product.VariantsGroup
 import com.hanheldpos.databinding.FragmentVariantBinding
-import com.hanheldpos.extension.notifyValueChange
 import com.hanheldpos.model.UserHelper
 import com.hanheldpos.model.cart.VariantCart
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.product.adapter.variant.ContainerVariantAdapter
-import com.hanheldpos.ui.screens.product.adapter.variant.VariantLayoutItem
 import com.hanheldpos.ui.screens.product.options.OptionVM
 
 

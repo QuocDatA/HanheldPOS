@@ -7,11 +7,10 @@ import com.hanheldpos.data.api.ApiConst
 import com.hanheldpos.data.api.pojo.order.menu.getModifierItemByListProduct
 import com.hanheldpos.data.api.pojo.order.menu.getProductModifierByListProduct
 import com.hanheldpos.data.api.pojo.order.menu.*
-import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.UserHelper
-import com.hanheldpos.model.home.order.ProductModeViewType
-import com.hanheldpos.model.image.getImageUrl
-import com.hanheldpos.model.product.*
+import com.hanheldpos.model.product.GroupExtra
+import com.hanheldpos.model.product.ItemExtra
+import com.hanheldpos.model.product.ItemExtraModel
 import java.lang.reflect.Type
 
 @SuppressLint("DefaultLocale")
@@ -43,89 +42,42 @@ private fun locationStrFromProduct(string: String?): List<LocationItem>? {
 }
 
 /**
- * Variant
- */
-
-fun ProductItem.getVariantList(): List<VariantStrProduct>? {
-    if (this.variants.isNotEmpty()) {
-        val listType: Type = object : TypeToken<List<VariantStrProduct?>?>() {}.type
-        return Gson().fromJson(this.variants, listType)
-    }
-    return null
-}
-
-/**
  * Modifier
  */
 
-fun ProductItem.getModifierList(orderMenuResp: OrderMenuResp): MutableMap<ModifierStrProduct, MutableList<ModifierItemItem>> {
+fun ProductItem.getModifierList(orderMenuResp: OrderMenuResp): List<GroupExtra> {
     // TODO: DONE FLOW
 
-    val rs: MutableMap<ModifierStrProduct, MutableList<ModifierItemItem>> = mutableMapOf()
+    val modifierExtras : List<ModifierExtra> = Gson().fromJson(modifier, object : TypeToken<List<ModifierExtra>?>() {}.type)
+    val rs: MutableList<GroupExtra> = mutableListOf()
 
-    if (this.modifier.isNotEmpty()) {
-        val modifierByStrProductList: List<ModifierStrProduct>? =
-            modifierStrFromProduct(this.modifier)
-
-        modifierByStrProductList?.forEach { it ->
-            val modifierByProduct = it
-
-            val modifierCustom = orderMenuResp.getProductModifierByListProduct()
-                ?.find {
-                    it?.productGuid?.equals(this.id) ?: false && it?.modifierGuid.equals(
-                        modifierByProduct.modifierGuid
-                    )
-                }
-
-            val modifierItemByListProduct = orderMenuResp.getModifierItemByListProduct()
-
-            // check custom first if have custom then get the modifier by the custom modifier
-            if (modifierCustom != null) {
-
-                val modifierCustomList = modifierStrFromProductModifier(modifierCustom.modifierItem)
-
-                modifierCustomList?.forEach { it ->
-                    val modifierItemCustom = it  // get form Modifier Item list by Modifier custom
-
-                    val modifierItem = modifierItemByListProduct?.find {
-                        it?.id == modifierItemCustom.modifierItem
-                    }
-
-                    modifierItem?.let {
-                        if (!rs.containsKey(modifierByProduct)) {
-                            rs[modifierByProduct] = mutableListOf()
-                        }
-                        rs[modifierByProduct]?.add(it)
-                    }
-
-                }
-            } else {
-                modifierItemByListProduct?.filter {
-                    it?.modifierGuid == modifierByProduct.modifierGuid
-                }?.forEach {
-                    it?.let {
-                        if (!rs.containsKey(modifierByProduct)) {
-                            rs[modifierByProduct] = mutableListOf()
-                        }
-                        rs[modifierByProduct]?.add(it)
-                    }
+    modifierExtras.forEach { extraGroup->
+        val group = GroupExtra(extraGroup);
+        val productModifierList = orderMenuResp.getProductModifierByListProduct()
+            ?.find {
+                it?.productGuid?.equals(this.id) ?: false && it?.modifierGuid.equals(
+                    extraGroup.ModifierGuid
+                )
+            }
+        if(productModifierList != null){
+            (Gson().fromJson(modifier, object : TypeToken<List<ModifierExtraID>?>() {}.type) as List<ModifierExtraID>).forEach { modifierId->
+                val modifierItem = orderMenuResp.getModifierItemByListProduct()?.find { it.id == modifierId.ModifierItem }
+                if (modifierItem != null) {
+                    (group.modifierList as MutableList).add(ItemExtra(modifierItem,this))
                 }
             }
-
         }
+        else {
+            val modifierItemList = orderMenuResp.getModifierItemByListProduct()?.filter {
+                it.modifierGuid == extraGroup.ModifierGuid
+            }
+            modifierItemList?.forEach { modifierItem->
+                (group.modifierList as MutableList).add(ItemExtra(modifierItem,this))
+            }
+        }
+
     }
-
     return rs
-}
-
-private fun modifierStrFromProduct(string: String?): List<ModifierStrProduct>? {
-    val listType: Type = object : TypeToken<List<ModifierStrProduct>?>() {}.type
-    return Gson().fromJson(string, listType)
-}
-
-private fun modifierStrFromProductModifier(string: String?): List<ModifierStrProductModifier>? {
-    val listType: Type = object : TypeToken<List<ModifierStrProductModifier>?>() {}.type
-    return Gson().fromJson(string, listType)
 }
 
 

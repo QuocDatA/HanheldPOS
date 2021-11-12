@@ -8,6 +8,7 @@ import com.hanheldpos.ui.screens.product.adapter.modifier.ModifierSelectedItemMo
 
 class ModifierVM : BaseUiViewModel<ModifierUV>() {
 
+    val
     var defaultModifierListLD = MutableLiveData<MutableList<ModifierHeader>?>()
 
     fun initLifeCycle(owner: LifecycleOwner){

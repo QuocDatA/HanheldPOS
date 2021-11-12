@@ -2,11 +2,11 @@ package com.hanheldpos.ui.screens.product.adapter.modifier
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
-import com.hanheldpos.data.api.pojo.order.menu.ModifierItemItem
+import com.hanheldpos.data.api.pojo.order.menu.ModifierItem
 
 @Parcelize
 data class ModifierSelectedItemModel(
-    val realItem: ModifierItemItem?,
+    val realItem: ModifierItem?,
     val modifierAvatar: String? = null,
     val maxQuantity : Int = 100,
     var quantity: Int = 0,
