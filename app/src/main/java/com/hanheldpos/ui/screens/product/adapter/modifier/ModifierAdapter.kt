@@ -23,13 +23,13 @@ class ModifierAdapter(private val listener: BaseItemClickListener<ItemExtra>) :
         holder.bindItem(item);
         val binding = (holder.binding as ItemModifierBinding);
         binding.btnAddQuantity.setOnClickListener {
-//            item.addQuantity(1);
+            item.addQuantity(1);
             notifyItemChanged(position)
             listener.onItemClick(position, item)
 
         }
         binding.btnRemoveQuantity.setOnClickListener {
-//            item.deleteQuantity(1);
+            item.deleteQuantity(1);
             notifyItemChanged(position)
             listener.onItemClick(position, item)
         }

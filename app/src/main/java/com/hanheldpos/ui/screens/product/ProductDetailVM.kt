@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.hanheldpos.data.api.pojo.product.VariantsGroup
 import com.hanheldpos.extension.notifyValueChange
+import com.hanheldpos.model.cart.ModifierCart
 import com.hanheldpos.model.cart.Regular
 import com.hanheldpos.model.cart.VariantCart
 import com.hanheldpos.model.home.order.combo.ItemActionType
@@ -23,12 +24,12 @@ class ProductDetailVM : BaseUiViewModel<ProductDetailUV>() {
     val totalPriceLD = MutableLiveData(0.0);
 
     var maxQuantity = -1;
-    var minQuantity : LiveData<Int> = Transformations.map(actionType) {
-        return@map  when(actionType.value){
-            ItemActionType.Modify->0;
-            ItemActionType.Add->1;
-            else->1;
-        } ;
+    var minQuantity: LiveData<Int> = Transformations.map(actionType) {
+        return@map when (actionType.value) {
+            ItemActionType.Modify -> 0;
+            ItemActionType.Add -> 1;
+            else -> 1;
+        };
     };
 
     fun initLifeCycle(owner: LifecycleOwner) {
@@ -49,7 +50,7 @@ class ProductDetailVM : BaseUiViewModel<ProductDetailUV>() {
     }
 
     fun onQuantityRemoved() {
-        if(minQuantity.value == numberQuantity.value) return;
+        if (minQuantity.value == numberQuantity.value) return;
         regularInCart.value?.minusOrderQuantity(1);
         regularInCart.notifyValueChange();
     }
@@ -61,13 +62,46 @@ class ProductDetailVM : BaseUiViewModel<ProductDetailUV>() {
     //endregion
 
     //region Variant
-    fun onVariantItemChange(item : List<VariantCart>, groupValue : String, priceOverride: Double, sku : String) {
+    fun onVariantItemChange(
+        item: List<VariantCart>,
+        groupValue: String,
+        priceOverride: Double,
+        sku: String
+    ) {
         regularInCart.value?.apply {
             variantList?.clear()
             variantList?.addAll(item);
             this.sku = sku
             this.priceOverride = priceOverride
         }
+        regularInCart.notifyValueChange();
+    }
+
+    //endregion
+
+    // region Modifier
+
+    fun onModifierAddItem(item: ModifierCart) {
+        regularInCart.value?.apply {
+            modifierList.find { modifier ->
+                item.modifierGuid == modifier.modifierGuid
+            }.let {
+                if (it != null) {
+                    val index = modifierList.indexOf(it);
+                    modifierList[index] = item;
+                } else {
+                    modifierList.add(item)
+                }
+            }
+        }
+        regularInCart.notifyValueChange();
+    }
+
+    fun onModifierRemoveItem(item: ModifierCart) {
+        regularInCart.value
+            ?.apply {
+                modifierList.removeAll { it.modifierGuid == item.modifierGuid }
+            }
         regularInCart.notifyValueChange();
     }
 

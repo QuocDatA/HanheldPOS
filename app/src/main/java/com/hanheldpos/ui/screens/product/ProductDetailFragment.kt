@@ -9,6 +9,7 @@ import com.hanheldpos.data.api.pojo.product.VariantsGroup
 import com.hanheldpos.data.api.pojo.product.getModifierList
 import com.hanheldpos.databinding.FragmentProductDetailBinding
 import com.hanheldpos.model.DataHelper
+import com.hanheldpos.model.cart.ModifierCart
 import com.hanheldpos.model.cart.Regular
 import com.hanheldpos.model.cart.VariantCart
 import com.hanheldpos.model.cart.order.OrderItemModel
@@ -87,6 +88,7 @@ class ProductDetailFragment(
         viewModel.maxQuantity = quantityCanChoose;
 
         viewModel.regularInCart.value.let {
+
             fragmentMap[OptionPage.Variant] =
                 VariantFragment(it?.proOriginal?.variantsGroup, it?.variantList, it?.proOriginal!!);
             fragmentMap[OptionPage.Modifier] = ModifierFragment(
@@ -102,13 +104,14 @@ class ProductDetailFragment(
 
     override fun initAction() {
         if (viewModel.regularInCart.value?.proOriginal?.variantsGroup == null) {
-            binding.tabOption.getTabAt(0)?.view?.isClickable = false;
-            binding.tabOption.getTabAt(1)?.select();
-            binding.optionContainer.currentItem = 2;
+
+
             GlobalScope.launch(Dispatchers.IO) {
                 delay(300);
                 launch(Dispatchers.Main) {
-
+                    binding.tabOption.getTabAt(0)?.view?.isClickable = false;
+                    binding.tabOption.getTabAt(1)?.select();
+                    binding.optionContainer.currentItem = 1;
                 }
             }
 
@@ -129,12 +132,12 @@ class ProductDetailFragment(
         listener?.onCartAdded(item, viewModel.actionType.value!!);
     }
 
-    override fun onModifierItemChange(item: ItemExtra) {
-//        viewModel.onModifierQuantityChange(
-//            item.realItem?.modifier,
-//            item,
-//            optionVM.extraDoneModel != null
-//        );
+    override fun onModifierAddItem(item: ModifierCart) {
+        viewModel.onModifierAddItem(item);
+    }
+
+    override fun onModifierRemoveItem(item: ModifierCart) {
+        viewModel.onModifierRemoveItem(item);
     }
 
     override fun onVariantItemChange(
