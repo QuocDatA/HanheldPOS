@@ -6,12 +6,15 @@ import androidx.fragment.app.activityViewModels
 import com.google.android.material.tabs.TabLayoutMediator
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.product.VariantsGroup
+import com.hanheldpos.data.api.pojo.product.getModifierList
 import com.hanheldpos.databinding.FragmentProductDetailBinding
+import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.cart.Regular
 import com.hanheldpos.model.cart.VariantCart
 import com.hanheldpos.model.cart.order.OrderItemModel
 import com.hanheldpos.model.home.order.combo.ItemActionType
 import com.hanheldpos.model.product.BaseProductInCart
+import com.hanheldpos.model.product.ItemExtra
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.product.adapter.OptionsPagerAdapter
 import com.hanheldpos.ui.screens.product.adapter.modifier.ModifierSelectedItemModel
@@ -84,23 +87,33 @@ class ProductDetailFragment(
         viewModel.maxQuantity = quantityCanChoose;
 
         viewModel.regularInCart.value.let {
-            fragmentMap[OptionPage.Variant] = VariantFragment(it?.proOriginal?.variantsGroup,it?.variantList,it?.proOriginal!!);
-            fragmentMap[OptionPage.Modifier] = ModifierFragment();
-
+            fragmentMap[OptionPage.Variant] =
+                VariantFragment(it?.proOriginal?.variantsGroup, it?.variantList, it?.proOriginal!!);
+            fragmentMap[OptionPage.Modifier] = ModifierFragment(
+                it.modifierList,
+                it.proOriginal?.getModifierList(
+                    DataHelper.orderMenuResp!!
+                )
+            );
             optionsPagerAdapter.submitList(fragmentMap.values);
-            if (it.proOriginal?.variantsGroup == null) {
-                binding.tabOption.getTabAt(0)?.view?.isClickable = false;
-                GlobalScope.launch(Dispatchers.IO) {
-                    delay(300);
-                    launch(Dispatchers.Main) {
-                        binding.tabOption.getTabAt(1)?.select();
-                    }
-                }
-            }
+
         }
     }
 
     override fun initAction() {
+        if (viewModel.regularInCart.value?.proOriginal?.variantsGroup == null) {
+            binding.tabOption.getTabAt(0)?.view?.isClickable = false;
+            binding.tabOption.getTabAt(1)?.select();
+            binding.optionContainer.currentItem = 2;
+            GlobalScope.launch(Dispatchers.IO) {
+                delay(300);
+                launch(Dispatchers.Main) {
+
+                }
+            }
+
+
+        }
     }
 
     interface ProductDetailListener {
@@ -116,7 +129,7 @@ class ProductDetailFragment(
         listener?.onCartAdded(item, viewModel.actionType.value!!);
     }
 
-    override fun onModifierItemChange(item: ModifierSelectedItemModel) {
+    override fun onModifierItemChange(item: ItemExtra) {
 //        viewModel.onModifierQuantityChange(
 //            item.realItem?.modifier,
 //            item,
@@ -130,10 +143,8 @@ class ProductDetailFragment(
         priceOverride: Double,
         sku: String
     ) {
-        viewModel.onVariantItemChange(item,groupValue,priceOverride,sku);
+        viewModel.onVariantItemChange(item, groupValue, priceOverride, sku);
     }
-
-
 
 
 }

@@ -2,7 +2,7 @@ package com.hanheldpos.model.product
 
 import com.hanheldpos.data.api.pojo.product.ModifierExtra
 
-class GroupExtra(
+data class GroupExtra(
     val modifierExtra: ModifierExtra,
     val modifierList: List<ItemExtra> = mutableListOf()
 ) {

@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import androidx.recyclerview.widget.DiffUtil
 import com.diadiem.pos_config.utils.Const
 import com.hanheldpos.R
-import com.hanheldpos.data.api.pojo.order.menu.GroupItem
 import com.hanheldpos.data.api.pojo.product.VariantsGroup
 import com.hanheldpos.databinding.ItemContainerVarientBinding
 import com.hanheldpos.model.cart.VariantCart

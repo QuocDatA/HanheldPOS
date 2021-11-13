@@ -10,7 +10,6 @@ import com.hanheldpos.data.api.pojo.order.menu.*
 import com.hanheldpos.model.UserHelper
 import com.hanheldpos.model.product.GroupExtra
 import com.hanheldpos.model.product.ItemExtra
-import com.hanheldpos.model.product.ItemExtraModel
 import java.lang.reflect.Type
 
 @SuppressLint("DefaultLocale")
@@ -75,7 +74,7 @@ fun ProductItem.getModifierList(orderMenuResp: OrderMenuResp): List<GroupExtra> 
                 (group.modifierList as MutableList).add(ItemExtra(modifierItem,this))
             }
         }
-
+        rs.add(group)
     }
     return rs
 }

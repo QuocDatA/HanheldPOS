@@ -67,11 +67,11 @@ data class OrderItemModel(
     fun getOrderSku(): String? {
         var sku = ""
 
-        extraDone?.let { it ->
-            it.selectedVariant?.sku?.let {
-                sku = it
-            }
-        }
+//        extraDone?.let { it ->
+//            it.selectedVariant?.sku?.let {
+//                sku = it
+//            }
+//        }
 
         return sku
     }

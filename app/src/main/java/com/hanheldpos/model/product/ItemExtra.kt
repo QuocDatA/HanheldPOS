@@ -7,10 +7,11 @@ import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-class ItemExtra(
+data class ItemExtra(
     val modifier: ModifierItem,
     private val productPricing: ProductItem,
     var extraQuantity: Int = 0,
+    var maxExtraQuantity : Int = 100,
     var isSelected: Boolean = false
 ) : Parcelable {
     @IgnoredOnParcel

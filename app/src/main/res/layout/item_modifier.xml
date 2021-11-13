@@ -7,7 +7,7 @@
 
         <variable
             name="item"
-            type="com.hanheldpos.ui.screens.product.adapter.modifier.ModifierSelectedItemModel" />
+            type="com.hanheldpos.model.product.ItemExtra" />
     </data>
 
     <androidx.cardview.widget.CardView
@@ -20,7 +20,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@{item.quantity > 0 ? @color/color_1 : @color/color_10}"
+            android:background="@{item.extraQuantity > 0 ? @color/color_1 : @color/color_10}"
             android:orientation="horizontal"
             android:paddingHorizontal="@dimen/_5sdp"
             android:gravity="center"
@@ -39,7 +39,7 @@
                     android:layout_height="@dimen/_11sdp"
                     android:layout_gravity="center"
                     android:layout_margin="@dimen/_4sdp"
-                    android:src="@{item.quantity > 0 ? @drawable/ic_remove_primary : @drawable/ic_remove_disable }" />
+                    android:src="@{item.extraQuantity > 0 ? @drawable/ic_remove_primary : @drawable/ic_remove_disable }" />
             </FrameLayout>
 
             <LinearLayout
@@ -54,10 +54,10 @@
                     android:layout_width="wrap_content"
                     android:id="@+id/modifier_title"
                     android:layout_height="wrap_content"
-                    android:text="@{item.realItem.modifier}"
+                    android:text="@{item.modifier.modifier}"
                     tools:text="Test"
                     marquee="@{true}"
-                    android:textColor="@{item.quantity > 0 ? @color/color_2 :  @color/color_4 }" />
+                    android:textColor="@{item.extraQuantity > 0 ? @color/color_2 :  @color/color_4 }" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -68,20 +68,20 @@
 
                     <com.diadiem.pos_components.PTextView
                         style="@style/OptionItemTitle"
-                        priceView="@{item.realItem.price}"
-                        visibleObject="@{item.realItem.price > 0}"
+                        priceView="@{item.modifier.price}"
+                        visibleObject="@{item.modifier.price > 0}"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         tools:text="Test"
 
-                        android:textColor="@{item.quantity > 0 ? @color/color_2 :  @color/color_4 }" />
+                        android:textColor="@{item.extraQuantity > 0 ? @color/color_2 :  @color/color_4 }" />
 
                     <com.diadiem.pos_components.PTextView
                         style="@style/OptionItemTitle"
-                        visibleObject="@{item.quantity > 0}"
+                        visibleObject="@{item.extraQuantity > 0}"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{`(` + item.quantity + `)`}"
+                        android:text="@{`(` + item.extraQuantity + `)`}"
                         app:useTextColor="color2" />
                 </LinearLayout>
 
@@ -100,7 +100,7 @@
                     android:layout_height="@dimen/_11sdp"
                     android:layout_gravity="center"
                     android:layout_margin="@dimen/_4sdp"
-                    android:src="@{item.quantity &lt; item.maxQuantity ? @drawable/ic_add_primary : @drawable/ic_add_disable}" />
+                    android:src="@{item.extraQuantity &lt; item.maxExtraQuantity ? @drawable/ic_add_primary : @drawable/ic_add_disable}" />
             </FrameLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
