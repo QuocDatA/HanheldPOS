@@ -9,7 +9,7 @@ import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.DiffUtil
 import com.hanheldpos.R
 import com.hanheldpos.databinding.ItemOrderProductBinding
-import com.hanheldpos.model.home.order.ProductModeViewType
+import com.hanheldpos.model.home.order.ProductModelViewType
 import com.hanheldpos.model.product.ProductOrderItem
 
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
@@ -44,7 +44,7 @@ class OrderProductAdapter(
     override fun onBindViewHolder(holder: BaseBindingViewHolder<ProductOrderItem>, position: Int) {
         val item = getItem(position);
         holder.bindItem(item);
-        if (item.uiType != ProductModeViewType.Empty){
+        if (item.uiType != ProductModelViewType.Empty){
             holder.binding.root.setOnClickListener { listener.onItemClick(position,item); }
         }
     }

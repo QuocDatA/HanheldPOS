@@ -7,22 +7,23 @@ class OrderMenuAdapterHelper(private val callBack : AdapterCallBack) {
 
     private var currentIndex : Int = 1;
     private var list: MutableList<OrderMenuItemModel?> = mutableListOf();
-    private var listOfPage: MutableList<List<OrderMenuItemModel?>> = mutableListOf();
+    private var listOfOrderMenuPage: MutableList<List<OrderMenuItemModel?>> = mutableListOf();
 
     fun submitList(list: MutableList<OrderMenuItemModel?>) {
         this.list = list
-        listOfPage.clear()
-        var temp: Int = this.list.size
-        var tempCurrentIndex: Int = 1
+        listOfOrderMenuPage.clear()
+        var sizeOfMainList: Int = this.list.size
+        var currentListIndex: Int = 1
+
         currentIndex = 1
-        if (temp > 0) {
-            while (temp > 0) {
-                var tempList = split(tempCurrentIndex)
-                listOfPage.add(tempList)
-                temp -= tempList.size
-                tempCurrentIndex++
+        if (sizeOfMainList > 0) {
+            while (sizeOfMainList > 0) {
+                var tempList = split(currentListIndex)
+                listOfOrderMenuPage.add(tempList)
+                sizeOfMainList -= (tempList.size-1) // reduce the dirButton
+                currentListIndex++
             }
-            callBack.onListSplitCallBack(listOfPage[currentIndex - 1])
+            callBack.onListSplitCallBack(listOfOrderMenuPage[currentIndex - 1])
         }
 
     }
@@ -30,8 +31,7 @@ class OrderMenuAdapterHelper(private val callBack : AdapterCallBack) {
     fun next(){
         if ((currentIndex * maxItemViewCate) < list.size ) {
             currentIndex = currentIndex.plus(1);
-            callBack.onListSplitCallBack(listOfPage[currentIndex - 1])
-            //split(currentIndex);
+            callBack.onListSplitCallBack(listOfOrderMenuPage[currentIndex - 1])
         }
 
     }
@@ -39,8 +39,7 @@ class OrderMenuAdapterHelper(private val callBack : AdapterCallBack) {
     fun previous(){
         if (currentIndex > 1) {
             currentIndex = currentIndex.minus(1);
-            callBack.onListSplitCallBack(listOfPage[currentIndex - 1])
-            //split(currentIndex);
+            callBack.onListSplitCallBack(listOfOrderMenuPage[currentIndex - 1])
         }
 
     }
@@ -64,6 +63,7 @@ class OrderMenuAdapterHelper(private val callBack : AdapterCallBack) {
             })
         }
 
+        // set state for Direction Button to add to list
         var menuItemType = MenuModeViewType.DirectionDisableUpDown;
         if ((pagePosition * maxItemViewCate) < list.size ){
             menuItemType = MenuModeViewType.DirectionEnableDown;
@@ -97,7 +97,6 @@ class OrderMenuAdapterHelper(private val callBack : AdapterCallBack) {
                 )
             )
         }
-        callBack.onListSplitCallBack(lastrs.toList());
         return lastrs
     }
 

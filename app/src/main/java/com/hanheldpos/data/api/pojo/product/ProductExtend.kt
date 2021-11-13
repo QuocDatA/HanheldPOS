@@ -9,7 +9,7 @@ import com.hanheldpos.data.api.pojo.order.menu.getProductModifierByListProduct
 import com.hanheldpos.data.api.pojo.order.menu.*
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.UserHelper
-import com.hanheldpos.model.home.order.ProductModeViewType
+import com.hanheldpos.model.home.order.ProductModelViewType
 import com.hanheldpos.model.image.getImageUrl
 import com.hanheldpos.model.product.*
 import java.lang.reflect.Type
@@ -22,7 +22,7 @@ fun ProductItem.toProductOrderItem(
     if (!this.checkValidProduct()) {
         return null
     }
-    productOrderItem.uiType = ProductModeViewType.Product;
+    productOrderItem.uiType = ProductModelViewType.Product;
     productOrderItem.color = this.color
     productOrderItem.id = this.id
     productOrderItem.text = this.name
@@ -63,7 +63,7 @@ fun ProductItem.toProductOrderItem(
     val productComboList = getProductComboList(combo)
     if (!productComboList.isNullOrEmpty()) {
         productOrderItem.productComboList = productComboList
-        productOrderItem.uiType = ProductModeViewType.Combo
+        productOrderItem.uiType = ProductModelViewType.Combo
     }
     if (this.groupPrices != null) {
         productOrderItem.listGroupPriceInCombo = this.groupPrices.toMutableList();

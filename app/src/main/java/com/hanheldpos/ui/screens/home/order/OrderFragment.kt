@@ -13,7 +13,7 @@ import com.hanheldpos.databinding.FragmentOrderBinding
 import com.hanheldpos.model.cart.CartPresenter
 import com.hanheldpos.model.cart.order.OrderItemModel
 import com.hanheldpos.model.cart.order.OrderItemType
-import com.hanheldpos.model.home.order.ProductModeViewType
+import com.hanheldpos.model.home.order.ProductModelViewType
 import com.hanheldpos.model.home.order.combo.ItemActionType
 import com.hanheldpos.model.home.order.menu.OrderMenuItemModel
 import com.hanheldpos.model.product.ProductOrderItem
@@ -114,7 +114,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
 
         productAdapHelper = OrderProductAdapterHelper(
             callBack = object : OrderProductAdapterHelper.AdapterCallBack {
-                override fun onListSplitCallBack(list: List<ProductOrderItem>) {
+                override fun onListSplitCallBack(list: List<ProductOrderItem?>) {
                     GlobalScope.launch(Dispatchers.Main) {
                         productAdapter.submitList(list);
                         productAdapter.notifyDataSetChanged();
@@ -131,7 +131,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
                     if (SystemClock.elapsedRealtime() - viewModel.mLastTimeClick <= 500) return;
                     viewModel.mLastTimeClick = SystemClock.elapsedRealtime();
                     when (item.uiType) {
-                        ProductModeViewType.Product -> {
+                        ProductModelViewType.Product -> {
                             val onCartAdded = object : ProductDetailFragment.ProductDetailListener {
                                 override fun onCartAdded(
                                     item: OrderItemModel,
@@ -152,17 +152,17 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
                                 )
                             )
                         }
-                        ProductModeViewType.PrevButton -> {
+                        ProductModelViewType.PrevButtonEnable -> {
                             GlobalScope.launch(Dispatchers.IO) {
                                 productAdapHelper.previous();
                             }
                         }
-                        ProductModeViewType.NextButton -> {
+                        ProductModelViewType.NextButtonEnable -> {
                             GlobalScope.launch(Dispatchers.IO) {
                                 productAdapHelper.next();
                             }
                         }
-                        ProductModeViewType.Combo -> {
+                        ProductModelViewType.Combo -> {
                             val onCartAdded = object : ComboFragment.ComboListener {
                                 override fun onCartAdded(
                                     item: OrderItemModel,

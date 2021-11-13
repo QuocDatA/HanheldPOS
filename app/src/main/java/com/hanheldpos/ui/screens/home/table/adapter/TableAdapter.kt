@@ -31,7 +31,7 @@ class TableAdapter(
             viewType,
             parent, false
         ).also {
-            Log.d("TableAdapter","RecycleView Height:" + parent.height);
+            //Log.d("TableAdapter","RecycleView Height:" + parent.height);
             val height = ((parent.height) / 5 ) - parent.resources.getDimension(R.dimen._6sdp);
             val params : FrameLayout.LayoutParams = FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,height.toInt());
             (it as ItemTableBinding).layoutMain.layoutParams = params;

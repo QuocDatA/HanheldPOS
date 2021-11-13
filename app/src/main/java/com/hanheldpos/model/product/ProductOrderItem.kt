@@ -9,7 +9,7 @@ import com.hanheldpos.data.api.pojo.order.menu.VariantStrProduct
 import com.hanheldpos.data.api.pojo.product.GroupPriceItem
 import com.hanheldpos.data.api.pojo.product.GroupPriceProductItem
 import com.hanheldpos.model.cart.fee.FeeApplyToType
-import com.hanheldpos.model.home.order.ProductModeViewType
+import com.hanheldpos.model.home.order.ProductModelViewType
 import com.hanheldpos.ui.screens.product.adapter.modifier.ModifierHeader
 import com.hanheldpos.ui.screens.product.adapter.modifier.ModifierSelectedItemModel
 import kotlinx.parcelize.IgnoredOnParcel
@@ -29,7 +29,7 @@ data class ProductOrderItem (
     var unitStr: String? = null,
     var mappedItem: ProductItem? = null,
     var extraData: ExtraData? = null,
-    var uiType: ProductModeViewType? = null,
+    var uiType: ProductModelViewType? = null,
 
 
     var pricingMethodType: PricingMethodType? = null,

@@ -6,7 +6,7 @@
 
         <import type="android.view.View" />
 
-        <import type="com.hanheldpos.model.home.order.ProductModeViewType" />
+        <import type="com.hanheldpos.model.home.order.ProductModelViewType" />
 
         <variable
             name="item"
@@ -20,14 +20,14 @@
     <com.google.android.material.card.MaterialCardView
         android:focusable="true"
         android:clickable="true"
-        backColor="@{(item.uiType == ProductModeViewType.Product || item.uiType == ProductModeViewType.Combo) ? item.color : `#00000000`}"
+        backColor="@{(item.uiType == ProductModelViewType.Product || item.uiType == ProductModelViewType.Combo) ? item.color : `#00000000`}"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/_1sdp"
         android:elevation="0dp"
         app:cardCornerRadius="0dp"
         app:cardElevation="0dp"
-        app:rippleColor="@{ item.uiType != ProductModeViewType.Empty  ? ( (item.uiType == ProductModeViewType.Product || item.uiType == ProductModeViewType.Combo) || item.uiType.pos == 1 ? @color/color_2 : @android:color/transparent )  : @android:color/transparent }">
+        app:rippleColor="@{ item.uiType != ProductModelViewType.Empty  ? ((item.uiType == ProductModelViewType.Product || item.uiType == ProductModelViewType.Combo) || (item.uiType == ProductModelViewType.PrevButtonEnable || item.uiType == ProductModelViewType.NextButtonEnable) ? @color/color_2 : @android:color/transparent )  : @android:color/transparent }">
 
         <LinearLayout
             android:id="@+id/layoutMain"
@@ -36,11 +36,11 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@{ (item.uiType == ProductModeViewType.Product || item.uiType == ProductModeViewType.Combo) ? @android:color/transparent : @color/_EEEEEE }"
-                android:visibility="@{ item.uiType != ProductModeViewType.Empty ? View.VISIBLE : View.INVISIBLE }">
+                android:background="@{ (item.uiType == ProductModelViewType.Product || item.uiType == ProductModelViewType.Combo) ? @android:color/transparent : @color/_EEEEEE }"
+                android:visibility="@{ item.uiType != ProductModelViewType.Empty ? View.VISIBLE : View.INVISIBLE }">
 
                 <RelativeLayout
-                    visibleObject="@{(item.uiType == ProductModeViewType.Product || item.uiType == ProductModeViewType.Combo)}"
+                    visibleObject="@{(item.uiType == ProductModelViewType.Product || item.uiType == ProductModelViewType.Combo)}"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
@@ -84,21 +84,21 @@
                 </RelativeLayout>
 
                 <ImageView
-                    visibleObject="@{item.uiType == ProductModeViewType.PrevButton }"
+                    visibleObject="@{item.uiType == ProductModelViewType.PrevButtonEnable || item.uiType == ProductModelViewType.PrevButtonDisable }"
                     android:layout_width="@dimen/_14sdp"
                     android:layout_height="@dimen/_14sdp"
                     android:layout_centerInParent="true"
                     android:layout_gravity="center"
                     android:scaleType="centerInside"
-                    android:src="@{ item.uiType.pos == 1 ? @drawable/ic_direction_up : @drawable/ic_direction_up_disable}" />
+                    android:src="@{ item.uiType == ProductModelViewType.PrevButtonEnable ? @drawable/ic_direction_up : @drawable/ic_direction_up_disable}" />
                 <ImageView
-                    visibleObject="@{item.uiType == ProductModeViewType.NextButton }"
+                    visibleObject="@{item.uiType == ProductModelViewType.NextButtonEnable ||  item.uiType == ProductModelViewType.NextButtonDisable}"
                     android:layout_width="@dimen/_14sdp"
                     android:layout_height="@dimen/_14sdp"
                     android:layout_centerInParent="true"
                     android:layout_gravity="center"
                     android:scaleType="centerInside"
-                    android:src="@{ item.uiType.pos == 1 ? @drawable/ic_direction_down : @drawable/ic_direction_down_disable }" />
+                    android:src="@{ item.uiType == ProductModelViewType.NextButtonEnable ? @drawable/ic_direction_down : @drawable/ic_direction_down_disable }" />
                 <ImageView
                     visibleObject="@{isChosen}"
                     android:layout_alignParentEnd="true"
