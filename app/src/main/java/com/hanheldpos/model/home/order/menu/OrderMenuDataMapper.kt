@@ -73,7 +73,7 @@ object OrderMenuDataMapper {
     /**
      * Find product list in groups by using @ComboGuid in combo
      */
-    private fun getProductItemListByComboGuid(comboGuid: String?): MutableList<ProductItem> {
+    fun getProductItemListByComboGuid(comboGuid: String?): MutableList<ProductItem> {
         val rs: MutableList<ProductItem> = mutableListOf()
         menuDB.getMenuGroupItemListWithGroupId(comboGuid)?.forEach { it ->
             //Get product id that enabled in combo hold in menu group

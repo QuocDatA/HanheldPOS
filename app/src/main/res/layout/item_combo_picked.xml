@@ -3,10 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
+        <import type="com.hanheldpos.model.product.ExtraConverter"/>
         <variable
             name="item"
-            type="com.hanheldpos.model.home.order.menu.ComboPickedItemViewModel" />
+            type="com.hanheldpos.model.cart.Regular" />
     </data>
 
     <LinearLayout
@@ -25,7 +25,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@{item.selectedComboItem.orderName}"
+                android:text="@{item.name}"
                 app:useFontStyle="normal"
                 app:useTextColor="color4"
                 app:useTextHeader="h6" />
@@ -33,7 +33,7 @@
             <com.diadiem.pos_components.PTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{`(`+ item.selectedComboItem.quantity + `x)`}"
+                android:text="@{`(`+ item.quantity + `x)`}"
                 app:useFontStyle="normal"
                 app:useTextColor="color4"
                 app:useTextHeader="h6" />
@@ -77,24 +77,23 @@
         </LinearLayout>
 
         <com.diadiem.pos_components.PTextView
-            visibleObject="@{item.selectedComboItem.getVariantStr()}"
+            visibleObject="@{item.variantList}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_3sdp"
             android:layout_marginEnd="@dimen/_40sdp"
-
-            android:text="@{`• ` + item.selectedComboItem.getVariantStr()}"
+            android:text="@{`• ` + ExtraConverter.INSTANCE.variantStr(item.variantList)}"
             app:useFontStyle="normal"
             app:useTextColor="color6"
             app:useTextHeader="h7" />
 
         <com.diadiem.pos_components.PTextView
-            visibleObject="@{item.selectedComboItem.getModifierStr()}"
+            visibleObject="@{item.modifierList.empty}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_3sdp"
             android:layout_marginEnd="@dimen/_40sdp"
-            android:text="@{`• ` +item.selectedComboItem.getModifierStr()}"
+            android:text="@{`• ` +ExtraConverter.INSTANCE.modifierStr(item.modifierList)}"
             app:useFontStyle="normal"
             app:useTextColor="color6"
             app:useTextHeader="h7" />

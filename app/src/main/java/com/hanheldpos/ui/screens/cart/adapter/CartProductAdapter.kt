@@ -32,18 +32,18 @@ class CartProductAdapter(
         binding.isShownDetail=item.isShownDetail;
         if(item.isCombo())
         {
-            binding.viewDetailTextView.setOnClickListener {
-               item.isShownDetail= true;
-                notifyItemChanged(position);
-            }
-            binding.hideDetailTextView.setOnClickListener {
-                item.isShownDetail= false;
-                notifyItemChanged(position);
-            }
-
-            val cartComboGroupAdapter=CartComboGroupAdapter();
-            cartComboGroupAdapter.submitList(item.menuComboItem!!.listItemsByGroup!!.toMutableList())
-            binding.productComboGroupRecyclerView.adapter=cartComboGroupAdapter;
+//            binding.viewDetailTextView.setOnClickListener {
+//               item.isShownDetail= true;
+//                notifyItemChanged(position);
+//            }
+//            binding.hideDetailTextView.setOnClickListener {
+//                item.isShownDetail= false;
+//                notifyItemChanged(position);
+//            }
+//
+//            val cartComboGroupAdapter=CartComboGroupAdapter();
+//            cartComboGroupAdapter.submitList(item.menuComboItem!!.listItemsByGroup!!.toMutableList())
+//            binding.productComboGroupRecyclerView.adapter=cartComboGroupAdapter;
         }
     }
 

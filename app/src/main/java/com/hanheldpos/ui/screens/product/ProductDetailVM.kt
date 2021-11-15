@@ -9,7 +9,7 @@ import com.hanheldpos.extension.notifyValueChange
 import com.hanheldpos.model.cart.ModifierCart
 import com.hanheldpos.model.cart.Regular
 import com.hanheldpos.model.cart.VariantCart
-import com.hanheldpos.model.home.order.combo.ItemActionType
+import com.hanheldpos.model.combo.ItemActionType
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
 
 class ProductDetailVM : BaseUiViewModel<ProductDetailUV>() {

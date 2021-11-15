@@ -47,10 +47,10 @@ private fun locationStrFromProduct(string: String?): List<LocationItem>? {
 fun ProductItem.getModifierList(orderMenuResp: OrderMenuResp): List<GroupExtra> {
     // TODO: DONE FLOW
 
-    val modifierExtras : List<ModifierExtra> = Gson().fromJson(modifier, object : TypeToken<List<ModifierExtra>?>() {}.type)
+    val modifierExtras : List<ModifierExtra>? = Gson().fromJson(modifier, object : TypeToken<List<ModifierExtra>?>() {}.type)
     val rs: MutableList<GroupExtra> = mutableListOf()
 
-    modifierExtras.forEach { extraGroup->
+    modifierExtras?.forEach { extraGroup->
         val group = GroupExtra(extraGroup);
         val productModifierList = orderMenuResp.getProductModifierByListProduct()
             ?.find {

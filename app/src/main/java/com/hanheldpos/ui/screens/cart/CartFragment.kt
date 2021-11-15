@@ -14,7 +14,7 @@ import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.cart.Regular
 import com.hanheldpos.model.cart.order.OrderItemModel
 import com.hanheldpos.model.cart.order.OrderItemType
-import com.hanheldpos.model.home.order.combo.ItemActionType
+import com.hanheldpos.model.combo.ItemActionType
 import com.hanheldpos.model.product.BaseProductInCart
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
@@ -157,41 +157,41 @@ class CartFragment(
 
     fun onEditItemIntCart(position: Int, item: OrderItemModel) {
         when (item.type) {
-            OrderItemType.Product -> {
-                navigator.goToWithCustomAnimation(
-                    ProductDetailFragment(
-                        item = Regular(),
-                        action = ItemActionType.Modify,
-                        quantityCanChoose = 100,
-                        listener = object : ProductDetailFragment.ProductDetailListener {
+//            OrderItemType.Product -> {
+//                navigator.goToWithCustomAnimation(
+//                    ProductDetailFragment(
+//                        item = Regular(),
+//                        action = ItemActionType.Modify,
+//                        quantityCanChoose = 100,
+//                        listener = object : ProductDetailFragment.ProductDetailListener {
 //                            override fun onCartAdded(item: OrderItemModel, action: ItemActionType) {
 //                                onUpdateItemInCart(position, item);
 //                            }
-
-                            override fun onCartAdded(
-                                item: BaseProductInCart,
-                                action: ItemActionType
-                            ) {
-
-                            }
-                        }
-                    )
-                )
-            }
-            OrderItemType.Combo -> {
-                navigator.goToWithCustomAnimation(
-                    ComboFragment.getInstance(
-                        item = item.clone(),
-                        action = ItemActionType.Modify,
-                        quantityCanChoose = 100,
-                        listener = object : ComboFragment.ComboListener {
-                            override fun onCartAdded(item: OrderItemModel, action: ItemActionType) {
-                                onUpdateItemInCart(position, item);
-                            }
-                        }
-                    )
-                );
-            }
+//
+//                            override fun onCartAdded(
+//                                item: BaseProductInCart,
+//                                action: ItemActionType
+//                            ) {
+//
+//                            }
+//                        }
+//                    )
+//                )
+//            }
+//            OrderItemType.Combo -> {
+//                navigator.goToWithCustomAnimation(
+//                    ComboFragment(
+//                        item = item.clone(),
+//                        action = ItemActionType.Modify,
+//                        quantityCanChoose = 100,
+//                        listener = object : ComboFragment.ComboListener {
+//                            override fun onCartAdded(item: OrderItemModel, action: ItemActionType) {
+//                                onUpdateItemInCart(position, item);
+//                            }
+//                        }
+//                    )
+//                );
+//            }
         }
     }
 

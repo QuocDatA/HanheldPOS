@@ -4,16 +4,18 @@ import androidx.core.view.size
 import androidx.recyclerview.widget.DiffUtil
 import com.hanheldpos.R
 import com.hanheldpos.databinding.ItemComboGroupBinding
-import com.hanheldpos.model.home.order.combo.ItemActionType
-import com.hanheldpos.model.home.order.menu.ComboPickedItemViewModel
-import com.hanheldpos.model.home.order.menu.ItemComboGroupManager
+import com.hanheldpos.model.cart.Regular
+import com.hanheldpos.model.combo.ItemActionType
+import com.hanheldpos.model.combo.ItemComboGroup
+import com.hanheldpos.model.home.order.menu.ProductMenuItem
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
+import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import kotlin.math.abs
 
 class ComboGroupAdapter(
     private val listener: ItemListener,
-) : BaseBindingListAdapter<ItemComboGroupManager>(DiffCallback()) {
+) : BaseBindingListAdapter<ItemComboGroup>(DiffCallback()) {
 
     override fun getItemViewType(position: Int): Int {
         return R.layout.item_combo_group;
@@ -23,13 +25,13 @@ class ComboGroupAdapter(
 
     private val selectedItem: SelectedItem = SelectedItem(0)
 
-    override fun submitList(list: MutableList<ItemComboGroupManager>?) {
+    override fun submitList(list: MutableList<ItemComboGroup>?) {
         selectedItem.value = 0;
         super.submitList(list);
     }
 
     override fun onBindViewHolder(
-        holder: BaseBindingViewHolder<ItemComboGroupManager>,
+        holder: BaseBindingViewHolder<ItemComboGroup>,
         position: Int
     ) {
         /**
@@ -37,8 +39,8 @@ class ComboGroupAdapter(
          */
         var positionFocus: Int = -1;
         run checkFocus@{
-            currentList.forEachIndexed { index, itemComboGroupManager ->
-                if (!itemComboGroupManager.isMaxItemSelected()) {
+            currentList.forEachIndexed { index, itemComboGroup->
+                if (!itemComboGroup.isMaxItemSelected()) {
                     positionFocus = index;
                     return@checkFocus;
                 }
@@ -57,42 +59,38 @@ class ComboGroupAdapter(
         binding.item = item;
 
         /*
-        * Green tick item has choosen in list
+        * Green tick item has chosen in list
         * */
         item.productsForChoose.forEach { it.isChosen = false }
-        item.listSelectedComboItems.forEach {
-//            item.productsForChoose.find { temp-> it?.selectedComboItem?.productOrderItem?.id == temp.selectedComboItem?.productOrderItem?.id }.let {
-//                it?.isChosen = true;
-//            }
+        item.groupBundle.productList.forEach { regular ->
+            item.productsForChoose.find { pro-> regular.proOriginal?.id == pro.proOriginal?.id }.let {
+                it?.isChosen = true;
+            }
         }
         binding.itemForSelectAdapter.apply {
-            adapter = ComboItemAdapter(
-                modeViewType = ComboItemAdapter.ComboItemViewType.ForChoose,
-                listener = object : ComboItemAdapter.ComboItemListener {
-                    override fun onComboItemChoose(
-                        action: ItemActionType,
-                        itemClick: ComboPickedItemViewModel
-                    ) {
-                        comboItemAction(item, action, itemClick);
+            adapter = ComboItemPickerAdapter(
+                listener = object : BaseItemClickListener<ProductMenuItem> {
+                    override fun onItemClick(adapterPosition: Int, itemClick: ProductMenuItem) {
+                        listener.onProductSelect(item.requireQuantity(),item,itemClick);
                     }
+
                 }
             ).apply {
                 submitList(item.productsForChoose);
             };
         }
         binding.itemSelectedAdapter.apply {
-            adapter = ComboItemAdapter(
-                modeViewType = ComboItemAdapter.ComboItemViewType.Chosen,
-                listener = object : ComboItemAdapter.ComboItemListener {
+            adapter = ComboItemChosenAdapter(
+                listener = object : ComboItemChosenAdapter.ComboItemChosenListener {
                     override fun onComboItemChoose(
                         action: ItemActionType,
-                        itemClick: ComboPickedItemViewModel
+                        itemClick: Regular
                     ) {
                         comboItemAction(item, action, itemClick);
                     }
                 }
             ).apply {
-                submitList(item.listSelectedComboItems);
+                submitList(item.groupBundle.productList);
             };
         }
     }
@@ -100,45 +98,44 @@ class ComboGroupAdapter(
     interface ItemListener {
         fun onProductSelect(
             maxQuantity: Int,
-            comboManager: ItemComboGroupManager,
-            item: ComboPickedItemViewModel,
-            action: ItemActionType
+            group: ItemComboGroup,
+            item: ProductMenuItem,
         );
     }
 
     fun comboItemAction(
-        comboManager: ItemComboGroupManager,
+        comboManager: ItemComboGroup,
         action: ItemActionType,
-        item: ComboPickedItemViewModel
+        item: Regular
     ) {
-        when (action) {
-            ItemActionType.Add -> {
-                listener.onProductSelect(
-                    comboManager.requireQuantity(),
-                    comboManager,
-                    item.clone(),
-                    action
-                );
-            }
-            ItemActionType.Modify -> {
-                listener.onProductSelect(
-                    comboManager.requireQuantity() + (item.selectedComboItem?.quantity
-                        ?: 0),
-                    comboManager,
-                    item,
-                    action
-                );
-            }
-            ItemActionType.Remove -> {
-                listener.onProductSelect(
-                    comboManager.requireQuantity() + (item.selectedComboItem?.quantity
-                        ?: 0),
-                    comboManager,
-                    item,
-                    action
-                );
-            }
-        }
+//        when (action) {
+//            ItemActionType.Add -> {
+//                listener.onProductSelect(
+//                    comboManager.requireQuantity(),
+//                    comboManager,
+//                    item.clone(),
+//                    action
+//                );
+//            }
+//            ItemActionType.Modify -> {
+//                listener.onProductSelect(
+//                    comboManager.requireQuantity() + (item.selectedComboItem?.quantity
+//                        ?: 0),
+//                    comboManager,
+//                    item,
+//                    action
+//                );
+//            }
+//            ItemActionType.Remove -> {
+//                listener.onProductSelect(
+//                    comboManager.requireQuantity() + (item.selectedComboItem?.quantity
+//                        ?: 0),
+//                    comboManager,
+//                    item,
+//                    action
+//                );
+//            }
+//        }
     }
 
 
@@ -156,19 +153,19 @@ class ComboGroupAdapter(
         };
     }*/
 
-    class DiffCallback : DiffUtil.ItemCallback<ItemComboGroupManager>() {
+    class DiffCallback : DiffUtil.ItemCallback<ItemComboGroup>() {
         override fun areItemsTheSame(
-            oldItem: ItemComboGroupManager,
-            newItem: ItemComboGroupManager
+            oldItem: ItemComboGroup,
+            newItem: ItemComboGroup
         ): Boolean {
-            return oldItem.productComboItem?.id == newItem.productComboItem?.id;
+            return oldItem.groupBundle == newItem.groupBundle
         }
 
         override fun areContentsTheSame(
-            oldItem: ItemComboGroupManager,
-            newItem: ItemComboGroupManager
+            oldItem: ItemComboGroup,
+            newItem: ItemComboGroup
         ): Boolean {
-            return false;
+            return oldItem.groupBundle == newItem.groupBundle;
         }
 
     }

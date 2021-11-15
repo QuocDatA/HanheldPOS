@@ -5,7 +5,6 @@ import com.diadiem.pos_config.utils.Const
 import com.hanheldpos.data.repository.GenerateId
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.cart.fee.FeeApplyToType
-import com.hanheldpos.model.home.order.menu.OrderMenuComboItemModel
 import com.hanheldpos.model.product.*
 import kotlinx.parcelize.Parcelize
 
@@ -16,11 +15,10 @@ data class OrderItemModel(
      */
     val orderItemId: String = GenerateId.getOrderItemId(),
 
-    var extraDone: ExtraDoneModel? = null,
     /**
      * If order item has combo list
      */
-    var menuComboItem: OrderMenuComboItemModel? = null,
+
 
     var type: OrderItemType? = null,
 
@@ -29,13 +27,6 @@ data class OrderItemModel(
     var isShownDetail: Boolean = false,
     var feeType : FeeApplyToType? = null,
 ) : Parcelable, Cloneable {
-
-    public override fun clone(): OrderItemModel {
-        return copy(
-            extraDone = extraDone?.copy(),
-            menuComboItem = menuComboItem?.clone(),
-        )
-    }
 
     /**
      * @return Quantity of order
@@ -78,7 +69,7 @@ data class OrderItemModel(
 
 
     fun isCombo(): Boolean {
-        return menuComboItem != null;
+        return false;
     }
 
     fun getVariantStr(): String? {
@@ -86,7 +77,7 @@ data class OrderItemModel(
     }
 
     private fun getVariantStr(separator: String): String? {
-        return extraDone?.getVariantStr(separator)
+        return ""
     }
 
     fun getModifierStr(): String? {
@@ -95,7 +86,7 @@ data class OrderItemModel(
     }
 
     private fun getModifierStr(separator: String): String? {
-        return extraDone?.getModifierStr(separator)
+        return ""
     }
 
     fun getDescription(): String {
@@ -112,9 +103,7 @@ data class OrderItemModel(
     }
 
     private fun getPriceModSubTotal(): Double {
-        return extraDone?.selectedModifiers?.sumOf {
-            it.getSubtotalModifier()
-        } ?: 0.0;
+        return  0.0;
     }
 
     private fun getPriceProModSubTotal(): Double {

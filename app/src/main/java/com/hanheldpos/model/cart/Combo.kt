@@ -8,7 +8,7 @@ import com.hanheldpos.model.product.PricingMethodType
 import com.hanheldpos.model.product.ProductType
 
 
-class Bundle() : BaseProductInCart() {
+class Combo() : BaseProductInCart() {
 
     var groupList: MutableList<GroupBundle> = mutableListOf()
 
@@ -20,7 +20,7 @@ class Bundle() : BaseProductInCart() {
         sku: String?,
         variants: String?,
         priceOverride: Double?,
-        fees: List<Fee>
+        fees: List<Fee>?
     ) : this() {
         this.proOriginal = productItem
         this.groupList = groupProducts.toMutableList();

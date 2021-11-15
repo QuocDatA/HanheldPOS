@@ -5,20 +5,17 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.google.android.material.tabs.TabLayoutMediator
 import com.hanheldpos.R
-import com.hanheldpos.data.api.pojo.product.VariantsGroup
 import com.hanheldpos.data.api.pojo.product.getModifierList
 import com.hanheldpos.databinding.FragmentProductDetailBinding
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.cart.ModifierCart
 import com.hanheldpos.model.cart.Regular
 import com.hanheldpos.model.cart.VariantCart
-import com.hanheldpos.model.cart.order.OrderItemModel
-import com.hanheldpos.model.home.order.combo.ItemActionType
+import com.hanheldpos.model.combo.ItemActionType
 import com.hanheldpos.model.product.BaseProductInCart
-import com.hanheldpos.model.product.ItemExtra
 import com.hanheldpos.ui.base.fragment.BaseFragment
+import com.hanheldpos.ui.screens.home.order.OrderFragment
 import com.hanheldpos.ui.screens.product.adapter.OptionsPagerAdapter
-import com.hanheldpos.ui.screens.product.adapter.modifier.ModifierSelectedItemModel
 import com.hanheldpos.ui.screens.product.options.OptionVM
 import com.hanheldpos.ui.screens.product.options.modifier.ModifierFragment
 import com.hanheldpos.ui.screens.product.options.variant.VariantFragment
@@ -29,7 +26,7 @@ class ProductDetailFragment(
     private val item: Regular,
     private val quantityCanChoose: Int = -1,
     private val action: ItemActionType,
-    private val listener: ProductDetailListener? = null,
+    private val listener: OrderFragment.OrderMenuListener? = null,
 ) : BaseFragment<FragmentProductDetailBinding, ProductDetailVM>(), ProductDetailUV,
     OptionVM.OptionListener {
     enum class OptionPage(val pos: Int, val text: String) {
@@ -104,8 +101,6 @@ class ProductDetailFragment(
 
     override fun initAction() {
         if (viewModel.regularInCart.value?.proOriginal?.variantsGroup == null) {
-
-
             GlobalScope.launch(Dispatchers.IO) {
                 delay(300);
                 launch(Dispatchers.Main) {
@@ -114,13 +109,7 @@ class ProductDetailFragment(
                     binding.optionContainer.currentItem = 1;
                 }
             }
-
-
         }
-    }
-
-    interface ProductDetailListener {
-        fun onCartAdded(item: BaseProductInCart, action: ItemActionType)
     }
 
     override fun onBack() {

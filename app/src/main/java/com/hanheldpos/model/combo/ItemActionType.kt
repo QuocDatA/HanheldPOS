@@ -1,4 +1,4 @@
-package com.hanheldpos.model.home.order.combo
+package com.hanheldpos.model.combo
 
 enum class ItemActionType(
     val value: Int

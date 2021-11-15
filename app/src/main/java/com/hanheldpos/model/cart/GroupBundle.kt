@@ -1,11 +1,14 @@
 package com.hanheldpos.model.cart
 
+import android.os.Parcelable
 import com.hanheldpos.data.api.pojo.order.settings.DiningOptionItem
 import com.hanheldpos.data.api.pojo.product.ProductItem
 import com.hanheldpos.model.home.order.menu.OrderMenuDataMapper
 import com.hanheldpos.model.product.ProductComboItem
+import kotlinx.parcelize.Parcelize
 
-class GroupBundle(
+
+data class GroupBundle(
     var comboInfo: ProductComboItem,
     var productList: MutableList<Regular>,
 ) {

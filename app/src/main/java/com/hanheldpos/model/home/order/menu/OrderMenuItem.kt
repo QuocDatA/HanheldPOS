@@ -25,5 +25,6 @@ data class OrderMenuItem(
 data class ProductMenuItem(
     val proOriginal : ProductItem? =null,
 ) {
+    var isChosen : Boolean = false;
     var uiType = ProductModeViewType.Product;
 }

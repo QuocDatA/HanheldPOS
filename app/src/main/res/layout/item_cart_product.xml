@@ -22,168 +22,168 @@
         android:paddingVertical="@dimen/_9sdp"
         android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingHorizontal="@dimen/_8sdp">
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="horizontal"-->
+<!--            android:paddingHorizontal="@dimen/_8sdp">-->
 
-            <com.diadiem.pos_components.PTextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="@dimen/_4sdp"
-                android:text="@{`(`+String.valueOf(item.orderQuantity)+`x)`}"
-                app:useTextColor="color4"
-                app:useTextHeader="h5"
-                tools:text="(1x)" />
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:baselineAligned="false">
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <com.diadiem.pos_components.PTextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@{item.orderName}"
-                            app:useTextColor="color4"
-                            app:useTextHeader="h5"
-                            tools:text="Pho Bo Tai" />
-
-                        <com.diadiem.pos_components.PTextView
-                            android:id="@+id/viewDetailTextView"
-                            visibleObject="@{item.menuComboItem!=null &amp;&amp; isShownDetail==false}"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/view_details"
-                            app:useTextColor="color0"
-                            app:useTextHeader="h6" />
-                    </LinearLayout>
+<!--            <com.diadiem.pos_components.PTextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_marginEnd="@dimen/_4sdp"-->
+<!--                android:text="@{`(`+String.valueOf(item.orderQuantity)+`x)`}"-->
+<!--                app:useTextColor="color4"-->
+<!--                app:useTextHeader="h5"-->
+<!--                tools:text="(1x)" />-->
 
 
-                    <RelativeLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layoutDirection="rtl"
-                        android:orientation="vertical">
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:orientation="vertical">-->
 
-                        <LinearLayout
-                            android:id="@+id/priceTextView"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal">
-                            <com.diadiem.pos_components.PTextView
-                                priceView="@{item.priceLineTotal}"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textAlignment="textEnd"
-                                app:useTextColor="color4"
-                                app:useTextHeader="h5"
-                                tools:text="137.000" />
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:baselineAligned="false">-->
 
-                            <com.diadiem.pos_components.PTextView
-                                bindStrike="@{true}"
-                                priceView="@{item.priceRegular}"
-                                visibleObject="@{ item.feeType != null}"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="@dimen/_2sdp"
-                                android:layout_toEndOf="@+id/priceTextView"
-                                android:textAlignment="textEnd"
-                                app:useTextColor="color8"
-                                app:useTextHeader="h6"
-                                tools:text="60.000" />
-                        </LinearLayout>
+<!--                    <LinearLayout-->
+<!--                        android:layout_width="0dp"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_weight="1"-->
+<!--                        android:orientation="vertical">-->
 
+<!--                        <com.diadiem.pos_components.PTextView-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:text="@{item.orderName}"-->
+<!--                            app:useTextColor="color4"-->
+<!--                            app:useTextHeader="h5"-->
+<!--                            tools:text="Pho Bo Tai" />-->
 
-                        <com.diadiem.pos_components.PTextView
-                            basePriceView="@{item.basePrice}"
-                            visibleObject="@{item.menuComboItem!=null}"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/priceTextView"
-                            android:textAlignment="textEnd"
-                            app:useTextColor="color7"
-                            app:useTextHeader="h7"
-                            tools:text="(Base price: 240.000)" />
+<!--                        <com.diadiem.pos_components.PTextView-->
+<!--                            android:id="@+id/viewDetailTextView"-->
+<!--                            visibleObject="@{item.menuComboItem!=null &amp;&amp; isShownDetail==false}"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:text="@string/view_details"-->
+<!--                            app:useTextColor="color0"-->
+<!--                            app:useTextHeader="h6" />-->
+<!--                    </LinearLayout>-->
 
 
-                    </RelativeLayout>
+<!--                    <RelativeLayout-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layoutDirection="rtl"-->
+<!--                        android:orientation="vertical">-->
 
-                </LinearLayout>
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:orientation="vertical"
-                        visibleObject="@{isShownDetail==true ||item.menuComboItem==null }"
-                        android:layout_height="wrap_content">
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/productComboGroupRecyclerView"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            visibleObject="@{item.combo==true}"
-                            android:overScrollMode="never"
-                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                            tools:itemCount="1"
-                            tools:listitem="@layout/cart_item_combo_group"
-                            />
+<!--                        <LinearLayout-->
+<!--                            android:id="@+id/priceTextView"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:gravity="center_vertical"-->
+<!--                            android:orientation="horizontal">-->
+<!--                            <com.diadiem.pos_components.PTextView-->
+<!--                                priceView="@{item.priceLineTotal}"-->
+<!--                                android:layout_width="wrap_content"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:textAlignment="textEnd"-->
+<!--                                app:useTextColor="color4"-->
+<!--                                app:useTextHeader="h5"-->
+<!--                                tools:text="137.000" />-->
 
-                        <include
-                            layout="@layout/cart_product_detail_line"
-                            visibleObject="@{item.variantStr!=null}"
-                            app:lineText="@{item.variantStr}" />
+<!--                            <com.diadiem.pos_components.PTextView-->
+<!--                                bindStrike="@{true}"-->
+<!--                                priceView="@{item.priceRegular}"-->
+<!--                                visibleObject="@{ item.feeType != null}"-->
+<!--                                android:layout_width="wrap_content"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:layout_marginStart="@dimen/_2sdp"-->
+<!--                                android:layout_toEndOf="@+id/priceTextView"-->
+<!--                                android:textAlignment="textEnd"-->
+<!--                                app:useTextColor="color8"-->
+<!--                                app:useTextHeader="h6"-->
+<!--                                tools:text="60.000" />-->
+<!--                        </LinearLayout>-->
 
-                        <include
-                            layout="@layout/cart_product_detail_line"
-                            visibleObject="@{item.modifierStr!=null}"
-                            app:lineText="@{item.modifierStr}"
-                            />
 
-                        <include
-                            layout="@layout/cart_product_detail_line"
-                            app:isDiscount="@{true}"
-                            visibleObject="@{false}"
+<!--                        <com.diadiem.pos_components.PTextView-->
+<!--                            basePriceView="@{item.basePrice}"-->
+<!--                            visibleObject="@{item.menuComboItem!=null}"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_below="@+id/priceTextView"-->
+<!--                            android:textAlignment="textEnd"-->
+<!--                            app:useTextColor="color7"-->
+<!--                            app:useTextHeader="h7"-->
+<!--                            tools:text="(Base price: 240.000)" />-->
 
-                            app:lineText="@{`Discount nameee`}" />
 
-                        <include
-                            layout="@layout/cart_product_detail_line"
-                            app:isOtherFee="@{true}"
-                            visibleObject="@{item.feeType != null}"
-                            app:lineText="@{`Other fees `}"
-                            app:priceDisc="@{item.fee}"/>
+<!--                    </RelativeLayout>-->
 
-                        <include
-                            layout="@layout/cart_product_detail_line"
-                            app:isNote="@{true}"
-                            visibleObject="@{item.note!=null &amp;&amp; !TextUtils.isEmpty(item.note) }"
-                            app:lineText="@{item.note}" />
-                    </LinearLayout>
+<!--                </LinearLayout>-->
+<!--                    <LinearLayout-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:orientation="vertical"-->
+<!--                        visibleObject="@{isShownDetail==true ||item.menuComboItem==null }"-->
+<!--                        android:layout_height="wrap_content">-->
+<!--                        <androidx.recyclerview.widget.RecyclerView-->
+<!--                            android:id="@+id/productComboGroupRecyclerView"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:orientation="vertical"-->
+<!--                            visibleObject="@{item.combo==true}"-->
+<!--                            android:overScrollMode="never"-->
+<!--                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"-->
+<!--                            tools:itemCount="1"-->
+<!--                            tools:listitem="@layout/cart_item_combo_group"-->
+<!--                            />-->
 
-                <com.diadiem.pos_components.PTextView
-                    android:id="@+id/hideDetailTextView"
-                    visibleObject="@{item.menuComboItem!=null &amp;&amp; isShownDetail==true}"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/hide_details"
-                    app:useTextColor="color0"
-                    app:useTextHeader="h6" />
-            </LinearLayout>
+<!--                        <include-->
+<!--                            layout="@layout/cart_product_detail_line"-->
+<!--                            visibleObject="@{item.variantStr!=null}"-->
+<!--                            app:lineText="@{item.variantStr}" />-->
 
-        </LinearLayout>
+<!--                        <include-->
+<!--                            layout="@layout/cart_product_detail_line"-->
+<!--                            visibleObject="@{item.modifierStr!=null}"-->
+<!--                            app:lineText="@{item.modifierStr}"-->
+<!--                            />-->
+
+<!--                        <include-->
+<!--                            layout="@layout/cart_product_detail_line"-->
+<!--                            app:isDiscount="@{true}"-->
+<!--                            visibleObject="@{false}"-->
+
+<!--                            app:lineText="@{`Discount nameee`}" />-->
+
+<!--                        <include-->
+<!--                            layout="@layout/cart_product_detail_line"-->
+<!--                            app:isOtherFee="@{true}"-->
+<!--                            visibleObject="@{item.feeType != null}"-->
+<!--                            app:lineText="@{`Other fees `}"-->
+<!--                            app:priceDisc="@{item.fee}"/>-->
+
+<!--                        <include-->
+<!--                            layout="@layout/cart_product_detail_line"-->
+<!--                            app:isNote="@{true}"-->
+<!--                            visibleObject="@{item.note!=null &amp;&amp; !TextUtils.isEmpty(item.note) }"-->
+<!--                            app:lineText="@{item.note}" />-->
+<!--                    </LinearLayout>-->
+
+<!--                <com.diadiem.pos_components.PTextView-->
+<!--                    android:id="@+id/hideDetailTextView"-->
+<!--                    visibleObject="@{item.menuComboItem!=null &amp;&amp; isShownDetail==true}"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="@string/hide_details"-->
+<!--                    app:useTextColor="color0"-->
+<!--                    app:useTextHeader="h6" />-->
+<!--            </LinearLayout>-->
+
+<!--        </LinearLayout>-->
 
 
     </LinearLayout>

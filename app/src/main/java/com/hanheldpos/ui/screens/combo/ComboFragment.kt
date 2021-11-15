@@ -7,19 +7,26 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentComboBinding
+import com.hanheldpos.model.cart.Combo
 import com.hanheldpos.model.cart.Regular
 import com.hanheldpos.model.cart.order.OrderItemModel
-import com.hanheldpos.model.home.order.combo.ItemActionType
-import com.hanheldpos.model.home.order.menu.ComboPickedItemViewModel
-import com.hanheldpos.model.home.order.menu.ItemComboGroupManager
-import com.hanheldpos.model.home.order.menu.OrderMenuComboItemModel
+import com.hanheldpos.model.combo.ItemActionType
+import com.hanheldpos.model.combo.ItemComboGroup
+import com.hanheldpos.model.home.order.menu.ProductMenuItem
 import com.hanheldpos.model.product.BaseProductInCart
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.combo.adapter.ComboGroupAdapter
+import com.hanheldpos.ui.screens.home.order.OrderFragment
 import com.hanheldpos.ui.screens.product.ProductDetailFragment
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class ComboFragment(
-    private val listener: ComboListener
+    private val item: Combo,
+    private val quantityCanChoose: Int = -1,
+    private val action: ItemActionType,
+    private val listener: OrderFragment.OrderMenuListener
 ) : BaseFragment<FragmentComboBinding, ComboVM>(), ComboUV {
     override fun layoutRes() = R.layout.fragment_combo;
 
@@ -41,23 +48,11 @@ class ComboFragment(
         comboGroupAdapter = ComboGroupAdapter(listener = object : ComboGroupAdapter.ItemListener {
             override fun onProductSelect(
                 maxQuantity: Int,
-                comboManager: ItemComboGroupManager,
-                item: ComboPickedItemViewModel,
-                action: ItemActionType
+                group: ItemComboGroup,
+                item: ProductMenuItem
             ) {
-                when (action) {
-                    ItemActionType.Remove -> {
-                        viewModel.onChooseItemComboSuccess(
-                            item.comboParentId,
-                            comboManager,
-                            item, action
-                        );
-                    }
-                    else -> openProductDetail(maxQuantity, comboManager, item, action);
-                }
 
             }
-
         });
 
         binding.comboGroupAdapter.apply {
@@ -79,47 +74,19 @@ class ComboFragment(
     }
 
     override fun initData() {
-        arguments?.let {
-            val a: OrderItemModel? = it.getParcelable(ARG_ORDER_ITEM_MODEL_FRAGMENT)
-            val quantityCanChoose: Int = it.getInt(ARG_PRODUCT_DETAIL_QUANTITY)
-            val actionType: ItemActionType =
-                it.getSerializable(ARG_ITEM_ACTION_TYPE) as ItemActionType;
-            viewModel.actionType.value = actionType;
-            viewModel.orderItemModel.value = a;
-            viewModel.maxQuantity = quantityCanChoose;
+        viewModel.bundleInCart.value = item;
+        viewModel.actionType.value = action;
+        GlobalScope.launch(Dispatchers.IO) {
+            viewModel.getCombo()?.let { viewModel.initDefaultComboList(it) };
         }
-        viewModel.getCombo()?.let { viewModel.initDefaultComboList(it) };
+
 
     }
 
     override fun initAction() {
     }
 
-    interface ComboListener {
-        fun onCartAdded(item: OrderItemModel, action: ItemActionType)
-    }
 
-    companion object {
-        private const val ARG_ORDER_ITEM_MODEL_FRAGMENT = "ARG_ORDER_ITEM_MODEL_FRAGMENT"
-        private const val ARG_PRODUCT_DETAIL_QUANTITY = "ARG_PRODUCT_DETAIL_QUANTITY"
-        private const val ARG_ITEM_ACTION_TYPE = "ARG_ITEM_ACTION_TYPE"
-        fun getInstance(
-            item: OrderItemModel,
-            quantityCanChoose: Int = -1,
-            action: ItemActionType,
-            listener: ComboListener
-        ): ComboFragment {
-            return ComboFragment(
-                listener = listener
-            ).apply {
-                arguments = Bundle().apply {
-                    putParcelable(ARG_ORDER_ITEM_MODEL_FRAGMENT, item)
-                    putSerializable(ARG_ITEM_ACTION_TYPE, action);
-                    putInt(ARG_PRODUCT_DETAIL_QUANTITY, quantityCanChoose)
-                }
-            };
-        }
-    }
 
     override fun onBack() {
         navigator.goOneBack();
@@ -127,15 +94,15 @@ class ComboFragment(
 
     fun openProductDetail(
         maxQuantity: Int,
-        comboManager: ItemComboGroupManager,
-        item: ComboPickedItemViewModel,
+//        comboManager: ItemComboGroupManager,
+//        item: ComboPickedItemViewModel,
         action: ItemActionType
     ) {
-        navigator.goToWithCustomAnimation(ProductDetailFragment(
-            item = Regular(),
-            quantityCanChoose = maxQuantity,
-            action = action,
-            listener = object : ProductDetailFragment.ProductDetailListener {
+//        navigator.goToWithCustomAnimation(ProductDetailFragment(
+//            item = Regular(),
+//            quantityCanChoose = maxQuantity,
+//            action = action,
+//            listener = object : ProductDetailFragment.ProductDetailListener {
 //                override fun onCartAdded(itemDone: OrderItemModel, action: ItemActionType) {
 //                    item.apply {
 //                        selectedComboItem = itemDone
@@ -147,24 +114,25 @@ class ComboFragment(
 //                        if (item.selectedComboItem!!.quantity > 0) action else ItemActionType.Remove
 //                    );
 //                }
-
-                override fun onCartAdded(item: BaseProductInCart, action: ItemActionType) {
-                    TODO("Not yet implemented")
-                }
-            }
-        ))
+//
+//                override fun onCartAdded(item: BaseProductInCart, action: ItemActionType) {
+//                    TODO("Not yet implemented")
+//                }
+//            }
+//        ))
     }
 
 
     override fun cartAdded(item: OrderItemModel, action: ItemActionType) {
-        onBack();
-        listener.onCartAdded(item, action);
+//        onBack();
+//        listener.onCartAdded(item, action);
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    override fun updateChangeCombo(item: OrderMenuComboItemModel?) {
-        comboGroupAdapter.submitList(item?.listItemsByGroup as MutableList<ItemComboGroupManager>?);
-        comboGroupAdapter.notifyDataSetChanged();
+    override fun onLoadComboSuccess(list: List<ItemComboGroup>) {
+        GlobalScope.launch(Dispatchers.Main) {
+            comboGroupAdapter.submitList(list.toMutableList());
+            comboGroupAdapter.notifyDataSetChanged();
+        }
     }
 
 }

@@ -203,7 +203,7 @@ data class ProductItem(
         return groupComboList != null && groupComboList!!.any()
     }
 
-    val groupComboList : List<ProductComboItem>? get() = Gson().fromJson(combo, object : TypeToken<List<ProductComboItem>?>() {}.type)
+    val groupComboList : List<ProductComboItem> get() = Gson().fromJson(combo, object : TypeToken<List<ProductComboItem>>() {}.type)
 
     val skuDefault get() = if (variantsGroup ==null) sku else variantsGroupSkuDefault
 
