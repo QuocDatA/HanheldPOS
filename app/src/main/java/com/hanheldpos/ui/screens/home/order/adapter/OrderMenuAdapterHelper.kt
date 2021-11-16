@@ -7,31 +7,17 @@ class OrderMenuAdapterHelper(private val callBack : AdapterCallBack) {
 
     private var currentIndex : Int = 1;
     private var list: MutableList<OrderMenuItem?> = mutableListOf();
-    private var listOfPage: MutableList<List<OrderMenuItem?>> = mutableListOf();
 
     fun submitList(list: MutableList<OrderMenuItem?>){
-        this.list = list
-        listOfPage.clear()
-        var temp: Int = this.list.size
-        var tempCurrentIndex: Int = 1
-        currentIndex = 1
-        if (temp > 0) {
-            while (temp > 0) {
-                var tempList = split(tempCurrentIndex)
-                listOfPage.add(tempList)
-                temp -= tempList.size
-                tempCurrentIndex++
-            }
-            callBack.onListSplitCallBack(listOfPage[currentIndex - 1])
-        }
-
+        this.list = list;
+        currentIndex = 1;
+        split(currentIndex);
     }
 
     fun next(){
         if ((currentIndex * maxItemViewCate) < list.size ){
             currentIndex = currentIndex.plus(1);
-            callBack.onListSplitCallBack(listOfPage[currentIndex - 1])
-            //split(currentIndex);
+            split(currentIndex);
         }
 
     }
@@ -39,13 +25,12 @@ class OrderMenuAdapterHelper(private val callBack : AdapterCallBack) {
     fun previous(){
         if (currentIndex > 1){
             currentIndex = currentIndex.minus(1);
-            callBack.onListSplitCallBack(listOfPage[currentIndex - 1])
-            //split(currentIndex);
+            split(currentIndex);
         }
 
     }
 
-    private fun split(pagePosition: Int): MutableList<OrderMenuItem?> {
+    private fun split(pagePosition: Int){
         val rs: MutableList<OrderMenuItem> = mutableListOf();
 
         list.let {
@@ -98,7 +83,6 @@ class OrderMenuAdapterHelper(private val callBack : AdapterCallBack) {
             )
         }
         callBack.onListSplitCallBack(lastrs.toList());
-        return lastrs
     }
 
 

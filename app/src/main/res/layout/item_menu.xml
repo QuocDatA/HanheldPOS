@@ -9,44 +9,37 @@
             type="com.hanheldpos.ui.screens.menu.MenuFragment.FakeMenuItem" />
     </data>
 
-
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:focusable="true"
         android:clickable="true"
         android:background="@color/color_2"
         android:foreground="?attr/selectableItemBackground"
-        android:orientation="vertical">
+        app:cardCornerRadius="@dimen/_2sdp">
 
-        <RelativeLayout
+        <com.diadiem.pos_components.PTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="@dimen/_2sdp"
-            >
+            android:layout_marginStart="@dimen/_14sdp"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:paddingVertical="@dimen/_16sdp"
+            android:text="@{item.name}"
+            app:useTextColor="color4"
+            app:useTextHeader="h5"
+            tools:text="Order" />
 
-            <com.diadiem.pos_components.PTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@{item.name}"
-                android:paddingVertical="@dimen/_16sdp"
-                android:layout_marginStart="@dimen/_14sdp"
-                android:clickable="true"
-                android:focusable="true"
-                android:gravity="center"
-                app:useTextColor="color4"
-                app:useTextHeader="h5"
-                tools:text="Order" />
-
-            <FrameLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="end"
                 android:layout_marginEnd="@dimen/_14sdp">
-                <ImageView
 
+            <ImageView
                     android:layout_width="@dimen/_6sdp"
                     android:layout_height="@dimen/_10sdp"
                     android:layout_gravity="center"
@@ -56,13 +49,6 @@
             </FrameLayout>
 
         </RelativeLayout>
-
-        <androidx.legacy.widget.Space
-            android:id="@+id/underLine"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_1sdp" />
-    </LinearLayout>
-
 
 </layout>
 
