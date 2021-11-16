@@ -50,14 +50,14 @@ class OrderMenuAdapter(
             oldItem: OrderMenuItem,
             newItem: OrderMenuItem
         ): Boolean {
-            return oldItem.id.equals(newItem.id) && oldItem.uiType == newItem.uiType
+            return oldItem.id.equals(newItem.id) && ((oldItem.uiType == newItem.uiType) || ( oldItem.uiType != MenuModeViewType.Menu && oldItem.uiType != MenuModeViewType.Empty && newItem.uiType != MenuModeViewType.Menu && newItem.uiType != MenuModeViewType.Empty))
         }
 
         override fun areContentsTheSame(
             oldItem: OrderMenuItem,
             newItem: OrderMenuItem
         ): Boolean {
-            return true;
+            return false;
         }
 
     }

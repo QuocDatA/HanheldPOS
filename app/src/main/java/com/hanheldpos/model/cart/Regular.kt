@@ -12,6 +12,9 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 class Regular() : BaseProductInCart(), Parcelable {
+    constructor(parcel: Parcel) : this() {
+    }
+
     constructor(
         productItem: ProductItem,
         diningOptionItem: DiningOptionItem,
@@ -143,4 +146,7 @@ class Regular() : BaseProductInCart(), Parcelable {
     fun minusOrderQuantity(num: Int) {
         quantity = if (quantity!! > 0) quantity!!.minus(num) else 0
     }
+
+
+
 }

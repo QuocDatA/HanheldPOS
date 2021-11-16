@@ -1,6 +1,7 @@
 package com.hanheldpos.model.combo
 
 import com.hanheldpos.model.cart.GroupBundle
+import com.hanheldpos.model.cart.Regular
 import com.hanheldpos.model.home.order.menu.ProductMenuItem
 
 
@@ -14,7 +15,7 @@ data class ItemComboGroup(
     /**
      * Show list of ComboPickedItem has been add to combo
      */
-    var productsForChoose : List<ProductMenuItem> = mutableListOf(),
+    var productsForChoose : List<Regular> = mutableListOf(),
 
     /**
      * only show combo list when item in cart is focused by user

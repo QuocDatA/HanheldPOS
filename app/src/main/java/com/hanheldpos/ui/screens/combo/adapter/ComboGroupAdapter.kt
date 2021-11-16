@@ -1,17 +1,14 @@
 package com.hanheldpos.ui.screens.combo.adapter
 
-import androidx.core.view.size
 import androidx.recyclerview.widget.DiffUtil
 import com.hanheldpos.R
 import com.hanheldpos.databinding.ItemComboGroupBinding
 import com.hanheldpos.model.cart.Regular
 import com.hanheldpos.model.combo.ItemActionType
 import com.hanheldpos.model.combo.ItemComboGroup
-import com.hanheldpos.model.home.order.menu.ProductMenuItem
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
-import kotlin.math.abs
 
 class ComboGroupAdapter(
     private val listener: ItemListener,
@@ -46,37 +43,37 @@ class ComboGroupAdapter(
                 }
             }
         }
-        val item = getItem(position);
+        val itemComboGroup = getItem(position);
         // Ẩn thông tin combo khi chưa tới lượt
         if (positionFocus == position) {
             selectedItem.value = position;
-            item.isFocused = true;
-        } else item.isFocused = false;
+            itemComboGroup.isFocused = true;
+        } else itemComboGroup.isFocused = false;
 
         val binding = holder.binding as ItemComboGroupBinding
         binding.position = (position + 1).toString();
-        binding.name = item.getGroupName();
-        binding.item = item;
+        binding.name = itemComboGroup.getGroupName();
+        binding.item = itemComboGroup;
 
         /*
         * Green tick item has chosen in list
         * */
-        item.productsForChoose.forEach { it.isChosen = false }
-        item.groupBundle.productList.forEach { regular ->
-            item.productsForChoose.find { pro-> regular.proOriginal?.id == pro.proOriginal?.id }.let {
-                it?.isChosen = true;
+//        item.productsForChoose.forEach { it.isChosen = false }
+        itemComboGroup.groupBundle.productList.forEach { regular ->
+            itemComboGroup.productsForChoose.find { pro-> regular.proOriginal?.id == pro.proOriginal?.id }.let {
+//                it?.isChosen = true;
             }
         }
         binding.itemForSelectAdapter.apply {
             adapter = ComboItemPickerAdapter(
-                listener = object : BaseItemClickListener<ProductMenuItem> {
-                    override fun onItemClick(adapterPosition: Int, itemClick: ProductMenuItem) {
-                        listener.onProductSelect(item.requireQuantity(),item,itemClick);
+                listener = object : BaseItemClickListener<Regular> {
+                    override fun onItemClick(adapterPosition: Int, item: Regular) {
+                        listener.onProductSelect(itemComboGroup.requireQuantity(),itemComboGroup,item);
                     }
 
                 }
             ).apply {
-                submitList(item.productsForChoose);
+                submitList(itemComboGroup.productsForChoose);
             };
         }
         binding.itemSelectedAdapter.apply {
@@ -86,11 +83,11 @@ class ComboGroupAdapter(
                         action: ItemActionType,
                         itemClick: Regular
                     ) {
-                        comboItemAction(item, action, itemClick);
+                        comboItemAction(itemComboGroup, action, itemClick);
                     }
                 }
             ).apply {
-                submitList(item.groupBundle.productList);
+                submitList(itemComboGroup.groupBundle.productList);
             };
         }
     }
@@ -99,7 +96,7 @@ class ComboGroupAdapter(
         fun onProductSelect(
             maxQuantity: Int,
             group: ItemComboGroup,
-            item: ProductMenuItem,
+            item: Regular,
         );
     }
 

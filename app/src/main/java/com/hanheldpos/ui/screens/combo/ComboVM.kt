@@ -5,9 +5,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.hanheldpos.data.api.pojo.order.menu.OrderMenuResp
+import com.hanheldpos.data.api.pojo.order.settings.DiningOptionItem
 import com.hanheldpos.data.repository.GenerateId
 import com.hanheldpos.model.cart.Combo
 import com.hanheldpos.model.cart.GroupBundle
+import com.hanheldpos.model.cart.Regular
 import com.hanheldpos.model.combo.ItemActionType
 import com.hanheldpos.model.combo.ItemComboGroup
 import com.hanheldpos.model.home.order.menu.OrderMenuDataMapper
@@ -37,6 +39,8 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
         return@map it?.isCompleted();
     } as MutableLiveData<Boolean>
 
+    var mLastTimeClick: Long = 0
+
     fun initLifeCycle(owner: LifecycleOwner) {
         owner.lifecycle.addObserver(this);
 
@@ -46,17 +50,31 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
     }
 
     fun initDefaultComboList(
-        listGroup: MutableList<GroupBundle>
+        listGroup: MutableList<GroupBundle>,
+        diningOption: DiningOptionItem,
+        menuOrderId : String
     ) {
 
-        listGroup.map { group ->
-            ItemComboGroup(
-                groupBundle = group,
-                productsForChoose = OrderMenuDataMapper.getProductItemListByComboGuid(group.comboInfo.comboGuid).map { ProductMenuItem(it) }
-            )
-        }.let {
-            uiCallback?.onLoadComboSuccess(it);
+        bundleInCart.value!!.let { combo ->
+            listGroup.map { group ->
+                val listRegular: List<Regular> =
+                    OrderMenuDataMapper.getProductItemListByComboGuid(group.comboInfo.comboGuid)
+                        .map {
+                            var priceOverride =
+                                it.priceOverride(menuOrderId, it.skuDefault, it.price?: 0.0);
+                            val regular = Regular(it, diningOption, 1, it.skuDefault, it.variants,priceOverride,null)
+                            regular.priceOverride = regular.groupPrice(group,combo.proOriginal!!);
+                            return@map regular
+                        }
+                ItemComboGroup(
+                    groupBundle = group,
+                    productsForChoose = listRegular
+                )
+            }.let {
+                uiCallback?.onLoadComboSuccess(it);
+            }
         }
+
 
     }
 
