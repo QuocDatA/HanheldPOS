@@ -19,10 +19,6 @@ class PaymentSuggestionAdapter(
         return R.layout.item_payment_suggestion;
     }
 
-    override fun submitList(list: MutableList<PaymentSuggestionItem>?) {
-        super.submitList(list)
-    }
-
     class DiffCallback : DiffUtil.ItemCallback<PaymentSuggestionItem>() {
         override fun areItemsTheSame(
             oldItem: PaymentSuggestionItem,
