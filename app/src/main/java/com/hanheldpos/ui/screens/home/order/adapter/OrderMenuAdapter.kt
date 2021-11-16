@@ -30,7 +30,8 @@ class OrderMenuAdapter(
                     listener.onItemClick(position, item);
                 }
             }
-            MenuModeViewType.DirectionButton -> {
+            MenuModeViewType.Empty -> {}
+            else -> {
                 (holder.binding as ItemOrderMenuBinding).dirUp.setOnClickListener {
                     directionCallBack.directionSelectd(1)
                 }
