@@ -49,7 +49,7 @@ class MenuFragment : BaseFragment<FragmentMenuBinding, MenuVM>(), MenuUV {
 
         binding.menuItemContainer.apply {
             addItemDecoration(
-                GridSpacingItemDecoration(spanCount = 1,includeEdge = false, spacing = 2)
+                GridSpacingItemDecoration(spanCount = 1,includeEdge = false, spacing = 3)
             )
         };
         binding.menuItemContainer.adapter = menuAdapter;

@@ -222,12 +222,12 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
                     );
                 }
             }
-            ProductModeViewType.PrevButton -> {
+            ProductModeViewType.PrevButtonEnable -> {
                 GlobalScope.launch(Dispatchers.IO) {
                     productAdapHelper.previous();
                 }
             }
-            ProductModeViewType.NextButton -> {
+            ProductModeViewType.NextButtonEnable -> {
                 GlobalScope.launch(Dispatchers.IO) {
                     productAdapHelper.next();
                 }

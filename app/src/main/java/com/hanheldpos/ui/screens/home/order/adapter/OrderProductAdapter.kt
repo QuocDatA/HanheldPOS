@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.DiffUtil
 import com.hanheldpos.R
 import com.hanheldpos.databinding.ItemOrderProductBinding
 import com.hanheldpos.model.home.order.ProductModeViewType
+import com.hanheldpos.model.home.order.menu.MenuModeViewType
 import com.hanheldpos.model.home.order.menu.ProductMenuItem
 
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
@@ -51,7 +52,7 @@ class OrderProductAdapter(
 
     private class DiffCallback : DiffUtil.ItemCallback<ProductMenuItem>() {
         override fun areItemsTheSame(oldItem: ProductMenuItem, newItem: ProductMenuItem): Boolean {
-            return oldItem.proOriginal?.id.equals(newItem.proOriginal?.id) && oldItem.uiType == newItem.uiType;
+            return oldItem.proOriginal?.id.equals(newItem.proOriginal?.id) && ((oldItem.uiType == newItem.uiType) || ( oldItem.uiType != ProductModeViewType.Product && oldItem.uiType != ProductModeViewType.Empty && newItem.uiType != ProductModeViewType.Product && newItem.uiType != ProductModeViewType.Empty))
         }
 
         override fun areContentsTheSame(oldItem: ProductMenuItem, newItem: ProductMenuItem): Boolean {

@@ -3,6 +3,8 @@ package com.hanheldpos.ui.screens.home.order.adapter
 import com.hanheldpos.data.api.pojo.product.ProductItem
 import com.hanheldpos.model.home.order.ProductModeViewType
 import com.hanheldpos.model.home.order.menu.ProductMenuItem
+import com.hanheldpos.model.home.table.TableModeViewType
+import com.hanheldpos.ui.screens.home.table.adapter.TableAdapterHelper
 
 class OrderProductAdapterHelper(
     private val callBack: AdapterCallBack
@@ -56,6 +58,16 @@ class OrderProductAdapterHelper(
             })
         }
 
+        // set state for Direction Button to add to list
+        var nextButtonType = ProductModeViewType.NextButtonDisable
+        var prevButtonType = ProductModeViewType.PrevButtonDisable
+        if (pagePosition > 1) {
+            prevButtonType = ProductModeViewType.PrevButtonEnable
+        }
+        if ((pagePosition * maxItemViewProduct) < list.size) {
+            nextButtonType = ProductModeViewType.NextButtonEnable
+        }
+
         // Add Direction Button
         rs.addAll(listOf(
             /*
@@ -63,18 +75,10 @@ class OrderProductAdapterHelper(
             * 2 : Disable
             * */
             ProductMenuItem().apply {
-                uiType = ProductModeViewType.PrevButton.apply {
-                    pos = if (currentIndex > 1) {
-                        1
-                    } else 2
-                };
+                uiType = prevButtonType
             },
             ProductMenuItem().apply {
-                uiType = ProductModeViewType.PrevButton.apply {
-                    pos = if ((currentIndex * maxItemViewProduct) < list.size) {
-                        1
-                    } else 2
-                };
+                uiType = nextButtonType
             } )
         )
         callBack.onListSplitCallBack(rs.toList());
