@@ -19,7 +19,7 @@
         android:elevation="0dp"
         app:cardCornerRadius="0dp"
         app:cardElevation="0dp"
-        app:rippleColor="@{ item.uiType != TableModeViewType.Empty  ? ( item.uiType == TableModeViewType.Table || item.uiType.pos == 1 ? @color/color_2 : @android:color/transparent )  : @android:color/transparent }">
+        app:rippleColor="@{ item.uiType != TableModeViewType.Empty  ? ( item.uiType == TableModeViewType.Table || (item.uiType == TableModeViewType.PrevButtonEnable || item.uiType == TableModeViewType.NextButtonEnable)  ? @color/color_2 : @android:color/transparent )  : @android:color/transparent }">
 
         <RelativeLayout
             android:id="@+id/layoutMain"
@@ -44,22 +44,22 @@
                     app:useTextHeader="h4" />
 
                 <ImageView
-                    visibleObject="@{item.uiType == TableModeViewType.PrevButton }"
+                    visibleObject="@{item.uiType == TableModeViewType.PrevButtonEnable || item.uiType == TableModeViewType.PrevButtonDisable }"
                     android:layout_width="@dimen/_14sdp"
                     android:layout_height="@dimen/_14sdp"
                     android:layout_centerInParent="true"
                     android:layout_gravity="center"
                     android:scaleType="centerInside"
-                    android:src="@{ item.uiType.pos == 1 ? @drawable/ic_direction_up : @drawable/ic_direction_up_disable}" />
+                    android:src="@{ item.uiType == TableModeViewType.PrevButtonEnable ? @drawable/ic_direction_up : @drawable/ic_direction_up_disable}" />
 
                 <ImageView
-                    visibleObject="@{item.uiType == TableModeViewType.NextButton }"
+                    visibleObject="@{item.uiType == TableModeViewType.NextButtonEnable || item.uiType == TableModeViewType.NextButtonDisable }"
                     android:layout_width="@dimen/_14sdp"
                     android:layout_height="@dimen/_14sdp"
                     android:layout_centerInParent="true"
                     android:layout_gravity="center"
                     android:scaleType="centerInside"
-                    android:src="@{ item.uiType.pos == 1 ? @drawable/ic_direction_down : @drawable/ic_direction_down_disable }" />
+                    android:src="@{ item.uiType == TableModeViewType.NextButtonEnable ? @drawable/ic_direction_down : @drawable/ic_direction_down_disable }" />
             </RelativeLayout>
 
 

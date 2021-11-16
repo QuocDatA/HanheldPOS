@@ -17,10 +17,6 @@ class PaymentMethodAdapter(
         return R.layout.item_payment_method;
     }
 
-    override fun submitList(list: MutableList<PaymentMethodResp>?) {
-        super.submitList(list)
-    }
-
     class DiffCallback : DiffUtil.ItemCallback<PaymentMethodResp>() {
 
         override fun areItemsTheSame(

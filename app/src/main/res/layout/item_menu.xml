@@ -1,0 +1,68 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.hanheldpos.ui.screens.menu.MenuFragment.FakeMenuItem" />
+    </data>
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/color_10"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="@dimen/_2sdp"
+            android:background="@color/color_2"
+            android:foreground="?attr/selectableItemBackground">
+
+            <com.diadiem.pos_components.PTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{item.name}"
+                android:paddingVertical="@dimen/_16sdp"
+                android:layout_marginStart="@dimen/_14sdp"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                app:useTextColor="color4"
+                app:useTextHeader="h5"
+                tools:text="Order" />
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/_14sdp">
+                <ImageView
+
+                    android:layout_width="@dimen/_6sdp"
+                    android:layout_height="@dimen/_10sdp"
+                    android:layout_gravity="center"
+                    android:backgroundTint="@color/color_8"
+                    android:src="@drawable/ic_arrow_forward_color9" />
+
+            </FrameLayout>
+
+        </RelativeLayout>
+
+        <androidx.legacy.widget.Space
+            android:id="@+id/underLine"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_1sdp" />
+    </LinearLayout>
+
+
+</layout>
+
+
+
