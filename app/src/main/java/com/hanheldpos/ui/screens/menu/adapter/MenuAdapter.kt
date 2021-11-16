@@ -22,15 +22,6 @@ class MenuAdapter(
         return R.layout.item_menu
     }
 
-    override fun onBindViewHolder(holder: BaseBindingViewHolder<FakeMenuItem>, position: Int) {
-        val item = getItem(position)
-        holder.bindItem(item);
-        val binding  = (holder.binding as ItemMenuBinding);
-        if(item.name == "Reset System"){
-            binding.underLine.isVisible = false
-        }
-    }
-
     class DiffCallback : DiffUtil.ItemCallback<FakeMenuItem>() {
         override fun areItemsTheSame(
             oldItem: FakeMenuItem,

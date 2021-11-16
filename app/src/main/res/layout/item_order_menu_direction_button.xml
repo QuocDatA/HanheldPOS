@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="com.hanheldpos.model.home.order.menu.MenuModeViewType" />
+
+        <variable
+            name="item"
+            type="com.hanheldpos.model.home.order.menu.OrderMenuItem" />
+
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_6sdp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/dirUp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:backgroundTint="@color/_EEEEEE"
+                android:elevation="0dp"
+                app:cardCornerRadius="@dimen/_3sdp"
+                app:cardElevation="0dp"
+                android:clickable="@{ item.uiType == MenuModeViewType.DirectionEnableUp ? true : item.uiType == MenuModeViewType.DirectionEnableUpDown ? true : false }"
+                app:rippleColor="@{ item.uiType == MenuModeViewType.DirectionEnableUp ? @color/color_2 : item.uiType == MenuModeViewType.DirectionEnableUpDown ? @color/color_2 : @android:color/transparent }">
+
+                <com.diadiem.pos_components.PTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/_9sdp"
+                    android:ellipsize="end"
+                    android:maxEms="12"
+                    android:maxLines="1"
+                    android:minEms="7"
+                    android:text="@{item.text,default=`C`}"
+                    android:textAlignment="center"
+                    android:textAllCaps="true"
+                    app:useFontStyle="bold"
+                    app:useTextColor="color2"
+                    app:useTextHeader="h5" />
+                <ImageView
+                    android:layout_width="@dimen/_12sdp"
+                    android:layout_height="@dimen/_12sdp"
+                    android:scaleType="centerInside"
+                    android:layout_gravity="center"
+                    android:src="@{ item.uiType == MenuModeViewType.DirectionEnableUp ? @drawable/ic_direction_up : item.uiType == MenuModeViewType.DirectionEnableUpDown ? @drawable/ic_direction_up : @drawable/ic_direction_up_disable }" />
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <androidx.legacy.widget.Space
+                android:layout_width="@dimen/_6sdp"
+                android:layout_height="wrap_content" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/dirDown"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:backgroundTint="@color/_EEEEEE"
+                android:elevation="0dp"
+                app:cardCornerRadius="@dimen/_3sdp"
+                app:cardElevation="0dp"
+                android:clickable="@{ item.uiType == MenuModeViewType.DirectionEnableDown ? true : item.uiType == MenuModeViewType.DirectionEnableUpDown ? true : false }"
+                app:rippleColor="@{ item.uiType == MenuModeViewType.DirectionEnableDown ? @color/color_2 : item.uiType == MenuModeViewType.DirectionEnableUpDown ? @color/color_2 : @android:color/transparent }">
+                <com.diadiem.pos_components.PTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/_9sdp"
+                    android:ellipsize="end"
+                    android:maxEms="12"
+                    android:maxLines="1"
+                    android:minEms="7"
+                    android:text="@{item.text,default=`C`}"
+                    android:textAlignment="center"
+                    android:textAllCaps="true"
+                    app:useFontStyle="bold"
+                    app:useTextColor="color2"
+                    app:useTextHeader="h5" />
+                <ImageView
+                    android:layout_width="@dimen/_12sdp"
+                    android:layout_height="@dimen/_12sdp"
+                    android:scaleType="centerInside"
+                    android:layout_gravity="center"
+                    android:src="@{ item.uiType == MenuModeViewType.DirectionEnableDown ? @drawable/ic_direction_down : item.uiType == MenuModeViewType.DirectionEnableUpDown ? @drawable/ic_direction_down : @drawable/ic_direction_down_disable }" />
+            </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
+
+    </FrameLayout>
+
+</layout>
