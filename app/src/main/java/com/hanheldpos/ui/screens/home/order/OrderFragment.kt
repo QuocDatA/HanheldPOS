@@ -72,7 +72,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
 
         menuAdapHelper = OrderMenuAdapterHelper(callBack = object :
             OrderMenuAdapterHelper.AdapterCallBack {
-            override fun onListSplitCallBack(list: List<OrderMenuItem>) {
+            override fun onListSplitCallBack(list: List<OrderMenuItem?>) {
                 menuAdapter.submitList(list);
                 menuAdapter.notifyDataSetChanged();
 

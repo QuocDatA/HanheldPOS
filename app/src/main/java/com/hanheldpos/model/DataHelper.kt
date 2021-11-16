@@ -8,6 +8,7 @@ import com.hanheldpos.data.api.pojo.order.menu.OrderMenuResp
 import com.hanheldpos.data.api.pojo.order.settings.OrderSettingResp
 import com.hanheldpos.data.api.pojo.device.DeviceCodeResp
 import com.hanheldpos.data.api.pojo.discount.DiscountResp
+import com.hanheldpos.data.api.pojo.payment.PaymentMethodResp
 import com.hanheldpos.data.api.pojo.payment.PaymentsResp
 import com.hanheldpos.data.api.pojo.table.TableResp
 import com.hanheldpos.model.cart.fee.FeeApplyToType
@@ -249,5 +250,5 @@ object DataHelper {
                 .storeValue(PrefKey.Payment.PAYMENTS_RESP, value)
         }
 
-    private fun getPaymentMethodList() = this.paymentsResp?.Model?.firstOrNull();
+    fun getPaymentMethodList()= this.paymentsResp?.Model;
 }

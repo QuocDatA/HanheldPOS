@@ -30,7 +30,8 @@ class OrderMenuAdapter(
                     listener.onItemClick(position, item);
                 }
             }
-            MenuModeViewType.Empty -> {}
+            MenuModeViewType.Empty -> {
+            }
             else -> {
                 (holder.binding as ItemOrderMenuBinding).dirUp.setOnClickListener {
                     directionCallBack.directionSelectd(1)
@@ -49,14 +50,14 @@ class OrderMenuAdapter(
             oldItem: OrderMenuItem,
             newItem: OrderMenuItem
         ): Boolean {
-            return oldItem.id.equals(newItem.id) && oldItem.uiType == newItem.uiType;
+            return oldItem.id.equals(newItem.id) && oldItem.uiType == newItem.uiType
         }
 
         override fun areContentsTheSame(
             oldItem: OrderMenuItem,
             newItem: OrderMenuItem
         ): Boolean {
-            return oldItem == newItem;
+            return true;
         }
 
     }

@@ -13,15 +13,17 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/color_10"
+        android:focusable="true"
+        android:clickable="true"
+        android:background="@color/color_2"
+        android:foreground="?attr/selectableItemBackground"
         android:orientation="vertical">
 
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:cardCornerRadius="@dimen/_2sdp"
-            android:background="@color/color_2"
-            android:foreground="?attr/selectableItemBackground">
+            >
 
             <com.diadiem.pos_components.PTextView
                 android:layout_width="wrap_content"

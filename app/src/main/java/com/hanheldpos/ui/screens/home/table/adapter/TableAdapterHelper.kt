@@ -2,9 +2,7 @@ package com.hanheldpos.ui.screens.home.table.adapter
 
 
 import com.hanheldpos.data.api.pojo.table.FloorTableItem
-import com.hanheldpos.model.home.order.ProductModelViewType
 import com.hanheldpos.model.home.table.TableModeViewType
-import com.hanheldpos.model.product.ProductOrderItem
 import com.hanheldpos.ui.screens.home.order.adapter.OrderProductAdapterHelper
 
 

@@ -82,7 +82,7 @@ class OrderMenuAdapterHelper(private val callBack : AdapterCallBack) {
                 uiType = menuItemType
 
             }
-        ));
+        );
 
         val sub1 = rs.subList(0,itemPerCol);
         val sub2 = rs.subList(itemPerCol,rs.size);
