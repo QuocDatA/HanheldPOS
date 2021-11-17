@@ -61,6 +61,7 @@ class ModifierFragment(
 
     fun onSelectedItemExtra(item: ItemExtra) {
         val modifier = ModifierCart(
+            item.modifier.id!!,
             item.modifier.modifierGuid!!,
             item.modifier.modifier!!,
             item.extraQuantity,

@@ -119,9 +119,9 @@ class ComboFragment(
             action = action,
             listener = object : OrderFragment.OrderMenuListener {
                 override fun onCartAdded(item: BaseProductInCart, action: ItemActionType) {
-                    TODO("Not yet implemented")
+                    viewModel.onRegularSelect(group.groupBundle, item as Regular, action)
+                    comboGroupAdapter.notifyDataSetChanged()
                 }
-
             }
         ))
     }

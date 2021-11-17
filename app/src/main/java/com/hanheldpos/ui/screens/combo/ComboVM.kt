@@ -7,6 +7,7 @@ import androidx.lifecycle.Transformations
 import com.hanheldpos.data.api.pojo.order.menu.OrderMenuResp
 import com.hanheldpos.data.api.pojo.order.settings.DiningOptionItem
 import com.hanheldpos.data.repository.GenerateId
+import com.hanheldpos.extension.notifyValueChange
 import com.hanheldpos.model.cart.Combo
 import com.hanheldpos.model.cart.GroupBundle
 import com.hanheldpos.model.cart.Regular
@@ -14,6 +15,7 @@ import com.hanheldpos.model.combo.ItemActionType
 import com.hanheldpos.model.combo.ItemComboGroup
 import com.hanheldpos.model.home.order.menu.OrderMenuDataMapper
 import com.hanheldpos.model.home.order.menu.ProductMenuItem
+import com.hanheldpos.model.product.BaseProductInCart
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
 
 class ComboVM : BaseUiViewModel<ComboUV>() {
@@ -78,54 +80,14 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
 
     }
 
-//    fun onChooseItemComboSuccess(
-//        comboParent: String?,
-//        comboManager: ItemComboGroupManager,
-//        item: ComboPickedItemViewModel,
-//        action: ItemActionType?
-//    ) {
-//        selectedCombo.value?.let { orderMenuComboItemModel ->
-//            orderMenuComboItemModel.listItemsByGroup?.forEach { it1 ->
-//                if (it1?.productComboItem?.comboGuid == comboParent) {
-//                    /**
-//                     * show check icon when add or modify item
-//                     */
-//                    when (action) {
-//                        ItemActionType.Add -> {
-//                            /*
-//                            * If in combo has the same item -> increase quantity
-//                            * */
-//                            if (it1?.listSelectedComboItems!!.contains(item)) {
-//                                it1.listSelectedComboItems.let {
-//                                    it[it.indexOf(item)]?.apply {
-//                                        selectedComboItem!!.plusOrderQuantity(item.selectedComboItem!!.quantity);
-//                                    }
-//                                }
-//                            } else
-//                                it1.listSelectedComboItems.add(item)
-//                        }
-//                        ItemActionType.Modify -> {
-//                            if (it1?.listSelectedComboItems!!.contains(item)) {
-//                                it1.listSelectedComboItems.let {
-//                                    it.set(it.indexOf(item), item);
-//                                }
-//                            }
-//                        }
-//                        ItemActionType.Remove -> {
-//                            /**
-//                             * Delete green tick when remove item
-//                             */
-//                            comboManager.let {
-//                                it.listSelectedComboItems.remove(item);
-//                            }
-//                        }
-//                    }
-//                    selectedCombo.notifyValueChange()
-//                    return;
-//                }
-//            }
-//        }
-//    }
+    fun onRegularSelect(group : GroupBundle,item: Regular, action: ItemActionType){
+        when(action){
+            ItemActionType.Add -> group.addRegular(item);
+            ItemActionType.Modify -> TODO()
+            ItemActionType.Remove -> TODO()
+        }
+        bundleInCart.notifyValueChange();
+    }
 
     private fun updateTotalPrice() {
         totalPriceLD.value = bundleInCart.value?.total()

@@ -5,6 +5,7 @@ import com.hanheldpos.data.api.pojo.product.ProductItem
 import com.hanheldpos.model.product.ModPricingType
 
 data class ModifierCart(
+    var modifierId : String,
     var modifierGuid: String,
     var name: String,
     var quantity: Int,

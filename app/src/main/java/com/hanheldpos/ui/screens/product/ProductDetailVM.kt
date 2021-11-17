@@ -69,6 +69,7 @@ class ProductDetailVM : BaseUiViewModel<ProductDetailUV>() {
         sku: String
     ) {
         regularInCart.value?.apply {
+            if (variantList == null) variantList = mutableListOf()
             variantList?.clear()
             variantList?.addAll(item);
             this.sku = sku
@@ -84,7 +85,7 @@ class ProductDetailVM : BaseUiViewModel<ProductDetailUV>() {
     fun onModifierAddItem(item: ModifierCart) {
         regularInCart.value?.apply {
             modifierList.find { modifier ->
-                item.modifierGuid == modifier.modifierGuid
+                item.modifierId == modifier.modifierId
             }.let {
                 if (it != null) {
                     val index = modifierList.indexOf(it);
@@ -107,6 +108,6 @@ class ProductDetailVM : BaseUiViewModel<ProductDetailUV>() {
 
     //endregion
     fun onAddCart() {
-//        uiCallback?.onAddCart(orderItemModel.value!!);
+        uiCallback?.onAddCart(regularInCart.value!!);
     }
 }
