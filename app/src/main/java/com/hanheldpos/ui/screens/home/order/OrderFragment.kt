@@ -232,27 +232,6 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
                     productAdapHelper.next();
                 }
             }
-//            ProductModeViewType.Combo -> {
-//                val onCartAdded = object : ComboFragment.ComboListener {
-//                    override fun onCartAdded(
-//                        item: OrderItemModel,
-//                        actionType: ItemActionType
-//                    ) {
-//                        showCartAnimation(item);
-//                    }
-//                }
-//                navigator.goToWithCustomAnimation(
-//                    ComboFragment.getInstance(
-//                        item = OrderItemModel(
-//                            productOrderItem = item,
-//                            type = OrderItemType.Combo,
-//                        ),
-//                        action = ItemActionType.Add,
-//                        quantityCanChoose = 100,
-//                        listener = onCartAdded
-//                    )
-//                );
-//            }
         }
     }
 

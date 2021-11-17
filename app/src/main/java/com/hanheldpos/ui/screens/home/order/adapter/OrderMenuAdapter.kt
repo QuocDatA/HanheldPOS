@@ -65,7 +65,7 @@ class OrderMenuAdapter(
             oldItem: OrderMenuItem,
             newItem: OrderMenuItem
         ): Boolean {
-            return false;
+            return oldItem == newItem && (oldItem.uiType == MenuModeViewType.Menu || oldItem.uiType == MenuModeViewType.Empty);
         }
 
     }
