@@ -101,7 +101,10 @@ class VariantFragment(
 
     override fun initData() {
         item?.let { viewModel.listVariantGroups.add(it) }
-        variantCart?.let { viewModel.listVariants.addAll(it) };
+        variantCart?.let {
+            viewModel.listVariants.addAll(it)
+            containerVariantAdapter.itemSelected = viewModel.listVariants
+        };
     }
 
     override fun initAction() {

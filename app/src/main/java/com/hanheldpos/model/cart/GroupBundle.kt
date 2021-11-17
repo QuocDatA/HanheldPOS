@@ -11,7 +11,7 @@ import kotlinx.parcelize.Parcelize
 data class GroupBundle(
     var comboInfo: ProductComboItem,
     var productList: MutableList<Regular>,
-) {
+) : Cloneable {
     val totalQuantity get() = productList.sumOf { it.quantity?: 0 }
     val requireQuantity get() = comboInfo.quantity?.minus(totalQuantity);
     val groupName get() = OrderMenuDataMapper.getGroupNameFromGroupGuid(comboInfo.comboGuid);
@@ -22,4 +22,11 @@ data class GroupBundle(
 //        val regular = Regular( productItem,diningOptionItem,1,productItem.skuDefault,productItem.variantDefault,priceOverride,null)
         productList.add(regular)
     }
+
+    override fun clone(): GroupBundle {
+        return copy().apply {
+            productList = productList.toMutableList().map { it.clone() }.toMutableList()
+        }
+    }
+
 }

@@ -38,8 +38,12 @@ abstract class BaseProductInCart {
     abstract fun isCompleted() : Boolean;
     abstract fun isMatching(productItem: ProductItem) : Boolean
 
+    abstract fun clone() : BaseProductInCart
+
     open fun grossPrice(subtotal: Double, totalFee: Double): Double {
         val grossPrice = subtotal + totalFee;
         return grossPrice;
     }
+
+
 }

@@ -68,7 +68,7 @@ class ComboGroupAdapter(
             adapter = ComboItemPickerAdapter(
                 listener = object : BaseItemClickListener<Regular> {
                     override fun onItemClick(adapterPosition: Int, item: Regular) {
-                        listener.onProductSelect(itemComboGroup.requireQuantity(),itemComboGroup,item);
+                        listener.onProductSelect(itemComboGroup.requireQuantity(),itemComboGroup,item,ItemActionType.Add);
                     }
 
                 }
@@ -83,7 +83,7 @@ class ComboGroupAdapter(
                         action: ItemActionType,
                         itemClick: Regular
                     ) {
-                        comboItemAction(itemComboGroup, action, itemClick);
+                        listener.onProductSelect(itemComboGroup.requireQuantity(),itemComboGroup,itemClick,action);
                     }
                 }
             ).apply {
@@ -97,43 +97,11 @@ class ComboGroupAdapter(
             maxQuantity: Int,
             group: ItemComboGroup,
             item: Regular,
+            actionType: ItemActionType
         );
+
     }
 
-    fun comboItemAction(
-        comboManager: ItemComboGroup,
-        action: ItemActionType,
-        item: Regular
-    ) {
-//        when (action) {
-//            ItemActionType.Add -> {
-//                listener.onProductSelect(
-//                    comboManager.requireQuantity(),
-//                    comboManager,
-//                    item.clone(),
-//                    action
-//                );
-//            }
-//            ItemActionType.Modify -> {
-//                listener.onProductSelect(
-//                    comboManager.requireQuantity() + (item.selectedComboItem?.quantity
-//                        ?: 0),
-//                    comboManager,
-//                    item,
-//                    action
-//                );
-//            }
-//            ItemActionType.Remove -> {
-//                listener.onProductSelect(
-//                    comboManager.requireQuantity() + (item.selectedComboItem?.quantity
-//                        ?: 0),
-//                    comboManager,
-//                    item,
-//                    action
-//                );
-//            }
-//        }
-    }
 
 
     /*private fun toggleItemSelected(

@@ -57,9 +57,10 @@ class ComboFragment(
             override fun onProductSelect(
                 maxQuantity: Int,
                 group: ItemComboGroup,
-                item: Regular
+                item: Regular,
+                actionType: ItemActionType
             ) {
-                openProductDetail(maxQuantity, group, item, ItemActionType.Add)
+                openProductDetail(maxQuantity, group, item,actionType)
             }
         });
 
@@ -113,19 +114,28 @@ class ComboFragment(
     ) {
         if (SystemClock.elapsedRealtime() - viewModel.mLastTimeClick <= 500) return;
         viewModel.mLastTimeClick = SystemClock.elapsedRealtime();
-        navigator.goToWithCustomAnimation(ProductDetailFragment(
-            item = item,
-            groupBundle = group.groupBundle,
-            productBundle = this.item.proOriginal,
-            quantityCanChoose = maxQuantity,
-            action = action,
-            listener = object : OrderFragment.OrderMenuListener {
-                override fun onCartAdded(item: BaseProductInCart, action: ItemActionType) {
-                    viewModel.onRegularSelect(group.groupBundle, item as Regular, action)
-                    comboGroupAdapter.notifyDataSetChanged()
-                }
+        when(action){
+            ItemActionType.Remove -> {
+                viewModel.onRegularSelect(group.groupBundle, item, item , action)
+                comboGroupAdapter.notifyDataSetChanged()
             }
-        ))
+            else->{
+                navigator.goToWithCustomAnimation(ProductDetailFragment(
+                    item = item.clone(),
+                    groupBundle = group.groupBundle,
+                    productBundle = this.item.proOriginal,
+                    quantityCanChoose = maxQuantity,
+                    action = action,
+                    listener = object : OrderFragment.OrderMenuListener {
+                        override fun onCartAdded(itemAfter: BaseProductInCart, action: ItemActionType) {
+                            viewModel.onRegularSelect(group.groupBundle, item,itemAfter as Regular, action)
+                            comboGroupAdapter.notifyDataSetChanged()
+                        }
+                    }
+                ))
+            }
+        }
+
     }
 
 

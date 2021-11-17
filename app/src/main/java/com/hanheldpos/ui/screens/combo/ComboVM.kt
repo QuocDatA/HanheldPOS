@@ -80,13 +80,21 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
 
     }
 
-    fun onRegularSelect(group : GroupBundle,item: Regular, action: ItemActionType){
+    fun onRegularSelect(group : GroupBundle,itemPrev: Regular,itemAfter : Regular, action: ItemActionType){
         when(action){
-            ItemActionType.Add -> group.addRegular(item);
-            ItemActionType.Modify -> TODO()
-            ItemActionType.Remove -> TODO()
+            ItemActionType.Add -> group.addRegular(itemAfter);
+            ItemActionType.Modify -> {
+                group.productList.find { it == itemPrev }.let { regular ->
+                    val index = group.productList.indexOf(regular)
+                    group.productList[index] = itemAfter;
+                }
+            }
+            ItemActionType.Remove ->{
+                group.productList.remove(itemPrev);
+            }
         }
         bundleInCart.notifyValueChange();
+
     }
 
     private fun updateTotalPrice() {

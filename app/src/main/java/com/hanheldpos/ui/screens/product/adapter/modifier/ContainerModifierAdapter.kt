@@ -49,20 +49,20 @@ class ContainerModifierAdapter(
              */
             binding.containerModifierItem.setHasFixedSize(true);
 
-//            /**
-//             * Restore option choose
-//             * */
-//            var list = item.childList;
-//            itemSeleted?.forEach { it1 ->
-//                run lit@{
-//                    list?.forEach { it2 ->
-//                        if (it1.realItem?.id == it2.realItem?.id) {
-//                            it2.quantity = it1.quantity;
-//                            return@lit
-//                        }
-//                    }
-//                }
-//            }
+            /**
+             * Restore option choose
+             * */
+            var list = item.modifierList;
+            itemSelected?.forEach { it1 ->
+                run lit@{
+                    list.forEach { it2 ->
+                        if (it1.modifierId == it2.modifier.id) {
+                            it2.extraQuantity = it1.quantity;
+                            return@lit
+                        }
+                    }
+                }
+            }
             modifierAdapter.submitList(item.modifierList);
         }
     }

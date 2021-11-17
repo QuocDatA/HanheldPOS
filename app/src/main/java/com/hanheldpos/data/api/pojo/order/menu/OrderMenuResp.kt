@@ -51,7 +51,7 @@ data class ListToHierarchyItem(
     val orderNo: Int? = null,
 
     @field:SerializedName("Children")
-    val children: String,
+    val children: List<ListToHierarchyItem>,
 
     @field:SerializedName("Url")
     val url: String? = null,

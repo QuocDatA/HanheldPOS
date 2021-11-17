@@ -77,6 +77,19 @@ class Combo() : BaseProductInCart() {
         return false;
     }
 
+    override fun clone(): Combo {
+        return Combo(
+            proOriginal!!,
+            groupList.toMutableList().map { it.copy() },
+            diningOption!!,
+            quantity,
+            sku,
+            variants,
+            priceOverride,
+            fees
+        );
+    }
+
     fun modSubTotal() : Double {
         val modSubtotal = groupList.sumOf { group -> group.productList.sumOf { regular-> regular.totalModifier(proOriginal!!) } }
         return modSubtotal;
