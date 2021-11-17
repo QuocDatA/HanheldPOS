@@ -5,12 +5,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.google.android.material.tabs.TabLayoutMediator
 import com.hanheldpos.R
+import com.hanheldpos.data.api.pojo.product.ProductItem
 import com.hanheldpos.data.api.pojo.product.getModifierList
 import com.hanheldpos.databinding.FragmentProductDetailBinding
 import com.hanheldpos.model.DataHelper
-import com.hanheldpos.model.cart.ModifierCart
-import com.hanheldpos.model.cart.Regular
-import com.hanheldpos.model.cart.VariantCart
+import com.hanheldpos.model.cart.*
 import com.hanheldpos.model.combo.ItemActionType
 import com.hanheldpos.model.product.BaseProductInCart
 import com.hanheldpos.ui.base.fragment.BaseFragment
@@ -24,6 +23,8 @@ import kotlinx.coroutines.*
 
 class ProductDetailFragment(
     private val item: Regular,
+    private val groupBundle : GroupBundle? = null,
+    private val productBundle : ProductItem? = null,
     private val quantityCanChoose: Int = -1,
     private val action: ItemActionType,
     private val listener: OrderFragment.OrderMenuListener? = null,
@@ -135,7 +136,7 @@ class ProductDetailFragment(
         priceOverride: Double,
         sku: String
     ) {
-        viewModel.onVariantItemChange(item, groupValue, priceOverride, sku);
+        viewModel.onVariantItemChange(item, groupBundle, productBundle ,groupValue, priceOverride, sku);
     }
 
 

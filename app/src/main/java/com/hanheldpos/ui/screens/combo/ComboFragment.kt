@@ -115,6 +115,8 @@ class ComboFragment(
         viewModel.mLastTimeClick = SystemClock.elapsedRealtime();
         navigator.goToWithCustomAnimation(ProductDetailFragment(
             item = item,
+            groupBundle = group.groupBundle,
+            productBundle = this.item.proOriginal,
             quantityCanChoose = maxQuantity,
             action = action,
             listener = object : OrderFragment.OrderMenuListener {
