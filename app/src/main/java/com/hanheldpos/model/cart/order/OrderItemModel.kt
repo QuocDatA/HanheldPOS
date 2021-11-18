@@ -127,12 +127,13 @@ data class OrderItemModel(
 
 
         /// TODO dealing with missing Id and Value as suggested since these fields does not available in cart
-        val valueFee = DataHelper.getValueFee(feeType);
-        return when (feeType) {
-            FeeApplyToType.NotIncluded -> subIncDisc * ( valueFee/ 100)
-            FeeApplyToType.Included -> subIncDisc - (subIncDisc / ((valueFee + 100) / 100))
-            else-> 0.0
-        }
+//        val valueFee = DataHelper.getValueFee(feeType);
+//        return when (feeType) {
+//            FeeApplyToType.NotIncluded -> subIncDisc * ( valueFee/ 100)
+//            FeeApplyToType.Included -> subIncDisc - (subIncDisc / ((valueFee + 100) / 100))
+//            else-> 0.0
+//        }
+        return 0.0;
     }
 
     fun getPriceLineTotal(): Double {

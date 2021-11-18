@@ -377,7 +377,7 @@
                             android:layout_weight="1" />
 
                         <com.diadiem.pos_components.PTextView
-                            priceView="@{cartDataVM.cartModelLD.fee}"
+                            priceView="@{cartDataVM.cartModelLD.totalFee(cartDataVM.cartModelLD.subTotal,cartDataVM.cartModelLD.discountPrice)}"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -482,7 +482,7 @@
                             android:layout_weight="1" />
 
                         <com.diadiem.pos_components.PTextView
-                            priceView="@{cartDataVM.cartModelLD.lineTotal}"
+                            priceView="@{cartDataVM.cartModelLD.total()}"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"

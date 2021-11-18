@@ -66,9 +66,6 @@ class Regular() : BaseProductInCart(), Parcelable, Cloneable {
     override fun isMatching(productItem: ProductItem): Boolean {
         return proOriginal?.id.equals(productItem.id) && proOriginal?.variantsGroup == null
     }
-
-
-
     override fun clone(): Regular {
         val cloneValue = Regular(
             this.proOriginal!!,
@@ -135,7 +132,7 @@ class Regular() : BaseProductInCart(), Parcelable, Cloneable {
     }
 
     fun totalFee(subtotal: Double, totalDisc: Double): Double {
-        return fees?.filter { it.feeApplyToType == FeeApplyToType.Included.value }
+        return fees?.filter { it.feeApplyToType != FeeApplyToType.Included.value }
             ?.sumOf { it.price(subtotal, totalDisc) } ?: 0.0
     }
 

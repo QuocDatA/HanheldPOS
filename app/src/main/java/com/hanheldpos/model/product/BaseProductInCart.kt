@@ -1,13 +1,16 @@
 package com.hanheldpos.model.product
 
+import android.os.Parcelable
 import com.hanheldpos.data.api.pojo.fee.Fee
 import com.hanheldpos.data.api.pojo.order.settings.DiningOptionItem
 import com.hanheldpos.data.api.pojo.order.settings.ListReasonsItem
 import com.hanheldpos.data.api.pojo.product.ProductItem
 import com.hanheldpos.model.cart.ModifierCart
 import com.hanheldpos.model.cart.VariantCart
+import kotlinx.parcelize.Parcelize
 
-abstract class BaseProductInCart {
+
+abstract class BaseProductInCart  {
     open var productType: ProductType = ProductType.NOT_FOUND;
     open var variants: String? = null
     open var sku: String? = null

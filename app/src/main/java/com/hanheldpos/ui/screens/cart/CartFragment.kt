@@ -111,7 +111,7 @@ class CartFragment(
         //endregion
 
         //init product data
-        cartProductAdapter.submitList(products = cartDataVM.cartModelLD.value?.listOrderItem);
+//        cartProductAdapter.submitList(products = cartDataVM.cartModelLD.value?.listOrderItem);
         //endregion
     }
 
