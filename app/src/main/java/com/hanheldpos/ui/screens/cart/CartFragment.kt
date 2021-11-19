@@ -11,10 +11,6 @@ import com.hanheldpos.data.api.pojo.order.settings.DiningOptionItem
 import com.hanheldpos.databinding.FragmentCartBinding
 import com.hanheldpos.extension.notifyValueChange
 import com.hanheldpos.model.DataHelper
-import com.hanheldpos.model.cart.Regular
-import com.hanheldpos.model.cart.order.OrderItemModel
-import com.hanheldpos.model.cart.order.OrderItemType
-import com.hanheldpos.model.combo.ItemActionType
 import com.hanheldpos.model.product.BaseProductInCart
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
@@ -23,8 +19,6 @@ import com.hanheldpos.ui.screens.cart.adapter.CartProductAdapter
 import com.hanheldpos.ui.screens.cart.customer.AddCustomerFragment
 import com.hanheldpos.ui.screens.cart.payment.PaymentFragment
 import com.hanheldpos.ui.screens.discount.DiscountFragment
-import com.hanheldpos.ui.screens.combo.ComboFragment
-import com.hanheldpos.ui.screens.product.ProductDetailFragment
 
 
 class CartFragment(
@@ -69,8 +63,8 @@ class CartFragment(
 
         //region setup product recycler view
         cartProductAdapter = CartProductAdapter(
-            onProductClickListener = object : BaseItemClickListener<OrderItemModel> {
-                override fun onItemClick(adapterPosition: Int, item: OrderItemModel) {
+            onProductClickListener = object : BaseItemClickListener<BaseProductInCart> {
+                override fun onItemClick(adapterPosition: Int, item: BaseProductInCart) {
                     onEditItemIntCart(adapterPosition, item);
                 }
             },
@@ -111,7 +105,7 @@ class CartFragment(
         //endregion
 
         //init product data
-//        cartProductAdapter.submitList(products = cartDataVM.cartModelLD.value?.listOrderItem);
+        cartProductAdapter.submitList(cartDataVM.cartModelLD.value?.productsList);
         //endregion
     }
 
@@ -155,8 +149,8 @@ class CartFragment(
         }));
     }
 
-    fun onEditItemIntCart(position: Int, item: OrderItemModel) {
-        when (item.type) {
+    fun onEditItemIntCart(position: Int, item: BaseProductInCart) {
+//        when (item.type) {
 //            OrderItemType.Product -> {
 //                navigator.goToWithCustomAnimation(
 //                    ProductDetailFragment(
@@ -192,11 +186,10 @@ class CartFragment(
 //                    )
 //                );
 //            }
-        }
+//        }
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    fun onUpdateItemInCart(position: Int, item: OrderItemModel) {
+    fun onUpdateItemInCart(position: Int, item: BaseProductInCart) {
         cartDataVM.updateItemInCart(position, item);
         cartProductAdapter.notifyDataSetChanged();
     }

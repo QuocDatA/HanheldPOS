@@ -1,7 +1,6 @@
 package com.hanheldpos.ui.screens.home.order
 
 import android.app.AlertDialog
-import android.os.Bundle
 import android.os.SystemClock
 import android.util.Log
 import android.view.LayoutInflater
@@ -15,7 +14,6 @@ import com.hanheldpos.model.cart.CartPresenter
 import com.hanheldpos.model.cart.Combo
 import com.hanheldpos.model.cart.GroupBundle
 import com.hanheldpos.model.cart.Regular
-import com.hanheldpos.model.cart.order.OrderItemModel
 import com.hanheldpos.model.home.order.ProductModeViewType
 import com.hanheldpos.model.combo.ItemActionType
 import com.hanheldpos.model.home.order.menu.OrderMenuItem
@@ -166,11 +164,14 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
         })
 
         dataVM.selectedMenu.observe(this, { orderMenuItemModel ->
-            dataVM.getProductByMenu(orderMenuItemModel)
-                ?.let { it1 ->
+
+            val list = dataVM.getProductByMenu(orderMenuItemModel);
+            if (list == null) productAdapHelper.submitList(mutableListOf());
+            else
+            list?.let { it1 ->
                     val rs: MutableList<ProductMenuItem> = mutableListOf();
                     it1.forEach {
-                        it?.let { it2 -> rs.add(it2) }
+                        it.let { it2 -> rs.add(it2) }
                     }
                     productAdapHelper.submitList(rs.toMutableList());
                 }

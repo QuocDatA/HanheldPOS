@@ -106,19 +106,19 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
     }
 
     fun onAddQuantity() {
-//        if (numberQuantity.value!! < maxQuantity)
-//            orderItemModel.value?.plusOrderQuantity(1);
-//        orderItemModel.notifyValueChange();
+        if (numberQuantity.value!! < maxQuantity)
+            bundleInCart.value?.plusOrderQuantity(1);
+        bundleInCart.notifyValueChange()
     }
 
     fun onRemoveQuantity() {
-//        if (minQuantity.value!! < numberQuantity.value!!)
-//            orderItemModel.value?.minusOrderQuantity(1);
-//        orderItemModel.notifyValueChange();
+        if (minQuantity.value!! < numberQuantity.value!!)
+            bundleInCart.value?.minusOrderQuantity(1);
+        bundleInCart.notifyValueChange();
     }
 
     fun onAddCart() {
-//        uiCallback?.cartAdded(orderItemModel.value!!, actionType.value!!);
+        uiCallback?.cartAdded(bundleInCart.value!!, actionType.value!!);
     }
 
     fun onBack() {

@@ -33,6 +33,7 @@ abstract class BaseProductInCart  {
 
     abstract fun getProductName(): String?
     abstract fun getFeeString(): String
+    abstract fun totalFee() : Double;
     abstract fun subTotal(): Double;
     abstract fun totalDiscount(): Double;
     abstract fun total(): Double;

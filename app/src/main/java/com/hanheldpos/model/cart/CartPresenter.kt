@@ -12,7 +12,6 @@ import android.widget.PopupWindow
 import com.diadiem.pos_components.PTextView
 import com.hanheldpos.R
 import com.hanheldpos.binding.setBackColor
-import com.hanheldpos.model.cart.order.OrderItemModel
 import com.hanheldpos.model.product.BaseProductInCart
 
 object CartPresenter {

@@ -11,7 +11,6 @@ import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.cart.CartModel
 import com.hanheldpos.model.cart.Combo
 import com.hanheldpos.model.cart.Regular
-import com.hanheldpos.model.cart.order.OrderItemModel
 import com.hanheldpos.model.home.table.TableStatusType
 import com.hanheldpos.model.product.BaseProductInCart
 import com.hanheldpos.ui.base.dialog.AppAlertDialog
@@ -59,7 +58,7 @@ class CartDataVM : BaseViewModel() {
         this.cartModelLD.notifyValueChange();
     }
 
-    fun updateItemInCart(index: Int, item: OrderItemModel) {
+    fun updateItemInCart(index: Int, item: BaseProductInCart) {
 //        if (item.quantity > 0) {
 //            cartModelLD.value!!.listOrderItem[index] = item;
 //        } else {

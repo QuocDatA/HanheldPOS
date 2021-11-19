@@ -43,6 +43,10 @@ class Regular() : BaseProductInCart(), Parcelable, Cloneable {
         return ""
     }
 
+    override fun totalFee(): Double {
+        return totalFee(subTotal(),totalDiscount());
+    }
+
     override fun subTotal(): Double {
         return subTotal(proOriginal!!);
     }

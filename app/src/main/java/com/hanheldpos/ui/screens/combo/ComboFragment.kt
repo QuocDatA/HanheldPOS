@@ -1,7 +1,5 @@
 package com.hanheldpos.ui.screens.combo
 
-import android.annotation.SuppressLint
-import android.os.Bundle
 import android.os.SystemClock
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
@@ -12,15 +10,12 @@ import com.hanheldpos.databinding.FragmentComboBinding
 import com.hanheldpos.model.UserHelper
 import com.hanheldpos.model.cart.Combo
 import com.hanheldpos.model.cart.Regular
-import com.hanheldpos.model.cart.order.OrderItemModel
 import com.hanheldpos.model.combo.ItemActionType
 import com.hanheldpos.model.combo.ItemComboGroup
-import com.hanheldpos.model.home.order.menu.ProductMenuItem
 import com.hanheldpos.model.product.BaseProductInCart
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.cart.CartDataVM
 import com.hanheldpos.ui.screens.combo.adapter.ComboGroupAdapter
-import com.hanheldpos.ui.screens.combo.adapter.ComboItemChosenAdapter
 import com.hanheldpos.ui.screens.home.order.OrderFragment
 import com.hanheldpos.ui.screens.product.ProductDetailFragment
 import kotlinx.coroutines.Dispatchers
@@ -85,6 +80,7 @@ class ComboFragment(
     override fun initData() {
         viewModel.bundleInCart.value = item;
         viewModel.actionType.value = action;
+        viewModel.maxQuantity = quantityCanChoose;
         GlobalScope.launch(Dispatchers.IO) {
             viewModel.getCombo()?.let {
                 viewModel.initDefaultComboList(
@@ -139,9 +135,9 @@ class ComboFragment(
     }
 
 
-    override fun cartAdded(item: OrderItemModel, action: ItemActionType) {
-//        onBack();
-//        listener.onCartAdded(item, action);
+    override fun cartAdded(item: BaseProductInCart, action: ItemActionType) {
+        onBack();
+        listener.onCartAdded(item, action);
     }
 
     override fun onLoadComboSuccess(list: List<ItemComboGroup>) {

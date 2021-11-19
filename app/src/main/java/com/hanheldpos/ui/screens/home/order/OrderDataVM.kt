@@ -11,7 +11,7 @@ import com.hanheldpos.ui.base.viewmodel.BaseRepoViewModel
 
 class OrderDataVM : BaseRepoViewModel<OrderRepo, OrderUV>() {
     val menus = MutableLiveData<MutableList<OrderMenuItem?>>(mutableListOf());
-    val selectedMenu = MutableLiveData<OrderMenuItem>();
+    val selectedMenu = MutableLiveData<OrderMenuItem?>();
 
     fun initData() {
         OrderMenuDataMapper.menuDB = DataHelper.orderMenuResp!!;
@@ -20,11 +20,11 @@ class OrderDataVM : BaseRepoViewModel<OrderRepo, OrderUV>() {
     fun onMenuChange(position: Int){
         menus.value = OrderMenuDataMapper.getMenuByBranch(position).toMutableList();
         // Init First Page
-        selectedMenu.value = menus.value?.first();
+        selectedMenu.value = menus.value?.firstOrNull();
     }
 
-    fun getProductByMenu(menuItem: OrderMenuItem): List<ProductMenuItem>? {
-        return menuItem.childList;
+    fun getProductByMenu(menuItem: OrderMenuItem?): List<ProductMenuItem>? {
+        return menuItem?.childList;
     }
 
     override fun createRepo(): OrderRepo {

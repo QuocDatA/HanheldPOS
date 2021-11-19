@@ -3,6 +3,7 @@ package com.hanheldpos.model.cart
 import com.hanheldpos.data.api.pojo.fee.Fee
 import com.hanheldpos.data.api.pojo.order.settings.DiningOptionItem
 import com.hanheldpos.data.api.pojo.product.ProductItem
+import com.hanheldpos.model.cart.fee.FeeApplyToType
 import com.hanheldpos.model.product.BaseProductInCart
 import com.hanheldpos.model.product.PricingMethodType
 import com.hanheldpos.model.product.ProductType
@@ -11,7 +12,7 @@ import com.hanheldpos.model.product.ProductType
 class Combo() : BaseProductInCart() {
 
     var groupList: MutableList<GroupBundle> = mutableListOf()
-
+    var isShowDetail : Boolean = false;
     constructor(
         productItem: ProductItem,
         groupProducts: List<GroupBundle>,
@@ -42,6 +43,10 @@ class Combo() : BaseProductInCart() {
 
     override fun getFeeString(): String {
         return ""
+    }
+
+    override fun totalFee(): Double {
+        return totalFee(subTotal(),totalDiscount());
     }
 
     override fun subTotal(): Double {
@@ -121,14 +126,27 @@ class Combo() : BaseProductInCart() {
         }
     }
 
+    fun totalFee(subtotal: Double, totalDisc: Double): Double {
+        return fees?.filter { it.feeApplyToType != FeeApplyToType.Included.value }
+            ?.sumOf { it.price(subtotal, totalDisc) } ?: 0.0
+    }
+
     private fun totalTemp(): Double {
         val subtotal = subTotal();
         val totalDiscPrice = 0.0;
-        val totalFeePrice = 0.0;
+        val totalFeePrice = totalFee(subtotal,totalDiscPrice);
 
         var total = subtotal - totalDiscPrice + totalFeePrice;
         total = if (total < 0) 0.0 else total;
         return total;
+    }
+
+    fun plusOrderQuantity(num: Int) {
+        quantity = (quantity ?: 0).plus(num);
+    }
+
+    fun minusOrderQuantity(num: Int) {
+        quantity = if (quantity!! > 0) quantity!!.minus(num) else 0
     }
 
 
