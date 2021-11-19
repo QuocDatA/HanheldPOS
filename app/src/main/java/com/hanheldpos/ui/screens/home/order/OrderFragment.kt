@@ -184,7 +184,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
             ProductModeViewType.Product -> {
                 val onCartAdded = object : OrderMenuListener {
                     override fun onCartAdded(item: BaseProductInCart, action: ItemActionType) {
-                            cartDataVM.addItemToCart(item);
+                        showCartAnimation(item);
                     }
                 }
                 item.proOriginal!!.let {
@@ -240,7 +240,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
 
         binding.txtProduct.text = String.format(
             getString(R.string.added),
-//            item.productOrderItem?.text
+            item.name
         )
         CartPresenter.showCartAnimation(item, binding.rootPopup, binding.imgCart) {
             cartDataVM.addItemToCart(item);
