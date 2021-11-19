@@ -3,7 +3,7 @@ package com.hanheldpos.prefs
 object  PrefKey {
     const val TOKEN_EXPIRED_IN = "TOKEN_EXPIRED_IN"
     const val BEARER_TOKEN = "BEARER_TOKEN"
-
+    const val SECRET_KEY = "SECRET_KEY"
     object Application {
         const val DARK_MODE = "DARK_MODE"
     }
