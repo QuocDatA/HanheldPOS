@@ -73,7 +73,7 @@
 
                 </LinearLayout>
                 <LinearLayout
-                    visibleObject="@{!item.variantList.empty}"
+                    visibleObject="@{item.variantList != null &amp;&amp; !item.variantList.empty}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
                     <androidx.legacy.widget.Space
