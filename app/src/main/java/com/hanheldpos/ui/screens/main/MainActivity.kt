@@ -26,7 +26,6 @@ class MainActivity : BaseFragmentBindingActivity<ActivityMainBinding, MainVM>(),
         viewModel.run {
             init(this@MainActivity)
         }
-
     }
 
     override fun initView() {

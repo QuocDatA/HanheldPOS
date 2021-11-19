@@ -11,7 +11,8 @@ import com.hanheldpos.model.product.ProductType
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-class Regular() : BaseProductInCart(), Parcelable {
+class Regular() : BaseProductInCart(), Parcelable, Cloneable {
+
     constructor(
         productItem: ProductItem,
         diningOptionItem: DiningOptionItem,
@@ -42,6 +43,10 @@ class Regular() : BaseProductInCart(), Parcelable {
         return ""
     }
 
+    override fun totalFee(): Double {
+        return totalFee(subTotal(),totalDiscount());
+    }
+
     override fun subTotal(): Double {
         return subTotal(proOriginal!!);
     }
@@ -65,12 +70,26 @@ class Regular() : BaseProductInCart(), Parcelable {
     override fun isMatching(productItem: ProductItem): Boolean {
         return proOriginal?.id.equals(productItem.id) && proOriginal?.variantsGroup == null
     }
+    override fun clone(): Regular {
+        val cloneValue = Regular(
+            this.proOriginal!!,
+            this.diningOption!!,
+            this.quantity,
+            this.sku,
+            this.variants,
+            this.priceOverride,
+            this.fees
+        )
+        cloneValue.variantList = this.variantList?.map { it.copy() }?.toMutableList()
+        cloneValue.modifierList.addAll(this.modifierList.map { it.copy() }.toMutableList())
+        return cloneValue
+    }
 
     private fun totalTemp(productPricing: ProductItem): Double {
         val subtotal = subTotal(productPricing);
         val totalDiscPrice = 0.0;
         val totalFeePrice = totalFee(subtotal, totalDiscPrice);
-        var total = subtotal - totalDiscPrice +totalFeePrice;
+        var total = subtotal - totalDiscPrice + totalFeePrice;
         total = if (total < 0) 0.0 else total;
         return total
     }
@@ -93,8 +112,8 @@ class Regular() : BaseProductInCart(), Parcelable {
         return mobSubtotal;
     }
 
-    fun totalModifier(productPricing: ProductItem) : Double {
-        val total = modSubTotal(productPricing) * (quantity?: 0);
+    fun totalModifier(productPricing: ProductItem): Double {
+        val total = modSubTotal(productPricing) * (quantity ?: 0);
         return total;
     }
 
@@ -117,22 +136,24 @@ class Regular() : BaseProductInCart(), Parcelable {
     }
 
     fun totalFee(subtotal: Double, totalDisc: Double): Double {
-        return fees?.filter { it.feeApplyToType == FeeApplyToType.Included.value }
+        return fees?.filter { it.feeApplyToType != FeeApplyToType.Included.value }
             ?.sumOf { it.price(subtotal, totalDisc) } ?: 0.0
     }
 
-    fun groupPrice(group : GroupBundle, productBundle: ProductItem) : Double{
-        val groupPrice = productBundle.groupPrices?.firstOrNull { g_price-> g_price.groupGUID == group.comboInfo.comboGuid }?.product?.firstOrNull { p_price-> p_price.productGUID == proOriginal?.id }
-        return if (proOriginal?.variantsGroup != null){
-            val groupPriceVariant = groupPrice?.variants?.firstOrNull { gr_price -> gr_price.groupSKU == sku }
+    fun groupPrice(group: GroupBundle, productBundle: ProductItem): Double {
+        val groupPrice =
+            productBundle.groupPrices?.firstOrNull { g_price -> g_price.groupGUID == group.comboInfo.comboGuid }?.product?.firstOrNull { p_price -> p_price.productGUID == proOriginal?.id }
+        return if (proOriginal?.variantsGroup != null) {
+            val groupPriceVariant =
+                groupPrice?.variants?.firstOrNull { gr_price -> gr_price.groupSKU == sku }
             groupPriceVariant?.groupAmount ?: 0.0
         } else {
-            groupPrice?.productAmount?:0.0
+            groupPrice?.productAmount ?: 0.0
         }
     }
 
-    fun totalGroupPrice(group : GroupBundle, productBundle : ProductItem) : Double {
-        val totalGroupPrice = groupPrice(group,productBundle) * (quantity?: 0);
+    fun totalGroupPrice(group: GroupBundle, productBundle: ProductItem): Double {
+        val totalGroupPrice = groupPrice(group, productBundle) * (quantity ?: 0);
         return totalGroupPrice;
     }
 
@@ -143,4 +164,6 @@ class Regular() : BaseProductInCart(), Parcelable {
     fun minusOrderQuantity(num: Int) {
         quantity = if (quantity!! > 0) quantity!!.minus(num) else 0
     }
+
+
 }

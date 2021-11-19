@@ -4,7 +4,6 @@ import androidx.recyclerview.widget.DiffUtil
 import com.hanheldpos.R
 import com.hanheldpos.databinding.ItemOrderMenuBinding
 import com.hanheldpos.databinding.ItemOrderMenuDirectionButtonBinding
-import com.hanheldpos.model.cart.order.OrderItemModel
 import com.hanheldpos.model.home.order.menu.MenuModeViewType
 import com.hanheldpos.model.home.order.menu.OrderMenuItem
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
@@ -65,7 +64,7 @@ class OrderMenuAdapter(
             oldItem: OrderMenuItem,
             newItem: OrderMenuItem
         ): Boolean {
-            return false;
+            return oldItem == newItem && (oldItem.uiType == MenuModeViewType.Menu || oldItem.uiType == MenuModeViewType.Empty);
         }
 
     }

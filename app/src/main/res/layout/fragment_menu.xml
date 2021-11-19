@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <import type="com.hanheldpos.model.UserHelper"/>
         <variable
             name="viewModel"
             type="com.hanheldpos.ui.screens.menu.MenuVM" />
@@ -48,7 +48,7 @@
                     android:backgroundTint="@color/color_1"
                     android:layout_marginEnd="@dimen/_14sdp"
                     android:layout_marginTop="@dimen/_13sdp"
-                    app:cardCornerRadius="@dimen/_50sdp"
+                    app:cardCornerRadius="@dimen/_18sdp"
                     android:layout_gravity="end">
 
                     <com.diadiem.pos_components.PTextView
@@ -58,6 +58,7 @@
                         app:useFontStyle="bold"
                         app:useTextColor="color2"
                         app:useTextHeader="h5"
+                        android:text="@{UserHelper.INSTANCE.curEmployee.nameAcronymn}"
                         tools:text="QN" />
                 </com.google.android.material.card.MaterialCardView>
 

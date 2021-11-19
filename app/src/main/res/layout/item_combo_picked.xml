@@ -77,7 +77,7 @@
         </LinearLayout>
 
         <com.diadiem.pos_components.PTextView
-            visibleObject="@{item.variantList}"
+            visibleObject="@{item.variantList != null}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_3sdp"
@@ -88,7 +88,7 @@
             app:useTextHeader="h7" />
 
         <com.diadiem.pos_components.PTextView
-            visibleObject="@{item.modifierList.empty}"
+            visibleObject="@{!item.modifierList.empty}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_3sdp"

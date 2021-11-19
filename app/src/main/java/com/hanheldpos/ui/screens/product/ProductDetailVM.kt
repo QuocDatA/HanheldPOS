@@ -4,8 +4,10 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
+import com.hanheldpos.data.api.pojo.product.ProductItem
 import com.hanheldpos.data.api.pojo.product.VariantsGroup
 import com.hanheldpos.extension.notifyValueChange
+import com.hanheldpos.model.cart.GroupBundle
 import com.hanheldpos.model.cart.ModifierCart
 import com.hanheldpos.model.cart.Regular
 import com.hanheldpos.model.cart.VariantCart
@@ -64,15 +66,21 @@ class ProductDetailVM : BaseUiViewModel<ProductDetailUV>() {
     //region Variant
     fun onVariantItemChange(
         item: List<VariantCart>,
+        groupBundle: GroupBundle? = null,
+        productBundle: ProductItem? = null,
         groupValue: String,
         priceOverride: Double,
         sku: String
     ) {
         regularInCart.value?.apply {
+            if (variantList == null) variantList = mutableListOf()
             variantList?.clear()
             variantList?.addAll(item);
             this.sku = sku
-            this.priceOverride = priceOverride
+            if (productBundle != null)
+                this.priceOverride = regularInCart.value!!.groupPrice(groupBundle!!, productBundle)
+            else
+                this.priceOverride = priceOverride
         }
         regularInCart.notifyValueChange();
     }
@@ -84,7 +92,7 @@ class ProductDetailVM : BaseUiViewModel<ProductDetailUV>() {
     fun onModifierAddItem(item: ModifierCart) {
         regularInCart.value?.apply {
             modifierList.find { modifier ->
-                item.modifierGuid == modifier.modifierGuid
+                item.modifierId == modifier.modifierId
             }.let {
                 if (it != null) {
                     val index = modifierList.indexOf(it);
@@ -107,6 +115,6 @@ class ProductDetailVM : BaseUiViewModel<ProductDetailUV>() {
 
     //endregion
     fun onAddCart() {
-//        uiCallback?.onAddCart(orderItemModel.value!!);
+        uiCallback?.onAddCart(regularInCart.value!!);
     }
 }

@@ -1,20 +1,20 @@
 package com.hanheldpos.ui.screens.combo
 
-import android.annotation.SuppressLint
-import android.os.Bundle
+import android.os.SystemClock
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentComboBinding
+import com.hanheldpos.model.UserHelper
 import com.hanheldpos.model.cart.Combo
 import com.hanheldpos.model.cart.Regular
-import com.hanheldpos.model.cart.order.OrderItemModel
 import com.hanheldpos.model.combo.ItemActionType
 import com.hanheldpos.model.combo.ItemComboGroup
-import com.hanheldpos.model.home.order.menu.ProductMenuItem
 import com.hanheldpos.model.product.BaseProductInCart
 import com.hanheldpos.ui.base.fragment.BaseFragment
+import com.hanheldpos.ui.screens.cart.CartDataVM
 import com.hanheldpos.ui.screens.combo.adapter.ComboGroupAdapter
 import com.hanheldpos.ui.screens.home.order.OrderFragment
 import com.hanheldpos.ui.screens.product.ProductDetailFragment
@@ -28,6 +28,9 @@ class ComboFragment(
     private val action: ItemActionType,
     private val listener: OrderFragment.OrderMenuListener
 ) : BaseFragment<FragmentComboBinding, ComboVM>(), ComboUV {
+
+    private val cartDataVM by activityViewModels<CartDataVM>()
+
     override fun layoutRes() = R.layout.fragment_combo;
 
     override fun viewModelClass(): Class<ComboVM> {
@@ -49,9 +52,10 @@ class ComboFragment(
             override fun onProductSelect(
                 maxQuantity: Int,
                 group: ItemComboGroup,
-                item: ProductMenuItem
+                item: Regular,
+                actionType: ItemActionType
             ) {
-
+                openProductDetail(maxQuantity, group, item,actionType)
             }
         });
 
@@ -76,8 +80,15 @@ class ComboFragment(
     override fun initData() {
         viewModel.bundleInCart.value = item;
         viewModel.actionType.value = action;
+        viewModel.maxQuantity = quantityCanChoose;
         GlobalScope.launch(Dispatchers.IO) {
-            viewModel.getCombo()?.let { viewModel.initDefaultComboList(it) };
+            viewModel.getCombo()?.let {
+                viewModel.initDefaultComboList(
+                    it,
+                    cartDataVM.diningOptionLD.value!!,
+                    UserHelper.getLocationGui()
+                )
+            };
         }
 
 
@@ -87,45 +98,46 @@ class ComboFragment(
     }
 
 
-
     override fun onBack() {
         navigator.goOneBack();
     }
 
     fun openProductDetail(
         maxQuantity: Int,
-//        comboManager: ItemComboGroupManager,
-//        item: ComboPickedItemViewModel,
+        group: ItemComboGroup,
+        item: Regular,
         action: ItemActionType
     ) {
-//        navigator.goToWithCustomAnimation(ProductDetailFragment(
-//            item = Regular(),
-//            quantityCanChoose = maxQuantity,
-//            action = action,
-//            listener = object : ProductDetailFragment.ProductDetailListener {
-//                override fun onCartAdded(itemDone: OrderItemModel, action: ItemActionType) {
-//                    item.apply {
-//                        selectedComboItem = itemDone
-//                    }
-//                    viewModel.onChooseItemComboSuccess(
-//                        item.comboParentId,
-//                        comboManager,
-//                        item,
-//                        if (item.selectedComboItem!!.quantity > 0) action else ItemActionType.Remove
-//                    );
-//                }
-//
-//                override fun onCartAdded(item: BaseProductInCart, action: ItemActionType) {
-//                    TODO("Not yet implemented")
-//                }
-//            }
-//        ))
+        if (SystemClock.elapsedRealtime() - viewModel.mLastTimeClick <= 500) return;
+        viewModel.mLastTimeClick = SystemClock.elapsedRealtime();
+        when(action){
+            ItemActionType.Remove -> {
+                viewModel.onRegularSelect(group.groupBundle, item, item , action)
+                comboGroupAdapter.notifyDataSetChanged()
+            }
+            else->{
+                navigator.goToWithCustomAnimation(ProductDetailFragment(
+                    item = item.clone(),
+                    groupBundle = group.groupBundle,
+                    productBundle = this.item.proOriginal,
+                    quantityCanChoose = maxQuantity,
+                    action = action,
+                    listener = object : OrderFragment.OrderMenuListener {
+                        override fun onCartAdded(itemAfter: BaseProductInCart, action: ItemActionType) {
+                            viewModel.onRegularSelect(group.groupBundle, item,itemAfter as Regular, action)
+                            comboGroupAdapter.notifyDataSetChanged()
+                        }
+                    }
+                ))
+            }
+        }
+
     }
 
 
-    override fun cartAdded(item: OrderItemModel, action: ItemActionType) {
-//        onBack();
-//        listener.onCartAdded(item, action);
+    override fun cartAdded(item: BaseProductInCart, action: ItemActionType) {
+        onBack();
+        listener.onCartAdded(item, action);
     }
 
     override fun onLoadComboSuccess(list: List<ItemComboGroup>) {

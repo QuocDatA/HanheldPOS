@@ -4,8 +4,7 @@ import androidx.recyclerview.widget.DiffUtil
 import com.hanheldpos.R
 import com.hanheldpos.databinding.CartItemComboGroupBinding
 import com.hanheldpos.model.cart.GroupBundle
-import com.hanheldpos.model.cart.order.OrderItemModel
-import com.hanheldpos.model.combo.ItemComboGroup
+import com.hanheldpos.model.product.BaseProductInCart
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
 
@@ -19,13 +18,11 @@ class CartComboGroupAdapter : BaseBindingListAdapter<GroupBundle>(DiffCallback()
         holder.bindItem(item);
         val binding  = (holder.binding as CartItemComboGroupBinding);
         binding.position=position+1;
-//        val cartComboGroupDetailAdapter=CartComboGroupDetailAdapter().apply {
-//            val selectedOrderMenuItems=item.listSelectedComboItems.map {
-//                it!!.selectedComboItem as OrderItemModel
-//            }.toMutableList();
-//            submitList(selectedOrderMenuItems);
-//        }
-//        binding.cartComboGroupDetailRecyclerView.adapter=cartComboGroupDetailAdapter;
+        val cartComboGroupDetailAdapter=CartComboGroupDetailAdapter().apply {
+            val productList = item.productList.toMutableList()
+            submitList(productList as List<BaseProductInCart>);
+        }
+        binding.cartComboGroupDetailRecyclerView.adapter=cartComboGroupDetailAdapter;
     }
 
     class DiffCallback : DiffUtil.ItemCallback<GroupBundle>() {

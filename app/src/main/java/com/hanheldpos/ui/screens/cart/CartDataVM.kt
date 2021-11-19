@@ -9,9 +9,10 @@ import com.hanheldpos.data.api.pojo.table.FloorTableItem
 import com.hanheldpos.extension.notifyValueChange
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.cart.CartModel
-import com.hanheldpos.model.cart.fee.FeeApplyToType
-import com.hanheldpos.model.cart.order.OrderItemModel
+import com.hanheldpos.model.cart.Combo
+import com.hanheldpos.model.cart.Regular
 import com.hanheldpos.model.home.table.TableStatusType
+import com.hanheldpos.model.product.BaseProductInCart
 import com.hanheldpos.ui.base.dialog.AppAlertDialog
 import com.hanheldpos.ui.base.viewmodel.BaseViewModel
 
@@ -23,7 +24,7 @@ class CartDataVM : BaseViewModel() {
         return@map it?.diningOption ?: DataHelper.getDefaultDiningOptionItem()
     }
     val linePerTotalQuantity: LiveData<String> = Transformations.map(cartModelLD) {
-        return@map "${it.listOrderItem.size}/${it.listOrderItem.sumOf { it1 -> it1.quantity }}"
+        return@map "${it.productsList.size}/${it.productsList.sumOf { it1 -> it1.quantity?: 0 }}"
     }
 
     val numberOfCustomer: LiveData<Int> = Transformations.map(cartModelLD) {
@@ -35,7 +36,9 @@ class CartDataVM : BaseViewModel() {
         cartModelLD.value = CartModel(
             customerQuantity = numberCustomer,
             table = table,
-            feeType = if (DataHelper.isIncludedFeeOrder()) FeeApplyToType.Order else null
+            fees = DataHelper.findFeeOrderList()?: mutableListOf(),
+            productsList = mutableListOf(),
+            diningOption = DataHelper.getDefaultDiningOptionItem()!!
         );
     }
 
@@ -44,17 +47,22 @@ class CartDataVM : BaseViewModel() {
         this.cartModelLD.notifyValueChange();
     }
 
-    fun addItemToCart(item: OrderItemModel) {
-        item.feeType = DataHelper.getRegularProductIdTypeFee("item.productOrderItem?.id!!")
-        this.cartModelLD.value!!.listOrderItem.add(item);
+    fun addItemToCart(item: BaseProductInCart) {
+        this.cartModelLD.value?.run {
+            if(item is Regular){
+                addRegular(item);
+            } else if(item is Combo){
+                addBundle(item);
+            }
+        }
         this.cartModelLD.notifyValueChange();
     }
 
-    fun updateItemInCart(index: Int, item: OrderItemModel) {
-        if (item.quantity > 0) {
-            cartModelLD.value!!.listOrderItem[index] = item;
+    fun updateItemInCart(index: Int, item: BaseProductInCart) {
+        if (item.quantity!! > 0) {
+            cartModelLD.value!!.productsList[index] = item;
         } else {
-            cartModelLD.value!!.listOrderItem.removeAt(index);
+            cartModelLD.value!!.productsList.removeAt(index);
         }
         cartModelLD.notifyValueChange();
     }

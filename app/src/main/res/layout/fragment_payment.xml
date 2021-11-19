@@ -129,7 +129,7 @@
                     android:foreground="?attr/selectableItemBackground"
                     android:gravity="center"
                     android:paddingVertical="@dimen/_6sdp"
-                    priceView="@{cartDataVMPayment.cartModelLD.lineTotal}"
+                    priceView="@{cartDataVMPayment.cartModelLD.total()}"
 
                     app:pbtn_useBackgroundColor="true"
                     app:pbtn_useFontStyle="bold"

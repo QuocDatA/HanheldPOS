@@ -165,11 +165,11 @@ object OrderMenuDataMapper {
                 // with the same level as the current checking level
                 // If the SystemGroupItem has no child then return null
 
-                listToHierarchyItem.children?.forEach {
-                    it?.let {
-                        return getOrderMenuItemList(it, parent)
-                    }
-                }
+//                listToHierarchyItem.children?.forEach {
+//                    it?.let {
+//                        return getOrderMenuItemList(it, parent)
+//                    }
+//                }
                 return null
             }
             1 -> { // Groups

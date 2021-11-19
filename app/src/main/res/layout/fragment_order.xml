@@ -188,7 +188,7 @@
                     app:useFontStyle="bold"
                     app:useTextColor="color4"
                     app:useTextHeader="h5"
-                    priceView="@{cartDataVM.cartModelLD.lineTotal}"
+                    priceView="@{cartDataVM.cartModelLD.total()}"
 
                     tools:text="1.000.000" />
 
@@ -219,7 +219,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginTop="@dimen/_2sdp"
-                        android:text="@{String.valueOf(cartDataVM.cartModelLD.quantityCart)}"
+                        android:text="@{String.valueOf(cartDataVM.cartModelLD.totalQuantity)}"
                         app:useFontStyle="bold"
                         app:useTextColor="color0"
                         app:useTextHeader="h6"

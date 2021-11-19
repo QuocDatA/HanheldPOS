@@ -19,6 +19,20 @@ fun setPriceView(view: TextView?, price: Double?) {
     view.text = rs
 }
 
+@BindingAdapter("pricePlusView")
+fun setPricePlusView(view: TextView?, price: Double?) {
+    if (view == null || price == null) return
+    val dfSymbols = DecimalFormatSymbols()
+    dfSymbols.decimalSeparator = '.'
+    dfSymbols.groupingSeparator = ','
+    val df = DecimalFormat("###", dfSymbols)
+    df.groupingSize = 3
+    df.isGroupingUsed = true
+    val rs = df.format(price);
+    view.text = "+$rs"
+}
+
+
 @BindingAdapter("basePriceView")
 fun setBasePriceView(view: TextView?, price: Double?) {
     if (view == null || price == null) return

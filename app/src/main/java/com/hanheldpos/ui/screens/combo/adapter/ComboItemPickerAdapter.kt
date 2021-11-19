@@ -8,6 +8,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.DiffUtil
 import com.hanheldpos.R
+import com.hanheldpos.databinding.ItemComboRegularBinding
 import com.hanheldpos.databinding.ItemOrderProductBinding
 import com.hanheldpos.model.cart.Regular
 import com.hanheldpos.model.home.order.menu.ProductMenuItem
@@ -17,17 +18,17 @@ import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.screens.cart.customer.adapter.CustomerAdapter
 
 class ComboItemPickerAdapter(
-    private val listener : BaseItemClickListener<ProductMenuItem>
-) : BaseBindingListAdapter<ProductMenuItem>(DiffCallBack(),listener) {
+    private val listener : BaseItemClickListener<Regular>
+) : BaseBindingListAdapter<Regular>(DiffCallBack()) {
 
     override fun getItemViewType(position: Int): Int {
-        return R.layout.item_order_product;
+        return R.layout.item_combo_regular;
     }
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): BaseBindingViewHolder<ProductMenuItem> {
+    ): BaseBindingViewHolder<Regular> {
         DataBindingUtil.inflate<ViewDataBinding>(
             LayoutInflater.from(parent.context),
             viewType,
@@ -39,21 +40,29 @@ class ComboItemPickerAdapter(
                 FrameLayout.LayoutParams.MATCH_PARENT,
                 height.toInt()
             );
-            (it as ItemOrderProductBinding).layoutMain.layoutParams = params;
+            (it as ItemComboRegularBinding).layoutMain.layoutParams = params;
             return BaseBindingViewHolder(it)
         }
     }
 
-    class DiffCallBack : DiffUtil.ItemCallback<ProductMenuItem>() {
-        override fun areItemsTheSame(oldItem: ProductMenuItem, newItem: ProductMenuItem): Boolean {
-            return oldItem == newItem;
+    override fun onBindViewHolder(holder: BaseBindingViewHolder<Regular>, position: Int) {
+        val item = getItem(position);
+        holder.bindItem(item);
+        (holder.binding as ItemComboRegularBinding).root.setOnClickListener {
+            listener.onItemClick(position,item);
+        }
+    }
+
+    class DiffCallBack : DiffUtil.ItemCallback<Regular>() {
+        override fun areItemsTheSame(oldItem: Regular, newItem: Regular): Boolean {
+            return false;
         }
 
         override fun areContentsTheSame(
-            oldItem: ProductMenuItem,
-            newItem: ProductMenuItem
+            oldItem: Regular,
+            newItem: Regular
         ): Boolean {
-            return oldItem == newItem;
+            return false;
         }
 
     }

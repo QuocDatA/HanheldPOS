@@ -5,13 +5,17 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.hanheldpos.data.api.pojo.order.menu.OrderMenuResp
+import com.hanheldpos.data.api.pojo.order.settings.DiningOptionItem
 import com.hanheldpos.data.repository.GenerateId
+import com.hanheldpos.extension.notifyValueChange
 import com.hanheldpos.model.cart.Combo
 import com.hanheldpos.model.cart.GroupBundle
+import com.hanheldpos.model.cart.Regular
 import com.hanheldpos.model.combo.ItemActionType
 import com.hanheldpos.model.combo.ItemComboGroup
 import com.hanheldpos.model.home.order.menu.OrderMenuDataMapper
 import com.hanheldpos.model.home.order.menu.ProductMenuItem
+import com.hanheldpos.model.product.BaseProductInCart
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
 
 class ComboVM : BaseUiViewModel<ComboUV>() {
@@ -37,6 +41,8 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
         return@map it?.isCompleted();
     } as MutableLiveData<Boolean>
 
+    var mLastTimeClick: Long = 0
+
     fun initLifeCycle(owner: LifecycleOwner) {
         owner.lifecycle.addObserver(this);
 
@@ -46,68 +52,50 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
     }
 
     fun initDefaultComboList(
-        listGroup: MutableList<GroupBundle>
+        listGroup: MutableList<GroupBundle>,
+        diningOption: DiningOptionItem,
+        menuOrderId : String
     ) {
 
-        listGroup.map { group ->
-            ItemComboGroup(
-                groupBundle = group,
-                productsForChoose = OrderMenuDataMapper.getProductItemListByComboGuid(group.comboInfo.comboGuid).map { ProductMenuItem(it) }
-            )
-        }.let {
-            uiCallback?.onLoadComboSuccess(it);
+        bundleInCart.value!!.let { combo ->
+            listGroup.map { group ->
+                val listRegular: List<Regular> =
+                    OrderMenuDataMapper.getProductItemListByComboGuid(group.comboInfo.comboGuid)
+                        .map {
+                            var priceOverride =
+                                it.priceOverride(menuOrderId, it.skuDefault, it.price?: 0.0);
+                            val regular = Regular(it, diningOption, 1, it.skuDefault, it.variants,priceOverride,null)
+                            regular.priceOverride = regular.groupPrice(group,combo.proOriginal!!);
+                            return@map regular
+                        }
+                ItemComboGroup(
+                    groupBundle = group,
+                    productsForChoose = listRegular
+                )
+            }.let {
+                uiCallback?.onLoadComboSuccess(it);
+            }
         }
+
 
     }
 
-//    fun onChooseItemComboSuccess(
-//        comboParent: String?,
-//        comboManager: ItemComboGroupManager,
-//        item: ComboPickedItemViewModel,
-//        action: ItemActionType?
-//    ) {
-//        selectedCombo.value?.let { orderMenuComboItemModel ->
-//            orderMenuComboItemModel.listItemsByGroup?.forEach { it1 ->
-//                if (it1?.productComboItem?.comboGuid == comboParent) {
-//                    /**
-//                     * show check icon when add or modify item
-//                     */
-//                    when (action) {
-//                        ItemActionType.Add -> {
-//                            /*
-//                            * If in combo has the same item -> increase quantity
-//                            * */
-//                            if (it1?.listSelectedComboItems!!.contains(item)) {
-//                                it1.listSelectedComboItems.let {
-//                                    it[it.indexOf(item)]?.apply {
-//                                        selectedComboItem!!.plusOrderQuantity(item.selectedComboItem!!.quantity);
-//                                    }
-//                                }
-//                            } else
-//                                it1.listSelectedComboItems.add(item)
-//                        }
-//                        ItemActionType.Modify -> {
-//                            if (it1?.listSelectedComboItems!!.contains(item)) {
-//                                it1.listSelectedComboItems.let {
-//                                    it.set(it.indexOf(item), item);
-//                                }
-//                            }
-//                        }
-//                        ItemActionType.Remove -> {
-//                            /**
-//                             * Delete green tick when remove item
-//                             */
-//                            comboManager.let {
-//                                it.listSelectedComboItems.remove(item);
-//                            }
-//                        }
-//                    }
-//                    selectedCombo.notifyValueChange()
-//                    return;
-//                }
-//            }
-//        }
-//    }
+    fun onRegularSelect(group : GroupBundle,itemPrev: Regular,itemAfter : Regular, action: ItemActionType){
+        when(action){
+            ItemActionType.Add -> group.addRegular(itemAfter);
+            ItemActionType.Modify -> {
+                group.productList.find { it == itemPrev }.let { regular ->
+                    val index = group.productList.indexOf(regular)
+                    group.productList[index] = itemAfter;
+                }
+            }
+            ItemActionType.Remove ->{
+                group.productList.remove(itemPrev);
+            }
+        }
+        bundleInCart.notifyValueChange();
+
+    }
 
     private fun updateTotalPrice() {
         totalPriceLD.value = bundleInCart.value?.total()
@@ -118,19 +106,19 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
     }
 
     fun onAddQuantity() {
-//        if (numberQuantity.value!! < maxQuantity)
-//            orderItemModel.value?.plusOrderQuantity(1);
-//        orderItemModel.notifyValueChange();
+        if (numberQuantity.value!! < maxQuantity)
+            bundleInCart.value?.plusOrderQuantity(1);
+        bundleInCart.notifyValueChange()
     }
 
     fun onRemoveQuantity() {
-//        if (minQuantity.value!! < numberQuantity.value!!)
-//            orderItemModel.value?.minusOrderQuantity(1);
-//        orderItemModel.notifyValueChange();
+        if (minQuantity.value!! < numberQuantity.value!!)
+            bundleInCart.value?.minusOrderQuantity(1);
+        bundleInCart.notifyValueChange();
     }
 
     fun onAddCart() {
-//        uiCallback?.cartAdded(orderItemModel.value!!, actionType.value!!);
+        uiCallback?.cartAdded(bundleInCart.value!!, actionType.value!!);
     }
 
     fun onBack() {
