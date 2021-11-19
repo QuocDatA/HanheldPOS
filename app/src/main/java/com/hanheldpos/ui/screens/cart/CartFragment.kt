@@ -11,14 +11,21 @@ import com.hanheldpos.data.api.pojo.order.settings.DiningOptionItem
 import com.hanheldpos.databinding.FragmentCartBinding
 import com.hanheldpos.extension.notifyValueChange
 import com.hanheldpos.model.DataHelper
+import com.hanheldpos.model.cart.Combo
+import com.hanheldpos.model.cart.Regular
+import com.hanheldpos.model.combo.ItemActionType
 import com.hanheldpos.model.product.BaseProductInCart
+import com.hanheldpos.model.product.ProductType
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.cart.adapter.CartDiningOptionAdapter
 import com.hanheldpos.ui.screens.cart.adapter.CartProductAdapter
 import com.hanheldpos.ui.screens.cart.customer.AddCustomerFragment
 import com.hanheldpos.ui.screens.cart.payment.PaymentFragment
+import com.hanheldpos.ui.screens.combo.ComboFragment
 import com.hanheldpos.ui.screens.discount.DiscountFragment
+import com.hanheldpos.ui.screens.home.order.OrderFragment
+import com.hanheldpos.ui.screens.product.ProductDetailFragment
 
 
 class CartFragment(
@@ -142,7 +149,8 @@ class CartFragment(
     }
 
     override fun onOpenAddCustomer() {
-        navigator.goToWithCustomAnimation(AddCustomerFragment(listener = object : AddCustomerFragment.CustomerEvent{
+        navigator.goToWithCustomAnimation(AddCustomerFragment(listener = object :
+            AddCustomerFragment.CustomerEvent {
             override fun onSelectedCustomer(item: CustomerResp) {
                 cartDataVM.addCustomerToCart(item);
             }
@@ -150,43 +158,38 @@ class CartFragment(
     }
 
     fun onEditItemIntCart(position: Int, item: BaseProductInCart) {
-//        when (item.type) {
-//            OrderItemType.Product -> {
-//                navigator.goToWithCustomAnimation(
-//                    ProductDetailFragment(
-//                        item = Regular(),
-//                        action = ItemActionType.Modify,
-//                        quantityCanChoose = 100,
-//                        listener = object : ProductDetailFragment.ProductDetailListener {
-//                            override fun onCartAdded(item: OrderItemModel, action: ItemActionType) {
-//                                onUpdateItemInCart(position, item);
-//                            }
-//
-//                            override fun onCartAdded(
-//                                item: BaseProductInCart,
-//                                action: ItemActionType
-//                            ) {
-//
-//                            }
-//                        }
-//                    )
-//                )
-//            }
-//            OrderItemType.Combo -> {
-//                navigator.goToWithCustomAnimation(
-//                    ComboFragment(
-//                        item = item.clone(),
-//                        action = ItemActionType.Modify,
-//                        quantityCanChoose = 100,
-//                        listener = object : ComboFragment.ComboListener {
-//                            override fun onCartAdded(item: OrderItemModel, action: ItemActionType) {
-//                                onUpdateItemInCart(position, item);
-//                            }
-//                        }
-//                    )
-//                );
-//            }
-//        }
+
+        val callbackEdit = object : OrderFragment.OrderMenuListener {
+            override fun onCartAdded(
+                item: BaseProductInCart,
+                action: ItemActionType
+            ) {
+                onUpdateItemInCart(position, item);
+            }
+        }
+
+        when (item.productType) {
+            ProductType.REGULAR -> {
+                navigator.goToWithCustomAnimation(
+                    ProductDetailFragment(
+                        item = (item as Regular).clone(),
+                        action = ItemActionType.Modify,
+                        quantityCanChoose = 100,
+                        listener = callbackEdit
+                    )
+                )
+            }
+            ProductType.BUNDLE -> {
+                navigator.goToWithCustomAnimation(
+                    ComboFragment(
+                        item = (item as Combo).clone(),
+                        action = ItemActionType.Modify,
+                        quantityCanChoose = 100,
+                        listener = callbackEdit
+                    )
+                );
+            }
+        }
     }
 
     fun onUpdateItemInCart(position: Int, item: BaseProductInCart) {

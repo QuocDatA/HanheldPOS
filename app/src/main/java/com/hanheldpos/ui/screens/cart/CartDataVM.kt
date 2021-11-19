@@ -59,12 +59,12 @@ class CartDataVM : BaseViewModel() {
     }
 
     fun updateItemInCart(index: Int, item: BaseProductInCart) {
-//        if (item.quantity > 0) {
-//            cartModelLD.value!!.listOrderItem[index] = item;
-//        } else {
-//            cartModelLD.value!!.listOrderItem.removeAt(index);
-//        }
-//        cartModelLD.notifyValueChange();
+        if (item.quantity!! > 0) {
+            cartModelLD.value!!.productsList[index] = item;
+        } else {
+            cartModelLD.value!!.productsList.removeAt(index);
+        }
+        cartModelLD.notifyValueChange();
     }
 
     fun deleteCart(title: String, message: String, positiveText : String , negativeText: String, callback: () -> Unit) {
