@@ -60,7 +60,7 @@ data class SubDiningOptionItem(
     @field:SerializedName("Location")
     val location: String? = null,
 
-) : Parcelable
+    ) : Parcelable
 
 @Parcelize
 data class ModelItem(
@@ -85,8 +85,19 @@ data class ListReasonsItem(
     val title: String? = null,
 
     @field:SerializedName("Id")
-    val id: Int? = null
-) : Parcelable
+    val id: Int? = null,
+
+    @field:SerializedName("CompVoidGuid")
+    val compVoidGuid: String,
+
+    @field:SerializedName("CompVoidValue")
+    val compVoidValue: Int,
+) : Parcelable {
+    fun total(total : Double) : Double {
+        val totalComp = total * compVoidValue / 100;
+        return totalComp;
+    }
+}
 
 @Parcelize
 data class ListVoidItem(

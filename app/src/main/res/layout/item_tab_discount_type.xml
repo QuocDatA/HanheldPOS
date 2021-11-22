@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.hanheldpos.model.discount.DiscountTypeTab" />
+        <variable
+            name="isSelected"
+            type="Boolean" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_5sdp"
+        android:layout_marginEnd="@dimen/_4sdp"
+        android:background="@{ isSelected ? @drawable/bg_tab_discount_type_selected : @drawable/bg_tab_discount_type_unselected }">
+        <com.diadiem.pos_components.PTextView
+            app:useTextHeader="h6"
+            app:useTextColor="color2"
+            app:useFontStyle="normal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{item.title,default = `Amount`}" />
+    </LinearLayout>
+</layout>

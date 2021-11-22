@@ -6,18 +6,25 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hanheldpos.R
+import com.hanheldpos.data.api.pojo.customer.CustomerResp
 import com.hanheldpos.data.api.pojo.order.settings.DiningOptionItem
 import com.hanheldpos.databinding.FragmentCartBinding
 import com.hanheldpos.extension.notifyValueChange
 import com.hanheldpos.model.DataHelper
-import com.hanheldpos.model.cart.order.OrderItemModel
-import com.hanheldpos.model.cart.order.OrderItemType
-import com.hanheldpos.model.home.order.combo.ItemActionType
+import com.hanheldpos.model.cart.Combo
+import com.hanheldpos.model.cart.Regular
+import com.hanheldpos.model.combo.ItemActionType
+import com.hanheldpos.model.product.BaseProductInCart
+import com.hanheldpos.model.product.ProductType
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.cart.adapter.CartDiningOptionAdapter
 import com.hanheldpos.ui.screens.cart.adapter.CartProductAdapter
-import com.hanheldpos.ui.screens.home.order.combo.ComboFragment
+import com.hanheldpos.ui.screens.cart.customer.AddCustomerFragment
+import com.hanheldpos.ui.screens.cart.payment.PaymentFragment
+import com.hanheldpos.ui.screens.combo.ComboFragment
+import com.hanheldpos.ui.screens.discount.DiscountFragment
+import com.hanheldpos.ui.screens.home.order.OrderFragment
 import com.hanheldpos.ui.screens.product.ProductDetailFragment
 
 
@@ -63,8 +70,8 @@ class CartFragment(
 
         //region setup product recycler view
         cartProductAdapter = CartProductAdapter(
-            onProductClickListener = object : BaseItemClickListener<OrderItemModel> {
-                override fun onItemClick(adapterPosition: Int, item: OrderItemModel) {
+            onProductClickListener = object : BaseItemClickListener<BaseProductInCart> {
+                override fun onItemClick(adapterPosition: Int, item: BaseProductInCart) {
                     onEditItemIntCart(adapterPosition, item);
                 }
             },
@@ -105,7 +112,7 @@ class CartFragment(
         //endregion
 
         //init product data
-        cartProductAdapter.submitList(products = cartDataVM.cartModelLD.value?.listOrderItem);
+        cartProductAdapter.submitList(cartDataVM.cartModelLD.value?.productsList);
         //endregion
     }
 
@@ -121,52 +128,77 @@ class CartFragment(
         cartDataVM.deleteCart(
             getString(R.string.confirmation),
             getString(R.string.delete_cart_warning),
+            getString(R.string.delete),
             getString(R.string.alert_btn_negative),
             this::onFragmentBackPressed
         )
     }
 
-    fun onEditItemIntCart(position: Int, item: OrderItemModel) {
-        when (item.type) {
-            OrderItemType.Product -> {
+    override fun onOpenDiscount() {
+        navigator
+            .goToWithCustomAnimation(DiscountFragment(listener = object :
+                DiscountFragment.ItemCallback {
+                override fun onItemSelected() {
+                    TODO("Not yet implemented")
+                }
+            }));
+    }
+
+    override fun openSelectPayment() {
+        navigator.goToWithCustomAnimation(PaymentFragment());
+    }
+
+    override fun onOpenAddCustomer() {
+        navigator.goToWithCustomAnimation(AddCustomerFragment(listener = object :
+            AddCustomerFragment.CustomerEvent {
+            override fun onSelectedCustomer(item: CustomerResp) {
+                cartDataVM.addCustomerToCart(item);
+            }
+        }));
+    }
+
+    fun onEditItemIntCart(position: Int, item: BaseProductInCart) {
+
+        val callbackEdit = object : OrderFragment.OrderMenuListener {
+            override fun onCartAdded(
+                item: BaseProductInCart,
+                action: ItemActionType
+            ) {
+                onUpdateItemInCart(position, item);
+            }
+        }
+
+        when (item.productType) {
+            ProductType.REGULAR -> {
                 navigator.goToWithCustomAnimation(
-                    ProductDetailFragment.getInstance(
-                        item = item.clone(),
+                    ProductDetailFragment(
+                        item = (item as Regular).clone(),
                         action = ItemActionType.Modify,
                         quantityCanChoose = 100,
-                        listener = object : ProductDetailFragment.ProductDetailListener {
-                            override fun onCartAdded(item: OrderItemModel, action: ItemActionType) {
-                                onUpdateItemInCart(position, item);
-                            }
-                        }
+                        listener = callbackEdit
                     )
                 )
             }
-            OrderItemType.Combo -> {
+            ProductType.BUNDLE -> {
                 navigator.goToWithCustomAnimation(
-                    ComboFragment.getInstance(
-                        item = item.clone(),
+                    ComboFragment(
+                        item = (item as Combo).clone(),
                         action = ItemActionType.Modify,
                         quantityCanChoose = 100,
-                        listener = object : ComboFragment.ComboListener {
-                            override fun onCartAdded(item: OrderItemModel, action: ItemActionType) {
-                                onUpdateItemInCart(position, item);
-                            }
-                        }
+                        listener = callbackEdit
                     )
                 );
             }
         }
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    fun onUpdateItemInCart(position: Int, item: OrderItemModel) {
+    fun onUpdateItemInCart(position: Int, item: BaseProductInCart) {
         cartDataVM.updateItemInCart(position, item);
         cartProductAdapter.notifyDataSetChanged();
     }
 
     companion object {
-        fun getIntance(
+        fun getInstance(
         ): CartFragment {
             return CartFragment(
 

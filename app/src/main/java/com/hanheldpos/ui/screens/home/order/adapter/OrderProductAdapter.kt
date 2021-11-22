@@ -10,15 +10,16 @@ import androidx.recyclerview.widget.DiffUtil
 import com.hanheldpos.R
 import com.hanheldpos.databinding.ItemOrderProductBinding
 import com.hanheldpos.model.home.order.ProductModeViewType
-import com.hanheldpos.model.product.ProductOrderItem
+import com.hanheldpos.model.home.order.menu.MenuModeViewType
+import com.hanheldpos.model.home.order.menu.ProductMenuItem
 
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 
 class OrderProductAdapter(
-    private val listener: BaseItemClickListener<ProductOrderItem>
-) : BaseBindingListAdapter<ProductOrderItem>(DiffCallback()) {
+    private val listener: BaseItemClickListener<ProductMenuItem>
+) : BaseBindingListAdapter<ProductMenuItem>(DiffCallback()) {
 
     override fun getItemViewType(position: Int): Int {
         return R.layout.item_order_product;
@@ -27,7 +28,7 @@ class OrderProductAdapter(
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): BaseBindingViewHolder<ProductOrderItem> {
+    ): BaseBindingViewHolder<ProductMenuItem> {
         DataBindingUtil.inflate<ViewDataBinding>(
             LayoutInflater.from(parent.context),
             viewType,
@@ -41,7 +42,7 @@ class OrderProductAdapter(
         }
     }
 
-    override fun onBindViewHolder(holder: BaseBindingViewHolder<ProductOrderItem>, position: Int) {
+    override fun onBindViewHolder(holder: BaseBindingViewHolder<ProductMenuItem>, position: Int) {
         val item = getItem(position);
         holder.bindItem(item);
         if (item.uiType != ProductModeViewType.Empty){
@@ -49,13 +50,13 @@ class OrderProductAdapter(
         }
     }
 
-    private class DiffCallback : DiffUtil.ItemCallback<ProductOrderItem>() {
-        override fun areItemsTheSame(oldItem: ProductOrderItem, newItem: ProductOrderItem): Boolean {
-            return oldItem.id.equals(newItem.id) && oldItem.uiType == newItem.uiType;
+    private class DiffCallback : DiffUtil.ItemCallback<ProductMenuItem>() {
+        override fun areItemsTheSame(oldItem: ProductMenuItem, newItem: ProductMenuItem): Boolean {
+            return oldItem.proOriginal?.id.equals(newItem.proOriginal?.id) && ((oldItem.uiType == newItem.uiType) || ( oldItem.uiType != ProductModeViewType.Product && oldItem.uiType != ProductModeViewType.Empty && newItem.uiType != ProductModeViewType.Product && newItem.uiType != ProductModeViewType.Empty))
         }
 
-        override fun areContentsTheSame(oldItem: ProductOrderItem, newItem: ProductOrderItem): Boolean {
-            return  oldItem == newItem
+        override fun areContentsTheSame(oldItem: ProductMenuItem, newItem: ProductMenuItem): Boolean {
+            return  false;
         }
 
     }

@@ -1,21 +1,19 @@
 package com.hanheldpos.ui.screens.cart
 
-import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import com.hanheldpos.R
+import com.hanheldpos.data.api.pojo.customer.CustomerResp
 import com.hanheldpos.data.api.pojo.order.settings.DiningOptionItem
 import com.hanheldpos.data.api.pojo.table.FloorTableItem
 import com.hanheldpos.extension.notifyValueChange
-import com.hanheldpos.generated.callback.OnClickListener
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.cart.CartModel
-import com.hanheldpos.model.cart.order.OrderItemModel
+import com.hanheldpos.model.cart.Combo
+import com.hanheldpos.model.cart.Regular
 import com.hanheldpos.model.home.table.TableStatusType
+import com.hanheldpos.model.product.BaseProductInCart
 import com.hanheldpos.ui.base.dialog.AppAlertDialog
-import com.hanheldpos.ui.base.dialog.AppFunctionDialog
-import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
 import com.hanheldpos.ui.base.viewmodel.BaseViewModel
 
 class CartDataVM : BaseViewModel() {
@@ -26,7 +24,7 @@ class CartDataVM : BaseViewModel() {
         return@map it?.diningOption ?: DataHelper.getDefaultDiningOptionItem()
     }
     val linePerTotalQuantity: LiveData<String> = Transformations.map(cartModelLD) {
-        return@map "${it.listOrderItem.size}/${it.listOrderItem.sumOf { it1 -> it1.quantity }}"
+        return@map "${it.productsList.size}/${it.productsList.sumOf { it1 -> it1.quantity?: 0 }}"
     }
 
     val numberOfCustomer: LiveData<Int> = Transformations.map(cartModelLD) {
@@ -38,51 +36,51 @@ class CartDataVM : BaseViewModel() {
         cartModelLD.value = CartModel(
             customerQuantity = numberCustomer,
             table = table,
+            fees = DataHelper.findFeeOrderList()?: mutableListOf(),
+            productsList = mutableListOf(),
+            diningOption = DataHelper.getDefaultDiningOptionItem()!!
         );
     }
 
-    fun addToCart(item: OrderItemModel) {
-        item.otherFee = calculateFee(item)
-        this.cartModelLD.value!!.listOrderItem.add(item);
+    fun addCustomerToCart(customer : CustomerResp){
+        this.cartModelLD.value!!.customer = customer;
         this.cartModelLD.notifyValueChange();
     }
 
-    fun updateItemInCart(index: Int, item: OrderItemModel) {
-        if (item.quantity > 0) {
-            cartModelLD.value!!.listOrderItem[index] = item;
+    fun addItemToCart(item: BaseProductInCart) {
+        this.cartModelLD.value?.run {
+            if(item is Regular){
+                addRegular(item);
+            } else if(item is Combo){
+                addBundle(item);
+            }
+        }
+        this.cartModelLD.notifyValueChange();
+    }
+
+    fun updateItemInCart(index: Int, item: BaseProductInCart) {
+        if (item.quantity!! > 0) {
+            cartModelLD.value!!.productsList[index] = item;
         } else {
-            cartModelLD.value!!.listOrderItem.removeAt(index);
+            cartModelLD.value!!.productsList.removeAt(index);
         }
         cartModelLD.notifyValueChange();
     }
 
-    fun deleteCart(title: String, message: String, negativeText: String, callback: () -> Unit) {
+    fun deleteCart(title: String, message: String, positiveText : String , negativeText: String, callback: () -> Unit) {
         AppAlertDialog.get()
             .show(
                 title,
                 message,
+                positiveText = positiveText,
                 negativeText = negativeText,
                 onClickListener = object : AppAlertDialog.AlertDialogOnClickListener {
                     override fun onPositiveClick() {
-                        this@CartDataVM.cartModelLD.value!!.listOrderItem.clear()
+                        this@CartDataVM.cartModelLD.value!!.clearCart();
                         this@CartDataVM.cartModelLD.notifyValueChange()
                         callback()
                     }
                 }
             )
-    }
-
-    private fun calculateFee(item: OrderItemModel): Double {
-        var result = item.otherFee
-
-        val regularProductIdFees = DataHelper.getRegularProductIdFees()
-
-        regularProductIdFees.forEach {
-            if (it.productId == item.orderItemId) {
-                result += DataHelper.getRegularFee()
-            }
-        }
-
-        return result
     }
 }

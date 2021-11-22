@@ -53,7 +53,7 @@ class TableFragment : BaseFragment<FragmentTableBinding, TableVM>(), TableUV {
         // table adapter vs listener
         tableAdapterHelper =
             TableAdapterHelper(callback = object : TableAdapterHelper.AdapterCallBack {
-                override fun onListSplitCallBack(list: List<FloorTableItem>) {
+                override fun onListSplitCallBack(list: List<FloorTableItem?>) {
                     tableAdapter.submitList(list);
                     tableAdapter.notifyDataSetChanged();
                 }
@@ -69,10 +69,10 @@ class TableFragment : BaseFragment<FragmentTableBinding, TableVM>(), TableUV {
                             TableModeViewType.Table -> {
                                 onTableChoosen(adapterPosition,item);
                             }
-                            TableModeViewType.PrevButton -> {
+                            TableModeViewType.PrevButtonEnable -> {
                                 tableAdapterHelper.previous();
                             }
-                            TableModeViewType.NextButton -> {
+                            TableModeViewType.NextButtonEnable -> {
                                 tableAdapterHelper.next();
                             }
                             else -> {

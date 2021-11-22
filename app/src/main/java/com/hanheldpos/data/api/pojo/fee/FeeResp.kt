@@ -71,7 +71,7 @@ data class Fee(
     val _id: String,
 
     @field:SerializedName("Id")
-    val feeApplyToType: FeeApplyToType,
+    val feeApplyToType: Int,
 
     @field:SerializedName("Name")
     val name: String,
@@ -85,7 +85,25 @@ data class Fee(
     @field:SerializedName("AssignToProductList")
     val assignToProducts: List<FeeAssignToProductItem>,
 
-    ) : Parcelable
+    ) : Parcelable {
+        fun price(subtotal : Double , totalDisc : Double) : Double {
+            var subIncDisc = totalDisc.let { subtotal.minus(it) };
+            subIncDisc = if (subIncDisc < 0.0) 0.0 else subIncDisc;
+            when(FeeApplyToType.fromInt(feeApplyToType)) {
+                FeeApplyToType.NotIncluded-> {
+                    return subIncDisc * (value / 100);
+                }
+                FeeApplyToType.Included -> {
+                    return subIncDisc - (subIncDisc/((value + 100)/100))
+                }
+                FeeApplyToType.Order -> {
+                    return subIncDisc * (value / 100)
+                }
+                else-> return  0.0;
+            }
+
+        }
+    }
 
 @Parcelize
 data class FeeAssignToProductItem(

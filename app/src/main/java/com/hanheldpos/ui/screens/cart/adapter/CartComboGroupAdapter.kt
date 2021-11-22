@@ -3,46 +3,39 @@ package com.hanheldpos.ui.screens.cart.adapter
 import androidx.recyclerview.widget.DiffUtil
 import com.hanheldpos.R
 import com.hanheldpos.databinding.CartItemComboGroupBinding
-import com.hanheldpos.model.cart.order.OrderItemModel
-import com.hanheldpos.model.home.order.menu.ItemComboGroupManager
-import com.hanheldpos.model.home.order.menu.OrderMenuItemModel
+import com.hanheldpos.model.cart.GroupBundle
+import com.hanheldpos.model.product.BaseProductInCart
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
 
-class CartComboGroupAdapter :BaseBindingListAdapter<ItemComboGroupManager>(DiffCallback()) {
+class CartComboGroupAdapter : BaseBindingListAdapter<GroupBundle>(DiffCallback()) {
 
     override fun getItemViewType(position: Int): Int {
         return R.layout.cart_item_combo_group;
     }
-    override fun onBindViewHolder(holder: BaseBindingViewHolder<ItemComboGroupManager>, position: Int) {
+    override fun onBindViewHolder(holder: BaseBindingViewHolder<GroupBundle>, position: Int) {
         val item = getItem(position);
         holder.bindItem(item);
         val binding  = (holder.binding as CartItemComboGroupBinding);
         binding.position=position+1;
         val cartComboGroupDetailAdapter=CartComboGroupDetailAdapter().apply {
-            val selectedOrderMenuItems=item.listSelectedComboItems.map {
-                it!!.selectedComboItem as OrderItemModel
-            }.toMutableList();
-            submitList(selectedOrderMenuItems);
+            val productList = item.productList.toMutableList()
+            submitList(productList as List<BaseProductInCart>);
         }
         binding.cartComboGroupDetailRecyclerView.adapter=cartComboGroupDetailAdapter;
     }
-    override fun submitList(
-        groups: MutableList<ItemComboGroupManager?>?,
-    ) {
-        super.submitList(groups)
-    }
-    class DiffCallback : DiffUtil.ItemCallback<ItemComboGroupManager>() {
+
+    class DiffCallback : DiffUtil.ItemCallback<GroupBundle>() {
         override fun areItemsTheSame(
-            oldItem: ItemComboGroupManager,
-            newItem: ItemComboGroupManager
+            oldItem: GroupBundle,
+            newItem: GroupBundle
         ): Boolean {
             return oldItem == newItem;
         }
 
         override fun areContentsTheSame(
-            oldItem: ItemComboGroupManager,
-            newItem: ItemComboGroupManager
+            oldItem: GroupBundle,
+            newItem: GroupBundle
         ): Boolean {
             return false
         }

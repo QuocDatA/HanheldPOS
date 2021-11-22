@@ -7,7 +7,7 @@
 
         <variable
             name="item"
-            type="com.hanheldpos.model.home.order.menu.ItemComboGroupManager" />
+            type="com.hanheldpos.model.combo.ItemComboGroup" />
 
         <variable
             name="name"
@@ -58,7 +58,7 @@
                     android:orientation="vertical">
 
                     <LinearLayout
-                        visibleObject="@{item.listSelectedComboItems.size() &lt;= 0}"
+                        visibleObject="@{item.groupBundle.totalQuantity &lt;= 0}"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_2sdp"
@@ -85,7 +85,7 @@
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/itemSelectedAdapter"
-                        visibleObject="@{item.listSelectedComboItems.size() > 0}"
+                        visibleObject="@{item.groupBundle.totalQuantity > 0}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:overScrollMode="never"
@@ -93,7 +93,7 @@
                         tools:listitem="@layout/item_combo_picked" />
 
                     <com.diadiem.pos_components.PTextView
-                        visibleObject="@{!item.maxItemSelected &amp;&amp; item.listSelectedComboItems.size() > 0}"
+                        visibleObject="@{!item.maxItemSelected &amp;&amp; item.groupBundle.totalQuantity > 0}"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@{item.requireQuantity() + ` selection required`,default=`1 items required`}"
@@ -119,7 +119,7 @@
         </LinearLayout>
 
         <FrameLayout
-            visibleObject="@{item.listSelectedComboItems.size() &lt;= 0 &amp;&amp; !item.isFocused}"
+            visibleObject="@{item.groupBundle.totalQuantity &lt;= 0 &amp;&amp; !item.isFocused}"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="#99FFFFFF" />

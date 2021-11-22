@@ -26,13 +26,13 @@ class MainActivity : BaseFragmentBindingActivity<ActivityMainBinding, MainVM>(),
         viewModel.run {
             init(this@MainActivity)
         }
-
     }
 
     override fun initView() {
         binding.root.viewTreeObserver.addOnGlobalLayoutListener {
             SystemHelper.hideSystemUI(window);
         }
+
         getNavigator().rootFragment = HomeFragment();
     }
 

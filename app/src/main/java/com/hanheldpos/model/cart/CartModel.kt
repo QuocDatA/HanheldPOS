@@ -1,72 +1,82 @@
 package com.hanheldpos.model.cart
 
-import android.os.Parcelable
+import com.hanheldpos.data.api.pojo.customer.CustomerResp
+import com.hanheldpos.data.api.pojo.fee.Fee
 import com.hanheldpos.data.api.pojo.order.settings.DiningOptionItem
+import com.hanheldpos.data.api.pojo.order.settings.ListReasonsItem
 import com.hanheldpos.data.api.pojo.table.FloorTableItem
-import com.hanheldpos.model.DataHelper.getDefaultDiningOptionItem
+import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.cart.fee.FeeApplyToType
-import com.hanheldpos.model.cart.order.OrderItemModel
-import com.hanheldpos.model.home.table.TableStatusType
-import kotlinx.parcelize.Parcelize
+import com.hanheldpos.model.product.BaseProductInCart
 
-@Parcelize
 data class CartModel(
-    var orderCode: String? = null,
-    //table info
-    var table: FloorTableItem? = null,
+    var table: FloorTableItem,
+    var customer: CustomerResp? = null,
+    var customerQuantity: Int,
+    var diningOption: DiningOptionItem,
+    val fees: List<Fee>,
+    var productsList: MutableList<BaseProductInCart>,
+    var compReason : ListReasonsItem? = null,
+) {
 
-    // Number of Customer
-    var customerQuantity: Int = 0,
-
-    //order item list of Order
-    var listOrderItem: MutableList<OrderItemModel> = mutableListOf(),
-
-    //dining option of Order
-    var diningOption: DiningOptionItem? = getDefaultDiningOptionItem(),
-
-
-    ) : Parcelable {
-    fun getQuantityCart(): Int {
-        return listOrderItem.sumOf {
-            it.getOrderQuantity()
-        }
+    fun getSubTotal() = productsList.sumOf {
+        it.lineTotalValue
     }
 
+    fun getDiscountPrice() = totalDiscount(getSubTotal());
 
-    fun getSubTotal() = listOrderItem.sumOf {
-        it.getOrderPrice()
+    fun getTotalQuantity() = productsList.sumOf {
+        it.quantity ?: 0
     }
 
-    fun getTotalDisc(): Double {
+    fun getTotalPrice() = total();
+
+    private fun totalDiscount(subTotal: Double): Double {
         return 0.0;
     }
 
-    @JvmOverloads
-    fun getPrice(subtotal: Double = getSubTotal(), totalDisc: Double = getTotalDisc()): Double {
-
-        var subIncDisc = subtotal - totalDisc
-
-        subIncDisc = if (subIncDisc < 0) 0.0 else subIncDisc
-
-
-        /// TODO dealing with missing Id and Value as suggested since these fields does not available in cart
-        val Id: FeeApplyToType = FeeApplyToType.Included
-        val Value: Double = 0.0
-
-        return when (Id) {
-            FeeApplyToType.NotIncluded -> subIncDisc * (Value / 100)
-            FeeApplyToType.Included -> subIncDisc - (subIncDisc / ((Value + 100) / 100))
-            FeeApplyToType.Order -> subIncDisc * (Value / 100)
+    fun totalFee(subTotal: Double, totalDiscount : Double) : Double {
+        return fees.filter { FeeApplyToType.fromInt(it.feeApplyToType) != FeeApplyToType.Included }.sumOf { fee->
+            fee.price(subTotal,totalDiscount)
         }
-
-
-//        val subtotal = getSubTotal();
-//        val totalDisc = getTotalDisc();
-//        var subIncDisc = subtotal - totalDisc;
-//        subIncDisc = if (subIncDisc < 0) 0.0 else subIncDisc;
-//
-//        //TODO : use FeeApplyToType to calculate price
-//
-//        return subIncDisc;
     }
+
+    fun totalTemp() : Double {
+        val totalDiscPrice = totalDiscount(getSubTotal());
+        val totalFeePrice = totalFee(getSubTotal(),totalDiscPrice);
+        var total = getSubTotal() + totalFeePrice - totalDiscPrice;
+        total = if (total < 0) 0.0 else total;
+        return total;
+    }
+
+    fun totalComp(totalTemp : Double) : Double {
+        val comp = compReason?.total(totalTemp);
+        return comp?: 0.0;
+    }
+
+    fun total() : Double {
+        val totalTemp = totalTemp();
+        val totalComp = totalComp(totalTemp);
+
+        val lineTotal = totalTemp - totalComp;
+        return lineTotal
+    }
+
+    fun addRegular(regular: Regular){
+        val listFee = DataHelper.findFeeProductList(regular.proOriginal!!.id);
+        regular.fees = listFee;
+        productsList.add(regular);
+    }
+
+    fun addBundle(combo : Combo){
+        val listFee = DataHelper.findFeeProductList(combo.proOriginal!!.id);
+        combo.fees = listFee;
+        productsList.add(combo);
+    }
+
+    fun clearCart() {
+        productsList.clear();
+        customer = null;
+    }
+
 }

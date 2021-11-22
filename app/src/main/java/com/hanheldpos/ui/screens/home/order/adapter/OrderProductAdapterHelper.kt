@@ -1,21 +1,24 @@
 package com.hanheldpos.ui.screens.home.order.adapter
 
+import com.hanheldpos.data.api.pojo.product.ProductItem
 import com.hanheldpos.model.home.order.ProductModeViewType
-import com.hanheldpos.model.product.ProductOrderItem
+import com.hanheldpos.model.home.order.menu.ProductMenuItem
+import com.hanheldpos.model.home.table.TableModeViewType
+import com.hanheldpos.ui.screens.home.table.adapter.TableAdapterHelper
 
 class OrderProductAdapterHelper(
     private val callBack: AdapterCallBack
 ) {
 
     interface AdapterCallBack {
-        fun onListSplitCallBack(list: List<ProductOrderItem>)
+        fun onListSplitCallBack(list: List<ProductMenuItem>)
     }
 
     private var currentIndex: Int = 1;
 
-    private var list: MutableList<ProductOrderItem?> = mutableListOf();
+    private var list: MutableList<ProductMenuItem?> = mutableListOf();
 
-    fun submitList(list: MutableList<ProductOrderItem?>) {
+    fun submitList(list: MutableList<ProductMenuItem?>) {
         this.list = list;
         currentIndex = 1;
         split(currentIndex);
@@ -38,21 +41,31 @@ class OrderProductAdapterHelper(
     }
 
     private fun split(pagePosition: Int) {
-        val rs: MutableList<ProductOrderItem> = mutableListOf();
+        val rs: MutableList<ProductMenuItem> = mutableListOf();
         list.let {
             if (it.size != 0) {
                 val start: Int = (pagePosition - 1) * maxItemViewProduct;
                 val end: Int =
                     if (it.size > maxItemViewProduct * pagePosition) maxItemViewProduct * pagePosition else it.size;
-                rs.addAll(it.toList().subList(start, end) as List<ProductOrderItem>);
+                rs.addAll(it.toList().subList(start, end) as List<ProductMenuItem>);
             }
         }
 
         // Add Empty
         for (i in rs.size until maxItemViewProduct) {
-            rs.add(ProductOrderItem().apply {
+            rs.add(ProductMenuItem().apply {
                 uiType = ProductModeViewType.Empty;
             })
+        }
+
+        // set state for Direction Button to add to list
+        var nextButtonType = ProductModeViewType.NextButtonDisable
+        var prevButtonType = ProductModeViewType.PrevButtonDisable
+        if (pagePosition > 1) {
+            prevButtonType = ProductModeViewType.PrevButtonEnable
+        }
+        if ((pagePosition * maxItemViewProduct) < list.size) {
+            nextButtonType = ProductModeViewType.NextButtonEnable
         }
 
         // Add Direction Button
@@ -61,19 +74,11 @@ class OrderProductAdapterHelper(
             * 1 : Enable
             * 2 : Disable
             * */
-            ProductOrderItem().apply {
-                uiType = ProductModeViewType.PrevButton.apply {
-                    pos = if (currentIndex > 1) {
-                        1
-                    } else 2
-                };
+            ProductMenuItem().apply {
+                uiType = prevButtonType
             },
-            ProductOrderItem().apply {
-                uiType = ProductModeViewType.NextButton.apply {
-                    pos = if ((currentIndex * maxItemViewProduct) < list.size) {
-                        1
-                    } else 2
-                };
+            ProductMenuItem().apply {
+                uiType = nextButtonType
             } )
         )
         callBack.onListSplitCallBack(rs.toList());

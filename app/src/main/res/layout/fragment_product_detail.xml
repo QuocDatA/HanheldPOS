@@ -5,7 +5,7 @@
 
     <data>
 
-        <import type="com.hanheldpos.model.home.order.combo.ItemActionType" />
+        <import type="com.hanheldpos.model.combo.ItemActionType" />
 
         <variable
             name="viewModel"
@@ -63,24 +63,24 @@
                         style="@style/ProductDetailTitle"
                         android:layout_marginEnd="@dimen/_10sdp"
                         android:layout_weight="1"
-                        android:text="@{viewModel.orderItemModel.orderName}"
+                        android:text="@{viewModel.regularInCart.productName}"
                         app:useFontStyle="normal"
                         tools:text="Produc name" />
 
                     <com.diadiem.pos_components.PTextView
                         style="@style/ProductDetailPrice"
-                        priceView="@{viewModel.orderItemModel.priceRegular}"
+                        priceView="@{viewModel.regularInCart.priceOverride}"
                         tools:text="10,000" />
                 </LinearLayout>
 
                 <com.diadiem.pos_components.PTextView
                     style="@style/ProductDetailSku"
-                    visibleObject="@{viewModel.orderItemModel.orderSku}"
+                    visibleObject="@{viewModel.regularInCart.sku}"
                     android:layout_marginVertical="@dimen/_3sdp"
                     android:background="@drawable/bg_food_detail_text"
                     android:paddingHorizontal="@dimen/_8sdp"
                     android:paddingVertical="@dimen/_1sdp"
-                    android:text="@{viewModel.orderItemModel.orderSku}" />
+                    android:text="@{viewModel.regularInCart.sku}" />
             </LinearLayout>
         </LinearLayout>
 
@@ -103,8 +103,7 @@
                 app:tabMaxWidth="0dp"
                 app:tabMode="fixed"
                 app:tabSelectedTextColor="@color/color_4"
-
-                app:tabTextAppearance="@style/ProductDetailTabTitle" />
+                app:tabTextAppearance="@style/TabTitleStyle" />
 
             <include
                 layout="@layout/divider_vertical"
@@ -176,11 +175,12 @@
                     android:focusableInTouchMode="true"
                     android:hint="@string/special_instructions"
                     android:inputType="text"
+                    android:maxLines="3"
                     android:focusable="true"
                     android:minHeight="@dimen/_40sdp"
                     android:paddingHorizontal="@dimen/_6sdp"
                     android:paddingVertical="@dimen/_7sdp"
-                    android:text="@={viewModel.orderItemModel.note}"
+                    android:text="@={viewModel.regularInCart.note}"
                     app:ipt_useFontStyle="normal"
                     app:ipt_useHintTextColor="color8"
                     app:ipt_useTextColor="color4"

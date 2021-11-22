@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.hanheldpos.ui.screens.cart.CartVM" />
@@ -53,7 +54,7 @@
                     android:clickable="true"
                     android:focusable="true"
                     android:onClick="@{v->viewModel.deleteCart()}"
-                    android:text="@string/delete" />
+                    android:text="@string/delete_cart" />
             </FrameLayout>
 
             <androidx.core.widget.NestedScrollView
@@ -78,7 +79,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_marginStart="@dimen/_9sdp"
-                            android:text="@string/deliver_to"
+                            android:text="@string/dining_option"
                             app:useFontStyle="bold"
                             app:useTextColor="color4"
                             app:useTextHeader="h5" />
@@ -107,32 +108,50 @@
 
                     <LinearLayout
                         style="@style/SingleLineItemCart"
-                        android:orientation="horizontal"
+                        android:orientation="vertical"
                         android:paddingVertical="@dimen/_11sdp">
 
-                        <com.diadiem.pos_components.PTextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginStart="@dimen/_9sdp"
-                            android:text="@string/customer_info"
-                            app:useFontStyle="bold"
-                            app:useTextColor="color4"
-                            app:useTextHeader="h5" />
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
 
-                        <androidx.legacy.widget.Space
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1" />
+                            <com.diadiem.pos_components.PTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginStart="@dimen/_9sdp"
+                                android:text="@string/customer_info"
+                                app:useFontStyle="bold"
+                                app:useTextColor="color4"
+                                app:useTextHeader="h5" />
 
-                        <com.diadiem.pos_components.PTextView
-                            android:layout_width="wrap_content"
+                            <androidx.legacy.widget.Space
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1" />
+
+                            <com.diadiem.pos_components.PTextView
+                                visibleObject="@{cartDataVM.cartModelLD.customer == null}"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginEnd="@dimen/_9sdp"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:onClick="@{v->viewModel.onOpenAddCustomer()}"
+                                android:text="@string/add_customer"
+                                app:useTextColor="color0"
+                                app:useTextHeader="h5" />
+                        </LinearLayout>
+
+                        <include
+                            layout="@layout/item_cart_customer"
+                            visibleObject="@{cartDataVM.cartModelLD.customer != null}"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginEnd="@dimen/_9sdp"
-                            android:text="@string/add_customer"
-                            app:useTextColor="color0"
-                            app:useTextHeader="h5" />
+                            android:layout_marginHorizontal="@dimen/_9sdp"
+                            android:layout_marginTop="@dimen/_7sdp"
+                            app:customer="@{cartDataVM.cartModelLD.customer}" />
 
                     </LinearLayout>
 
@@ -191,6 +210,7 @@
 
                     <LinearLayout
                         style="@style/SingleLineItemCart"
+                        android:gravity="center_vertical"
                         android:orientation="horizontal"
                         android:paddingVertical="0dp">
 
@@ -237,11 +257,11 @@
                             android:layout_weight="1" />
 
                         <com.diadiem.pos_components.PTextView
-                            android:onClick="@{v -> viewModel.backPress()}"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_marginEnd="@dimen/_9sdp"
+                            android:onClick="@{v -> viewModel.backPress()}"
                             android:text="@string/add_items"
                             app:useTextColor="color0"
                             app:useTextHeader="h5" />
@@ -254,11 +274,11 @@
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/productRecyclerView"
                         style="@style/SingleLineItemCart"
-                        android:paddingVertical="0dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:overScrollMode="never"
+                        android:paddingVertical="0dp"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         tools:itemCount="1"
                         tools:listitem="@layout/item_cart_product" />
@@ -287,11 +307,11 @@
                             android:layout_weight="1" />
 
                         <com.diadiem.pos_components.PTextView
+                            priceView="@{cartDataVM.cartModelLD.subTotal}"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             app:useTextColor="color4"
-                            priceView="@{cartDataVM.cartModelLD.subTotal}"
                             app:useTextHeader="h5"
                             tools:text="50.000" />
                     </LinearLayout>
@@ -323,6 +343,9 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:onClick="@{()->viewModel.openDiscount()}"
                             android:text="@string/add_discount"
                             app:useTextColor="color0"
                             app:useTextHeader="h5" />
@@ -354,7 +377,7 @@
                             android:layout_weight="1" />
 
                         <com.diadiem.pos_components.PTextView
-                            priceView="@{0.0}"
+                            priceView="@{cartDataVM.cartModelLD.totalFee(cartDataVM.cartModelLD.subTotal,cartDataVM.cartModelLD.discountPrice)}"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -459,7 +482,7 @@
                             android:layout_weight="1" />
 
                         <com.diadiem.pos_components.PTextView
-                            priceView="@{cartDataVM.cartModelLD.price}"
+                            priceView="@{cartDataVM.cartModelLD.total()}"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -490,6 +513,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:onClick="@{v->viewModel.openSelectPayment()}"
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?attr/selectableItemBackground"
@@ -526,6 +550,7 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?attr/selectableItemBackground"
+                android:onClick="@{()->viewModel.openDiscount()}"
                 android:padding="@dimen/_12sdp">
 
                 <ImageView
@@ -545,89 +570,26 @@
 
         </LinearLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_5sdp"
-            android:background="@color/color_10" />
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:padding="@dimen/_8sdp">
 
-            <LinearLayout
-                android:layout_width="0dp"
+            <com.diadiem.pos_components.PMaterialButton
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:padding="@dimen/_12sdp">
-
-                <com.diadiem.pos_components.PTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/_7sdp"
-                    android:text="@{ cartDataVM.cartModelLD.table.tableName + `-` + cartDataVM.diningOptionLD.title + ` (` + cartDataVM.numberOfCustomer + `)`}"
-                    app:useTextColor="color4"
-
-                    app:useTextHeader="h5"
-                    tools:text="B1-For Here (2)" />
-
-                <com.diadiem.pos_components.PTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_color5_2444dp"
-                    android:paddingHorizontal="@dimen/_5sdp"
-                    android:text="@{cartDataVM.linePerTotalQuantity}"
-                    app:useTextColor="color2"
-
-                    app:useTextHeader="h6"
-                    tools:text="8/10" />
-
-            </LinearLayout>
-
-            <View
-                android:layout_width="@dimen/_1sdp"
-                android:layout_height="match_parent"
-                android:layout_marginVertical="@dimen/_8sdp"
-                android:background="@color/color_10" />
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <com.diadiem.pos_components.PTextView
-                    priceView="@{cartDataVM.cartModelLD.price}"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_12sdp"
-                    app:useFontStyle="bold"
-                    app:useTextColor="color4"
-                    app:useTextHeader="h5"
-                    tools:text="1.000.000" />
-
-                <androidx.legacy.widget.Space
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-
-                <com.diadiem.pos_components.PMaterialButton
-                    android:layout_width="@dimen/_56sdp"
-                    android:layout_height="match_parent"
-                    android:background="@color/color_0"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:foreground="?attr/selectableItemBackground"
-                    android:gravity="center"
-                    android:text="NEXT"
-
-                    app:pbtn_useBackgroundColor="true"
-                    app:pbtn_useFontStyle="bold"
-                    app:pbtn_useTextColor="color2"
-                    app:pbtn_useTextHeader="h5" />
-            </LinearLayout>
-
+                android:background="@color/color_0"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                android:gravity="center"
+                android:padding="@dimen/_5sdp"
+                android:text="@string/bill"
+                android:textAllCaps="true"
+                app:pbtn_useFontStyle="bold"
+                app:pbtn_useTextColor="color2"
+                app:pbtn_useTextHeader="h5" />
         </LinearLayout>
     </LinearLayout>
 </layout>

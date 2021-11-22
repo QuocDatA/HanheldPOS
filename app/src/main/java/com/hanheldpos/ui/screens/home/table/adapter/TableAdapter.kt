@@ -1,6 +1,5 @@
 package com.hanheldpos.ui.screens.home.table.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.FrameLayout
@@ -10,6 +9,7 @@ import androidx.recyclerview.widget.DiffUtil
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.table.FloorTableItem
 import com.hanheldpos.databinding.ItemTableBinding
+import com.hanheldpos.model.home.table.TableModeViewType
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
@@ -31,7 +31,7 @@ class TableAdapter(
             viewType,
             parent, false
         ).also {
-            Log.d("TableAdapter","RecycleView Height:" + parent.height);
+            //Log.d("TableAdapter","RecycleView Height:" + parent.height);
             val height = ((parent.height) / 5 ) - parent.resources.getDimension(R.dimen._6sdp);
             val params : FrameLayout.LayoutParams = FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,height.toInt());
             (it as ItemTableBinding).layoutMain.layoutParams = params;
@@ -43,11 +43,11 @@ class TableAdapter(
 
     private class DiffCallBack : DiffUtil.ItemCallback<FloorTableItem>(){
         override fun areItemsTheSame(oldItem: FloorTableItem, newItem: FloorTableItem): Boolean {
-            return oldItem.id.equals(newItem.id) && oldItem.uiType == newItem.uiType;
+            return oldItem.id.equals(newItem.id) && ((oldItem.uiType == newItem.uiType) || (oldItem.uiType != TableModeViewType.Table && oldItem.uiType != TableModeViewType.Empty && newItem.uiType != TableModeViewType.Table && newItem.uiType != TableModeViewType.Empty))
         }
 
         override fun areContentsTheSame(oldItem: FloorTableItem, newItem: FloorTableItem): Boolean {
-            return oldItem == newItem;
+            return false
         }
 
     }

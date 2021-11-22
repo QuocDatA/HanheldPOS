@@ -3,24 +3,31 @@ package com.hanheldpos.ui.screens.home.order.adapter
 import androidx.recyclerview.widget.DiffUtil
 import com.hanheldpos.R
 import com.hanheldpos.databinding.ItemOrderMenuBinding
+import com.hanheldpos.databinding.ItemOrderMenuDirectionButtonBinding
 import com.hanheldpos.model.home.order.menu.MenuModeViewType
-import com.hanheldpos.model.home.order.menu.OrderMenuItemModel
+import com.hanheldpos.model.home.order.menu.OrderMenuItem
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 
 class OrderMenuAdapter(
     private val directionCallBack: Callback,
-    private val listener: BaseItemClickListener<OrderMenuItemModel>
-) : BaseBindingListAdapter<OrderMenuItemModel>(DiffCallBack()) {
+    private val listener: BaseItemClickListener<OrderMenuItem>
+) : BaseBindingListAdapter<OrderMenuItem>(DiffCallBack()) {
 
     override fun getItemViewType(position: Int): Int {
-        return R.layout.item_order_menu;
+        return when(getItem(position).uiType) {
+            MenuModeViewType.Empty -> R.layout.item_order_menu_empty
+            MenuModeViewType.Menu -> R.layout.item_order_menu
+            else -> { // Note the block
+                R.layout.item_order_menu_direction_button
+            }
+        }
     }
 
 
     override fun onBindViewHolder(
-        holder: BaseBindingViewHolder<OrderMenuItemModel>,
+        holder: BaseBindingViewHolder<OrderMenuItem>,
         position: Int
     ) {
         val item = getItem(position);
@@ -30,11 +37,13 @@ class OrderMenuAdapter(
                     listener.onItemClick(position, item);
                 }
             }
-            MenuModeViewType.DirectionButton -> {
-                (holder.binding as ItemOrderMenuBinding).dirUp.setOnClickListener {
+            MenuModeViewType.Empty -> {
+            }
+            else -> {
+                (holder.binding as ItemOrderMenuDirectionButtonBinding).dirUp.setOnClickListener {
                     directionCallBack.directionSelectd(1)
                 }
-                (holder.binding as ItemOrderMenuBinding).dirDown.setOnClickListener {
+                (holder.binding as ItemOrderMenuDirectionButtonBinding).dirDown.setOnClickListener {
                     directionCallBack.directionSelectd(2)
                 }
             }
@@ -43,19 +52,19 @@ class OrderMenuAdapter(
 
     }
 
-    private class DiffCallBack : DiffUtil.ItemCallback<OrderMenuItemModel>() {
+    private class DiffCallBack : DiffUtil.ItemCallback<OrderMenuItem>() {
         override fun areItemsTheSame(
-            oldItem: OrderMenuItemModel,
-            newItem: OrderMenuItemModel
+            oldItem: OrderMenuItem,
+            newItem: OrderMenuItem
         ): Boolean {
-            return oldItem.id.equals(newItem.id) && oldItem.uiType == newItem.uiType;
+            return oldItem.id.equals(newItem.id) && ((oldItem.uiType == newItem.uiType) || ( oldItem.uiType != MenuModeViewType.Menu && oldItem.uiType != MenuModeViewType.Empty && newItem.uiType != MenuModeViewType.Menu && newItem.uiType != MenuModeViewType.Empty))
         }
 
         override fun areContentsTheSame(
-            oldItem: OrderMenuItemModel,
-            newItem: OrderMenuItemModel
+            oldItem: OrderMenuItem,
+            newItem: OrderMenuItem
         ): Boolean {
-            return oldItem == newItem;
+            return oldItem == newItem && (oldItem.uiType == MenuModeViewType.Menu || oldItem.uiType == MenuModeViewType.Empty);
         }
 
     }

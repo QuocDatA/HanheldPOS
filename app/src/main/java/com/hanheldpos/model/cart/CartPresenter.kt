@@ -8,16 +8,14 @@ import android.util.Size
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
-import android.widget.ImageView
 import android.widget.PopupWindow
 import com.diadiem.pos_components.PTextView
 import com.hanheldpos.R
-import com.hanheldpos.binding.loadImageFromUrlToCircular
 import com.hanheldpos.binding.setBackColor
-import com.hanheldpos.model.cart.order.OrderItemModel
+import com.hanheldpos.model.product.BaseProductInCart
 
 object CartPresenter {
-    fun showCartAnimation(item: OrderItemModel?, slideView: View, popupView: View, slideInListener: Runnable) {
+    fun showCartAnimation(item: BaseProductInCart, slideView: View, popupView: View, slideInListener: Runnable) {
 
         slideView.visibility = View.VISIBLE
         val animSlideIn = ObjectAnimator.ofFloat(
@@ -68,7 +66,7 @@ object CartPresenter {
         )
     }
 
-    private fun showPopupWindowWithoutBinging(anchor: View, item: OrderItemModel?) {
+    private fun showPopupWindowWithoutBinging(anchor: View, item: BaseProductInCart) {
         PopupWindow(anchor.context).apply {
             isOutsideTouchable = true
             val inflater = LayoutInflater.from(anchor.context)
@@ -81,9 +79,9 @@ object CartPresenter {
             setBackgroundDrawable(null)
 
             val circle: View = contentView.findViewById(R.id.circleCartAnimation);
-            setBackColor(circle, item?.productOrderItem?.color);
+            setBackColor(circle, item.proOriginal?.color);
             val txt: PTextView = contentView.findViewById(R.id.txtProductAdded);
-            txt.text = item?.productOrderItem?.acronymn;
+            txt.text = item.proOriginal?.acronymn;
 
         }.also { popupWindow ->
             val location = IntArray(2).apply {
