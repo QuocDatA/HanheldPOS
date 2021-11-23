@@ -74,7 +74,7 @@
                 android:layout_margin="0dp"
                 android:background="@drawable/bg_outline"
                 android:focusableInTouchMode="true"
-                android:hint="@string/device_code"
+                android:hint="@string/search_customer"
                 android:inputType="text"
                 android:padding="@dimen/_10sdp"
                 app:ipt_useFontStyle="normal"
