@@ -1,13 +1,17 @@
 package com.hanheldpos.ui.screens.discount.discounttype
 
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import com.hanheldpos.R
+import com.hanheldpos.data.api.pojo.order.settings.ListReasonsItem
 import com.hanheldpos.databinding.FragmentDiscountTypeBinding
+import com.hanheldpos.model.cart.CartModel
 import com.hanheldpos.model.discount.DiscountType
 import com.hanheldpos.model.discount.DiscountTypeFor
 import com.hanheldpos.model.discount.DiscountTypeTab
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
+import com.hanheldpos.ui.screens.cart.CartDataVM
 import com.hanheldpos.ui.screens.discount.discounttype.adapter.DiscountTabAdapter
 import com.hanheldpos.ui.screens.discount.discounttype.amount.DiscountAmountFragment
 import com.hanheldpos.ui.screens.discount.discounttype.comp.DiscountCompFragment
@@ -15,12 +19,14 @@ import com.hanheldpos.ui.screens.discount.discounttype.discount_code.DiscountCod
 import com.hanheldpos.ui.screens.discount.discounttype.percentage.DiscountPercentageFragment
 import com.hanheldpos.ui.screens.product.adapter.OptionsPagerAdapter
 
-class DiscountTypeFragment(private val type: DiscountType) :
+class DiscountTypeFragment(private val type: DiscountType, private val cart : CartModel, private val listener : DiscountTypeListener) :
     BaseFragment<FragmentDiscountTypeBinding, DiscountTypeVM>(),
     DiscountTypeUV {
     // Adapter
     private lateinit var adapter: DiscountTabAdapter;
     private lateinit var optionsPagerAdapter: OptionsPagerAdapter;
+
+
 
     // Frament child
     private val fragmentMap: MutableMap<DiscountTypeFor, Fragment> = mutableMapOf()
@@ -75,13 +81,26 @@ class DiscountTypeFragment(private val type: DiscountType) :
         fragmentMap[DiscountTypeFor.AMOUNT] = DiscountAmountFragment();
         fragmentMap[DiscountTypeFor.PERCENTAGE] = DiscountPercentageFragment();
         fragmentMap[DiscountTypeFor.DISCOUNT_CODE] = DiscountCodeFragment();
-        fragmentMap[DiscountTypeFor.COMP] = DiscountCompFragment();
+        fragmentMap[DiscountTypeFor.COMP] = DiscountCompFragment(comp = cart.compReason,listener = object : DiscountTypeListener {
+            override fun compReasonChoose(item: ListReasonsItem) {
+                listener.compReasonChoose(item);
+            }
+
+            override fun compRemoveAll() {
+                listener.compRemoveAll();
+            }
+        });
         optionsPagerAdapter.submitList(fragmentMap.values);
 
     }
 
     override fun initAction() {
 
+    }
+
+    interface DiscountTypeListener {
+        fun compReasonChoose(item : ListReasonsItem) : Unit {};
+        fun compRemoveAll();
     }
 
 }

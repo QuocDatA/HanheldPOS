@@ -1,27 +1,25 @@
 package com.hanheldpos.ui.screens.discount
 
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import com.google.android.material.tabs.TabLayoutMediator
 import com.hanheldpos.R
+import com.hanheldpos.data.api.pojo.order.settings.ListReasonsItem
 import com.hanheldpos.databinding.FragmentDiscountBinding
 import com.hanheldpos.model.discount.DiscountType
 import com.hanheldpos.ui.base.fragment.BaseFragment
+import com.hanheldpos.ui.screens.cart.CartDataVM
 import com.hanheldpos.ui.screens.discount.discounttype.DiscountTypeFragment
 import com.hanheldpos.ui.screens.product.adapter.OptionsPagerAdapter
 
 
-class DiscountFragment(private val listener: ItemCallback) :
+class DiscountFragment(private val listener: DiscountCallback) :
     BaseFragment<FragmentDiscountBinding, DiscountVM>(), DiscountUV {
     override fun layoutRes(): Int = R.layout.fragment_discount
 
 
-
     // Adapter
     private lateinit var optionsPagerAdapter: OptionsPagerAdapter;
+    private val cartDataVM by activityViewModels<CartDataVM>();
 
     override fun viewModelClass(): Class<DiscountVM> {
         return DiscountVM::class.java;
@@ -55,8 +53,32 @@ class DiscountFragment(private val listener: ItemCallback) :
     override fun initData() {
         optionsPagerAdapter.submitList(
             listOf(
-                DiscountTypeFragment(type = DiscountType.ITEM_DISCOUNT),
-                DiscountTypeFragment(type = DiscountType.ORDER_DISCOUNT),
+                DiscountTypeFragment(
+
+                    type = DiscountType.ITEM_DISCOUNT, cart = cartDataVM.cartModelLD.value!!,
+                    listener = object : DiscountTypeFragment.DiscountTypeListener {
+                        override fun compReasonChoose(item: ListReasonsItem) {
+
+                        }
+
+                        override fun compRemoveAll() {
+
+                        }
+                    }),
+                DiscountTypeFragment(
+                    type = DiscountType.ORDER_DISCOUNT,
+                    cart = cartDataVM.cartModelLD.value!!,
+                    listener = object : DiscountTypeFragment.DiscountTypeListener {
+                        override fun compReasonChoose(item: ListReasonsItem) {
+                            listener.onCompReasonChoose(item);
+                            backPress();
+                        }
+
+                        override fun compRemoveAll() {
+                            listener.onCompOrderRemove();
+                            backPress();
+                        }
+                    }),
             )
         )
     }
@@ -65,8 +87,9 @@ class DiscountFragment(private val listener: ItemCallback) :
 
     }
 
-    interface ItemCallback {
-        fun onItemSelected();
+    interface DiscountCallback {
+        fun onCompReasonChoose(reason: ListReasonsItem);
+        fun onCompOrderRemove();
     }
 
     override fun backPress() {

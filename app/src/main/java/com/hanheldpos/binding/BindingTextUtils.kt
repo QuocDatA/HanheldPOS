@@ -75,6 +75,21 @@ fun setDiscPriceView(view: TextView?, price: Double?) {
     view.text = "($rs)"
 }
 
+@BindingAdapter("priceDiscMinus")
+fun setDiscPriceMinusView(view: TextView?, price: Double?) {
+    if (view == null || price == null) return
+
+    val dfSymbols = DecimalFormatSymbols()
+    dfSymbols.decimalSeparator = '.'
+    dfSymbols.groupingSeparator = ','
+    val df = DecimalFormat("###", dfSymbols)
+    df.groupingSize = 3
+    df.isGroupingUsed = true
+    val rs = df.format(price);
+
+    view.text = "-$rs"
+}
+
 @BindingAdapter("bindStrike")
 fun setbindStrike(textView: TextView, isBind: Boolean?) {
     textView.apply {

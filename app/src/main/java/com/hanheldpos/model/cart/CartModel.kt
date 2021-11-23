@@ -74,6 +74,10 @@ data class CartModel(
         productsList.add(combo);
     }
 
+    fun addCompReason(reason : ListReasonsItem) {
+        compReason = reason;
+    }
+
     fun clearCart() {
         productsList.clear();
         customer = null;

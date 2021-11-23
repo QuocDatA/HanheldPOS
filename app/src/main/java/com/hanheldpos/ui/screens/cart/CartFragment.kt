@@ -1,6 +1,5 @@
 package com.hanheldpos.ui.screens.cart
 
-import android.annotation.SuppressLint
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -8,10 +7,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.customer.CustomerResp
 import com.hanheldpos.data.api.pojo.order.settings.DiningOptionItem
+import com.hanheldpos.data.api.pojo.order.settings.ListReasonsItem
 import com.hanheldpos.databinding.FragmentCartBinding
 import com.hanheldpos.extension.notifyValueChange
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.cart.Combo
+import com.hanheldpos.model.cart.DiscountCart
 import com.hanheldpos.model.cart.Regular
 import com.hanheldpos.model.combo.ItemActionType
 import com.hanheldpos.model.product.BaseProductInCart
@@ -19,11 +20,13 @@ import com.hanheldpos.model.product.ProductType
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.cart.adapter.CartDiningOptionAdapter
+import com.hanheldpos.ui.screens.cart.adapter.CartDiscountAdapter
 import com.hanheldpos.ui.screens.cart.adapter.CartProductAdapter
 import com.hanheldpos.ui.screens.cart.customer.AddCustomerFragment
 import com.hanheldpos.ui.screens.cart.payment.PaymentFragment
 import com.hanheldpos.ui.screens.combo.ComboFragment
 import com.hanheldpos.ui.screens.discount.DiscountFragment
+import com.hanheldpos.ui.screens.discount.DiscountUV
 import com.hanheldpos.ui.screens.home.order.OrderFragment
 import com.hanheldpos.ui.screens.product.ProductDetailFragment
 
@@ -34,7 +37,10 @@ class CartFragment(
 
     private lateinit var cartDiningOptionAdapter: CartDiningOptionAdapter;
     private lateinit var cartProductAdapter: CartProductAdapter;
+    private lateinit var cartDiscountAdapter: CartDiscountAdapter;
     private val cartDataVM by activityViewModels<CartDataVM>();
+
+
 
     override fun viewModelClass(): Class<CartVM> {
         return CartVM::class.java;
@@ -93,6 +99,19 @@ class CartFragment(
             adapter = cartProductAdapter;
         };
         //endregion
+
+        //region setup discount recycle view
+        cartDiscountAdapter = CartDiscountAdapter(listener = object : BaseItemClickListener<DiscountCart>{
+            override fun onItemClick(adapterPosition: Int, item: DiscountCart) {
+                    cartDataVM.deleteDiscount(item);
+            }
+        })
+
+        binding.discountRecycleView.apply {
+            adapter = cartDiscountAdapter
+        }
+
+        //endregion
     }
 
     override fun initData() {
@@ -114,10 +133,17 @@ class CartFragment(
         //init product data
         cartProductAdapter.submitList(cartDataVM.cartModelLD.value?.productsList);
         //endregion
+
+
     }
 
     override fun initAction() {
-
+        cartDataVM.cartModelLD.observe(this,{
+            val list =viewModel.processDataDiscount(it);
+            binding.isShowDiscount = list.isNotEmpty();
+            cartDiscountAdapter.submitList(list);
+            cartDiscountAdapter.notifyDataSetChanged();
+        })
     }
 
     override fun getBack() {
@@ -137,9 +163,13 @@ class CartFragment(
     override fun onOpenDiscount() {
         navigator
             .goToWithCustomAnimation(DiscountFragment(listener = object :
-                DiscountFragment.ItemCallback {
-                override fun onItemSelected() {
-                    TODO("Not yet implemented")
+                DiscountFragment.DiscountCallback {
+                override fun onCompReasonChoose(reason: ListReasonsItem) {
+                    cartDataVM.addCompReason(reason);
+                }
+
+                override fun onCompOrderRemove() {
+                    cartDataVM.removeCompOrder();
                 }
             }));
     }

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="item"
+            type="com.hanheldpos.model.cart.DiscountCart" />
+    </data>
+
+    <RelativeLayout
+        android:padding="@dimen/_9sdp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_alignParentStart="true"
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            >
+            <ImageView
+                android:layout_width="@dimen/_14sdp"
+                android:layout_height="@dimen/_14sdp"
+                android:src="@drawable/ic_discount_tag"
+                />
+            <androidx.legacy.widget.Space
+                android:layout_width="@dimen/_7sdp"
+                android:layout_height="wrap_content"/>
+
+            <com.diadiem.pos_components.PTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:useTextColor="color4"
+                app:useTextHeader="h5"
+                app:useFontStyle="normal"
+                android:text="@{item.title, default=`10% Off Order`}"
+                />
+
+            <androidx.legacy.widget.Space
+                android:layout_width="@dimen/_7sdp"
+                android:layout_height="wrap_content"/>
+            <ImageView
+                android:id="@+id/btnRemove"
+                android:focusable="true"
+                android:clickable="true"
+                android:layout_width="@dimen/_14sdp"
+                android:layout_height="@dimen/_14sdp"
+                android:src="@drawable/ic_delete"
+                />
+        </LinearLayout>
+        <com.diadiem.pos_components.PTextView
+            android:layout_alignParentEnd="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:useTextHeader="h6"
+            app:useTextColor="color0"
+            app:useFontStyle="normal"
+            priceDiscMinus="@{item.amount}"
+            tools:text="-5,000"
+            />
+    </RelativeLayout>
+
+
+</layout>

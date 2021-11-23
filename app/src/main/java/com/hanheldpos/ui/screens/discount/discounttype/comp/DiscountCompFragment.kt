@@ -12,10 +12,11 @@ import com.hanheldpos.model.DataHelper
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
+import com.hanheldpos.ui.screens.discount.discounttype.DiscountTypeFragment
 import com.hanheldpos.ui.screens.discount.discounttype.comp.adapter.DiscountReasonAdapter
 
 
-class DiscountCompFragment : BaseFragment<FragmentDiscountCompBinding,DiscountCompVM>(), DiscountCompUV {
+class DiscountCompFragment(private val comp : ListReasonsItem?, private val listener : DiscountTypeFragment.DiscountTypeListener) : BaseFragment<FragmentDiscountCompBinding,DiscountCompVM>(), DiscountCompUV {
 
     private lateinit var adapter : DiscountReasonAdapter;
 
@@ -33,22 +34,33 @@ class DiscountCompFragment : BaseFragment<FragmentDiscountCompBinding,DiscountCo
     }
 
     override fun initView() {
-        adapter = DiscountReasonAdapter(listener = object : BaseItemClickListener<ListReasonsItem>{
+        adapter = DiscountReasonAdapter(comp,listener = object : BaseItemClickListener<ListReasonsItem>{
             override fun onItemClick(adapterPosition: Int, item: ListReasonsItem) {
                 // Dealing with item selected;
-                viewModel.reasonChosen.postValue(item);
+                viewModel.reasonChosen.value = (item);
             }
         })
         binding.reasonContainer.adapter = adapter;
+
+        binding.removeComp.apply {
+            comp?.run { setTextColor(resources.getColor(R.color.color_0)); }
+            setOnClickListener {
+                comp?.run {
+                    listener.compRemoveAll();
+                }
+            }
+        }
     }
 
     override fun initData() {
         val list = DataHelper.getCompList();
-        adapter.submitList(list);
+        adapter.submitList(list as MutableList<ListReasonsItem>);
     }
 
     override fun initAction() {
-
+        binding.saveBtn.setOnClickListener {
+            listener.compReasonChoose(viewModel.reasonChosen.value!!);
+        }
     }
 
 }
