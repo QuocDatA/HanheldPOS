@@ -174,7 +174,7 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
     }
 
     override fun openSelectMenu() {
-        navigator.goToWithCustomAnimation(MenuFragment());
+        navigator.goToWithAnimationEnterFromLeft(MenuFragment());
     }
 
 }
