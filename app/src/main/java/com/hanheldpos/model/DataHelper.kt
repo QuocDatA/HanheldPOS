@@ -1,13 +1,14 @@
 package com.hanheldpos.model
 
 import com.hanheldpos.data.api.ApiConst
+import com.hanheldpos.data.api.pojo.device.DeviceCodeResp
+import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.data.api.pojo.employee.EmployeeResp
 import com.hanheldpos.data.api.pojo.fee.Fee
-import com.hanheldpos.data.api.pojo.fee.FeeAssignToProductItem
 import com.hanheldpos.data.api.pojo.fee.FeeResp
 import com.hanheldpos.data.api.pojo.order.menu.OrderMenuResp
 import com.hanheldpos.data.api.pojo.order.settings.OrderSettingResp
-import com.hanheldpos.data.api.pojo.setting.DeviceCodeResp
+import com.hanheldpos.data.api.pojo.payment.PaymentsResp
 import com.hanheldpos.data.api.pojo.table.TableResp
 import com.hanheldpos.model.cart.fee.FeeApplyToType
 import com.hanheldpos.prefs.PrefKey
@@ -19,7 +20,8 @@ object DataHelper {
         deviceCodeResp = null;
         orderMenuResp = null;
         tableResp = null;
-        feeResp=null;
+        feeResp = null;
+        discountResp = null;
         AppPreferences.get().storeValue(PrefKey.Setting.DEVICE_CODE, null);
     }
 
@@ -28,15 +30,16 @@ object DataHelper {
     var orderMenuResp: OrderMenuResp? = null
         get() {
             if (field == null) {
-                field = AppPreferences.get()
-                    .getParcelableObject(PrefKey.Order.ORDER_MENU_RESP, OrderMenuResp::class.java)
+                field = StorageHelper.getDataFromEncryptedFile(
+                    PrefKey.Order.ORDER_MENU_RESP,
+                    OrderMenuResp::class.java
+                )
             }
             return field
         }
         set(value) {
             field = value
-            AppPreferences.get()
-                .storeValue(PrefKey.Order.ORDER_MENU_RESP, value)
+            StorageHelper.setDataToEncryptedFile(PrefKey.Order.ORDER_MENU_RESP, value!!)
         }
 
     //endregion
@@ -44,7 +47,7 @@ object DataHelper {
     var orderSettingResp: OrderSettingResp? = null
         get() {
             if (field == null) {
-                field = AppPreferences.get().getParcelableObject(
+                field = StorageHelper.getDataFromEncryptedFile(
                     PrefKey.Order.ORDER_SETTING_RESP,
                     OrderSettingResp::class.java
                 )
@@ -53,15 +56,14 @@ object DataHelper {
         }
         set(value) {
             field = value
-            AppPreferences.get()
-                .storeValue(PrefKey.Order.ORDER_SETTING_RESP, value)
+            StorageHelper.setDataToEncryptedFile(PrefKey.Order.ORDER_SETTING_RESP, value!!)
         }
 
     private fun getOrderSettingModel() = orderSettingResp?.model?.firstOrNull()
 
     private fun getVoidInfo() = getOrderSettingModel()?.listVoid?.firstOrNull()
 
-    fun getVoidList() = getVoidInfo()?.listReasons
+    private fun getVoidList() = getVoidInfo()?.listReasons
 
     fun getVoidItemById(voidId: Int) = getVoidList()?.find { it?.id == voidId }
 
@@ -77,21 +79,23 @@ object DataHelper {
         getDiningOptionList()?.find { it?.id == diningOptionId }
 
 
-
     fun getDefaultDiningOptionItem() = getDiningOptionList()?.firstOrNull()
+
     //endregion
     //region ## Device Code
     var deviceCodeResp: DeviceCodeResp? = null
         get() {
             if (field == null) {
-                field = AppPreferences.get()
-                    .getParcelableObject(PrefKey.Setting.DEVICE_CODE, DeviceCodeResp::class.java)
+                field = StorageHelper.getDataFromEncryptedFile(
+                    PrefKey.Setting.DEVICE_CODE,
+                    DeviceCodeResp::class.java
+                )
             }
             return field
         }
         set(value) {
             field = value
-            AppPreferences.get().storeValue(PrefKey.Setting.DEVICE_CODE, value)
+            StorageHelper.setDataToEncryptedFile(PrefKey.Setting.DEVICE_CODE, value!!)
         }
 
     private fun getDeviceCodeModel() = deviceCodeResp?.model?.firstOrNull()
@@ -141,8 +145,10 @@ object DataHelper {
     var tableResp: TableResp? = null
         get() {
             if (field == null) {
-                field = AppPreferences.get()
-                    .getParcelableObject(PrefKey.Table.TABLE_RESP, TableResp::class.java)
+                field = StorageHelper.getDataFromEncryptedFile(
+                    PrefKey.Table.TABLE_RESP,
+                    TableResp::class.java
+                )
             }
             return field
         }
@@ -154,8 +160,7 @@ object DataHelper {
 
             field = value
 
-            AppPreferences.get()
-                .storeValue(PrefKey.Table.TABLE_RESP, value)
+            StorageHelper.setDataToEncryptedFile(PrefKey.Table.TABLE_RESP, value!!)
         }
 
     private fun getTableModel() = tableResp?.model?.firstOrNull()
@@ -168,32 +173,76 @@ object DataHelper {
     var feeResp: FeeResp? = null
         get() {
             if (field == null) {
-                field = AppPreferences.get()
-                    .getParcelableObject(PrefKey.Fee.FEE_RESP, FeeResp::class.java)
+                field = StorageHelper.getDataFromEncryptedFile(
+                    PrefKey.Fee.FEE_RESP,
+                    FeeResp::class.java
+                )
             }
             return field
         }
         set(value) {
             field = value
-            AppPreferences.get()
-                .storeValue(PrefKey.Fee.FEE_RESP, value)
+            StorageHelper.setDataToEncryptedFile(PrefKey.Fee.FEE_RESP, value!!)
         }
 
+    private fun getListFee() : List<Fee>? = feeResp?.feeModel?.fees;
     /**
-     * Get FeeAssignToProductItem with [Fee.feeApplyToType] is Included or Not Included
+     * Get Fee type [FeeApplyToType] with product id
      */
-    fun getRegularProductIdFees():MutableList<FeeAssignToProductItem>{
-        val result= mutableListOf<FeeAssignToProductItem>();
-        val notIncluded = feeResp?.feeModel?.fees?.firstOrNull{
-            it.feeApplyToType==FeeApplyToType.NotIncluded
-        };
-        val included =feeResp?.feeModel?.fees?.firstOrNull{
-            it.feeApplyToType==FeeApplyToType.Included
-        };
-        notIncluded?.assignToProducts?.let { result.addAll(it) };
-        included?.assignToProducts?.let { result.addAll(it) };
-        return result;
+    fun findFeeProductList(productId : String) : List<Fee>? {
+        return getListFee()?.filter { fee->
+            FeeApplyToType.fromInt(fee.feeApplyToType) != FeeApplyToType.Order && fee.assignToProducts.firstOrNull{ assign_p->
+                assign_p.productId == productId
+            } != null
+        }?.toList()
+    }
+    /**
+     * Get Fee type [FeeApplyToType] for order
+     */
+    fun findFeeOrderList() : List<Fee>? {
+        return getListFee()?.filter { fee->
+            FeeApplyToType.fromInt(fee.feeApplyToType) != FeeApplyToType.Order
+        }?.toList()
     }
 
+
     //endregion
+
+    //region Discount
+
+    var discountResp: DiscountResp? = null
+        get() {
+            if (field == null) {
+                field = StorageHelper.getDataFromEncryptedFile(
+                    PrefKey.Discount.DISCOUNT_RESP,
+                    DiscountResp::class.java
+                )
+            }
+            return field
+        }
+        set(value) {
+            field = value
+            StorageHelper.setDataToEncryptedFile(PrefKey.Discount.DISCOUNT_RESP, value!!)
+        }
+
+    //endregion
+
+    //region Payment
+
+    var paymentsResp : PaymentsResp? = null
+        get() {
+            if (field == null) {
+                field = StorageHelper.getDataFromEncryptedFile(
+                    PrefKey.Payment.PAYMENTS_RESP,
+                    PaymentsResp::class.java
+                )
+            }
+            return field
+        }
+        set(value) {
+            field = value
+            StorageHelper.setDataToEncryptedFile(PrefKey.Payment.PAYMENTS_RESP, value!!)
+        }
+
+    fun getPaymentMethodList()= this.paymentsResp?.Model;
 }

@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <import type="com.hanheldpos.model.home.order.combo.ItemActionType"/>
+        <import type="com.hanheldpos.model.combo.ItemActionType"/>
         <variable
             name="viewModel"
-            type="com.hanheldpos.ui.screens.home.order.combo.ComboVM" />
+            type="com.hanheldpos.ui.screens.combo.ComboVM" />
     </data>
 
     <RelativeLayout style="@style/RootLayout">
@@ -61,12 +61,12 @@
                         android:layout_marginEnd="@dimen/_10sdp"
                         android:layout_weight="1"
                         app:useFontStyle="normal"
-                        android:text="@{viewModel.orderItemModel.orderName}" />
+                        android:text="@{viewModel.bundleInCart.name}" />
 
                     <com.diadiem.pos_components.PTextView
                         style="@style/ProductDetailPrice"
                         app:useFontStyle="normal"
-                        priceView="@{viewModel.orderItemModel.priceRegular}" />
+                        priceView="@{viewModel.bundleInCart.proModSubTotal()}" />
                 </LinearLayout>
 
                 <RelativeLayout
@@ -75,13 +75,13 @@
                     android:orientation="horizontal">
                     <com.diadiem.pos_components.PTextView
                         style="@style/ProductDetailSku"
-                        visibleObject="@{viewModel.orderItemModel.orderSku}"
+                        visibleObject="@{viewModel.bundleInCart.sku}"
                         android:layout_marginVertical="@dimen/_3sdp"
                         android:background="@drawable/bg_food_detail_text"
                         android:paddingHorizontal="@dimen/_8sdp"
                         android:paddingVertical="@dimen/_1sdp"
                         android:layout_alignParentStart="true"
-                        android:text="@{viewModel.orderItemModel.orderSku}" />
+                        android:text="@{viewModel.bundleInCart.sku}" />
 
                     <com.diadiem.pos_components.PTextView
                         android:layout_width="wrap_content"
@@ -161,6 +161,8 @@
                         style="@style/BaseTextInput"
                         android:layout_marginVertical="@dimen/_8sdp"
                         android:background="@drawable/bg_outline"
+                        android:id="@+id/noteInput"
+                        android:focusable="true"
                         android:focusableInTouchMode="true"
                         android:hint="Special Instructions"
                         android:inputType="text"
@@ -169,7 +171,7 @@
                         android:paddingVertical="@dimen/_7sdp"
                         app:ipt_useFontStyle="normal"
                         app:ipt_useHintTextColor="color8"
-                        android:text="@={viewModel.orderItemModel.note}"
+                        android:text="@={viewModel.bundleInCart.note}"
                         app:ipt_useTextColor="color4"
                         app:ipt_useTextHeader="h5" />
                 </LinearLayout>
@@ -252,7 +254,7 @@
 
                     <com.diadiem.pos_components.PTextView
                         style="@style/ProductDetailText"
-                        android:text="@{viewModel.numberQuantity > 0 ? ( viewModel.actionType == ItemActionType.Add ? `Add` : `Edit` ) : `Remove`}"
+                        android:text="@{viewModel.numberQuantity > 0 ? ( viewModel.actionType == ItemActionType.Add ? `Add` : `Update` ) : `Remove`}"
                         android:textAllCaps="true"
                         app:useFontStyle="bold"
                         app:useTextColor="color2"

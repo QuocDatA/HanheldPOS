@@ -12,8 +12,8 @@ plugins {
 
 // ----- Apk info
 String APK_NAME = "[DEV]HanheldPos"
-int VERSION_CODE = 21
-String VERSION_NAME = "0.2.1"
+int VERSION_CODE = 27
+String VERSION_NAME = "0.2.7"
 
 static def getDate() {
     return new Date().format("yyyyMMdd")
@@ -123,6 +123,7 @@ dependencies {
     implementation project(path: ':utils')
     implementation project(path: ':pos_config')
     implementation project(path: ':utils')
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.3.1'
     kapt 'com.github.bumptech.glide:compiler:4.12.0'
     implementation 'de.hdodenhof:circleimageview:3.1.0'
 

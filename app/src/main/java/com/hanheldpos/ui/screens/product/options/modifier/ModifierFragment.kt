@@ -1,19 +1,21 @@
 package com.hanheldpos.ui.screens.product.options.modifier
 
-import android.os.Bundle
 import androidx.fragment.app.activityViewModels
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentModifierBinding
-import com.hanheldpos.model.product.ExtraData
-import com.hanheldpos.model.product.getDefaultModifierList
+import com.hanheldpos.model.cart.ModifierCart
+import com.hanheldpos.model.product.GroupExtra
+import com.hanheldpos.model.product.ItemExtra
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.product.adapter.modifier.ContainerModifierAdapter
-import com.hanheldpos.ui.screens.product.adapter.modifier.ModifierSelectedItemModel
 import com.hanheldpos.ui.screens.product.options.OptionVM
 
 
-class ModifierFragment : BaseFragment<FragmentModifierBinding,ModifierVM>(),ModifierUV {
+class ModifierFragment(
+    private val modifierInCarts: List<ModifierCart>,
+    private val listGroupExtra: List<GroupExtra>?
+) : BaseFragment<FragmentModifierBinding, ModifierVM>(), ModifierUV {
 
     //ViewModel
     private val optionVM by activityViewModels<OptionVM>();
@@ -37,44 +39,39 @@ class ModifierFragment : BaseFragment<FragmentModifierBinding,ModifierVM>(),Modi
     override fun initView() {
 
         containerModifierAdapter = ContainerModifierAdapter(
-            itemSeleted = optionVM.extraDoneModel?.selectedModifiers,
-            listener = object : BaseItemClickListener<ModifierSelectedItemModel>{
-            override fun onItemClick(adapterPosition: Int, item: ModifierSelectedItemModel) {
-                optionVM.modifierItemChange(item);
-            }
+            itemSelected = modifierInCarts,
+            listener = object : BaseItemClickListener<ItemExtra> {
+                override fun onItemClick(adapterPosition: Int, item: ItemExtra) {
+                    onSelectedItemExtra(item);
+                }
 
-        }).also {
+            }).also {
             binding.containerModifier.adapter = it;
         }
-
-        viewModel.defaultModifierListLD.observe(this,{
-            containerModifierAdapter.submitList(it);
-            containerModifierAdapter.notifyDataSetChanged();
-        });
     }
 
     override fun initData() {
-        arguments?.let {
-            val a: ExtraData? = it.getParcelable(ARG_PRODUCT_EXTRA_FRAGMENT)
-            viewModel.defaultModifierListLD.value = (a?.getDefaultModifierList());
-        }
+        this.listGroupExtra?.let { viewModel.listGroupExtra.addAll(it) };
+        containerModifierAdapter.submitList(viewModel.listGroupExtra);
     }
 
     override fun initAction() {
 
     }
 
-    companion object {
-        private const val ARG_PRODUCT_EXTRA_FRAGMENT = "ARG_PRODUCT_EXTRA_FRAGMENT"
-        fun getInstance(
-            item: ExtraData,
-        ): ModifierFragment {
-            return ModifierFragment().apply {
-                arguments = Bundle().apply {
-                    putParcelable(ARG_PRODUCT_EXTRA_FRAGMENT, item)
-                }
-            };
-        }
+    fun onSelectedItemExtra(item: ItemExtra) {
+        val modifier = ModifierCart(
+            item.modifier.id!!,
+            item.modifier.modifierGuid!!,
+            item.modifier.modifier!!,
+            item.extraQuantity,
+            item.modifier.price
+        )
+        if (item.extraQuantity > 0)
+            optionVM.modifierAddItem(
+                modifier
+            );
+        else optionVM.modifierRemoveItem(modifier)
     }
 
 }

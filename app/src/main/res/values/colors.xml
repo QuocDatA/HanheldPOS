@@ -26,8 +26,13 @@
     
     <color name="_1067A7">#1067A7</color>
     <color name="_EEEEEE">#EEEEEE</color>
+    <color name="_007EFF">#007EFF</color>
+    <color name="_FBD536">#FBD536</color>
     <color name="radicalRed">#FD2B70</color>
+
 
     <color name="grayText">#777777</color>
     <color name="extraAdjust">#40693B</color>
+
+
 </resources>

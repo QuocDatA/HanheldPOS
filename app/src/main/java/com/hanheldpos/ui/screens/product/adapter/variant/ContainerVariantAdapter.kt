@@ -4,62 +4,60 @@ import android.annotation.SuppressLint
 import androidx.recyclerview.widget.DiffUtil
 import com.diadiem.pos_config.utils.Const
 import com.hanheldpos.R
-import com.hanheldpos.data.api.pojo.order.menu.GroupItem
+import com.hanheldpos.data.api.pojo.product.VariantsGroup
 import com.hanheldpos.databinding.ItemContainerVarientBinding
+import com.hanheldpos.model.cart.VariantCart
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.screens.product.adapter.GridSpacingItemDecoration
 
 class ContainerVariantAdapter(
-    private val itemSelected : GroupItem? = null,
-    private val listener: BaseItemClickListener<String?>
-) : BaseBindingListAdapter<VariantHeader>(DiffCallback()) {
+    private val listener: BaseItemClickListener<VariantsGroup.OptionValueVariantsGroup>
+) : BaseBindingListAdapter<VariantsGroup>(DiffCallback()) {
 
     override fun getItemViewType(position: Int): Int {
         return R.layout.item_container_varient;
     }
-
-    private var level : Int = 0;
     private var variantSelected : MutableMap<Int,String>? = null;
+    var itemSelected : List<VariantCart>? = null
 
-    override fun submitList(list: MutableList<VariantHeader>?) {
-        this.level = 0;
+    override fun submitList(list: MutableList<VariantsGroup>?) {
         variantSelected = mutableMapOf();
         super.submitList(list)
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    override fun onBindViewHolder(holder: BaseBindingViewHolder<VariantHeader>, position: Int) {
+    override fun onBindViewHolder(holder: BaseBindingViewHolder<VariantsGroup>, position: Int) {
         val item = getItem(position);
         holder.bindItem(item);
         val binding = (holder.binding as ItemContainerVarientBinding);
-        val itemLevel = ++this.level // Use level to check ordinal of variant string
         VariantAdapter(
-            level = itemLevel,
-            listener = object : BaseItemClickListener<VariantLayoutItem> {
-            override fun onItemClick(adapterPosition: Int, item: VariantLayoutItem) {
-                variantSelected?.set(itemLevel, item.name);
-                listener.onItemClick(adapterPosition, getGroupItemFromVariantSelected());
+            listener = object : BaseItemClickListener<VariantsGroup.OptionValueVariantsGroup> {
+            override fun onItemClick(adapterPosition: Int, item: VariantsGroup.OptionValueVariantsGroup) {
+//                variantSelected?.set(itemLevel, item.name);
+                listener.onItemClick(adapterPosition, item);
             }
         }).also { variantAdapter ->
             binding.containerVariantItem.adapter = variantAdapter;
-            binding.containerVariantItem.addItemDecoration(GridSpacingItemDecoration(2, 20, false))
-
+            if (binding.containerVariantItem.itemDecorationCount == 0){
+                binding.containerVariantItem.addItemDecoration(GridSpacingItemDecoration(2, 20, false))
+            }
             /**
              * Fix scroll when change type variant
              */
             binding.containerVariantItem.setHasFixedSize(true);
 
-            val list = item.childList?.toMutableList();
+            val list = item.subOptionValueList()?.toMutableList();
             variantAdapter.submitList(list);
             /**
              *  Restore option choosed
             */
-            itemSelected?.groupName?.split("•")?.get(itemLevel-1).let { name ->
+            if(itemSelected?.size?:0 > position)
+            itemSelected?.get(position).let { variant ->
                 run lit@{
                     list?.forEach {
-                        if (it.name == name){
+                        if (it.Id == variant?.Id){
                             variantAdapter.selectedItem.value = list.indexOf(it);
                             return@lit;
                         }
@@ -70,27 +68,17 @@ class ContainerVariantAdapter(
         }
     }
 
-    class DiffCallback : DiffUtil.ItemCallback<VariantHeader>() {
+    class DiffCallback : DiffUtil.ItemCallback<VariantsGroup>() {
 
-        override fun areItemsTheSame(oldItem: VariantHeader, newItem: VariantHeader): Boolean {
+        override fun areItemsTheSame(oldItem: VariantsGroup, newItem: VariantsGroup): Boolean {
             return oldItem == newItem;
         }
 
-        override fun areContentsTheSame(oldItem: VariantHeader, newItem: VariantHeader): Boolean {
-            return oldItem == newItem;
+        override fun areContentsTheSame(oldItem: VariantsGroup, newItem: VariantsGroup): Boolean {
+            return false;
         }
 
     }
 
-    private fun getGroupItemFromVariantSelected() : String?{
-        val rs : MutableList<String> = mutableListOf();
-        for (i in 1..level){
-            if (variantSelected != null && variantSelected?.contains(i) == true)
-            {
-                variantSelected!![i]?.let { rs.add(it) }
-            }
-            else return null;
-        }
-        return rs.joinToString(Const.SymBol.VariantSeparator)
-    }
+
 }

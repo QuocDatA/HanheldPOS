@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="url"
+            type="String" />
+    </data>
+
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/rootPopup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent">
+
+        <ImageView
+            android:layout_width="@dimen/_31sdp"
+            android:layout_height="@dimen/_38sdp"
+            android:background="@drawable/co_ic_cart_ellipse" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/circleCartAnimation"
+            android:layout_width="@dimen/_24sdp"
+            android:layout_height="@dimen/_24sdp"
+            android:layout_gravity="top|center"
+            android:layout_marginTop="@dimen/_3sdp"
+            app:cardCornerRadius="@dimen/_12sdp"
+            android:elevation="0dp"
+            app:cardElevation="0dp">
+
+            <com.diadiem.pos_components.PTextView
+                android:background="@android:color/transparent"
+                android:id="@+id/txtProductAdded"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:useFontStyle="semi_bold"
+                app:useTextColor="color2"
+                app:useTextHeader="h5" />
+
+        </com.google.android.material.card.MaterialCardView>
+        <!--<ImageView
+            android:id="@+id/imgProductAdded"
+            android:layout_width="@dimen/_24sdp"
+            android:layout_height="@dimen/_24sdp"
+            android:layout_gravity="top|center"
+            android:layout_marginTop="@dimen/_3sdp"
+            imageCircularUrl="@{url}"
+            />-->
+    </FrameLayout>
+</layout>
+

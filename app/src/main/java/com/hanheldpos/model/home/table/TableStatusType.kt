@@ -4,7 +4,7 @@ enum class TableStatusType(
     val value: Int
 ) {
     Available(1),
-    Held(2),
+    Pending(2),
     Unavailable(3);
 
     companion object {

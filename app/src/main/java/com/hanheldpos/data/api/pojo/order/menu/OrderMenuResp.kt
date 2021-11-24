@@ -2,9 +2,10 @@ package com.hanheldpos.data.api.pojo.order.menu
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
-import com.hanheldpos.data.api.pojo.product.GroupPriceItem
-import kotlinx.android.parcel.Parcelize
-import kotlinx.parcelize.RawValue
+import com.hanheldpos.data.api.pojo.product.ProductItem
+import com.hanheldpos.model.product.ModPricingType
+import com.hanheldpos.model.product.PricingMethodType
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class OrderMenuResp(
@@ -21,193 +22,6 @@ data class OrderMenuResp(
     @field:SerializedName("DidError")
     val didError: Boolean? = null
 ) : Parcelable
-
-@Parcelize
-data class ProductItem(
-
-    @field:SerializedName("_id")
-    val id: String,
-
-    @field:SerializedName("_rev")
-    val rev: String,
-
-    @field:SerializedName("_key")
-    val key: Int,
-
-    @field:SerializedName("ProductId")
-    val productID: Int,
-
-    @field:SerializedName("Detail")
-    val detail:@RawValue Any? = null,
-
-    @field:SerializedName("CategoryGuid")
-    val categoryGUID: String,
-
-    @field:SerializedName("Name")
-    val name: String,
-
-    @field:SerializedName("Name1")
-    val name1: String,
-
-    @field:SerializedName("Description")
-    val description: String,
-
-    @field:SerializedName("Name2")
-    val name2: String,
-
-    @field:SerializedName("Description2")
-    val description2: String,
-
-    @field:SerializedName("Name3")
-    val name3: String,
-
-    @field:SerializedName("Name4")
-    val name4: String,
-
-    @field:SerializedName("AsignTo")
-    val asignTo: Int,
-
-    @field:SerializedName("Location")
-    val location: String,
-
-    @field:SerializedName("UnitType")
-    val unitType: Int,
-
-    @field:SerializedName("Price")
-    val price: Double,
-
-    @field:SerializedName("ComparePrice")
-    val comparePrice: Double,
-
-    @field:SerializedName("CostPerItem")
-    val costPerItem: Double,
-
-    @field:SerializedName("ChargeTaxes")
-    val chargeTaxes: Int,
-
-    @field:SerializedName("SKU")
-    val sku: String,
-
-    @field:SerializedName("Quantity")
-    val quantity: Int,
-
-    @field:SerializedName("InventoryPolicy")
-    val inventoryPolicy: Int,
-
-    @field:SerializedName("Barcode")
-    val barcode: String,
-
-    @field:SerializedName("StatusId")
-    val statusID: Int,
-
-    @field:SerializedName("Visible")
-    val visible: Int,
-
-    @field:SerializedName("Purchase")
-    val purchase: Int,
-
-    @field:SerializedName("CreateDate")
-    val createDate: String,
-
-    @field:SerializedName("Variants")
-    val variants: String,
-
-    @field:SerializedName("Modifier")
-    val modifier: String,
-
-    @field:SerializedName("Color")
-    val color: String,
-
-    @field:SerializedName("Combo")
-    val combo: String,
-
-    @field:SerializedName("PrintingLocation")
-    val printingLocation: String,
-
-    @field:SerializedName("PriceFormat")
-    val priceFormat: String? = null,
-
-    @field:SerializedName("ComparePriceFormat")
-    val comparePriceFormat: String? = null,
-
-    @field:SerializedName("Url")
-    val url: String? = null,
-
-    @field:SerializedName("Discount")
-    val discount: String? = null,
-
-    val strDiscount: String? = null,
-    val strComparePrice: String? = null,
-    val strSku: String? = null,
-    val strName3: String? = null,
-    val strUnit: String? = null,
-
-    @field:SerializedName("Handle")
-    val handle: String,
-
-    @field:SerializedName("LocationLock")
-    val locationLock: String? = null,
-
-    @field:SerializedName("IsLock")
-    val isLock: Boolean,
-
-    @field:SerializedName("IsPriceFixed")
-    val isPriceFixed: Boolean? = null,
-
-    @field:SerializedName("PricingMethodType")
-    val pricingMethodType: Int,
-
-    @field:SerializedName("PricingMethodDiscount")
-    val pricingMethodDiscount: Double,
-
-    @field:SerializedName("ModifierPricingType")
-    val modifierPricingType: Int,
-
-    @field:SerializedName("ModifierPricingDescription")
-    val modifierPricingDescription: String,
-
-    @field:SerializedName("ModifierPricingValue")
-    val modifierPricingValue: Double,
-
-//    @field:SerializedName("ProductPriceOverrideList")
-//    val productPriceOverrideList: List<Any?>,
-//
-//    @field:SerializedName("VariantPriceOverrideList")
-//    val variantPriceOverrideList: List<Any?>,
-
-    @field:SerializedName("VariantsGroup")
-    val variantsGroup:@RawValue Any? = null,
-
-    @field:SerializedName("VariantsGroupNameDefault")
-    val variantsGroupNameDefault: String? = null,
-
-    @field:SerializedName("VariantsGroupSkuDefault")
-    val variantsGroupSkuDefault: String? = null,
-
-    @field:SerializedName("ModifierPricing")
-    val modifierPricing: String,
-
-    @field:SerializedName("PricingMethod")
-    val pricingMethod: String,
-
-    @field:SerializedName("GroupPrices")
-    val groupPrices: List<GroupPriceItem>? = null,
-
-    @field:SerializedName("ProductTypeId")
-    val productTypeID: String? = null,
-
-    @field:SerializedName("ComboType")
-    val comboType: Int,
-
-    @field:SerializedName("Parent_id")
-    val parentID: String? = null,
-
-    ) : Parcelable,Cloneable {
-
-    public override fun clone(): ProductItem {
-        return copy()
-    }
-}
 
 @Parcelize
 data class ListToHierarchyItem(
@@ -237,7 +51,7 @@ data class ListToHierarchyItem(
     val orderNo: Int? = null,
 
     @field:SerializedName("Children")
-    val children: List<ListToHierarchyItem?>? = null,
+    val children: List<ListToHierarchyItem>,
 
     @field:SerializedName("Url")
     val url: String? = null,
@@ -290,6 +104,7 @@ data class CategoryItem(
 ) : Parcelable {
 
 }
+
 @Parcelize
 data class ProductModifierItem(
 
@@ -470,7 +285,7 @@ data class MenusGroupItem(
 ) : Parcelable
 
 @Parcelize
-data class ModifierItemItem(
+data class ModifierItem(
 
     @field:SerializedName("ModifierGuid")
     val modifierGuid: String? = null,
@@ -501,7 +316,34 @@ data class ModifierItemItem(
 
     @field:SerializedName("CreateDate")
     val createDate: String? = null
-) : Parcelable
+) : Parcelable {
+    fun pricing(productPricing : ProductItem) : Double{
+        val pricingType = productPricing.modifierPricingType ?: -1;
+        val pricingValue = productPricing.modifierPricingValue ?: 0.0;
+        when (ModPricingType.fromInt(pricingType)) {
+            ModPricingType.FIX_AMOUNT -> {
+                return pricingValue;
+            }
+            ModPricingType.USED_DEFAULT_PRICE -> {
+                return price ?: 0.0;
+            }
+            ModPricingType.DISCOUNT_AMOUNT -> {
+                val pricingPrice = (price ?: 0.0).minus(pricingValue);
+                return if (pricingPrice < 0) 0.0 else pricingPrice;
+            }
+            ModPricingType.DISCOUNT_PERCENT -> {
+                val pricingPrice = (price ?: 0.0).minus((price ?: 0.0) * pricingValue / 100);
+                return pricingPrice;
+            }
+            ModPricingType.NONE -> {
+                return 0.0;
+            }
+            else -> {
+                return price ?: 0.0;
+            }
+        }
+    }
+}
 
 @Parcelize
 data class MenusGroupShowInItem(
@@ -837,21 +679,21 @@ data class ListProductItem(
     val productModifier: List<ProductModifierItem?>? = null,
 
     @field:SerializedName("Product")
-    val product: List<ProductItem?>? = null,
+    val product: List<ProductItem>? = null,
 
     @field:SerializedName("ModifierItem")
-    val modifierItem: List<ModifierItemItem?>? = null,
+    val modifierItem: List<ModifierItem>? = null,
 
     @field:SerializedName("Units")
-    val units: List<UnitsItem?>? = null
+    val units: List<UnitsItem>? = null
 ) : Parcelable
 
 @Parcelize
 data class ListMenusGroupItemTree(
 
     @field:SerializedName("ListToHierarchy")
-    val listToHierarchy: List<ListToHierarchyItem?>? = null,
+    val listToHierarchy: List<ListToHierarchyItem>? = null,
 
     @field:SerializedName("ListToArray")
-    val listToArray: List<ListToArrayItem?>? = null
+    val listToArray: List<ListToArrayItem>? = null
 ) : Parcelable

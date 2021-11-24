@@ -10,14 +10,16 @@ import com.hanheldpos.data.api.pojo.order.menu.getMenuList
 import com.hanheldpos.data.api.pojo.table.getFloorList
 import com.hanheldpos.databinding.FragmentHomeBinding
 import com.hanheldpos.model.DataHelper
+import com.hanheldpos.ui.base.dialog.AppAlertDialog
 import com.hanheldpos.ui.base.pager.FragmentPagerAdapter
-import com.hanheldpos.ui.screens.home.order.OrderDataVM
+import com.hanheldpos.ui.screens.cart.CartDataVM
+import com.hanheldpos.ui.screens.cart.payment.PaymentFragment
 import com.hanheldpos.ui.screens.main.BaseMainFragment
 import com.hanheldpos.ui.screens.home.order.OrderFragment
 import com.hanheldpos.ui.screens.home.table.TableFragment
 import com.hanheldpos.ui.screens.main.adapter.TabSpinnerAdapter
-import com.hanheldpos.ui.screens.home.table.TableDataVM
 import com.hanheldpos.ui.screens.main.adapter.SubSpinnerAdapter
+import com.hanheldpos.ui.screens.menu.MenuFragment
 
 
 class HomeFragment : BaseMainFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
@@ -31,6 +33,7 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
 
 
     private val screenViewModel by activityViewModels<ScreenViewModel>()
+    private val cartDataVM by activityViewModels<CartDataVM>()
 
     // Adapter
     private lateinit var paperAdapter: FragmentPagerAdapter
@@ -70,6 +73,16 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
 
     override fun initAction() {
         screenViewModel.screenEvent.observe(this, {
+            // Check cart initialized
+            if (it.screen == HomePage.Order && cartDataVM.cartModelLD.value == null) {
+                showAlert(
+                    message =  "Cart has not been initialized!",
+                    onClickListener = object : AppAlertDialog.AlertDialogOnClickListener {
+                        override fun onPositiveClick() {
+                            screenViewModel.showTablePage();
+                        }
+                    })
+            }
             binding.toolbarLayout.spinnerMain.setSelection(it.screen.pos);
         })
 
@@ -87,7 +100,6 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
                         HomePage.Table -> TableFragment.selectedSort = position;
                     }
                     screenViewModel.onChangeDropdown(item);
-
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -159,6 +171,10 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
                 else -> 0
             }
         )
+    }
+
+    override fun openSelectMenu() {
+        navigator.goToWithAnimationEnterFromLeft(MenuFragment());
     }
 
 }

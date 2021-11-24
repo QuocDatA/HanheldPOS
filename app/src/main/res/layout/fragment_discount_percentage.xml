@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.text.TextUtils" />
+
+        <variable
+            name="viewModel"
+            type="com.hanheldpos.ui.screens.discount.discounttype.percentage.DiscountPercentageVM" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="@dimen/_9sdp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_8sdp"
+            android:orientation="vertical"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_outline"
+                android:orientation="vertical"
+                android:paddingHorizontal="@dimen/_10sdp"
+                android:paddingVertical="@dimen/_5sdp">
+
+                <com.diadiem.pos_components.PTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/percentage"
+                    app:useFontStyle="normal"
+                    app:useTextColor="color4"
+                    app:useTextHeader="h6" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    android:orientation="horizontal">
+
+                    <com.diadiem.pos_components.PTextInputEditText
+                        android:id="@+id/percentDiscount"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:digits="0123456789"
+                        android:focusableInTouchMode="true"
+                        android:hint="@{`0%`}"
+                        android:inputType="numberDecimal"
+                        android:text="@={viewModel.percent}"
+                        android:textColorHint="@color/color_4"
+                        app:ipt_useFontStyle="normal"
+                        app:ipt_useTextColor="color4"
+                        app:ipt_useTextHeader="h4" />
+
+                    <com.diadiem.pos_components.PTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/required"
+                        app:useFontStyle="normal"
+                        app:useTextColor="color6"
+                        app:useTextHeader="h7" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <androidx.legacy.widget.Space
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/_8sdp" />
+
+            <com.diadiem.pos_components.PTextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_outline"
+                android:focusableInTouchMode="true"
+                android:hint="@string/title"
+                android:inputType="text"
+                android:paddingHorizontal="@dimen/_10sdp"
+                android:paddingVertical="@dimen/_12sdp"
+                android:text="@={viewModel.title}"
+                android:textColorHint="@color/color_4"
+                app:ipt_useFontStyle="normal"
+                app:ipt_useTextColor="color4"
+                app:ipt_useTextHeader="h4" />
+        </LinearLayout>
+
+        <com.diadiem.pos_components.PMaterialButton
+            android:id="@+id/btnSave"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginHorizontal="@dimen/_9sdp"
+            android:background="@color/color_0"
+            android:clickable="true"
+            android:enabled="@{!viewModel.percent.equals(`0`) &amp;&amp; !TextUtils.isEmpty(viewModel.title)}"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
+            android:gravity="center"
+            android:padding="@dimen/_5sdp"
+            android:text="@string/save"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:pbtn_useFontStyle="bold"
+            app:pbtn_useTextColor="color2"
+            app:pbtn_useTextHeader="h5" />
+    </RelativeLayout>
+</layout>

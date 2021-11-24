@@ -12,9 +12,6 @@
             name="viewModel"
             type="com.hanheldpos.ui.screens.home.order.OrderVM" />
 
-        <variable
-            name="tableDataVM"
-            type="com.hanheldpos.ui.screens.home.table.TableDataVM" />
 
         <variable
             name="cartDataVM"
@@ -100,37 +97,45 @@
         </RelativeLayout>
 
 
-        
-        <include
-            layout="@layout/divider_vertical"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_1sdp"
-            android:layout_above="@id/toolbarCart" />
 
 
-        <FrameLayout
-            android:id="@+id/rootPopup"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+
+        <LinearLayout
             android:layout_above="@id/toolbarCart"
-            android:background="@color/color_0"
-            android:visibility="gone">
-
-            <com.diadiem.pos_components.PTextView
-                android:id="@+id/txtProduct"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <FrameLayout
+                android:id="@+id/rootPopup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_12sdp"
-                android:layout_marginVertical="@dimen/_4sdp"
-                android:text="@string/added"
-                app:useTextColor="color2"
-                app:useTextHeader="h5" />
-        </FrameLayout>
+                android:background="@color/color_0"
+                android:visibility="gone">
+
+                <com.diadiem.pos_components.PTextView
+                    android:id="@+id/txtProduct"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_12sdp"
+                    android:layout_marginVertical="@dimen/_4sdp"
+                    android:text="@string/added"
+                    app:useTextColor="color2"
+                    app:useTextHeader="h5" />
+            </FrameLayout>
+
+            <include
+                layout="@layout/divider_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_1sdp" />
+
+        </LinearLayout>
+
         <LinearLayout
+            android:id="@+id/toolbarCart"
+            android:layout_alignParentBottom="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:id="@+id/toolbarCart"
+
             android:background="@color/color_2"
             android:orientation="horizontal">
 
@@ -145,7 +150,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/_7sdp"
                     app:useTextColor="color4"
-                    android:text="@{tableDataVM.curTableLD.tableName + `-` + cartDataVM.diningOptionLD.title + ` (` + cartDataVM.numberOfCustomer + `)`}"
+                    android:text="@{cartDataVM.cartModelLD.table.tableName + `-` + cartDataVM.diningOptionLD.title + ` (` + cartDataVM.numberOfCustomer + `)`}"
 
                     app:useTextHeader="h5"
                     tools:text="B1-For Here (2)" />
@@ -157,7 +162,6 @@
                     android:paddingHorizontal="@dimen/_5sdp"
                     app:useTextColor="color2"
                     app:useTextHeader="h6"
-
                     android:text="@{cartDataVM.linePerTotalQuantity}"
                     tools:text="8/10" />
 
@@ -170,6 +174,7 @@
                 android:background="@color/color_10" />
 
             <LinearLayout
+
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -183,7 +188,7 @@
                     app:useFontStyle="bold"
                     app:useTextColor="color4"
                     app:useTextHeader="h5"
-                    priceView="@{cartDataVM.cartModelLD.price}"
+                    priceView="@{cartDataVM.cartModelLD.total()}"
 
                     tools:text="1.000.000" />
 
@@ -201,6 +206,7 @@
                     android:onClick="@{v->viewModel.showCart()}">
 
                     <ImageView
+                        android:id="@+id/imgCart"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@color/color_0"
@@ -213,7 +219,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginTop="@dimen/_2sdp"
-                        android:text="@{String.valueOf(cartDataVM.cartModelLD.quantityCart)}"
+                        android:text="@{String.valueOf(cartDataVM.cartModelLD.totalQuantity)}"
                         app:useFontStyle="bold"
                         app:useTextColor="color0"
                         app:useTextHeader="h6"
@@ -223,7 +229,6 @@
             </LinearLayout>
 
         </LinearLayout>
-
 
     </RelativeLayout>
 </layout>

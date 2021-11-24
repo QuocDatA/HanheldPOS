@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="item"
-            type="com.hanheldpos.data.api.pojo.order.settings.DiningOptionItem"
-            />
+            type="com.hanheldpos.data.api.pojo.order.settings.DiningOptionItem" />
 
     </data>
 
     <com.diadiem.pos_components.PRadioButton
         android:id="@+id/dining_option_button"
         android:layout_width="wrap_content"
-        android:paddingHorizontal="@dimen/_3sdp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_4sdp"
-        android:paddingVertical="@dimen/_5sdp"
-        app:useTextColor="color6"
-        app:useTextHeader="h6"
         android:background="@drawable/bg_delivery_to_radio_button"
-
+        android:gravity="center"
+        android:paddingHorizontal="@dimen/_5sdp"
+        android:paddingVertical="@dimen/_5sdp"
         android:text="@{item.title}"
-        android:gravity="center" />
+
+        app:useTextColor="color6"
+        app:useTextHeader="h6" />
 </layout>

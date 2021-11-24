@@ -1,30 +1,33 @@
 package com.hanheldpos.ui.screens.product
 
-import android.os.Bundle
+import android.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.google.android.material.tabs.TabLayoutMediator
 import com.hanheldpos.R
-import com.hanheldpos.data.api.pojo.order.menu.GroupItem
+import com.hanheldpos.data.api.pojo.product.ProductItem
+import com.hanheldpos.data.api.pojo.product.getModifierList
 import com.hanheldpos.databinding.FragmentProductDetailBinding
-import com.hanheldpos.model.cart.order.OrderItemModel
-import com.hanheldpos.model.home.order.combo.ItemActionType
-import com.hanheldpos.model.product.ExtraDoneModel
-import com.hanheldpos.model.product.ProductOrderItem
+import com.hanheldpos.model.DataHelper
+import com.hanheldpos.model.cart.*
+import com.hanheldpos.model.combo.ItemActionType
+import com.hanheldpos.model.product.BaseProductInCart
 import com.hanheldpos.ui.base.fragment.BaseFragment
-import com.hanheldpos.ui.screens.home.order.OrderDataVM
+import com.hanheldpos.ui.screens.home.order.OrderFragment
 import com.hanheldpos.ui.screens.product.adapter.OptionsPagerAdapter
-import com.hanheldpos.ui.screens.product.adapter.modifier.ModifierSelectedItemModel
 import com.hanheldpos.ui.screens.product.options.OptionVM
 import com.hanheldpos.ui.screens.product.options.modifier.ModifierFragment
 import com.hanheldpos.ui.screens.product.options.variant.VariantFragment
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 
 class ProductDetailFragment(
-    private val listener: ProductDetailListener? = null
+    private val item: Regular,
+    private val groupBundle : GroupBundle? = null,
+    private val productBundle : ProductItem? = null,
+    private val quantityCanChoose: Int = -1,
+    private val action: ItemActionType,
+    private val listener: OrderFragment.OrderMenuListener? = null,
 ) : BaseFragment<FragmentProductDetailBinding, ProductDetailVM>(), ProductDetailUV,
     OptionVM.OptionListener {
     enum class OptionPage(val pos: Int, val text: String) {
@@ -39,6 +42,9 @@ class ProductDetailFragment(
 
     // Adapter
     private lateinit var optionsPagerAdapter: OptionsPagerAdapter;
+
+    // Dialog Note
+    private lateinit var dialogCategory: AlertDialog;
 
     override fun layoutRes() = R.layout.fragment_product_detail;
 
@@ -70,69 +76,40 @@ class ProductDetailFragment(
                     }
                 }
             }
-        }.let {
-            it.attach();
-        }
-
+        }.attach()
 
     }
 
     override fun initData() {
-        arguments?.let {
-            val i: OrderItemModel? = it.getParcelable(ARG_ORDER_ITEM_MODEL_FRAGMENT);
-            val quantityCanChoose: Int = it.getInt(ARG_PRODUCT_DETAIL_QUANTITY);
-            val actionType : ItemActionType = it.getSerializable(ARG_ITEM_ACTION_TYPE) as ItemActionType;
-            optionVM.extraDoneModel = i?.extraDone;
-            i?.extraDone = i?.extraDone ?: ExtraDoneModel(
-                productOrderItem = i?.productOrderItem,
-            )
-            viewModel.actionType.value = actionType;
-            viewModel.orderItemModel.value = i;
-            viewModel.maxQuantity = quantityCanChoose;
-        }
-        val extraData= viewModel.orderItemModel.value?.productOrderItem?.extraData;
+        viewModel.actionType.value = action;
+        viewModel.regularInCart.value = item;
+        viewModel.maxQuantity = quantityCanChoose;
 
-        GlobalScope.launch(Dispatchers.IO) {
-           extraData!!.let {
-                fragmentMap[OptionPage.Variant] = VariantFragment.getInstance(it);
-                fragmentMap[OptionPage.Modifier] = ModifierFragment.getInstance(it);
-                launch(Dispatchers.Main) {
-                    optionsPagerAdapter.submitList(fragmentMap.values);
-                    if(it.variantStrProductList==null){
-                        binding.tabOption.getTabAt(1)?.select();
-                    }
-                }
-            }
+        viewModel.regularInCart.value.let {
+
+            fragmentMap[OptionPage.Variant] =
+                VariantFragment(it?.proOriginal?.variantsGroup, it?.variantList, it?.proOriginal!!);
+            fragmentMap[OptionPage.Modifier] = ModifierFragment(
+                it.modifierList,
+                it.proOriginal?.getModifierList(
+                    DataHelper.orderMenuResp!!
+                )
+            );
+            optionsPagerAdapter.submitList(fragmentMap.values);
+
         }
     }
 
     override fun initAction() {
-
-    }
-
-    interface ProductDetailListener {
-        fun onCartAdded(item: OrderItemModel,action: ItemActionType)
-    }
-
-    companion object {
-        private const val ARG_ORDER_ITEM_MODEL_FRAGMENT = "ARG_ORDER_ITEM_MODEL_FRAGMENT"
-        private const val ARG_PRODUCT_DETAIL_QUANTITY = "ARG_PRODUCT_DETAIL_QUANTITY"
-        private const val ARG_ITEM_ACTION_TYPE = "ARG_ITEM_ACTION_TYPE"
-        fun getInstance(
-            item: OrderItemModel,
-            quantityCanChoose: Int = -1,
-            action : ItemActionType,
-            listener: ProductDetailListener? = null,
-        ): ProductDetailFragment {
-            return ProductDetailFragment(
-                listener = listener
-            ).apply {
-                arguments = Bundle().apply {
-                    putParcelable(ARG_ORDER_ITEM_MODEL_FRAGMENT, item)
-                    putSerializable(ARG_ITEM_ACTION_TYPE,action);
-                    putInt(ARG_PRODUCT_DETAIL_QUANTITY, quantityCanChoose)
+        if (viewModel.regularInCart.value?.proOriginal?.variantsGroup == null) {
+            GlobalScope.launch(Dispatchers.IO) {
+                delay(300);
+                launch(Dispatchers.Main) {
+                    binding.tabOption.getTabAt(0)?.view?.isClickable = false;
+                    binding.tabOption.getTabAt(1)?.select();
+                    binding.optionContainer.currentItem = 1;
                 }
-            };
+            }
         }
     }
 
@@ -140,21 +117,26 @@ class ProductDetailFragment(
         navigator.goOneBack();
     }
 
-    override fun onAddCart(item: OrderItemModel) {
+    override fun onAddCart(item: BaseProductInCart) {
         onBack();
-        listener?.onCartAdded(item,viewModel.actionType.value!!);
+        listener?.onCartAdded(item, viewModel.actionType.value!!);
     }
 
-    override fun onModifierItemChange(item: ModifierSelectedItemModel) {
-        viewModel.onModifierQuantityChange(
-            item.realItem?.modifier,
-            item,
-            optionVM.extraDoneModel != null
-        );
+    override fun onModifierAddItem(item: ModifierCart) {
+        viewModel.onModifierAddItem(item);
     }
 
-    override fun onVariantItemChange(item: GroupItem) {
-        viewModel.onVariantItemChange(item);
+    override fun onModifierRemoveItem(item: ModifierCart) {
+        viewModel.onModifierRemoveItem(item);
+    }
+
+    override fun onVariantItemChange(
+        item: List<VariantCart>,
+        groupValue: String,
+        priceOverride: Double,
+        sku: String
+    ) {
+        viewModel.onVariantItemChange(item, groupBundle, productBundle ,groupValue, priceOverride, sku);
     }
 
 

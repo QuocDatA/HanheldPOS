@@ -5,9 +5,11 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="android.text.TextUtils"/>
+        <import type="com.hanheldpos.model.product.ExtraConverter"/>
         <variable
             name="item"
-            type="com.hanheldpos.model.cart.order.OrderItemModel" />
+            type="com.hanheldpos.model.product.BaseProductInCart" />
 
         <variable
             name="isShownDetail"
@@ -31,7 +33,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="@dimen/_4sdp"
-                android:text="@{`(`+String.valueOf(item.orderQuantity)+`x)`}"
+                android:text="@{`(`+String.valueOf(item.quantity)+`x)`}"
                 app:useTextColor="color4"
                 app:useTextHeader="h5"
                 tools:text="(1x)" />
@@ -56,14 +58,14 @@
                         <com.diadiem.pos_components.PTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@{item.orderName}"
+                            android:text="@{item.name}"
                             app:useTextColor="color4"
                             app:useTextHeader="h5"
                             tools:text="Pho Bo Tai" />
 
                         <com.diadiem.pos_components.PTextView
                             android:id="@+id/viewDetailTextView"
-                            visibleObject="@{item.menuComboItem!=null &amp;&amp; isShownDetail==false}"
+                            visibleObject="@{item.proOriginal.bundle &amp;&amp; isShownDetail==false}"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/view_details"
@@ -78,36 +80,39 @@
                         android:layoutDirection="rtl"
                         android:orientation="vertical">
 
-
-                        <com.diadiem.pos_components.PTextView
+                        <LinearLayout
                             android:id="@+id/priceTextView"
-                            priceView="@{item.orderPrice}"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textAlignment="textEnd"
-                            app:useTextColor="color4"
-                            app:useTextHeader="h5"
-                            tools:text="137.000" />
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+                            <com.diadiem.pos_components.PTextView
+                                priceView="@{item.total}"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textAlignment="textEnd"
+                                app:useTextColor="color4"
+                                app:useTextHeader="h5"
+                                tools:text="137.000" />
+
+                            <com.diadiem.pos_components.PTextView
+                                bindStrike="@{true}"
+                                priceView="@{item.subtotalValue}"
+                                visibleObject="@{ !item.fees.empty}"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/_2sdp"
+                                android:layout_toEndOf="@+id/priceTextView"
+                                android:textAlignment="textEnd"
+                                app:useTextColor="color8"
+                                app:useTextHeader="h6"
+                                tools:text="60.000" />
+                        </LinearLayout>
+
 
                         <com.diadiem.pos_components.PTextView
-
-                            bindStrike="true"
-                            priceView="@{item.orderPrice}"
-                            visibleObject="@{item.productOrderItem.isPriceFixed==true}"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/_2sdp"
-                            android:layout_toEndOf="@+id/priceTextView"
-                            android:text="@{String.valueOf(item.productOrderItem.comparePrice)}"
-                            android:textAlignment="textEnd"
-                            app:useTextColor="color8"
-                            app:useTextHeader="h6"
-                            tools:text="60.000" />
-
-
-                        <com.diadiem.pos_components.PTextView
-                            basePriceView="@{item.priceRegular}"
-                            visibleObject="@{item.menuComboItem!=null}"
+                            basePriceView="@{item.proOriginal.price}"
+                            visibleObject="@{item.proOriginal.bundle}"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/priceTextView"
@@ -123,14 +128,14 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:orientation="vertical"
-                        visibleObject="@{isShownDetail==true ||item.menuComboItem==null }"
+                        visibleObject="@{isShownDetail==true || !item.proOriginal.bundle }"
                         android:layout_height="wrap_content">
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/productComboGroupRecyclerView"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
-                            visibleObject="@{item.combo==true}"
+                            visibleObject="@{item.proOriginal.bundle}"
                             android:overScrollMode="never"
                             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                             tools:itemCount="1"
@@ -139,13 +144,13 @@
 
                         <include
                             layout="@layout/cart_product_detail_line"
-                            visibleObject="@{item.variantStr!=null}"
-                            app:lineText="@{item.variantStr}" />
+                            visibleObject="@{item.variantList != null}"
+                            app:lineText="@{ExtraConverter.INSTANCE.variantStr(item.variantList)}" />
 
                         <include
                             layout="@layout/cart_product_detail_line"
-                            visibleObject="@{item.modifierStr!=null}"
-                            app:lineText="@{item.modifierStr}"
+                            visibleObject="@{!item.modifierList.empty}"
+                            app:lineText="@{ExtraConverter.INSTANCE.modifierStr(item.modifierList)}"
                             />
 
                         <include
@@ -158,20 +163,20 @@
                         <include
                             layout="@layout/cart_product_detail_line"
                             app:isOtherFee="@{true}"
-                            visibleObject="@{false}"
-
-                            app:lineText="@{`Other fees`}" />
+                            visibleObject="@{!item.fees.empty}"
+                            app:lineText="@{`Other fees `}"
+                            app:priceDisc="@{item.totalFee()}"/>
 
                         <include
                             layout="@layout/cart_product_detail_line"
                             app:isNote="@{true}"
-                            visibleObject="@{item.note!=null}"
+                            visibleObject="@{item.note!=null &amp;&amp; !TextUtils.isEmpty(item.note) }"
                             app:lineText="@{item.note}" />
                     </LinearLayout>
 
                 <com.diadiem.pos_components.PTextView
                     android:id="@+id/hideDetailTextView"
-                    visibleObject="@{item.menuComboItem!=null &amp;&amp; isShownDetail==true}"
+                    visibleObject="@{item.proOriginal.bundle &amp;&amp; isShownDetail==true}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/hide_details"

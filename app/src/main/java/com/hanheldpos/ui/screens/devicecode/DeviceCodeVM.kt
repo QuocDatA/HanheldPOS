@@ -5,20 +5,39 @@ import androidx.lifecycle.MutableLiveData
 import com.hanheldpos.data.api.pojo.fee.FeeResp
 import com.hanheldpos.data.api.pojo.order.menu.OrderMenuResp
 import com.hanheldpos.data.api.pojo.order.settings.OrderSettingResp
-import com.hanheldpos.data.api.pojo.setting.DeviceCodeResp
+import com.hanheldpos.data.api.pojo.device.DeviceCodeResp
+import com.hanheldpos.data.api.pojo.discount.DiscountResp
+import com.hanheldpos.data.api.pojo.payment.PaymentsResp
 import com.hanheldpos.data.api.pojo.table.TableResp
 import com.hanheldpos.data.repository.base.BaseRepoCallback
-import com.hanheldpos.data.repository.settings.SettingRepo
+import com.hanheldpos.data.repository.device.DeviceRepo
+import com.hanheldpos.data.repository.discount.DiscountRepo
+import com.hanheldpos.data.repository.fee.FeeRepo
+import com.hanheldpos.data.repository.floor.FloorRepo
+import com.hanheldpos.data.repository.menu.MenuRepo
+import com.hanheldpos.data.repository.order.OrderRepo
+import com.hanheldpos.data.repository.payment.PaymentRepo
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.ui.base.viewmodel.BaseRepoViewModel
 import java.util.*
 
-class DeviceCodeVM : BaseRepoViewModel<SettingRepo, DeviceCodeUV>() {
+class DeviceCodeVM : BaseRepoViewModel<DeviceRepo, DeviceCodeUV>() {
 
     val pinGroupSize = 4;
     val pinTextLD = MutableLiveData<String>();
 
     private var mLastTimeClick: Long = 0;
+
+    private var menuRepo : MenuRepo = MenuRepo();
+    private var orderRepo: OrderRepo = OrderRepo();
+    private var floorRepo: FloorRepo = FloorRepo();
+    private var feeRepo: FeeRepo = FeeRepo();
+    private var discountRepo : DiscountRepo = DiscountRepo();
+    private var paymentRepo : PaymentRepo = PaymentRepo();
+
+    override fun createRepo(): DeviceRepo {
+        return DeviceRepo();
+    }
 
     fun signIn() {
         if (SystemClock.elapsedRealtime() - mLastTimeClick < 1000) return;
@@ -35,6 +54,8 @@ class DeviceCodeVM : BaseRepoViewModel<SettingRepo, DeviceCodeUV>() {
             }
         })
     }
+
+
 
     private fun getPinWithSymbol(pinTextStr: String): String {
         val charList = LinkedList(pinTextStr.toList())
@@ -61,7 +82,7 @@ class DeviceCodeVM : BaseRepoViewModel<SettingRepo, DeviceCodeUV>() {
     private fun fetchAllData() {
         val location = DataHelper.getLocationGuidByDeviceCode()
         val userGuid = DataHelper.getUserGuidByDeviceCode()
-        repo?.getOrderMenu(
+        menuRepo.getOrderMenu(
             userGuid = userGuid,
             locationGuid = location,
             callback = object : BaseRepoCallback<OrderMenuResp?> {
@@ -79,7 +100,7 @@ class DeviceCodeVM : BaseRepoViewModel<SettingRepo, DeviceCodeUV>() {
                 }
             });
 
-        repo?.getOrderSetting(
+        orderRepo.getOrderSetting(
             userGuid = userGuid,
             locationGuid = location,
             callback = object : BaseRepoCallback<OrderSettingResp?>{
@@ -96,7 +117,7 @@ class DeviceCodeVM : BaseRepoViewModel<SettingRepo, DeviceCodeUV>() {
                 }
             }
         )
-        repo?.getPosFloor(
+        floorRepo.getPosFloor(
             userGuid = userGuid,
             locationGuid = location,
             callback = object : BaseRepoCallback<TableResp?> {
@@ -114,7 +135,7 @@ class DeviceCodeVM : BaseRepoViewModel<SettingRepo, DeviceCodeUV>() {
                 }
             });
 
-        repo?.getFees( userGuid = userGuid,
+        feeRepo.getFees( userGuid = userGuid,
             locationGuid = location,
             callback = object : BaseRepoCallback<FeeResp?> {
                 override fun apiResponse(data: FeeResp?) {
@@ -130,6 +151,37 @@ class DeviceCodeVM : BaseRepoViewModel<SettingRepo, DeviceCodeUV>() {
                 }
 
             },);
+
+        discountRepo.getDiscountList(userGuid = userGuid,
+            locationGuid = location,
+            callback = object : BaseRepoCallback<DiscountResp> {
+                override fun apiResponse(data: DiscountResp?) {
+                    if (data == null || data.DidError) {
+                        onDataFailure("Failed to load data");
+                    } else {
+                        DataHelper.discountResp = data;
+                        startMappingData();
+                    }
+                }
+
+                override fun showMessage(message: String?) {
+                }
+
+            },);
+        paymentRepo.getPaymentMethods(userGuid = userGuid,callback = object : BaseRepoCallback<PaymentsResp>{
+            override fun apiResponse(data: PaymentsResp?) {
+                if (data == null || data.DidError) {
+                    onDataFailure("Failed to load data");
+                } else {
+                    DataHelper.paymentsResp = data;
+                    startMappingData();
+                }
+            }
+
+            override fun showMessage(message: String?) {
+
+            }
+        })
     }
 
 
@@ -139,20 +191,21 @@ class DeviceCodeVM : BaseRepoViewModel<SettingRepo, DeviceCodeUV>() {
     }
 
     private fun startMappingData() {
-        if (DataHelper.orderMenuResp != null
-            && DataHelper.tableResp != null
-            && DataHelper.feeResp!=null) {
-            uiCallback?.openPinCode();
+        DataHelper.let {
+            it.orderMenuResp?:return;
+            it.tableResp?:return;
+            it.feeResp?:return;
+            it.discountResp?:return;
+            it.paymentsResp?:return;
         }
+        uiCallback?.openPinCode();
     }
 
     fun backPress() {
         uiCallback?.goBack();
     }
 
-    override fun createRepo(): SettingRepo {
-        return SettingRepo();
-    }
+
 
 
 }

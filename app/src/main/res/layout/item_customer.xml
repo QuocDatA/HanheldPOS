@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <import type="android.text.TextUtils"/>
+        <variable
+            name="item"
+            type="com.hanheldpos.data.api.pojo.customer.CustomerResp" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingVertical="@dimen/_12sdp"
+        android:paddingHorizontal="@dimen/_8sdp"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:gravity="center_vertical"
+            android:layout_height="wrap_content">
+            <com.diadiem.pos_components.PTextView
+                app:useTextColor="color4"
+                app:useFontStyle="normal"
+                app:useTextHeader="h5"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:text="@{item.fullName,default=`Full Name`}"/>
+            <com.diadiem.pos_components.PTextView
+                app:useTextColor="color4"
+                app:useFontStyle="normal"
+                app:useTextHeader="h5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{String.valueOf(item._key)  ,default=`1000`}"
+                android:layout_marginEnd="@dimen/_29sdp"
+                />
+            <ImageView
+                android:layout_width="@dimen/_12sdp"
+                android:layout_height="@dimen/_12sdp"
+                android:src="@drawable/ic_info"
+                />
+        </LinearLayout>
+        <androidx.legacy.widget.Space
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_5sdp"/>
+        <LinearLayout
+            android:gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <com.diadiem.pos_components.PTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:useTextColor="color5"
+                app:useFontStyle="normal"
+                app:useTextHeader="h5"
+                android:text="@{item.phone,default=`090 367 8928`}"
+                />
+            <View
+                visibleObject="@{ !TextUtils.isEmpty(item.phone) &amp;&amp; !TextUtils.isEmpty(item.email)}"
+                android:layout_width="@dimen/_1sdp"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="@dimen/_8sdp"
+                android:background="@color/color_5" />
+            <com.diadiem.pos_components.PTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:useTextColor="color5"
+                app:useFontStyle="normal"
+                app:useTextHeader="h5"
+                android:text="@{item.email,default=`quantran@gmail.com`}"
+                />
+        </LinearLayout>
+    </LinearLayout>
+</layout>

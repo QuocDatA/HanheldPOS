@@ -18,7 +18,6 @@ object SystemHelper {
      */
     fun hideSystemUI(window: Window) {
         window.run {
-
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
                 decorView.systemUiVisibility = (
                         View.SYSTEM_UI_FLAG_FULLSCREEN

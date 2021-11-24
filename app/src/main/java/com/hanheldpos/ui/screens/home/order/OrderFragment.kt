@@ -1,40 +1,29 @@
 package com.hanheldpos.ui.screens.home.order
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
-import android.animation.AnimatorSet
-import android.animation.ObjectAnimator
-import android.app.AlertDialog
 import android.os.SystemClock
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.order.menu.MenusItem
-import com.hanheldpos.data.repository.GenerateId
-import com.hanheldpos.databinding.DialogCategoryBinding
 import com.hanheldpos.databinding.FragmentOrderBinding
-import com.hanheldpos.model.cart.order.OrderItemModel
-import com.hanheldpos.model.cart.order.OrderItemType
+import com.hanheldpos.model.cart.CartPresenter
+import com.hanheldpos.model.cart.Combo
+import com.hanheldpos.model.cart.GroupBundle
+import com.hanheldpos.model.cart.Regular
 import com.hanheldpos.model.home.order.ProductModeViewType
-import com.hanheldpos.model.home.order.combo.ItemActionType
-import com.hanheldpos.model.home.order.menu.OrderMenuItemModel
-import com.hanheldpos.model.product.ExtraDoneModel
-import com.hanheldpos.model.product.ProductOrderItem
+import com.hanheldpos.model.combo.ItemActionType
+import com.hanheldpos.model.home.order.menu.ProductMenuItem
+import com.hanheldpos.model.product.BaseProductInCart
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.cart.CartDataVM
 import com.hanheldpos.ui.screens.cart.CartFragment
+import com.hanheldpos.ui.screens.combo.ComboFragment
 import com.hanheldpos.ui.screens.home.HomeFragment
 import com.hanheldpos.ui.screens.home.ScreenViewModel
-import com.hanheldpos.ui.screens.home.order.adapter.OrderMenuAdapter
-import com.hanheldpos.ui.screens.home.order.adapter.OrderMenuAdapterHelper
 import com.hanheldpos.ui.screens.home.order.adapter.OrderProductAdapter
 import com.hanheldpos.ui.screens.home.order.adapter.OrderProductAdapterHelper
-import com.hanheldpos.ui.screens.home.order.combo.ComboFragment
-import com.hanheldpos.ui.screens.home.table.TableDataVM
+import com.hanheldpos.ui.screens.home.order.menu.CategoryMenuFragment
 import com.hanheldpos.ui.screens.product.ProductDetailFragment
 import kotlinx.coroutines.*
 
@@ -43,18 +32,12 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
 
     // ViewModel
     private val dataVM by activityViewModels<OrderDataVM>()
-    private val screenViewModel by activityViewModels<ScreenViewModel>()
-    private val tableDataVM by activityViewModels<TableDataVM>()
     private val cartDataVM by activityViewModels<CartDataVM>()
+    private val screenViewModel by activityViewModels<ScreenViewModel>()
 
-    // Adapter
-    private lateinit var menuAdapter: OrderMenuAdapter;
-    private lateinit var menuAdapHelper: OrderMenuAdapterHelper;
+    //Adapter
     private lateinit var productAdapter: OrderProductAdapter;
     private lateinit var productAdapHelper: OrderProductAdapterHelper;
-
-    // Dialog Category
-    private lateinit var dialogCategory: AlertDialog;
 
     override fun viewModelClass(): Class<OrderVM> {
         return OrderVM::class.java
@@ -67,63 +50,15 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
             binding.viewModel = this
         }
         binding.dataVM = this.dataVM
-        binding.tableDataVM = this.tableDataVM
         binding.cartDataVM = this.cartDataVM
     }
 
     override fun initView() {
 
-        // category adapter vs listener
-
-        menuAdapHelper = OrderMenuAdapterHelper(callBack = object :
-            OrderMenuAdapterHelper.AdapterCallBack {
-            override fun onListSplitCallBack(list: List<OrderMenuItemModel>) {
-                menuAdapter.submitList(list);
-                menuAdapter.notifyDataSetChanged();
-
-            }
-        });
-
-        menuAdapter = OrderMenuAdapter(
-            listener = object : BaseItemClickListener<OrderMenuItemModel> {
-                override fun onItemClick(adapterPosition: Int, item: OrderMenuItemModel) {
-                    menuItemSelected(item);
-                    dialogCategory.dismiss();
-                }
-
-            },
-            directionCallBack = object : OrderMenuAdapter.Callback {
-                override fun directionSelectd(value: Int) {
-                    when (value) {
-                        1 -> menuAdapHelper.previous();
-                        2 -> menuAdapHelper.next();
-                    }
-                }
-
-            }
-        )
-
-        // Init Dialog Category
-        val dialogCateBinding: DialogCategoryBinding = DataBindingUtil.inflate(
-            LayoutInflater.from(context),
-            R.layout.dialog_category,
-            null,
-            false
-        );
-        dialogCateBinding.categoryList.adapter = menuAdapter;
-
-        val builder = AlertDialog.Builder(context);
-        builder.setView(dialogCateBinding.root);
-
-        dialogCategory = builder.create();
-
-        dialogCateBinding.closeBtn.setOnClickListener { dialogCategory.dismiss() }
-
         // product adapter vs listener
-
         productAdapHelper = OrderProductAdapterHelper(
             callBack = object : OrderProductAdapterHelper.AdapterCallBack {
-                override fun onListSplitCallBack(list: List<ProductOrderItem>) {
+                override fun onListSplitCallBack(list: List<ProductMenuItem>) {
                     GlobalScope.launch(Dispatchers.Main) {
                         productAdapter.submitList(list);
                         productAdapter.notifyDataSetChanged();
@@ -134,63 +69,14 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
         );
 
         productAdapter = OrderProductAdapter(
-            listener = object : BaseItemClickListener<ProductOrderItem> {
-                override fun onItemClick(adapterPosition: Int, item: ProductOrderItem) {
+            listener = object : BaseItemClickListener<ProductMenuItem> {
+                override fun onItemClick(adapterPosition: Int, item: ProductMenuItem) {
                     Log.d("OrderFragment", "Product Selected");
                     if (SystemClock.elapsedRealtime() - viewModel.mLastTimeClick <= 500) return;
                     viewModel.mLastTimeClick = SystemClock.elapsedRealtime();
-                    when (item.uiType) {
-                        ProductModeViewType.Product -> {
-                            val onCartAdded = object : ProductDetailFragment.ProductDetailListener {
-                                override fun onCartAdded(
-                                    item: OrderItemModel,
-                                    action: ItemActionType
-                                ) {
-                                    showCartAnimation(item);
-                                }
-                            }
-                            navigator.goToWithCustomAnimation(
-                                ProductDetailFragment.getInstance(
-                                    item = OrderItemModel(
-                                        productOrderItem = item,
-                                        type = OrderItemType.Product
-                                    ),
-                                    quantityCanChoose = 100,
-                                    action = ItemActionType.Add,
-                                    listener = onCartAdded
-                                )
-                            )
-                        }
-                        ProductModeViewType.PrevButton -> {
-                            GlobalScope.launch(Dispatchers.IO) {
-                                productAdapHelper.previous();
-                            }
-                        }
-                        ProductModeViewType.NextButton -> {
-                            GlobalScope.launch(Dispatchers.IO) {
-                                productAdapHelper.next();
-                            }
-                        }
-                        ProductModeViewType.Combo -> {
-                            val onCartAdded = object : ComboFragment.ComboListener {
-                                override fun onCartAdded(item: OrderItemModel,actionType: ItemActionType) {
-                                    showCartAnimation(item);
-                                }
-                            }
-                            navigator.goToWithCustomAnimation(
-                                ComboFragment.getInstance(
-                                    item = OrderItemModel(
-                                        productOrderItem = item,
-                                        type = OrderItemType.Combo
-                                    ),
-                                    action = ItemActionType.Add,
-                                    quantityCanChoose = 100,
-                                    listener = onCartAdded
-                                )
-                            );
-                        }
-                    }
+                    onProductMenuSelected(item);
                 }
+
 
             }
         ).also {
@@ -214,89 +100,103 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
             }
         })
 
-        dataVM.menus.observe(this, {
-            menuAdapHelper.submitList(it);
-        })
-
         dataVM.selectedMenu.observe(this, { orderMenuItemModel ->
-            dataVM.getProductByMenu(orderMenuItemModel)
-                ?.let { it1 ->
-                    val rs: MutableList<ProductOrderItem> = mutableListOf();
-                    it1.forEach {
 
-                        it?.let { it2 -> rs.add(it2) }
+            val list = dataVM.getProductByMenu(orderMenuItemModel);
+            if (list == null) productAdapHelper.submitList(mutableListOf());
+            else
+                list?.let { it1 ->
+                    val rs: MutableList<ProductMenuItem> = mutableListOf();
+                    it1.forEach {
+                        it.let { it2 -> rs.add(it2) }
                     }
                     productAdapHelper.submitList(rs.toMutableList());
                 }
         });
     }
 
-    fun showCartAnimation(item: OrderItemModel) {
+    fun onProductMenuSelected(item: ProductMenuItem) {
+        when (item.uiType) {
+            ProductModeViewType.Product -> {
+                val onCartAdded = object : OrderMenuListener {
+                    override fun onCartAdded(item: BaseProductInCart, action: ItemActionType) {
+                        showCartAnimation(item);
+                    }
+                }
+                item.proOriginal!!.let {
+                    if (!it.isBundle())
+                        navigator.goToWithCustomAnimation(
+                            ProductDetailFragment(
+                                item = Regular(
+                                    it,
+                                    cartDataVM.diningOptionLD.value!!,
+                                    1,
+                                    it.skuDefault,
+                                    it.variantDefault,
+                                    it.price,
+                                    null
+                                ),
+                                quantityCanChoose = 100,
+                                action = ItemActionType.Add,
+                                listener = onCartAdded
+                            )
+                        ) else navigator.goToWithCustomAnimation(
+                        ComboFragment(
+                            item = Combo(
+                                it,
+                                it.groupComboList!!.map { pro -> GroupBundle(pro, mutableListOf()) },
+                                cartDataVM.diningOptionLD.value!!,
+                                1,
+                                it.skuDefault,
+                                it.variants,
+                                it.price,
+                                null
+                            ),
+                            action = ItemActionType.Add,
+                            quantityCanChoose = 100,
+                            listener = onCartAdded
+                        )
+                    );
+                }
+            }
+            ProductModeViewType.PrevButtonEnable -> {
+                GlobalScope.launch(Dispatchers.IO) {
+                    productAdapHelper.previous();
+                }
+            }
+            ProductModeViewType.NextButtonEnable -> {
+                GlobalScope.launch(Dispatchers.IO) {
+                    productAdapHelper.next();
+                }
+            }
+        }
+    }
+
+    fun showCartAnimation(item: BaseProductInCart) {
 
         binding.txtProduct.text = String.format(
             getString(R.string.added),
-            item.productOrderItem?.text
+            item.name
         )
-        binding.rootPopup.visibility = View.VISIBLE
-        val animSlideIn = ObjectAnimator.ofFloat(
-            binding.rootPopup,
-            "translationY",
-            100f,
-            0f
-        ).apply {
-            duration = 500
-            addListener(object : AnimatorListenerAdapter() {
-                override fun onAnimationEnd(animation: Animator?) {
-                    cartDataVM.addToCart(item);
-                }
-            })
-        }
-
-        val animSlideStand = ObjectAnimator.ofFloat(
-            binding.rootPopup,
-            "translationY",
-            0f,
-            0f
-        ).apply {
-            duration = 2000
-        }
-
-        val animSlideOut = ObjectAnimator.ofFloat(
-            binding.rootPopup,
-            "translationY",
-            0f,
-            100f
-        ).apply {
-            duration = 500
-        }
-
-        AnimatorSet().apply {
-            play(animSlideIn).before(animSlideStand)
-            play(animSlideStand).before(animSlideOut)
-            addListener(object : AnimatorListenerAdapter() {
-                override fun onAnimationEnd(animation: Animator?) {
-                    binding.rootPopup.visibility = View.GONE
-                }
-            })
-        }.start()
-    }
-
-
-    private fun menuItemSelected(menuItem: OrderMenuItemModel) {
-        dataVM.selectedMenu.value = menuItem
+        CartPresenter.showCartAnimation(item, binding.rootPopup, binding.imgCart) {
+            cartDataVM.addItemToCart(item);
+        };
     }
 
     override fun showCategoryDialog() {
-        dataVM.menus.value?.let { menuAdapHelper.submitList(it) }
-        dialogCategory.show();
-        dialogCategory.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        dataVM.menus.value?.let {  navigator.goTo(CategoryMenuFragment(it)) }
     }
 
     override fun showCart() {
-        navigator.goToWithCustomAnimation(CartFragment.getIntance());
+        navigator.goToWithCustomAnimation(CartFragment.getInstance());
+    }
+
+    interface OrderMenuListener {
+        fun onCartAdded(item: BaseProductInCart, action: ItemActionType)
     }
 
     companion object {
+        // Position previous dropdown item
         var selectedSort: Int = 0;
     }
 

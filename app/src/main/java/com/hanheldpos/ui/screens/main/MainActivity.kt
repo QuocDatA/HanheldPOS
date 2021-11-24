@@ -18,8 +18,6 @@ class MainActivity : BaseFragmentBindingActivity<ActivityMainBinding, MainVM>(),
 
     override fun layoutRes() = R.layout.activity_main
 
-
-
     override fun viewModelClass(): Class<MainVM> {
         return MainVM::class.java
     }
@@ -28,16 +26,13 @@ class MainActivity : BaseFragmentBindingActivity<ActivityMainBinding, MainVM>(),
         viewModel.run {
             init(this@MainActivity)
         }
-
     }
 
     override fun initView() {
         binding.root.viewTreeObserver.addOnGlobalLayoutListener {
             SystemHelper.hideSystemUI(window);
-            window.setFlags(
-                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
-                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         }
+
         getNavigator().rootFragment = HomeFragment();
     }
 

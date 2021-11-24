@@ -8,7 +8,7 @@ import com.hanheldpos.model.image.getImageUrl
 /**
  * Get Category Info
  */
-internal fun OrderMenuItemModel.setCategoryOrderItem(
+internal fun OrderMenuItem.setCategoryOrderItem(
     orderMenuResp: OrderMenuResp,
     categoryGuid: String
 ) {
@@ -20,7 +20,7 @@ internal fun OrderMenuItemModel.setCategoryOrderItem(
     }
 }
 
-internal fun OrderMenuItemModel.setCategoryOrderItem(
+internal fun OrderMenuItem.setCategoryOrderItem(
     orderMenuResp: OrderMenuResp,
     categoryItem: CategoryItem
 ) {
@@ -38,7 +38,7 @@ internal fun OrderMenuItemModel.setCategoryOrderItem(
 /**
  * Get Groups Info
  */
-internal fun OrderMenuItemModel.setGroupOrderItem(orderMenuResp: OrderMenuResp, groupGuid: String) {
+internal fun OrderMenuItem.setGroupOrderItem(orderMenuResp: OrderMenuResp, groupGuid: String) {
 
     val groupItem = orderMenuResp.getGroupItem(groupGuid)
 
@@ -47,7 +47,7 @@ internal fun OrderMenuItemModel.setGroupOrderItem(orderMenuResp: OrderMenuResp, 
     }
 }
 
-internal fun OrderMenuItemModel.setGroupOrderItem(
+internal fun OrderMenuItem.setGroupOrderItem(
     orderMenuResp: OrderMenuResp,
     groupItem: GroupsItem
 ) {

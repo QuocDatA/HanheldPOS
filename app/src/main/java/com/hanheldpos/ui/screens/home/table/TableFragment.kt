@@ -12,6 +12,7 @@ import com.hanheldpos.data.api.pojo.table.FloorTableItem
 import com.hanheldpos.databinding.FragmentTableBinding
 import com.hanheldpos.extension.notifyValueChange
 import com.hanheldpos.model.home.table.TableModeViewType
+import com.hanheldpos.model.home.table.TableStatusType
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.cart.CartDataVM
@@ -31,11 +32,8 @@ class TableFragment : BaseFragment<FragmentTableBinding, TableVM>(), TableUV {
     private lateinit var tableAdapterHelper: TableAdapterHelper
 
     // ViewModel
-    private val dataVM by activityViewModels<TableDataVM>()
     private val screenViewModel by activityViewModels<ScreenViewModel>()
     private val cartDataVM by activityViewModels<CartDataVM>()
-    // Dialog Category
-    private lateinit var dialogTable: AlertDialog;
 
 
     override fun viewModelClass(): Class<TableVM> {
@@ -48,11 +46,6 @@ class TableFragment : BaseFragment<FragmentTableBinding, TableVM>(), TableUV {
             binding.viewModel = this;
             initLifecycle(this@TableFragment);
         }
-
-        this.dataVM.run {
-            binding.dataVM = this;
-        }
-
     }
 
     override fun initView() {
@@ -60,7 +53,7 @@ class TableFragment : BaseFragment<FragmentTableBinding, TableVM>(), TableUV {
         // table adapter vs listener
         tableAdapterHelper =
             TableAdapterHelper(callback = object : TableAdapterHelper.AdapterCallBack {
-                override fun onListSplitCallBack(list: List<FloorTableItem>) {
+                override fun onListSplitCallBack(list: List<FloorTableItem?>) {
                     tableAdapter.submitList(list);
                     tableAdapter.notifyDataSetChanged();
                 }
@@ -74,15 +67,12 @@ class TableFragment : BaseFragment<FragmentTableBinding, TableVM>(), TableUV {
                     if (SystemClock.elapsedRealtime() - viewModel.mLastTimeClick > 1000) {
                         when (item.uiType) {
                             TableModeViewType.Table -> {
-                                viewModel.mLastTimeClick = SystemClock.elapsedRealtime();
-                                dataVM.curTableLD.value = item;
-                                openDialogInputCustomer(item);
+                                onTableChoosen(adapterPosition,item);
                             }
-                            TableModeViewType.PrevButton -> {
-
+                            TableModeViewType.PrevButtonEnable -> {
                                 tableAdapterHelper.previous();
                             }
-                            TableModeViewType.NextButton -> {
+                            TableModeViewType.NextButtonEnable -> {
                                 tableAdapterHelper.next();
                             }
                             else -> {
@@ -110,44 +100,66 @@ class TableFragment : BaseFragment<FragmentTableBinding, TableVM>(), TableUV {
             val screen = screenViewModel.screenEvent.value?.screen;
             if (screen == HomeFragment.HomePage.Table) {
                 if (it.realItem is FloorItem) {
-                    dataVM.floorItemSelected.value = it.realItem as FloorItem;
+                    viewModel.floorItemSelected.value = it.realItem as FloorItem;
                 } else if (it.realItem == null)
-                    dataVM.getTableList()?.toMutableList()
+                    viewModel.getTableList()?.toMutableList()
                         ?.let { it1 -> tableAdapterHelper.submitList(it1); };
             }
         })
 
-        dataVM.curTableLD.observe(this,{
-            if (it == null)
-                cartDataVM.cartModelLD.value = null
-        })
-
-        dataVM.floorItemSelected.observe(this, {
-            dataVM.floorTableList.value = dataVM.getTableListByFloor(it)?.toMutableList();
-            dataVM.floorTableList.value?.let { it1 -> tableAdapterHelper.submitList(it1) };
+        viewModel.floorItemSelected.observe(this, {
+            viewModel.floorTableList.value = viewModel.getTableListByFloor(it)?.toMutableList();
+            viewModel.floorTableList.value?.let { it1 -> tableAdapterHelper.submitList(it1) };
         });
-
 
         binding.root.viewTreeObserver.addOnGlobalLayoutListener(object :
             OnGlobalLayoutListener {
             override fun onGlobalLayout() {
                 if (binding.recyclerTable.height > 0) {
                     binding.root.viewTreeObserver.removeOnGlobalLayoutListener(this);
-                    dataVM.initData();
+                    viewModel.initData();
                 }
             }
         })
     }
 
-    private fun openDialogInputCustomer(item: FloorTableItem) {
-        navigator.goTo(TableInputFragment.getInstance(listener = object :
-            TableInputFragment.TableInputListener {
-            override fun onCompleteTable(numberCustomer: Int) {
-                cartDataVM.cartModelLD.value?.customerQuantity = numberCustomer;
-                cartDataVM.cartModelLD.notifyValueChange();
-                screenViewModel.showOrderPage();
+    private fun onTableChoosen(adapterPosition: Int,item: FloorTableItem){
+        when(item.tableStatus){
+            TableStatusType.Available->{
+                // Check list has any pending table, if has change to available
+                tableAdapter.currentList.filter { it.tableStatus == TableStatusType.Pending }.let {
+                  if (it.isNotEmpty()){
+                      it.forEach { table-> table.tableStatus = TableStatusType.Available };
+                      tableAdapter.notifyDataSetChanged();
+                      return;
+                  }
+                };
+
+                viewModel.mLastTimeClick = SystemClock.elapsedRealtime();
+
+                // Show Table intput number customer
+                navigator.goTo(TableInputFragment.getInstance(listener = object :
+                    TableInputFragment.TableInputListener {
+                    override fun onCompleteTable(numberCustomer: Int) {
+                        item.tableStatus = TableStatusType.Pending;
+                        tableAdapter.notifyItemChanged(adapterPosition);
+
+                        // Init cart fisrt time
+                        cartDataVM.initCart(numberCustomer,item);
+                        screenViewModel.showOrderPage();
+                    }
+                }));
+
             }
-        }));
+            TableStatusType.Pending->{
+                item.tableStatus = TableStatusType.Available;
+                tableAdapter.notifyItemChanged(adapterPosition);
+            }
+            TableStatusType.Unavailable->{
+
+            }
+        }
+
     }
     companion object {
         var selectedSort : Int = 0;
