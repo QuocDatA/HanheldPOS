@@ -10,32 +10,32 @@
             type="com.hanheldpos.ui.screens.home.order.OrderVM" />
     </data>
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
         android:orientation="vertical">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/_5sdp">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_5sdp">
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/layoutMain"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:elevation="0dp"
-                android:layout_margin="@dimen/_10sdp"
-                app:cardCornerRadius="@dimen/_3sdp"
-                app:cardElevation="0dp">
+    <androidx.cardview.widget.CardView
+        android:id="@+id/layoutMain"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="0dp"
+        android:layout_margin="@dimen/_10sdp"
+        app:cardCornerRadius="@dimen/_3sdp"
+        app:cardElevation="0dp">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/color_2"
-                    android:orientation="vertical"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/color_2"
+        android:orientation="vertical"
+
                     android:padding="@dimen/_6sdp">
 
                     <androidx.recyclerview.widget.RecyclerView

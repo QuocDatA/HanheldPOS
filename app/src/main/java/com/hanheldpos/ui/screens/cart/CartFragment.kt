@@ -15,6 +15,7 @@ import com.hanheldpos.model.cart.Combo
 import com.hanheldpos.model.cart.DiscountCart
 import com.hanheldpos.model.cart.Regular
 import com.hanheldpos.model.combo.ItemActionType
+import com.hanheldpos.model.discount.DiscountUser
 import com.hanheldpos.model.product.BaseProductInCart
 import com.hanheldpos.model.product.ProductType
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
@@ -164,6 +165,10 @@ class CartFragment(
         navigator
             .goToWithCustomAnimation(DiscountFragment(listener = object :
                 DiscountFragment.DiscountCallback {
+                override fun onDiscountUserChoose(discount: DiscountUser) {
+                    cartDataVM.addDiscountUser(discount);
+                }
+
                 override fun onCompReasonChoose(reason: ListReasonsItem) {
                     cartDataVM.addCompReason(reason);
                 }

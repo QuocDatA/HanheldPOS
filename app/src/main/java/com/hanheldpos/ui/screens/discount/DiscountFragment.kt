@@ -5,7 +5,8 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.order.settings.ListReasonsItem
 import com.hanheldpos.databinding.FragmentDiscountBinding
-import com.hanheldpos.model.discount.DiscountType
+import com.hanheldpos.model.discount.DiscountApplyToType
+import com.hanheldpos.model.discount.DiscountUser
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.cart.CartDataVM
 import com.hanheldpos.ui.screens.discount.discounttype.DiscountTypeFragment
@@ -54,9 +55,12 @@ class DiscountFragment(private val listener: DiscountCallback) :
         optionsPagerAdapter.submitList(
             listOf(
                 DiscountTypeFragment(
-
-                    type = DiscountType.ITEM_DISCOUNT, cart = cartDataVM.cartModelLD.value!!,
+                    applyToType = DiscountApplyToType.ITEM_DISCOUNT_APPLY_TO, cart = cartDataVM.cartModelLD.value!!,
                     listener = object : DiscountTypeFragment.DiscountTypeListener {
+                        override fun discountUserChoose(discount: DiscountUser) {
+
+                        }
+
                         override fun compReasonChoose(item: ListReasonsItem) {
 
                         }
@@ -66,9 +70,14 @@ class DiscountFragment(private val listener: DiscountCallback) :
                         }
                     }),
                 DiscountTypeFragment(
-                    type = DiscountType.ORDER_DISCOUNT,
+                    applyToType = DiscountApplyToType.ORDER_DISCOUNT_APPLY_TO,
                     cart = cartDataVM.cartModelLD.value!!,
                     listener = object : DiscountTypeFragment.DiscountTypeListener {
+                        override fun discountUserChoose(discount: DiscountUser) {
+                            listener.onDiscountUserChoose(discount);
+                            backPress();
+                        }
+
                         override fun compReasonChoose(item: ListReasonsItem) {
                             listener.onCompReasonChoose(item);
                             backPress();
@@ -88,6 +97,7 @@ class DiscountFragment(private val listener: DiscountCallback) :
     }
 
     interface DiscountCallback {
+        fun onDiscountUserChoose(discount: DiscountUser);
         fun onCompReasonChoose(reason: ListReasonsItem);
         fun onCompOrderRemove();
     }

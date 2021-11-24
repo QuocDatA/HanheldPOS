@@ -13,6 +13,7 @@ import com.hanheldpos.model.cart.CartModel
 import com.hanheldpos.model.cart.Combo
 import com.hanheldpos.model.cart.DiscountCart
 import com.hanheldpos.model.cart.Regular
+import com.hanheldpos.model.discount.DiscountUser
 import com.hanheldpos.model.home.table.TableStatusType
 import com.hanheldpos.model.product.BaseProductInCart
 import com.hanheldpos.ui.base.dialog.AppAlertDialog
@@ -40,6 +41,7 @@ class CartDataVM : BaseViewModel() {
             table = table,
             fees = DataHelper.findFeeOrderList()?: mutableListOf(),
             productsList = mutableListOf(),
+            discountUserList = mutableListOf(),
             diningOption = DataHelper.getDefaultDiningOptionItem()!!
         );
     }
@@ -91,6 +93,9 @@ class CartDataVM : BaseViewModel() {
             if (it is ListReasonsItem){
                 cartModelLD.value!!.compReason = null;
             }
+            else if (it is DiscountUser) {
+                cartModelLD.value!!.discountUserList.remove(it);
+            }
         }
         cartModelLD.notifyValueChange();
     }
@@ -102,6 +107,11 @@ class CartDataVM : BaseViewModel() {
 
     fun addCompReason(reason : ListReasonsItem){
         this.cartModelLD.value!!.addCompReason(reason);
+        cartModelLD.notifyValueChange();
+    }
+
+    fun addDiscountUser(discount : DiscountUser){
+        this.cartModelLD.value!!.addDiscountUser(discount);
         cartModelLD.notifyValueChange();
     }
 }

@@ -33,6 +33,10 @@ class CartVM : BaseUiViewModel<CartUV>() {
 
     fun processDataDiscount(cart: CartModel): List<DiscountCart> {
         val list = mutableListOf<DiscountCart>();
+
+        cart.discountUserList.forEach {
+            list.add(DiscountCart(it, it.DiscountName, it.total(cart.getSubTotal())));
+        }
         cart.compReason?.let {
             list.add(DiscountCart(it, it.title!!, cart.totalComp(cart.totalTemp())));
         }
