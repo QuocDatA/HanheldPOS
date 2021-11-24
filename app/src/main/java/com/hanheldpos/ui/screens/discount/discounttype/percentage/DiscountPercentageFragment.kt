@@ -8,11 +8,14 @@ import android.view.ViewGroup
 import androidx.core.widget.doAfterTextChanged
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentDiscountPercentageBinding
+import com.hanheldpos.model.discount.DiscountTypeEnum
+import com.hanheldpos.model.discount.DiscountUser
 import com.hanheldpos.ui.base.fragment.BaseFragment
+import com.hanheldpos.ui.screens.discount.discounttype.DiscountTypeFragment
 import java.text.DecimalFormat
 
 
-class DiscountPercentageFragment :
+class DiscountPercentageFragment(private val listener : DiscountTypeFragment.DiscountTypeListener) :
     BaseFragment<FragmentDiscountPercentageBinding, DiscountPercentageVM>(), DiscountPercentageUV {
     override fun layoutRes(): Int = R.layout.fragment_discount_percentage;
 
@@ -23,6 +26,7 @@ class DiscountPercentageFragment :
     override fun initViewModel(viewModel: DiscountPercentageVM) {
         viewModel.run {
             init(this@DiscountPercentageFragment);
+            initLifeCycle(this@DiscountPercentageFragment);
             binding.viewModel = this;
         }
     }
@@ -41,6 +45,15 @@ class DiscountPercentageFragment :
                 input.setSelection(input.length());
                 isEditing = false;
             }
+        }
+        binding.btnSave.setOnClickListener {
+            listener.discountUserChoose(
+                DiscountUser(
+                    DiscountName = viewModel.title.value!!,
+                    DiscountValue = viewModel.amountValue,
+                    DiscountType = DiscountTypeEnum.PERCENT.value
+                )
+            )
         }
     }
 

@@ -1,19 +1,17 @@
 package com.hanheldpos.ui.screens.discount.discounttype.amount
 
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.core.widget.addTextChangedListener
 import androidx.core.widget.doAfterTextChanged
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentDiscountAmountBinding
+import com.hanheldpos.model.discount.DiscountTypeEnum
+import com.hanheldpos.model.discount.DiscountUser
 import com.hanheldpos.ui.base.fragment.BaseFragment
+import com.hanheldpos.ui.screens.discount.discounttype.DiscountTypeFragment
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 
-class DiscountAmountFragment : BaseFragment<FragmentDiscountAmountBinding, DiscountAmountVM>(),
+class DiscountAmountFragment(private val listener: DiscountTypeFragment.DiscountTypeListener) :
+    BaseFragment<FragmentDiscountAmountBinding, DiscountAmountVM>(),
     DiscountAmountUV {
     override fun layoutRes(): Int = R.layout.fragment_discount_amount
 
@@ -24,6 +22,7 @@ class DiscountAmountFragment : BaseFragment<FragmentDiscountAmountBinding, Disco
     override fun initViewModel(viewModel: DiscountAmountVM) {
         viewModel.run {
             init(this@DiscountAmountFragment);
+            initLifeCycle(this@DiscountAmountFragment);
             binding.viewModel = this;
         }
 
@@ -50,6 +49,15 @@ class DiscountAmountFragment : BaseFragment<FragmentDiscountAmountBinding, Disco
                 input.setSelection(input.length());
                 isEditing = false;
             }
+        }
+        binding.btnSave.setOnClickListener {
+            listener.discountUserChoose(
+                DiscountUser(
+                    DiscountName = viewModel.title.value!!,
+                    DiscountValue = viewModel.amountValue,
+                    DiscountType = DiscountTypeEnum.AMOUNT.value
+                )
+            )
         }
     }
 

@@ -12,6 +12,10 @@
         <variable
             name="cartDataVM"
             type="com.hanheldpos.ui.screens.cart.CartDataVM" />
+
+        <variable
+            name="isShowDiscount"
+            type="Boolean" />
     </data>
 
     <LinearLayout
@@ -322,33 +326,52 @@
                         android:background="@color/color_10" />
 
                     <LinearLayout
-                        style="@style/SingleLineItemCart"
-                        android:orientation="horizontal"
-                        android:paddingHorizontal="@dimen/_9sdp">
-
-                        <com.diadiem.pos_components.PTextView
-                            android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:orientation="vertical"
+                        >
+                        <androidx.recyclerview.widget.RecyclerView
+                            visibleObject="@{isShowDiscount}"
+                            android:background="@color/color_2"
+                            android:id="@+id/discountRecycleView"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:text="@string/discount"
-                            app:useTextColor="color4"
-                            app:useTextHeader="h5" />
-
-                        <androidx.legacy.widget.Space
-                            android:layout_width="0dp"
+                            tools:itemCount="3"
+                            tools:listitem="@layout/item_cart_discount"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                            android:orientation="vertical"/>
+                        <LinearLayout
+                            visibleObject="@{!isShowDiscount}"
+                            style="@style/SingleLineItemCart"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1" />
+                            android:paddingHorizontal="@dimen/_9sdp"
+                            >
+                            <com.diadiem.pos_components.PTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:text="@string/discount"
+                                app:useTextColor="color4"
+                                app:useTextHeader="h5" />
 
-                        <com.diadiem.pos_components.PTextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:clickable="true"
-                            android:focusable="true"
-                            android:onClick="@{()->viewModel.openDiscount()}"
-                            android:text="@string/add_discount"
-                            app:useTextColor="color0"
-                            app:useTextHeader="h5" />
+                            <androidx.legacy.widget.Space
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1" />
+
+                            <com.diadiem.pos_components.PTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:onClick="@{()->viewModel.openDiscount()}"
+                                android:text="@string/add_discount"
+                                app:useTextColor="color0"
+                                app:useTextHeader="h5" />
+                        </LinearLayout>
+
                     </LinearLayout>
 
                     <LinearLayout

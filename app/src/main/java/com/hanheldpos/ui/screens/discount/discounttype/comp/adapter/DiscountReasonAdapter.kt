@@ -11,12 +11,21 @@ import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.screens.discount.discounttype.adapter.DiscountTabAdapter
 
 class DiscountReasonAdapter(
+    private val comp : ListReasonsItem?,
     private val listener: BaseItemClickListener<ListReasonsItem>
 ) : BaseBindingListAdapter<ListReasonsItem>(DiffCallback()) {
 
     data class SelectedItem(var value: Int = -1)
 
     private var selectedItem: SelectedItem = SelectedItem(-1)
+
+    override fun submitList(list: MutableList<ListReasonsItem>?) {
+        if (comp != null)
+        list?.find { it.id == comp.id }.let{
+            selectedItem.value =  list?.indexOf(it)?: -1;
+        }
+        super.submitList(list)
+    }
 
     override fun getItemViewType(position: Int): Int = R.layout.item_discount_comp;
 

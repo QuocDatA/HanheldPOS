@@ -84,6 +84,35 @@ class FragmentNavigator(
     }
 
     /**
+     * Same as go to with custom animation but enter from the left and exit to the left,
+     * delete this fun if default is set
+     * it will be added to the transaction.
+     *
+     * @param fragment The fragment which will be added
+     */
+    fun goToWithAnimationEnterFromLeft(fragment: Fragment) {
+        currentState = fragment.lifecycle.currentState
+        mFragmentManager.beginTransaction()
+            .apply {
+                setCustomAnimations(
+                    R.anim.slide_in_left,  // enter
+                    R.anim.slide_out_top,  // exit
+                    R.anim.slide_in_top,   // popEnter
+                    R.anim.slide_out_left  // popExit
+                )
+                addToBackStack(getTag(fragment))
+                add(mDefaultContainer, fragment, getTag(fragment))
+            }
+            .also {
+                if (currentState!!.isAtLeast(Lifecycle.State.CREATED)) {
+                    it.setMaxLifecycle(fragment, currentState!!)
+                }
+                it.commit()
+            }
+        mFragmentManager.executePendingTransactions()
+    }
+
+    /**
      * This is just a helper method which returns the simple name of the fragment.
      *
      * @param fragment That get added to the history (BackStack)

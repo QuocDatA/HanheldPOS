@@ -38,6 +38,9 @@
                     app:useTextHeader="h5" />
 
                 <com.diadiem.pos_components.PTextView
+                    android:id="@+id/removeComp"
+                    android:focusable="true"
+                    android:clickable="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/remove_comp"

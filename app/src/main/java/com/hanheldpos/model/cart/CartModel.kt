@@ -7,6 +7,7 @@ import com.hanheldpos.data.api.pojo.order.settings.ListReasonsItem
 import com.hanheldpos.data.api.pojo.table.FloorTableItem
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.cart.fee.FeeApplyToType
+import com.hanheldpos.model.discount.DiscountUser
 import com.hanheldpos.model.product.BaseProductInCart
 
 data class CartModel(
@@ -16,6 +17,7 @@ data class CartModel(
     var diningOption: DiningOptionItem,
     val fees: List<Fee>,
     var productsList: MutableList<BaseProductInCart>,
+    var discountUserList: MutableList<DiscountUser>,
     var compReason : ListReasonsItem? = null,
 ) {
 
@@ -32,7 +34,10 @@ data class CartModel(
     fun getTotalPrice() = total();
 
     private fun totalDiscount(subTotal: Double): Double {
-        return 0.0;
+        val totalDiscUser = discountUserList.sumOf { it.total(subTotal) };
+
+        var total = totalDiscUser;
+        return total;
     }
 
     fun totalFee(subTotal: Double, totalDiscount : Double) : Double {
@@ -72,6 +77,14 @@ data class CartModel(
         val listFee = DataHelper.findFeeProductList(combo.proOriginal!!.id);
         combo.fees = listFee;
         productsList.add(combo);
+    }
+
+    fun addCompReason(reason : ListReasonsItem) {
+        compReason = reason;
+    }
+
+    fun addDiscountUser(discount : DiscountUser){
+        discountUserList = mutableListOf(discount);
     }
 
     fun clearCart() {
