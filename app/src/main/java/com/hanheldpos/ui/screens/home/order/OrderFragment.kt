@@ -1,14 +1,10 @@
 package com.hanheldpos.ui.screens.home.order
 
-import android.app.AlertDialog
 import android.os.SystemClock
 import android.util.Log
-import android.view.LayoutInflater
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.order.menu.MenusItem
-import com.hanheldpos.databinding.DialogCategoryBinding
 import com.hanheldpos.databinding.FragmentOrderBinding
 import com.hanheldpos.model.cart.CartPresenter
 import com.hanheldpos.model.cart.Combo
@@ -16,7 +12,6 @@ import com.hanheldpos.model.cart.GroupBundle
 import com.hanheldpos.model.cart.Regular
 import com.hanheldpos.model.home.order.ProductModeViewType
 import com.hanheldpos.model.combo.ItemActionType
-import com.hanheldpos.model.home.order.menu.OrderMenuItem
 import com.hanheldpos.model.home.order.menu.ProductMenuItem
 import com.hanheldpos.model.product.BaseProductInCart
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
@@ -26,10 +21,9 @@ import com.hanheldpos.ui.screens.cart.CartFragment
 import com.hanheldpos.ui.screens.combo.ComboFragment
 import com.hanheldpos.ui.screens.home.HomeFragment
 import com.hanheldpos.ui.screens.home.ScreenViewModel
-import com.hanheldpos.ui.screens.home.order.adapter.OrderMenuAdapter
-import com.hanheldpos.ui.screens.home.order.adapter.OrderMenuAdapterHelper
 import com.hanheldpos.ui.screens.home.order.adapter.OrderProductAdapter
 import com.hanheldpos.ui.screens.home.order.adapter.OrderProductAdapterHelper
+import com.hanheldpos.ui.screens.home.order.menu.CategoryMenuFragment
 import com.hanheldpos.ui.screens.product.ProductDetailFragment
 import kotlinx.coroutines.*
 
@@ -38,17 +32,12 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
 
     // ViewModel
     private val dataVM by activityViewModels<OrderDataVM>()
-    private val screenViewModel by activityViewModels<ScreenViewModel>()
     private val cartDataVM by activityViewModels<CartDataVM>()
+    private val screenViewModel by activityViewModels<ScreenViewModel>()
 
-    // Adapter
-    private lateinit var menuAdapter: OrderMenuAdapter;
-    private lateinit var menuAdapHelper: OrderMenuAdapterHelper;
+    //Adapter
     private lateinit var productAdapter: OrderProductAdapter;
     private lateinit var productAdapHelper: OrderProductAdapterHelper;
-
-    // Dialog Category
-    private lateinit var dialogCategory: AlertDialog;
 
     override fun viewModelClass(): Class<OrderVM> {
         return OrderVM::class.java
@@ -66,54 +55,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
 
     override fun initView() {
 
-        // category adapter vs listener
-
-        menuAdapHelper = OrderMenuAdapterHelper(callBack = object :
-            OrderMenuAdapterHelper.AdapterCallBack {
-            override fun onListSplitCallBack(list: List<OrderMenuItem?>) {
-                menuAdapter.submitList(list);
-                menuAdapter.notifyDataSetChanged();
-
-            }
-        });
-
-        menuAdapter = OrderMenuAdapter(
-            listener = object : BaseItemClickListener<OrderMenuItem> {
-                override fun onItemClick(adapterPosition: Int, item: OrderMenuItem) {
-                    menuItemSelected(item);
-                    dialogCategory.dismiss();
-                }
-
-            },
-            directionCallBack = object : OrderMenuAdapter.Callback {
-                override fun directionSelectd(value: Int) {
-                    when (value) {
-                        1 -> menuAdapHelper.previous();
-                        2 -> menuAdapHelper.next();
-                    }
-                }
-
-            }
-        )
-
-        // Init Dialog Category
-        val dialogCateBinding: DialogCategoryBinding = DataBindingUtil.inflate(
-            LayoutInflater.from(context),
-            R.layout.dialog_category,
-            null,
-            false
-        );
-        dialogCateBinding.categoryList.adapter = menuAdapter;
-
-        val builder = AlertDialog.Builder(context);
-        builder.setView(dialogCateBinding.root);
-
-        dialogCategory = builder.create();
-
-        dialogCateBinding.closeBtn.setOnClickListener { dialogCategory.dismiss() }
-
         // product adapter vs listener
-
         productAdapHelper = OrderProductAdapterHelper(
             callBack = object : OrderProductAdapterHelper.AdapterCallBack {
                 override fun onListSplitCallBack(list: List<ProductMenuItem>) {
@@ -148,7 +90,6 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
     }
 
     override fun initAction() {
-
         screenViewModel.dropDownSelected.observe(this, {
             val screen = screenViewModel.screenEvent.value?.screen;
             if (screen == HomeFragment.HomePage.Order) {
@@ -159,16 +100,12 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
             }
         })
 
-        dataVM.menus.observe(this, {
-            menuAdapHelper.submitList(it);
-        })
-
         dataVM.selectedMenu.observe(this, { orderMenuItemModel ->
 
             val list = dataVM.getProductByMenu(orderMenuItemModel);
             if (list == null) productAdapHelper.submitList(mutableListOf());
             else
-            list?.let { it1 ->
+                list?.let { it1 ->
                     val rs: MutableList<ProductMenuItem> = mutableListOf();
                     it1.forEach {
                         it.let { it2 -> rs.add(it2) }
@@ -176,7 +113,6 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
                     productAdapHelper.submitList(rs.toMutableList());
                 }
         });
-
     }
 
     fun onProductMenuSelected(item: ProductMenuItem) {
@@ -247,15 +183,8 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
         };
     }
 
-
-    private fun menuItemSelected(menuItem: OrderMenuItem) {
-        dataVM.selectedMenu.value = menuItem
-    }
-
     override fun showCategoryDialog() {
-        dataVM.menus.value?.let { menuAdapHelper.submitList(it) }
-        dialogCategory.show();
-        dialogCategory.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        dataVM.menus.value?.let {  navigator.goTo(CategoryMenuFragment(it)) }
     }
 
     override fun showCart() {
