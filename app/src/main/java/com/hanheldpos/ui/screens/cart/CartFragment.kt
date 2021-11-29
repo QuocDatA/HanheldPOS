@@ -14,6 +14,7 @@ import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.cart.Combo
 import com.hanheldpos.model.cart.DiscountCart
 import com.hanheldpos.model.cart.Regular
+import com.hanheldpos.model.cart.payment.PaymentOrder
 import com.hanheldpos.model.combo.ItemActionType
 import com.hanheldpos.model.discount.DiscountUser
 import com.hanheldpos.model.product.BaseProductInCart
@@ -180,7 +181,11 @@ class CartFragment(
     }
 
     override fun openSelectPayment() {
-        navigator.goToWithCustomAnimation(PaymentFragment());
+        navigator.goToWithCustomAnimation(PaymentFragment(listener = object : PaymentFragment.PaymentCallback {
+            override fun onPaymentComplete(paymentOrder: PaymentOrder) {
+                cartDataVM.updatePaymentOrder(paymentOrder)
+            }
+        }));
     }
 
     override fun onOpenAddCustomer() {

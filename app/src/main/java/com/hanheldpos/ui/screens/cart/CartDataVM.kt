@@ -13,6 +13,7 @@ import com.hanheldpos.model.cart.CartModel
 import com.hanheldpos.model.cart.Combo
 import com.hanheldpos.model.cart.DiscountCart
 import com.hanheldpos.model.cart.Regular
+import com.hanheldpos.model.cart.payment.PaymentOrder
 import com.hanheldpos.model.discount.DiscountUser
 import com.hanheldpos.model.home.table.TableStatusType
 import com.hanheldpos.model.product.BaseProductInCart
@@ -22,6 +23,7 @@ import com.hanheldpos.ui.base.viewmodel.BaseViewModel
 class CartDataVM : BaseViewModel() {
 
     val cartModelLD: MutableLiveData<CartModel> = MutableLiveData();
+    var paymentOrder: MutableLiveData<PaymentOrder> = MutableLiveData()
 
     val diningOptionLD: LiveData<DiningOptionItem> = Transformations.map(cartModelLD) {
         return@map it?.diningOption ?: DataHelper.getDefaultDiningOptionItem()
@@ -69,6 +71,11 @@ class CartDataVM : BaseViewModel() {
             cartModelLD.value!!.productsList.removeAt(index);
         }
         cartModelLD.notifyValueChange();
+    }
+
+    fun updatePaymentOrder(item: PaymentOrder) {
+        paymentOrder.value = item
+        paymentOrder.notifyValueChange()
     }
 
     fun deleteCart(title: String, message: String, positiveText : String , negativeText: String, callback: () -> Unit) {

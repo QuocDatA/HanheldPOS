@@ -130,7 +130,7 @@
                     android:gravity="center"
                     android:paddingVertical="@dimen/_6sdp"
                     priceView="@{cartDataVMPayment.cartModelLD.total()}"
-
+                    android:onClick="@{v->viewModel.getPayment()}"
                     app:pbtn_useBackgroundColor="true"
                     app:pbtn_useFontStyle="bold"
                     app:pbtn_useTextColor="color2"

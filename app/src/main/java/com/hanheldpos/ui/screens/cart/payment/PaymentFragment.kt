@@ -5,6 +5,7 @@ import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.payment.PaymentMethodResp
 import com.hanheldpos.data.api.pojo.payment.PaymentSuggestionItem
 import com.hanheldpos.databinding.FragmentPaymentBinding
+import com.hanheldpos.model.cart.payment.PaymentOrder
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.cart.CartDataVM
@@ -13,7 +14,8 @@ import com.hanheldpos.ui.screens.cart.payment.adapter.PaymentSuggestionAdapter
 import com.hanheldpos.ui.screens.product.adapter.GridSpacingItemDecoration
 
 
-class PaymentFragment : BaseFragment<FragmentPaymentBinding,PaymentVM>(), PaymentUV {
+class PaymentFragment(private var listener: PaymentCallback) :
+    BaseFragment<FragmentPaymentBinding, PaymentVM>(), PaymentUV {
     override fun layoutRes(): Int = R.layout.fragment_payment;
 
     private lateinit var paymentMethodAdapter: PaymentMethodAdapter
@@ -88,6 +90,15 @@ class PaymentFragment : BaseFragment<FragmentPaymentBinding,PaymentVM>(), Paymen
 
     override fun getBack() {
         onFragmentBackPressed()
+    }
+
+    override fun getPayment() {
+        listener.onPaymentComplete(PaymentOrder(1, 1, 1, "TIEN MAT", 0.0, 0.0, "Nhi Nguyen", "001","01/01/2001"))
+        onFragmentBackPressed()
+    }
+
+    interface PaymentCallback {
+        fun onPaymentComplete(paymentOrder: PaymentOrder)
     }
 }
 
