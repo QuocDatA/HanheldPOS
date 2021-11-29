@@ -23,12 +23,16 @@ class CartVM : BaseUiViewModel<CartUV>() {
         uiCallback?.onOpenDiscount();
     }
 
-    fun openSelectPayment() {
-        uiCallback?.openSelectPayment();
+    fun openSelectPayment(payable : Double) {
+        uiCallback?.openSelectPayment(payable);
     }
 
     fun onOpenAddCustomer() {
         uiCallback?.onOpenAddCustomer();
+    }
+
+    fun billCart() {
+        uiCallback?.onBillCart();
     }
 
     fun processDataDiscount(cart: CartModel): List<DiscountCart> {
