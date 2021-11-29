@@ -1,4 +1,4 @@
-package com.hanheldpos.model.cart.order
+package com.hanheldpos.model.order
 
 enum class OrderItemType(val value: Int) {
     BUNDLE(0),

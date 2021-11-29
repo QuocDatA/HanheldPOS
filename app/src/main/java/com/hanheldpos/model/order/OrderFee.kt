@@ -1,4 +1,4 @@
-package com.hanheldpos.model.cart.order
+package com.hanheldpos.model.order
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

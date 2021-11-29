@@ -1,4 +1,4 @@
-package com.hanheldpos.model.cart.order
+package com.hanheldpos.model.order
 
 import android.os.Parcelable
 import com.hanheldpos.data.api.pojo.order.settings.DiningOptionItem
