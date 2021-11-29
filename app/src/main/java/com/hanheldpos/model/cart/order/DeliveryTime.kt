@@ -6,7 +6,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class DeliveryTime(
     var DateText: String,
-    var TimeTextval: String,
+    var TimeText: String,
     var DateValue: String,
     var TimeValue: String,
     var IsNow: Boolean,

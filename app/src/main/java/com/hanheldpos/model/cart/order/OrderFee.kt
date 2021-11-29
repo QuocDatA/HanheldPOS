@@ -9,6 +9,6 @@ data class OrderFee(
     var FeeType: Int,
     var FeeName: String,
     var FeeValue: Double,
-    var dTotalPrice: Double
+    var TotalPrice: Double
 ) : Parcelable {
 }
