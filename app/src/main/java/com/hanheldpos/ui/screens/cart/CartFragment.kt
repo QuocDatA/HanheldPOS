@@ -28,7 +28,6 @@ import com.hanheldpos.ui.screens.cart.customer.AddCustomerFragment
 import com.hanheldpos.ui.screens.cart.payment.PaymentFragment
 import com.hanheldpos.ui.screens.combo.ComboFragment
 import com.hanheldpos.ui.screens.discount.DiscountFragment
-import com.hanheldpos.ui.screens.discount.DiscountUV
 import com.hanheldpos.ui.screens.home.order.OrderFragment
 import com.hanheldpos.ui.screens.product.ProductDetailFragment
 
@@ -180,10 +179,10 @@ class CartFragment(
             }));
     }
 
-    override fun openSelectPayment() {
-        navigator.goToWithCustomAnimation(PaymentFragment(listener = object : PaymentFragment.PaymentCallback {
+    override fun openSelectPayment(payable: Double) {
+        navigator.goToWithCustomAnimation(PaymentFragment(payable,listener = object : PaymentFragment.PaymentCallback {
             override fun onPaymentComplete(paymentOrder: PaymentOrder) {
-                cartDataVM.updatePaymentOrder(paymentOrder)
+                cartDataVM.addPaymentOrder(paymentOrder)
             }
         }));
     }
@@ -195,6 +194,10 @@ class CartFragment(
                 cartDataVM.addCustomerToCart(item);
             }
         }));
+    }
+
+    override fun onBillCart() {
+        cartDataVM.billCart();
     }
 
     fun onEditItemIntCart(position: Int, item: BaseProductInCart) {

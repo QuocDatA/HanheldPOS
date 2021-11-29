@@ -7,8 +7,10 @@ import com.hanheldpos.data.api.pojo.order.settings.ListReasonsItem
 import com.hanheldpos.data.api.pojo.table.FloorTableItem
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.cart.fee.FeeApplyToType
+import com.hanheldpos.model.cart.payment.PaymentOrder
 import com.hanheldpos.model.discount.DiscountUser
 import com.hanheldpos.model.product.BaseProductInCart
+import com.hanheldpos.prefs.PrefKey
 
 data class CartModel(
     var table: FloorTableItem,
@@ -16,6 +18,7 @@ data class CartModel(
     var customerQuantity: Int,
     var diningOption: DiningOptionItem,
     val fees: List<Fee>,
+    var paymentsList : MutableList<PaymentOrder>,
     var productsList: MutableList<BaseProductInCart>,
     var discountUserList: MutableList<DiscountUser>,
     var compReason : ListReasonsItem? = null,
@@ -85,6 +88,10 @@ data class CartModel(
 
     fun addDiscountUser(discount : DiscountUser){
         discountUserList = mutableListOf(discount);
+    }
+
+    fun addPayment(payment : PaymentOrder) {
+        paymentsList = mutableListOf(payment);
     }
 
     fun clearCart() {

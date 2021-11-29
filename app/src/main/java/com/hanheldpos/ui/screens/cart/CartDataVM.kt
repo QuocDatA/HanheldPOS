@@ -23,7 +23,6 @@ import com.hanheldpos.ui.base.viewmodel.BaseViewModel
 class CartDataVM : BaseViewModel() {
 
     val cartModelLD: MutableLiveData<CartModel> = MutableLiveData();
-    var paymentOrder: MutableLiveData<PaymentOrder> = MutableLiveData()
 
     val diningOptionLD: LiveData<DiningOptionItem> = Transformations.map(cartModelLD) {
         return@map it?.diningOption ?: DataHelper.getDefaultDiningOptionItem()
@@ -43,6 +42,7 @@ class CartDataVM : BaseViewModel() {
             table = table,
             fees = DataHelper.findFeeOrderList()?: mutableListOf(),
             productsList = mutableListOf(),
+            paymentsList = mutableListOf(),
             discountUserList = mutableListOf(),
             diningOption = DataHelper.getDefaultDiningOptionItem()!!
         );
@@ -73,9 +73,9 @@ class CartDataVM : BaseViewModel() {
         cartModelLD.notifyValueChange();
     }
 
-    fun updatePaymentOrder(item: PaymentOrder) {
-        paymentOrder.value = item
-        paymentOrder.notifyValueChange()
+    fun addPaymentOrder(payment: PaymentOrder) {
+        cartModelLD.value!!.addPayment(payment);
+        cartModelLD.notifyValueChange()
     }
 
     fun deleteCart(title: String, message: String, positiveText : String , negativeText: String, callback: () -> Unit) {
@@ -120,5 +120,17 @@ class CartDataVM : BaseViewModel() {
     fun addDiscountUser(discount : DiscountUser){
         this.cartModelLD.value!!.addDiscountUser(discount);
         cartModelLD.notifyValueChange();
+    }
+
+    fun billCart() {
+        if(cartModelLD.value!!.paymentsList.isEmpty()){
+            AppAlertDialog.get()
+                .show(
+                    "Warning",
+                    "Please choose payment method",
+                )
+            return;
+        }
+
     }
 }

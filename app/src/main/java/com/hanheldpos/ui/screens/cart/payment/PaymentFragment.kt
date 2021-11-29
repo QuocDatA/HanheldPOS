@@ -14,7 +14,7 @@ import com.hanheldpos.ui.screens.cart.payment.adapter.PaymentSuggestionAdapter
 import com.hanheldpos.ui.screens.product.adapter.GridSpacingItemDecoration
 
 
-class PaymentFragment(private var listener: PaymentCallback) :
+class PaymentFragment(private val payable : Double ,private var listener: PaymentCallback) :
     BaseFragment<FragmentPaymentBinding, PaymentVM>(), PaymentUV {
     override fun layoutRes(): Int = R.layout.fragment_payment;
 
@@ -22,7 +22,6 @@ class PaymentFragment(private var listener: PaymentCallback) :
     private lateinit var paymentSuggestionAdapter: PaymentSuggestionAdapter
 
     private val paymentVM by activityViewModels<PaymentVM>();
-    private val cartDataVM by activityViewModels<CartDataVM>();
 
     override fun viewModelClass(): Class<PaymentVM> {
         return PaymentVM::class.java;
@@ -33,7 +32,7 @@ class PaymentFragment(private var listener: PaymentCallback) :
             init(this@PaymentFragment);
             binding.viewModel = this;
         }
-        binding.cartDataVMPayment = cartDataVM;
+
     }
 
     override fun initView() {
@@ -71,7 +70,7 @@ class PaymentFragment(private var listener: PaymentCallback) :
     }
 
     override fun initData() {
-
+        binding.payable = this.payable;
         //region init payment method data
         val paymentMethods = viewModel.getPaymentMethods();
         paymentMethodAdapter.submitList(paymentMethods)
@@ -93,7 +92,7 @@ class PaymentFragment(private var listener: PaymentCallback) :
     }
 
     override fun getPayment() {
-        listener.onPaymentComplete(PaymentOrder(1, 1, 1, "TIEN MAT", 0.0, 0.0, "Nhi Nguyen", "001","01/01/2001"))
+        listener.onPaymentComplete(PaymentOrder(1, 1, 1, "TIEN MAT", payable, 0.0, "Nhi Nguyen", "001","01/01/2001"))
         onFragmentBackPressed()
     }
 

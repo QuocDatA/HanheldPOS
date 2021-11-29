@@ -4,7 +4,8 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class ListPaymentItem(
+data class Voucher(
     val Money: Double,
     val Title: String
-) : Parcelable
+) : Parcelable {
+}
