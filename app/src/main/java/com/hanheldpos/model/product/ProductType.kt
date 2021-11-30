@@ -1,6 +1,6 @@
 package com.hanheldpos.model.product
 
-enum class ProductType(value : Int) {
+enum class ProductType(val value : Int) {
     NOT_FOUND(0),
     REGULAR(1),
     BUNDLE(2),

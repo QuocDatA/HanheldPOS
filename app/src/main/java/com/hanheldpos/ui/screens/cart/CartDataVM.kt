@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.hanheldpos.data.api.pojo.customer.CustomerResp
 import com.hanheldpos.data.api.pojo.order.settings.DiningOptionItem
-import com.hanheldpos.data.api.pojo.order.settings.ListReasonsItem
+import com.hanheldpos.data.api.pojo.order.settings.Reason
 import com.hanheldpos.data.api.pojo.table.FloorTableItem
 import com.hanheldpos.extension.notifyValueChange
 import com.hanheldpos.model.DataHelper
@@ -16,6 +16,7 @@ import com.hanheldpos.model.cart.Regular
 import com.hanheldpos.model.cart.payment.PaymentOrder
 import com.hanheldpos.model.discount.DiscountUser
 import com.hanheldpos.model.home.table.TableStatusType
+import com.hanheldpos.model.home.table.TableSummary
 import com.hanheldpos.model.product.BaseProductInCart
 import com.hanheldpos.ui.base.dialog.AppAlertDialog
 import com.hanheldpos.ui.base.viewmodel.BaseViewModel
@@ -32,19 +33,23 @@ class CartDataVM : BaseViewModel() {
     }
 
     val numberOfCustomer: LiveData<Int> = Transformations.map(cartModelLD) {
-        return@map it?.customerQuantity;
+        return@map it?.table?.PeopleQuantity;
     }
 
     fun initCart(numberCustomer: Int, table: FloorTableItem) {
         table.tableStatus = TableStatusType.Pending;
         cartModelLD.value = CartModel(
-            customerQuantity = numberCustomer,
-            table = table,
+            table = TableSummary(
+                _id = table.id!!,
+                TableName = table.tableName!!,
+                PeopleQuantity = numberCustomer
+            ),
             fees = DataHelper.findFeeOrderList()?: mutableListOf(),
             productsList = mutableListOf(),
             paymentsList = mutableListOf(),
             discountUserList = mutableListOf(),
-            diningOption = DataHelper.getDefaultDiningOptionItem()!!
+            discountServerList = mutableListOf(),
+            diningOption = DataHelper.getDefaultDiningOptionItem()!!,
         );
     }
 
@@ -61,6 +66,11 @@ class CartDataVM : BaseViewModel() {
                 addBundle(item);
             }
         }
+        this.cartModelLD.notifyValueChange();
+    }
+
+    fun updatePriceList(menuLocation_id : String){
+        this.cartModelLD.value!!.updatePriceList(menuLocation_id);
         this.cartModelLD.notifyValueChange();
     }
 
@@ -97,7 +107,7 @@ class CartDataVM : BaseViewModel() {
 
     fun deleteDiscount(discount : DiscountCart){
         discount.disOriginal.let {
-            if (it is ListReasonsItem){
+            if (it is Reason){
                 cartModelLD.value!!.compReason = null;
             }
             else if (it is DiscountUser) {
@@ -112,7 +122,7 @@ class CartDataVM : BaseViewModel() {
         cartModelLD.notifyValueChange();
     }
 
-    fun addCompReason(reason : ListReasonsItem){
+    fun addCompReason(reason : Reason){
         this.cartModelLD.value!!.addCompReason(reason);
         cartModelLD.notifyValueChange();
     }

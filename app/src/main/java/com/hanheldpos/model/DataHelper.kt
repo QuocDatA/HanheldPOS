@@ -42,6 +42,13 @@ object DataHelper {
             StorageHelper.setDataToEncryptedFile(PrefKey.Order.ORDER_MENU_RESP, value!!)
         }
 
+    private fun getOrderMenuModel() = orderMenuResp?.model?.firstOrNull()
+    fun getGroupsOrderMenu() = getOrderMenuModel()?.groups;
+
+    fun findGroupNameOrderMenu(group_id : String) : String{
+        return getGroupsOrderMenu()?.firstOrNull { groupsItem ->  groupsItem?.id.equals(group_id)}?.groupName ?: "";
+    }
+
     //endregion
     //region ### Order Settings
     var orderSettingResp: OrderSettingResp? = null
@@ -61,9 +68,9 @@ object DataHelper {
 
     private fun getOrderSettingModel() = orderSettingResp?.model?.firstOrNull()
 
-    private fun getVoidInfo() = getOrderSettingModel()?.listVoid?.firstOrNull()
+    fun getVoidInfo() = getOrderSettingModel()?.listVoid?.firstOrNull()
 
-    private fun getVoidList() = getVoidInfo()?.listReasons
+    fun getVoidList() = getVoidInfo()?.listReasons
 
     fun getVoidItemById(voidId: Int) = getVoidList()?.find { it?.id == voidId }
 
@@ -114,6 +121,8 @@ object DataHelper {
 
     fun getPictureMode() =
         getDeviceCodeModel()?.viewItemMode?.firstOrNull()?.pictureMode?.firstOrNull()
+
+    fun getCurrencySymbol() = getDeviceCodeModel()?.users?.currencySymbol;
 
     fun getDeviceGuidByDeviceCode() = getDeviceByDeviceCode()?.id
 

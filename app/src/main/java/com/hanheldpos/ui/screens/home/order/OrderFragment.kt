@@ -112,6 +112,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
                     }
                     productAdapHelper.submitList(rs.toMutableList());
                 }
+            cartDataVM.updatePriceList(orderMenuItemModel?.id!!);
         });
     }
 

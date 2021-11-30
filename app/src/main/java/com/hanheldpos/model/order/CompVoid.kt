@@ -6,9 +6,9 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class CompVoid(
     var CompVoidGuid: String,
-    var CompVoidGroupId: Int,
-    var CompVoidName: String,
+    var CompVoidGroupId: Int?,
+    var CompVoidTitle: String?,
     var CompVoidValue: Int,
-    var CompVoidTotalPrice: Double
+    var CompVoidTotalPrice: Double?
 ) : Parcelable {
 }

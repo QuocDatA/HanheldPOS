@@ -2,7 +2,7 @@ package com.hanheldpos.ui.screens.discount.discounttype
 
 import androidx.fragment.app.Fragment
 import com.hanheldpos.R
-import com.hanheldpos.data.api.pojo.order.settings.ListReasonsItem
+import com.hanheldpos.data.api.pojo.order.settings.Reason
 import com.hanheldpos.databinding.FragmentDiscountTypeBinding
 import com.hanheldpos.model.cart.CartModel
 import com.hanheldpos.model.discount.DiscountApplyToType
@@ -89,7 +89,7 @@ class DiscountTypeFragment(private val applyToType: DiscountApplyToType, private
         });
         fragmentMap[DiscountTypeFor.DISCOUNT_CODE] = DiscountCodeFragment();
         fragmentMap[DiscountTypeFor.COMP] = DiscountCompFragment(comp = cart.compReason,listener = object : DiscountTypeListener {
-            override fun compReasonChoose(item: ListReasonsItem) {
+            override fun compReasonChoose(item: Reason) {
                 listener.compReasonChoose(item);
             }
 
@@ -107,7 +107,7 @@ class DiscountTypeFragment(private val applyToType: DiscountApplyToType, private
 
     interface DiscountTypeListener {
         fun discountUserChoose(discount : DiscountUser) : Unit{};
-        fun compReasonChoose(item : ListReasonsItem) : Unit {};
+        fun compReasonChoose(item : Reason) : Unit {};
         fun compRemoveAll() : Unit{};
     }
 

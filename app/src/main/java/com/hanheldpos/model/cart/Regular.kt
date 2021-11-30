@@ -105,6 +105,19 @@ class Regular() : BaseProductInCart(), Parcelable, Cloneable {
         return telcomp;
     }
 
+    fun totalDiscount(productPricing: ProductItem) : Double {
+        var totalPrice = totalPrice();
+        var totalModifierPrice = totalModifier(productPricing);
+
+        var subtotal = totalPrice + totalModifierPrice;
+        var totalDiscUser = discountUsersList?.sumOf { disc -> disc.total(subtotal) }?: 0.0;
+        // TODO : un comment when apply discount server
+        /*var totalDiscServer = discountServersList?.Sum(disc => disc.Total(totalPrice, totalModifierPrice, ProOriginal?.Id, Quantity)) ?? 0;*/
+
+        var total = totalDiscUser //+ totalDiscServer;
+        return total;
+    }
+
     fun modSubTotal(productPricing: ProductItem): Double {
         val mobSubtotal = modifierList.sumOf {
             it.subTotal(productPricing) ?: 0.0
@@ -121,6 +134,10 @@ class Regular() : BaseProductInCart(), Parcelable, Cloneable {
         val modSubtotal = modSubTotal(productPricing);
         val proModsubtotal = modSubtotal + (priceOverride ?: 0.0);
         return proModsubtotal;
+    }
+
+    fun totalPrice() :Double {
+        return priceOverride?.times(quantity!!)?: 0.0
     }
 
     fun subTotal(productPricing: ProductItem): Double {

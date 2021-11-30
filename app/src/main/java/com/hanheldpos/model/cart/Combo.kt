@@ -70,6 +70,11 @@ class Combo() : BaseProductInCart() {
         return totalcomp;
     }
 
+    fun totalModifier() : Double {
+        var totalModifier = modSubTotal() * quantity!!;
+        return totalModifier;
+    }
+
     fun totalComp(totalTemp: Double): Double {
         return compReason?.total(totalTemp) ?: 0.0;
     }

@@ -21,7 +21,7 @@ data class DeviceCodeResp(
     val pageNumber: Int? = null,
 
     @field:SerializedName("Model")
-    val model: List<ModelItem?>? = null,
+    val model: List<DeviceInfoRespModel?>? = null,
 
     @field:SerializedName("ErrorMessage")
     val errorMessage: String? = null,
@@ -45,7 +45,7 @@ data class ViewItemModeItem(
 ) : Parcelable
 
 @Parcelize
-data class ModelItem(
+data class DeviceInfoRespModel(
 
     @field:SerializedName("ViewItemMode")
     val viewItemMode: List<ViewItemModeItem?>? = null,

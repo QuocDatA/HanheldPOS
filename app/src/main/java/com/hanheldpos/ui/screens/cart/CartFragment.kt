@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.customer.CustomerResp
 import com.hanheldpos.data.api.pojo.order.settings.DiningOptionItem
-import com.hanheldpos.data.api.pojo.order.settings.ListReasonsItem
+import com.hanheldpos.data.api.pojo.order.settings.Reason
 import com.hanheldpos.databinding.FragmentCartBinding
 import com.hanheldpos.extension.notifyValueChange
 import com.hanheldpos.model.DataHelper
@@ -169,7 +169,7 @@ class CartFragment(
                     cartDataVM.addDiscountUser(discount);
                 }
 
-                override fun onCompReasonChoose(reason: ListReasonsItem) {
+                override fun onCompReasonChoose(reason: Reason) {
                     cartDataVM.addCompReason(reason);
                 }
 

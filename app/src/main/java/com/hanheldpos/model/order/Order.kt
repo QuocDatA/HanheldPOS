@@ -12,10 +12,10 @@ data class Order(
     val LocationGuid: String,
     val DeviceGuid: String,
     val DiningOptionId : Int?,
-    val Code : String,
-    val CreateDate: String,
-    val MenuLocationGuid: String,
-    val CashDrawer_id: String,
+    val Code : String?,
+    val CreateDate: String?,
+    val MenuLocationGuid: String?,
+    /*val CashDrawer_id: String,*/
     val CurrencySymbol : String,
 ) : Parcelable {
 

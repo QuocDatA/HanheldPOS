@@ -6,8 +6,8 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class OrderDiningOption(
     var Id: Int,
-    var Title: String,
+    var Title: String?,
     var TypeId: Int,
-    var Acronymn: String,
+    var Acronymn: String?,
 ) : Parcelable {
 }

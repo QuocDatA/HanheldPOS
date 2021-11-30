@@ -86,7 +86,7 @@ data class Fee(
     val assignToProducts: List<FeeAssignToProductItem>,
 
     ) : Parcelable {
-        fun price(subtotal : Double , totalDisc : Double) : Double {
+        fun price(subtotal : Double, totalDisc : Double) : Double {
             var subIncDisc = totalDisc.let { subtotal.minus(it) };
             subIncDisc = if (subIncDisc < 0.0) 0.0 else subIncDisc;
             when(FeeApplyToType.fromInt(feeApplyToType)) {

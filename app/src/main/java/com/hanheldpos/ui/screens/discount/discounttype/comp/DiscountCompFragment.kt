@@ -1,22 +1,16 @@
 package com.hanheldpos.ui.screens.discount.discounttype.comp
 
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import com.hanheldpos.R
-import com.hanheldpos.data.api.pojo.order.settings.ListReasonsItem
+import com.hanheldpos.data.api.pojo.order.settings.Reason
 import com.hanheldpos.databinding.FragmentDiscountCompBinding
 import com.hanheldpos.model.DataHelper
-import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.discount.discounttype.DiscountTypeFragment
 import com.hanheldpos.ui.screens.discount.discounttype.comp.adapter.DiscountReasonAdapter
 
 
-class DiscountCompFragment(private val comp : ListReasonsItem?, private val listener : DiscountTypeFragment.DiscountTypeListener) : BaseFragment<FragmentDiscountCompBinding,DiscountCompVM>(), DiscountCompUV {
+class DiscountCompFragment(private val comp : Reason?, private val listener : DiscountTypeFragment.DiscountTypeListener) : BaseFragment<FragmentDiscountCompBinding,DiscountCompVM>(), DiscountCompUV {
 
     private lateinit var adapter : DiscountReasonAdapter;
 
@@ -34,8 +28,8 @@ class DiscountCompFragment(private val comp : ListReasonsItem?, private val list
     }
 
     override fun initView() {
-        adapter = DiscountReasonAdapter(comp,listener = object : BaseItemClickListener<ListReasonsItem>{
-            override fun onItemClick(adapterPosition: Int, item: ListReasonsItem) {
+        adapter = DiscountReasonAdapter(comp,listener = object : BaseItemClickListener<Reason>{
+            override fun onItemClick(adapterPosition: Int, item: Reason) {
                 // Dealing with item selected;
                 viewModel.reasonChosen.value = (item);
             }
@@ -54,7 +48,7 @@ class DiscountCompFragment(private val comp : ListReasonsItem?, private val list
 
     override fun initData() {
         val list = DataHelper.getCompList();
-        adapter.submitList(list as MutableList<ListReasonsItem>);
+        adapter.submitList(list as MutableList<Reason>);
     }
 
     override fun initAction() {
