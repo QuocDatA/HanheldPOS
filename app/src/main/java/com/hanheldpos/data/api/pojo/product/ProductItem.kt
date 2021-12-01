@@ -122,7 +122,7 @@ data class ProductItem(
     val comparePriceFormat: String? = null,
 
     @field:SerializedName("Url")
-    val url: String? = null,
+    var url: String? = null,
 
     @field:SerializedName("Discount")
     val discount: String? = null,
