@@ -1,8 +1,6 @@
 package com.hanheldpos.data.api.pojo.fee
 
 import android.os.Parcelable
-import com.fasterxml.jackson.annotation.JsonEnumDefaultValue
-import com.fasterxml.jackson.annotation.JsonProperty
 import com.google.gson.annotations.SerializedName
 import com.hanheldpos.model.cart.fee.FeeApplyToType
 import com.hanheldpos.model.cart.fee.FeeType
@@ -84,6 +82,8 @@ data class Fee(
 
     @field:SerializedName("AssignToProductList")
     val assignToProducts: List<FeeAssignToProductItem>,
+
+    val total: Double,
 
     ) : Parcelable {
         fun price(subtotal : Double, totalDisc : Double) : Double {
