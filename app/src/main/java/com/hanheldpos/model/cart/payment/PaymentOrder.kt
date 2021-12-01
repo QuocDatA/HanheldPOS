@@ -13,7 +13,7 @@ data class PaymentOrder(
     var OverPay: Double,
     var EmployeeName: String,
     var CardNo: String,
-    var SubId: Int,
+//    var SubId: Int,
     // var VoucherList:
     var CreateDate: String
 ) : Parcelable {

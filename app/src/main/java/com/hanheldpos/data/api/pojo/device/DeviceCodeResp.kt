@@ -3,7 +3,7 @@ package com.hanheldpos.data.api.pojo.device
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import com.hanheldpos.data.api.pojo.employee.EmployeeResp
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class DeviceCodeResp(
@@ -72,8 +72,31 @@ data class DeviceInfoRespModel(
     val listDeviceType: List<ListDeviceTypeItem?>? = null,
 
     @field:SerializedName("DeviceInfoGuid")
-    val deviceInfoGuid: String? = null
+    val deviceInfoGuid: String? = null,
+
+    @field:SerializedName("ListSettingsId")
+    val listSettingsId: List<ListSettingsId>? = null
+
+
 ) : Parcelable
+
+@Parcelize
+data class ListSettingsId(
+    val _key : Long,
+    val _id : String,
+    val _rev : String,
+    val SettingId : Int?,
+    val SettingTypeId: Int?,
+    val Prefix : String,
+    val Number : Int?,
+    val MaxChar: Int?,
+    val Location : String,
+    val UserGuid : String,
+    val NumberIncrement: Long,
+    val MinimumNumber: Int
+) : Parcelable {
+
+}
 
 @Parcelize
 data class PictureModeItem(
@@ -249,6 +272,9 @@ data class DeviceItem(
 
     @field:SerializedName("ExtraItemStyle")
     val modifierStyle: Int = 2,
+
+    @field:SerializedName("Acronymn")
+    val acronymn: String,
 
 
 ) : Parcelable

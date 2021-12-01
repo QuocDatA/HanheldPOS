@@ -1,5 +1,6 @@
 package com.hanheldpos.model
 
+
 import com.hanheldpos.data.api.ApiConst
 import com.hanheldpos.data.api.pojo.device.DeviceCodeResp
 import com.hanheldpos.data.api.pojo.discount.DiscountResp
@@ -13,16 +14,37 @@ import com.hanheldpos.data.api.pojo.table.TableResp
 import com.hanheldpos.model.cart.fee.FeeApplyToType
 import com.hanheldpos.prefs.PrefKey
 import com.utils.helper.AppPreferences
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+import java.time.ZonedDateTime
+import java.util.*
 
 object DataHelper {
 
     fun clearData() {
-        deviceCodeResp = null;
-        orderMenuResp = null;
-        tableResp = null;
-        feeResp = null;
-        discountResp = null;
-        AppPreferences.get().storeValue(PrefKey.Setting.DEVICE_CODE, null);
+        deviceCodeResp = null
+        orderMenuResp = null
+        tableResp = null
+        feeResp = null
+        discountResp = null
+        AppPreferences.get().storeValue(PrefKey.Setting.DEVICE_CODE, null)
+    }
+
+    fun UTC_ISO_8601( dateTime: Date) : String {
+        val tz = TimeZone.getTimeZone("UTC")
+        val df: DateFormat =
+            SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'") // Quoted "Z" to indicate UTC, no timezone offset
+
+        df.timeZone = tz
+        return df.format(dateTime)
+    }
+
+    fun generateOrderIdByFormat() : String {
+        var numberIncrement = 0;
+        val prefix = getDeviceCodeModel()?.listSettingsId?.firstOrNull()?.Prefix ?: ""
+        val deviceAcronymn =getDeviceCodeModel()?.device?.firstOrNull()?.acronymn ?: ""
+        val minimumNumber = getDeviceCodeModel()?.listSettingsId?.firstOrNull()?.MinimumNumber ?: 0
+        return "${prefix}${deviceAcronymn}${numberIncrement.toString().padEnd(minimumNumber, '0')}";
     }
 
     //region ## Order Menu
@@ -43,10 +65,10 @@ object DataHelper {
         }
 
     private fun getOrderMenuModel() = orderMenuResp?.model?.firstOrNull()
-    fun getGroupsOrderMenu() = getOrderMenuModel()?.groups;
+    fun getGroupsOrderMenu() = getOrderMenuModel()?.groups
 
     fun findGroupNameOrderMenu(group_id : String) : String{
-        return getGroupsOrderMenu()?.firstOrNull { groupsItem ->  groupsItem?.id.equals(group_id)}?.groupName ?: "";
+        return getGroupsOrderMenu()?.firstOrNull { groupsItem ->  groupsItem?.id.equals(group_id)}?.groupName ?: ""
     }
 
     //endregion
@@ -122,7 +144,7 @@ object DataHelper {
     fun getPictureMode() =
         getDeviceCodeModel()?.viewItemMode?.firstOrNull()?.pictureMode?.firstOrNull()
 
-    fun getCurrencySymbol() = getDeviceCodeModel()?.users?.currencySymbol;
+    fun getCurrencySymbol() = getDeviceCodeModel()?.users?.currencySymbol
 
     fun getDeviceGuidByDeviceCode() = getDeviceByDeviceCode()?.id
 
@@ -194,7 +216,8 @@ object DataHelper {
             StorageHelper.setDataToEncryptedFile(PrefKey.Fee.FEE_RESP, value!!)
         }
 
-    private fun getListFee() : List<Fee>? = feeResp?.feeModel?.fees;
+    private fun getListFee() : List<Fee>? = feeResp?.feeModel?.fees
+
     /**
      * Get Fee type [FeeApplyToType] with product id
      */
@@ -253,5 +276,5 @@ object DataHelper {
             StorageHelper.setDataToEncryptedFile(PrefKey.Payment.PAYMENTS_RESP, value!!)
         }
 
-    fun getPaymentMethodList()= this.paymentsResp?.Model;
+    fun getPaymentMethodList()= this.paymentsResp?.Model
 }

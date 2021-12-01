@@ -1,22 +1,23 @@
 package com.hanheldpos.ui.screens.cart
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
+import com.google.gson.Gson
 import com.hanheldpos.data.api.pojo.customer.CustomerResp
 import com.hanheldpos.data.api.pojo.order.settings.DiningOptionItem
 import com.hanheldpos.data.api.pojo.order.settings.Reason
 import com.hanheldpos.data.api.pojo.table.FloorTableItem
 import com.hanheldpos.extension.notifyValueChange
 import com.hanheldpos.model.DataHelper
-import com.hanheldpos.model.cart.CartModel
-import com.hanheldpos.model.cart.Combo
-import com.hanheldpos.model.cart.DiscountCart
-import com.hanheldpos.model.cart.Regular
+import com.hanheldpos.model.cart.*
 import com.hanheldpos.model.cart.payment.PaymentOrder
+import com.hanheldpos.model.cart.payment.PaymentStatus
 import com.hanheldpos.model.discount.DiscountUser
 import com.hanheldpos.model.home.table.TableStatusType
 import com.hanheldpos.model.home.table.TableSummary
+import com.hanheldpos.model.order.OrderStatus
 import com.hanheldpos.model.product.BaseProductInCart
 import com.hanheldpos.ui.base.dialog.AppAlertDialog
 import com.hanheldpos.ui.base.viewmodel.BaseViewModel
@@ -50,6 +51,7 @@ class CartDataVM : BaseViewModel() {
             discountUserList = mutableListOf(),
             discountServerList = mutableListOf(),
             diningOption = DataHelper.getDefaultDiningOptionItem()!!,
+            orderCode = DataHelper.generateOrderIdByFormat()
         );
     }
 
@@ -141,6 +143,7 @@ class CartDataVM : BaseViewModel() {
                 )
             return;
         }
-
+        var orderJson = Gson().toJson( CartConverter.toOrder(cartModelLD.value!!,OrderStatus.KITCHENT.value,PaymentStatus.PAID.value) );
+        print(orderJson);
     }
 }

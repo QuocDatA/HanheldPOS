@@ -9,7 +9,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class OrderDetail(
-    var IsCompletedOrder: Boolean,
+    var IsCompletedOrder: Boolean = true,
     var Order: OrderSummary,
     var DiningOption: OrderDiningOption,
     var DeliveryTime: DeliveryTime?,
@@ -20,7 +20,7 @@ data class OrderDetail(
     var DiscountList: List<DiscountOrder>,
     var ServiceFeeList: List<OrderFee>,
     var SurchargeFeeList: List<OrderFee>,
-    var ShippingFeeList: List<OrderFee>,
+    var ShippingFeeList: List<OrderFee>?= null,
     var TaxFeeList: List<OrderFee>,
     var CompVoidList: List<CompVoid>,
     var OrderProducts: List<ProductBuy>,

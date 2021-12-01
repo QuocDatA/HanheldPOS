@@ -30,7 +30,9 @@ data class CartModel(
     var compReason : Reason? = null,
     var createDate : String? = null,
     var orderCode : String? = null,
+    var orderGuid : String? = null,
     var menuLocationGuid : String?=null,
+    var note : String? = null,
 ) {
 
     fun getSubTotal() = productsList.sumOf {

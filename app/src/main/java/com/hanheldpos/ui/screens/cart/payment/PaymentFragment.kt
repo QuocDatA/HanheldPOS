@@ -5,6 +5,7 @@ import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.payment.PaymentMethodResp
 import com.hanheldpos.data.api.pojo.payment.PaymentSuggestionItem
 import com.hanheldpos.databinding.FragmentPaymentBinding
+import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.cart.payment.PaymentOrder
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
@@ -12,6 +13,7 @@ import com.hanheldpos.ui.screens.cart.CartDataVM
 import com.hanheldpos.ui.screens.cart.payment.adapter.PaymentMethodAdapter
 import com.hanheldpos.ui.screens.cart.payment.adapter.PaymentSuggestionAdapter
 import com.hanheldpos.ui.screens.product.adapter.GridSpacingItemDecoration
+import java.util.*
 
 
 class PaymentFragment(private val payable : Double ,private var listener: PaymentCallback) :
@@ -92,7 +94,7 @@ class PaymentFragment(private val payable : Double ,private var listener: Paymen
     }
 
     override fun getPayment() {
-        listener.onPaymentComplete(PaymentOrder(1, 1, 1, "TIEN MAT", payable, 0.0, "Nhi Nguyen", "001","01/01/2001"))
+        listener.onPaymentComplete(PaymentOrder("1", 1, 1, "TIEN MAT", payable, 0.0, "Nhi Nguyen", "001",DataHelper.UTC_ISO_8601(Date())))
         onFragmentBackPressed()
     }
 

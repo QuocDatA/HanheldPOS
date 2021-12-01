@@ -7,7 +7,7 @@ import kotlinx.parcelize.Parcelize
 data class OrderSummary(
     var Subtotal: Double,
     var Grandtotal: Double,
-    var Points: Double,
+    var Points: Double? = null,
     var GrossPrice: Double,
     var Discount: Double,
     var Service: Double,
@@ -17,7 +17,7 @@ data class OrderSummary(
     val Received: Double,
     val Change: Double,
     val PaymentAmount: Double,
-    var Note: String,
+    var Note: String? = null,
     val OtherFee: Double,
 ) : Parcelable {
 }

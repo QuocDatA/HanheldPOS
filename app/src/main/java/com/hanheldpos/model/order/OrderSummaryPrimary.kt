@@ -13,8 +13,8 @@ data class OrderSummaryPrimary(
     val TableId: String,
     val TableName : String,
     val DiningOptionId: Int?,
-    val DiningOptionName: String,
+    val DiningOptionName: String?,
     val CreateDate: String,
-    val Synced: Boolean,
+    val Synced: Boolean? = null,
 ) : Parcelable {
 }
