@@ -10,6 +10,7 @@ import com.hanheldpos.model.cart.payment.PaymentOrder
 import com.hanheldpos.model.order.*
 import com.hanheldpos.model.product.BaseProductInCart
 import com.hanheldpos.model.product.ProductType
+import com.hanheldpos.utils.time.DateTimeHelper
 import java.time.LocalDateTime
 import java.time.ZonedDateTime
 import java.util.*
@@ -35,7 +36,7 @@ object CartConverter {
             cart.productsList.map { baseProductInCart -> baseProductInCart.name }.joinToString(",");
 
         // TODO : save temp order to local
-        cart.createDate = DataHelper.UTC_ISO_8601(Date());
+        cart.createDate = DateTimeHelper.dateToString(Date(),DateTimeHelper.Format.FULL_DATE_UTC_Z);
 
         return OrderModel(
             Order = Order(
@@ -166,9 +167,9 @@ object CartConverter {
             GrossPrice = grossPrice,
             Subtotal = subTotal,
             Discount = totalDisc,
-            Service = totalService ?: 0.0,
-            Surcharge = totalSurcharge ?: 0.0,
-            Tax = totalTaxe ?: 0.0,
+            Service = totalService,
+            Surcharge = totalSurcharge,
+            Tax = totalTaxe ,
             Note = note,
             OtherFee = otherFee,
             Balance = if (balance < 0.0) 0.0 else balance,

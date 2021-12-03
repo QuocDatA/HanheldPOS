@@ -8,5 +8,5 @@ interface CartUV : BaseUserView {
     fun onOpenDiscount();
     fun openSelectPayment(payable : Double);
     fun onOpenAddCustomer();
-    fun onBillCart();
+    fun onBillSuccess();
 }

@@ -600,7 +600,7 @@
             android:padding="@dimen/_8sdp">
 
             <com.diadiem.pos_components.PMaterialButton
-                android:onClick="@{v->viewModel.billCart()}"
+                android:id="@+id/btnBill"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/color_0"

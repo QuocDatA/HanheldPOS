@@ -30,17 +30,10 @@ object DataHelper {
         AppPreferences.get().storeValue(PrefKey.Setting.DEVICE_CODE, null)
     }
 
-    fun UTC_ISO_8601( dateTime: Date) : String {
-        val tz = TimeZone.getTimeZone("UTC")
-        val df: DateFormat =
-            SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'") // Quoted "Z" to indicate UTC, no timezone offset
-
-        df.timeZone = tz
-        return df.format(dateTime)
-    }
-
     fun generateOrderIdByFormat() : String {
-        var numberIncrement = 0;
+        var numberIncrement = if ((getDeviceCodeModel()?.listSettingsId?.firstOrNull()?.NumberIncrement?: 0) > numberIncreaseOrder) getDeviceCodeModel()?.listSettingsId?.firstOrNull()?.NumberIncrement?: 0 else numberIncreaseOrder;
+        numberIncrement = numberIncrement.plus(1);
+        numberIncreaseOrder = numberIncrement;
         val prefix = getDeviceCodeModel()?.listSettingsId?.firstOrNull()?.Prefix ?: ""
         val deviceAcronymn =getDeviceCodeModel()?.device?.firstOrNull()?.acronymn ?: ""
         val minimumNumber = getDeviceCodeModel()?.listSettingsId?.firstOrNull()?.MinimumNumber ?: 0
@@ -277,4 +270,20 @@ object DataHelper {
         }
 
     fun getPaymentMethodList()= this.paymentsResp?.Model
+
+    //region Order Storage
+
+    var numberIncreaseOrder : Long = 0
+        get() {
+            if (field == null) {
+                field = AppPreferences.get().getLong(PrefKey.Order.FILE_NAME_NUMBER_INCREAMENT)
+            }
+            return field
+        }
+        set(value) {
+            field = value
+            AppPreferences.get().storeValue(PrefKey.Payment.PAYMENTS_RESP, value!!)
+        }
+
+    //endregion
 }

@@ -16,6 +16,7 @@ object  PrefKey {
     object Order {
         const val ORDER_MENU_RESP = "ORDER_MENU_RESP"
         const val ORDER_SETTING_RESP = "ORDER_SETTING_RESP"
+        const val FILE_NAME_NUMBER_INCREAMENT = "FILE_NAME_NUMBER_INCREAMENT"
     }
 
     object Table {

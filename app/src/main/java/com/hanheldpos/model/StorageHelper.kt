@@ -28,7 +28,7 @@ object StorageHelper {
         return Gson().fromJson(data, type)
     }
 
-    private fun encryptAndSaveFile(fileName: String, data: Any) {
+     fun encryptAndSaveFile(fileName: String, data: Any) {
         var jsonData = Gson().toJson(data)
         try {
             //get filePath
@@ -66,7 +66,7 @@ object StorageHelper {
         }
     }
 
-    private fun decryptEncryptedFile(fileName: String): String? {
+    fun decryptEncryptedFile(fileName: String): String? {
         val filePath = INTERNAL_PATH + fileName
         val fileData = readFile(filePath)
         if (fileData != null) {

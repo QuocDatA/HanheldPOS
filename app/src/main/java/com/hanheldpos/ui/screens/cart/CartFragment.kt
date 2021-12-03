@@ -28,6 +28,7 @@ import com.hanheldpos.ui.screens.cart.customer.AddCustomerFragment
 import com.hanheldpos.ui.screens.cart.payment.PaymentFragment
 import com.hanheldpos.ui.screens.combo.ComboFragment
 import com.hanheldpos.ui.screens.discount.DiscountFragment
+import com.hanheldpos.ui.screens.home.ScreenViewModel
 import com.hanheldpos.ui.screens.home.order.OrderFragment
 import com.hanheldpos.ui.screens.product.ProductDetailFragment
 
@@ -40,7 +41,7 @@ class CartFragment(
     private lateinit var cartProductAdapter: CartProductAdapter;
     private lateinit var cartDiscountAdapter: CartDiscountAdapter;
     private val cartDataVM by activityViewModels<CartDataVM>();
-
+    private val screenViewModel by activityViewModels<ScreenViewModel>();
 
 
     override fun viewModelClass(): Class<CartVM> {
@@ -113,6 +114,10 @@ class CartFragment(
         }
 
         //endregion
+
+        binding.btnBill.setOnClickListener {
+            onBillCart();
+        }
     }
 
     override fun initData() {
@@ -196,8 +201,14 @@ class CartFragment(
         }));
     }
 
-    override fun onBillCart() {
-        cartDataVM.billCart();
+    override fun onBillSuccess() {
+        getBack();
+        cartDataVM.removeCart();
+        screenViewModel.showTablePage();
+    }
+
+    fun onBillCart() {
+        viewModel.billCart(cartDataVM.cartModelLD.value!!);
     }
 
     fun onEditItemIntCart(position: Int, item: BaseProductInCart) {
