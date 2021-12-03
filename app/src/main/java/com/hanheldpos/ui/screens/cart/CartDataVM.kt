@@ -50,7 +50,6 @@ class CartDataVM : BaseViewModel() {
     }
 
     fun initCart(numberCustomer: Int, table: FloorTableItem) {
-        table.tableStatus = TableStatusType.Pending;
         cartModelLD.value = CartModel(
             table = TableSummary(
                 _id = table.id!!,
