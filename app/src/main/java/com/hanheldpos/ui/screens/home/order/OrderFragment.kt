@@ -104,7 +104,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
 
             val list = dataVM.getProductByMenu(orderMenuItemModel);
             if (list == null) productAdapHelper.submitList(mutableListOf());
-            else
+            else {
                 list?.let { it1 ->
                     val rs: MutableList<ProductMenuItem> = mutableListOf();
                     it1.forEach {
@@ -112,7 +112,9 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
                     }
                     productAdapHelper.submitList(rs.toMutableList());
                 }
-            cartDataVM.updatePriceList(orderMenuItemModel?.id!!);
+                cartDataVM.updatePriceList(orderMenuItemModel?.id!!);
+            }
+
         });
     }
 
