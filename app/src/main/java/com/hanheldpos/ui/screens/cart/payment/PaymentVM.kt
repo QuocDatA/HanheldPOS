@@ -28,4 +28,8 @@ class PaymentVM : BaseUiViewModel<PaymentUV>() {
         )
         return paymentSuggestionList
     }
+
+    fun getPayment() {
+        uiCallback?.getPayment()
+    }
 }

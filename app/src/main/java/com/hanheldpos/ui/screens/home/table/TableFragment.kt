@@ -141,7 +141,7 @@ class TableFragment : BaseFragment<FragmentTableBinding, TableVM>(), TableUV {
                 navigator.goTo(TableInputFragment.getInstance(listener = object :
                     TableInputFragment.TableInputListener {
                     override fun onCompleteTable(numberCustomer: Int) {
-                        item.tableStatus = TableStatusType.Pending;
+//                        item.tableStatus = TableStatusType.Pending;
                         tableAdapter.notifyItemChanged(adapterPosition);
 
                         // Init cart fisrt time

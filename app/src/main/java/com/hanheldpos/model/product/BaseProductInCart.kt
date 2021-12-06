@@ -1,13 +1,13 @@
 package com.hanheldpos.model.product
 
-import android.os.Parcelable
 import com.hanheldpos.data.api.pojo.fee.Fee
 import com.hanheldpos.data.api.pojo.order.settings.DiningOptionItem
-import com.hanheldpos.data.api.pojo.order.settings.ListReasonsItem
+import com.hanheldpos.data.api.pojo.order.settings.Reason
 import com.hanheldpos.data.api.pojo.product.ProductItem
 import com.hanheldpos.model.cart.ModifierCart
 import com.hanheldpos.model.cart.VariantCart
-import kotlinx.parcelize.Parcelize
+import com.hanheldpos.model.discount.DiscountServer
+import com.hanheldpos.model.discount.DiscountUser
 
 
 abstract class BaseProductInCart  {
@@ -18,12 +18,13 @@ abstract class BaseProductInCart  {
     open var quantity: Int? = null
     open var priceOverride : Double? = null
     open var proOriginal: ProductItem? = null
-    open var compReason: ListReasonsItem? = null
+    open var compReason: Reason? = null
     open var diningOption: DiningOptionItem? = null
     open var fees : List<Fee>? = null
     val modifierList : MutableList<ModifierCart> = mutableListOf();
     var variantList : MutableList<VariantCart>? = null
-
+    var discountUsersList : MutableList<DiscountUser>? = null
+    var discountServersList : MutableList<DiscountServer>? = null
     val name get() = getProductName();
     val feeStringValue get() = getFeeString();
     val subtotalValue get() = subTotal();

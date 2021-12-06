@@ -2,7 +2,6 @@ package com.hanheldpos.data.api.pojo.order.settings
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
-import com.hanheldpos.model.cart.fee.FeeType
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -76,7 +75,7 @@ data class ModelItem(
 ) : Parcelable
 
 @Parcelize
-data class ListReasonsItem(
+data class Reason(
 
     @field:SerializedName("Visible")
     val visible: Int? = null,
@@ -109,7 +108,7 @@ data class ListVoidItem(
     val id: Int? = null,
 
     @field:SerializedName("ListReasons")
-    val listReasons: List<ListReasonsItem?>? = null
+    val listReasons: List<Reason?>? = null
 ) : Parcelable
 
 @Parcelize
@@ -122,5 +121,5 @@ data class ListCompItem(
     val id: Int? = null,
 
     @field:SerializedName("ListReasons")
-    val listReasons: List<ListReasonsItem?>? = null
+    val listReasons: List<Reason?>? = null
 ) : Parcelable

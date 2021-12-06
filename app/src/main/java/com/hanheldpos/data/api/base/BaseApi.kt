@@ -1,12 +1,14 @@
 package com.hanheldpos.data.api.base
 
 import com.hanheldpos.data.api.RetrofitService
+import com.hanheldpos.data.api.RetrofitServiceAlter
 import com.hanheldpos.data.api.services.*
 
 abstract class BaseApi : BaseApiError() {
 
     // Retrofit
     private val retrofit = RetrofitService.get();
+    private val retrofitAlter = RetrofitServiceAlter.get();
     // Services
     protected val orderService : OrderService = retrofit.createService(OrderService::class.java);
     protected val employeeService : EmployeeService = retrofit.createService(EmployeeService::class.java);
@@ -17,5 +19,7 @@ abstract class BaseApi : BaseApiError() {
     protected val discountService : DiscountService = retrofit.createService(DiscountService::class.java);
     protected val customerService : CustomerService = retrofit.createService(CustomerService::class.java);
     protected val paymentService : PaymentService = retrofit.createService(PaymentService::class.java);
+    protected val settingService : SettingService = retrofit.createService(SettingService::class.java);
 
+    protected val orderAlterService : OrdersAlterService = retrofitAlter.createService(OrdersAlterService::class.java);
 }

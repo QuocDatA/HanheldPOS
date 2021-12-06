@@ -10,8 +10,8 @@
             type="com.hanheldpos.ui.screens.cart.payment.PaymentVM" />
 
         <variable
-            name="cartDataVMPayment"
-            type="com.hanheldpos.ui.screens.cart.CartDataVM" />
+            name="payable"
+            type="Double" />
     </data>
 
     <LinearLayout
@@ -129,8 +129,8 @@
                     android:foreground="?attr/selectableItemBackground"
                     android:gravity="center"
                     android:paddingVertical="@dimen/_6sdp"
-                    priceView="@{cartDataVMPayment.cartModelLD.total()}"
-
+                    priceView="@{payable}"
+                    android:onClick="@{v->viewModel.getPayment()}"
                     app:pbtn_useBackgroundColor="true"
                     app:pbtn_useFontStyle="bold"
                     app:pbtn_useTextColor="color2"

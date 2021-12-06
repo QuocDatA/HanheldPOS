@@ -1,16 +1,19 @@
 package com.hanheldpos.model.cart
 
+import android.os.Parcelable
 import android.util.Log
 import com.hanheldpos.data.api.pojo.product.ProductItem
 import com.hanheldpos.model.product.ModPricingType
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class ModifierCart(
     var modifierId : String,
     var modifierGuid: String,
     var name: String,
     var quantity: Int,
     var price: Double?
-) {
+) : Parcelable {
     fun total(pricingPrice: Double): Double? {
         var discountValue = price?.minus(pricingPrice);
         discountValue ?: return null;

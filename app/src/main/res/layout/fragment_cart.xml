@@ -536,7 +536,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:onClick="@{v->viewModel.openSelectPayment()}"
+                android:onClick="@{v->viewModel.openSelectPayment(cartDataVM.cartModelLD.total)}"
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?attr/selectableItemBackground"
@@ -553,7 +553,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_9sdp"
-                    android:text="Payment Method"
+                    android:text="@{cartDataVM.cartModelLD.paymentsList.empty ? @string/payment_method: cartDataVM.cartModelLD.paymentsList.get(0).title}"
                     app:useTextColor="color4"
                     app:useTextHeader="h5" />
 
@@ -600,6 +600,7 @@
             android:padding="@dimen/_8sdp">
 
             <com.diadiem.pos_components.PMaterialButton
+                android:id="@+id/btnBill"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/color_0"

@@ -3,7 +3,7 @@ package com.hanheldpos.ui.screens.discount
 import androidx.fragment.app.activityViewModels
 import com.google.android.material.tabs.TabLayoutMediator
 import com.hanheldpos.R
-import com.hanheldpos.data.api.pojo.order.settings.ListReasonsItem
+import com.hanheldpos.data.api.pojo.order.settings.Reason
 import com.hanheldpos.databinding.FragmentDiscountBinding
 import com.hanheldpos.model.discount.DiscountApplyToType
 import com.hanheldpos.model.discount.DiscountUser
@@ -61,7 +61,7 @@ class DiscountFragment(private val listener: DiscountCallback) :
 
                         }
 
-                        override fun compReasonChoose(item: ListReasonsItem) {
+                        override fun compReasonChoose(item: Reason) {
 
                         }
 
@@ -78,7 +78,7 @@ class DiscountFragment(private val listener: DiscountCallback) :
                             backPress();
                         }
 
-                        override fun compReasonChoose(item: ListReasonsItem) {
+                        override fun compReasonChoose(item: Reason) {
                             listener.onCompReasonChoose(item);
                             backPress();
                         }
@@ -98,7 +98,7 @@ class DiscountFragment(private val listener: DiscountCallback) :
 
     interface DiscountCallback {
         fun onDiscountUserChoose(discount: DiscountUser);
-        fun onCompReasonChoose(reason: ListReasonsItem);
+        fun onCompReasonChoose(reason: Reason);
         fun onCompOrderRemove();
     }
 

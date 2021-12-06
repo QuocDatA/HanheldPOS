@@ -1,5 +1,6 @@
 package com.hanheldpos.model
 
+
 import com.hanheldpos.data.api.ApiConst
 import com.hanheldpos.data.api.pojo.device.DeviceCodeResp
 import com.hanheldpos.data.api.pojo.discount.DiscountResp
@@ -13,16 +14,30 @@ import com.hanheldpos.data.api.pojo.table.TableResp
 import com.hanheldpos.model.cart.fee.FeeApplyToType
 import com.hanheldpos.prefs.PrefKey
 import com.utils.helper.AppPreferences
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+import java.time.ZonedDateTime
+import java.util.*
 
 object DataHelper {
 
     fun clearData() {
-        deviceCodeResp = null;
-        orderMenuResp = null;
-        tableResp = null;
-        feeResp = null;
-        discountResp = null;
-        AppPreferences.get().storeValue(PrefKey.Setting.DEVICE_CODE, null);
+        deviceCodeResp = null
+        orderMenuResp = null
+        tableResp = null
+        feeResp = null
+        discountResp = null
+        AppPreferences.get().storeValue(PrefKey.Setting.DEVICE_CODE, null)
+    }
+
+    fun generateOrderIdByFormat() : String {
+        var numberIncrement = if ((getDeviceCodeModel()?.listSettingsId?.firstOrNull()?.NumberIncrement?: 0) > numberIncreaseOrder) getDeviceCodeModel()?.listSettingsId?.firstOrNull()?.NumberIncrement?: 0 else numberIncreaseOrder;
+        numberIncrement = numberIncrement.plus(1);
+        numberIncreaseOrder = numberIncrement;
+        val prefix = getDeviceCodeModel()?.listSettingsId?.firstOrNull()?.Prefix ?: ""
+        val deviceAcronymn =getDeviceCodeModel()?.device?.firstOrNull()?.acronymn ?: ""
+        val minimumNumber = getDeviceCodeModel()?.listSettingsId?.firstOrNull()?.MinimumNumber ?: 0
+        return "${prefix}${deviceAcronymn}${numberIncrement.toString().padEnd(minimumNumber, '0')}";
     }
 
     //region ## Order Menu
@@ -41,6 +56,13 @@ object DataHelper {
             field = value
             StorageHelper.setDataToEncryptedFile(PrefKey.Order.ORDER_MENU_RESP, value!!)
         }
+
+    private fun getOrderMenuModel() = orderMenuResp?.model?.firstOrNull()
+    fun getGroupsOrderMenu() = getOrderMenuModel()?.groups
+
+    fun findGroupNameOrderMenu(group_id : String) : String{
+        return getGroupsOrderMenu()?.firstOrNull { groupsItem ->  groupsItem?.id.equals(group_id)}?.groupName ?: ""
+    }
 
     //endregion
     //region ### Order Settings
@@ -61,9 +83,9 @@ object DataHelper {
 
     private fun getOrderSettingModel() = orderSettingResp?.model?.firstOrNull()
 
-    private fun getVoidInfo() = getOrderSettingModel()?.listVoid?.firstOrNull()
+    fun getVoidInfo() = getOrderSettingModel()?.listVoid?.firstOrNull()
 
-    private fun getVoidList() = getVoidInfo()?.listReasons
+    fun getVoidList() = getVoidInfo()?.listReasons
 
     fun getVoidItemById(voidId: Int) = getVoidList()?.find { it?.id == voidId }
 
@@ -114,6 +136,8 @@ object DataHelper {
 
     fun getPictureMode() =
         getDeviceCodeModel()?.viewItemMode?.firstOrNull()?.pictureMode?.firstOrNull()
+
+    fun getCurrencySymbol() = getDeviceCodeModel()?.users?.currencySymbol
 
     fun getDeviceGuidByDeviceCode() = getDeviceByDeviceCode()?.id
 
@@ -185,7 +209,8 @@ object DataHelper {
             StorageHelper.setDataToEncryptedFile(PrefKey.Fee.FEE_RESP, value!!)
         }
 
-    private fun getListFee() : List<Fee>? = feeResp?.feeModel?.fees;
+    private fun getListFee() : List<Fee>? = feeResp?.feeModel?.fees
+
     /**
      * Get Fee type [FeeApplyToType] with product id
      */
@@ -244,5 +269,21 @@ object DataHelper {
             StorageHelper.setDataToEncryptedFile(PrefKey.Payment.PAYMENTS_RESP, value!!)
         }
 
-    fun getPaymentMethodList()= this.paymentsResp?.Model;
+    fun getPaymentMethodList()= this.paymentsResp?.Model
+
+    //region Order Storage
+
+    var numberIncreaseOrder : Long = 0
+        get() {
+            if (field == null) {
+                field = AppPreferences.get().getLong(PrefKey.Order.FILE_NAME_NUMBER_INCREAMENT)
+            }
+            return field
+        }
+        set(value) {
+            field = value
+            AppPreferences.get().storeValue(PrefKey.Payment.PAYMENTS_RESP, value!!)
+        }
+
+    //endregion
 }

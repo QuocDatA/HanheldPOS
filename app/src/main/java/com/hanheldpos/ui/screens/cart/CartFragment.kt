@@ -7,13 +7,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.customer.CustomerResp
 import com.hanheldpos.data.api.pojo.order.settings.DiningOptionItem
-import com.hanheldpos.data.api.pojo.order.settings.ListReasonsItem
+import com.hanheldpos.data.api.pojo.order.settings.Reason
 import com.hanheldpos.databinding.FragmentCartBinding
 import com.hanheldpos.extension.notifyValueChange
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.cart.Combo
 import com.hanheldpos.model.cart.DiscountCart
 import com.hanheldpos.model.cart.Regular
+import com.hanheldpos.model.cart.payment.PaymentOrder
 import com.hanheldpos.model.combo.ItemActionType
 import com.hanheldpos.model.discount.DiscountUser
 import com.hanheldpos.model.product.BaseProductInCart
@@ -27,7 +28,7 @@ import com.hanheldpos.ui.screens.cart.customer.AddCustomerFragment
 import com.hanheldpos.ui.screens.cart.payment.PaymentFragment
 import com.hanheldpos.ui.screens.combo.ComboFragment
 import com.hanheldpos.ui.screens.discount.DiscountFragment
-import com.hanheldpos.ui.screens.discount.DiscountUV
+import com.hanheldpos.ui.screens.home.ScreenViewModel
 import com.hanheldpos.ui.screens.home.order.OrderFragment
 import com.hanheldpos.ui.screens.product.ProductDetailFragment
 
@@ -40,7 +41,7 @@ class CartFragment(
     private lateinit var cartProductAdapter: CartProductAdapter;
     private lateinit var cartDiscountAdapter: CartDiscountAdapter;
     private val cartDataVM by activityViewModels<CartDataVM>();
-
+    private val screenViewModel by activityViewModels<ScreenViewModel>();
 
 
     override fun viewModelClass(): Class<CartVM> {
@@ -113,6 +114,10 @@ class CartFragment(
         }
 
         //endregion
+
+        binding.btnBill.setOnClickListener {
+            onBillCart();
+        }
     }
 
     override fun initData() {
@@ -169,7 +174,7 @@ class CartFragment(
                     cartDataVM.addDiscountUser(discount);
                 }
 
-                override fun onCompReasonChoose(reason: ListReasonsItem) {
+                override fun onCompReasonChoose(reason: Reason) {
                     cartDataVM.addCompReason(reason);
                 }
 
@@ -179,8 +184,12 @@ class CartFragment(
             }));
     }
 
-    override fun openSelectPayment() {
-        navigator.goToWithCustomAnimation(PaymentFragment());
+    override fun openSelectPayment(payable: Double) {
+        navigator.goToWithCustomAnimation(PaymentFragment(payable,listener = object : PaymentFragment.PaymentCallback {
+            override fun onPaymentComplete(paymentOrder: PaymentOrder) {
+                cartDataVM.addPaymentOrder(paymentOrder)
+            }
+        }));
     }
 
     override fun onOpenAddCustomer() {
@@ -190,6 +199,16 @@ class CartFragment(
                 cartDataVM.addCustomerToCart(item);
             }
         }));
+    }
+
+    override fun onBillSuccess() {
+        getBack();
+        cartDataVM.removeCart();
+        screenViewModel.showTablePage();
+    }
+
+    fun onBillCart() {
+        viewModel.billCart(cartDataVM.cartModelLD.value!!);
     }
 
     fun onEditItemIntCart(position: Int, item: BaseProductInCart) {
