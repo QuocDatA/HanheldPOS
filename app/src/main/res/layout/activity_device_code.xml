@@ -98,7 +98,7 @@
                 android:layout_marginStart="@dimen/_13sdp"
                 android:layout_marginEnd="@dimen/_13sdp"
                 android:gravity="center"
-                android:text="Device Codes are created in Dashboard for each new device, allowing you to sign in without ever sharing your email and password"
+                android:text="@string/description_device_code"
                 android:textColor="@color/textSecondary"
                 app:useTextHeader="h7" />
         </LinearLayout>

@@ -1,7 +1,10 @@
 package com.hanheldpos.ui.screens.devicecode
 
+import android.content.Context
 import android.os.SystemClock
+import android.provider.Settings.Global.getString
 import androidx.lifecycle.MutableLiveData
+import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.fee.FeeResp
 import com.hanheldpos.data.api.pojo.order.menu.OrderMenuResp
 import com.hanheldpos.data.api.pojo.order.settings.OrderSettingResp
@@ -25,6 +28,7 @@ class DeviceCodeVM : BaseRepoViewModel<DeviceRepo, DeviceCodeUV>() {
 
     val pinGroupSize = 4;
     val pinTextLD = MutableLiveData<String>();
+    var context : Context? = null;
 
     private var mLastTimeClick: Long = 0;
 
@@ -39,6 +43,10 @@ class DeviceCodeVM : BaseRepoViewModel<DeviceRepo, DeviceCodeUV>() {
         return DeviceRepo();
     }
 
+    fun initContext(context : Context) {
+        this.context = context;
+    }
+
     fun signIn() {
         if (SystemClock.elapsedRealtime() - mLastTimeClick < 1000) return;
         mLastTimeClick = SystemClock.elapsedRealtime();
@@ -50,12 +58,10 @@ class DeviceCodeVM : BaseRepoViewModel<DeviceRepo, DeviceCodeUV>() {
             }
 
             override fun showMessage(message: String?) {
-                showError(message);
+                onDataFailure(message);
             }
         })
     }
-
-
 
     private fun getPinWithSymbol(pinTextStr: String): String {
         val charList = LinkedList(pinTextStr.toList())
@@ -71,7 +77,8 @@ class DeviceCodeVM : BaseRepoViewModel<DeviceRepo, DeviceCodeUV>() {
 
         result?.let {
             if (it.didError == true) {
-                showError(it.message ?: "There was not found");
+                onDataFailure(it.message);
+
             } else {
                 DataHelper.deviceCodeResp = it;
                 fetchAllData();
@@ -88,7 +95,7 @@ class DeviceCodeVM : BaseRepoViewModel<DeviceRepo, DeviceCodeUV>() {
             callback = object : BaseRepoCallback<OrderMenuResp?> {
                 override fun apiResponse(data: OrderMenuResp?) {
                     if (data == null || data?.didError == true) {
-                        onDataFailure("Failed to load data");
+                        onDataFailure(context?.getString(R.string.failed_to_load_data));
                     } else {
                         DataHelper.orderMenuResp = data;
 
@@ -105,8 +112,8 @@ class DeviceCodeVM : BaseRepoViewModel<DeviceRepo, DeviceCodeUV>() {
             locationGuid = location,
             callback = object : BaseRepoCallback<OrderSettingResp?>{
                 override fun apiResponse(data: OrderSettingResp?) {
-                    if (data == null || data?.didError == true) {
-                        onDataFailure("Failed to load data");
+                    if (data == null || data.didError == true) {
+                        onDataFailure(context?.getString(R.string.failed_to_load_data));
                     } else {
                         DataHelper.orderSettingResp = data;
                         startMappingData();
@@ -122,8 +129,8 @@ class DeviceCodeVM : BaseRepoViewModel<DeviceRepo, DeviceCodeUV>() {
             locationGuid = location,
             callback = object : BaseRepoCallback<TableResp?> {
                 override fun apiResponse(data: TableResp?) {
-                    if (data == null || data?.didError == true) {
-                        onDataFailure("Failed to load data");
+                    if (data == null || data.didError == true) {
+                        onDataFailure(context?.getString(R.string.failed_to_load_data));
                     } else {
                         DataHelper.tableResp = data;
                         startMappingData();
@@ -140,7 +147,7 @@ class DeviceCodeVM : BaseRepoViewModel<DeviceRepo, DeviceCodeUV>() {
             callback = object : BaseRepoCallback<FeeResp?> {
                 override fun apiResponse(data: FeeResp?) {
                     if (data == null || data.didError) {
-                        onDataFailure("Failed to load data");
+                        onDataFailure(context?.getString(R.string.failed_to_load_data));
                     } else {
                         DataHelper.feeResp = data;
                         startMappingData();
@@ -157,7 +164,7 @@ class DeviceCodeVM : BaseRepoViewModel<DeviceRepo, DeviceCodeUV>() {
             callback = object : BaseRepoCallback<DiscountResp> {
                 override fun apiResponse(data: DiscountResp?) {
                     if (data == null || data.DidError) {
-                        onDataFailure("Failed to load data");
+                        onDataFailure(context?.getString(R.string.failed_to_load_data));
                     } else {
                         DataHelper.discountResp = data;
                         startMappingData();
@@ -171,7 +178,7 @@ class DeviceCodeVM : BaseRepoViewModel<DeviceRepo, DeviceCodeUV>() {
         paymentRepo.getPaymentMethods(userGuid = userGuid,callback = object : BaseRepoCallback<PaymentsResp>{
             override fun apiResponse(data: PaymentsResp?) {
                 if (data == null || data.DidError) {
-                    onDataFailure("Failed to load data");
+                    onDataFailure(context?.getString(R.string.failed_to_load_data));
                 } else {
                     DataHelper.paymentsResp = data;
                     startMappingData();
@@ -187,7 +194,7 @@ class DeviceCodeVM : BaseRepoViewModel<DeviceRepo, DeviceCodeUV>() {
 
     fun onDataFailure(message: String?) {
         DataHelper.clearData();
-        showError(message);
+        uiCallback?.showMessage(message);
     }
 
     private fun startMappingData() {

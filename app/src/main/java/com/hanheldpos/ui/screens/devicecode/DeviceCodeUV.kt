@@ -5,4 +5,5 @@ import com.hanheldpos.ui.base.BaseUserView
 interface DeviceCodeUV : BaseUserView {
     fun goBack()
     fun openPinCode()
+    fun showMessage(message : String?)
 }

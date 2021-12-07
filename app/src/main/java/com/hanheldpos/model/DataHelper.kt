@@ -54,7 +54,7 @@ object DataHelper {
         }
         set(value) {
             field = value
-            StorageHelper.setDataToEncryptedFile(PrefKey.Order.ORDER_MENU_RESP, value!!)
+            StorageHelper.setDataToEncryptedFile(PrefKey.Order.ORDER_MENU_RESP, value)
         }
 
     private fun getOrderMenuModel() = orderMenuResp?.model?.firstOrNull()
@@ -78,7 +78,7 @@ object DataHelper {
         }
         set(value) {
             field = value
-            StorageHelper.setDataToEncryptedFile(PrefKey.Order.ORDER_SETTING_RESP, value!!)
+            StorageHelper.setDataToEncryptedFile(PrefKey.Order.ORDER_SETTING_RESP, value)
         }
 
     private fun getOrderSettingModel() = orderSettingResp?.model?.firstOrNull()
@@ -117,7 +117,7 @@ object DataHelper {
         }
         set(value) {
             field = value
-            StorageHelper.setDataToEncryptedFile(PrefKey.Setting.DEVICE_CODE, value!!)
+            StorageHelper.setDataToEncryptedFile(PrefKey.Setting.DEVICE_CODE, value)
         }
 
     private fun getDeviceCodeModel() = deviceCodeResp?.model?.firstOrNull()
@@ -184,7 +184,7 @@ object DataHelper {
 
             field = value
 
-            StorageHelper.setDataToEncryptedFile(PrefKey.Table.TABLE_RESP, value!!)
+            StorageHelper.setDataToEncryptedFile(PrefKey.Table.TABLE_RESP, value)
         }
 
     private fun getTableModel() = tableResp?.model?.firstOrNull()
@@ -206,7 +206,7 @@ object DataHelper {
         }
         set(value) {
             field = value
-            StorageHelper.setDataToEncryptedFile(PrefKey.Fee.FEE_RESP, value!!)
+            StorageHelper.setDataToEncryptedFile(PrefKey.Fee.FEE_RESP, value)
         }
 
     private fun getListFee() : List<Fee>? = feeResp?.feeModel?.fees
@@ -247,7 +247,7 @@ object DataHelper {
         }
         set(value) {
             field = value
-            StorageHelper.setDataToEncryptedFile(PrefKey.Discount.DISCOUNT_RESP, value!!)
+            StorageHelper.setDataToEncryptedFile(PrefKey.Discount.DISCOUNT_RESP, value)
         }
 
     //endregion
@@ -266,7 +266,7 @@ object DataHelper {
         }
         set(value) {
             field = value
-            StorageHelper.setDataToEncryptedFile(PrefKey.Payment.PAYMENTS_RESP, value!!)
+            StorageHelper.setDataToEncryptedFile(PrefKey.Payment.PAYMENTS_RESP, value)
         }
 
     fun getPaymentMethodList()= this.paymentsResp?.Model
@@ -282,7 +282,7 @@ object DataHelper {
         }
         set(value) {
             field = value
-            AppPreferences.get().storeValue(PrefKey.Payment.PAYMENTS_RESP, value!!)
+            AppPreferences.get().storeValue(PrefKey.Payment.PAYMENTS_RESP, value)
         }
 
     //endregion
