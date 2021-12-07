@@ -63,4 +63,7 @@
     <string name="bill">Bill</string>
     <string name="search_customer">Search Customer</string>
     <string name="add_new_customer">Add New Customer</string>
+    <string name="description_device_code">Device Codes are created in Dashboard for each new device, allowing you to sign in without ever sharing your email and password</string>
+    <string name="there_was_not_found">There was not found</string>
+    <string name="failed_to_load_data">Failed to load data</string>
 </resources>

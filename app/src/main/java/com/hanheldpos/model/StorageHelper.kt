@@ -19,7 +19,7 @@ object StorageHelper {
     private final var INTERNAL_PATH =
         Environment.getDataDirectory().path + "/data/com.hanheldpos/local/"
 
-    public fun setDataToEncryptedFile(key: String, data: Any) {
+    public fun setDataToEncryptedFile(key: String, data: Any?) {
         encryptAndSaveFile(key, data)
     }
 
@@ -28,7 +28,7 @@ object StorageHelper {
         return Gson().fromJson(data, type)
     }
 
-     fun encryptAndSaveFile(fileName: String, data: Any) {
+     fun encryptAndSaveFile(fileName: String, data: Any?) {
         var jsonData = Gson().toJson(data)
         try {
             //get filePath

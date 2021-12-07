@@ -13,6 +13,8 @@
             name="cartDataVM"
             type="com.hanheldpos.ui.screens.cart.CartDataVM" />
 
+        <import type="com.hanheldpos.model.cart.DeliveryType"/>
+
         <variable
             name="isShowDiscount"
             type="Boolean" />
@@ -160,7 +162,7 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        visibleObject="@{cartDataVM.diningOptionLD.orderNo == 2}"
+                        visibleObject="@{cartDataVM.diningOptionLD.orderNo == DeliveryType.DiGiao.value}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
@@ -226,13 +228,15 @@
                             app:tint="@color/color_0" />
 
                         <com.diadiem.pos_components.PTextInputEditText
+                            android:text="@={cartDataVM.cartModelLD.note}"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/_5sdp"
                             android:focusableInTouchMode="true"
                             android:hint="@string/special_instruction_for_order"
+                            android:textColorHint="@color/color_9"
                             android:paddingVertical="@dimen/_11sdp"
-                            app:ipt_useTextColor="color9"
+                            app:ipt_useTextColor="color4"
                             app:ipt_useTextHeader="h5" />
                     </LinearLayout>
 
@@ -411,7 +415,7 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        visibleObject="@{cartDataVM.diningOptionLD.orderNo == 2}"
+                        visibleObject="@{cartDataVM.diningOptionLD.orderNo == DeliveryType.DiGiao.value}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
@@ -447,6 +451,14 @@
                                 android:theme="@style/SCBSwitch" />
                         </LinearLayout>
 
+                    </LinearLayout>
+
+                    <LinearLayout
+                        visibleObject="@{cartDataVM.diningOptionLD.orderNo != DeliveryType.TaiBan.value}"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
                         <androidx.legacy.widget.Space
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/_1sdp" />
@@ -478,7 +490,6 @@
                                 android:theme="@style/SCBSwitch" />
                         </LinearLayout>
                     </LinearLayout>
-
 
                     <androidx.legacy.widget.Space
                         android:layout_width="match_parent"
