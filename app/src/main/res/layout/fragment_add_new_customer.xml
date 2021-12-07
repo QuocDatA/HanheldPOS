@@ -1,0 +1,417 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.hanheldpos.ui.screens.cart.customer.AddNewCustomerVM" />
+    </data>
+
+    <LinearLayout
+        style="@style/RootLayout"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_42sdp"
+            android:background="@color/color_2"
+            android:elevation="@dimen/_1ssp">
+
+            <ImageButton
+                style="@style/MaterialButton.Icon"
+                android:layout_height="match_parent"
+                android:layout_gravity="center|start"
+                android:adjustViewBounds="true"
+                android:backgroundTint="@color/textPrimary"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="@{v -> viewModel.backPress()}"
+                android:padding="@dimen/_14sdp"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_close"
+                tools:ignore="ContentDescription" />
+
+            <com.diadiem.pos_components.PTextView
+                style="@style/CartTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/add_new_customer" />
+
+            <com.diadiem.pos_components.PTextView
+                android:id="@+id/saveBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center|end"
+                android:background="@color/color_10"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                android:gravity="center"
+                android:padding="@dimen/_5sdp"
+                android:paddingStart="@dimen/_19sdp"
+                android:paddingEnd="@dimen/_19sdp"
+                android:text="@string/save"
+                android:textAllCaps="true"
+                app:useFontStyle="bold"
+                app:useTextColor="color9"
+                app:useTextHeader="h5"/>
+        </FrameLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_4sdp"
+                    android:background="@color/color_10" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_8sdp"
+                    android:layout_marginTop="@dimen/_18sdp"
+                    android:orientation="vertical">
+
+                    <com.diadiem.pos_components.PTextView
+                        style="@style/CartTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start"
+                        android:text="@string/contract_information"
+                        android:textAllCaps="true"
+                        app:useFontStyle="bold"
+                        app:useTextColor="color4"
+                        app:useTextHeader="h6" />
+
+
+                    <com.diadiem.pos_components.PTextInputEditText
+                        android:id="@+id/firstNameInput"
+                        style="@style/BaseTextInput"
+                        android:layout_marginTop="@dimen/_15sdp"
+                        android:background="@drawable/bg_outline"
+                        android:focusableInTouchMode="true"
+                        android:hint="@string/first_name"
+                        android:inputType="text"
+                        android:padding="@dimen/_10sdp"
+                        app:ipt_useFontStyle="normal"
+                        app:ipt_useHintTextColor="color8"
+                        app:ipt_useTextColor="color4"
+                        app:ipt_useTextHeader="h5" />
+
+                    <com.diadiem.pos_components.PTextInputEditText
+                        android:id="@+id/lastNameInput"
+                        style="@style/BaseTextInput"
+                        android:layout_marginTop="@dimen/_15sdp"
+                        android:background="@drawable/bg_outline"
+                        android:focusableInTouchMode="true"
+                        android:hint="@string/last_name"
+                        android:inputType="text"
+                        android:padding="@dimen/_10sdp"
+                        app:ipt_useFontStyle="normal"
+                        app:ipt_useHintTextColor="color8"
+                        app:ipt_useTextColor="color4"
+                        app:ipt_useTextHeader="h5" />
+
+                    <com.diadiem.pos_components.PTextInputEditText
+                        android:id="@+id/phoneInput"
+                        style="@style/BaseTextInput"
+                        android:layout_marginTop="@dimen/_15sdp"
+                        android:background="@drawable/bg_outline"
+                        android:focusableInTouchMode="true"
+                        android:hint="@string/phone"
+                        android:inputType="text"
+                        android:padding="@dimen/_10sdp"
+                        app:ipt_useFontStyle="normal"
+                        app:ipt_useHintTextColor="color8"
+                        app:ipt_useTextColor="color4"
+                        app:ipt_useTextHeader="h5" />
+
+                    <com.diadiem.pos_components.PTextInputEditText
+                        android:id="@+id/emailInput"
+                        style="@style/BaseTextInput"
+                        android:layout_marginTop="@dimen/_15sdp"
+                        android:background="@drawable/bg_outline"
+                        android:focusableInTouchMode="true"
+                        android:hint="@string/email"
+                        android:inputType="text"
+                        android:padding="@dimen/_10sdp"
+                        app:ipt_useFontStyle="normal"
+                        app:ipt_useHintTextColor="color8"
+                        app:ipt_useTextColor="color4"
+                        app:ipt_useTextHeader="h5" />
+
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/birthDayTextInputLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_outline"
+                        android:backgroundTint="@android:color/transparent"
+                        android:importantForAutofill="no"
+                        app:boxBackgroundColor="@android:color/transparent"
+                        app:boxCornerRadiusBottomEnd="0dp"
+                        app:boxCornerRadiusBottomStart="0dp"
+                        app:boxCornerRadiusTopEnd="0dp"
+                        app:boxCornerRadiusTopStart="0dp"
+                        app:boxStrokeWidth="0dp"
+                        app:boxStrokeWidthFocused="0dp"
+                        app:endIconDrawable="@drawable/ic_calendar"
+                        app:endIconMode="custom"
+                        app:endIconTint="@color/color_7"
+                        app:hintEnabled="false">
+
+                        <com.diadiem.pos_components.PTextInputEditText
+                            android:id="@+id/birthDayInput"
+                            style="@style/BaseTextInput"
+                            android:layout_marginTop="@dimen/_15sdp"
+                            android:background="@drawable/bg_outline"
+                            android:focusableInTouchMode="true"
+                            android:hint="@string/birthday"
+                            android:inputType="text"
+                            android:padding="@dimen/_10sdp"
+                            app:ipt_useFontStyle="normal"
+                            app:ipt_useHintTextColor="color8"
+                            app:ipt_useTextColor="color4"
+                            app:ipt_useTextHeader="h5" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+
+                    <com.diadiem.pos_components.PTextInputEditText
+                        android:id="@+id/companyInput"
+                        style="@style/BaseTextInput"
+                        android:layout_marginTop="@dimen/_15sdp"
+                        android:background="@drawable/bg_outline"
+                        android:focusableInTouchMode="true"
+                        android:hint="@string/company_optional"
+                        android:inputType="text"
+                        android:padding="@dimen/_10sdp"
+                        app:ipt_useFontStyle="normal"
+                        app:ipt_useHintTextColor="color8"
+                        app:ipt_useTextColor="color4"
+                        app:ipt_useTextHeader="h5" />
+
+                    <com.diadiem.pos_components.PTextInputEditText
+                        android:id="@+id/referenceIdInput"
+                        style="@style/BaseTextInput"
+                        android:layout_marginTop="@dimen/_15sdp"
+                        android:background="@drawable/bg_outline"
+                        android:focusableInTouchMode="true"
+                        android:hint="@string/reference_id_optional"
+                        android:inputType="text"
+                        android:padding="@dimen/_10sdp"
+                        app:ipt_useFontStyle="normal"
+                        app:ipt_useHintTextColor="color8"
+                        app:ipt_useTextColor="color4"
+                        app:ipt_useTextHeader="h5" />
+
+                    <com.diadiem.pos_components.PTextInputEditText
+                        android:id="@+id/idCardInput"
+                        style="@style/BaseTextInput"
+                        android:layout_marginTop="@dimen/_15sdp"
+                        android:background="@drawable/bg_outline"
+                        android:focusableInTouchMode="true"
+                        android:hint="@string/id_card_optional"
+                        android:inputType="text"
+                        android:padding="@dimen/_10sdp"
+                        app:ipt_useFontStyle="normal"
+                        app:ipt_useHintTextColor="color8"
+                        app:ipt_useTextColor="color4"
+                        app:ipt_useTextHeader="h5" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_37sdp"
+                        android:orientation="horizontal">
+
+                        <com.diadiem.pos_components.PTextView
+                            style="@style/CartTitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="start"
+                            android:text="@string/contract_information"
+                            android:textAllCaps="true"
+                            app:useFontStyle="bold"
+                            app:useTextColor="color4"
+                            app:useTextHeader="h6" />
+                    </LinearLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_outline"
+                        android:backgroundTint="@android:color/transparent"
+                        android:importantForAutofill="no"
+                        app:boxBackgroundColor="@android:color/transparent"
+                        app:boxCornerRadiusBottomEnd="0dp"
+                        app:boxCornerRadiusBottomStart="0dp"
+                        app:boxCornerRadiusTopEnd="0dp"
+                        app:boxCornerRadiusTopStart="0dp"
+                        app:boxStrokeWidth="0dp"
+                        app:boxStrokeWidthFocused="0dp"
+                        app:endIconDrawable="@drawable/ic_arrow_down"
+                        app:endIconMode="custom"
+                        app:endIconTint="@color/color_7"
+                        app:hintEnabled="false">
+
+                        <com.diadiem.pos_components.PTextInputEditText
+                            android:id="@+id/addressInput"
+                            style="@style/BaseTextInput"
+                            android:layout_marginTop="@dimen/_15sdp"
+                            android:background="@drawable/bg_outline"
+                            android:focusableInTouchMode="true"
+                            android:hint="@string/address_type"
+                            android:inputType="text"
+                            android:padding="@dimen/_10sdp"
+                            app:ipt_useFontStyle="normal"
+                            app:ipt_useHintTextColor="color8"
+                            app:ipt_useTextColor="color4"
+                            app:ipt_useTextHeader="h5" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.diadiem.pos_components.PTextInputEditText
+                        android:id="@+id/apartmentNameInput"
+                        style="@style/BaseTextInput"
+                        android:layout_marginTop="@dimen/_15sdp"
+                        android:background="@drawable/bg_outline"
+                        android:focusableInTouchMode="true"
+                        android:hint="@string/id_card_optional"
+                        android:inputType="text"
+                        android:padding="@dimen/_10sdp"
+                        app:ipt_useFontStyle="normal"
+                        app:ipt_useHintTextColor="color8"
+                        app:ipt_useTextColor="color4"
+                        app:ipt_useTextHeader="h5" />
+
+                    <com.diadiem.pos_components.PTextInputEditText
+                        android:id="@+id/houseNumberAndStreetNameInput"
+                        style="@style/BaseTextInput"
+                        android:layout_marginTop="@dimen/_15sdp"
+                        android:background="@drawable/bg_outline"
+                        android:focusableInTouchMode="true"
+                        android:hint="@string/house_number_street_name"
+                        android:inputType="text"
+                        android:padding="@dimen/_10sdp"
+                        app:ipt_useFontStyle="normal"
+                        app:ipt_useHintTextColor="color8"
+                        app:ipt_useTextColor="color4"
+                        app:ipt_useTextHeader="h5" />
+
+                    <com.diadiem.pos_components.PTextInputEditText
+                        android:id="@+id/floorNameAndRoomNumberInput"
+                        style="@style/BaseTextInput"
+                        android:layout_marginTop="@dimen/_15sdp"
+                        android:background="@drawable/bg_outline"
+                        android:focusableInTouchMode="true"
+                        android:hint="@string/floor_name_room_number_optional"
+                        android:inputType="text"
+                        android:padding="@dimen/_10sdp"
+                        app:ipt_useFontStyle="normal"
+                        app:ipt_useHintTextColor="color8"
+                        app:ipt_useTextColor="color4"
+                        app:ipt_useTextHeader="h5" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:baselineAligned="false"
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/_5sdp"
+                            android:layout_weight="1"
+                            android:background="@drawable/bg_outline"
+                            android:backgroundTint="@android:color/transparent"
+                            android:importantForAutofill="no"
+                            app:boxBackgroundColor="@android:color/transparent"
+                            app:boxCornerRadiusBottomEnd="0dp"
+                            app:boxCornerRadiusBottomStart="0dp"
+                            app:boxCornerRadiusTopEnd="0dp"
+                            app:boxCornerRadiusTopStart="0dp"
+                            app:boxStrokeWidth="0dp"
+                            app:boxStrokeWidthFocused="0dp"
+                            app:endIconDrawable="@drawable/ic_arrow_down"
+                            app:endIconMode="custom"
+                            app:endIconTint="@color/color_7"
+                            app:hintEnabled="false">
+
+                            <com.diadiem.pos_components.PTextInputEditText
+                                android:id="@+id/districtInput"
+                                style="@style/BaseTextInput"
+                                android:layout_marginTop="@dimen/_15sdp"
+                                android:background="@drawable/bg_outline"
+                                android:focusableInTouchMode="true"
+                                android:hint="@string/district"
+                                android:inputType="text"
+                                android:padding="@dimen/_10sdp"
+                                app:ipt_useFontStyle="normal"
+                                app:ipt_useHintTextColor="color8"
+                                app:ipt_useTextColor="color4"
+                                app:ipt_useTextHeader="h5" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_5sdp"
+                            android:layout_weight="1"
+                            android:background="@drawable/bg_outline"
+                            android:backgroundTint="@android:color/transparent"
+                            android:importantForAutofill="no"
+                            app:boxBackgroundColor="@android:color/transparent"
+                            app:boxCornerRadiusBottomEnd="0dp"
+                            app:boxCornerRadiusBottomStart="0dp"
+                            app:boxCornerRadiusTopEnd="0dp"
+                            app:boxCornerRadiusTopStart="0dp"
+                            app:boxStrokeWidth="0dp"
+                            app:boxStrokeWidthFocused="0dp"
+                            app:endIconDrawable="@drawable/ic_arrow_down"
+                            app:endIconMode="custom"
+                            app:endIconTint="@color/color_7"
+                            app:hintEnabled="false">
+
+                            <com.diadiem.pos_components.PTextInputEditText
+                                android:id="@+id/wardInput"
+                                style="@style/BaseTextInput"
+                                android:layout_marginTop="@dimen/_15sdp"
+                                android:background="@drawable/bg_outline"
+                                android:focusableInTouchMode="true"
+                                android:hint="@string/ward"
+                                android:inputType="text"
+                                android:padding="@dimen/_10sdp"
+                                app:ipt_useFontStyle="normal"
+                                app:ipt_useHintTextColor="color8"
+                                app:ipt_useTextColor="color4"
+                                app:ipt_useTextHeader="h5" />
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_17sdp"
+                        android:layout_marginBottom="@dimen/_11sdp"
+                        android:orientation="horizontal">
+
+                        <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="@dimen/_16sdp"
+                            android:buttonTint="@color/color_0"
+                            android:text="@string/set_as_default" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+    </LinearLayout>
+</layout>

@@ -114,6 +114,7 @@
             android:background="@color/color_0"
             android:clickable="true"
             android:focusable="true"
+            android:onClick="@{v->viewModel.onAddNewCustomer()}"
             android:foreground="?attr/selectableItemBackground"
             android:gravity="center"
             android:padding="@dimen/_5sdp"
