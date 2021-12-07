@@ -138,6 +138,10 @@ class AddCustomerFragment(
             adapterCustomerHelper.loadedFail()
     }
 
+    override fun onAddNewCustomer() {
+        navigator.goToWithCustomAnimation(AddNewCustomerFragment())
+    }
+
     interface CustomerEvent {
         fun onSelectedCustomer(item: CustomerResp): Unit {
             /* default implementation */

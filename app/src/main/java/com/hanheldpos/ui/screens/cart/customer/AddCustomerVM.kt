@@ -46,4 +46,8 @@ class AddCustomerVM : BaseRepoViewModel<CustomerRepo, AddCustomerUV>() {
     fun backPress() {
         uiCallback?.getBack();
     }
+
+    fun onAddNewCustomer() {
+        uiCallback?.onAddNewCustomer()
+    }
 }
