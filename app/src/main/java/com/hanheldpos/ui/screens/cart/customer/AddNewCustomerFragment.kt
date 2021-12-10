@@ -50,7 +50,7 @@ class AddNewCustomerFragment : BaseFragment<FragmentAddNewCustomerBinding, AddNe
         val month = calendar.get(Calendar.MONTH)
         val day = calendar.get(Calendar.DAY_OF_MONTH)
 
-        val datePickerDialog = DatePickerDialog(this.requireActivity(), DatePickerDialog.OnDateSetListener { view, yearOfPick, monthOfPick, dayOfPick ->
+        val datePickerDialog = DatePickerDialog(this.requireActivity(),R.style.CustomDatePickerDialogTheme, DatePickerDialog.OnDateSetListener { view, yearOfPick, monthOfPick, dayOfPick ->
 
             // Display Selected date in textbox
             val monthPicked = monthOfPick+1

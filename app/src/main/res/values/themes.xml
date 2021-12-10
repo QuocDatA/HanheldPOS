@@ -21,6 +21,7 @@
         <item name="colorOnSurface">@color/onSurface</item>
         <item name="android:colorBackground">@color/background</item>
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="android:datePickerDialogTheme">@style/CustomDatePickerDialogTheme</item>
 
         <!-- Ripple effect -->
         <item name="colorControlHighlight">@color/textSecondary</item>
@@ -53,6 +54,21 @@
 
     <style name="DatePicker.Header.ToggleButton" parent="Widget.MaterialComponents.MaterialCalendar.HeaderToggleButton">
         <item name="android:visibility">gone</item>
+    </style>
+
+    <!-- DateTime Picker -->
+    <style name="CustomDatePickerDialogTheme" parent="android:Theme.Material.Light.Dialog">
+        <item name="android:datePickerStyle">@style/CustomDatePickerStyle</item>
+    </style>
+
+    <style name="CustomDatePickerStyle" parent="@android:style/Widget.Material.Light.DatePicker">
+        <item name="colorAccent">@color/primary</item>
+    </style>
+
+    <!-- CheckBox -->
+    <style name="CheckBoxTheme" parent="Base.Theme.AppCompat">
+        <item name="colorAccent">@color/primary</item>
+        <item name="android:textColorSecondary">@color/color_9</item>
     </style>
 
     <!-- Parent Layout -->
