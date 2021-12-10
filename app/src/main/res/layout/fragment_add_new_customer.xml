@@ -415,7 +415,6 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="start"
                             android:text="@string/set_as_default"
-                            android:textAllCaps="true"
                             app:useFontStyle="normal"
                             app:useTextColor="color4"
                             app:useTextHeader="h5" />
