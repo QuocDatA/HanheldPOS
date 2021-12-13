@@ -1,5 +1,6 @@
 package com.hanheldpos.data.repository.discount
 
+import com.hanheldpos.data.api.pojo.discount.CouponResp
 import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.data.api.pojo.employee.EmployeeResp
 import com.hanheldpos.data.repository.GDataResp
@@ -27,6 +28,30 @@ class DiscountRepo : BaseRepo() {
             }
 
             override fun onFailure(call: Call<DiscountResp>, t: Throwable) {
+                callback.apiRequesting(false);
+                t.printStackTrace();
+                callback.showMessage(t.message);
+            }
+        });
+    }
+
+    fun getDiscountDetailList(
+        userGuid: String?,
+        locationGuid: String?,
+        callback: BaseRepoCallback<CouponResp>
+    ) {
+        callback.apiRequesting(true);
+        discountService.getDiscountDetails(userGuid,locationGuid).enqueue(object :
+            Callback<CouponResp> {
+            override fun onResponse(
+                call: Call<CouponResp>,
+                response: Response<CouponResp>
+            ) {
+                callback.apiRequesting(false);
+                callback.apiResponse(getBodyResponse(response));
+            }
+
+            override fun onFailure(call: Call<CouponResp>, t: Throwable) {
                 callback.apiRequesting(false);
                 t.printStackTrace();
                 callback.showMessage(t.message);

@@ -48,7 +48,7 @@ class DiscountCompFragment(private val comp : Reason?, private val listener : Di
 
     override fun initData() {
         val list = DataHelper.getCompList();
-        adapter.submitList(list as MutableList<Reason>);
+        if (list != null) adapter.submitList(list as MutableList<Reason>);
     }
 
     override fun initAction() {

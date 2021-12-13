@@ -12,7 +12,7 @@ data class DiscountResp(
     val DidError: Boolean,
     val ErrorMessage: String,
     val Message: String,
-    val DiscountItem: List<DiscountItem>
+    val Model: List<DiscountItem>
 ) : Parcelable
 
 @Parcelize
@@ -127,7 +127,8 @@ data class CustomerGets(
 
 @Parcelize
 data class DiningOptionDiscount(
-    val Id: Int
+    val Id: Int,
+    val Title : String
 ) : Parcelable
 
 @Parcelize

@@ -40,6 +40,7 @@ class DiscountTypeFragment(private val applyToType: DiscountApplyToType, private
         viewModel.run {
             init(this@DiscountTypeFragment);
             binding.viewModel = this;
+            binding.discountType = applyToType;
         }
     }
 
@@ -87,7 +88,7 @@ class DiscountTypeFragment(private val applyToType: DiscountApplyToType, private
                 listener.discountUserChoose(discount);
             }
         });
-        fragmentMap[DiscountTypeFor.DISCOUNT_CODE] = DiscountCodeFragment();
+        fragmentMap[DiscountTypeFor.DISCOUNT_CODE] = DiscountCodeFragment(applyToType);
         fragmentMap[DiscountTypeFor.COMP] = DiscountCompFragment(comp = cart.compReason,listener = object : DiscountTypeListener {
             override fun compReasonChoose(item: Reason) {
                 listener.compReasonChoose(item);
