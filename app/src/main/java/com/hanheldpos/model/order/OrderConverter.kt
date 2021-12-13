@@ -15,7 +15,6 @@ import com.hanheldpos.model.cart.Combo
 import com.hanheldpos.model.cart.GroupBundle
 import com.hanheldpos.model.cart.Regular
 import com.hanheldpos.model.cart.fee.FeeType
-import com.hanheldpos.model.cart.payment.PaymentOrder
 import com.hanheldpos.model.discount.DiscountServer
 import com.hanheldpos.model.discount.DiscountUser
 import com.hanheldpos.model.product.BaseProductInCart
@@ -24,38 +23,38 @@ import com.hanheldpos.model.product.ProductType
 import java.net.URI
 
 object OrderConverter {
-    public fun toCart(orderResponseModel: OrderModel, orderGuid: String): CartModel {
-        val orderPayment = orderResponseModel.OrderDetail.PaymentList;
-        val orderData = orderResponseModel.OrderDetail;
-        val order = orderResponseModel.Order;
+    public fun toCart(orderModel: OrderModel, orderGuid: String): CartModel {
+        val orderPayment = orderModel.OrderDetail.PaymentList;
+        val orderData = orderModel.OrderDetail;
+        val order = orderModel.Order;
 
         val model = CartModel(
-            order = orderResponseModel.Order,
-            compReason = reasonComp(orderData.CompVoidList),
-            table = orderData.TableList.firstOrNull()!!,
-            paymentsList = orderPayment as MutableList<PaymentOrder>,
+            order = orderModel.Order,
+            compReason = toReasonComp(orderData.CompVoidList),
+            paymentsList = orderPayment.toMutableList(),
             customer = orderData.Billing,
             shipping = orderData.Shipping,
+            table = orderData.TableList.firstOrNull()!!,
             deliveryTime = orderData.DeliveryTime,
             diningOption = DataHelper.getDiningOptionItem(order.DiningOptionId ?: 0)!!,
-            //TODO: Add orderGuid = orderGuid,
+            orderGuid = orderGuid,
             createDate = order.CreateDate,
             orderCode = order.Code,
             menuLocationGuid = order.MenuLocationGuid,
-            fees = fees(
+            fees = toFeeList(
                 serviceFeeList = orderData.ServiceFeeList,
                 shippingFeeList = orderData.ShippingFeeList,
                 surchargeFeeList = orderData.SurchargeFeeList,
                 taxesFeeList = orderData.TaxFeeList,
             ),
-            discountServerList = discountsServer(orderData.DiscountList) as MutableList<DiscountServer>,
-            discountUserList = discountsUser(orderData.DiscountList) as MutableList<DiscountUser>,
-            productsList = productList(orderData.OrderProducts, order.MenuLocationGuid!!),
+            discountServerList = toDiscountsServer(orderData.DiscountList) as MutableList<DiscountServer>,
+            discountUserList = toDiscountsUser(orderData.DiscountList) as MutableList<DiscountUser>,
+            productsList = toProductList(orderData.OrderProducts, order.MenuLocationGuid!!),
         )
         return model
     }
 
-    private fun reasonComp(compVoids: List<CompVoid>): Reason? {
+    private fun toReasonComp(compVoids: List<CompVoid>): Reason? {
         return compVoids.map { comp ->
             Reason(
                 compVoidGuid = comp.CompVoidGuid,
@@ -67,7 +66,7 @@ object OrderConverter {
         }.firstOrNull()
     }
 
-    private fun discountsUser(orderDiscounts: List<DiscountOrder>): List<DiscountUser> {
+    private fun toDiscountsUser(orderDiscounts: List<DiscountOrder>): List<DiscountUser> {
         return orderDiscounts.filter { it._id.isEmpty() }.toList()
             .map { dc ->
                 DiscountUser(
@@ -79,7 +78,7 @@ object OrderConverter {
             }
     }
 
-    private fun productList(
+    private fun toProductList(
         orderProducts: List<ProductBuy>,
         menuLocation_id: String
     ): MutableList<BaseProductInCart> {
@@ -88,10 +87,10 @@ object OrderConverter {
             val productBuy = productOrder
             val diningOption = DataHelper.getDiningOptionItem(productBuy.DiningOption?.Id ?: 0)!!
 
-            val compReason = reasonComp(productBuy.CompVoidList!!)
-            val discountServerList = discountsServer(productBuy.DiscountList!!)
-            val discountUserList = discountsUser(productBuy.DiscountList!!)
-            val feeList = fees(
+            val compReason = toReasonComp(productBuy.CompVoidList!!)
+            val discountServerList = toDiscountsServer(productBuy.DiscountList!!)
+            val discountUserList = toDiscountsUser(productBuy.DiscountList!!)
+            val feeList = toFeeList(
                 serviceFeeList = productBuy.ServiceFeeList,
                 surchargeFeeList = productBuy.SurchargeFeeList,
                 shippingFeeList = productBuy.ShippingFeeList,
@@ -210,11 +209,11 @@ object OrderConverter {
 
     }
 
-    private fun discountsServer(orderDiscounts: List<DiscountOrder>): List<DiscountServer> {
+    private fun toDiscountsServer(orderDiscounts: List<DiscountOrder>): List<DiscountServer> {
         return listOf()
     }
 
-    fun fees(
+    private fun toFeeList(
         serviceFeeList: List<OrderFee>?,
         surchargeFeeList: List<OrderFee>?,
         taxesFeeList: List<OrderFee>?,
