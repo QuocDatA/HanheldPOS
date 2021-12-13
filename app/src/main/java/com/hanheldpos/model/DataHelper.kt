@@ -3,6 +3,7 @@ package com.hanheldpos.model
 
 import com.hanheldpos.data.api.ApiConst
 import com.hanheldpos.data.api.pojo.device.DeviceCodeResp
+import com.hanheldpos.data.api.pojo.discount.CouponResp
 import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.data.api.pojo.employee.EmployeeResp
 import com.hanheldpos.data.api.pojo.fee.Fee
@@ -248,6 +249,21 @@ object DataHelper {
         set(value) {
             field = value
             StorageHelper.setDataToEncryptedFile(PrefKey.Discount.DISCOUNT_RESP, value)
+        }
+
+    var discountDetailResp: CouponResp? = null
+        get() {
+            if (field == null) {
+                field = StorageHelper.getDataFromEncryptedFile(
+                    PrefKey.Discount.DISCOUNT_DETAIL_RESP,
+                    CouponResp::class.java
+                )
+            }
+            return field
+        }
+        set(value) {
+            field = value
+            StorageHelper.setDataToEncryptedFile(PrefKey.Discount.DISCOUNT_DETAIL_RESP, value)
         }
 
     //endregion

@@ -29,6 +29,7 @@ object  PrefKey {
 
     object Discount {
         const val DISCOUNT_RESP = "DISCOUNT_RESP"
+        const val DISCOUNT_DETAIL_RESP = "DISCOUNT_DETAIL_RESP";
     }
 
     object Payment {

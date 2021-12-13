@@ -9,6 +9,7 @@ import com.hanheldpos.data.api.pojo.fee.FeeResp
 import com.hanheldpos.data.api.pojo.order.menu.OrderMenuResp
 import com.hanheldpos.data.api.pojo.order.settings.OrderSettingResp
 import com.hanheldpos.data.api.pojo.device.DeviceCodeResp
+import com.hanheldpos.data.api.pojo.discount.CouponResp
 import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.data.api.pojo.payment.PaymentsResp
 import com.hanheldpos.data.api.pojo.table.TableResp
@@ -175,6 +176,23 @@ class DeviceCodeVM : BaseRepoViewModel<DeviceRepo, DeviceCodeUV>() {
                 }
 
             },);
+
+        discountRepo.getDiscountDetailList(userGuid = userGuid,
+            locationGuid = location,
+            callback = object : BaseRepoCallback<CouponResp> {
+                override fun apiResponse(data: CouponResp?) {
+                    if (data == null || data.DidError) {
+                        onDataFailure(context?.getString(R.string.failed_to_load_data));
+                    } else {
+                        DataHelper.discountDetailResp = data;
+                        startMappingData();
+                    }
+                }
+
+                override fun showMessage(message: String?) {
+                }
+
+            },);
         paymentRepo.getPaymentMethods(userGuid = userGuid,callback = object : BaseRepoCallback<PaymentsResp>{
             override fun apiResponse(data: PaymentsResp?) {
                 if (data == null || data.DidError) {
@@ -203,6 +221,7 @@ class DeviceCodeVM : BaseRepoViewModel<DeviceRepo, DeviceCodeUV>() {
             it.tableResp?:return;
             it.feeResp?:return;
             it.discountResp?:return;
+            it.discountDetailResp?:return;
             it.paymentsResp?:return;
         }
         uiCallback?.openPinCode();
