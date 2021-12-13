@@ -407,8 +407,17 @@
                         <CheckBox
                             android:layout_width="wrap_content"
                             android:layout_height="@dimen/_16sdp"
-                            android:buttonTint="@color/color_0"
-                            android:text="@string/set_as_default" />
+                            android:theme="@style/CheckBoxTheme" />
+
+                        <com.diadiem.pos_components.PTextView
+                            style="@style/CartTitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="start"
+                            android:text="@string/set_as_default"
+                            app:useFontStyle="normal"
+                            app:useTextColor="color4"
+                            app:useTextHeader="h5" />
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
