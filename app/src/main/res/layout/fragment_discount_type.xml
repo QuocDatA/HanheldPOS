@@ -4,20 +4,61 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.hanheldpos.ui.screens.discount.discounttype.DiscountTypeVM" />
+
+        <import type="android.view.View" />
+
+        <import type="com.hanheldpos.model.discount.DiscountApplyToType" />
+
+        <variable
+            name="applyToType"
+            type="com.hanheldpos.model.discount.DiscountApplyToType" />
     </data>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.diadiem.pos_components.PTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_8sdp"
+                android:layout_marginTop="@dimen/_14sdp"
+                android:text="@string/apply_to"
+                android:textAllCaps="true"
+                app:useTextColor="color4"
+                app:useFontStyle="bold"
+                android:layout_marginBottom="@dimen/_5sdp"
+                app:useTextHeader="h6"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/itemDiscountContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:overScrollMode="never"
+                android:visibility="@{applyToType == DiscountApplyToType.ORDER_DISCOUNT_APPLY_TO ? View.GONE : View.VISIBLE}"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:itemCount="3"
+                tools:listitem="@layout/item_discount" />
+        </LinearLayout>
+
+
         <LinearLayout
             android:layout_marginHorizontal="@dimen/_8sdp"
             android:layout_marginVertical="@dimen/_19sdp"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/tabDiscountType"

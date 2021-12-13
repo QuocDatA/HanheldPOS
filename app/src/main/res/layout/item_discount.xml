@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="item"
+            type="com.hanheldpos.model.product.BaseProductInCart" />
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.diadiem.pos_components.PRadioButton
+            style="@android:style/Widget.Holo.CompoundButton.RadioButton"
+            android:id="@+id/btnProductItem"
+            android:text="@{item.name}"
+            android:background="@color/color_2"
+            tools:text="Item 1"
+            android:paddingVertical="@dimen/_10sdp"
+            android:buttonTint="@color/color_0"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+</layout>
