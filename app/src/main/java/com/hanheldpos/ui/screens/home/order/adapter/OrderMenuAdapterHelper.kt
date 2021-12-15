@@ -7,17 +7,33 @@ class OrderMenuAdapterHelper(private val callBack : AdapterCallBack) {
 
     private var currentIndex : Int = 1;
     private var list: MutableList<OrderMenuItem?> = mutableListOf();
+    private var listOfOrderMenuPage: MutableList<List<OrderMenuItem?>> = mutableListOf()
 
     fun submitList(list: MutableList<OrderMenuItem?>){
         this.list = list;
         currentIndex = 1;
-        split(currentIndex);
+        listOfOrderMenuPage.clear()
+        var sizeOfMainList: Int = this.list.size
+        var currentListIndex: Int = 1
+
+        if (sizeOfMainList > 0) {
+            while (sizeOfMainList > 0) {
+                var tablePage = split(currentListIndex)
+                listOfOrderMenuPage.add(tablePage)
+                sizeOfMainList -= (tablePage.size - 2) // reduce list size except for 2 dirButton
+                currentListIndex++
+            }
+        } else if (sizeOfMainList == 0) {
+            var tempList = split(currentListIndex)
+            listOfOrderMenuPage.add(tempList)
+        }
+        callBack.onListSplitCallBack(listOfOrderMenuPage[currentIndex-1])
     }
 
     fun next(){
         if ((currentIndex * maxItemViewCate) < list.size ){
             currentIndex = currentIndex.plus(1);
-            split(currentIndex);
+            callBack.onListSplitCallBack(listOfOrderMenuPage[currentIndex-1])
         }
 
     }
@@ -25,12 +41,12 @@ class OrderMenuAdapterHelper(private val callBack : AdapterCallBack) {
     fun previous(){
         if (currentIndex > 1){
             currentIndex = currentIndex.minus(1);
-            split(currentIndex);
+            callBack.onListSplitCallBack(listOfOrderMenuPage[currentIndex-1])
         }
 
     }
 
-    private fun split(pagePosition: Int){
+    private fun split(pagePosition: Int): MutableList<OrderMenuItem?> {
         val rs: MutableList<OrderMenuItem> = mutableListOf();
 
         list.let {
@@ -82,7 +98,7 @@ class OrderMenuAdapterHelper(private val callBack : AdapterCallBack) {
                 )
             )
         }
-        callBack.onListSplitCallBack(lastrs.toList());
+        return lastrs
     }
 
 
