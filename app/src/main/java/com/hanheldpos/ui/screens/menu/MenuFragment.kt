@@ -1,6 +1,9 @@
 package com.hanheldpos.ui.screens.menu
 
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentMenuBinding
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
@@ -49,7 +52,17 @@ class MenuFragment : BaseFragment<FragmentMenuBinding, MenuVM>(), MenuUV {
 
         binding.menuItemContainer.apply {
             addItemDecoration(
-                GridSpacingItemDecoration(spanCount = 1,includeEdge = false, spacing = 3)
+                DividerItemDecoration(
+                    context,
+                    LinearLayoutManager.VERTICAL
+                ).apply {
+                    setDrawable(
+                        ContextCompat.getDrawable(
+                            context,
+                            R.drawable.divider_vertical
+                        )!!
+                    )
+                }
             )
         };
         binding.menuItemContainer.adapter = menuAdapter;

@@ -82,4 +82,5 @@
     <string name="description_device_code">Device Codes are created in Dashboard for each new device, allowing you to sign in without ever sharing your email and password</string>
     <string name="there_was_not_found">There was not found</string>
     <string name="failed_to_load_data">Failed to load data</string>
+    <string name="apply_to">Apply to</string>
 </resources>

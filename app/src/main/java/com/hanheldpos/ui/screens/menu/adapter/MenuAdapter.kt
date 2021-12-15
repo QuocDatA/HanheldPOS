@@ -1,14 +1,8 @@
 package com.hanheldpos.ui.screens.menu.adapter
 
-import android.opengl.Visibility
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import com.hanheldpos.R
-import com.hanheldpos.binding.visibleObject
-import com.hanheldpos.databinding.ItemCartComboGroupDetailBinding
-import com.hanheldpos.databinding.ItemMenuBinding
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
-import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.screens.menu.MenuFragment.FakeMenuItem
 
