@@ -95,7 +95,7 @@ class DiscountTypeFragment(private val applyToType: DiscountApplyToType, private
     }
 
     override fun initData() {
-        binding.applyToType = this.applyToType
+
 
         // Data Discount Tab Adapter
         val listTab = mutableListOf(
@@ -112,7 +112,6 @@ class DiscountTypeFragment(private val applyToType: DiscountApplyToType, private
 
         // Data Discount Item Adapter
         itemDiscountAdapter.submitList(cart.productsList)
-        val theName = cart.productsList[0].name
 
         // Data Container Fragment Type
         fragmentMap[DiscountTypeFor.AMOUNT] =

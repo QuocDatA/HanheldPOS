@@ -126,8 +126,7 @@ class CartDataVM : BaseViewModel() {
 
     fun removeCart() {
         this@CartDataVM.cartModelLD.value = null;
-        this@CartDataVM.cartModelLD.notifyValueChange()
-
+        this@CartDataVM.cartModelLD.notifyValueChange();
     }
 
     fun deleteDiscount(discount: DiscountCart) {

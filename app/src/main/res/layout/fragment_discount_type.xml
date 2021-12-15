@@ -4,7 +4,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
         <variable
             name="viewModel"
             type="com.hanheldpos.ui.screens.discount.discounttype.DiscountTypeVM" />
@@ -14,7 +13,7 @@
         <import type="com.hanheldpos.model.discount.DiscountApplyToType" />
 
         <variable
-            name="applyToType"
+            name="discountType"
             type="com.hanheldpos.model.discount.DiscountApplyToType" />
     </data>
     <LinearLayout
@@ -23,6 +22,7 @@
         android:orientation="vertical">
 
         <LinearLayout
+            android:visibility="@{discountType == DiscountApplyToType.ORDER_DISCOUNT_APPLY_TO ? View.GONE : View.VISIBLE}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -45,7 +45,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:overScrollMode="never"
-                android:visibility="@{applyToType == DiscountApplyToType.ORDER_DISCOUNT_APPLY_TO ? View.GONE : View.VISIBLE}"
+
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:itemCount="3"
                 tools:listitem="@layout/item_discount" />
@@ -58,7 +58,6 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/tabDiscountType"
