@@ -3,6 +3,7 @@ package com.hanheldpos.ui.screens.devicecode
 import android.content.Context
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.device.DeviceCodeResp
+import com.hanheldpos.data.api.pojo.discount.CouponResp
 import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.data.api.pojo.fee.FeeResp
 import com.hanheldpos.data.api.pojo.order.menu.OrderMenuResp
@@ -19,17 +20,16 @@ import com.hanheldpos.data.repository.payment.PaymentRepo
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.ui.base.viewmodel.BaseViewModel
 
-class SyncDataService : BaseViewModel()  {
+class SyncDataService : BaseViewModel() {
     //var context : Context? = null;
 
-    private var menuRepo : MenuRepo = MenuRepo();
+    private var menuRepo: MenuRepo = MenuRepo();
     private var orderRepo: OrderRepo = OrderRepo();
     private var floorRepo: FloorRepo = FloorRepo();
     private var feeRepo: FeeRepo = FeeRepo();
-    private var discountRepo : DiscountRepo = DiscountRepo();
-    private var paymentRepo : PaymentRepo = PaymentRepo();
-
-    private fun fetchAllData(context: Context?) {
+    private var discountRepo: DiscountRepo = DiscountRepo();
+    private var paymentRepo: PaymentRepo = PaymentRepo();
+    fun fetchAllData(context: Context?, listener: SyncDataServiceListener) {
         val location = DataHelper.getLocationGuidByDeviceCode()
         val userGuid = DataHelper.getUserGuidByDeviceCode()
         menuRepo.getOrderMenu(
@@ -38,15 +38,16 @@ class SyncDataService : BaseViewModel()  {
             callback = object : BaseRepoCallback<OrderMenuResp?> {
                 override fun apiResponse(data: OrderMenuResp?) {
                     if (data == null || data?.didError == true) {
-                        onDataFailure(context?.getString(R.string.failed_to_load_data));
+                        onDataFailure(context?.getString(R.string.failed_to_load_data),listener);
                     } else {
                         DataHelper.orderMenuResp = data;
 
-                        startMappingData();
+                        startMappingData(listener);
                     }
                 }
+
                 override fun showMessage(message: String?) {
-                    onDataFailure(message);
+                    onDataFailure(message,listener);
                 }
             });
 
@@ -56,14 +57,15 @@ class SyncDataService : BaseViewModel()  {
             callback = object : BaseRepoCallback<OrderSettingResp?> {
                 override fun apiResponse(data: OrderSettingResp?) {
                     if (data == null || data.didError == true) {
-                        onDataFailure(context?.getString(R.string.failed_to_load_data));
+                        onDataFailure(context?.getString(R.string.failed_to_load_data),listener);
                     } else {
                         DataHelper.orderSettingResp = data;
-                        startMappingData();
+                        startMappingData(listener);
                     }
                 }
+
                 override fun showMessage(message: String?) {
-                    onDataFailure(message)
+                    onDataFailure(message,listener);
                 }
             }
         )
@@ -73,96 +75,117 @@ class SyncDataService : BaseViewModel()  {
             callback = object : BaseRepoCallback<TableResp?> {
                 override fun apiResponse(data: TableResp?) {
                     if (data == null || data.didError == true) {
-                        onDataFailure(context?.getString(R.string.failed_to_load_data));
+                        onDataFailure(context?.getString(R.string.failed_to_load_data),listener);
                     } else {
                         DataHelper.tableResp = data;
-                        startMappingData();
+                        startMappingData(listener);
                     }
                 }
 
                 override fun showMessage(message: String?) {
-                    onDataFailure(message);
+                    onDataFailure(message,listener);
                 }
             });
 
-        feeRepo.getFees( userGuid = userGuid,
+        feeRepo.getFees(
+            userGuid = userGuid,
             locationGuid = location,
             callback = object : BaseRepoCallback<FeeResp?> {
                 override fun apiResponse(data: FeeResp?) {
                     if (data == null || data.didError) {
-                        onDataFailure(context?.getString(R.string.failed_to_load_data));
+                        onDataFailure(context?.getString(R.string.failed_to_load_data),listener);
                     } else {
                         DataHelper.feeResp = data;
-                        startMappingData();
+                        startMappingData(listener);
                     }
                 }
 
                 override fun showMessage(message: String?) {
+
+                    onDataFailure(message,listener);
                 }
 
-            },);
+            },
+        );
 
-        discountRepo.getDiscountList(userGuid = userGuid,
+        discountRepo.getDiscountList(
+            userGuid = userGuid,
             locationGuid = location,
             callback = object : BaseRepoCallback<DiscountResp> {
                 override fun apiResponse(data: DiscountResp?) {
                     if (data == null || data.DidError) {
-                        onDataFailure(context?.getString(R.string.failed_to_load_data));
+                        onDataFailure(context?.getString(R.string.failed_to_load_data),listener);
                     } else {
                         DataHelper.discountResp = data;
-                        startMappingData();
+                        startMappingData(listener);
                     }
                 }
 
                 override fun showMessage(message: String?) {
+                    onDataFailure(message,listener);
+                }
+            },
+        );
+
+        discountRepo.getDiscountDetailList(
+            userGuid = userGuid,
+            locationGuid = location,
+            callback = object : BaseRepoCallback<CouponResp> {
+                override fun apiResponse(data: CouponResp?) {
+                    if (data == null || data.DidError) {
+                        onDataFailure(context?.getString(R.string.failed_to_load_data),listener);
+                    } else {
+                        DataHelper.discountDetailResp = data;
+                        startMappingData(listener);
+                    }
                 }
 
-            },);
-        paymentRepo.getPaymentMethods(userGuid = userGuid,callback = object :
+                override fun showMessage(message: String?) {
+                    onDataFailure(message,listener);
+                }
+            },
+        );
+
+        paymentRepo.getPaymentMethods(userGuid = userGuid, callback = object :
             BaseRepoCallback<PaymentsResp> {
             override fun apiResponse(data: PaymentsResp?) {
                 if (data == null || data.DidError) {
-                    onDataFailure(context?.getString(R.string.failed_to_load_data));
+                    onDataFailure(context?.getString(R.string.failed_to_load_data),listener);
                 } else {
                     DataHelper.paymentsResp = data;
-                    startMappingData();
+                    startMappingData(listener);
                 }
             }
 
             override fun showMessage(message: String?) {
-
+                onDataFailure(message,listener);
             }
         })
     }
 
-    fun onDataFailure(message: String?){
+    private fun onDataFailure(message: String?,listener: SyncDataServiceListener) {
         DataHelper.clearData();
-        //uiCallback?.showMessage(message);
+        showLoading(false);
+        listener.onError(message);
     }
 
-    fun onDataSuccess(result: DeviceCodeResp?, context: Context?):String {
-        var isSuccess = ""
-        result?.let {
-            if (it.didError == true) {
-                onDataFailure(it.message);
-                isSuccess = it.message.toString()
-            } else {
-                DataHelper.deviceCodeResp = it;
-                fetchAllData(context);
-            }
-        }
-        return isSuccess
-    }
 
-    private fun startMappingData() {
+    private fun startMappingData(listener: SyncDataServiceListener) {
         DataHelper.let {
-            it.orderMenuResp?:return;
-            it.tableResp?:return;
-            it.feeResp?:return;
-            it.discountResp?:return;
-            it.paymentsResp?:return;
+            it.orderMenuResp ?: return;
+            it.tableResp ?: return;
+            it.feeResp ?: return;
+            it.discountResp ?: return;
+            it.discountDetailResp ?: return;
+            it.paymentsResp ?: return;
         }
+
+        listener.onLoadedResources();
 
     }
 
+    interface SyncDataServiceListener {
+        fun onLoadedResources();
+        fun onError(message: String?);
+    }
 }
