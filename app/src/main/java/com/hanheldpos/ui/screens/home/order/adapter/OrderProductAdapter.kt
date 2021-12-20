@@ -24,9 +24,9 @@ class OrderProductAdapter(
 ) : BaseBindingListAdapter<ProductMenuItem>(DiffCallback()) {
 
     override fun getItemViewType(position: Int): Int {
-        return when(getItem(position).uiType){
+        return when (getItem(position).uiType) {
             ProductModeViewType.Product -> R.layout.item_order_product;
-            else->R.layout.item_order_product_direction_button;
+            else -> R.layout.item_order_product_direction_button;
         }
     }
 
@@ -39,12 +39,12 @@ class OrderProductAdapter(
             viewType,
             parent, false
         ).also {
-            Log.d("OrderProductAdapter","RecycleView Height:" + parent.height);
-            val height = ((parent.height) / 6 ) - parent.resources.getDimension(R.dimen._2sdp);
-            val params : FrameLayout.LayoutParams = FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,height.toInt());
+            val height = ((parent.height) / 6) - parent.resources.getDimension(R.dimen._2sdp);
+//            val params : FrameLayout.LayoutParams = FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,height.toInt());
             if (it is ItemOrderProductBinding)
-            (it as ItemOrderProductBinding).layoutMain.layoutParams = params;
-            else (it as ItemOrderProductDirectionButtonBinding).layoutMain.layoutParams = params;
+                (it as ItemOrderProductBinding).layoutMain.layoutParams.height = height.toInt();
+            else (it as ItemOrderProductDirectionButtonBinding).layoutMain.layoutParams.height =
+                height.toInt();
             return BaseBindingViewHolder(it, listener);
         }
     }
@@ -52,18 +52,22 @@ class OrderProductAdapter(
     override fun onBindViewHolder(holder: BaseBindingViewHolder<ProductMenuItem>, position: Int) {
         val item = getItem(position);
         holder.bindItem(item);
-        if (item.uiType != ProductModeViewType.Empty){
-            holder.binding.root.setOnClickListener { listener.onItemClick(position,item); }
+        if (item.uiType != ProductModeViewType.Empty) {
+
+            holder.binding.root.setOnClickListener { listener.onItemClick(position, item); }
         }
     }
 
     private class DiffCallback : DiffUtil.ItemCallback<ProductMenuItem>() {
         override fun areItemsTheSame(oldItem: ProductMenuItem, newItem: ProductMenuItem): Boolean {
-            return oldItem.proOriginal?.id.equals(newItem.proOriginal?.id) && ((oldItem.uiType == newItem.uiType) || ( oldItem.uiType != ProductModeViewType.Product && oldItem.uiType != ProductModeViewType.Empty && newItem.uiType != ProductModeViewType.Product && newItem.uiType != ProductModeViewType.Empty))
+            return oldItem.proOriginal?.id.equals(newItem.proOriginal?.id) && ((oldItem.uiType == newItem.uiType) || (oldItem.uiType != ProductModeViewType.Product && oldItem.uiType != ProductModeViewType.Empty && newItem.uiType != ProductModeViewType.Product && newItem.uiType != ProductModeViewType.Empty))
         }
 
-        override fun areContentsTheSame(oldItem: ProductMenuItem, newItem: ProductMenuItem): Boolean {
-            return  false;
+        override fun areContentsTheSame(
+            oldItem: ProductMenuItem,
+            newItem: ProductMenuItem
+        ): Boolean {
+            return false;
         }
 
     }
