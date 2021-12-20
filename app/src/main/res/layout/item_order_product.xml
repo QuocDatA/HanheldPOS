@@ -20,14 +20,14 @@
     <com.google.android.material.card.MaterialCardView
         android:focusable="true"
         android:clickable="true"
-        backColor="@{(item.uiType == ProductModeViewType.Product) ? item.proOriginal.color : `#00000000`}"
+        backColor="@{item.proOriginal.color}"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/_1sdp"
         android:elevation="0dp"
         app:cardCornerRadius="0dp"
         app:cardElevation="0dp"
-        app:rippleColor="@{ item.uiType != ProductModeViewType.Empty  ? ( (item.uiType == ProductModeViewType.Product) || (item.uiType == ProductModeViewType.PrevButtonEnable || item.uiType == ProductModeViewType.NextButtonEnable )? @color/color_2 : @android:color/transparent )  : @android:color/transparent }">
+        app:rippleColor="@color/color_2">
 
         <LinearLayout
             android:id="@+id/layoutMain"
@@ -36,8 +36,8 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@{ (item.uiType == ProductModeViewType.Product) ? @android:color/transparent : @color/_EEEEEE }"
-                android:visibility="@{ item.uiType != ProductModeViewType.Empty ? View.VISIBLE : View.INVISIBLE }">
+                android:background="@android:color/transparent"
+                >
 
                 <RelativeLayout
                     visibleObject="@{(item.uiType == ProductModeViewType.Product)}"
@@ -82,23 +82,6 @@
                         app:useTextColor="color2"
                         app:useTextHeader="h7" />
                 </RelativeLayout>
-
-                <ImageView
-                    visibleObject="@{item.uiType == ProductModeViewType.PrevButtonEnable ||  item.uiType == ProductModeViewType.PrevButtonDisable}"
-                    android:layout_width="@dimen/_14sdp"
-                    android:layout_height="@dimen/_14sdp"
-                    android:layout_centerInParent="true"
-                    android:layout_gravity="center"
-                    android:scaleType="centerInside"
-                    android:src="@{ item.uiType == ProductModeViewType.PrevButtonEnable ? @drawable/ic_direction_up : @drawable/ic_direction_up_disable}" />
-                <ImageView
-                    visibleObject="@{item.uiType == ProductModeViewType.NextButtonEnable || item.uiType == ProductModeViewType.NextButtonDisable}"
-                    android:layout_width="@dimen/_14sdp"
-                    android:layout_height="@dimen/_14sdp"
-                    android:layout_centerInParent="true"
-                    android:layout_gravity="center"
-                    android:scaleType="centerInside"
-                    android:src="@{ item.uiType == ProductModeViewType.NextButtonEnable ? @drawable/ic_direction_down : @drawable/ic_direction_down_disable }" />
                 <ImageView
                     visibleObject="@{isChosen}"
                     android:layout_alignParentEnd="true"
