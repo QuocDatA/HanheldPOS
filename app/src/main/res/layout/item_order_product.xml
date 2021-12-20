@@ -29,69 +29,62 @@
         app:cardElevation="0dp"
         app:rippleColor="@color/color_2">
 
-        <LinearLayout
+        <RelativeLayout
+            android:background="@android:color/transparent"
             android:id="@+id/layoutMain"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_100sdp">
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@android:color/transparent"
-                >
 
-                <RelativeLayout
-                    visibleObject="@{(item.uiType == ProductModeViewType.Product)}"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+            <com.diadiem.pos_components.PTextView
+                visibleObject="@{item.proOriginal.sku}"
+                android:id="@+id/skuProduct"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_4sdp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:layout_marginEnd="@dimen/_4sdp"
+                android:layout_marginBottom="@dimen/_4sdp"
+                android:background="@drawable/bg_food_text"
+                android:paddingHorizontal="@dimen/_6sdp"
+                android:text="@{item.proOriginal.sku}"
+                app:useTextColor="color2"
+                app:useTextHeader="h6" />
 
-                    <com.diadiem.pos_components.PTextView
-                        visibleObject="@{item.proOriginal.sku}"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_4sdp"
-                        android:layout_marginTop="@dimen/_4sdp"
-                        android:layout_marginEnd="@dimen/_4sdp"
-                        android:layout_marginBottom="@dimen/_4sdp"
-                        android:background="@drawable/bg_food_text"
-                        android:paddingHorizontal="@dimen/_6sdp"
-                        android:text="@{item.proOriginal.sku}"
-                        app:useTextColor="color2"
-                        app:useTextHeader="h6" />
+            <com.diadiem.pos_components.PTextView
+                android:id="@+id/nameProduct"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text="@{item.proOriginal.name,default=`Product Name`}"
+                android:textAlignment="center"
+                app:useFontStyle="bold"
+                app:useTextColor="color2"
+                app:useTextHeader="h6" />
 
-                    <com.diadiem.pos_components.PTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:ellipsize="end"
-                        android:maxLines="2"
-                        android:text="@{item.proOriginal.name,default=`Product Name`}"
-                        android:textAlignment="center"
-                        app:useFontStyle="bold"
-                        app:useTextColor="color2"
-                        app:useTextHeader="h6" />
+            <com.diadiem.pos_components.PTextView
+                android:id="@+id/priceProduct"
+                priceView="@{item.proOriginal.price}"
+                visibleObject="@{item.proOriginal.price != 0}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:padding="@dimen/_5sdp"
+                app:useFontStyle="normal"
+                app:useTextColor="color2"
+                app:useTextHeader="h7" />
 
-                    <com.diadiem.pos_components.PTextView
-                        priceView="@{item.proOriginal.price}"
-                        visibleObject="@{item.proOriginal.price != 0}"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignParentBottom="true"
-                        android:padding="@dimen/_5sdp"
-                        app:useFontStyle="normal"
-                        app:useTextColor="color2"
-                        app:useTextHeader="h7" />
-                </RelativeLayout>
-                <ImageView
-                    visibleObject="@{isChosen}"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentTop="true"
-                    android:layout_width="@dimen/_12sdp"
-                    android:layout_height="@dimen/_12sdp"
-                    android:layout_marginEnd="@dimen/_4sdp"
-                    android:layout_marginTop="@dimen/_4sdp"
-                    android:src="@drawable/ic_check" />
-            </RelativeLayout>
-        </LinearLayout>
+            <ImageView
+                visibleObject="@{isChosen}"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
+                android:layout_width="@dimen/_12sdp"
+                android:layout_height="@dimen/_12sdp"
+                android:layout_marginEnd="@dimen/_4sdp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:src="@drawable/ic_check" />
+        </RelativeLayout>
     </com.google.android.material.card.MaterialCardView>
 </layout>
