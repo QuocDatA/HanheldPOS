@@ -1,10 +1,7 @@
 package com.hanheldpos.ui.screens.home.order.adapter
 
-import com.hanheldpos.data.api.pojo.product.ProductItem
 import com.hanheldpos.model.home.order.ProductModeViewType
 import com.hanheldpos.model.home.order.menu.ProductMenuItem
-import com.hanheldpos.model.home.table.TableModeViewType
-import com.hanheldpos.ui.screens.home.table.adapter.TableAdapterHelper
 
 class OrderProductAdapterHelper(
     private val callBack: AdapterCallBack
@@ -17,17 +14,34 @@ class OrderProductAdapterHelper(
     private var currentIndex: Int = 1;
 
     private var list: MutableList<ProductMenuItem?> = mutableListOf();
+    private var listOfProductPage: MutableList<List<ProductMenuItem>> = mutableListOf()
 
     fun submitList(list: MutableList<ProductMenuItem?>) {
         this.list = list;
         currentIndex = 1;
-        split(currentIndex);
+        listOfProductPage.clear()
+        var sizeOfMainList: Int = this.list.size
+        var currentListIndex: Int = 1
+
+        if (sizeOfMainList > 0) {
+            while (sizeOfMainList > 0) {
+                var tablePage = split(currentListIndex)
+                listOfProductPage.add(tablePage)
+                sizeOfMainList -= (tablePage.size - 2) // reduce list size except for 2 dirButton
+                currentListIndex++
+            }
+        } else if (sizeOfMainList == 0) {
+            var tempList = split(currentListIndex)
+            listOfProductPage.add(tempList)
+        }
+
+        callBack.onListSplitCallBack(listOfProductPage[currentIndex - 1])
     }
 
     fun next() {
         if ((currentIndex * maxItemViewProduct) < list.size) {
             currentIndex = currentIndex.plus(1);
-            split(currentIndex);
+            callBack.onListSplitCallBack(listOfProductPage[currentIndex - 1])
         }
 
     }
@@ -35,12 +49,12 @@ class OrderProductAdapterHelper(
     fun previous() {
         if (currentIndex > 1) {
             currentIndex = currentIndex.minus(1);
-            split(currentIndex);
+            callBack.onListSplitCallBack(listOfProductPage[currentIndex - 1])
         }
 
     }
 
-    private fun split(pagePosition: Int) {
+    private fun split(pagePosition: Int): MutableList<ProductMenuItem> {
         val rs: MutableList<ProductMenuItem> = mutableListOf();
         list.let {
             if (it.size != 0) {
@@ -81,7 +95,7 @@ class OrderProductAdapterHelper(
                 uiType = nextButtonType
             } )
         )
-        callBack.onListSplitCallBack(rs.toList());
+        return rs
     }
 
     companion object {
