@@ -8,7 +8,7 @@ import retrofit2.http.Headers
 import retrofit2.http.POST
 import retrofit2.http.PUT
 
-interface OrdersAlterService {
+interface OrdersAsyncService {
     @POST("orders/v2")
     @Headers("Accept: text/plain",
         "Content-Type: application/json")

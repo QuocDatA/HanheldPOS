@@ -80,16 +80,16 @@
                 <com.diadiem.pos_components.PTextInputEditText
                     style="@style/BaseTextInput"
                     groupSize="@{viewModel.pinGroupSize}"
+                    android:focusableInTouchMode="true"
                     android:hint="@string/device_code"
                     android:inputType="textCapCharacters"
-                    android:text="@={viewModel.pinTextLD}"
-                    android:focusableInTouchMode="true"
-                    android:textAllCaps="true"
-                    android:paddingVertical="@dimen/_17sdp"
                     android:paddingHorizontal="@dimen/_10sdp"
+                    android:paddingVertical="@dimen/_17sdp"
+                    android:text="@={viewModel.pinTextLD}"
+                    android:textAllCaps="true"
                     android:textSize="@dimen/_12sdp"
                     app:ipt_useFontStyle="normal"
-                    app:ipt_useTextHeader="h5"/>
+                    app:ipt_useTextHeader="h5" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.diadiem.pos_components.PTextView

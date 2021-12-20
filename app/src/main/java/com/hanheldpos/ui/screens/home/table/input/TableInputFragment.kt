@@ -11,7 +11,7 @@ class TableInputFragment(
 ) : BaseFragment<FragmentTableInputBinding,TableInputVM>(),TableInputUV {
 
     //ViewModel
-    private val numberPadVM by activityViewModels<NumberPadVM>()
+    private val numberPadVM  = NumberPadVM();
 
     override fun layoutRes() = R.layout.fragment_table_input
 
@@ -25,13 +25,20 @@ class TableInputFragment(
             binding.viewModel = this;
             binding.numberPadVM = numberPadVM;
             binding.numberPad.viewModel = numberPadVM;
-            binding.numberPad.tableInputVM = this;
         }
 
     }
 
     override fun initView() {
+        numberPadVM.onListener(listener = object : NumberPadVM.NumberPadCallBack{
+            override fun onComplete() {
+                viewModel.onComplete();
+            }
 
+            override fun onCancel() {
+                viewModel.onCancel();
+            }
+        });
     }
 
     override fun initData() {

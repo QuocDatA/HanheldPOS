@@ -5,9 +5,6 @@
         <variable
             name="viewModel"
             type="com.hanheldpos.ui.screens.home.table.input.NumberPadVM" />
-        <variable
-            name="tableInputVM"
-            type="com.hanheldpos.ui.screens.home.table.input.TableInputVM" />
     </data>
 
     <FrameLayout
@@ -168,7 +165,7 @@
                     android:layout_height="@dimen/_10sdp" />
 
                 <com.diadiem.pos_components.PTextView
-                    android:onClick="@{v->tableInputVM.onComplete()}"
+                    android:onClick="@{v->viewModel.listener.onComplete()}"
                     style="@style/NumberOk"
                     android:layout_width="match_parent"
                     android:layout_weight="1.75"
@@ -178,7 +175,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/_10sdp" />
                 <com.diadiem.pos_components.PTextView
-                    android:onClick="@{v->tableInputVM.onCancel()}"
+                    android:onClick="@{v->viewModel.listener.onCancel()}"
                     android:id="@+id/cancelBtn"
                     style="@style/NumberPad"
                     android:text="Cancel" />

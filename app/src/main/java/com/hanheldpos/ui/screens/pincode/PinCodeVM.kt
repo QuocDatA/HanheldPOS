@@ -4,24 +4,34 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.hanheldpos.R
+import com.hanheldpos.data.api.pojo.cashdrawer.CashDrawerStatus
+import com.hanheldpos.data.api.pojo.cashdrawer.CashDrawerStatusResp
 import com.hanheldpos.data.api.pojo.employee.EmployeeResp
+import com.hanheldpos.data.api.services.CashDrawerService
 import com.hanheldpos.data.repository.GDataResp
 import com.hanheldpos.data.repository.base.BaseRepoCallback
+import com.hanheldpos.data.repository.cashdrawer.CashDrawerRepo
 import com.hanheldpos.data.repository.employee.EmployeeRepo
 import com.hanheldpos.extension.notifyValueChange
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.UserHelper
+import com.hanheldpos.model.cashdrawer.CashDrawerStatusReq
+import com.hanheldpos.model.cashdrawer.DrawerStatus
 
 import com.hanheldpos.ui.base.viewmodel.BaseRepoViewModel
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
+import com.hanheldpos.utils.JsonHelper
 import okhttp3.internal.notify
 import java.util.*
+import kotlin.coroutines.coroutineContext
 
 class PinCodeVM : BaseRepoViewModel<EmployeeRepo, PinCodeUV>() {
 
     // Data
     private val lstResultLD = MutableLiveData<MutableList<String>?>(mutableListOf())
     var displayClockState = MutableLiveData(false)
+
+    private val cashDrawerRepo = CashDrawerRepo();
 
     val listSize: MutableLiveData<Int> =
         Transformations.map(lstResultLD) { listResult: List<String>? ->
@@ -94,7 +104,7 @@ class PinCodeVM : BaseRepoViewModel<EmployeeRepo, PinCodeUV>() {
     private fun fetchDataEmployee(passCode: String) {
         val userGuid = DataHelper.getUserGuidByDeviceCode();
         val locationGuid = DataHelper.getLocationGuidByDeviceCode();
-        if (passCode != null && userGuid != null && locationGuid != null) {
+        if (userGuid != null && locationGuid != null) {
             repo?.getDataEmployee(
                 userGuid,
                 passCode,
@@ -126,7 +136,7 @@ class PinCodeVM : BaseRepoViewModel<EmployeeRepo, PinCodeUV>() {
             if (displayClockState.value == true) {
                 /*checkClockInOut()*/
             } else {
-                uiCallback?.goHome()
+                checkDrawerStatus();
             }
         }
         /*changeClockState()*/
@@ -147,6 +157,38 @@ class PinCodeVM : BaseRepoViewModel<EmployeeRepo, PinCodeUV>() {
         }
     }
 
+    private fun checkDrawerStatus() {
+        val body = JsonHelper.stringify(
+            CashDrawerStatusReq(
+                UserGuid = UserHelper.getUserGui(),
+                DeviceGuid = UserHelper.getDeviceGui(),
+                LocationGuid = UserHelper.getLocationGui(),
+                EmployeeGuid = UserHelper.getEmployeeGuid()
+            )
+        );
+        cashDrawerRepo.getStatusCashDrawer(body, callback = object  : BaseRepoCallback<CashDrawerStatusResp>{
+            override fun apiResponse(data: CashDrawerStatusResp?) {
+                if (data == null || data.DidError || data.Model.isNullOrEmpty()) {
+                    showError(data?.ErrorMessage ?:  "Have some error.");
+                    lstResultLD.value?.clear();
+                    lstResultLD.notifyValueChange();
+                } else {
+                    when(DrawerStatus.fromInt(data.Model.first().StatusId)) {
+                        DrawerStatus.NOT_FOUND -> uiCallback?.goStartDrawer();
+                        else->{
+                            DataHelper.CurrentDrawer_id = data.Model.first().CashDrawerGuid;
+                            uiCallback?.goHome()
+                        };
+                    }
+                }
+            }
+
+            override fun showMessage(message: String?) {
+                showError(message);
+            }
+        });
+
+    }
 
     companion object {
         private const val PIN_MAX_LENGTH = 4

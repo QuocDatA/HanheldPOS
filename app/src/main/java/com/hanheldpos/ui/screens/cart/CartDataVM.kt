@@ -1,35 +1,21 @@
 package com.hanheldpos.ui.screens.cart
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import com.google.gson.Gson
 import com.hanheldpos.data.api.pojo.customer.CustomerResp
 import com.hanheldpos.data.api.pojo.order.settings.DiningOptionItem
 import com.hanheldpos.data.api.pojo.order.settings.Reason
-import com.hanheldpos.data.api.pojo.setting.SettingDeviceResp
 import com.hanheldpos.data.api.pojo.table.FloorTableItem
-import com.hanheldpos.data.repository.base.BaseRepoCallback
-import com.hanheldpos.data.repository.order.OrderAlterRepo
-import com.hanheldpos.data.repository.setting.SettingRepo
 import com.hanheldpos.extension.notifyValueChange
 import com.hanheldpos.model.DataHelper
-import com.hanheldpos.model.UserHelper
 import com.hanheldpos.model.cart.*
 import com.hanheldpos.model.cart.payment.PaymentOrder
-import com.hanheldpos.model.cart.payment.PaymentStatus
 import com.hanheldpos.model.discount.DiscountUser
-import com.hanheldpos.model.home.table.TableStatusType
 import com.hanheldpos.model.home.table.TableSummary
-import com.hanheldpos.model.order.OrderStatus
-import com.hanheldpos.model.order.OrderSubmitResp
 import com.hanheldpos.model.product.BaseProductInCart
-import com.hanheldpos.model.setting.SettingDevicePut
 import com.hanheldpos.ui.base.dialog.AppAlertDialog
 import com.hanheldpos.ui.base.viewmodel.BaseViewModel
-import com.hanheldpos.utils.JsonHelper
-import org.json.JSONObject
 
 class CartDataVM : BaseViewModel() {
 

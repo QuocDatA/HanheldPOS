@@ -5,6 +5,7 @@ import com.hanheldpos.R
 import com.hanheldpos.databinding.ActivityPinCodeBinding
 import com.hanheldpos.extension.navigateTo
 import com.hanheldpos.ui.base.activity.BaseActivity
+import com.hanheldpos.ui.screens.cashdrawer.startdrawer.StartDrawerActivity
 import com.hanheldpos.ui.screens.main.MainActivity
 import com.hanheldpos.ui.screens.pincode.adapter.PinCodeAdapter
 import com.utils.helper.SystemHelper
@@ -52,6 +53,10 @@ class PinCodeActivity : BaseActivity<ActivityPinCodeBinding, PinCodeVM>(), PinCo
 
     override fun goHome() {
         navigateTo(MainActivity::class.java, alsoFinishCurrentActivity = true, alsoClearActivity = false);
+    }
+
+    override fun goStartDrawer() {
+        navigateTo(StartDrawerActivity::class.java, alsoFinishCurrentActivity = true, alsoClearActivity = false);
     }
 
 }

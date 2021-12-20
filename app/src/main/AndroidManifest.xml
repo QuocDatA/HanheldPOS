@@ -12,15 +12,17 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:windowSoftInputMode="adjustResize"
         android:theme="@style/Theme.HanheldPOS"
-
+        android:windowSoftInputMode="adjustResize"
         tools:ignore="AllowBackup">
+        <activity
+            android:name=".ui.screens.cashdrawer.startdrawer.StartDrawerActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.screens.pincode.PinCodeActivity"
             android:exported="true"
             android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity"/>
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".ui.screens.devicecode.DeviceCodeActivity"
             android:exported="true"
@@ -38,14 +40,15 @@
             tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:windowSoftInputMode="adjustResize"
             android:name=".ui.screens.main.MainActivity"
             android:exported="true"
             android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize"
             tools:ignore="LockedOrientationActivity" />
     </application>
 

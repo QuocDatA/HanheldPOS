@@ -3,7 +3,7 @@ package com.hanheldpos.ui.screens.cart
 import androidx.lifecycle.LifecycleOwner
 import com.hanheldpos.data.api.pojo.setting.SettingDeviceResp
 import com.hanheldpos.data.repository.base.BaseRepoCallback
-import com.hanheldpos.data.repository.order.OrderAlterRepo
+import com.hanheldpos.data.repository.order.OrderAsyncRepo
 import com.hanheldpos.data.repository.setting.SettingRepo
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.UserHelper
@@ -21,7 +21,7 @@ import com.hanheldpos.utils.JsonHelper
 class CartVM : BaseUiViewModel<CartUV>() {
 
     private val settingResp = SettingRepo();
-    private val orderAlterRepo = OrderAlterRepo();
+    private val orderAlterRepo = OrderAsyncRepo();
 
     fun initLifeCycle(owner: LifecycleOwner) {
         owner.lifecycle.addObserver(this);
