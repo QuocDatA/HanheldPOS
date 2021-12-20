@@ -139,23 +139,30 @@
             android:background="@color/color_2"
             android:orientation="horizontal">
 
-            <LinearLayout
+            <RelativeLayout
+                android:orientation="horizontal"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:padding="@dimen/_12sdp">
 
                 <com.diadiem.pos_components.PTextView
+                    android:layout_toStartOf="@+id/infoCartNumber"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/_7sdp"
+                    android:layout_alignParentStart="true"
                     app:useTextColor="color4"
                     android:text="@{cartDataVM.cartModelLD.table.tableName + `-` + cartDataVM.diningOptionLD.title + ` (` + cartDataVM.numberOfCustomer + `)`}"
-
+                    android:ellipsize="end"
+                    android:maxEms="15"
+                    android:maxLines="1"
                     app:useTextHeader="h5"
                     tools:text="B1-For Here (2)" />
 
                 <com.diadiem.pos_components.PTextView
+                    android:id="@+id/infoCartNumber"
+                    android:layout_alignParentEnd="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_color5_2444dp"
@@ -165,7 +172,7 @@
                     android:text="@{cartDataVM.linePerTotalQuantity}"
                     tools:text="8/10" />
 
-            </LinearLayout>
+            </RelativeLayout>
 
             <View
                 android:layout_width="@dimen/_1sdp"
