@@ -96,6 +96,7 @@
             android:layout_weight="1" />
 
         <com.diadiem.pos_components.PMaterialButton
+            android:onClick="@{v->viewModel.onComplete()}"
             style="@style/Base.MaterialButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
