@@ -165,7 +165,6 @@ class SyncDataService : BaseViewModel() {
 
     private fun onDataFailure(message: String?,listener: SyncDataServiceListener) {
         DataHelper.clearData();
-        showLoading(false);
         listener.onError(message);
     }
 
