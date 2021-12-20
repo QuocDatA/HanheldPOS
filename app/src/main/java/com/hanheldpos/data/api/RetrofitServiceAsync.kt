@@ -1,7 +1,6 @@
 package com.hanheldpos.data.api
 
 import com.hanheldpos.data.api.helper.ApiLogger
-import com.hanheldpos.data.api.helper.BearerTokenInterceptor
 import com.utils.constants.Const
 import okhttp3.OkHttpClient
 import okhttp3.Protocol
@@ -19,7 +18,7 @@ import javax.net.ssl.SSLSocketFactory
 import javax.net.ssl.TrustManager
 import javax.net.ssl.X509TrustManager
 
-class RetrofitServiceAlter private constructor() {
+class RetrofitServiceAsync private constructor() {
 
     private val loggingInterceptor =
         HttpLoggingInterceptor(ApiLogger()).setLevel(
@@ -89,12 +88,12 @@ class RetrofitServiceAlter private constructor() {
     companion object {
 
         @Volatile
-        private var instance: RetrofitServiceAlter? = null
+        private var instance: RetrofitServiceAsync? = null
 
-        fun get(): RetrofitServiceAlter =
+        fun get(): RetrofitServiceAsync =
             instance ?: synchronized(this) {
                 val newInstance =
-                    instance ?: RetrofitServiceAlter().also { instance = it }
+                    instance ?: RetrofitServiceAsync().also { instance = it }
                 newInstance
             }
 

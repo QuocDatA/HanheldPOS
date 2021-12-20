@@ -35,7 +35,8 @@ object CartConverter {
             cart.productsList.map { baseProductInCart -> baseProductInCart.name }.joinToString(",");
 
         // TODO : save temp order to local
-        cart.createDate = DateTimeHelper.dateToString(Date(),DateTimeHelper.Format.FULL_DATE_UTC_Z);
+        cart.createDate =
+            DateTimeHelper.dateToString(Date(), DateTimeHelper.Format.FULL_DATE_UTC_Z);
 
         return OrderModel(
             Order = Order(
@@ -49,7 +50,8 @@ object CartConverter {
                 CreateDate = cart.createDate,
                 Code = cart.orderCode,
                 MenuLocationGuid = cart.menuLocationGuid,
-                CurrencySymbol = DataHelper.getCurrencySymbol()!!
+                CurrencySymbol = DataHelper.getCurrencySymbol()!!,
+                CashDrawer_id = DataHelper.CurrentDrawer_id,
             ),
             OrderDetail = OrderDetail(
                 DiningOption = OrderDiningOption(
@@ -151,9 +153,9 @@ object CartConverter {
         totalService: Double?,
         totalSurcharge: Double?,
         totalTaxe: Double?,
-        note  : String?,
-        otherFee : Double,
-        paymentList : List<PaymentOrder>
+        note: String?,
+        otherFee: Double,
+        paymentList: List<PaymentOrder>
     ): OrderSummary {
         val totalPaid = paymentList.sumOf { it.Payable }
         val totalGrand = total;
@@ -168,7 +170,7 @@ object CartConverter {
             Discount = totalDisc,
             Service = totalService,
             Surcharge = totalSurcharge,
-            Tax = totalTaxe ,
+            Tax = totalTaxe,
             Note = note,
             OtherFee = otherFee,
             Balance = if (balance < 0.0) 0.0 else balance,
@@ -178,12 +180,14 @@ object CartConverter {
         )
     }
 
-    private fun toOrderDiscountList(discountServers: List<DiscountServer>?,
-                                    discountUsers: List<DiscountUser>?,
-                                    proSubtotal: Double,
-                                    modSubtotal: Double,
-                                    productOriginal_id: String? = null,
-                                    quantity: Int? = 1) : List<DiscountOrder> {
+    private fun toOrderDiscountList(
+        discountServers: List<DiscountServer>?,
+        discountUsers: List<DiscountUser>?,
+        proSubtotal: Double,
+        modSubtotal: Double,
+        productOriginal_id: String? = null,
+        quantity: Int? = 1
+    ): List<DiscountOrder> {
         val discountOrders = mutableListOf<DiscountOrder>();
 
         // Mapping discount form client.
@@ -192,8 +196,8 @@ object CartConverter {
                 disc,
                 proSubtotal,
                 modSubtotal,
-                productOriginal_id?: "",
-                quantity?: 1
+                productOriginal_id ?: "",
+                quantity ?: 1
             );
         }
         if (disUser != null) {
@@ -202,15 +206,17 @@ object CartConverter {
         return discountOrders;
     }
 
-    private fun toOrderFeeList(fees: List<Fee>,
-                               feeType: FeeType,
-                               subtotal: Double?,
-                               totalDiscounts: Double?) : List<OrderFee> {
+    private fun toOrderFeeList(
+        fees: List<Fee>,
+        feeType: FeeType,
+        subtotal: Double?,
+        totalDiscounts: Double?
+    ): List<OrderFee> {
         return fees.filter { f -> f.feeType == feeType }
             .map { fee -> OrderFee(fee, subtotal ?: 0.0, totalDiscounts ?: 0.0) }
     }
 
-    private fun toOrderCompVoidList (reason: Reason?, totalPrice: Double?): List<CompVoid> {
+    private fun toOrderCompVoidList(reason: Reason?, totalPrice: Double?): List<CompVoid> {
         val compVoids = mutableListOf<CompVoid>();
         reason ?: return compVoids;
         val parentId = DataHelper.getVoidInfo()?.id;

@@ -17,7 +17,7 @@ class DeviceCodeActivity : BaseActivity<ActivityDeviceCodeBinding,DeviceCodeVM>(
 
     override fun initView() {
 
-        viewModel.context = context;
+        viewModel.initContext(context);
 
         binding.root.viewTreeObserver.addOnGlobalLayoutListener{
             window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);

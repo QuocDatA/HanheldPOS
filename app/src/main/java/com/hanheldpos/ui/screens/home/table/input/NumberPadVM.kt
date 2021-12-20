@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 
 class NumberPadVM : ViewModel()  {
     val input = MutableLiveData<String>()
-
+    var listener : NumberPadCallBack? = null;
     fun concatenateInputString(view: View) {
         val textView = view as TextView
         if (input.value.isNullOrEmpty()) {
@@ -28,5 +28,14 @@ class NumberPadVM : ViewModel()  {
         if (input.value.isNullOrEmpty()) return
 
         input.value = input.value?.substring(0, input.value?.length!! - 1)
+    }
+
+    fun onListener(listener : NumberPadCallBack) {
+        this.listener = listener;
+    }
+
+    interface NumberPadCallBack {
+        fun onComplete();
+        fun onCancel();
     }
 }

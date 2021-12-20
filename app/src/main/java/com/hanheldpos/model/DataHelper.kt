@@ -22,6 +22,8 @@ import java.util.*
 
 object DataHelper {
 
+    var CurrentDrawer_id : String? = null;
+
     fun clearData() {
         deviceCodeResp = null
         orderMenuResp = null

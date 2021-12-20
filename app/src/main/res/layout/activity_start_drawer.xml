@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.hanheldpos.ui.screens.cashdrawer.startdrawer.StartDrawerVM" />
+    </data>
+
+    <LinearLayout style="@style/RootLayout">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize">
+
+            <!--            <ImageButton-->
+            <!--                style="@style/MaterialButton.Icon"-->
+            <!--                android:layout_height="match_parent"-->
+            <!--                android:layout_gravity="center|start"-->
+            <!--                android:adjustViewBounds="true"-->
+            <!--                android:backgroundTint="@color/textPrimary"-->
+            <!--                android:onClick="@{() -> viewModel.backPress()}"-->
+            <!--                android:scaleType="centerInside"-->
+            <!--                android:src="@drawable/ic_baseline_arrow_back_ios_13"-->
+            <!--                tools:ignore="ContentDescription" />-->
+
+            <com.diadiem.pos_components.PTextView
+                style="@style/Base.TextAppearance"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="@string/current_drawer"
+                app:useFontStyle="bold"
+                app:useTextColor="color4"
+                app:useTextHeader="h4" />
+
+            <!--            <com.diadiem.pos_components.PMaterialButton-->
+            <!--                style="@style/Base.MaterialButton"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="match_parent"-->
+            <!--                android:layout_gravity="end"-->
+            <!--                android:background="@drawable/bg_primary_button"-->
+            <!--                android:gravity="center"-->
+            <!--                android:paddingStart="@dimen/_10sdp"-->
+            <!--                android:paddingTop="0dp"-->
+            <!--                android:paddingEnd="@dimen/_10sdp"-->
+            <!--                android:paddingBottom="0dp"-->
+            <!--                android:text="@string/start_drawer"-->
+            <!--                app:pbtn_useFontStyle="bold"-->
+            <!--                app:pbtn_useTextColor="color2"-->
+            <!--                app:pbtn_useTextHeader="h4" />-->
+        </FrameLayout>
+
+        <include layout="@layout/divider_ver" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_14sdp"
+            android:layout_marginVertical="@dimen/_25sdp">
+
+            <!--            <com.diadiem.pos_components.PTextView-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_gravity="center_vertical"-->
+            <!--                android:layout_marginStart="@dimen/_9sdp"-->
+            <!--                android:text="@string/staring_cash"-->
+            <!--                app:useFontStyle="normal"-->
+            <!--                app:useTextColor="color8"-->
+            <!--                app:useTextHeader="h5" />-->
+
+            <com.diadiem.pos_components.PTextInputEditText
+                android:id="@+id/startingCash"
+                style="@style/BaseTextInput"
+                android:layout_margin="0dp"
+                android:background="@drawable/bg_outline"
+                android:focusable="false"
+                android:focusableInTouchMode="true"
+                android:hint="@string/staring_cash"
+                android:inputType="number"
+                android:maxLength="20"
+                android:paddingHorizontal="@dimen/_8sdp"
+                android:paddingVertical="@dimen/_17sdp"
+                android:text="@={viewModel.amountString}"
+                app:ipt_useFontStyle="normal"
+                app:ipt_useHintTextColor="color8"
+                app:ipt_useTextColor="color4"
+                app:ipt_useTextHeader="h5" />
+        </FrameLayout>
+
+        <androidx.legacy.widget.Space
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <com.diadiem.pos_components.PMaterialButton
+            style="@style/Base.MaterialButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_primary_button"
+            android:gravity="center"
+            android:layout_marginHorizontal="@dimen/_9sdp"
+            android:layout_marginVertical="@dimen/_16sdp"
+            android:text="@string/start_drawer"
+            app:pbtn_useFontStyle="bold"
+            app:pbtn_useTextColor="color2"
+            app:pbtn_useTextHeader="h4" />
+
+        <include
+            android:id="@id/numberPad"
+            layout="@layout/layout_number_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+</layout>
