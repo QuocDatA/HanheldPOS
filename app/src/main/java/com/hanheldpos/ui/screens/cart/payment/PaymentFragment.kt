@@ -49,7 +49,7 @@ class PaymentFragment(private val payable : Double ,private var listener: Paymen
         );
         binding.paymentMethodContainer.apply {
             addItemDecoration(
-                GridSpacingItemDecoration(spanCount = 2,includeEdge = false, spacing = 35)
+                GridSpacingItemDecoration(spanCount = 2,includeEdge = false, spacing = resources.getDimensionPixelSize(R.dimen._10sdp))
             )
             binding.paymentMethodContainer.adapter = paymentMethodAdapter;
         };
@@ -64,7 +64,7 @@ class PaymentFragment(private val payable : Double ,private var listener: Paymen
         );
         binding.paymentSuggestionContainer.apply {
             addItemDecoration(
-                GridSpacingItemDecoration(spanCount = 4,includeEdge = false, spacing = 35)
+                GridSpacingItemDecoration(spanCount = 4,includeEdge = false, spacing = resources.getDimensionPixelSize(R.dimen._7sdp))
             )
             binding.paymentSuggestionContainer.adapter = paymentSuggestionAdapter;
         };

@@ -88,7 +88,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <LinearLayout
+            <androidx.legacy.widget.Space
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_4sdp"
                 android:background="@color/color_10"/>
@@ -104,10 +104,8 @@
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/paymentSuggestionContainer"
-                    style="@style/SingleLineItemCart"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingVertical="@dimen/_10sdp"
                     android:layout_marginTop="@dimen/_15sdp"
                     android:layout_marginBottom="@dimen/_15sdp"
                     android:orientation="vertical"

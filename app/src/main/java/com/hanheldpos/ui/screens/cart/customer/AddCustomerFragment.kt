@@ -88,13 +88,13 @@ class AddCustomerFragment(
             CustomerAdapterHelper.SearchCallBack {
             override fun onSearch(keyword: String, pageNo: Int?) {
 
-                if (pageNo == 1 ){
+                if (pageNo == 1) {
                     binding.customerContainer.smoothScrollToPosition(0);
                     adapterCustomer.apply {
                         submitList(listOf());
                         notifyDataSetChanged()
                     }
-                    if(keyword.trim().isBlank()) return;
+                    if (keyword.trim().isBlank()) return;
                 }
                 viewModel.searchCustomer(keyword, pageNo);
             }
@@ -102,16 +102,16 @@ class AddCustomerFragment(
             override fun onLoadingNextPage(customers: List<CustomerResp?>) {
                 adapterCustomer.apply {
                     submitList(customers);
-                    notifyItemRangeInserted(customers.size -1,1)
+                    notifyItemRangeInserted(customers.size - 1, 1)
                     if (customers.isNotEmpty())
-                    binding.customerContainer.smoothScrollToPosition(customers.size - 1);
+                        binding.customerContainer.smoothScrollToPosition(customers.size - 1);
                 }
             }
 
             override fun onLoadedNextPage(startIndex: Int, customers: List<CustomerResp?>) {
                 adapterCustomer.apply {
                     submitList(customers)
-                    notifyItemRangeInserted(startIndex,customers.size - startIndex -1)
+                    notifyDataSetChanged();
                 }
 
             }
@@ -132,10 +132,7 @@ class AddCustomerFragment(
     }
 
     override fun loadCustomer(list: List<CustomerResp>, isSuccess: Boolean) {
-        if (isSuccess)
-            adapterCustomerHelper.loadedSuccess(list);
-        else
-            adapterCustomerHelper.loadedFail()
+        adapterCustomerHelper.loaded(list.toMutableList(), isSuccess);
     }
 
     override fun onAddNewCustomer() {

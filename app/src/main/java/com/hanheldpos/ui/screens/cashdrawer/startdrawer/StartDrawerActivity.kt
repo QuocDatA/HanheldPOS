@@ -86,23 +86,38 @@ class StartDrawerActivity : BaseActivity<ActivityStartDrawerBinding, StartDrawer
     }
 
     override fun goHome() {
-        navigateTo(MainActivity::class.java, alsoFinishCurrentActivity = true, alsoClearActivity = false);
+        navigateTo(
+            MainActivity::class.java,
+            alsoFinishCurrentActivity = true,
+            alsoClearActivity = false
+        );
     }
 
     override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
 
-//        // Detect touch inside edit text
-//        val touchPoint = Point(ev.rawX.roundToInt(), ev.rawY.roundToInt())
-//
-//        if (!isPointInsideViewBounds(
-//                binding.numberPad.root,
-//                touchPoint
-//            )
-//        ) {
-//            binding.numberPad.root.visibility = View.GONE;
-//        } else {
-//            binding.numberPad.root.visibility = View.VISIBLE;
-//        }
+        // Detect touch inside edit text
+        if (ev.action == MotionEvent.ACTION_DOWN) {
+            val touchPoint = Point(ev.rawX.roundToInt(), ev.rawY.roundToInt())
+            val viewNum = !isPointInsideViewBounds(
+                binding.numberPad.root,
+                touchPoint
+            );
+            val viewEdit = !isPointInsideViewBounds(
+                binding.startingCash,
+                touchPoint
+            );
+            val viewBtn = !isPointInsideViewBounds(
+                binding.btnStartDrawer,
+                touchPoint
+            );
+            if (binding.numberPad.root.visibility == View.VISIBLE && viewNum && viewEdit && viewBtn
+            ) {
+                binding.numberPad.root.visibility = View.GONE;
+            } else if (!viewEdit || !viewNum) {
+                binding.numberPad.root.visibility = View.VISIBLE;
+            }
+        }
+
 
         return super.dispatchTouchEvent(ev)
     }
