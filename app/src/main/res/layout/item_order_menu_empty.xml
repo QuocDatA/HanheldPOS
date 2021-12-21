@@ -3,16 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <data>
-
-        <import type="com.hanheldpos.model.home.order.menu.MenuModeViewType" />
-
-        <variable
-            name="item"
-            type="com.hanheldpos.model.home.order.menu.OrderMenuItem" />
-
-    </data>
-
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -33,7 +23,6 @@
                 android:minEms="7"
                 android:paddingStart="@dimen/_6sdp"
                 android:paddingEnd="@dimen/_6sdp"
-                android:text="@{item.text,default=`Category`}"
                 android:textAlignment="center"
                 android:textAllCaps="true"
                 app:useFontStyle="bold"
