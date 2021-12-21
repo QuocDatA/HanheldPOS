@@ -12,7 +12,7 @@ import com.hanheldpos.ui.base.viewmodel.BaseRepoViewModel
 import java.util.*
 
 class DeviceCodeVM : BaseRepoViewModel<DeviceRepo, DeviceCodeUV>() {
-
+    val syncDataService = SyncDataService();
     val pinGroupSize = 4;
     val pinTextLD = MutableLiveData<String>();
     var context : Context? = null;
@@ -26,6 +26,7 @@ class DeviceCodeVM : BaseRepoViewModel<DeviceRepo, DeviceCodeUV>() {
 
     fun initContext(context : Context) {
         this.context = context;
+
     }
 
     fun signIn() {
@@ -52,7 +53,7 @@ class DeviceCodeVM : BaseRepoViewModel<DeviceRepo, DeviceCodeUV>() {
 
     private fun loadResource(){
         showLoading(true);
-        SyncDataService().fetchAllData(context, listener = object : SyncDataService.SyncDataServiceListener{
+        syncDataService.fetchAllData(context, listener = object : SyncDataService.SyncDataServiceListener{
             override fun onLoadedResources() {
                 uiCallback?.openPinCode();
             }

@@ -16,7 +16,9 @@ class DiscountAmountVM : BaseUiViewModel<DiscountAmountUV>() {
     fun initLifeCycle(owner: LifecycleOwner) {
         owner.lifecycle.addObserver(this);
         amount.observe(owner,{
-            amountValue = it.replace(",","").toDouble();
+            val result = it.replace(",","");
+            if(result.isNotEmpty())
+            amountValue = result.toDouble();
         })
     }
 

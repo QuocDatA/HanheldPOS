@@ -72,8 +72,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
             listener = object : BaseItemClickListener<ProductMenuItem> {
                 override fun onItemClick(adapterPosition: Int, item: ProductMenuItem) {
                     Log.d("OrderFragment", "Product Selected");
-                    if (SystemClock.elapsedRealtime() - viewModel.mLastTimeClick <= 500) return;
-                    viewModel.mLastTimeClick = SystemClock.elapsedRealtime();
+
                     onProductMenuSelected(item);
                 }
 
@@ -121,6 +120,8 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
     fun onProductMenuSelected(item: ProductMenuItem) {
         when (item.uiType) {
             ProductModeViewType.Product -> {
+                if (SystemClock.elapsedRealtime() - viewModel.mLastTimeClick <= 500) return;
+                viewModel.mLastTimeClick = SystemClock.elapsedRealtime();
                 val onCartAdded = object : OrderMenuListener {
                     override fun onCartAdded(item: BaseProductInCart, action: ItemActionType) {
                         showCartAnimation(item);

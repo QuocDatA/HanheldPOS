@@ -64,21 +64,21 @@ class TableFragment : BaseFragment<FragmentTableBinding, TableVM>(), TableUV {
             listener = object : BaseItemClickListener<FloorTableItem> {
                 override fun onItemClick(adapterPosition: Int, item: FloorTableItem) {
                     Log.d("OrderFragment", "Product Selected");
-                    if (SystemClock.elapsedRealtime() - viewModel.mLastTimeClick > 1000) {
-                        when (item.uiType) {
-                            TableModeViewType.Table -> {
-                                onTableChoosen(adapterPosition,item);
-                            }
-                            TableModeViewType.PrevButtonEnable -> {
-                                tableAdapterHelper.previous();
-                            }
-                            TableModeViewType.NextButtonEnable -> {
-                                tableAdapterHelper.next();
-                            }
-                            else -> {
-                            }
+
+                    when (item.uiType) {
+                        TableModeViewType.Table -> {
+                            onTableChoosen(adapterPosition, item);
+                        }
+                        TableModeViewType.PrevButtonEnable -> {
+                            tableAdapterHelper.previous();
+                        }
+                        TableModeViewType.NextButtonEnable -> {
+                            tableAdapterHelper.next();
+                        }
+                        else -> {
                         }
                     }
+
                 }
             }
         ).also {
@@ -123,16 +123,16 @@ class TableFragment : BaseFragment<FragmentTableBinding, TableVM>(), TableUV {
         })
     }
 
-    private fun onTableChoosen(adapterPosition: Int,item: FloorTableItem){
-        when(item.tableStatus){
-            TableStatusType.Available->{
+    private fun onTableChoosen(adapterPosition: Int, item: FloorTableItem) {
+        when (item.tableStatus) {
+            TableStatusType.Available -> {
                 // Check list has any pending table, if has change to available
                 tableAdapter.currentList.filter { it.tableStatus == TableStatusType.Pending }.let {
-                  if (it.isNotEmpty()){
-                      it.forEach { table-> table.tableStatus = TableStatusType.Available };
-                      tableAdapter.notifyDataSetChanged();
-                      return;
-                  }
+                    if (it.isNotEmpty()) {
+                        it.forEach { table -> table.tableStatus = TableStatusType.Available };
+                        tableAdapter.notifyDataSetChanged();
+                        return;
+                    }
                 };
 
                 viewModel.mLastTimeClick = SystemClock.elapsedRealtime();
@@ -145,24 +145,25 @@ class TableFragment : BaseFragment<FragmentTableBinding, TableVM>(), TableUV {
                         tableAdapter.notifyItemChanged(adapterPosition);
 
                         // Init cart fisrt time
-                        cartDataVM.initCart(numberCustomer,item);
+                        cartDataVM.initCart(numberCustomer, item);
                         screenViewModel.showOrderPage();
                     }
                 }));
 
             }
-            TableStatusType.Pending->{
+            TableStatusType.Pending -> {
                 item.tableStatus = TableStatusType.Available;
                 tableAdapter.notifyItemChanged(adapterPosition);
             }
-            TableStatusType.Unavailable->{
+            TableStatusType.Unavailable -> {
 
             }
         }
 
     }
+
     companion object {
-        var selectedSort : Int = 0;
+        var selectedSort: Int = 0;
 
     }
 

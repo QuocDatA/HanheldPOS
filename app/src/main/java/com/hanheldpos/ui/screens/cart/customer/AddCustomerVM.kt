@@ -31,7 +31,7 @@ class AddCustomerVM : BaseRepoViewModel<CustomerRepo, AddCustomerUV>() {
 
                 override fun apiResponse(data: CustomerSearchResp?) {
                     if (data == null || data.DidError) {
-                        // Error
+                        uiCallback?.loadCustomer(mutableListOf(),false);
                     } else {
                         data.Model.firstOrNull()?.List?.let { uiCallback?.loadCustomer(it,true) }
                     }
