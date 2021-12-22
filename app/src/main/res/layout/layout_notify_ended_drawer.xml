@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+    <LinearLayout
+        style="@style/RootLayout"
+        android:background="@android:color/transparent"
+        android:gravity="center">
+        <androidx.cardview.widget.CardView
+            android:id="@+id/layoutMain"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:elevation="0dp"
+            app:cardCornerRadius="@dimen/_5sdp"
+            app:cardElevation="0dp">
+
+            <LinearLayout
+                style="@style/RootLayout.WrapHeight"
+                android:layout_width="wrap_content">
+
+                <ImageView
+                    android:layout_width="@dimen/_90sdp"
+                    android:layout_height="@dimen/_90sdp"
+                    android:layout_gravity="center"
+                    android:layout_marginHorizontal="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:src="@drawable/ic_clockinout_ic_check_big"
+                    tools:ignore="ContentDescription" />
+
+                <com.diadiem.pos_components.PTextView
+                    android:id="@+id/txt_msg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="@string/drawer_ended"
+                    app:useFontStyle="normal"
+                    app:useTextColor="color2"
+                    app:useTextHeader="h4" />
+
+                <androidx.legacy.widget.Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_10sdp" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <LinearLayout
+                        android:id="@+id/btn_close_app"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_outline"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?attr/selectableItemBackground"
+                        android:gravity="center">
+
+                        <com.diadiem.pos_components.PTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="@dimen/_5sdp"
+                            android:text="@string/close_app"
+                            android:textAlignment="center"
+                            android:textAllCaps="true"
+                            android:textColor="@color/color_5"
+                            android:textStyle="bold"
+                            app:useFontStyle="bold"
+                            app:useTextColor="color0"
+                            app:useTextHeader="h4" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/btn_start_again"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_outline"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?attr/selectableItemBackground"
+                        android:gravity="center">
+
+                        <com.diadiem.pos_components.PTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="@dimen/_5sdp"
+                            android:text="@string/new_drawer"
+                            android:textAlignment="center"
+                            android:textAllCaps="true"
+                            android:textColor="@color/primary"
+                            android:textStyle="bold"
+                            app:useFontStyle="bold"
+                            app:useTextColor="color0"
+                            app:useTextHeader="h4" />
+                    </LinearLayout>
+                </LinearLayout>
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
+
+</layout>

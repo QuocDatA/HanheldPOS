@@ -87,4 +87,8 @@
     <string name="start_drawer">Start Drawer</string>
     <string name="staring_cash">Staring cash</string>
     <string name="device_codes_are_created_in_dashboard_for_each_new_device_allowing_you_to_sign_in_without_ever_sharing_your_email_and_password">Device Codes are created in Dashboard for each new device, allowing you to sign in without ever sharing your email and password</string>
+    <string name="drawer_started">Drawer Started</string>
+    <string name="drawer_ended">Drawer Ended</string>
+    <string name="close_app">Close App</string>
+    <string name="new_drawer">New Drawer</string>
 </resources>

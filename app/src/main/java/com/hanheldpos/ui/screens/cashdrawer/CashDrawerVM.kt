@@ -1,12 +1,10 @@
-package com.hanheldpos.ui.screens.cashdrawer.startdrawer
+package com.hanheldpos.ui.screens.cashdrawer
 
-import android.bluetooth.BluetoothClass
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.hanheldpos.R
-import com.hanheldpos.data.PosConst
 import com.hanheldpos.data.api.pojo.cashdrawer.CreateCashDrawerResp
 import com.hanheldpos.data.repository.base.BaseRepoCallback
 import com.hanheldpos.data.repository.cashdrawer.CashDrawerRepo
@@ -15,12 +13,10 @@ import com.hanheldpos.model.UserHelper
 import com.hanheldpos.model.cashdrawer.CashDrawerType
 import com.hanheldpos.model.cashdrawer.CreateCashDrawerReq
 import com.hanheldpos.ui.base.viewmodel.BaseRepoViewModel
-import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
 import com.hanheldpos.utils.JsonHelper
 
-class StartDrawerVM : BaseRepoViewModel<CashDrawerRepo,StartDrawerUV>() {
+class CashDrawerVM : BaseRepoViewModel<CashDrawerRepo, CashDrawerUV>() {
 
-    var context : Context? = null;
     val amountString = MutableLiveData<String>(0.toString());
     val amount = Transformations.map(amountString) {
         return@map it.replace(",","").toDouble();
@@ -29,12 +25,8 @@ class StartDrawerVM : BaseRepoViewModel<CashDrawerRepo,StartDrawerUV>() {
         uiCallback?.backPress();
     }
 
-    fun initContext(context: Context) {
-        this.context = context;
-    }
 
-
-    fun onComplete() {
+    fun startDrawer(context: Context) {
         showLoading(true);
         val startDrawerReq = CreateCashDrawerReq(
             UserGuid = UserHelper.getUserGui(),
@@ -55,13 +47,13 @@ class StartDrawerVM : BaseRepoViewModel<CashDrawerRepo,StartDrawerUV>() {
                         showError(context?.getString(R.string.failed_to_load_data));
                     } else {
                         DataHelper.CurrentDrawer_id = data.Model.first().CashDrawerGuid;
-                        uiCallback?.goHome();
+                        uiCallback?.goMain();
                     }
                 }
 
                 override fun showMessage(message: String?) {
                     showLoading(false)
-                    showError(message);
+                    showError(message?: "Some thing error.");
                 }
 
             }
