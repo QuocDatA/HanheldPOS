@@ -82,7 +82,7 @@ class CartVM : BaseUiViewModel<CartUV>() {
                         AppAlertDialog.get()
                             .show(
                                 "Error",
-                                "Has some problem when push order",
+                                data?.ErrorMessage,
                             )
                     } else {
                         val orderJson = JsonHelper.stringify(
@@ -119,6 +119,7 @@ class CartVM : BaseUiViewModel<CartUV>() {
 
                 override fun showMessage(message: String?) {
                     showLoading(false);
+                    showError(message);
                 }
             });
     }

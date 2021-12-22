@@ -2,6 +2,7 @@ package com.hanheldpos.ui.screens.home
 
 import android.util.Log
 import android.view.View
+import android.view.ViewTreeObserver
 import android.widget.AdapterView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -14,12 +15,15 @@ import com.hanheldpos.ui.base.dialog.AppAlertDialog
 import com.hanheldpos.ui.base.pager.FragmentPagerAdapter
 import com.hanheldpos.ui.screens.cart.CartDataVM
 import com.hanheldpos.ui.screens.cart.payment.PaymentFragment
+import com.hanheldpos.ui.screens.cashdrawer.CashDrawerHelper
+import com.hanheldpos.ui.screens.cashdrawer.CashDrawerVM
 import com.hanheldpos.ui.screens.main.BaseMainFragment
 import com.hanheldpos.ui.screens.home.order.OrderFragment
 import com.hanheldpos.ui.screens.home.table.TableFragment
 import com.hanheldpos.ui.screens.main.adapter.TabSpinnerAdapter
 import com.hanheldpos.ui.screens.main.adapter.SubSpinnerAdapter
 import com.hanheldpos.ui.screens.menu.MenuFragment
+import com.utils.helper.SystemHelper
 
 
 class HomeFragment : BaseMainFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
@@ -30,7 +34,6 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
         Table(0, R.string.table),
         Order(1, R.string.order);
     }
-
 
     private val screenViewModel by activityViewModels<ScreenViewModel>()
     private val cartDataVM by activityViewModels<CartDataVM>()
@@ -55,6 +58,15 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
     }
 
     override fun initView() {
+        binding.root.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener{
+            override fun onGlobalLayout() {
+                if (CashDrawerHelper.isStartDrawer)
+                    CashDrawerHelper.showDrawerNotification(this@HomeFragment.requireActivity());
+                binding.root.viewTreeObserver.removeOnGlobalLayoutListener(this);
+            }
+        })
+
+
         // init fragment page
         fragmentMap[HomePage.Table] = TableFragment();
         fragmentMap[HomePage.Order] = OrderFragment();

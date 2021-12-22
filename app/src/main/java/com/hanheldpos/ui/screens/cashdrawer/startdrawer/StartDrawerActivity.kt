@@ -2,27 +2,30 @@ package com.hanheldpos.ui.screens.cashdrawer.startdrawer
 
 import android.graphics.Point
 import android.graphics.Rect
-import android.opengl.Visibility
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
 import android.view.MotionEvent
 import android.view.View
 import androidx.core.widget.doAfterTextChanged
+import androidx.fragment.app.activityViewModels
 import com.hanheldpos.R
 import com.hanheldpos.databinding.ActivityStartDrawerBinding
 import com.hanheldpos.extension.navigateTo
 import com.hanheldpos.ui.base.activity.BaseActivity
+import com.hanheldpos.ui.screens.cashdrawer.CashDrawerHelper
+import com.hanheldpos.ui.screens.cashdrawer.CashDrawerVM
+import com.hanheldpos.ui.screens.cashdrawer.CashDrawerUV
 import com.hanheldpos.ui.screens.home.table.input.NumberPadVM
 import com.hanheldpos.ui.screens.main.MainActivity
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import kotlin.math.roundToInt
 
-class StartDrawerActivity : BaseActivity<ActivityStartDrawerBinding, StartDrawerVM>(),
-    StartDrawerUV {
+class StartDrawerActivity : BaseActivity<ActivityStartDrawerBinding, CashDrawerVM>(), CashDrawerUV {
+
+
     override fun layoutRes(): Int = R.layout.activity_start_drawer;
+
     private val numberPadVM = NumberPadVM();
-    override fun initViewModel(viewModel: StartDrawerVM) {
+    override fun initViewModel(viewModel: CashDrawerVM) {
         viewModel.run {
             init(this@StartDrawerActivity);
             binding.viewModel = this;
@@ -32,7 +35,6 @@ class StartDrawerActivity : BaseActivity<ActivityStartDrawerBinding, StartDrawer
     }
 
     override fun initView() {
-        viewModel.initContext(context);
         binding.startingCash.let { input ->
             var isEditing = false
             input.doAfterTextChanged {
@@ -67,7 +69,7 @@ class StartDrawerActivity : BaseActivity<ActivityStartDrawerBinding, StartDrawer
     override fun initAction() {
         numberPadVM.listener = object : NumberPadVM.NumberPadCallBack {
             override fun onComplete() {
-                viewModel.onComplete();
+                viewModel.startDrawer(this@StartDrawerActivity);
             }
 
             override fun onCancel() {
@@ -75,21 +77,25 @@ class StartDrawerActivity : BaseActivity<ActivityStartDrawerBinding, StartDrawer
             }
 
         }
+        binding.btnStartDrawer.setOnClickListener {
+            viewModel.startDrawer(this);
+        }
     }
 
-    override fun viewModelClass(): Class<StartDrawerVM> {
-        return StartDrawerVM::class.java;
+    override fun viewModelClass(): Class<CashDrawerVM> {
+        return CashDrawerVM::class.java;
     }
 
     override fun backPress() {
         backPress();
     }
 
-    override fun goHome() {
+    override fun goMain() {
+        CashDrawerHelper.isStartDrawer = true;
         navigateTo(
             MainActivity::class.java,
             alsoFinishCurrentActivity = true,
-            alsoClearActivity = false
+            alsoClearActivity = true,
         );
     }
 

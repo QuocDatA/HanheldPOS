@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="com.hanheldpos.ui.screens.cashdrawer.startdrawer.StartDrawerVM" />
+            type="com.hanheldpos.ui.screens.cashdrawer.CashDrawerVM" />
     </data>
 
     <LinearLayout style="@style/RootLayout">
@@ -97,7 +97,6 @@
 
         <com.diadiem.pos_components.PMaterialButton
             android:id="@+id/btnStartDrawer"
-            android:onClick="@{v->viewModel.onComplete()}"
             style="@style/Base.MaterialButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
