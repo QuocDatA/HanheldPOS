@@ -71,7 +71,7 @@
                             android:textStyle="bold"
                             app:useFontStyle="bold"
                             app:useTextColor="color0"
-                            app:useTextHeader="h4" />
+                            app:useTextHeader="h5" />
                     </LinearLayout>
                     <LinearLayout
                         android:id="@+id/btn_start_again"
@@ -95,7 +95,7 @@
                             android:textStyle="bold"
                             app:useFontStyle="bold"
                             app:useTextColor="color0"
-                            app:useTextHeader="h4" />
+                            app:useTextHeader="h5" />
                     </LinearLayout>
                 </LinearLayout>
 
