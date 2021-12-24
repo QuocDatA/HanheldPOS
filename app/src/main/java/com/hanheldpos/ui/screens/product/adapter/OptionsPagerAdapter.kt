@@ -35,4 +35,8 @@ class OptionsPagerAdapter(
     override fun createFragment(position: Int): Fragment {
         return fragmentList[position]
     }
+
+    override fun getItemId(position: Int): Long {
+        return fragmentList[position].hashCode().toLong() // make sure notifyDataSetChanged() works
+    }
 }

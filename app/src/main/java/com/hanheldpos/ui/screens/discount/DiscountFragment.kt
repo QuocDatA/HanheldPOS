@@ -7,6 +7,7 @@ import com.hanheldpos.data.api.pojo.order.settings.Reason
 import com.hanheldpos.databinding.FragmentDiscountBinding
 import com.hanheldpos.model.discount.DiscountApplyToType
 import com.hanheldpos.model.discount.DiscountUser
+import com.hanheldpos.model.product.BaseProductInCart
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.cart.CartDataVM
 import com.hanheldpos.ui.screens.discount.discounttype.DiscountTypeFragment
@@ -58,15 +59,34 @@ class DiscountFragment(private val listener: DiscountCallback) :
                     applyToType = DiscountApplyToType.ITEM_DISCOUNT_APPLY_TO, cart = cartDataVM.cartModelLD.value!!,
                     listener = object : DiscountTypeFragment.DiscountTypeListener {
                         override fun discountUserChoose(discount: DiscountUser) {
-
+                            if(viewModel.itemForDiscount.value == null) {
+                                showMessage(getString(R.string.please_choose_an_item));
+                                return;
+                            }
+                            listener.onDiscountUserChoose(discount,viewModel.itemForDiscount.value);
+                            backPress();
                         }
 
                         override fun compReasonChoose(item: Reason) {
-
+                            if(viewModel.itemForDiscount.value == null) {
+                                showMessage(getString(R.string.please_choose_an_item));
+                                return;
+                            }
+                            listener.onCompReasonChoose(item,viewModel.itemForDiscount.value);
+                            backPress();
                         }
 
                         override fun compRemoveAll() {
+                            if(viewModel.itemForDiscount.value == null) {
+                                showMessage(getString(R.string.please_choose_an_item));
+                                return;
+                            }
+                            listener.onCompRemove(viewModel.itemForDiscount.value);
+                            backPress();
+                        }
 
+                        override fun onProductChooseForDiscount(product: BaseProductInCart) {
+                            viewModel.itemForDiscount.postValue(product);
                         }
                     }),
                 DiscountTypeFragment(
@@ -84,7 +104,7 @@ class DiscountFragment(private val listener: DiscountCallback) :
                         }
 
                         override fun compRemoveAll() {
-                            listener.onCompOrderRemove();
+                            listener.onCompRemove();
                             backPress();
                         }
                     }),
@@ -97,9 +117,9 @@ class DiscountFragment(private val listener: DiscountCallback) :
     }
 
     interface DiscountCallback {
-        fun onDiscountUserChoose(discount: DiscountUser);
-        fun onCompReasonChoose(reason: Reason);
-        fun onCompOrderRemove();
+        fun onDiscountUserChoose(discount: DiscountUser,productInCart: BaseProductInCart? = null);
+        fun onCompReasonChoose(reason: Reason,productInCart: BaseProductInCart? = null);
+        fun onCompRemove(productInCart: BaseProductInCart? = null);
     }
 
     override fun backPress() {

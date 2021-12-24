@@ -78,11 +78,17 @@ class CartFragment(
 
         //region setup product recycler view
         cartProductAdapter = CartProductAdapter(
-            onProductClickListener = object : BaseItemClickListener<BaseProductInCart> {
+            listener = object : CartProductAdapter.CartProductListener {
                 override fun onItemClick(adapterPosition: Int, item: BaseProductInCart) {
-                    onEditItemIntCart(adapterPosition, item);
+                    onEditItemInCart(adapterPosition, item);
                 }
-            },
+
+                override fun onDiscountDelete(adapterPosition: Int, discount : DiscountCart , item: BaseProductInCart) {
+                    cartDataVM.deleteDiscountCart(discount = discount, productInCart = item);
+                }
+
+
+            }
         );
         binding.productRecyclerView.apply {
             addItemDecoration(
@@ -105,7 +111,7 @@ class CartFragment(
         //region setup discount recycle view
         cartDiscountAdapter = CartDiscountAdapter(listener = object : BaseItemClickListener<DiscountCart>{
             override fun onItemClick(adapterPosition: Int, item: DiscountCart) {
-                    cartDataVM.deleteDiscount(item);
+                    cartDataVM.deleteDiscountCart(item,null);
             }
         })
 
@@ -145,10 +151,12 @@ class CartFragment(
 
     override fun initAction() {
         cartDataVM.cartModelLD.observe(this,{
-            val list =viewModel.processDataDiscount(it);
+            val list = viewModel.processDataDiscount(it);
             binding.isShowDiscount = list.isNotEmpty();
             cartDiscountAdapter.submitList(list);
             cartDiscountAdapter.notifyDataSetChanged();
+
+            cartProductAdapter.notifyDataSetChanged();
         })
     }
 
@@ -170,16 +178,16 @@ class CartFragment(
         navigator
             .goToWithCustomAnimation(DiscountFragment(listener = object :
                 DiscountFragment.DiscountCallback {
-                override fun onDiscountUserChoose(discount: DiscountUser) {
-                    cartDataVM.addDiscountUser(discount);
+                override fun onDiscountUserChoose(discount: DiscountUser,productInCart: BaseProductInCart?) {
+                    cartDataVM.addDiscountUser(discount,productInCart);
                 }
 
-                override fun onCompReasonChoose(reason: Reason) {
-                    cartDataVM.addCompReason(reason);
+                override fun onCompReasonChoose(reason: Reason,productInCart: BaseProductInCart?) {
+                    cartDataVM.addCompReason(reason,productInCart);
                 }
 
-                override fun onCompOrderRemove() {
-                    cartDataVM.removeCompOrder();
+                override fun onCompRemove(productInCart: BaseProductInCart?) {
+                    cartDataVM.removeCompReason(productInCart);
                 }
             }));
     }
@@ -207,11 +215,11 @@ class CartFragment(
         screenViewModel.showTablePage();
     }
 
-    fun onBillCart() {
+    private fun onBillCart() {
         viewModel.billCart(cartDataVM.cartModelLD.value!!);
     }
 
-    fun onEditItemIntCart(position: Int, item: BaseProductInCart) {
+    fun onEditItemInCart(position: Int, item: BaseProductInCart) {
 
         val callbackEdit = object : OrderFragment.OrderMenuListener {
             override fun onCartAdded(
@@ -219,6 +227,7 @@ class CartFragment(
                 action: ItemActionType
             ) {
                 onUpdateItemInCart(position, item);
+
             }
         }
 

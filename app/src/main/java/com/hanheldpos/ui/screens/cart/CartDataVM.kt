@@ -115,7 +115,17 @@ class CartDataVM : BaseViewModel() {
         this@CartDataVM.cartModelLD.notifyValueChange();
     }
 
-    fun deleteDiscount(discount: DiscountCart) {
+    fun deleteDiscountCart(discount: DiscountCart, productInCart: BaseProductInCart?) {
+        if(productInCart != null) {
+            discount.disOriginal.let {
+                if (it is Reason) {
+                    productInCart.compReason = null;
+                } else if (it is DiscountUser) {
+                    productInCart.discountUsersList?.remove(it);
+                }
+            }
+        }
+        else
         discount.disOriginal.let {
             if (it is Reason) {
                 cartModelLD.value!!.compReason = null;
@@ -126,20 +136,36 @@ class CartDataVM : BaseViewModel() {
         cartModelLD.notifyValueChange();
     }
 
-    fun removeCompOrder() {
+    fun removeCompReason(productInCart: BaseProductInCart?) {
+        if (productInCart != null) {
+            productInCart.compReason = null;
+        }
+        else
         cartModelLD.value!!.compReason = null;
         cartModelLD.notifyValueChange();
     }
 
-    fun addCompReason(reason: Reason) {
+    fun addCompReason(reason: Reason,productInCart: BaseProductInCart?) {
+        if (productInCart != null) {
+            productInCart.compReason = reason;
+        }
+        else
         this.cartModelLD.value!!.addCompReason(reason);
         cartModelLD.notifyValueChange();
     }
 
-    fun addDiscountUser(discount: DiscountUser) {
-        this.cartModelLD.value!!.addDiscountUser(discount);
+    fun addDiscountUser(discount: DiscountUser,productInCart: BaseProductInCart?) {
+        if (productInCart != null) {
+            productInCart.discountUsersList = mutableListOf(discount);
+        }
+        else{
+            this.cartModelLD.value!!.addDiscountUser(discount);
+        }
+
         cartModelLD.notifyValueChange();
     }
+
+
 
 
 }

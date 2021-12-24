@@ -25,8 +25,16 @@
             type="Double" />
 
         <variable
+            name="priceDiscMinus"
+            type="Double" />
+
+        <variable
             name="isHeaderH6"
             type="Boolean" />
+
+        <variable
+            name="clickListener"
+            type="android.view.View.OnClickListener" />
     </data>
 
     <LinearLayout
@@ -79,13 +87,20 @@
                 android:layout_height="wrap_content"
                 app:useTextColor="color5"
                 app:useTextHeader="h6"
-                priceDisc="@{priceDisc}"/>
+                priceDisc="@{priceDisc}"
+                priceDiscMinus="@{priceDiscMinus}"/>
             <ImageView
-                android:layout_width="@dimen/_10sdp"
-                android:layout_height="@dimen/_10sdp"
+                android:focusable="true"
+                android:clickable="true"
+                android:onClick="@{clickListener}"
+                android:layout_width="@dimen/_14sdp"
+                android:layout_height="@dimen/_14sdp"
                 android:layout_gravity="center"
                 android:layout_marginStart="@dimen/_4sdp"
+                android:scaleType="fitXY"
                 android:src="@{isDiscount?@drawable/ic_delete: @drawable/ic_info,default=@drawable/ic_info}" />
+
+
         </LinearLayout>
 
 
