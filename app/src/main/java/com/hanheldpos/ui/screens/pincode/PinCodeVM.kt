@@ -166,6 +166,7 @@ class PinCodeVM : BaseRepoViewModel<EmployeeRepo, PinCodeUV>() {
                 EmployeeGuid = UserHelper.getEmployeeGuid()
             )
         );
+
         cashDrawerRepo.getStatusCashDrawer(body, callback = object  : BaseRepoCallback<CashDrawerStatusResp>{
             override fun apiResponse(data: CashDrawerStatusResp?) {
                 if (data == null || data.DidError || data.Model.isNullOrEmpty()) {

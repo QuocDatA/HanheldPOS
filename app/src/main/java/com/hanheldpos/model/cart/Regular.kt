@@ -52,7 +52,7 @@ class Regular() : BaseProductInCart(), Parcelable, Cloneable {
     }
 
     override fun totalDiscount(): Double {
-        return 0.0
+        return totalDiscount(proOriginal!!);
     }
 
     override fun total(): Double {
@@ -87,7 +87,7 @@ class Regular() : BaseProductInCart(), Parcelable, Cloneable {
 
     private fun totalTemp(productPricing: ProductItem): Double {
         val subtotal = subTotal(productPricing);
-        val totalDiscPrice = 0.0;
+        val totalDiscPrice = totalDiscount(productPricing);
         val totalFeePrice = totalFee(subtotal, totalDiscPrice);
         var total = subtotal - totalDiscPrice + totalFeePrice;
         total = if (total < 0) 0.0 else total;

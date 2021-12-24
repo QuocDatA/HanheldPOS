@@ -91,4 +91,5 @@
     <string name="drawer_ended">Drawer Ended</string>
     <string name="close_app">Close App</string>
     <string name="new_drawer">New Drawer</string>
+    <string name="please_choose_an_item">Please choose an item.</string>
 </resources>

@@ -45,6 +45,7 @@
                 android:orientation="vertical">
 
                 <LinearLayout
+                    android:id="@+id/layoutTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:baselineAligned="false">
@@ -154,11 +155,22 @@
                             />
 
                         <include
+                            android:id="@+id/discountDetail"
                             layout="@layout/cart_product_detail_line"
                             app:isDiscount="@{true}"
-                            visibleObject="@{false}"
+                            visibleObject="@{item.discountUsersList != null &amp;&amp; !item.discountUsersList.empty }"
+                            app:lineText="@{`Discount : ` }"
+                            app:priceDiscMinus="@{item.totalDiscount()}"
+                            />
 
-                            app:lineText="@{`Discount nameee`}" />
+                        <include
+                            android:id="@+id/compDetail"
+                            layout="@layout/cart_product_detail_line"
+                            app:isDiscount="@{true}"
+                            visibleObject="@{item.compReason != null }"
+                            app:lineText="@{`Comp Reason : `}"
+                            app:priceDiscMinus="@{item.totalCompValue}"
+                            />
 
                         <include
                             layout="@layout/cart_product_detail_line"
