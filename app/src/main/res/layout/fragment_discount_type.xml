@@ -16,70 +16,86 @@
             name="discountType"
             type="com.hanheldpos.model.discount.DiscountApplyToType" />
     </data>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <LinearLayout
-            android:visibility="@{discountType == DiscountApplyToType.ORDER_DISCOUNT_APPLY_TO ? View.GONE : View.VISIBLE}"
+    <ScrollView
+        android:fillViewport="true"
+        style="@style/RootLayout">
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <com.diadiem.pos_components.PTextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/layoutItems"
+                app:layout_constraintTop_toTopOf="parent"
+                android:visibility="@{discountType == DiscountApplyToType.ORDER_DISCOUNT_APPLY_TO ? View.GONE : View.VISIBLE}"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:layout_constraintHeight_max="@dimen/_200sdp"
+                app:layout_constrainedHeight="true"
+                android:orientation="vertical">
+
+                <com.diadiem.pos_components.PTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_8sdp"
+                    android:layout_marginTop="@dimen/_14sdp"
+                    android:text="@string/apply_to"
+                    android:textAllCaps="true"
+                    app:useTextColor="color4"
+                    app:useFontStyle="bold"
+                    android:layout_marginBottom="@dimen/_5sdp"
+                    app:useTextHeader="h6"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/itemDiscountContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:overScrollMode="never"
+
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:itemCount="3"
+                    tools:listitem="@layout/item_discount" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/tabLayout"
+                app:layout_constraintTop_toBottomOf="@id/layoutItems"
                 android:layout_marginHorizontal="@dimen/_8sdp"
-                android:layout_marginTop="@dimen/_14sdp"
-                android:text="@string/apply_to"
-                android:textAllCaps="true"
-                app:useTextColor="color4"
-                app:useFontStyle="bold"
-                android:layout_marginBottom="@dimen/_5sdp"
-                app:useTextHeader="h6"/>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/itemDiscountContainer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/_19sdp"
                 android:orientation="vertical"
-                android:overScrollMode="never"
-
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:itemCount="3"
-                tools:listitem="@layout/item_discount" />
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:layout_marginHorizontal="@dimen/_8sdp"
-            android:layout_marginVertical="@dimen/_19sdp"
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/tabDiscountType"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:itemCount="3"
-                tools:listitem="@layout/item_tab_discount_type" />
+                android:layout_height="wrap_content">
 
-            <View
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/tabDiscountType"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:itemCount="3"
+                    tools:listitem="@layout/item_tab_discount_type" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/color_6"
+                    />
+            </LinearLayout>
+            <androidx.viewpager2.widget.ViewPager2
+                app:layout_constraintTop_toBottomOf="@id/tabLayout"
+                android:layout_marginTop="@dimen/_18sdp"
+                app:layout_constrainedHeight="true"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:id="@+id/discountFragmentContainer"
+                useInputEnable="@{false}"
                 android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="@color/color_6"
+                android:layout_height="0dp"
                 />
-        </LinearLayout>
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/discountFragmentContainer"
-            useInputEnable="@{false}"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-    </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
 
 
 </layout>

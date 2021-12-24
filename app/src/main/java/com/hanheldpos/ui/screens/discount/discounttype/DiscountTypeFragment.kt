@@ -96,7 +96,6 @@ class DiscountTypeFragment(private val applyToType: DiscountApplyToType, private
 
     override fun initData() {
 
-
         // Data Discount Tab Adapter
         val listTab = mutableListOf(
             DiscountTypeTab(title = "Amount (đ)", type = DiscountTypeFor.AMOUNT),
