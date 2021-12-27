@@ -25,6 +25,7 @@ import com.hanheldpos.ui.screens.home.order.adapter.OrderProductAdapter
 import com.hanheldpos.ui.screens.home.order.adapter.OrderProductAdapterHelper
 import com.hanheldpos.ui.screens.home.order.menu.CategoryMenuFragment
 import com.hanheldpos.ui.screens.product.ProductDetailFragment
+import com.hanheldpos.ui.screens.product.temporary_style.TemporaryStyleFragment
 import kotlinx.coroutines.*
 
 class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
@@ -128,7 +129,8 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
                     }
                 }
                 item.proOriginal!!.let {
-                    if (!it.isBundle())
+                    navigator.goToWithCustomAnimation(TemporaryStyleFragment());
+                    /*if (!it.isBundle())
                         navigator.goToWithCustomAnimation(
                             ProductDetailFragment(
                                 item = Regular(
@@ -144,11 +146,17 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
                                 action = ItemActionType.Add,
                                 listener = onCartAdded
                             )
-                        ) else navigator.goToWithCustomAnimation(
+                        )
+                    else navigator.goToWithCustomAnimation(
                         ComboFragment(
                             item = Combo(
                                 it,
-                                it.groupComboList!!.map { pro -> GroupBundle(pro, mutableListOf()) },
+                                it.groupComboList!!.map { pro ->
+                                    GroupBundle(
+                                        pro,
+                                        mutableListOf()
+                                    )
+                                },
                                 cartDataVM.diningOptionLD.value!!,
                                 1,
                                 it.skuDefault,
@@ -160,7 +168,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
                             quantityCanChoose = 100,
                             listener = onCartAdded
                         )
-                    );
+                    );*/
                 }
             }
             ProductModeViewType.PrevButtonEnable -> {
@@ -188,7 +196,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
     }
 
     override fun showCategoryDialog() {
-        dataVM.menus.value?.let {  navigator.goTo(CategoryMenuFragment(it)) }
+        dataVM.menus.value?.let { navigator.goTo(CategoryMenuFragment(it)) }
     }
 
     override fun showCart() {
