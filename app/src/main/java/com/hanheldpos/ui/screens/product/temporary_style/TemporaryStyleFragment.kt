@@ -6,12 +6,8 @@ import com.hanheldpos.databinding.FragmentTemporaryStyleBinding
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.product.adapter.GridSpacingItemDecoration
-import com.hanheldpos.ui.screens.product.temporary_style.temporary_adapter.TemporarySauceAdapter
-import com.hanheldpos.ui.screens.product.adapter.GridSpacingItemDecoration
 import com.hanheldpos.ui.screens.product.temporary_style.adapter.TemporaryVariantAdapter
-
-class TemporaryStyleFragment : BaseFragment<FragmentTemporaryStyleBinding, TemporaryStyleVM>(),
-    TemporaryStyleUV {
+import com.hanheldpos.ui.screens.product.temporary_style.temporary_adapter.TemporarySauceAdapter
 
 class TemporaryStyleFragment : BaseFragment<FragmentTemporaryStyleBinding, TemporaryStyleVM>(), TemporaryStyleUV {
 
@@ -79,8 +75,6 @@ class TemporaryStyleFragment : BaseFragment<FragmentTemporaryStyleBinding, Tempo
     override fun getBack() {
         onFragmentBackPressed()
     }
-
-
 }
-
 data class TemporarySauceItem(val name: String)
+
