@@ -11,7 +11,7 @@
 
     <LinearLayout
         style="@style/RootLayout"
-        android:background="@color/color_11"
+        android:background="#f6f6f6"
         >
         <LinearLayout
             android:layout_width="match_parent"
@@ -38,6 +38,33 @@
                 android:layoutDirection="ltr"
                 tools:itemCount="3"
                 tools:listitem="@layout/item_temporary_variant"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_10sdp"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="HOW DO YOU WANT TO COOK?"
+                android:textAllCaps="true"
+                />
+            <androidx.legacy.widget.Space
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/_10sdp"/>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/containerCookOption"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:overScrollMode="never"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:spanCount="2"
+                android:layoutDirection="ltr"
+                tools:itemCount="2"
+                tools:listitem="@layout/item_temporary_cook_option"
                 />
         </LinearLayout>
     </LinearLayout>
