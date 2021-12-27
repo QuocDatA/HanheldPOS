@@ -3,9 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <variable
-            name="item"
-            type="com.hanheldpos.ui.screens.product.temporary_style.TemporarySauceItem" />
 
     </data>
 
@@ -16,8 +13,6 @@
         <com.diadiem.pos_components.PRadioButton
             style="@android:style/Widget.Holo.CompoundButton.RadioButton"
             android:id="@+id/btnProductItem"
-            android:text="@{item.name}"
-            android:background="@color/color_2"
             tools:text="BBQ sauce"
             android:paddingVertical="@dimen/_10sdp"
             android:buttonTint="@color/color_0"

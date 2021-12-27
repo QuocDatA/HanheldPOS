@@ -24,7 +24,6 @@ class PaymentFragment(private val payable : Double ,private var listener: Paymen
     private lateinit var paymentMethodAdapter: PaymentMethodAdapter
     private lateinit var paymentSuggestionAdapter: PaymentSuggestionAdapter
 
-    private val paymentVM by activityViewModels<PaymentVM>();
 
     override fun viewModelClass(): Class<PaymentVM> {
         return PaymentVM::class.java;
@@ -81,7 +80,7 @@ class PaymentFragment(private val payable : Double ,private var listener: Paymen
 
         //region init payment suggestion data
         val paymentSuggestion: MutableList<PaymentSuggestionItem> =
-            (paymentVM.initPaymentSuggestion() as List<PaymentSuggestionItem>).toMutableList();
+            (viewModel.initPaymentSuggestion() as List<PaymentSuggestionItem>).toMutableList();
         paymentSuggestionAdapter.submitList(paymentSuggestion);
         //endregion
     }
