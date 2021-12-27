@@ -9,14 +9,17 @@ import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.product.adapter.GridSpacingItemDecoration
 import com.hanheldpos.ui.screens.product.temporary_style.adapter.TemporaryCookAdapter
+import com.hanheldpos.ui.screens.product.temporary_style.adapter.TemporaryOptionAdapter
 import com.hanheldpos.ui.screens.product.temporary_style.adapter.TemporaryVariantAdapter
 import com.hanheldpos.ui.screens.product.temporary_style.adapter.TemporarySauceAdapter
 
-class TemporaryStyleFragment : BaseFragment<FragmentTemporaryStyleBinding, TemporaryStyleVM>(), TemporaryStyleUV {
+class TemporaryStyleFragment : BaseFragment<FragmentTemporaryStyleBinding, TemporaryStyleVM>(),
+    TemporaryStyleUV {
 
     private lateinit var temporarySauceAdapter: TemporarySauceAdapter
     private lateinit var variantAdapter: TemporaryVariantAdapter;
     private lateinit var cookOptionAdapter: TemporaryCookAdapter;
+    private lateinit var optionAdapter: TemporaryOptionAdapter;
 
     override fun layoutRes(): Int {
         return R.layout.fragment_temporary_style;
@@ -34,7 +37,32 @@ class TemporaryStyleFragment : BaseFragment<FragmentTemporaryStyleBinding, Tempo
     }
 
     override fun initView() {
-        //region setup sauce recycler view
+
+
+        variantAdapter = TemporaryVariantAdapter()
+        binding.containerVariant.apply {
+            adapter = variantAdapter;
+            addItemDecoration(
+                GridSpacingItemDecoration(
+                    4,
+                    resources.getDimensionPixelSize(R.dimen._15sdp),
+                    false
+                )
+            );
+        }
+
+        cookOptionAdapter = TemporaryCookAdapter()
+        binding.containerCookOption.apply {
+            adapter = cookOptionAdapter;
+            addItemDecoration(
+                GridSpacingItemDecoration(
+                    2,
+                    resources.getDimensionPixelSize(R.dimen._6sdp),
+                    false
+                )
+            );
+        }
+
         temporarySauceAdapter = TemporarySauceAdapter();
         binding.temporarySauceContainer.apply {
             addItemDecoration(
@@ -52,37 +80,25 @@ class TemporaryStyleFragment : BaseFragment<FragmentTemporaryStyleBinding, Tempo
             )
             binding.temporarySauceContainer.adapter = temporarySauceAdapter;
         };
-        //endregion
-        variantAdapter = TemporaryVariantAdapter()
-        binding.containerVariant.apply {
-            adapter = variantAdapter; addItemDecoration(
-            GridSpacingItemDecoration(
-                4,
-                resources.getDimensionPixelSize(R.dimen._15sdp),
-                false
-            )
-        );
-        }
 
-        cookOptionAdapter = TemporaryCookAdapter()
-        binding.containerCookOption.apply {
-            adapter = cookOptionAdapter; addItemDecoration(
-            GridSpacingItemDecoration(
-                2,
-                resources.getDimensionPixelSize(R.dimen._6sdp),
-                false
-            )
-        );
+        optionAdapter = TemporaryOptionAdapter();
+        binding.containerOption.apply {
+            adapter = optionAdapter;
+//            addItemDecoration(
+//                GridSpacingItemDecoration(
+//                    3,
+//                    resources.getDimensionPixelSize(R.dimen._6sdp),
+//                    false
+//                )
+//            );
         }
     }
 
     override fun initData() {
         variantAdapter.submitList(mutableListOf("S", "M", "L", "SSL"))
-        cookOptionAdapter.submitList(mutableListOf("Rare","Medium"))
-
-        //region init payment suggestion data
-        temporarySauceAdapter.submitList(mutableListOf("Pepper sauce","Mushroom sauce"));
-        //endregion
+        cookOptionAdapter.submitList(mutableListOf("Rare", "Medium"))
+        temporarySauceAdapter.submitList(mutableListOf("Pepper sauce", "Mushroom sauce"));
+        optionAdapter.submitList(mutableListOf("Rare", "Medium","Well done"))
     }
 
     override fun initAction() {
