@@ -13,9 +13,11 @@ class TemporaryVariantAdapter : BaseBindingListAdapter<Int>(DiffCallBack()) {
     }
 
     var indexSelect : Int = 0;
+    var indexDisable : Int= 0 ;
 
     override fun submitList(list: MutableList<Int>?) {
         indexSelect = 0;
+        indexDisable = list?.asSequence()?.shuffled()?.find { true }!!;
         super.submitList(list)
     }
 
@@ -23,9 +25,10 @@ class TemporaryVariantAdapter : BaseBindingListAdapter<Int>(DiffCallBack()) {
         val item = getItem(position);
         holder.bindItem(item);
         val binding = holder.binding as ItemTemporaryVariantBinding;
-
+        binding.isDisable = indexDisable == position;
         binding.isSelected = indexSelect == position;
         binding.root.setOnClickListener {
+            if(indexDisable == position) return@setOnClickListener;
             notifyItemChanged(indexSelect);
             indexSelect = position;
             notifyItemChanged(position);
