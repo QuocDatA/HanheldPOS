@@ -7,7 +7,7 @@ import com.hanheldpos.databinding.ItemTemporaryVariantBinding
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
 
-class TemporaryCookAdapter : BaseBindingListAdapter<Int>(DiffCallBack()) {
+class TemporaryCookAdapter : BaseBindingListAdapter<String>(DiffCallBack()) {
 
     override fun getItemViewType(position: Int): Int {
         return R.layout.item_temporary_cook_option;
@@ -17,16 +17,17 @@ class TemporaryCookAdapter : BaseBindingListAdapter<Int>(DiffCallBack()) {
     var indexSelect : Int = 0;
 
 
-    override fun submitList(list: MutableList<Int>?) {
+    override fun submitList(list: MutableList<String>?) {
         indexSelect = 0;
         super.submitList(list)
     }
 
 
-    override fun onBindViewHolder(holder: BaseBindingViewHolder<Int>, position: Int) {
+    override fun onBindViewHolder(holder: BaseBindingViewHolder<String>, position: Int) {
         val item = getItem(position);
         holder.bindItem(item);
         val binding = holder.binding as ItemTemporaryCookOptionBinding;
+        binding.nameOption.text = item;
         binding.isSelected = indexSelect == position;
         binding.root.setOnClickListener {
             notifyItemChanged(indexSelect);
@@ -35,12 +36,12 @@ class TemporaryCookAdapter : BaseBindingListAdapter<Int>(DiffCallBack()) {
         }
     }
 
-    class DiffCallBack : DiffUtil.ItemCallback<Int>() {
-        override fun areItemsTheSame(oldItem: Int, newItem: Int): Boolean {
+    class DiffCallBack : DiffUtil.ItemCallback<String>() {
+        override fun areItemsTheSame(oldItem: String, newItem: String): Boolean {
             return oldItem == newItem;
         }
 
-        override fun areContentsTheSame(oldItem: Int, newItem: Int): Boolean {
+        override fun areContentsTheSame(oldItem: String, newItem: String): Boolean {
             return oldItem == newItem;
         }
 

@@ -24,6 +24,7 @@
 
         >
         <com.diadiem.pos_components.PTextView
+            android:id="@+id/nameVariant"
             android:paddingVertical="@dimen/_12sdp"
             android:layout_gravity="center"
             android:layout_width="wrap_content"
@@ -31,7 +32,7 @@
             app:useTextHeader="h6"
             app:useFontStyle="semi_bold"
             android:textColor="@{ isDisable ? @color/color_9 : ( isSelected ? @color/color_2 : @color/color_5) }"
-            android:text="S"
+
             />
     </androidx.cardview.widget.CardView>
 </layout>

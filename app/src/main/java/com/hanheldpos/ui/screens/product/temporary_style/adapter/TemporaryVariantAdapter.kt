@@ -6,7 +6,7 @@ import com.hanheldpos.databinding.ItemTemporaryVariantBinding
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
 
-class TemporaryVariantAdapter : BaseBindingListAdapter<Int>(DiffCallBack()) {
+class TemporaryVariantAdapter : BaseBindingListAdapter<String>(DiffCallBack()) {
 
     override fun getItemViewType(position: Int): Int {
         return R.layout.item_temporary_variant;
@@ -15,16 +15,17 @@ class TemporaryVariantAdapter : BaseBindingListAdapter<Int>(DiffCallBack()) {
     var indexSelect : Int = 0;
     var indexDisable : Int= 0 ;
 
-    override fun submitList(list: MutableList<Int>?) {
+    override fun submitList(list: MutableList<String>?) {
         indexSelect = 0;
-        indexDisable = list?.asSequence()?.shuffled()?.find { true }!!;
+        indexDisable = list?.size?.minus(1)?: 0;
         super.submitList(list)
     }
 
-    override fun onBindViewHolder(holder: BaseBindingViewHolder<Int>, position: Int) {
+    override fun onBindViewHolder(holder: BaseBindingViewHolder<String>, position: Int) {
         val item = getItem(position);
         holder.bindItem(item);
         val binding = holder.binding as ItemTemporaryVariantBinding;
+        binding.nameVariant.text = item;
         binding.isDisable = indexDisable == position;
         binding.isSelected = indexSelect == position;
         binding.root.setOnClickListener {
@@ -35,12 +36,12 @@ class TemporaryVariantAdapter : BaseBindingListAdapter<Int>(DiffCallBack()) {
         }
     }
 
-    class DiffCallBack : DiffUtil.ItemCallback<Int>() {
-        override fun areItemsTheSame(oldItem: Int, newItem: Int): Boolean {
+    class DiffCallBack : DiffUtil.ItemCallback<String>() {
+        override fun areItemsTheSame(oldItem: String, newItem: String): Boolean {
             return oldItem == newItem;
         }
 
-        override fun areContentsTheSame(oldItem: Int, newItem: Int): Boolean {
+        override fun areContentsTheSame(oldItem: String, newItem: String): Boolean {
             return oldItem == newItem;
         }
 
