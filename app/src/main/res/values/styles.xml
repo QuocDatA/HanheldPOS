@@ -126,6 +126,12 @@
         <item name="android:paddingBottom">@dimen/_7sdp</item>
     </style>
 
+    <style name="RadioCustom">
+        <item name="android:button">@drawable/bg_radio_selector</item>
+    </style>
 
+    <style name="CheckBoxCustom">
+        <item name="android:button">@drawable/bg_checkbox_selector</item>
+    </style>
 
 </resources>

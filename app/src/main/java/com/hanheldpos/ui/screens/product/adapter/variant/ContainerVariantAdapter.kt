@@ -68,7 +68,7 @@ class ContainerVariantAdapter(
         }
     }
 
-    class DiffCallback : DiffUtil.ItemCallback<VariantsGroup>() {
+    private class DiffCallback : DiffUtil.ItemCallback<VariantsGroup>() {
 
         override fun areItemsTheSame(oldItem: VariantsGroup, newItem: VariantsGroup): Boolean {
             return oldItem == newItem;

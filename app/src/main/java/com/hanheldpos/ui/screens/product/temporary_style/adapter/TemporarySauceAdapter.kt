@@ -37,7 +37,7 @@ class TemporarySauceAdapter() :
         }
     }
 
-    class DiffCallback : DiffUtil.ItemCallback<String>() {
+    private class DiffCallback : DiffUtil.ItemCallback<String>() {
         override fun areItemsTheSame(
             oldItem: String,
             newItem: String,

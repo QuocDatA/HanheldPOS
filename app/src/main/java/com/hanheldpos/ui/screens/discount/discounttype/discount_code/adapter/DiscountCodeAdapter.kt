@@ -15,7 +15,7 @@ class DiscountCodeAdapter(private val listener : BaseItemClickListener<DiscountI
 
 
 
-    class DiffCallBack : DiffUtil.ItemCallback<DiscountItem>() {
+    private class DiffCallBack : DiffUtil.ItemCallback<DiscountItem>() {
         override fun areItemsTheSame(oldItem: DiscountItem, newItem: DiscountItem): Boolean {
             return oldItem == newItem;
 

@@ -39,7 +39,7 @@ class ComboItemChosenAdapter(
         fun onComboItemChoose(action: ItemActionType, item: Regular)
     }
 
-    class DiffCallback : DiffUtil.ItemCallback<Regular>() {
+    private class DiffCallback : DiffUtil.ItemCallback<Regular>() {
         override fun areItemsTheSame(
             oldItem: Regular,
             newItem: Regular

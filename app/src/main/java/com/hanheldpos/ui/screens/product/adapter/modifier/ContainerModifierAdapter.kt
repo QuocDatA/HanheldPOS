@@ -67,7 +67,7 @@ class ContainerModifierAdapter(
         }
     }
 
-    class DiffCallback : DiffUtil.ItemCallback<GroupExtra>() {
+    private class DiffCallback : DiffUtil.ItemCallback<GroupExtra>() {
         override fun areItemsTheSame(oldItem: GroupExtra, newItem: GroupExtra): Boolean {
             return oldItem == newItem;
         }

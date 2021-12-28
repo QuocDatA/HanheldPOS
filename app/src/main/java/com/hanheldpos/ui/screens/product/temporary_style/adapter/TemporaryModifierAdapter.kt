@@ -3,37 +3,22 @@ package com.hanheldpos.ui.screens.product.temporary_style.adapter
 import androidx.recyclerview.widget.DiffUtil
 import com.hanheldpos.R
 import com.hanheldpos.databinding.ItemTemporaryCookOptionBinding
-import com.hanheldpos.databinding.ItemTemporaryVariantBinding
+import com.hanheldpos.databinding.ItemTemporaryModifierBinding
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
 
-class TemporaryCookAdapter : BaseBindingListAdapter<String>(DiffCallBack()) {
+class TemporaryModifierAdapter : BaseBindingListAdapter<String>(DiffCallBack()) {
 
     override fun getItemViewType(position: Int): Int {
-        return R.layout.item_temporary_cook_option;
+        return R.layout.item_temporary_modifier;
     }
-
-
-    var indexSelect : Int = 0;
-
-
-    override fun submitList(list: MutableList<String>?) {
-        indexSelect = 0;
-        super.submitList(list)
-    }
-
 
     override fun onBindViewHolder(holder: BaseBindingViewHolder<String>, position: Int) {
         val item = getItem(position);
         holder.bindItem(item);
-        val binding = holder.binding as ItemTemporaryCookOptionBinding;
-        binding.nameOption.text = item;
-        binding.isSelected = indexSelect == position;
-        binding.root.setOnClickListener {
-            notifyItemChanged(indexSelect);
-            indexSelect = position;
-            notifyItemChanged(position);
-        }
+        val binding = holder.binding as ItemTemporaryModifierBinding;
+        binding.nameModifier.text = item;
+        binding.isImage = mutableListOf<Boolean>(true,true,false,false).asSequence().shuffled().find { true };
     }
 
     private class DiffCallBack : DiffUtil.ItemCallback<String>() {

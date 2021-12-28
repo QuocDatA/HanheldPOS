@@ -38,7 +38,7 @@ class TemporaryOptionAdapter : BaseBindingListAdapter<String>(DiffCallBack()) {
         }
     }
 
-    class DiffCallBack : DiffUtil.ItemCallback<String>() {
+    private class DiffCallBack : DiffUtil.ItemCallback<String>() {
         override fun areItemsTheSame(oldItem: String, newItem: String): Boolean {
             return oldItem == newItem;
         }

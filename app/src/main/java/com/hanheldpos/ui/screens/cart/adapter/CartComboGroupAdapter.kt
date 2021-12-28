@@ -25,7 +25,7 @@ class CartComboGroupAdapter : BaseBindingListAdapter<GroupBundle>(DiffCallback()
         binding.cartComboGroupDetailRecyclerView.adapter=cartComboGroupDetailAdapter;
     }
 
-    class DiffCallback : DiffUtil.ItemCallback<GroupBundle>() {
+    private class DiffCallback : DiffUtil.ItemCallback<GroupBundle>() {
         override fun areItemsTheSame(
             oldItem: GroupBundle,
             newItem: GroupBundle

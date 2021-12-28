@@ -24,7 +24,7 @@ class CartComboGroupDetailAdapter(
         val binding  = (holder.binding as ItemCartComboGroupDetailBinding);
 
     }
-    class DiffCallback : DiffUtil.ItemCallback<BaseProductInCart>() {
+    private class DiffCallback : DiffUtil.ItemCallback<BaseProductInCart>() {
         override fun areItemsTheSame(
             oldItem: BaseProductInCart,
             newItem: BaseProductInCart

@@ -53,7 +53,7 @@ class ComboItemPickerAdapter(
         }
     }
 
-    class DiffCallBack : DiffUtil.ItemCallback<Regular>() {
+    private class DiffCallBack : DiffUtil.ItemCallback<Regular>() {
         override fun areItemsTheSame(oldItem: Regular, newItem: Regular): Boolean {
             return false;
         }

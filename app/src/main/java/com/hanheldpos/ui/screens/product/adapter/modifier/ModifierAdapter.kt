@@ -35,7 +35,7 @@ class ModifierAdapter(private val listener: BaseItemClickListener<ItemExtra>) :
         }
     }
 
-    class DiffCallback : DiffUtil.ItemCallback<ItemExtra>() {
+    private class DiffCallback : DiffUtil.ItemCallback<ItemExtra>() {
         override fun areItemsTheSame(
             oldItem: ItemExtra,
             newItem: ItemExtra

@@ -23,7 +23,7 @@ class CartDiscountAdapter(private val listener : BaseItemClickListener<DiscountC
         }
     }
 
-    class DiffCallBack : DiffUtil.ItemCallback<DiscountCart>() {
+    private class DiffCallBack : DiffUtil.ItemCallback<DiscountCart>() {
         override fun areItemsTheSame(oldItem: DiscountCart, newItem: DiscountCart): Boolean {
             return oldItem == newItem;
         }

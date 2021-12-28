@@ -22,7 +22,7 @@ class CustomerAdapter(private val listener : BaseItemClickListener<CustomerResp?
         }
     }
 
-    class DiffCallBack : DiffUtil.ItemCallback<CustomerResp?>() {
+    private class DiffCallBack : DiffUtil.ItemCallback<CustomerResp?>() {
         override fun areItemsTheSame(oldItem: CustomerResp, newItem: CustomerResp): Boolean {
             return oldItem._Id == newItem._Id;
         }
