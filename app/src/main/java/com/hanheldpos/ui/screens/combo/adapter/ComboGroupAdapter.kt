@@ -118,7 +118,7 @@ class ComboGroupAdapter(
         };
     }*/
 
-    class DiffCallback : DiffUtil.ItemCallback<ItemComboGroup>() {
+    private class DiffCallback : DiffUtil.ItemCallback<ItemComboGroup>() {
         override fun areItemsTheSame(
             oldItem: ItemComboGroup,
             newItem: ItemComboGroup

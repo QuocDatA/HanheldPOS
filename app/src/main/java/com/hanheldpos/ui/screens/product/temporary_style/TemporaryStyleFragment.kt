@@ -8,10 +8,7 @@ import com.hanheldpos.databinding.FragmentTemporaryStyleBinding
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.product.adapter.GridSpacingItemDecoration
-import com.hanheldpos.ui.screens.product.temporary_style.adapter.TemporaryCookAdapter
-import com.hanheldpos.ui.screens.product.temporary_style.adapter.TemporaryOptionAdapter
-import com.hanheldpos.ui.screens.product.temporary_style.adapter.TemporaryVariantAdapter
-import com.hanheldpos.ui.screens.product.temporary_style.adapter.TemporarySauceAdapter
+import com.hanheldpos.ui.screens.product.temporary_style.adapter.*
 
 class TemporaryStyleFragment : BaseFragment<FragmentTemporaryStyleBinding, TemporaryStyleVM>(),
     TemporaryStyleUV {
@@ -20,6 +17,8 @@ class TemporaryStyleFragment : BaseFragment<FragmentTemporaryStyleBinding, Tempo
     private lateinit var variantAdapter: TemporaryVariantAdapter;
     private lateinit var cookOptionAdapter: TemporaryCookAdapter;
     private lateinit var optionAdapter: TemporaryOptionAdapter;
+    private lateinit var modifierAdapter : TemporaryModifierAdapter;
+    private lateinit var modifierTwoAdapter: TemporaryModifierTwoAdapter;
 
     override fun layoutRes(): Int {
         return R.layout.fragment_temporary_style;
@@ -84,13 +83,36 @@ class TemporaryStyleFragment : BaseFragment<FragmentTemporaryStyleBinding, Tempo
         optionAdapter = TemporaryOptionAdapter();
         binding.containerOption.apply {
             adapter = optionAdapter;
-//            addItemDecoration(
-//                GridSpacingItemDecoration(
-//                    3,
-//                    resources.getDimensionPixelSize(R.dimen._6sdp),
-//                    false
-//                )
-//            );
+        }
+
+        modifierAdapter = TemporaryModifierAdapter();
+        binding.modifierCheckBoxContainer.apply {
+            adapter = modifierAdapter;
+            addItemDecoration(
+                DividerItemDecoration(
+                    context,
+                    LinearLayoutManager.VERTICAL
+                ).apply {
+                    setDrawable(
+                        ContextCompat.getDrawable(
+                            context,
+                            R.drawable.divider_vertical
+                        )!!
+                    )
+                }
+            )
+        }
+
+        modifierTwoAdapter = TemporaryModifierTwoAdapter()
+        binding.containerModifierSelect.apply {
+            adapter = modifierTwoAdapter;
+            addItemDecoration(
+                GridSpacingItemDecoration(
+                    2,
+                    resources.getDimensionPixelSize(R.dimen._6sdp),
+                    false
+                )
+            );
         }
     }
 
@@ -99,6 +121,8 @@ class TemporaryStyleFragment : BaseFragment<FragmentTemporaryStyleBinding, Tempo
         cookOptionAdapter.submitList(mutableListOf("Rare", "Medium"))
         temporarySauceAdapter.submitList(mutableListOf("Pepper sauce", "Mushroom sauce"));
         optionAdapter.submitList(mutableListOf("Rare", "Medium","Well done"))
+        modifierAdapter.submitList(mutableListOf("Extra bruschetta tomato", "Onion","Onion"))
+        modifierTwoAdapter.submitList(mutableListOf("Onion","Cheese"));
     }
 
     override fun initAction() {

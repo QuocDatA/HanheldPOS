@@ -57,7 +57,7 @@ class VariantAdapter(
         }
     }
 
-    class DiffCallback : DiffUtil.ItemCallback<VariantsGroup.OptionValueVariantsGroup>() {
+    private class DiffCallback : DiffUtil.ItemCallback<VariantsGroup.OptionValueVariantsGroup>() {
         override fun areItemsTheSame(
             oldItem: VariantsGroup.OptionValueVariantsGroup,
             newItem: VariantsGroup.OptionValueVariantsGroup

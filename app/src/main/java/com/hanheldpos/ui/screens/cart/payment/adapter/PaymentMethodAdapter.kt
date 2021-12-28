@@ -17,7 +17,7 @@ class PaymentMethodAdapter(
         return R.layout.item_payment_method;
     }
 
-    class DiffCallback : DiffUtil.ItemCallback<PaymentMethodResp>() {
+    private class DiffCallback : DiffUtil.ItemCallback<PaymentMethodResp>() {
 
         override fun areItemsTheSame(
             oldItem: PaymentMethodResp,

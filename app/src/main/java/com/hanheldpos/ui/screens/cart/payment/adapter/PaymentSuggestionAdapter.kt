@@ -19,7 +19,7 @@ class PaymentSuggestionAdapter(
         return R.layout.item_payment_suggestion;
     }
 
-    class DiffCallback : DiffUtil.ItemCallback<PaymentSuggestionItem>() {
+    private class DiffCallback : DiffUtil.ItemCallback<PaymentSuggestionItem>() {
         override fun areItemsTheSame(
             oldItem: PaymentSuggestionItem,
             newItem: PaymentSuggestionItem,

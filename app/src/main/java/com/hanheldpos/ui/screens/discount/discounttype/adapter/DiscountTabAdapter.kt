@@ -43,7 +43,7 @@ class DiscountTabAdapter(
 
     }
 
-    class DiffCallback : DiffUtil.ItemCallback<DiscountTypeTab>() {
+    private class DiffCallback : DiffUtil.ItemCallback<DiscountTypeTab>() {
 
         override fun areItemsTheSame(oldItem: DiscountTypeTab, newItem: DiscountTypeTab): Boolean {
             return oldItem == newItem;

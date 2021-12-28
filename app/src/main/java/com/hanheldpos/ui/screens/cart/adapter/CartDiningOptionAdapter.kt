@@ -64,7 +64,7 @@ class CartDiningOptionAdapter(private val onItemClickListener: BaseItemClickList
 
     }
 
-    class DiffCallback : DiffUtil.ItemCallback<DiningOptionItem>() {
+    private class DiffCallback : DiffUtil.ItemCallback<DiningOptionItem>() {
         override fun areItemsTheSame(
             oldItem: DiningOptionItem,
             newItem: DiningOptionItem

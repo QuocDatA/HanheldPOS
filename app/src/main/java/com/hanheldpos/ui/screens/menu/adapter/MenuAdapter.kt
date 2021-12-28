@@ -16,7 +16,7 @@ class MenuAdapter(
         return R.layout.item_menu
     }
 
-    class DiffCallback : DiffUtil.ItemCallback<FakeMenuItem>() {
+    private class DiffCallback : DiffUtil.ItemCallback<FakeMenuItem>() {
         override fun areItemsTheSame(
             oldItem: FakeMenuItem,
             newItem: FakeMenuItem,
