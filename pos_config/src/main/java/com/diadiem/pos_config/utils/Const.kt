@@ -9,7 +9,7 @@ object Const {
         const val VND = "₫"
         const val VariantSeparator = "•"
         const val SplashSeparator = " / "
-        const val CommaSeparator = ","
+        const val CommaSeparator = ", "
         const val TableStaffSeparator = " - "
     }
 }

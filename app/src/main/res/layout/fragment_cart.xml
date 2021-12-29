@@ -344,6 +344,7 @@
                         android:orientation="vertical">
 
                         <androidx.recyclerview.widget.RecyclerView
+                            android:overScrollMode="never"
                             android:id="@+id/discountRecycleView"
                             visibleObject="@{isShowDiscount}"
                             android:layout_width="match_parent"

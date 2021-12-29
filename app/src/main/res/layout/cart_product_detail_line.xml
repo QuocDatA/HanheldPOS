@@ -33,6 +33,10 @@
             type="Boolean" />
 
         <variable
+            name="nameLineText"
+            type="String" />
+
+        <variable
             name="clickListener"
             type="android.view.View.OnClickListener" />
     </data>
@@ -77,6 +81,15 @@
             app:useTextColor="color5"
             app:useTextHeader="h7"
             tools:text="Variant 1" />
+
+        <com.diadiem.pos_components.PTextView
+            visibleObject="@{nameLineText}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{nameLineText}"
+            app:useTextColor="color5"
+            app:useTextHeader="h6"
+            tools:text="Variant 1" />
         <LinearLayout
             visibleObject="@{isDiscount || isOtherFee,default=false}"
             android:layout_width="wrap_content"
@@ -88,7 +101,7 @@
                 app:useTextColor="color5"
                 app:useTextHeader="h6"
                 priceDisc="@{priceDisc}"
-                priceDiscMinus="@{priceDiscMinus}"/>
+                priceDiscMinusRound="@{priceDiscMinus}"/>
             <ImageView
                 android:focusable="true"
                 android:clickable="true"

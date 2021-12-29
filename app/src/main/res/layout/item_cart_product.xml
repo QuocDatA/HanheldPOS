@@ -160,6 +160,7 @@
                             app:isDiscount="@{true}"
                             visibleObject="@{item.discountUsersList != null &amp;&amp; !item.discountUsersList.empty }"
                             app:lineText="@{`Discount : ` }"
+                            app:nameLineText="@{ item.discountUsersList.size() > 0 ? (item.discountUsersList.get(0).discountName) : null }"
                             app:priceDiscMinus="@{item.totalDiscount()}"
                             />
 

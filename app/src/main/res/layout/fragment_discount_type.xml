@@ -55,7 +55,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:overScrollMode="never"
-
+                    android:paddingHorizontal="@dimen/_8sdp"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:itemCount="3"
                     tools:listitem="@layout/item_discount" />
