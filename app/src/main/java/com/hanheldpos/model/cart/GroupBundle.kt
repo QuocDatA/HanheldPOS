@@ -15,7 +15,7 @@ data class GroupBundle(
     val totalQuantity get() = productList.sumOf { it.quantity?: 0 }
     val requireQuantity get() = comboInfo.quantity?.minus(totalQuantity);
     val groupName get() = OrderMenuDataMapper.getGroupNameFromGroupGuid(comboInfo.comboGuid);
-    fun isComplete() = totalQuantity >= comboInfo?.quantity ?: 0;
+    fun isComplete() = totalQuantity >= comboInfo.quantity ?: 0;
 
     fun addRegular(regular: Regular){
 //        val priceOverride  = productItem.priceOverride(menuLocation_id,productItem.skuDefault,productItem.price)
