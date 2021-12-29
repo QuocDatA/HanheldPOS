@@ -119,7 +119,7 @@
         <item name="hintTextColor">@color/primary</item>
         <item name="android:textColorHint">@color/textSecondary</item>
         <item name="hintEnabled">true</item>
-        <item name="strokeColor">@color/primary</item>
+        <item name="strokeColor">@color/color_0</item>
         <item name="strokeWidth">@dimen/_1sdp</item>
         <item name="errorTextAppearance">@style/TextAppearance.Primary</item>
         <item name="errorTextColor">@color/error</item>

@@ -177,7 +177,8 @@
                             android:focusableInTouchMode="true"
                             android:hint="@string/birthday"
                             android:inputType="text"
-                            android:padding="@dimen/_10sdp"
+                            android:paddingHorizontal="@dimen/_10sdp"
+                            android:gravity="center_vertical"
                             app:ipt_useFontStyle="normal"
                             app:ipt_useHintTextColor="color8"
                             app:ipt_useTextColor="color4"
@@ -271,7 +272,8 @@
                             android:focusableInTouchMode="true"
                             android:hint="@string/address_type"
                             android:inputType="text"
-                            android:padding="@dimen/_10sdp"
+                            android:paddingHorizontal="@dimen/_10sdp"
+                            android:gravity="center_vertical"
                             app:ipt_useFontStyle="normal"
                             app:ipt_useHintTextColor="color8"
                             app:ipt_useTextColor="color4"
@@ -354,7 +356,8 @@
                                 android:focusableInTouchMode="true"
                                 android:hint="@string/district"
                                 android:inputType="text"
-                                android:padding="@dimen/_10sdp"
+                                android:paddingHorizontal="@dimen/_10sdp"
+                                android:gravity="center_vertical"
                                 app:ipt_useFontStyle="normal"
                                 app:ipt_useHintTextColor="color8"
                                 app:ipt_useTextColor="color4"
@@ -389,7 +392,8 @@
                                 android:focusableInTouchMode="true"
                                 android:hint="@string/ward"
                                 android:inputType="text"
-                                android:padding="@dimen/_10sdp"
+                                android:paddingHorizontal="@dimen/_10sdp"
+                                android:gravity="center_vertical"
                                 app:ipt_useFontStyle="normal"
                                 app:ipt_useHintTextColor="color8"
                                 app:ipt_useTextColor="color4"
@@ -405,9 +409,11 @@
                         android:orientation="horizontal">
 
                         <CheckBox
-                            android:layout_width="wrap_content"
-                            android:layout_height="@dimen/_16sdp"
-                            android:theme="@style/CheckBoxTheme" />
+                            android:button="@null"
+                            android:layout_width="@dimen/_17sdp"
+                            android:layout_height="@dimen/_17sdp"
+                            android:layout_marginEnd="@dimen/_10sdp"
+                            style="@style/CheckBoxCustom" />
 
                         <com.diadiem.pos_components.PTextView
                             style="@style/CartTitle"

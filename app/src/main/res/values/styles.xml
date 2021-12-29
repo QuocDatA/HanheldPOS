@@ -127,6 +127,7 @@
 
     <style name="RadioCustom">
         <item name="android:button">@drawable/bg_radio_selector</item>
+        <item name="android:gravity">center_vertical</item>
     </style>
 
     <style name="CheckBoxCustom">
