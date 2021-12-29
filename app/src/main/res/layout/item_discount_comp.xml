@@ -13,12 +13,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <com.diadiem.pos_components.PRadioButton
-            style="@android:style/Widget.Holo.CompoundButton.RadioButton"
+            style="@style/RadioCustom"
+            android:gravity="center_vertical"
             android:id="@+id/btn"
             android:text="@{item.title}"
             android:paddingVertical="@dimen/_10sdp"
             tools:text="Title"
-            android:buttonTint="@color/color_0"
+            android:paddingStart="@dimen/_7sdp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
     </LinearLayout>
