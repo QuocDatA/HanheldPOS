@@ -131,7 +131,7 @@
     </style>
 
     <style name="CheckBoxCustom">
-        <item name="android:button">@drawable/bg_checkbox_selector</item>
+        <item name="android:background">@drawable/bg_checkbox_selector</item>
     </style>
 
 </resources>
