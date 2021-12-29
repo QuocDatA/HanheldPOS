@@ -1,17 +1,12 @@
-package com.hanheldpos.ui.screens.discount.discounttype.discount_code
+package com.hanheldpos.ui.screens.discount.discount_type.discount_code
 
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.discount.DiscountItem
 import com.hanheldpos.databinding.FragmentDiscountCodeBinding
 import com.hanheldpos.model.discount.DiscountApplyToType
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
-import com.hanheldpos.ui.screens.discount.discounttype.discount_code.adapter.DiscountCodeAdapter
+import com.hanheldpos.ui.screens.discount.discount_type.discount_code.adapter.DiscountCodeAdapter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch

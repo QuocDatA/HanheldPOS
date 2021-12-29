@@ -1,4 +1,4 @@
-package com.hanheldpos.ui.screens.discount.discounttype.amount
+package com.hanheldpos.ui.screens.discount.discount_type.amount
 
 import com.hanheldpos.ui.base.BaseUserView
 

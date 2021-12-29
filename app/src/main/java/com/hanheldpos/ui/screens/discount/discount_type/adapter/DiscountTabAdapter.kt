@@ -1,6 +1,5 @@
-package com.hanheldpos.ui.screens.discount.discounttype.adapter
+package com.hanheldpos.ui.screens.discount.discount_type.adapter
 
-import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import com.hanheldpos.R
 import com.hanheldpos.databinding.ItemTabDiscountTypeBinding
@@ -8,7 +7,6 @@ import com.hanheldpos.model.discount.DiscountTypeTab
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
-import com.hanheldpos.ui.screens.product.adapter.variant.VariantAdapter
 
 class DiscountTabAdapter(
     private val listener: BaseItemClickListener<DiscountTypeTab>

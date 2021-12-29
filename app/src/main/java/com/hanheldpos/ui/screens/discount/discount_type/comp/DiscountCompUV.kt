@@ -1,4 +1,4 @@
-package com.hanheldpos.ui.screens.discount.discounttype.comp
+package com.hanheldpos.ui.screens.discount.discount_type.comp
 
 import com.hanheldpos.ui.base.BaseUserView
 

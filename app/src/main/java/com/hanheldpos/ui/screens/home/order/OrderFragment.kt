@@ -129,8 +129,8 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
                     }
                 }
                 item.proOriginal!!.let {
-                    navigator.goToWithCustomAnimation(TemporaryStyleFragment());
-                    /*if (!it.isBundle())
+                    /*navigator.goToWithCustomAnimation(TemporaryStyleFragment());*/
+                    if (!it.isBundle())
                         navigator.goToWithCustomAnimation(
                             ProductDetailFragment(
                                 item = Regular(
@@ -168,7 +168,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
                             quantityCanChoose = 100,
                             listener = onCartAdded
                         )
-                    );*/
+                    );
                 }
             }
             ProductModeViewType.PrevButtonEnable -> {

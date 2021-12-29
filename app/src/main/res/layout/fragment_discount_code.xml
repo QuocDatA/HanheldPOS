@@ -6,28 +6,46 @@
     <data>
     <variable
         name="viewModel"
-        type="com.hanheldpos.ui.screens.discount.discounttype.discount_code.DiscountCodeVM" />
+        type="com.hanheldpos.ui.screens.discount.discount_type.discount_code.DiscountCodeVM" />
     </data>
-    <RelativeLayout
-        style="@style/RootLayout"
-        android:layout_height="match_parent"
-        >
-        <ProgressBar
-            visibleObject="@{viewModel.isLoading()}"
-            android:indeterminateTint="@color/color_0"
-            android:layout_centerInParent="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            />
-        <androidx.recyclerview.widget.RecyclerView
-            visibleObject="@{!viewModel.isLoading()}"
-            android:id="@+id/listDiscountCode"
+    <LinearLayout
+        style="@style/RootLayout">
+        <com.diadiem.pos_components.PTextInputEditText
+            android:id="@+id/firstNameInput"
+            style="@style/BaseTextInput"
+            android:layout_marginBottom="@dimen/_20sdp"
+            android:layout_marginHorizontal="@dimen/_9sdp"
+            android:background="@drawable/bg_outline"
+            android:focusableInTouchMode="true"
+            android:hint="@string/discount_code"
+            android:inputType="text"
+            android:padding="@dimen/_10sdp"
+            app:ipt_useFontStyle="normal"
+            app:ipt_useHintTextColor="color8"
+            app:ipt_useTextColor="color4"
+            app:ipt_useTextHeader="h5" />
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:itemCount="3"
-            tools:listitem="@layout/item_discount_code"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            android:orientation="vertical"
-            />
-    </RelativeLayout>
+            android:layout_height="match_parent"
+            >
+            <ProgressBar
+                visibleObject="@{viewModel.isLoading()}"
+                android:indeterminateTint="@color/color_0"
+                android:layout_centerInParent="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+            <androidx.recyclerview.widget.RecyclerView
+                visibleObject="@{!viewModel.isLoading()}"
+                android:id="@+id/listDiscountCode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:itemCount="3"
+                tools:listitem="@layout/item_discount_code"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:orientation="vertical"
+                />
+        </RelativeLayout>
+    </LinearLayout>
+
 </layout>

@@ -10,7 +10,7 @@ import com.hanheldpos.model.discount.DiscountUser
 import com.hanheldpos.model.product.BaseProductInCart
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.cart.CartDataVM
-import com.hanheldpos.ui.screens.discount.discounttype.DiscountTypeFragment
+import com.hanheldpos.ui.screens.discount.discount_type.DiscountTypeFragment
 import com.hanheldpos.ui.screens.product.adapter.OptionsPagerAdapter
 
 

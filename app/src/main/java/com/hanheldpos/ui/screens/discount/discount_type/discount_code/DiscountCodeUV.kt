@@ -1,4 +1,4 @@
-package com.hanheldpos.ui.screens.discount.discounttype.discount_code
+package com.hanheldpos.ui.screens.discount.discount_type.discount_code
 
 import com.hanheldpos.data.api.pojo.discount.DiscountItem
 import com.hanheldpos.ui.base.BaseUserView

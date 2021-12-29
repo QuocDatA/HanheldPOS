@@ -1,4 +1,4 @@
-package com.hanheldpos.ui.screens.discount.discounttype.comp
+package com.hanheldpos.ui.screens.discount.discount_type.comp
 
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.order.settings.Reason
@@ -6,8 +6,8 @@ import com.hanheldpos.databinding.FragmentDiscountCompBinding
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
-import com.hanheldpos.ui.screens.discount.discounttype.DiscountTypeFragment
-import com.hanheldpos.ui.screens.discount.discounttype.comp.adapter.DiscountReasonAdapter
+import com.hanheldpos.ui.screens.discount.discount_type.DiscountTypeFragment
+import com.hanheldpos.ui.screens.discount.discount_type.comp.adapter.DiscountReasonAdapter
 
 
 class DiscountCompFragment(private val comp : Reason?, private val listener : DiscountTypeFragment.DiscountTypeListener) : BaseFragment<FragmentDiscountCompBinding,DiscountCompVM>(), DiscountCompUV {

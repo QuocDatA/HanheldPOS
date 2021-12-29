@@ -1,18 +1,12 @@
-package com.hanheldpos.ui.screens.discount.discounttype.percentage
+package com.hanheldpos.ui.screens.discount.discount_type.percentage
 
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.core.widget.doAfterTextChanged
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentDiscountPercentageBinding
 import com.hanheldpos.model.discount.DiscountTypeEnum
 import com.hanheldpos.model.discount.DiscountUser
 import com.hanheldpos.ui.base.fragment.BaseFragment
-import com.hanheldpos.ui.screens.discount.discounttype.DiscountTypeFragment
-import java.text.DecimalFormat
+import com.hanheldpos.ui.screens.discount.discount_type.DiscountTypeFragment
 
 
 class DiscountPercentageFragment(private val listener : DiscountTypeFragment.DiscountTypeListener) :
