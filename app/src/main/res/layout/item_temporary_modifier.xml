@@ -13,6 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <CheckBox
+            android:id="@+id/checkbox"
             android:button="@null"
             android:paddingStart="@dimen/_7sdp"
             android:background="@drawable/bg_checkbox_selector"

@@ -19,6 +19,10 @@ class TemporaryModifierAdapter : BaseBindingListAdapter<String>(DiffCallBack()) 
         val binding = holder.binding as ItemTemporaryModifierBinding;
         binding.nameModifier.text = item;
         binding.isImage = mutableListOf<Boolean>(true,true,false,false).asSequence().shuffled().find { true };
+        binding.root.setOnClickListener {
+            binding.checkbox.isChecked = !binding.checkbox.isChecked
+
+        }
     }
 
     private class DiffCallBack : DiffUtil.ItemCallback<String>() {
