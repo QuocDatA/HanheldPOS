@@ -1,4 +1,4 @@
-package com.hanheldpos.ui.screens.discount.discounttype.comp.adapter
+package com.hanheldpos.ui.screens.discount.discount_type.comp.adapter
 
 import androidx.recyclerview.widget.DiffUtil
 import com.hanheldpos.R

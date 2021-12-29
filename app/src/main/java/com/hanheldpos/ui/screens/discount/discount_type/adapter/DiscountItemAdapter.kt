@@ -1,9 +1,8 @@
-package com.hanheldpos.ui.screens.discount.discounttype.adapter
+package com.hanheldpos.ui.screens.discount.discount_type.adapter
 
 import androidx.recyclerview.widget.DiffUtil
 import com.hanheldpos.R
 import com.hanheldpos.databinding.ItemDiscountBinding
-import com.hanheldpos.databinding.ItemDiscountCompBinding
 import com.hanheldpos.model.product.BaseProductInCart
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder

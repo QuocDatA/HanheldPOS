@@ -1,8 +1,7 @@
-package com.hanheldpos.ui.screens.discount.discounttype
+package com.hanheldpos.ui.screens.discount.discount_type
 
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hanheldpos.R
@@ -16,13 +15,13 @@ import com.hanheldpos.model.discount.DiscountUser
 import com.hanheldpos.model.product.BaseProductInCart
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
-import com.hanheldpos.ui.screens.discount.discounttype.adapter.DiscountItemAdapter
-import com.hanheldpos.ui.screens.discount.discounttype.adapter.DiscountTabAdapter
-import com.hanheldpos.ui.screens.discount.discounttype.amount.DiscountAmountFragment
-import com.hanheldpos.ui.screens.discount.discounttype.comp.DiscountCompFragment
-import com.hanheldpos.ui.screens.discount.discounttype.discount_code.DiscountCodeFragment
-import com.hanheldpos.ui.screens.discount.discounttype.percentage.DiscountPercentageFragment
-import com.hanheldpos.ui.screens.product.adapter.GridSpacingItemDecoration
+import com.hanheldpos.ui.screens.discount.discount_type.adapter.DiscountItemAdapter
+import com.hanheldpos.ui.screens.discount.discount_type.adapter.DiscountTabAdapter
+import com.hanheldpos.ui.screens.discount.discount_type.amount.DiscountAmountFragment
+import com.hanheldpos.ui.screens.discount.discount_type.automatic.DiscountAutomaticFragment
+import com.hanheldpos.ui.screens.discount.discount_type.comp.DiscountCompFragment
+import com.hanheldpos.ui.screens.discount.discount_type.discount_code.DiscountCodeFragment
+import com.hanheldpos.ui.screens.discount.discount_type.percentage.DiscountPercentageFragment
 import com.hanheldpos.ui.screens.product.adapter.OptionsPagerAdapter
 
 class DiscountTypeFragment(
@@ -104,6 +103,7 @@ class DiscountTypeFragment(
         val listTab = mutableListOf(
             DiscountTypeTab(title = "Amount (đ)", type = DiscountTypeFor.AMOUNT),
             DiscountTypeTab(title = "Percentage (%)", type = DiscountTypeFor.PERCENTAGE),
+            DiscountTypeTab(title = "Automatic" , type = DiscountTypeFor.AUTOMATIC ),
             DiscountTypeTab(title = "Comp", type = DiscountTypeFor.COMP),
         )
         if (applyToType == DiscountApplyToType.ORDER_DISCOUNT_APPLY_TO)
@@ -135,6 +135,7 @@ class DiscountTypeFragment(
                 }
             });
         fragmentMap[DiscountTypeFor.DISCOUNT_CODE] = DiscountCodeFragment(applyToType);
+        fragmentMap[DiscountTypeFor.AUTOMATIC] = DiscountAutomaticFragment();
         viewModel.reasonChosen.observe(this, {
             fragmentMap[DiscountTypeFor.COMP] =
                 DiscountCompFragment(comp = it, listener = object : DiscountTypeListener {

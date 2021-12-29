@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="com.hanheldpos.ui.screens.discount.discounttype.DiscountTypeVM" />
+            type="com.hanheldpos.ui.screens.discount.discount_type.DiscountTypeVM" />
 
         <import type="android.view.View" />
 

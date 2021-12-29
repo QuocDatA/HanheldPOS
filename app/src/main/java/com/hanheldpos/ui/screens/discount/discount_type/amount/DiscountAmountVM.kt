@@ -1,12 +1,8 @@
-package com.hanheldpos.ui.screens.discount.discounttype.amount
+package com.hanheldpos.ui.screens.discount.discount_type.amount
 
-import android.service.autofill.Transformation
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
-import javax.xml.transform.Transformer
 
 class DiscountAmountVM : BaseUiViewModel<DiscountAmountUV>() {
     val amount = MutableLiveData<String>(0.toString());

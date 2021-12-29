@@ -4,5 +4,6 @@ enum class DiscountTypeFor(val value : Int) {
     AMOUNT(0),
     PERCENTAGE(1),
     DISCOUNT_CODE(2),
-    COMP(3)
+    AUTOMATIC(3),
+    COMP(4)
 }

@@ -9,7 +9,7 @@
 
         <variable
             name="viewModel"
-            type="com.hanheldpos.ui.screens.discount.discounttype.percentage.DiscountPercentageVM" />
+            type="com.hanheldpos.ui.screens.discount.discount_type.percentage.DiscountPercentageVM" />
     </data>
 
     <RelativeLayout

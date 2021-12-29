@@ -8,7 +8,7 @@
 
         <variable
             name="viewModel"
-            type="com.hanheldpos.ui.screens.discount.discounttype.amount.DiscountAmountVM" />
+            type="com.hanheldpos.ui.screens.discount.discount_type.amount.DiscountAmountVM" />
     </data>
 
     <RelativeLayout

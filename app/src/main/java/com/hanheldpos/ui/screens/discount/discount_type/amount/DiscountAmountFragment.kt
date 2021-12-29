@@ -1,4 +1,4 @@
-package com.hanheldpos.ui.screens.discount.discounttype.amount
+package com.hanheldpos.ui.screens.discount.discount_type.amount
 
 import androidx.core.widget.doAfterTextChanged
 import com.hanheldpos.R
@@ -6,7 +6,7 @@ import com.hanheldpos.databinding.FragmentDiscountAmountBinding
 import com.hanheldpos.model.discount.DiscountTypeEnum
 import com.hanheldpos.model.discount.DiscountUser
 import com.hanheldpos.ui.base.fragment.BaseFragment
-import com.hanheldpos.ui.screens.discount.discounttype.DiscountTypeFragment
+import com.hanheldpos.ui.screens.discount.discount_type.DiscountTypeFragment
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 

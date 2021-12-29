@@ -1,4 +1,4 @@
-package com.hanheldpos.ui.screens.discount.discounttype.percentage
+package com.hanheldpos.ui.screens.discount.discount_type.percentage
 
 import com.hanheldpos.ui.base.BaseUserView
 
