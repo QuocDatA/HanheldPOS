@@ -112,11 +112,10 @@
     </style>
 
     <style name="CartDelete">
-        <item name="useTextHeader">h6</item>
+        <item name="useTextHeader">h5</item>
         <item name="useFontStyle">normal</item>
         <item name="useTextColor">color0</item>
-        <item name="android:layout_gravity">center|end</item>
-        <item name="android:layout_marginEnd">@dimen/_10sdp</item>
+
     </style>
     <style name="SingleLineItemCart">
         <item name="android:background">@color/color_2</item>
