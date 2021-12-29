@@ -18,6 +18,7 @@ import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.screens.cart.customer.adapter.CustomerAdapter
 
 class ComboItemPickerAdapter(
+    private val productChosen : List<Regular> = mutableListOf(),
     private val listener : BaseItemClickListener<Regular>
 ) : BaseBindingListAdapter<Regular>(DiffCallBack()) {
 
@@ -47,6 +48,9 @@ class ComboItemPickerAdapter(
 
     override fun onBindViewHolder(holder: BaseBindingViewHolder<Regular>, position: Int) {
         val item = getItem(position);
+        productChosen.find { it.proOriginal?.id == item.proOriginal?.id }?.let {
+            (holder.binding as ItemComboRegularBinding).isChosen = true;
+        }
         holder.bindItem(item);
         (holder.binding as ItemComboRegularBinding).root.setOnClickListener {
             listener.onItemClick(position,item);

@@ -66,6 +66,7 @@ class ComboGroupAdapter(
         }
         binding.itemForSelectAdapter.apply {
             adapter = ComboItemPickerAdapter(
+                productChosen = itemComboGroup.groupBundle.productList,
                 listener = object : BaseItemClickListener<Regular> {
                     override fun onItemClick(adapterPosition: Int, item: Regular) {
                         listener.onProductSelect(itemComboGroup.requireQuantity(),itemComboGroup,item,ItemActionType.Add);
