@@ -10,6 +10,10 @@ import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import kotlin.system.exitProcess
+import android.view.WindowManager
+
+
+
 
 object SystemHelper {
 
@@ -18,23 +22,28 @@ object SystemHelper {
      */
     fun hideSystemUI(window: Window) {
         window.run {
+
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
                 decorView.systemUiVisibility = (
-                        View.SYSTEM_UI_FLAG_FULLSCREEN
-                                or View.SYSTEM_UI_FLAG_LOW_PROFILE
-                                or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                                or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                        View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                                 or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                                or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION)
-
+                                or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                                or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                                or View.SYSTEM_UI_FLAG_FULLSCREEN
+                                or View.SYSTEM_UI_FLAG_IMMERSIVE)
+                window.addFlags(
+                    WindowManager.LayoutParams.FLAG_FULLSCREEN
+                )
+                window.clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN)
             } else {
+
                 setDecorFitsSystemWindows(false)
                 insetsController?.let { controller ->
-                    controller.hide(
-                        WindowInsets.Type.statusBars() or WindowInsets.Type.navigationBars()
-                    )
                     controller.systemBarsBehavior =
                         WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+                    controller.hide(
+                        WindowInsets.Type.systemBars()
+                    )
                 }
             }
         }

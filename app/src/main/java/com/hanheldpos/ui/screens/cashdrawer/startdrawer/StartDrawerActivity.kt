@@ -15,6 +15,7 @@ import com.hanheldpos.ui.screens.cashdrawer.CashDrawerVM
 import com.hanheldpos.ui.screens.cashdrawer.CashDrawerUV
 import com.hanheldpos.ui.screens.home.table.input.NumberPadVM
 import com.hanheldpos.ui.screens.main.MainActivity
+import com.utils.helper.SystemHelper
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import kotlin.math.roundToInt
@@ -35,6 +36,11 @@ class StartDrawerActivity : BaseActivity<ActivityStartDrawerBinding, CashDrawerV
     }
 
     override fun initView() {
+
+        binding.root.viewTreeObserver.addOnGlobalLayoutListener {
+            SystemHelper.hideSystemUI(window);
+        }
+
         binding.startingCash.let { input ->
             var isEditing = false
             input.doAfterTextChanged {

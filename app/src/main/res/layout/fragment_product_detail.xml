@@ -14,11 +14,13 @@
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
+
         style="@style/ProductDetailRoot"
         android:orientation="vertical">
 
         <LinearLayout
             app:layout_constraintTop_toTopOf="parent"
+
             android:id="@+id/productInfo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -119,6 +121,7 @@
         </LinearLayout>
 
         <LinearLayout
+
             app:layout_constraintBottom_toBottomOf="parent"
             android:id="@+id/bottomAction"
             android:layout_width="match_parent"

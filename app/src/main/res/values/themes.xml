@@ -25,6 +25,8 @@
 
         <!-- Ripple effect -->
         <item name="colorControlHighlight">@color/textSecondary</item>
+
+
     </style>
 
     <!-- Alert Dialog -->
