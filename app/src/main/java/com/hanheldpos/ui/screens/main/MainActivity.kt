@@ -1,6 +1,8 @@
 package com.hanheldpos.ui.screens.main
 
+import android.graphics.Rect
 import android.view.ViewTreeObserver
+import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import android.view.WindowManager
 import com.hanheldpos.R
 import com.hanheldpos.databinding.ActivityMainBinding
@@ -34,6 +36,23 @@ class MainActivity : BaseFragmentBindingActivity<ActivityMainBinding, MainVM>(),
         binding.root.viewTreeObserver.addOnGlobalLayoutListener {
             SystemHelper.hideSystemUI(window);
         }
+
+//        this.window.decorView.viewTreeObserver.addOnGlobalLayoutListener {
+//            val r = Rect()
+//            window.decorView.getWindowVisibleDisplayFrame(r)
+//            val height: Int =
+//                binding.mainFragmentContainer.context.resources.displayMetrics.heightPixels
+//            val diff: Int = height - r.bottom
+//            if (diff != 0) {
+//                if (binding.mainFragmentContainer.paddingBottom !== diff) {
+//                    binding.mainFragmentContainer.setPadding(0, 0, 0, diff)
+//                }
+//            } else {
+//                if (binding.mainFragmentContainer.paddingBottom !== 0) {
+//                    binding.mainFragmentContainer.setPadding(0, 0, 0, 0)
+//                }
+//            }
+//        }
 
         getNavigator().rootFragment = HomeFragment();
     }

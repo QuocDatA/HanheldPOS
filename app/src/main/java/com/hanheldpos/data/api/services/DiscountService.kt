@@ -8,7 +8,7 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface DiscountService {
-    @GET("discounts/list")
+    @GET("discounts/list/v3")
     fun getDiscounts(
         @Query("userGuid") userGuid: String?,
         @Query("locationGuid") location: String?,

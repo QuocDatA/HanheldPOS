@@ -1,17 +1,15 @@
 package com.hanheldpos.data.api.pojo.discount
 
 import android.os.Parcelable
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import com.hanheldpos.data.api.pojo.product.ProductItem
-import com.hanheldpos.model.product.ProductComboItem
+import com.hanheldpos.data.api.pojo.product.VariantsGroup
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class DiscountResp(
     val DidError: Boolean,
-    val ErrorMessage: String,
-    val Message: String,
+    val ErrorMessage: String?,
+    val Message: String?,
     val Model: List<DiscountItem>
 ) : Parcelable
 
@@ -24,6 +22,7 @@ data class DiscountItem(
     val Color: String,
     val Condition: Condition,
     val CustomerEligibility: Int,
+    val CustomerEligibilityList: List<CustomerEligibility>,
     val DateOff: String,
     val DateOn: String,
     val DateRange: Int,
@@ -43,8 +42,6 @@ data class DiscountItem(
     val FromToDiscount: String,
     val IsFullBanner: Boolean,
     val IsVisiblePOS: Int,
-    val ListCustomerEligibility: String,
-    val ListSchedules: String,
     val MaximumDiscount: Double,
     val MaximumDiscountFormatter: String,
     val MaximumNumberOfUsedPerOrder: Boolean,
@@ -52,83 +49,45 @@ data class DiscountItem(
     val MinimumOrder: Double,
     val MinimumOrderFormatter: String,
     val MinimumOrderId: Int,
-    val MinimumRequired: String,
     val MinimumRequiredType: Int,
+    val MinimumRequiredValue: Double,
     val OnlyApplyDiscountOncePerOrder: Int,
     val OnlyApplyDiscountProductOncePerOrder: Int,
     val OrderNo: Int,
+    val ScheduleList: List<ListScheduleItem>,
     val SetSchedules: Int,
-//    val Trigger: List<Any>,
+    val Trigger: List<Trigger>,
     val Url: String,
     val UsageLimits: String,
-    val Watch: String,
+    val UseForOrder: Int,
     val _id: String,
     val jsaction: String
-) : Parcelable {
-    fun ListCustomerEligibility(): List<CustomerEligibility> =
-        Gson().fromJson(this.ListCustomerEligibility,
-            object : TypeToken<List<CustomerEligibility>>() {}.type);
-}
-
-data class CustomerEligibility(
-    val Name: String,
-    val _key: Int,
-    val _id: String,
-)
-
-
-@Parcelize
-data class Condition(
-    val AppliesTo: Int,
-    val CustomerBuys: CustomerBuys,
-    val CustomerGets: CustomerGets,
-    val DiscountGuid: String,
-    val DiscountType: Int,
-    val DiscountValue: Double,
-    val IsDiscountLimit: Int,
-    val IsMaxAmount: Int,
-    val IsMaxQuantity: Int,
-//    val ListApplyTo: Any,
-    val ListFromItem: String,
-    val MaximumDiscount: Double,
-    val MaximumNumberOfUses: Int,
-    val MaximumNumberOfUsesValue: Int,
-    val _Id: String,
-    val _key: Int,
-    val _rev: String
-) : Parcelable {
-    fun listFromItem(): List<ProductDiscount> =
-        Gson().fromJson(this.ListFromItem, object : TypeToken<List<ProductDiscount>>() {}.type);
-}
-
-@Parcelize
-data class CustomerBuys(
-    val ApplyTo: Int,
-    val CustomerName: String,
-    val Handle: String,
-    val ListApplyTo: List<ProductItem>,
-    val MinimumTypeId: Int,
-    val MinimumValue: Double,
-    val MinimumValueFormat: String,
-    val ProductApplyTo: Int
 ) : Parcelable
 
 @Parcelize
-data class CustomerGets(
-    val ApplyTo: Int,
-    val CustomerName: String,
-    val DiscountValue: Double,
-    val DiscountValueType: Int,
-    val Handle: String,
-    val ListApplyTo: List<ProductItem>,
-    val ProductApplyTo: Int,
-    val Quantity: Int
+data class Condition(
+    val CustomerBuys: CustomerBuys,
+    val DiscountValue: Double
 ) : Parcelable
 
 @Parcelize
 data class DiningOptionDiscount(
-    val Id: Int,
-    val Title : String
+    val Id: Int
+) : Parcelable
+
+@Parcelize
+data class CustomerEligibility(
+    val _id: String
+) : Parcelable
+
+@Parcelize
+data class CustomerBuys(
+    val ApplyTo: Int,
+    val IsDiscountLimit: Int,
+    val IsMaxAmount: Int,
+    val IsMaxQuantity: Int,
+    val ListApplyTo: List<ProductItem>,
+    val MaximumDiscount: Double
 ) : Parcelable
 
 @Parcelize
@@ -137,37 +96,31 @@ data class DiscountsApplyToItem(
     val DiscountAutomatic: Boolean,
     val DiscountGuid: String,
     val DiscountType: Int,
-//    val ListCombo: Any,
+    val ListCombo: String,
     val ListParents: String,
     val ListProducts: String,
     val UserGuid: String
-) : Parcelable {
-    fun listProducts(): List<ProductDiscount> =
-        Gson().fromJson(this.ListProducts, object : TypeToken<List<ProductDiscount>>() {}.type);
-}
+) : Parcelable
+
 
 @Parcelize
-data class VariantDiscount(
-    val GroupId: String,
-    val GroupName: String,
-    val OrderNo: Int,
+data class Trigger(
+    val Id: Int,
+    val Name: String,
+    val RefreshTimer: Int
 ) : Parcelable
 
 @Parcelize
-data class ProductDiscount(
-    val ProductGuid: String,
-    val Name: String,
-    val Sku: String,
-    val TotalVariant: Int,
-    val TotalVariantChecked: Int,
-    val Url: String,
-    val IsMaxAmount: Int,
-    val IsMaxQuantity: Int,
-    val MaxQuantity: Int,
-    val MaxAmount: Double,
-    val ApplyToModifier: Int,
-    val ListVariant: List<VariantDiscount>
-) : Parcelable {
+data class ListScheduleItem(
+    val Id: String,
+    val Date: String,
+    val ListSetTime: List<ListSetTimeItem>
+) : Parcelable
 
-}
+@Parcelize
 
+data class ListSetTimeItem(
+    val TimeOn: String,
+    val TimeOff: String,
+    val OrderNo: Long,
+) : Parcelable
