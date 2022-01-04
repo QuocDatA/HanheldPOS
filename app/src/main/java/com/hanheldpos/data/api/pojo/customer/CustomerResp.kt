@@ -1,7 +1,8 @@
 package com.hanheldpos.data.api.pojo.customer
 
 import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
+
 
 @Parcelize
 data class CustomerResp(
@@ -37,7 +38,7 @@ data class CustomerResp(
     val IsVerifyPhone: Boolean,
     val LastName: String,
     val Latitude: Boolean,
-//    val ListGroups: Any,
+    val ListGroups: String?,
     val Longitude: Boolean,
     val Name: String,
     val NameAcronymn: String,
@@ -107,4 +108,12 @@ data class CustomerResp(
             }
         }.toString()
     }
+}
+
+@Parcelize
+data class CustomerGroup(
+    val CustomerGuestGroupGuid : String,
+    val GroupName : String,
+) : Parcelable {
+
 }

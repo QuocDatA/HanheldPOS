@@ -4,6 +4,7 @@ import android.os.Parcelable
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 import com.google.gson.reflect.TypeToken
+import com.hanheldpos.model.cart.VariantCart
 import com.hanheldpos.model.home.order.ProductModeViewType
 import com.hanheldpos.model.product.ProductComboItem
 import kotlinx.parcelize.IgnoredOnParcel
@@ -199,25 +200,36 @@ data class ProductItem(
         return copy()
     }
 
-    fun isBundle() : Boolean {
+    fun isBundle(): Boolean {
         return groupComboList != null && groupComboList!!.any()
     }
 
-    val groupComboList : List<ProductComboItem> get() = Gson().fromJson(combo, object : TypeToken<List<ProductComboItem>>() {}.type)
+    val groupComboList: List<ProductComboItem>
+        get() = Gson().fromJson(
+            combo,
+            object : TypeToken<List<ProductComboItem>>() {}.type
+        )
 
-    val skuDefault get() = if (variantsGroup ==null) sku else variantsGroupSkuDefault
+    val skuDefault get() = if (variantsGroup == null) sku else variantsGroupSkuDefault
 
     val variantDefault get() = if (variantsGroup == null) "" else variantsGroupNameDefault
 
-    fun priceOverride(locationId : String?,sku : String?, priceDefault : Double) : Double{
-        if (locationId.isNullOrEmpty()) return price?: 0.0
+    fun priceOverride(locationId: String?, sku: String?, priceDefault: Double): Double {
+        if (locationId.isNullOrEmpty()) return price ?: 0.0
         if (variantsGroup != null) {
-            val priceOverride = variantPriceOverrideList?.firstOrNull { it.VariationSku.equals(sku) }
-            val listPriceOverride : List<VariantsPriceOverrideLocation>? = Gson().fromJson(priceOverride?.PriceOverride, object : TypeToken<List<VariantsPriceOverrideLocation>>() {}.type)
-            val priceOverrideOfLocation : VariantsPriceOverrideLocation? = listPriceOverride?.firstOrNull { it.LocationGuid.equals(locationId) }
-            return if (priceOverrideOfLocation != null) priceOverrideOfLocation.Price ?: 0.0 else priceDefault
+            val priceOverride =
+                variantPriceOverrideList?.firstOrNull { it.VariationSku.equals(sku) }
+            val listPriceOverride: List<VariantsPriceOverrideLocation>? = Gson().fromJson(
+                priceOverride?.PriceOverride,
+                object : TypeToken<List<VariantsPriceOverrideLocation>>() {}.type
+            )
+            val priceOverrideOfLocation: VariantsPriceOverrideLocation? =
+                listPriceOverride?.firstOrNull { it.LocationGuid.equals(locationId) }
+            return if (priceOverrideOfLocation != null) priceOverrideOfLocation.Price
+                ?: 0.0 else priceDefault
         }
-        return productPriceOverrideList?.firstOrNull { it.LocationGuid.equals(locationId) }?.Price?: price
+        return productPriceOverrideList?.firstOrNull { it.LocationGuid.equals(locationId) }?.Price
+            ?: price
     }
 
 
@@ -225,19 +237,19 @@ data class ProductItem(
 
 @Parcelize
 data class ProductPriceOverrideListItem(
-    val LocationGuid : String?,
-    val Price : Double?,
+    val LocationGuid: String?,
+    val Price: Double?,
 ) : Parcelable
 
 @Parcelize
 data class VariantPriceOverrideListItem(
-    val GroupName : String?,
-    val VariationName : String?,
-    val VariationSku : String?,
-    val UnitTypeId : Int?,
-    val Price : Double?,
-    val PriceOverride : String?,
-    val ProductGuid : String?,
+    val GroupName: String?,
+    val VariationName: String?,
+    val VariationSku: String?,
+    val UnitTypeId: Int?,
+    val Price: Double?,
+    val PriceOverride: String?,
+    val ProductGuid: String?,
 ) : Parcelable
 
 @Parcelize
@@ -270,11 +282,27 @@ data class VariantsGroup(
         val Value: String,
         val Visible: Int,
         val Variant: VariantsGroup?,
-    ) : Parcelable
+    ) : Parcelable {
+        fun isExistsVariant(variantList: List<VariantCart>?): Boolean {
+            if (Variant == null) {
+                return true; }
 
-    fun subOptionValueList() : List<OptionValueVariantsGroup>? {
+            val isExists = variantList?.firstOrNull { v -> v.Id == Id } != null;
+            return if (isExists) Variant.isExistsVariant(variantList) else isExists;
+        }
+    }
+
+    fun subOptionValueList(): List<OptionValueVariantsGroup>? {
         return OptionValueList?.map { option_value ->
             option_value.apply { this.OptionName = this@VariantsGroup.OptionName }
         }
+    }
+
+    fun isExistsVariant(variantList: List<VariantCart>?): Boolean {
+        if (variantList?.any() != true) {
+            return true; }
+        val isExists =
+            OptionValueList?.firstOrNull { option -> option.isExistsVariant(variantList) } != null;
+        return isExists;
     }
 }
