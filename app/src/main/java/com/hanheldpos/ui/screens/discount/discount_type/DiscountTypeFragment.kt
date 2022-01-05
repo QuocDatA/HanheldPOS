@@ -138,26 +138,25 @@ class DiscountTypeFragment(
             });
         fragmentMap[DiscountTypeFor.DISCOUNT_CODE] = DiscountCodeFragment(applyToType);
         fragmentMap[DiscountTypeFor.AUTOMATIC] = DiscountAutomaticFragment(null,cart);
-        viewModel.reasonChosen.observe(this, {
-            fragmentMap[DiscountTypeFor.COMP] =
-                DiscountCompFragment(comp = it, listener = object : DiscountTypeListener {
-                    override fun compReasonChoose(item: Reason) {
-                        listener.compReasonChoose(item);
-                    }
+        fragmentMap[DiscountTypeFor.COMP] =
+            DiscountCompFragment(comp = if(applyToType == DiscountApplyToType.ORDER_DISCOUNT_APPLY_TO) cart.compReason else null, listener = object : DiscountTypeListener {
+                override fun compReasonChoose(item: Reason) {
+                    listener.compReasonChoose(item);
+                }
 
-                    override fun compRemoveAll() {
-                        listener.compRemoveAll();
-                    }
-                })
-            optionsPagerAdapter.submitList(fragmentMap.values);
-        });
+                override fun compRemoveAll() {
+                    listener.compRemoveAll();
+                }
+            })
 
         optionsPagerAdapter.submitList(fragmentMap.values);
 
     }
 
     override fun initAction() {
-
+        viewModel.reasonChosen.observe(this, {
+            (fragmentMap[DiscountTypeFor.COMP] as DiscountCompFragment).onReasonChange(it);
+        });
     }
 
     interface DiscountTypeListener {

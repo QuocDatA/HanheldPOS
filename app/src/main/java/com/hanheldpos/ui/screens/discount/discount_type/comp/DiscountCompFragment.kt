@@ -1,5 +1,6 @@
 package com.hanheldpos.ui.screens.discount.discount_type.comp
 
+import androidx.lifecycle.MutableLiveData
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.order.settings.Reason
 import com.hanheldpos.databinding.FragmentDiscountCompBinding
@@ -10,9 +11,15 @@ import com.hanheldpos.ui.screens.discount.discount_type.DiscountTypeFragment
 import com.hanheldpos.ui.screens.discount.discount_type.comp.adapter.DiscountReasonAdapter
 
 
-class DiscountCompFragment(private val comp : Reason?, private val listener : DiscountTypeFragment.DiscountTypeListener) : BaseFragment<FragmentDiscountCompBinding,DiscountCompVM>(), DiscountCompUV {
+class DiscountCompFragment(
+    private val comp: Reason?,
+    private val listener: DiscountTypeFragment.DiscountTypeListener
+) : BaseFragment<FragmentDiscountCompBinding, DiscountCompVM>(), DiscountCompUV {
 
-    private lateinit var adapter : DiscountReasonAdapter;
+    private lateinit var adapter: DiscountReasonAdapter;
+
+    var reasonChosen = MutableLiveData<Reason?>();
+    var isOnReasonChange: Boolean = false;
 
     override fun layoutRes(): Int = R.layout.fragment_discount_comp
 
@@ -28,33 +35,49 @@ class DiscountCompFragment(private val comp : Reason?, private val listener : Di
     }
 
     override fun initView() {
-        adapter = DiscountReasonAdapter(comp,listener = object : BaseItemClickListener<Reason>{
-            override fun onItemClick(adapterPosition: Int, item: Reason) {
-                // Dealing with item selected;
-                viewModel.reasonChosen.value = (item);
-            }
-        })
-        binding.reasonContainer.adapter = adapter;
-
-        binding.removeComp.apply {
-            comp?.run { setTextColor(resources.getColor(R.color.color_0)); }
-            setOnClickListener {
-                comp?.run {
-                    listener.compRemoveAll();
+        reasonChosen.observe(this, { reason ->
+            if (isOnReasonChange) {
+                isOnReasonChange = false;
+                adapter =
+                    DiscountReasonAdapter(
+                        reason,
+                        listener = object : BaseItemClickListener<Reason> {
+                            override fun onItemClick(adapterPosition: Int, item: Reason) {
+                                // Dealing with item selected;
+                                reasonChosen.postValue(item)
+                            }
+                        })
+                binding.reasonContainer.adapter = adapter;
+                val list = DataHelper.getCompList();
+                if (list != null) adapter.submitList(list as MutableList<Reason>);
+                binding.removeComp.apply {
+                    reason?.run { setTextColor(resources.getColor(R.color.color_0)); }
+                    setOnClickListener {
+                        reason?.run {
+                            listener.compRemoveAll();
+                        }
+                    }
                 }
             }
-        }
+            binding.saveBtn.isEnabled = reason != null;
+        });
+
+
     }
 
     override fun initData() {
-        val list = DataHelper.getCompList();
-        if (list != null) adapter.submitList(list as MutableList<Reason>);
+        reasonChosen.postValue(comp);
     }
 
     override fun initAction() {
         binding.saveBtn.setOnClickListener {
-            listener.compReasonChoose(viewModel.reasonChosen.value!!);
+            listener.compReasonChoose(reasonChosen.value!!);
         }
+    }
+
+    fun onReasonChange(reason: Reason?) {
+        isOnReasonChange = true;
+        reasonChosen.postValue(reason)
     }
 
 }
