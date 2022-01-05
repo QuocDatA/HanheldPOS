@@ -72,6 +72,8 @@ class DiscountTypeFragment(
             DiscountItemAdapter(listener = object : BaseItemClickListener<BaseProductInCart> {
                 override fun onItemClick(adapterPosition: Int, item: BaseProductInCart) {
                     viewModel.reasonChosen.postValue(item.compReason);
+                    fragmentMap[DiscountTypeFor.AUTOMATIC] = DiscountAutomaticFragment(item,cart);
+                    optionsPagerAdapter.submitList(fragmentMap.values);
                     listener.onProductChooseForDiscount(item);
                 }
             })
@@ -135,7 +137,7 @@ class DiscountTypeFragment(
                 }
             });
         fragmentMap[DiscountTypeFor.DISCOUNT_CODE] = DiscountCodeFragment(applyToType);
-        fragmentMap[DiscountTypeFor.AUTOMATIC] = DiscountAutomaticFragment();
+        fragmentMap[DiscountTypeFor.AUTOMATIC] = DiscountAutomaticFragment(null,cart);
         viewModel.reasonChosen.observe(this, {
             fragmentMap[DiscountTypeFor.COMP] =
                 DiscountCompFragment(comp = it, listener = object : DiscountTypeListener {
@@ -148,7 +150,6 @@ class DiscountTypeFragment(
                     }
                 })
             optionsPagerAdapter.submitList(fragmentMap.values);
-
         });
 
         optionsPagerAdapter.submitList(fragmentMap.values);

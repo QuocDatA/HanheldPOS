@@ -66,7 +66,29 @@
                 android:src="@drawable/ic_discount_automatic_sort"
                 android:contentDescription="TODO" />
         </LinearLayout>
-        
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+            <ProgressBar
+                visibleObject="@{viewModel.isLoading()}"
+                android:indeterminateTint="@color/color_0"
+                android:layout_centerInParent="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+            <androidx.recyclerview.widget.RecyclerView
+                visibleObject="@{!viewModel.isLoading()}"
+                android:id="@+id/listDiscountCode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:itemCount="3"
+                tools:listitem="@layout/item_discount_code"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:orientation="vertical"
+                />
+        </RelativeLayout>
 
     </LinearLayout>
 </layout>
