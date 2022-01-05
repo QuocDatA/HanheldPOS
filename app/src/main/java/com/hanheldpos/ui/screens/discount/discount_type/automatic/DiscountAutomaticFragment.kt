@@ -1,5 +1,6 @@
 package com.hanheldpos.ui.screens.discount.discount_type.automatic
 
+import androidx.lifecycle.MutableLiveData
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.discount.DiscountItem
 import com.hanheldpos.databinding.FragmentDiscountAutomaticBinding
@@ -13,7 +14,11 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 
-class DiscountAutomaticFragment(private val item : BaseProductInCart?, private val cart : CartModel?) : BaseFragment<FragmentDiscountAutomaticBinding,DiscountAutomaticVM>() , DiscountAutomaticUV {
+class DiscountAutomaticFragment(private val cart: CartModel?) :
+    BaseFragment<FragmentDiscountAutomaticBinding, DiscountAutomaticVM>(), DiscountAutomaticUV {
+
+    private var itemSelected = MutableLiveData<BaseProductInCart?>();
+
     override fun layoutRes(): Int {
         return R.layout.fragment_discount_automatic;
     }
@@ -42,10 +47,11 @@ class DiscountAutomaticFragment(private val item : BaseProductInCart?, private v
     }
 
     override fun initData() {
-        GlobalScope.launch(Dispatchers.IO) {
-            viewModel.loadDiscountAutomatic(item,cart);
-        }
-
+        itemSelected.observe(this, {
+            GlobalScope.launch(Dispatchers.IO) {
+                viewModel.loadDiscountAutomatic(itemSelected.value, cart);
+            }
+        });
 
     }
 
@@ -56,6 +62,10 @@ class DiscountAutomaticFragment(private val item : BaseProductInCart?, private v
     override fun loadDataDiscountCode(list: List<DiscountItem>) {
         discountCodeAdapter.submitList(list);
         discountCodeAdapter.notifyDataSetChanged();
+    }
+
+    fun onItemSelectChange(item: BaseProductInCart?) {
+        itemSelected.postValue(item);
     }
 
 }
