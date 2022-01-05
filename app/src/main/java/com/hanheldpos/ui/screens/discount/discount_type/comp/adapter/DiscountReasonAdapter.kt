@@ -44,7 +44,7 @@ class DiscountReasonAdapter(
 
     private class DiffCallback : DiffUtil.ItemCallback<Reason>() {
         override fun areItemsTheSame(oldItem: Reason, newItem: Reason): Boolean {
-            return oldItem == newItem;
+            return oldItem.id == newItem.id;
         }
 
         override fun areContentsTheSame(
