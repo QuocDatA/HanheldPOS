@@ -1,5 +1,6 @@
 package com.hanheldpos.ui.screens.discount.discount_type.discount_code
 
+import androidx.core.widget.doAfterTextChanged
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.discount.DiscountItem
 import com.hanheldpos.databinding.FragmentDiscountCodeBinding
@@ -38,6 +39,9 @@ class DiscountCodeFragment(private val applyToType: DiscountApplyToType) :
                 }
             });
         binding.listDiscountCode.adapter = discountCodeAdapter;
+        binding.firstNameInput.doAfterTextChanged {
+            viewModel.seachDiscountCode(it.toString())
+        }
     }
 
     override fun initData() {
@@ -53,11 +57,10 @@ class DiscountCodeFragment(private val applyToType: DiscountApplyToType) :
     }
 
     override fun loadDataDiscountCode(list: List<DiscountItem>) {
-        GlobalScope.launch (Dispatchers.Main) {
-            discountCodeAdapter.submitList(list);
-            discountCodeAdapter.notifyDataSetChanged();
-        }
-
+            GlobalScope.launch (Dispatchers.Main) {
+                discountCodeAdapter.submitList(list);
+                discountCodeAdapter.notifyDataSetChanged();
+            }
     }
 
 }
