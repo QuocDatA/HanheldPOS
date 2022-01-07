@@ -615,26 +615,40 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/btnBill"
+            android:background="@color/color_0"
+            android:foreground="?attr/selectableItemBackground"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="@dimen/_8sdp">
+            android:layout_margin="@dimen/_8sdp"
+            android:gravity="center"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="@dimen/_10sdp">
 
-            <com.diadiem.pos_components.PMaterialButton
-                android:id="@+id/btnBill"
-                android:layout_width="match_parent"
+            <com.diadiem.pos_components.PTextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@color/color_0"
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="?attr/selectableItemBackground"
+
                 android:gravity="center"
-                android:padding="@dimen/_5sdp"
                 android:text="@string/bill"
                 android:textAllCaps="true"
-                app:pbtn_useFontStyle="bold"
-                app:pbtn_useTextColor="color2"
-                app:pbtn_useTextHeader="h5" />
+                app:useFontStyle="bold"
+                app:useTextColor="color2"
+                app:useTextHeader="h5" />
+            <androidx.legacy.widget.Space
+                android:layout_width="@dimen/_3sdp"
+                android:layout_height="wrap_content"/>
+            <com.diadiem.pos_components.PTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                priceDisc="@{cartDataVM.cartModelLD.total()}"
+                android:textAllCaps="true"
+                app:useFontStyle="bold"
+                app:useTextColor="color2"
+                app:useTextHeader="h5" />
         </LinearLayout>
     </LinearLayout>
 </layout>

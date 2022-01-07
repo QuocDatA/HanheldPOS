@@ -140,6 +140,10 @@ object CartConverter {
                     val bundle = baseProductInCart as Combo;
                     proOrderList.add(OrderMapper.mappingProductBuy(bundle, index, null));
                 }
+                ProductType.NOT_FOUND -> TODO()
+                ProductType.GROUP_SKU -> TODO()
+                ProductType.BUYX_GETY_DISC -> TODO()
+                ProductType.COMBO_DISC -> TODO()
             }
         }
         return proOrderList;

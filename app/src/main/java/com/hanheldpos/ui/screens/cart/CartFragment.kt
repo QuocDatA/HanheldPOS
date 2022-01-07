@@ -1,5 +1,6 @@
 package com.hanheldpos.ui.screens.cart
 
+import android.annotation.SuppressLint
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -149,13 +150,13 @@ class CartFragment(
 
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun initAction() {
         cartDataVM.cartModelLD.observe(this,{
             val list = viewModel.processDataDiscount(it);
             binding.isShowDiscount = list.isNotEmpty();
             cartDiscountAdapter.submitList(list);
             cartDiscountAdapter.notifyDataSetChanged();
-
             cartProductAdapter.notifyDataSetChanged();
         })
     }
