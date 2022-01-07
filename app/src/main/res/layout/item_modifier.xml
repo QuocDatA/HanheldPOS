@@ -18,6 +18,7 @@
         app:cardElevation="0dp">
 
         <LinearLayout
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@{item.extraQuantity > 0 ? @color/color_1 : @color/color_10}"
@@ -43,6 +44,7 @@
             </FrameLayout>
 
             <LinearLayout
+                android:id="@+id/item_modifier_text_background"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/_32sdp"
                 android:layout_weight="1"
