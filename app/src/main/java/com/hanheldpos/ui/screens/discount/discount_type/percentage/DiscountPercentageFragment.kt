@@ -31,11 +31,11 @@ class DiscountPercentageFragment(private val listener : DiscountTypeFragment.Dis
             input.doAfterTextChanged {
                 if (isEditing) return@doAfterTextChanged;
                 isEditing = true;
-                if (it.toString().isEmpty())
-                    input.setText(0.toString())
-                else if (it.toString().toInt() > 100)
-                    input.setText(100.toString())
-                else input.setText(it.toString().toInt().toString())
+                when {
+                    it.toString().isEmpty() -> input.setText(0.toString())
+                    it.toString().toInt() > 100 -> input.setText(100.toString())
+                    else -> input.setText(it.toString().toInt().toString())
+                }
                 input.setSelection(input.length());
                 isEditing = false;
             }
@@ -44,7 +44,7 @@ class DiscountPercentageFragment(private val listener : DiscountTypeFragment.Dis
             listener.discountUserChoose(
                 DiscountUser(
                     DiscountName = viewModel.title.value!!,
-                    DiscountValue = viewModel.amountValue,
+                    DiscountValue = viewModel.percentValue,
                     DiscountType = DiscountTypeEnum.PERCENT.value
                 )
             )

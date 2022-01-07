@@ -4,6 +4,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
+import com.diadiem.pos_config.utils.Const
 import com.hanheldpos.data.api.pojo.product.ProductItem
 import com.hanheldpos.data.api.pojo.product.VariantsGroup
 import com.hanheldpos.extension.notifyValueChange
@@ -73,14 +74,21 @@ class ProductDetailVM : BaseUiViewModel<ProductDetailUV>() {
         sku: String
     ) {
         regularInCart.value?.apply {
-            if (variantList == null) variantList = mutableListOf()
+            if (variantList == null) {
+                variantList = mutableListOf()
+            }
             variantList?.clear()
             variantList?.addAll(item);
+
+            variants = groupValue;
+
             this.sku = sku
             if (productBundle != null)
                 this.priceOverride = regularInCart.value!!.groupPrice(groupBundle!!, productBundle)
             else
                 this.priceOverride = priceOverride
+
+
         }
         regularInCart.notifyValueChange();
     }

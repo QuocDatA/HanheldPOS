@@ -1,5 +1,6 @@
 package com.hanheldpos.model.order
 
+import com.diadiem.pos_config.utils.Const
 import com.hanheldpos.data.api.pojo.fee.Fee
 import com.hanheldpos.data.api.pojo.order.settings.Reason
 import com.hanheldpos.model.cart.ModifierCart
@@ -125,7 +126,6 @@ abstract class OrderMapping {
             ),
 
             VariantList = src.variantList,
-
             DiscountTotalPrice = totalDiscount,
             ServiceTotalPrice = totalService,
             SurchargeTotalPrice = totalSurcharge,
