@@ -29,19 +29,20 @@
             <FrameLayout
                 android:id="@+id/toolbarLayout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="@dimen/_42sdp">
 
                 <FrameLayout
                     style="@style/ProductDetailCloseBtn"
                     android:layout_gravity="end">
 
                     <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:clickable="true"
                         android:focusable="true"
+                        android:adjustViewBounds="true"
                         android:onClick="@{v -> viewModel.onBack()}"
-                        android:padding="@dimen/_8sdp"
+                        android:padding="@dimen/_15sdp"
                         android:scaleType="centerInside"
                         android:src="@drawable/ic_close_light" />
                 </FrameLayout>
