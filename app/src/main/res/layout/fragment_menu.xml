@@ -43,12 +43,15 @@
                     tools:ignore="ContentDescription" />
 
                 <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/avatarEmployee"
+                    android:clickable="true"
+                    android:focusable="true"
                     android:layout_width="@dimen/_33sdp"
                     android:layout_height="@dimen/_33sdp"
                     android:backgroundTint="@color/color_1"
                     android:layout_marginEnd="@dimen/_14sdp"
                     android:layout_marginTop="@dimen/_13sdp"
-                    app:cardCornerRadius="@dimen/_18sdp"
+                    app:cardCornerRadius="@dimen/_16sdp"
                     android:layout_gravity="end">
 
                     <com.diadiem.pos_components.PTextView

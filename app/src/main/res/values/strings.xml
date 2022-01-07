@@ -94,4 +94,17 @@
     <string name="please_choose_an_item">Please choose an item.</string>
     <string name="discount_code">Discount Code</string>
     <string name="search">Search</string>
+    <string name="orders">Orders</string>
+    <string name="transactions">Transactions</string>
+    <string name="reports">Reports</string>
+    <string name="customer">Customer</string>
+    <string name="order_history">Order History</string>
+    <string name="settings">Settings</string>
+    <string name="support">Support</string>
+    <string name="logout_user">Logout User</string>
+    <string name="reset_system">Reset System</string>
+    <string name="are_you_sure_you_want_to_exit_this_account">Are you sure you want to exit this account?</string>
+    <string name="logout">Logout</string>
+    <string name="check_out">Check Out</string>
+    <string name="are_you_sure_you_want_to_exit_this_employee">Are you sure you want to exit this employee?</string>
 </resources>
