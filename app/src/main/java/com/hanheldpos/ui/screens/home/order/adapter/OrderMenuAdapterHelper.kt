@@ -5,49 +5,20 @@ import com.hanheldpos.model.home.order.menu.OrderMenuItem
 
 class OrderMenuAdapterHelper(private val callBack : AdapterCallBack) {
 
-    private var currentIndex : Int = 1;
     private var list: MutableList<OrderMenuItem?> = mutableListOf();
-    private var listOfOrderMenuPage: MutableList<List<OrderMenuItem?>> = mutableListOf()
 
     fun submitList(list: MutableList<OrderMenuItem?>){
+        this.list.clear()
         this.list = list;
-        currentIndex = 1;
-        listOfOrderMenuPage.clear()
-        var sizeOfMainList: Int = this.list.size
-        var currentListIndex: Int = 1
-
-        if (sizeOfMainList > 0) {
-            while (sizeOfMainList > 0) {
-                var tablePage = split(currentListIndex)
-                listOfOrderMenuPage.add(tablePage)
-                sizeOfMainList -= (tablePage.size - 2) // reduce list size except for 2 dirButton
-                currentListIndex++
-            }
-        } else if (sizeOfMainList == 0) {
-            var tempList = split(currentListIndex)
-            listOfOrderMenuPage.add(tempList)
-        }
-        callBack.onListSplitCallBack(listOfOrderMenuPage[currentIndex-1])
-    }
-
-    fun next(){
-        if ((currentIndex * maxItemViewCate) < list.size ){
-            currentIndex = currentIndex.plus(1);
-            callBack.onListSplitCallBack(listOfOrderMenuPage[currentIndex-1])
-        }
-
-    }
-
-    fun previous(){
-        if (currentIndex > 1){
-            currentIndex = currentIndex.minus(1);
-            callBack.onListSplitCallBack(listOfOrderMenuPage[currentIndex-1])
-        }
-
+        this.list = split(1)
+        callBack.onListSplitCallBack(this.list)
     }
 
     private fun split(pagePosition: Int): MutableList<OrderMenuItem?> {
         val rs: MutableList<OrderMenuItem> = mutableListOf();
+
+        val itemPerCol: Int = list.size / 2;
+        val maxItemViewCate: Int = itemPerCol*2;
 
         list.let {
             if (it.size != 0) {
@@ -64,26 +35,6 @@ class OrderMenuAdapterHelper(private val callBack : AdapterCallBack) {
                 uiType = MenuModeViewType.Empty
             })
         }
-
-        var menuItemType = MenuModeViewType.DirectionDisableUpDown;
-        if ((pagePosition * maxItemViewCate) < list.size ){
-            menuItemType = MenuModeViewType.DirectionEnableDown;
-        }
-        if (pagePosition > 1){
-            menuItemType = when(menuItemType){
-                MenuModeViewType.DirectionEnableDown->MenuModeViewType.DirectionEnableUpDown
-                MenuModeViewType.DirectionDisableUpDown->MenuModeViewType.DirectionEnableUp
-                else -> MenuModeViewType.DirectionDisableUpDown
-            };
-        }
-
-        // Add Direction Button
-        rs.add(
-            OrderMenuItem().apply {
-                uiType = menuItemType
-
-            }
-        );
 
         val sub1 = rs.subList(0,itemPerCol);
         val sub2 = rs.subList(itemPerCol,rs.size);
@@ -107,12 +58,12 @@ class OrderMenuAdapterHelper(private val callBack : AdapterCallBack) {
     }
 
 
-    companion object {
-        @JvmStatic
-        val itemPerCol: Int = 9;
-
-        @JvmStatic
-        val maxItemViewCate: Int = itemPerCol*2-1;
-    }
+//    companion object {
+//        @JvmStatic
+//        val itemPerCol: Int = 9;
+//
+//        @JvmStatic
+//        val maxItemViewCate: Int = itemPerCol*2-1;
+//    }
 
 }
