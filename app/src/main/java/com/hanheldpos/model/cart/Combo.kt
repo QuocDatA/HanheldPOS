@@ -55,7 +55,16 @@ class Combo() : BaseProductInCart() {
     }
 
     override fun totalDiscount(): Double {
-        return 0.0
+        val subtotal = subTotal();
+        val totalModifierPrice = totalModifier();
+
+        var totalPrice = subtotal - totalModifierPrice;
+        val totalDiscUser = discountUsersList?.sumOf { disc -> disc.total(subtotal) } ?: 0.0;
+        // TODO : Discount server
+        //  var totalDiscServer = discountServersList?.sumOf { disc -> disc.total(totalPrice, totalModifierPrice, proOriginal?.id, quantity) } ?: 0.0;
+
+        val total = totalDiscUser// + totalDiscServer;
+        return total;
     }
 
     override fun total(): Double {
@@ -71,7 +80,7 @@ class Combo() : BaseProductInCart() {
     }
 
     fun totalModifier() : Double {
-        var totalModifier = modSubTotal() * quantity!!;
+        val totalModifier = modSubTotal() * quantity!!;
         return totalModifier;
     }
 
@@ -138,7 +147,7 @@ class Combo() : BaseProductInCart() {
 
     private fun totalTemp(): Double {
         val subtotal = subTotal();
-        val totalDiscPrice = 0.0;
+        val totalDiscPrice = totalDiscount();
         val totalFeePrice = totalFee(subtotal,totalDiscPrice);
 
         var total = subtotal - totalDiscPrice + totalFeePrice;
