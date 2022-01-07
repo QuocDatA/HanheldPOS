@@ -12,8 +12,8 @@
 
     <!-- Others -->
     <color name="textPrimary">#000000</color>
-    <color name="textSecondary">#B8B8B8</color>
-    <color name="error">#FF0000</color>
+    <color name="textSecondary">#777777</color>
+    <color name="error">#D80028</color>
     <color name="onError">#FFFFFF</color>
     <color name="surface">#FFFFFF</color>
     <color name="onSurface">#000000</color>
