@@ -10,63 +10,79 @@
             type="com.hanheldpos.ui.screens.home.order.menu.CategoryMenuVM" />
     </data>
 
-
-    <RelativeLayout
-        android:background="#A6000000"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        style="@style/RootLayout"
+        android:background="@color/color_10"
+        android:gravity="center"
+        android:orientation="vertical">
 
-        <LinearLayout
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:orientation="vertical">
+            android:layout_height="@dimen/_42sdp"
+            android:background="@color/color_2">
 
-            <RelativeLayout
-                android:layout_width="match_parent"
+            <ImageButton
+                style="@style/MaterialButton.Icon"
+                android:layout_height="match_parent"
+                android:layout_gravity="center|start"
+                android:adjustViewBounds="true"
+                android:backgroundTint="@color/textPrimary"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="@{v -> viewModel.backPress()}"
+                android:padding="@dimen/_14sdp"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_close"
+                tools:ignore="ContentDescription" />
+
+            <com.diadiem.pos_components.PTextView
+                style="@style/CartTitle"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_5sdp">
+                android:text="@string/menu" />
+        </FrameLayout>
 
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/layoutMain"
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_1sdp"
+            android:background="@color/color_9" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/layoutMain"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:elevation="0dp"
+                app:cardElevation="0dp">
+
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:elevation="0dp"
-                    android:layout_margin="@dimen/_10sdp"
-                    app:cardCornerRadius="@dimen/_3sdp"
-                    app:cardElevation="0dp">
+                    android:layout_height="match_parent"
+                    android:background="@color/color_2"
+                    android:orientation="vertical">
 
-                    <LinearLayout
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/categoryList"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@color/color_2"
+                        android:layout_height="match_parent"
+                        android:nestedScrollingEnabled="true"
+                        android:scrollbars="vertical"
+                        android:scrollbarThumbVertical="@drawable/bg_scrollbar_vertical"
+                        android:overScrollMode="ifContentScrolls"
                         android:orientation="vertical"
-                        android:padding="@dimen/_6sdp">
+                        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                        app:spanCount="2"
+                        tools:itemCount="30"
+                        tools:listitem="@layout/item_order_menu" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+        </RelativeLayout>
 
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/categoryList"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:nestedScrollingEnabled="false"
-                            android:orientation="vertical"
-                            android:overScrollMode="never"
-                            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                            app:spanCount="2"
-                            tools:itemCount="17"
-                            tools:listitem="@layout/item_order_menu" />
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
-                <ImageView
-                    android:layout_alignParentEnd="true"
-                    android:id="@+id/closeBtn"
-                    android:layout_width="@dimen/_21sdp"
-                    android:layout_height="@dimen/_21sdp"
-                    android:layout_gravity="end"
-                    android:src="@drawable/ic_close_dialog"
-                    android:onClick="@{v->viewModel.backPress()}"/>
-            </RelativeLayout>
-
-        </LinearLayout>
-    </RelativeLayout>
+    </LinearLayout>
 
 </layout>

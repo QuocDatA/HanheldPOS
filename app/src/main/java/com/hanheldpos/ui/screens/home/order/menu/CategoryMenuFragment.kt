@@ -9,6 +9,7 @@ import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.home.order.OrderDataVM
 import com.hanheldpos.ui.screens.home.order.adapter.OrderMenuAdapter
 import com.hanheldpos.ui.screens.home.order.adapter.OrderMenuAdapterHelper
+import com.hanheldpos.ui.screens.product.adapter.GridSpacingItemDecoration
 
 class CategoryMenuFragment(
     private val listMenuCategory:
@@ -45,7 +46,6 @@ class CategoryMenuFragment(
             override fun onListSplitCallBack(list: List<OrderMenuItem?>) {
                 menuAdapter.submitList(list);
                 menuAdapter.notifyDataSetChanged();
-
             }
         });
 
@@ -57,17 +57,11 @@ class CategoryMenuFragment(
                 }
 
             },
-            directionCallBack = object : OrderMenuAdapter.Callback {
-                override fun directionSelectd(value: Int) {
-                    when (value) {
-                        1 -> menuAdapHelper.previous();
-                        2 -> menuAdapHelper.next();
-                    }
-                }
-
-            }
         ).also {
             binding.categoryList.adapter = it
+            binding.categoryList.addItemDecoration(
+                GridSpacingItemDecoration(spanCount = 2,includeEdge = true, spacing = resources.getDimensionPixelSize(R.dimen._13sdp))
+            )
         }
     }
 
