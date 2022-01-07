@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewTreeObserver
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import android.view.WindowManager
+import androidx.fragment.app.activityViewModels
 import com.hanheldpos.R
 import com.hanheldpos.databinding.ActivityMainBinding
 import com.hanheldpos.ui.base.activity.BaseFragmentBindingActivity
@@ -17,6 +18,8 @@ import com.hanheldpos.ui.screens.root.RootFragment
 import com.utils.helper.SystemHelper
 
 class MainActivity : BaseFragmentBindingActivity<ActivityMainBinding, MainVM>(), MainUV {
+
+
 
     override fun createFragmentNavigator(): FragmentNavigator {
         return FragmentNavigator(supportFragmentManager, R.id.main_fragment_container)

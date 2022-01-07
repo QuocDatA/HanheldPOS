@@ -14,16 +14,13 @@ import com.hanheldpos.model.DataHelper
 import com.hanheldpos.ui.base.dialog.AppAlertDialog
 import com.hanheldpos.ui.base.pager.FragmentPagerAdapter
 import com.hanheldpos.ui.screens.cart.CartDataVM
-import com.hanheldpos.ui.screens.cart.payment.PaymentFragment
 import com.hanheldpos.ui.screens.cashdrawer.CashDrawerHelper
-import com.hanheldpos.ui.screens.cashdrawer.CashDrawerVM
-import com.hanheldpos.ui.screens.main.BaseMainFragment
 import com.hanheldpos.ui.screens.home.order.OrderFragment
 import com.hanheldpos.ui.screens.home.table.TableFragment
+import com.hanheldpos.ui.screens.main.BaseMainFragment
 import com.hanheldpos.ui.screens.main.adapter.TabSpinnerAdapter
 import com.hanheldpos.ui.screens.main.adapter.SubSpinnerAdapter
 import com.hanheldpos.ui.screens.menu.MenuFragment
-import com.utils.helper.SystemHelper
 
 
 class HomeFragment : BaseMainFragment<FragmentHomeBinding, HomeVM>(), HomeUV {

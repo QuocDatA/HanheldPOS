@@ -27,9 +27,14 @@ object DataHelper {
     fun clearData() {
         deviceCodeResp = null
         orderMenuResp = null
+        orderSettingResp = null
         tableResp = null
         feeResp = null
         discountResp = null
+        discountDetailResp = null
+        paymentsResp = null
+        CurrentDrawer_id = null
+        numberIncreaseOrder = 0;
         AppPreferences.get().storeValue(PrefKey.Setting.DEVICE_CODE, null)
     }
 
@@ -61,7 +66,7 @@ object DataHelper {
         }
 
     private fun getOrderMenuModel() = orderMenuResp?.model?.firstOrNull()
-    fun getGroupsOrderMenu() = getOrderMenuModel()?.groups
+    private fun getGroupsOrderMenu() = getOrderMenuModel()?.groups
 
     fun findGroupNameOrderMenu(group_id : String) : String{
         return getGroupsOrderMenu()?.firstOrNull { groupsItem ->  groupsItem?.id.equals(group_id)}?.groupName ?: ""
