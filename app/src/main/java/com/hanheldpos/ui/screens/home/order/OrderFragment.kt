@@ -105,7 +105,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
             val list = dataVM.getProductByMenu(orderMenuItemModel);
             if (list == null) productAdapHelper.submitList(mutableListOf());
             else {
-                list?.let { it1 ->
+                list.let { it1 ->
                     val rs: MutableList<ProductMenuItem> = mutableListOf();
                     it1.forEach {
                         it.let { it2 -> rs.add(it2) }
@@ -200,7 +200,12 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
     }
 
     override fun showCart() {
-        navigator.goToWithCustomAnimation(CartFragment.getInstance());
+        navigator.goToWithCustomAnimation(CartFragment.getInstance(listener = object : CartFragment.CartCallBack {
+            override fun onCartDelete() {
+                dataVM.onMenuChange(0);
+                showCategoryDialog();
+            }
+        }));
     }
 
     interface OrderMenuListener {

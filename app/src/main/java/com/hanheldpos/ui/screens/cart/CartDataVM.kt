@@ -48,7 +48,6 @@ class CartDataVM : BaseViewModel() {
             discountUserList = mutableListOf(),
             discountServerList = mutableListOf(),
             diningOption = DataHelper.getDefaultDiningOptionItem()!!,
-
             );
     }
 

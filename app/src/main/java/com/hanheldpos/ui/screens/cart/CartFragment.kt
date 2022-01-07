@@ -34,8 +34,7 @@ import com.hanheldpos.ui.screens.home.order.OrderFragment
 import com.hanheldpos.ui.screens.product.ProductDetailFragment
 
 
-class CartFragment(
-) : BaseFragment<FragmentCartBinding, CartVM>(), CartUV {
+class CartFragment( private val listener : CartCallBack) : BaseFragment<FragmentCartBinding, CartVM>(), CartUV {
     override fun layoutRes() = R.layout.fragment_cart;
 
     private lateinit var cartDiningOptionAdapter: CartDiningOptionAdapter;
@@ -171,7 +170,12 @@ class CartFragment(
             getString(R.string.delete_cart_warning),
             getString(R.string.delete),
             getString(R.string.alert_btn_negative),
-            this::onFragmentBackPressed
+            callback = object : () -> Unit {
+                override fun invoke() {
+                    onFragmentBackPressed();
+                    listener.onCartDelete();
+                }
+            }
         )
     }
 
@@ -256,6 +260,7 @@ class CartFragment(
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun onUpdateItemInCart(position: Int, item: BaseProductInCart) {
         cartDataVM.updateItemInCart(position, item);
         cartProductAdapter.notifyDataSetChanged();
@@ -263,12 +268,17 @@ class CartFragment(
 
     companion object {
         fun getInstance(
+            listener: CartCallBack
         ): CartFragment {
             return CartFragment(
-
+                listener
             ).apply {
 
             };
         }
+    }
+
+    interface CartCallBack {
+        fun onCartDelete();
     }
 }
