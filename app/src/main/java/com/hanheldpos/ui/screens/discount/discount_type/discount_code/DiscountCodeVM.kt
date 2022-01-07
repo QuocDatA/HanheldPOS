@@ -16,7 +16,7 @@ class DiscountCodeVM : BaseUiViewModel<DiscountCodeUV>() {
 
     fun seachDiscountCode(keyword: String) {
         val listDiscountCode = DataHelper.discountResp?.Model?.filter { !it.DiscountAutomatic };
-        val searchList =  listDiscountCode?.filter { it.DiscountName.lowercase().contains(keyword.lowercase()) }
+        val searchList =  listDiscountCode?.filter { it.DiscountCode.lowercase().contains(keyword.lowercase()) }
         uiCallback?.loadDataDiscountCode(searchList as List<DiscountItem>);
     }
 }
