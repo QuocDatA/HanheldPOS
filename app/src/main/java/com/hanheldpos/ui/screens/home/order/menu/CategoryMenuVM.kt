@@ -5,6 +5,6 @@ import com.hanheldpos.ui.screens.home.order.OrderUV
 
 class CategoryMenuVM : BaseUiViewModel<CategoryMenuUV>() {
     fun backPress() {
-        uiCallback?.getBack()
+        uiCallback?.getBack(isSelected = false)
     }
 }
