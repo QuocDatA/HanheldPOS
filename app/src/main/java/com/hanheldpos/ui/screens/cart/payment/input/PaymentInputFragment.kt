@@ -15,10 +15,6 @@ class PaymentInputFragment(
 ) :
     BaseFragment<FragmentPaymentInputBinding, PaymentInputVM>(), PaymentInputUV {
 
-    interface PaymentInputListener {
-        fun onCompleteTable(numberCustomer: Int)
-    }
-
     //ViewModel
     private val numberPadVM = NumberPadVM();
 
@@ -82,5 +78,9 @@ class PaymentInputFragment(
 
             };
         }
+    }
+
+    interface PaymentInputListener {
+        fun onCompleteTable(numberCustomer: Int)
     }
 }
