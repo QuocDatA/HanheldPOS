@@ -55,7 +55,7 @@ class CategoryMenuFragment(
             listener = object : BaseItemClickListener<OrderMenuItem> {
                 override fun onItemClick(adapterPosition: Int, item: OrderMenuItem) {
                     menuItemSelected(item);
-                    getBack()
+                    getBack(true)
                 }
 
             },
@@ -74,8 +74,8 @@ class CategoryMenuFragment(
     override fun initAction() {
     }
 
-    override fun getBack() {
-        if (isBackToTable == true) {
+    override fun getBack(isSelected: Boolean) {
+        if (isBackToTable == true && !isSelected) {
             onFragmentBackPressed()
             listener.onMenuClose()
         } else {
