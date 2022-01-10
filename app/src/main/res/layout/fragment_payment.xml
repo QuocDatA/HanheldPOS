@@ -73,7 +73,8 @@
                         android:paddingHorizontal="@dimen/_8sdp"
                         android:paddingVertical="@dimen/_15sdp"
                         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                        app:spanCount="2" />
+                        app:spanCount="2"
+                        tools:listitem="@layout/item_payment_method" />
                 </LinearLayout>
 
 
