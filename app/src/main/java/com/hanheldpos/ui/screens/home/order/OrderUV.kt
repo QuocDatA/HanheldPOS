@@ -4,6 +4,6 @@ import android.view.View
 import com.hanheldpos.ui.base.BaseUserView
 
 interface OrderUV : BaseUserView {
-    fun showCategoryDialog(isGoBackTable : Boolean = false)
+    fun showCategoryDialog(isBackToTable: Boolean)
     fun showCart()
 }

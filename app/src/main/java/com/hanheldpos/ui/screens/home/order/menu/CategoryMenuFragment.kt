@@ -12,8 +12,10 @@ import com.hanheldpos.ui.screens.home.order.adapter.OrderMenuAdapterHelper
 import com.hanheldpos.ui.screens.product.adapter.GridSpacingItemDecoration
 
 class CategoryMenuFragment(
-
-    private val listMenuCategory: MutableList<OrderMenuItem?>
+    private val isBackToTable: Boolean? = false,
+    private val listener: CategoryMenuCallBack,
+    private val listMenuCategory:
+    MutableList<OrderMenuItem?>
 ) :
     BaseFragment<FragmentCategoryMenuBinding, CategoryMenuVM>(),
     CategoryMenuUV {
@@ -73,13 +75,35 @@ class CategoryMenuFragment(
     }
 
     override fun getBack() {
-
-        onFragmentBackPressed()
+        if (isBackToTable == true) {
+            onFragmentBackPressed()
+            listener.onMenuClose()
+        } else {
+            onFragmentBackPressed()
+        }
     }
 
     private fun menuItemSelected(menuItem: OrderMenuItem) {
         dataVM.selectedMenu.value = menuItem
     }
 
+    companion object {
+        fun getInstance(
+            listener: CategoryMenuFragment.CategoryMenuCallBack,
+            listMenuCategory: MutableList<OrderMenuItem?>,
+            isBackToTable: Boolean?
+        ): CategoryMenuFragment {
+            return CategoryMenuFragment(
+                listMenuCategory = listMenuCategory,
+                listener = listener,
+                isBackToTable = isBackToTable
+            ).apply {
 
+            };
+        }
+    }
+
+    interface CategoryMenuCallBack {
+        fun onMenuClose();
+    }
 }
