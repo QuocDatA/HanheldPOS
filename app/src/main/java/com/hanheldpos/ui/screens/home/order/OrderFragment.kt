@@ -10,8 +10,8 @@ import com.hanheldpos.model.cart.CartPresenter
 import com.hanheldpos.model.cart.Combo
 import com.hanheldpos.model.cart.GroupBundle
 import com.hanheldpos.model.cart.Regular
-import com.hanheldpos.model.home.order.ProductModeViewType
 import com.hanheldpos.model.combo.ItemActionType
+import com.hanheldpos.model.home.order.ProductModeViewType
 import com.hanheldpos.model.home.order.menu.ProductMenuItem
 import com.hanheldpos.model.product.BaseProductInCart
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
@@ -25,7 +25,6 @@ import com.hanheldpos.ui.screens.home.order.adapter.OrderProductAdapter
 import com.hanheldpos.ui.screens.home.order.adapter.OrderProductAdapterHelper
 import com.hanheldpos.ui.screens.home.order.menu.CategoryMenuFragment
 import com.hanheldpos.ui.screens.product.ProductDetailFragment
-import com.hanheldpos.ui.screens.product.temporary_style.TemporaryStyleFragment
 import kotlinx.coroutines.*
 
 class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
@@ -195,15 +194,23 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
         };
     }
 
-    override fun showCategoryDialog() {
-        dataVM.menus.value?.let { navigator.goTo(CategoryMenuFragment(it)) }
+    override fun showCategoryDialog(isBackToTable: Boolean) {
+        dataVM.menus.value?.let {
+            navigator.goTo(CategoryMenuFragment.getInstance(listener = object :
+                CategoryMenuFragment.CategoryMenuCallBack {
+                override fun onMenuClose() {
+                    screenViewModel.showTablePage()
+                }
+            }, listMenuCategory = it, isBackToTable = isBackToTable))
+        }
     }
 
     override fun showCart() {
-        navigator.goToWithCustomAnimation(CartFragment.getInstance(listener = object : CartFragment.CartCallBack {
+        navigator.goToWithCustomAnimation(CartFragment.getInstance(listener = object :
+            CartFragment.CartCallBack {
             override fun onCartDelete() {
                 dataVM.onMenuChange(0);
-                showCategoryDialog();
+                showCategoryDialog(true);
             }
         }));
     }

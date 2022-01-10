@@ -25,12 +25,10 @@ class OrderVM : BaseUiViewModel<OrderUV>() {
     }
 
     fun showCategoryDialog(){
-        uiCallback?.showCategoryDialog();
+        uiCallback?.showCategoryDialog(isBackToTable = false);
     }
 
     fun showCart(){
         uiCallback?.showCart();
     }
-
-
 }
