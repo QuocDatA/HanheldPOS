@@ -18,7 +18,9 @@ import com.hanheldpos.ui.screens.product.adapter.GridSpacingItemDecoration
 import kotlinx.coroutines.withContext
 import kotlin.coroutines.coroutineContext
 
-class GroupVariantAdapter(private val listener: BaseItemClickListener<VariantsGroup.OptionValueVariantsGroup>) :
+class GroupVariantAdapter(
+    private val listener: BaseItemClickListener<VariantsGroup.OptionValueVariantsGroup>
+    ) :
     BaseBindingListAdapter<VariantsGroup>(DiffCallBack()) {
 
     var itemSelected: List<VariantCart>? = null
