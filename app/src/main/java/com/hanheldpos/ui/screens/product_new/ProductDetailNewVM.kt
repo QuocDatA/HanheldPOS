@@ -12,11 +12,13 @@ import com.hanheldpos.model.cart.ModifierCart
 import com.hanheldpos.model.cart.Regular
 import com.hanheldpos.model.cart.VariantCart
 import com.hanheldpos.model.combo.ItemActionType
+import com.hanheldpos.model.product.GroupExtra
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
 
 class ProductDetailNewVM : BaseUiViewModel<ProductDetailNewUV>() {
 
     val listVariantGroups : MutableList<VariantsGroup> =mutableListOf();
+    val listModifierGroups :  MutableList<GroupExtra> = mutableListOf();
 
     val regularInCart = MutableLiveData<Regular>();
     val actionType = MutableLiveData<ItemActionType>();

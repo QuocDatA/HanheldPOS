@@ -4,85 +4,98 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <import type="com.hanheldpos.model.combo.ItemActionType" />
+
         <variable
             name="viewModel"
             type="com.hanheldpos.ui.screens.product_new.ProductDetailNewVM" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        style="@style/RootLayout">
-
-
-        <FrameLayout
-            android:id="@+id/appBar"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <FrameLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                android:focusable="true"
-                android:onClick="@{v->viewModel.onGetBack()}"
-                android:padding="@dimen/_14sdp">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="TODO"
-                    android:src="@drawable/ic_close" />
-            </FrameLayout>
-
-
-            <com.diadiem.pos_components.PTextView
-                android:id="@+id/header_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="@dimen/_14sdp"
-                app:useFontStyle="bold"
-                app:useTextColor="color4"
-                app:useTextHeader="h4"
-                tools:text="Pho Dac Biet" />
-        </FrameLayout>
-
-        <include
-            app:layout_constraintTop_toBottomOf="@id/appBar"
-            layout="@layout/divider_vertical"
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            app:layout_constraintTop_toBottomOf="@id/appBar"
-            android:id="@+id/groupVariants"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:overScrollMode="never"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:itemCount="2"
-            tools:listitem="@layout/item_product_group_variant" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            app:layout_constraintTop_toBottomOf="@id/groupVariants"
-            app:layout_constraintBottom_toTopOf="@+id/bottomAction"
-            android:id="@+id/groupModifiers"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:overScrollMode="never"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:itemCount="2"
-            tools:listitem="@layout/item_product_group_variant" />
+    <androidx.constraintlayout.widget.ConstraintLayout style="@style/RootLayout">
 
         <LinearLayout
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:id="@+id/appBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:onClick="@{v->viewModel.onGetBack()}"
+                    android:padding="@dimen/_14sdp">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="TODO"
+                        android:src="@drawable/ic_close" />
+                </FrameLayout>
+
+
+                <com.diadiem.pos_components.PTextView
+                    android:id="@+id/header_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/_14sdp"
+                    app:useFontStyle="bold"
+                    app:useTextColor="color4"
+                    app:useTextHeader="h4"
+                    tools:text="Pho Dac Biet" />
+            </FrameLayout>
+
+            <include
+                layout="@layout/divider_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="1dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            app:layout_constraintBottom_toTopOf="@+id/bottomAction"
+            app:layout_constraintTop_toBottomOf="@id/appBar"
+            android:layout_width="match_parent"
+            android:layout_height="0dp">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/groupVariants"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:overScrollMode="never"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintTop_toBottomOf="@id/appBar"
+                tools:itemCount="1"
+                tools:listitem="@layout/item_product_group_variant" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/groupModifiers"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:overScrollMode="never"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:itemCount="1"
+                tools:listitem="@layout/item_product_group_modifier" />
+        </LinearLayout>
+
+
+        <LinearLayout
             android:id="@+id/bottomAction"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent">
 
             <LinearLayout
                 android:id="@+id/noteProduct"
@@ -125,15 +138,15 @@
                 </LinearLayout>
 
                 <com.diadiem.pos_components.PTextInputEditText
-                    style="@style/BaseTextInput"
                     android:id="@+id/noteInput"
+                    style="@style/BaseTextInput"
                     android:layout_marginVertical="@dimen/_8sdp"
                     android:background="@drawable/bg_outline"
+                    android:focusable="true"
                     android:focusableInTouchMode="true"
                     android:hint="@string/special_instructions"
                     android:inputType="text"
                     android:maxLines="3"
-                    android:focusable="true"
                     android:minHeight="@dimen/_40sdp"
                     android:paddingHorizontal="@dimen/_6sdp"
                     android:paddingVertical="@dimen/_7sdp"
