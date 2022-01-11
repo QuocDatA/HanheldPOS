@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="viewModel"
-            type="com.hanheldpos.ui.screens.home.table.input.NumberPadVM" />
+            type="com.hanheldpos.ui.input.KeyBoardVM" />
     </data>
 
     <FrameLayout
@@ -19,103 +21,107 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:weightSum="5"
-            >
+            android:weightSum="5">
+
             <LinearLayout
-                android:layout_weight="2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                >
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <LinearLayout
-                        android:layout_weight="1"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-                        <com.diadiem.pos_components.PTextView
-                            style="@style/NumberPad"
-                            android:onClick="@{(view) -> viewModel.concatenateInputString(view)}"
-                            android:text="7" />
+                android:layout_weight="1"
+                android:orientation="vertical">
 
-                        <Space
-                            android:layout_width="wrap_content"
-                            android:layout_height="@dimen/_10sdp" />
+                <com.diadiem.pos_components.PTextView
+                    style="@style/NumberPad"
+                    android:onClick="@{(view) -> viewModel.concatenateInputString(view)}"
+                    android:text="7" />
 
-                        <com.diadiem.pos_components.PTextView
-                            android:onClick="@{(view) -> viewModel.concatenateInputString(view)}"
-                            style="@style/NumberPad"
-                            android:text="4" />
-                        <Space
-                            android:layout_width="wrap_content"
-                            android:layout_height="@dimen/_10sdp" />
-                        <com.diadiem.pos_components.PTextView
-                            android:onClick="@{(view) -> viewModel.concatenateInputString(view)}"
-                            style="@style/NumberPad"
-                            android:text="1" />
-
-
-                    </LinearLayout>
-                    <Space
-                        android:layout_width="@dimen/_10sdp"
-                        android:layout_height="wrap_content"/>
-                    <LinearLayout
-                        android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-                        <com.diadiem.pos_components.PTextView
-                            style="@style/NumberPad"
-                            android:onClick="@{(view) -> viewModel.concatenateInputString(view)}"
-                            android:layout_weight="1.5"
-                            android:text="8" />
-
-                        <Space
-                            android:layout_width="wrap_content"
-                            android:layout_height="@dimen/_10sdp" />
-
-                        <com.diadiem.pos_components.PTextView
-                            android:onClick="@{(view) -> viewModel.concatenateInputString(view)}"
-                            style="@style/NumberPad"
-                            android:layout_weight="1.5"
-                            android:text="5" />
-
-                        <Space
-                            android:layout_width="wrap_content"
-                            android:layout_height="@dimen/_10sdp" />
-
-                        <com.diadiem.pos_components.PTextView
-                            android:onClick="@{(view) -> viewModel.concatenateInputString(view)}"
-                            style="@style/NumberPad"
-                            android:layout_weight="1.5"
-                            android:text="2" />
-
-                    </LinearLayout>
-                </LinearLayout>
                 <Space
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/_10sdp" />
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <com.diadiem.pos_components.PTextView
-                        android:onClick="@{(view) -> viewModel.concatenateInputString(view)}"
-                        style="@style/NumberPad"
-                        android:layout_weight="1.5"
-                        android:text="0" />
-                </LinearLayout>
+
+                <com.diadiem.pos_components.PTextView
+                    style="@style/NumberPad"
+                    android:onClick="@{(view) -> viewModel.concatenateInputString(view)}"
+                    android:text="4" />
+
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_10sdp" />
+
+                <com.diadiem.pos_components.PTextView
+                    style="@style/NumberPad"
+                    android:onClick="@{(view) -> viewModel.concatenateInputString(view)}"
+                    android:text="1" />
+
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_10sdp" />
+
+                <com.diadiem.pos_components.PTextView
+                    style="@style/NumberPad"
+                    android:layout_weight="1.5"
+                    android:onClick="@{v->viewModel.switchKeyBoardType()}"
+                    android:text="abc" />
+
             </LinearLayout>
+
             <Space
                 android:layout_width="@dimen/_10sdp"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content" />
+
             <LinearLayout
-                android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                >
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <com.diadiem.pos_components.PTextView
+                    style="@style/NumberPad"
+                    android:layout_weight="1.5"
+                    android:onClick="@{(view) -> viewModel.concatenateInputString(view)}"
+                    android:text="8" />
+
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_10sdp" />
+
+                <com.diadiem.pos_components.PTextView
+                    style="@style/NumberPad"
+                    android:layout_weight="1.5"
+                    android:onClick="@{(view) -> viewModel.concatenateInputString(view)}"
+                    android:text="5" />
+
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_10sdp" />
+
+                <com.diadiem.pos_components.PTextView
+                    style="@style/NumberPad"
+                    android:layout_weight="1.5"
+                    android:onClick="@{(view) -> viewModel.concatenateInputString(view)}"
+                    android:text="2" />
+
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_10sdp" />
+
+                <com.diadiem.pos_components.PTextView
+                    style="@style/NumberPad"
+                    android:layout_weight="1.5"
+                    android:onClick="@{(view) -> viewModel.concatenateInputString(view)}"
+                    android:text="0" />
+
+            </LinearLayout>
+
+            <Space
+                android:layout_width="@dimen/_10sdp"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
                 <com.diadiem.pos_components.PTextView
                     style="@style/NumberPad"
                     android:onClick="@{(view) -> viewModel.concatenateInputString(view)}"
@@ -126,63 +132,70 @@
                     android:layout_height="@dimen/_10sdp" />
 
                 <com.diadiem.pos_components.PTextView
-                    android:onClick="@{(view) -> viewModel.concatenateInputString(view)}"
                     style="@style/NumberPad"
+                    android:onClick="@{(view) -> viewModel.concatenateInputString(view)}"
                     android:text="6" />
-                <Space
-                    android:layout_width="wrap_content"
-                    android:layout_height="@dimen/_10sdp" />
-                <com.diadiem.pos_components.PTextView
-                    android:onClick="@{(view) -> viewModel.concatenateInputString(view)}"
-                    style="@style/NumberPad"
-                    android:text="3" />
-                <Space
-                    android:layout_width="wrap_content"
-                    android:layout_height="@dimen/_10sdp" />
-                <com.diadiem.pos_components.PTextView
-                    android:onClick="@{(view) -> viewModel.concatenateInputString(view)}"
-                    style="@style/NumberPad"
-                    android:text="00" />
-            </LinearLayout>
-            <Space
-                android:layout_width="@dimen/_10sdp"
-                android:layout_height="wrap_content"/>
-            <LinearLayout
-                android:layout_weight="2"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                >
-                <ImageView
-                    android:onClick="@{() -> viewModel.delete()}"
-                    style="@style/NumberPad"
-                    android:layout_weight="2"
-                    android:paddingVertical="@dimen/_10sdp"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/ic_backspace" />
+
                 <Space
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/_10sdp" />
 
                 <com.diadiem.pos_components.PTextView
-                    android:onClick="@{v->viewModel.listener.onComplete()}"
+                    style="@style/NumberPad"
+                    android:onClick="@{(view) -> viewModel.concatenateInputString(view)}"
+                    android:text="3" />
+
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_10sdp" />
+
+                <com.diadiem.pos_components.PTextView
+                    style="@style/NumberPad"
+                    android:onClick="@{(view) -> viewModel.concatenateInputString(view)}"
+                    android:text="00" />
+            </LinearLayout>
+
+            <Space
+                android:layout_width="@dimen/_10sdp"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:orientation="vertical">
+
+                <ImageView
+                    style="@style/NumberPad"
+                    android:layout_weight="2"
+                    android:onClick="@{() -> viewModel.delete()}"
+                    android:paddingVertical="@dimen/_10sdp"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_backspace" />
+
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_10sdp" />
+
+                <com.diadiem.pos_components.PTextView
                     style="@style/NumberOk"
                     android:layout_width="match_parent"
                     android:layout_weight="1.75"
+                    android:onClick="@{v->viewModel.listener.onComplete()}"
                     android:text="OK" />
 
                 <Space
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/_10sdp" />
+
                 <com.diadiem.pos_components.PTextView
-                    android:onClick="@{v->viewModel.listener.onCancel()}"
                     android:id="@+id/cancelBtn"
                     style="@style/NumberPad"
+                    android:onClick="@{v->viewModel.listener.onCancel()}"
                     android:text="Cancel" />
             </LinearLayout>
 
         </LinearLayout>
-
 
     </FrameLayout>
 </layout>

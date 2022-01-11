@@ -1,6 +1,7 @@
 package com.hanheldpos.ui.screens.cart.payment.input
 
 import androidx.lifecycle.ViewModel
+import com.hanheldpos.model.keyboard.KeyBoardType
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
 
 class PaymentInputVM : BaseUiViewModel<PaymentInputUV>() {
@@ -9,5 +10,8 @@ class PaymentInputVM : BaseUiViewModel<PaymentInputUV>() {
     }
     fun onCancel(){
         uiCallback?.onCancel();
+    }
+    fun onSwitch(keyBoardType: KeyBoardType) {
+        uiCallback?.onSwitch(keyBoardType)
     }
 }
