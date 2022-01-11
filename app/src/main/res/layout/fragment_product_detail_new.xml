@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="com.hanheldpos.model.combo.ItemActionType" />
+        <variable
+            name="viewModel"
+            type="com.hanheldpos.ui.screens.product_new.ProductDetailNewVM" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        style="@style/RootLayout">
+
+
+        <FrameLayout
+            android:id="@+id/appBar"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="@{v->viewModel.onGetBack()}"
+                android:padding="@dimen/_14sdp">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="TODO"
+                    android:src="@drawable/ic_close" />
+            </FrameLayout>
+
+
+            <com.diadiem.pos_components.PTextView
+                android:id="@+id/header_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/_14sdp"
+                app:useFontStyle="bold"
+                app:useTextColor="color4"
+                app:useTextHeader="h4"
+                tools:text="Pho Dac Biet" />
+        </FrameLayout>
+
+        <include
+            app:layout_constraintTop_toBottomOf="@id/appBar"
+            layout="@layout/divider_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            app:layout_constraintTop_toBottomOf="@id/appBar"
+            android:id="@+id/groupVariants"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:overScrollMode="never"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:itemCount="2"
+            tools:listitem="@layout/item_product_group_variant" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            app:layout_constraintTop_toBottomOf="@id/groupVariants"
+            app:layout_constraintBottom_toTopOf="@+id/bottomAction"
+            android:id="@+id/groupModifiers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:overScrollMode="never"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:itemCount="2"
+            tools:listitem="@layout/item_product_group_variant" />
+
+        <LinearLayout
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:id="@+id/bottomAction"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/noteProduct"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/color_2"
+                android:orientation="vertical"
+                android:paddingHorizontal="@dimen/_10sdp"
+                app:layout_constraintBottom_toTopOf="@+id/dividerActin"
+                app:layout_constraintTop_toBottomOf="@+id/tabLayout">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="@dimen/_16sdp"
+                        android:layout_height="@dimen/_16sdp"
+                        android:layout_marginTop="@dimen/_2sdp"
+                        android:src="@drawable/ic_note" />
+
+                    <com.diadiem.pos_components.PTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/_4sdp"
+                        android:text="Special Instructions"
+                        app:useFontStyle="bold"
+                        app:useTextColor="color4"
+                        app:useTextHeader="h5" />
+
+                    <com.diadiem.pos_components.PTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Optional"
+                        app:useFontStyle="normal"
+                        app:useTextColor="color8"
+                        app:useTextHeader="h7" />
+                </LinearLayout>
+
+                <com.diadiem.pos_components.PTextInputEditText
+                    style="@style/BaseTextInput"
+                    android:id="@+id/noteInput"
+                    android:layout_marginVertical="@dimen/_8sdp"
+                    android:background="@drawable/bg_outline"
+                    android:focusableInTouchMode="true"
+                    android:hint="@string/special_instructions"
+                    android:inputType="text"
+                    android:maxLines="3"
+                    android:focusable="true"
+                    android:minHeight="@dimen/_40sdp"
+                    android:paddingHorizontal="@dimen/_6sdp"
+                    android:paddingVertical="@dimen/_7sdp"
+                    android:text="@={viewModel.regularInCart.note}"
+                    app:ipt_useFontStyle="normal"
+                    app:ipt_useHintTextColor="color8"
+                    app:ipt_useTextColor="color4"
+                    app:ipt_useTextHeader="h5" />
+            </LinearLayout>
+
+            <include
+                android:id="@+id/dividerActin"
+                layout="@layout/divider_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_1sdp"
+                app:layout_constraintBottom_toTopOf="@+id/actionBar" />
+
+            <RelativeLayout
+                android:id="@+id/actionBar"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_40sdp"
+                android:background="@color/color_2"
+                android:clickable="true"
+                android:focusable="true"
+                app:layout_constraintBottom_toBottomOf="parent">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginHorizontal="@dimen/_16sdp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/btnReduceQuantity"
+                        style="@style/ProductDetailBtnQuantity"
+                        android:layout_width="@dimen/_25sdp"
+                        android:layout_height="@dimen/_25sdp"
+
+                        android:onClick="@{v -> viewModel.onQuantityRemoved()}"
+                        android:src="@{ viewModel.minQuantity &lt; viewModel.numberQuantity ? @drawable/ic_remove_primary : @drawable/ic_remove_disable}"
+                        tools:ignore="ContentDescription" />
+
+                    <com.diadiem.pos_components.PTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/_13sdp"
+                        android:text="@{String.valueOf(viewModel.numberQuantity)}"
+                        app:useFontStyle="normal"
+                        app:useTextColor="color5"
+                        app:useTextHeader="h3" />
+
+                    <ImageView
+                        android:id="@+id/btnIncreaseQuantity"
+                        style="@style/ProductDetailBtnQuantity"
+                        android:layout_width="@dimen/_25sdp"
+                        android:layout_height="@dimen/_25sdp"
+                        android:onClick="@{v -> viewModel.onQuantityAdded()}"
+                        android:src="@{viewModel.numberQuantity &lt; viewModel.maxQuantity ? @drawable/ic_add_primary : @drawable/ic_add_disable}"
+                        tools:ignore="ContentDescription" />
+                </LinearLayout>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentEnd="true"
+                    android:backgroundTint="@color/color_0"
+                    android:clickable="true"
+                    android:elevation="0dp"
+                    android:focusable="true"
+                    android:minWidth="@dimen/_95sdp"
+                    android:onClick="@{v->viewModel.onAddCart()}"
+                    app:cardCornerRadius="0dp"
+                    app:cardElevation="0dp"
+                    app:rippleColor="@color/color_2">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="@dimen/_12sdp">
+
+                        <com.diadiem.pos_components.PTextView
+                            style="@style/ProductDetailText"
+                            android:text="@{viewModel.numberQuantity > 0 ? ( viewModel.actionType == ItemActionType.Add ? `Add` : `Update` ) : `Remove`}"
+                            android:textAllCaps="true"
+                            app:useFontStyle="bold"
+                            app:useTextColor="color2"
+                            app:useTextHeader="h5" />
+
+                        <com.diadiem.pos_components.PTextView
+                            style="@style/ProductDetailText"
+                            priceView="@{viewModel.totalPriceLD}"
+                            visibleObject="@{viewModel.totalPriceLD > 0}"
+                            android:layout_marginStart="@dimen/_25sdp"
+                            app:useFontStyle="bold"
+                            app:useTextColor="color2"
+                            app:useTextHeader="h5" />
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+            </RelativeLayout>
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

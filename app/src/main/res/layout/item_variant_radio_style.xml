@@ -12,14 +12,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <com.diadiem.pos_components.PRadioButton
-            android:id="@+id/optionBtn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/_8sdp"
-            android:background="@drawable/select_option_item"
-            style="@style/OptionItemTitle"
-            android:textAlignment="center"
+            android:gravity="center_vertical"
+            style="@style/RadioCustom"
+            android:id="@+id/btnProductItem"
             android:text="@{item.value}"
-            />
+            tools:text="BBQ sauce"
+            android:paddingHorizontal="@dimen/_10sdp"
+            android:paddingVertical="@dimen/_10sdp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
     </LinearLayout>
 </layout>

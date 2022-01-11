@@ -4,7 +4,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.product.VariantsGroup
-import com.hanheldpos.databinding.ItemVariantBinding
+import com.hanheldpos.databinding.ItemVariantButtonStyleBinding
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
@@ -18,7 +18,7 @@ class VariantAdapter(
     val selectedItem: SelectedItem = SelectedItem(0)
 
     override fun getItemViewType(position: Int): Int {
-        return R.layout.item_variant;
+        return R.layout.item_variant_button_style;
     }
 
     override fun submitList(list: MutableList<VariantsGroup.OptionValueVariantsGroup>?) {
@@ -29,7 +29,7 @@ class VariantAdapter(
     override fun onBindViewHolder(holder: BaseBindingViewHolder<VariantsGroup.OptionValueVariantsGroup>, position: Int) {
         val item = getItem(position);
         holder.bindItem(item);
-        val binding  = (holder.binding as ItemVariantBinding);
+        val binding  = (holder.binding as ItemVariantButtonStyleBinding);
         binding.optionBtn.apply {
             setOnClickListener {
                 notifyItemChanged(selectedItem.value)
