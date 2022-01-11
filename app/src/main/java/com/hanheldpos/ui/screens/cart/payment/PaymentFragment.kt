@@ -97,7 +97,7 @@ class PaymentFragment(private val payable : Double ,private var listener: Paymen
     }
 
     override fun getPayment() {
-        listener.onPaymentComplete(PaymentOrder("1", 1, 1, "TIEN MAT", payable, 0.0, "Nhi Nguyen", "001",DateTimeHelper.dateToString(Date(),DateTimeHelper.Format.FULL_DATE_UTC_NOT_MILI)))
+        listener.onPaymentComplete(PaymentOrder("1", 1, 1, "TIEN MAT", payable, 0.0, "Nhi Nguyen", "001",DateTimeHelper.dateToString(Date(),DateTimeHelper.Format.FULL_DATE_UTC_TIMEZONE)))
         onFragmentBackPressed()
     }
 
