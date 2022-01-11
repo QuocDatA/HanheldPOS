@@ -218,7 +218,7 @@ class CartFragment( private val listener : CartCallBack) : BaseFragment<Fragment
     override fun onBillSuccess() {
         getBack();
         cartDataVM.removeCart();
-        screenViewModel.showTablePage();
+        listener.onBillSuccess();
     }
 
     private fun onBillCart() {
@@ -267,19 +267,8 @@ class CartFragment( private val listener : CartCallBack) : BaseFragment<Fragment
         cartProductAdapter.notifyDataSetChanged();
     }
 
-    companion object {
-        fun getInstance(
-            listener: CartCallBack
-        ): CartFragment {
-            return CartFragment(
-                listener
-            ).apply {
-
-            };
-        }
-    }
-
     interface CartCallBack {
         fun onCartDelete();
+        fun onBillSuccess();
     }
 }

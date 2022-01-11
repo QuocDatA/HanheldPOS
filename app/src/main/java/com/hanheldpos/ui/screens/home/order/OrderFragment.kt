@@ -1,5 +1,6 @@
 package com.hanheldpos.ui.screens.home.order
 
+import android.annotation.SuppressLint
 import android.os.SystemClock
 import android.util.Log
 import androidx.fragment.app.activityViewModels
@@ -24,8 +25,7 @@ import com.hanheldpos.ui.screens.home.ScreenViewModel
 import com.hanheldpos.ui.screens.home.order.adapter.OrderProductAdapter
 import com.hanheldpos.ui.screens.home.order.adapter.OrderProductAdapterHelper
 import com.hanheldpos.ui.screens.home.order.menu.CategoryMenuFragment
-import com.hanheldpos.ui.screens.product.ProductDetailFragment
-import com.hanheldpos.ui.screens.product.temporary_style.TemporaryStyleFragment
+import com.hanheldpos.ui.screens.product_new.ProductDetailNewFragment
 import kotlinx.coroutines.*
 
 class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
@@ -99,7 +99,6 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
         })
 
         dataVM.selectedMenu.observe(this, { orderMenuItemModel ->
-
             val list = dataVM.getProductByMenu(orderMenuItemModel);
             if (list == null) productAdapHelper.submitList(mutableListOf());
             else {
@@ -130,8 +129,8 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
                     /*navigator.goToWithCustomAnimation(TemporaryStyleFragment());*/
                     if (!it.isBundle())
                         navigator.goToWithCustomAnimation(
-                            ProductDetailFragment(
-                                item = Regular(
+                            ProductDetailNewFragment(
+                                 regular = Regular(
                                     it,
                                     cartDataVM.diningOptionLD.value!!,
                                     1,
@@ -193,22 +192,27 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
         };
     }
 
-    override fun showCategoryDialog(isBackToTable: Boolean) {
+    override fun showCategoryDialog(isGoBackTable: Boolean) {
         dataVM.menus.value?.let {
-            navigator.goTo(CategoryMenuFragment.getInstance(listener = object :
+            navigator.goTo(CategoryMenuFragment(listener = object :
                 CategoryMenuFragment.CategoryMenuCallBack {
                 override fun onMenuClose() {
                     screenViewModel.showTablePage()
                 }
-            }, listMenuCategory = it, isBackToTable = isBackToTable))
+            }, listMenuCategory = it, isBackToTable = isGoBackTable))
         }
     }
 
     override fun showCart() {
-        navigator.goToWithCustomAnimation(CartFragment.getInstance(listener = object : CartFragment.CartCallBack {
+        navigator.goToWithCustomAnimation(CartFragment(listener = object : CartFragment.CartCallBack {
             override fun onCartDelete() {
                 dataVM.onMenuChange(0);
-                showCategoryDialog();
+                showCategoryDialog(true);
+            }
+
+            override fun onBillSuccess() {
+                dataVM.onMenuChange(0);
+                screenViewModel.showTablePage();
             }
         }));
     }
