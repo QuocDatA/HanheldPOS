@@ -93,7 +93,6 @@ class VariantFragment(
                 binding.containerVariant.post{
                     containerVariantAdapter.notifyItemInserted(item.Level);
                 }
-
             }
 
         }

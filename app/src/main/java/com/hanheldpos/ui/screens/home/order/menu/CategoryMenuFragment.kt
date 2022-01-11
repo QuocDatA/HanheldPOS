@@ -12,8 +12,8 @@ import com.hanheldpos.ui.screens.home.order.adapter.OrderMenuAdapterHelper
 import com.hanheldpos.ui.screens.product.adapter.GridSpacingItemDecoration
 
 class CategoryMenuFragment(
-    private val listMenuCategory:
-    MutableList<OrderMenuItem?>
+
+    private val listMenuCategory: MutableList<OrderMenuItem?>
 ) :
     BaseFragment<FragmentCategoryMenuBinding, CategoryMenuVM>(),
     CategoryMenuUV {
@@ -73,10 +73,13 @@ class CategoryMenuFragment(
     }
 
     override fun getBack() {
+
         onFragmentBackPressed()
     }
 
     private fun menuItemSelected(menuItem: OrderMenuItem) {
         dataVM.selectedMenu.value = menuItem
     }
+
+
 }

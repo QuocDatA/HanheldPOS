@@ -2,10 +2,9 @@ package com.hanheldpos.ui.screens.product.adapter.variant
 
 import android.annotation.SuppressLint
 import androidx.recyclerview.widget.DiffUtil
-import com.diadiem.pos_config.utils.Const
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.product.VariantsGroup
-import com.hanheldpos.databinding.ItemContainerVarientBinding
+import com.hanheldpos.databinding.ItemProductGroupVariantBinding
 import com.hanheldpos.model.cart.VariantCart
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
@@ -17,7 +16,7 @@ class ContainerVariantAdapter(
 ) : BaseBindingListAdapter<VariantsGroup>(DiffCallback()) {
 
     override fun getItemViewType(position: Int): Int {
-        return R.layout.item_container_varient;
+        return R.layout.item_product_group_variant;
     }
     private var variantSelected : MutableMap<Int,String>? = null;
     var itemSelected : List<VariantCart>? = null
@@ -31,7 +30,7 @@ class ContainerVariantAdapter(
     override fun onBindViewHolder(holder: BaseBindingViewHolder<VariantsGroup>, position: Int) {
         val item = getItem(position);
         holder.bindItem(item);
-        val binding = (holder.binding as ItemContainerVarientBinding);
+        val binding = (holder.binding as ItemProductGroupVariantBinding);
         VariantAdapter(
             listener = object : BaseItemClickListener<VariantsGroup.OptionValueVariantsGroup> {
             override fun onItemClick(adapterPosition: Int, item: VariantsGroup.OptionValueVariantsGroup) {

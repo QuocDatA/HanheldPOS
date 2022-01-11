@@ -1,5 +1,6 @@
 package com.hanheldpos.ui.screens.home.order
 
+import android.annotation.SuppressLint
 import android.os.SystemClock
 import android.util.Log
 import androidx.fragment.app.activityViewModels
@@ -26,6 +27,7 @@ import com.hanheldpos.ui.screens.home.order.adapter.OrderProductAdapterHelper
 import com.hanheldpos.ui.screens.home.order.menu.CategoryMenuFragment
 import com.hanheldpos.ui.screens.product.ProductDetailFragment
 import com.hanheldpos.ui.screens.product.temporary_style.TemporaryStyleFragment
+import com.hanheldpos.ui.screens.product_new.ProductDetailNewFragment
 import kotlinx.coroutines.*
 
 class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
@@ -59,6 +61,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
         // product adapter vs listener
         productAdapHelper = OrderProductAdapterHelper(
             callBack = object : OrderProductAdapterHelper.AdapterCallBack {
+                @SuppressLint("NotifyDataSetChanged")
                 override fun onListSplitCallBack(list: List<ProductMenuItem>) {
                     GlobalScope.launch(Dispatchers.Main) {
                         productAdapter.submitList(list);
@@ -73,11 +76,8 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
             listener = object : BaseItemClickListener<ProductMenuItem> {
                 override fun onItemClick(adapterPosition: Int, item: ProductMenuItem) {
                     Log.d("OrderFragment", "Product Selected");
-
                     onProductMenuSelected(item);
                 }
-
-
             }
         ).also {
             binding.productList.adapter = it;
@@ -132,8 +132,8 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
                     /*navigator.goToWithCustomAnimation(TemporaryStyleFragment());*/
                     if (!it.isBundle())
                         navigator.goToWithCustomAnimation(
-                            ProductDetailFragment(
-                                item = Regular(
+                            ProductDetailNewFragment(
+                                regular = Regular(
                                     it,
                                     cartDataVM.diningOptionLD.value!!,
                                     1,
@@ -151,7 +151,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
                         ComboFragment(
                             item = Combo(
                                 it,
-                                it.groupComboList!!.map { pro ->
+                                it.groupComboList.map { pro ->
                                     GroupBundle(
                                         pro,
                                         mutableListOf()
@@ -195,8 +195,10 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
         };
     }
 
-    override fun showCategoryDialog() {
-        dataVM.menus.value?.let { navigator.goTo(CategoryMenuFragment(it)) }
+    override fun showCategoryDialog(isGoBackTable : Boolean) {
+        dataVM.menus.value?.let {
+            navigator.goTo(CategoryMenuFragment(it))
+        }
     }
 
     override fun showCart() {
