@@ -1,7 +1,5 @@
 package com.hanheldpos.ui.screens.home.table
 
-import android.app.AlertDialog
-import android.os.Bundle
 import android.os.SystemClock
 import android.util.Log
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
@@ -10,7 +8,6 @@ import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.table.FloorItem
 import com.hanheldpos.data.api.pojo.table.FloorTableItem
 import com.hanheldpos.databinding.FragmentTableBinding
-import com.hanheldpos.extension.notifyValueChange
 import com.hanheldpos.model.home.table.TableModeViewType
 import com.hanheldpos.model.home.table.TableStatusType
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
@@ -20,8 +17,7 @@ import com.hanheldpos.ui.screens.home.HomeFragment
 import com.hanheldpos.ui.screens.home.ScreenViewModel
 import com.hanheldpos.ui.screens.home.table.adapter.TableAdapter
 import com.hanheldpos.ui.screens.home.table.adapter.TableAdapterHelper
-import com.hanheldpos.ui.screens.home.table.input.TableInputFragment
-import com.hanheldpos.ui.screens.product.ProductDetailFragment
+import com.hanheldpos.ui.screens.home.table.customer_input.TableInputFragment
 
 
 class TableFragment : BaseFragment<FragmentTableBinding, TableVM>(), TableUV {

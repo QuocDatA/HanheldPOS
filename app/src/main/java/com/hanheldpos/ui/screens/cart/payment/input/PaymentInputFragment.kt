@@ -1,12 +1,14 @@
 package com.hanheldpos.ui.screens.cart.payment.input
 
 import android.annotation.SuppressLint
+import android.view.View
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.payment.PaymentMethodResp
 import com.hanheldpos.databinding.FragmentPaymentInputBinding
 import com.hanheldpos.extension.toNiceString
+import com.hanheldpos.model.keyboard.KeyBoardType
 import com.hanheldpos.ui.base.fragment.BaseFragment
-import com.hanheldpos.ui.screens.home.table.input.NumberPadVM
+import com.hanheldpos.ui.input.KeyBoardVM
 
 class PaymentInputFragment(
     private val payable: Double,
@@ -16,7 +18,7 @@ class PaymentInputFragment(
     BaseFragment<FragmentPaymentInputBinding, PaymentInputVM>(), PaymentInputUV {
 
     //ViewModel
-    private val numberPadVM = NumberPadVM();
+    private val keyBoardVM = KeyBoardVM();
 
     override fun layoutRes() = R.layout.fragment_payment_input
 
@@ -28,20 +30,29 @@ class PaymentInputFragment(
         viewModel.run {
             init(this@PaymentInputFragment);
             binding.viewModel = this;
-            binding.numberPadVM = numberPadVM;
-            binding.numberPad.viewModel = numberPadVM;
+            binding.keyboardVM = keyBoardVM;
+            binding.numberPad.viewModel = keyBoardVM;
+            binding.textPad.viewModel = keyBoardVM;
         }
     }
 
     @SuppressLint("SetTextI18n")
     override fun initView() {
-        numberPadVM.onListener(listener = object : NumberPadVM.NumberPadCallBack {
+        keyBoardVM.onListener(listener = object : KeyBoardVM.KeyBoardCallBack {
             override fun onComplete() {
                 viewModel.onComplete();
             }
 
             override fun onCancel() {
                 viewModel.onCancel();
+            }
+
+            override fun onSwitch(keyBoardType: KeyBoardType) {
+                viewModel.onSwitch(keyBoardType)
+            }
+
+            override fun onCapLock() {
+                binding.textPad.isCapLock = keyBoardVM.isCapLock
             }
         });
         binding.paymentInputTitle.setText(paymentMethod.Title + " (Amount Due " + payable.toNiceString() + ")")
@@ -53,12 +64,23 @@ class PaymentInputFragment(
 
     override fun onComplete() {
         navigator.goOneBack();
-        if (!numberPadVM.input.value?.trim().equals(""))
-            listener?.onCompleteTable(Integer.valueOf(numberPadVM.input.value));
+        if (!keyBoardVM.input.value?.trim().equals(""))
+            listener?.onCompleteTable(Integer.valueOf(keyBoardVM.input.value));
+    }
+
+    override fun onSwitch(keyBoardType: KeyBoardType) {
+        if(keyBoardType == KeyBoardType.Number) {
+            binding.numberPad.root.visibility = View.VISIBLE
+            binding.textPad.root.visibility = View.GONE
+        } else if (keyBoardType == KeyBoardType.Text) {
+            binding.numberPad.root.visibility = View.GONE
+            binding.textPad.root.visibility = View.VISIBLE
+        }
     }
 
     override fun initData() {
-        numberPadVM.input.value = payable.toNiceString();
+        keyBoardVM.input.value = payable.toNiceString();
+        binding.textPad.isCapLock = keyBoardVM.isCapLock
     }
 
     override fun initAction() {

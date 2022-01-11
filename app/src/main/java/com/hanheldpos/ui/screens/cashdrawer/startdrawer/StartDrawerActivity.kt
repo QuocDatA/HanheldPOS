@@ -5,15 +5,15 @@ import android.graphics.Rect
 import android.view.MotionEvent
 import android.view.View
 import androidx.core.widget.doAfterTextChanged
-import androidx.fragment.app.activityViewModels
 import com.hanheldpos.R
 import com.hanheldpos.databinding.ActivityStartDrawerBinding
 import com.hanheldpos.extension.navigateTo
+import com.hanheldpos.model.keyboard.KeyBoardType
 import com.hanheldpos.ui.base.activity.BaseActivity
 import com.hanheldpos.ui.screens.cashdrawer.CashDrawerHelper
 import com.hanheldpos.ui.screens.cashdrawer.CashDrawerVM
 import com.hanheldpos.ui.screens.cashdrawer.CashDrawerUV
-import com.hanheldpos.ui.screens.home.table.input.NumberPadVM
+import com.hanheldpos.ui.input.KeyBoardVM
 import com.hanheldpos.ui.screens.main.MainActivity
 import com.utils.helper.SystemHelper
 import java.text.DecimalFormat
@@ -25,14 +25,14 @@ class StartDrawerActivity : BaseActivity<ActivityStartDrawerBinding, CashDrawerV
 
     override fun layoutRes(): Int = R.layout.activity_start_drawer;
 
-    private val numberPadVM = NumberPadVM();
+    private val keyBoardVM = KeyBoardVM();
     override fun initViewModel(viewModel: CashDrawerVM) {
         viewModel.run {
             init(this@StartDrawerActivity);
             binding.viewModel = this;
 
         }
-        binding.numberPad.viewModel = numberPadVM;
+        binding.numberPad.viewModel = keyBoardVM;
     }
 
     override fun initView() {
@@ -67,18 +67,26 @@ class StartDrawerActivity : BaseActivity<ActivityStartDrawerBinding, CashDrawerV
     }
 
     override fun initData() {
-        numberPadVM.input.observe(this, {
+        keyBoardVM.input.observe(this, {
             viewModel.amountString.value = it;
         });
     }
 
     override fun initAction() {
-        numberPadVM.listener = object : NumberPadVM.NumberPadCallBack {
+        keyBoardVM.listener = object : KeyBoardVM.KeyBoardCallBack {
             override fun onComplete() {
                 viewModel.startDrawer(this@StartDrawerActivity);
             }
 
             override fun onCancel() {
+
+            }
+
+            override fun onSwitch(keyBoardType: KeyBoardType) {
+
+            }
+
+            override fun onCapLock() {
 
             }
 
