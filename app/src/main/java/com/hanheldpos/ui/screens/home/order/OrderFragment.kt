@@ -1,6 +1,5 @@
 package com.hanheldpos.ui.screens.home.order
 
-import android.annotation.SuppressLint
 import android.os.SystemClock
 import android.util.Log
 import androidx.fragment.app.activityViewModels
@@ -27,7 +26,6 @@ import com.hanheldpos.ui.screens.home.order.adapter.OrderProductAdapterHelper
 import com.hanheldpos.ui.screens.home.order.menu.CategoryMenuFragment
 import com.hanheldpos.ui.screens.product.ProductDetailFragment
 import com.hanheldpos.ui.screens.product.temporary_style.TemporaryStyleFragment
-import com.hanheldpos.ui.screens.product_new.ProductDetailNewFragment
 import kotlinx.coroutines.*
 
 class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
@@ -132,8 +130,8 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
                     /*navigator.goToWithCustomAnimation(TemporaryStyleFragment());*/
                     if (!it.isBundle())
                         navigator.goToWithCustomAnimation(
-                            ProductDetailNewFragment(
-                                regular = Regular(
+                            ProductDetailFragment(
+                                item = Regular(
                                     it,
                                     cartDataVM.diningOptionLD.value!!,
                                     1,
@@ -151,7 +149,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
                         ComboFragment(
                             item = Combo(
                                 it,
-                                it.groupComboList.map { pro ->
+                                it.groupComboList!!.map { pro ->
                                     GroupBundle(
                                         pro,
                                         mutableListOf()
@@ -195,9 +193,14 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
         };
     }
 
-    override fun showCategoryDialog(isGoBackTable : Boolean) {
+    override fun showCategoryDialog(isBackToTable: Boolean) {
         dataVM.menus.value?.let {
-            navigator.goTo(CategoryMenuFragment(it))
+            navigator.goTo(CategoryMenuFragment.getInstance(listener = object :
+                CategoryMenuFragment.CategoryMenuCallBack {
+                override fun onMenuClose() {
+                    screenViewModel.showTablePage()
+                }
+            }, listMenuCategory = it, isBackToTable = isBackToTable))
         }
     }
 

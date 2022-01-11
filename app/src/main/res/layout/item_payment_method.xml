@@ -14,6 +14,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         backColor="@{item.color}"
+        android:clickable="true"
+        android:focusable="true"
         app:cardCornerRadius="@dimen/_2sdp">
 
         <com.diadiem.pos_components.PTextView
@@ -22,8 +24,6 @@
             android:text="@{item.Title}"
             android:foreground="?attr/selectableItemBackground"
             android:padding="@dimen/_10sdp"
-            android:clickable="true"
-            android:focusable="true"
             android:gravity="center"
             android:textColor="@color/color_2"
             android:textAllCaps="true"

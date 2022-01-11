@@ -1,17 +1,15 @@
 package com.hanheldpos.ui.screens.cart.payment
 
-import androidx.fragment.app.activityViewModels
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.payment.PaymentMethodResp
 import com.hanheldpos.data.api.pojo.payment.PaymentSuggestionItem
 import com.hanheldpos.databinding.FragmentPaymentBinding
-import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.cart.payment.PaymentOrder
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
-import com.hanheldpos.ui.screens.cart.CartDataVM
 import com.hanheldpos.ui.screens.cart.payment.adapter.PaymentMethodAdapter
 import com.hanheldpos.ui.screens.cart.payment.adapter.PaymentSuggestionAdapter
+import com.hanheldpos.ui.screens.cart.payment.input.PaymentInputFragment
 import com.hanheldpos.ui.screens.product.adapter.GridSpacingItemDecoration
 import com.hanheldpos.utils.time.DateTimeHelper
 import java.util.*
@@ -43,6 +41,11 @@ class PaymentFragment(private val payable : Double ,private var listener: Paymen
         paymentMethodAdapter = PaymentMethodAdapter(
             onPaymentMethodClickListener = object : BaseItemClickListener<PaymentMethodResp> {
                 override fun onItemClick(adapterPosition: Int, item: PaymentMethodResp) {
+                    navigator.goTo(PaymentInputFragment.getInstance(listener = object :
+                        PaymentInputFragment.PaymentInputListener {
+                        override fun onCompleteTable(numberCustomer: Int) {
+                        }
+                    }, paymentMethod = item, payable = payable));
                 }
             },
         );
