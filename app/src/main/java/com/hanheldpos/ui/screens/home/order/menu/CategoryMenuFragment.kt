@@ -1,5 +1,6 @@
 package com.hanheldpos.ui.screens.home.order.menu
 
+import android.annotation.SuppressLint
 import androidx.fragment.app.activityViewModels
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentCategoryMenuBinding
@@ -45,6 +46,7 @@ class CategoryMenuFragment(
         // category adapter vs listener
         menuAdapHelper = OrderMenuAdapterHelper(callBack = object :
             OrderMenuAdapterHelper.AdapterCallBack {
+            @SuppressLint("NotifyDataSetChanged")
             override fun onListSplitCallBack(list: List<OrderMenuItem?>) {
                 menuAdapter.submitList(list);
                 menuAdapter.notifyDataSetChanged();
@@ -85,22 +87,6 @@ class CategoryMenuFragment(
 
     private fun menuItemSelected(menuItem: OrderMenuItem) {
         dataVM.selectedMenu.value = menuItem
-    }
-
-    companion object {
-        fun getInstance(
-            listener: CategoryMenuFragment.CategoryMenuCallBack,
-            listMenuCategory: MutableList<OrderMenuItem?>,
-            isBackToTable: Boolean?
-        ): CategoryMenuFragment {
-            return CategoryMenuFragment(
-                listMenuCategory = listMenuCategory,
-                listener = listener,
-                isBackToTable = isBackToTable
-            ).apply {
-
-            };
-        }
     }
 
     interface CategoryMenuCallBack {
