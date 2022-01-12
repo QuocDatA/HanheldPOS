@@ -48,6 +48,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:text="@{viewModel.regularInCart.productName}"
                     app:useFontStyle="bold"
                     app:useTextColor="color4"
                     app:useTextHeader="h4"
