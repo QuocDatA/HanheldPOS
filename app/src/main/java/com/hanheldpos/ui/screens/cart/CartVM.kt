@@ -99,7 +99,7 @@ class CartVM : BaseUiViewModel<CartUV>() {
                                     .show(
                                         "Notification",
                                         "Push order success",
-                                    )
+                                    );
                                 uiCallback?.onBillSuccess();
                             }
 

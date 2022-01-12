@@ -99,7 +99,7 @@ class Combo() : BaseProductInCart() {
     override fun clone(): Combo {
         return Combo(
             proOriginal!!,
-            groupList.toMutableList().map { it.copy() },
+            groupList.toMutableList().map { it.clone() },
             diningOption!!,
             quantity,
             sku,

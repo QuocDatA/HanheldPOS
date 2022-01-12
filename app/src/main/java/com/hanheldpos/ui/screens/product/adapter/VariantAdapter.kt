@@ -1,18 +1,16 @@
-package com.hanheldpos.ui.screens.product_new.adapter
+package com.hanheldpos.ui.screens.product.adapter
 
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import com.hanheldpos.R
 import com.hanheldpos.data.PosConst
 import com.hanheldpos.data.api.pojo.product.VariantsGroup
-import com.hanheldpos.databinding.ItemTemporaryVariantSauceBinding
-import com.hanheldpos.databinding.ItemVariantButtonStyleBinding
-import com.hanheldpos.databinding.ItemVariantRadioStyleBinding
+import com.hanheldpos.databinding.ItemProductVariantButtonStyleBinding
+import com.hanheldpos.databinding.ItemProductVariantRadioStyleBinding
 import com.hanheldpos.model.product.VariantGroupType
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
-import com.utils.constants.Const
 
 class VariantAdapter(
     private val variantViewType: VariantGroupType? = VariantGroupType.ButtonStyle,
@@ -23,9 +21,9 @@ class VariantAdapter(
 
     override fun getItemViewType(position: Int): Int {
         return when(variantViewType) {
-            VariantGroupType.ButtonStyle-> R.layout.item_variant_button_style;
-            VariantGroupType.RadioStyle-> R.layout.item_variant_radio_style;
-            else -> R.layout.item_variant_button_style;
+            VariantGroupType.ButtonStyle-> R.layout.item_product_variant_button_style;
+            VariantGroupType.RadioStyle-> R.layout.item_product_variant_radio_style;
+            else -> R.layout.item_product_variant_button_style;
         } ;
     }
 
@@ -42,7 +40,7 @@ class VariantAdapter(
         holder.bindItem(item);
         when(variantViewType){
             VariantGroupType.ButtonStyle -> {
-                val binding = (holder.binding as ItemVariantButtonStyleBinding);
+                val binding = (holder.binding as ItemProductVariantButtonStyleBinding);
                 binding.optionBtn.apply {
                     if (item.Visible == PosConst.IN_VISIBLE) {
                         if(selectedItem == position) {
@@ -82,7 +80,7 @@ class VariantAdapter(
                 }
             }
             VariantGroupType.RadioStyle -> {
-                val binding = holder.binding as ItemVariantRadioStyleBinding;
+                val binding = holder.binding as ItemProductVariantRadioStyleBinding;
                 binding.btnProductItem.apply {
                     if (item.Visible == PosConst.IN_VISIBLE) {
                         if(selectedItem == position) {

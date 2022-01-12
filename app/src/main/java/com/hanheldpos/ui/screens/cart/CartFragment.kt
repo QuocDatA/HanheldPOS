@@ -32,7 +32,6 @@ import com.hanheldpos.ui.screens.discount.DiscountFragment
 import com.hanheldpos.ui.screens.home.ScreenViewModel
 import com.hanheldpos.ui.screens.home.order.OrderFragment
 import com.hanheldpos.ui.screens.product.ProductDetailFragment
-import com.hanheldpos.ui.screens.product_new.ProductDetailNewFragment
 
 
 class CartFragment( private val listener : CartCallBack) : BaseFragment<FragmentCartBinding, CartVM>(), CartUV {
@@ -240,7 +239,7 @@ class CartFragment( private val listener : CartCallBack) : BaseFragment<Fragment
         when (item.productType) {
             ProductType.REGULAR -> {
                 navigator.goToWithCustomAnimation(
-                    ProductDetailNewFragment(
+                    ProductDetailFragment(
                         regular = (item as Regular).clone(),
                         action = ItemActionType.Modify,
                         quantityCanChoose = 100,

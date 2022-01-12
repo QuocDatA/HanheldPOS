@@ -25,7 +25,7 @@ import com.hanheldpos.ui.screens.home.ScreenViewModel
 import com.hanheldpos.ui.screens.home.order.adapter.OrderProductAdapter
 import com.hanheldpos.ui.screens.home.order.adapter.OrderProductAdapterHelper
 import com.hanheldpos.ui.screens.home.order.menu.CategoryMenuFragment
-import com.hanheldpos.ui.screens.product_new.ProductDetailNewFragment
+import com.hanheldpos.ui.screens.product.ProductDetailFragment
 import kotlinx.coroutines.*
 
 class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
@@ -129,7 +129,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
                     /*navigator.goToWithCustomAnimation(TemporaryStyleFragment());*/
                     if (!it.isBundle())
                         navigator.goToWithCustomAnimation(
-                            ProductDetailNewFragment(
+                            ProductDetailFragment(
                                  regular = Regular(
                                     it,
                                     cartDataVM.diningOptionLD.value!!,
@@ -148,7 +148,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
                         ComboFragment(
                             item = Combo(
                                 it,
-                                it.groupComboList!!.map { pro ->
+                                it.groupComboList.map { pro ->
                                     GroupBundle(
                                         pro,
                                         mutableListOf()

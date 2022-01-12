@@ -1,5 +1,6 @@
 package com.hanheldpos.ui.screens.combo
 
+import android.annotation.SuppressLint
 import android.os.SystemClock
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
@@ -102,6 +103,7 @@ class ComboFragment(
         navigator.goOneBack();
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun openProductDetail(
         maxQuantity: Int,
         group: ItemComboGroup,
@@ -117,12 +119,13 @@ class ComboFragment(
             }
             else->{
                 navigator.goToWithCustomAnimation(ProductDetailFragment(
-                    item = item.clone(),
+                    regular = item.clone(),
                     groupBundle = group.groupBundle,
                     productBundle = this.item.proOriginal,
                     quantityCanChoose = maxQuantity,
                     action = action,
                     listener = object : OrderFragment.OrderMenuListener {
+                        @SuppressLint("NotifyDataSetChanged")
                         override fun onCartAdded(itemAfter: BaseProductInCart, action: ItemActionType) {
                             viewModel.onRegularSelect(group.groupBundle, item,itemAfter as Regular, action)
                             comboGroupAdapter.notifyDataSetChanged()
@@ -140,6 +143,7 @@ class ComboFragment(
         listener.onCartAdded(item, action);
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onLoadComboSuccess(list: List<ItemComboGroup>) {
         GlobalScope.launch(Dispatchers.Main) {
             comboGroupAdapter.submitList(list.toMutableList());

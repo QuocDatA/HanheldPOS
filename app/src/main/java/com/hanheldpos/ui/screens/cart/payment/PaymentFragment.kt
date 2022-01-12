@@ -6,11 +6,11 @@ import com.hanheldpos.data.api.pojo.payment.PaymentSuggestionItem
 import com.hanheldpos.databinding.FragmentPaymentBinding
 import com.hanheldpos.model.cart.payment.PaymentOrder
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
+import com.hanheldpos.ui.base.adapter.GridSpacingItemDecoration
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.cart.payment.adapter.PaymentMethodAdapter
 import com.hanheldpos.ui.screens.cart.payment.adapter.PaymentSuggestionAdapter
 import com.hanheldpos.ui.screens.cart.payment.input.PaymentInputFragment
-import com.hanheldpos.ui.screens.product.adapter.GridSpacingItemDecoration
 import com.hanheldpos.utils.time.DateTimeHelper
 import java.util.*
 
