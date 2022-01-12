@@ -76,7 +76,7 @@ class KeyBoardVM : ViewModel() {
                 keyBoardType = KeyBoardType.Number
             }
         }
-        listener?.onSwitch(keyBoardType)
+        listener?.onSwitch()
     }
 
     fun onListener(listener: KeyBoardCallBack) {
@@ -86,7 +86,7 @@ class KeyBoardVM : ViewModel() {
     interface KeyBoardCallBack {
         fun onComplete();
         fun onCancel();
-        fun onSwitch(keyBoardType: KeyBoardType);
+        fun onSwitch();
         fun onCapLock()
     }
 }

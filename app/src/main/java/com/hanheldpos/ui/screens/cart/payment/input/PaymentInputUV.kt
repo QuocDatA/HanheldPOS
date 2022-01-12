@@ -6,5 +6,4 @@ import com.hanheldpos.ui.base.BaseUserView
 interface PaymentInputUV: BaseUserView {
     fun onComplete()
     fun onCancel()
-    fun onSwitch(keyBoardType: KeyBoardType)
 }

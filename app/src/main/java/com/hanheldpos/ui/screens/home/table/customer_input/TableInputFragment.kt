@@ -26,8 +26,9 @@ class TableInputFragment(
             init(this@TableInputFragment);
             binding.viewModel = this;
             binding.keyboardVM = keyBoardVM;
-            binding.numberPad.viewModel = keyBoardVM;
-            binding.textPad.viewModel = keyBoardVM;
+            binding.keyBoardContainer.numberPad.viewModel = keyBoardVM;
+            binding.keyBoardContainer.textPad.viewModel = keyBoardVM;
+            binding.keyBoardContainer.keyboardVM = keyBoardVM;
         }
 
     }
@@ -42,12 +43,12 @@ class TableInputFragment(
                 viewModel.onCancel();
             }
 
-            override fun onSwitch(keyBoardType: KeyBoardType) {
-                viewModel.onSwitch(keyBoardType)
+            override fun onSwitch() {
+                binding.keyBoardContainer.keyBoardType = keyBoardVM.keyBoardType
             }
 
             override fun onCapLock() {
-                binding.textPad.isCapLock = keyBoardVM.isCapLock
+                binding.keyBoardContainer.textPad.isCapLock = keyBoardVM.isCapLock
             }
 
 
@@ -56,7 +57,8 @@ class TableInputFragment(
 
     override fun initData() {
         keyBoardVM.input.value = "";
-        binding.textPad.isCapLock = keyBoardVM.isCapLock
+        binding.keyBoardContainer.textPad.isCapLock = keyBoardVM.isCapLock
+        binding.keyBoardContainer.keyBoardType = keyBoardVM.keyBoardType
     }
 
     override fun initAction() {
@@ -87,16 +89,6 @@ class TableInputFragment(
         navigator.goOneBack();
         if (!keyBoardVM.input.value?.trim().equals(""))
         listener?.onCompleteTable(Integer.valueOf(keyBoardVM.input.value));
-    }
-
-    override fun onSwitch(keyBoardType: KeyBoardType) {
-        if(keyBoardType == KeyBoardType.Number) {
-            binding.numberPad.root.visibility = View.VISIBLE
-            binding.textPad.root.visibility = View.GONE
-        } else if (keyBoardType == KeyBoardType.Text) {
-            binding.numberPad.root.visibility = View.GONE
-            binding.textPad.root.visibility = View.VISIBLE
-        }
     }
 
 }

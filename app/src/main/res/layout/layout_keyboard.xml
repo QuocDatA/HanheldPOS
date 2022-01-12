@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <import type="com.hanheldpos.model.keyboard.KeyBoardType" />
+
+        <import type="android.view.View" />
+
+        <variable
+            name="keyboardVM"
+            type="com.hanheldpos.ui.input.KeyBoardVM" />
+
+        <variable
+            name="keyBoardType"
+            type="com.hanheldpos.model.keyboard.KeyBoardType" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/_5sdp"
+            android:background="@color/color_10">
+
+            <com.diadiem.pos_components.PTextInputEditText
+                android:id="@+id/numberCustomer"
+                style="@style/BaseTextInput"
+                android:focusable="false"
+                android:layout_weight="1"
+                android:focusableInTouchMode="true"
+                android:paddingHorizontal="@dimen/_13sdp"
+                android:paddingVertical="@dimen/_10sdp"
+                android:text="@{keyboardVM.input}" />
+
+            <com.diadiem.pos_components.PTextView
+                android:id="@+id/cancelBtn"
+                android:visibility="@{keyBoardType == KeyBoardType.Text ? View.VISIBLE : View.GONE}"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_gravity="bottom"
+                android:layout_marginEnd="@dimen/_12sdp"
+                android:gravity="center"
+                android:paddingHorizontal="@dimen/_5sdp"
+                android:paddingVertical="@dimen/_10sdp"
+                android:onClick="@{v->keyboardVM.listener.onCancel()}"
+                android:background="@drawable/bg_ffffff_round_number_input"
+                android:layout_weight="4"
+                android:text="Cancel" />
+        </LinearLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/color_10">
+
+            <include
+                android:id="@+id/textPad"
+                layout="@layout/layout_text_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="@{keyBoardType == KeyBoardType.Text ? View.VISIBLE : View.GONE}" />
+
+            <include
+                android:id="@id/numberPad"
+                layout="@layout/layout_number_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="@{keyBoardType == KeyBoardType.Number ? View.VISIBLE : View.GONE}" />
+        </FrameLayout>
+    </LinearLayout>
+
+
+</layout>
