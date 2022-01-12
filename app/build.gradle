@@ -12,8 +12,8 @@ plugins {
 
 // ----- Apk info
 String APK_NAME = "[DEV]HanheldPos"
-int VERSION_CODE = 32
-String VERSION_NAME = "0.3.2"
+int VERSION_CODE = 33
+String VERSION_NAME = "0.3.3"
 
 static def getDate() {
     return new Date().format("yyyyMMdd")
