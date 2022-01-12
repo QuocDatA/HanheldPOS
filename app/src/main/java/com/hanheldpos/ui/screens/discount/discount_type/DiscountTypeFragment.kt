@@ -15,6 +15,7 @@ import com.hanheldpos.model.discount.DiscountUser
 import com.hanheldpos.model.product.BaseProductInCart
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
+import com.hanheldpos.ui.screens.discount.adapter.OptionsPagerAdapter
 import com.hanheldpos.ui.screens.discount.discount_type.adapter.DiscountItemAdapter
 import com.hanheldpos.ui.screens.discount.discount_type.adapter.DiscountTabAdapter
 import com.hanheldpos.ui.screens.discount.discount_type.amount.DiscountAmountFragment
@@ -22,7 +23,7 @@ import com.hanheldpos.ui.screens.discount.discount_type.automatic.DiscountAutoma
 import com.hanheldpos.ui.screens.discount.discount_type.comp.DiscountCompFragment
 import com.hanheldpos.ui.screens.discount.discount_type.discount_code.DiscountCodeFragment
 import com.hanheldpos.ui.screens.discount.discount_type.percentage.DiscountPercentageFragment
-import com.hanheldpos.ui.screens.product.adapter.OptionsPagerAdapter
+
 
 class DiscountTypeFragment(
     private val applyToType: DiscountApplyToType,

@@ -36,8 +36,8 @@
             android:layout_height="@dimen/_100sdp">
 
             <com.diadiem.pos_components.PTextView
-                visibleObject="@{item.proOriginal.sku}"
                 android:id="@+id/skuProduct"
+                visibleObject="@{item.proOriginal.sku}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_4sdp"

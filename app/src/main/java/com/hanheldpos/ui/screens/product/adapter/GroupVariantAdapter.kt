@@ -1,4 +1,4 @@
-package com.hanheldpos.ui.screens.product_new.adapter
+package com.hanheldpos.ui.screens.product.adapter
 
 import android.annotation.SuppressLint
 import androidx.core.content.ContextCompat
@@ -14,9 +14,7 @@ import com.hanheldpos.model.product.VariantGroupType
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
-import com.hanheldpos.ui.screens.product.adapter.GridSpacingItemDecoration
-import kotlinx.coroutines.withContext
-import kotlin.coroutines.coroutineContext
+import com.hanheldpos.ui.base.adapter.GridSpacingItemDecoration
 
 class GroupVariantAdapter(
     private val listener: BaseItemClickListener<VariantsGroup.OptionValueVariantsGroup>

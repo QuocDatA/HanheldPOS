@@ -1,11 +1,10 @@
-package com.hanheldpos.ui.screens.product.adapter
+package com.hanheldpos.ui.screens.discount.adapter
 
+import android.annotation.SuppressLint
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.hanheldpos.ui.screens.product.options.modifier.ModifierFragment
-import com.hanheldpos.ui.screens.product.options.variant.VariantFragment
 
 class OptionsPagerAdapter(
     fragmentManager: FragmentManager,
@@ -13,6 +12,7 @@ class OptionsPagerAdapter(
 ) : FragmentStateAdapter(fragmentManager, lifecycle) {
     private val fragmentList = mutableListOf<Fragment>()
 
+    @SuppressLint("NotifyDataSetChanged")
     fun submitList(collection: Collection<Fragment>?) {
         fragmentList.clear()
         collection?.let {

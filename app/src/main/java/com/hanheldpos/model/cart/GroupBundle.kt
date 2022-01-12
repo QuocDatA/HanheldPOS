@@ -23,7 +23,7 @@ data class GroupBundle(
         productList.add(regular)
     }
 
-    override fun clone(): GroupBundle {
+    public override fun clone(): GroupBundle {
         return copy().apply {
             productList = productList.toMutableList().map { it.clone() }.toMutableList()
         }
