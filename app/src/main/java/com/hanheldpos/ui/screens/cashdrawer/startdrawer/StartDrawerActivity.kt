@@ -82,7 +82,7 @@ class StartDrawerActivity : BaseActivity<ActivityStartDrawerBinding, CashDrawerV
 
             }
 
-            override fun onSwitch(keyBoardType: KeyBoardType) {
+            override fun onSwitch() {
 
             }
 

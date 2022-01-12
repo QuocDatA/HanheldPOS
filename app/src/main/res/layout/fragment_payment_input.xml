@@ -120,24 +120,12 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
-        <RelativeLayout
+        <include
             android:id="@+id/keyBoardContainer"
+            layout="@layout/layout_keyboard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true">
+            android:layout_alignParentBottom="true" />
 
-            <include
-                android:id="@id/numberPad"
-                layout="@layout/layout_number_input"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-            <include
-                android:id="@+id/textPad"
-                android:visibility="gone"
-                layout="@layout/layout_text_input"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-        </RelativeLayout>
     </RelativeLayout>
 </layout>

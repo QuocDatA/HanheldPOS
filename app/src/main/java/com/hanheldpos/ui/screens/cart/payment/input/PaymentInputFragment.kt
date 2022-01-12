@@ -35,8 +35,8 @@ class PaymentInputFragment(
             init(this@PaymentInputFragment);
             binding.viewModel = this;
             binding.keyboardVM = keyBoardVM;
-            binding.numberPad.viewModel = keyBoardVM;
-            binding.textPad.viewModel = keyBoardVM;
+            binding.keyBoardContainer.textPad.viewModel = keyBoardVM;
+            binding.keyBoardContainer.numberPad.viewModel = keyBoardVM;
         }
     }
 
@@ -51,12 +51,12 @@ class PaymentInputFragment(
                 viewModel.onCancel();
             }
 
-            override fun onSwitch(keyBoardType: KeyBoardType) {
-                viewModel.onSwitch(keyBoardType)
+            override fun onSwitch() {
+                binding.keyBoardContainer.keyBoardType = keyBoardVM.keyBoardType
             }
 
             override fun onCapLock() {
-                binding.textPad.isCapLock = keyBoardVM.isCapLock
+                binding.keyBoardContainer.textPad.isCapLock = keyBoardVM.isCapLock
             }
         });
         binding.paymentInputTitle.setText(paymentMethod.Title + " (Amount Due " + payable.toNiceString() + ")")
@@ -72,19 +72,10 @@ class PaymentInputFragment(
             listener?.onCompleteTable(Integer.valueOf(keyBoardVM.input.value));
     }
 
-    override fun onSwitch(keyBoardType: KeyBoardType) {
-        if(keyBoardType == KeyBoardType.Number) {
-            binding.numberPad.root.visibility = View.VISIBLE
-            binding.textPad.root.visibility = View.GONE
-        } else if (keyBoardType == KeyBoardType.Text) {
-            binding.numberPad.root.visibility = View.GONE
-            binding.textPad.root.visibility = View.VISIBLE
-        }
-    }
-
     override fun initData() {
         keyBoardVM.input.value = payable.toNiceString();
-        binding.textPad.isCapLock = keyBoardVM.isCapLock
+        binding.keyBoardContainer.textPad.isCapLock = keyBoardVM.isCapLock
+        binding.keyBoardContainer.keyBoardType = keyBoardVM.keyBoardType
     }
 
     override fun initAction() {

@@ -11,7 +11,4 @@ class PaymentInputVM : BaseUiViewModel<PaymentInputUV>() {
     fun onCancel(){
         uiCallback?.onCancel();
     }
-    fun onSwitch(keyBoardType: KeyBoardType) {
-        uiCallback?.onSwitch(keyBoardType)
-    }
 }
