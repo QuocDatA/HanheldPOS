@@ -101,6 +101,10 @@ class MenuFragment : BaseFragment<FragmentMenuBinding, MenuVM>(), MenuUV {
         }
     }
 
+    fun navigateToReport() {
+        navigator.goTo(ReportFragment())
+    }
+
     private fun onLogoutOption(type: LogoutType, title: String?, message: String?) {
 
         //TODO : syncing local data orders.
