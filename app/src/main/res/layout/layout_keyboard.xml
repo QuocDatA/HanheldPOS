@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -16,48 +17,11 @@
             type="com.hanheldpos.model.keyboard.KeyBoardType" />
     </data>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center_horizontal"
-        android:orientation="vertical">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="@dimen/_5sdp"
-            android:background="@color/color_10">
-
-            <com.diadiem.pos_components.PTextInputEditText
-                android:id="@+id/numberCustomer"
-                style="@style/BaseTextInput"
-                android:focusable="false"
-                android:layout_weight="1"
-                android:focusableInTouchMode="true"
-                android:paddingHorizontal="@dimen/_13sdp"
-                android:paddingVertical="@dimen/_10sdp"
-                android:text="@{keyboardVM.input}" />
-
-            <com.diadiem.pos_components.PTextView
-                android:id="@+id/cancelBtn"
-                android:visibility="@{keyBoardType == KeyBoardType.Text ? View.VISIBLE : View.GONE}"
-                android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                android:layout_gravity="bottom"
-                android:layout_marginEnd="@dimen/_12sdp"
-                android:gravity="center"
-                android:paddingHorizontal="@dimen/_5sdp"
-                android:paddingVertical="@dimen/_10sdp"
-                android:onClick="@{v->keyboardVM.listener.onCancel()}"
-                android:background="@drawable/bg_ffffff_round_number_input"
-                android:layout_weight="4"
-                android:text="Cancel" />
-        </LinearLayout>
-
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/color_10">
+            android:background="@color/color_10"
+            android:layout_gravity="bottom|center_horizontal">
 
             <include
                 android:id="@+id/textPad"
@@ -73,7 +37,4 @@
                 android:layout_height="wrap_content"
                 android:visibility="@{keyBoardType == KeyBoardType.Number ? View.VISIBLE : View.GONE}" />
         </FrameLayout>
-    </LinearLayout>
-
-
 </layout>

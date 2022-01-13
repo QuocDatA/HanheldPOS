@@ -59,6 +59,8 @@ class TableInputFragment(
         keyBoardVM.input.value = "";
         binding.keyBoardContainer.textPad.isCapLock = keyBoardVM.isCapLock
         binding.keyBoardContainer.keyBoardType = keyBoardVM.keyBoardType
+        keyBoardVM.keyBoardType = KeyBoardType.NumberOnly
+        binding.keyBoardContainer.numberPad.keyBoardType = keyBoardVM.keyBoardType
     }
 
     override fun initAction() {
