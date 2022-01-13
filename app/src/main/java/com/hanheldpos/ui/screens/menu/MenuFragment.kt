@@ -14,6 +14,7 @@ import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.dialog.AppAlertDialog
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.menu.adapter.MenuAdapter
+import com.hanheldpos.ui.screens.menu.option.report.ReportFragment
 import com.hanheldpos.ui.screens.pincode.PinCodeActivity
 import com.hanheldpos.ui.screens.welcome.WelcomeActivity
 
@@ -85,7 +86,7 @@ class MenuFragment : BaseFragment<FragmentMenuBinding, MenuVM>(), MenuUV {
         when (option.type) {
             NavBarOptionType.ORDERS -> {}
             NavBarOptionType.TRANSACTIONS -> {}
-            NavBarOptionType.REPORTS -> {}
+            NavBarOptionType.REPORTS -> navigateToReport();
             NavBarOptionType.CUSTOMER -> {}
             NavBarOptionType.ORDER_HISTORY -> {}
             NavBarOptionType.SETTINGS -> {}
