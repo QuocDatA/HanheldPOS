@@ -111,8 +111,8 @@
 
         <include
             visibleObject="@{false}"
-            android:id="@id/numberPad"
-            layout="@layout/layout_number_input"
+            android:id="@+id/keyBoardContainer"
+            layout="@layout/layout_keyboard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </LinearLayout>

@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.hanheldpos.ui.input.KeyBoardVM" />
+
+        <variable
+            name="isCapLock"
+            type="Boolean" />
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:background="@color/color_10"
+        android:paddingHorizontal="@dimen/_5sdp"
+        android:paddingVertical="@dimen/_7sdp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.diadiem.pos_components.PTextView
+                    style="@style/NumberPad"
+                    android:layout_marginHorizontal="@dimen/_3sdp"
+                    android:layout_weight="1.5"
+                    android:textAllCaps="@{isCapLock ? true : false}"
+                    android:onClick="@{(v) -> viewModel.inputString(v)}"
+                    android:text="q" />
+
+                <com.diadiem.pos_components.PTextView
+                    style="@style/NumberPad"
+                    android:layout_marginHorizontal="@dimen/_3sdp"
+                    android:layout_weight="1.5"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:textAllCaps="@{isCapLock ? true : false}"
+                    android:onClick="@{(view) -> viewModel.inputString(view)}"
+                    android:text="w" />
+
+                <com.diadiem.pos_components.PTextView
+                    style="@style/NumberPad"
+                    android:layout_marginHorizontal="@dimen/_3sdp"
+                    android:layout_weight="1.5"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:textAllCaps="@{isCapLock ? true : false}"
+                    android:onClick="@{(view) -> viewModel.inputString(view)}"
+                    android:text="e" />
+
+                <com.diadiem.pos_components.PTextView
+                    style="@style/NumberPad"
+                    android:layout_marginHorizontal="@dimen/_3sdp"
+                    android:layout_weight="1.5"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:textAllCaps="@{isCapLock ? true : false}"
+                    android:onClick="@{(view) -> viewModel.inputString(view)}"
+                    android:text="r" />
+
+                <com.diadiem.pos_components.PTextView
+                    style="@style/NumberPad"
+                    android:layout_marginHorizontal="@dimen/_3sdp"
+                    android:layout_weight="1.5"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:textAllCaps="@{isCapLock ? true : false}"
+                    android:onClick="@{(view) -> viewModel.inputString(view)}"
+                    android:text="t" />
+
+                <com.diadiem.pos_components.PTextView
+                    style="@style/NumberPad"
+                    android:layout_marginHorizontal="@dimen/_3sdp"
+                    android:layout_weight="1.5"
+                    android:textAllCaps="@{isCapLock ? true : false}"
+                    android:onClick="@{(view) -> viewModel.inputString(view)}"
+                    android:text="y" />
+
+                <com.diadiem.pos_components.PTextView
+                    style="@style/NumberPad"
+                    android:layout_marginHorizontal="@dimen/_3sdp"
+                    android:layout_weight="1.5"
+                    android:textAllCaps="@{isCapLock ? true : false}"
+                    android:onClick="@{(view) -> viewModel.inputString(view)}"
+                    android:text="u" />
+
+                <com.diadiem.pos_components.PTextView
+                    style="@style/NumberPad"
+                    android:layout_marginHorizontal="@dimen/_3sdp"
+                    android:layout_weight="1.5"
+                    android:textAllCaps="@{isCapLock ? true : false}"
+                    android:onClick="@{(view) -> viewModel.inputString(view)}"
+                    android:text="i" />
+
+                <com.diadiem.pos_components.PTextView
+                    style="@style/NumberPad"
+                    android:layout_marginHorizontal="@dimen/_3sdp"
+                    android:layout_weight="1.5"
+                    android:textAllCaps="@{isCapLock ? true : false}"
+                    android:onClick="@{(view) -> viewModel.inputString(view)}"
+                    android:text="o" />
+
+                <com.diadiem.pos_components.PTextView
+                    style="@style/NumberPad"
+                    android:layout_marginHorizontal="@dimen/_3sdp"
+                    android:layout_weight="1.5"
+                    android:textAllCaps="@{isCapLock ? true : false}"
+                    android:onClick="@{(view) -> viewModel.inputString(view)}"
+                    android:text="p" />
+            </LinearLayout>
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/_10sdp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_12sdp"
+                android:orientation="horizontal">
+
+                <com.diadiem.pos_components.PTextView
+                    style="@style/NumberPad"
+                    android:layout_marginHorizontal="@dimen/_3sdp"
+                    android:layout_weight="1.498"
+                    android:textAllCaps="@{isCapLock ? true : false}"
+                    android:onClick="@{(view) -> viewModel.inputString(view)}"
+                    android:text="a" />
+
+                <com.diadiem.pos_components.PTextView
+                    style="@style/NumberPad"
+                    android:layout_marginHorizontal="@dimen/_3sdp"
+                    android:layout_weight="1.498"
+                    android:textAllCaps="@{isCapLock ? true : false}"
+                    android:onClick="@{(view) -> viewModel.inputString(view)}"
+                    android:text="s" />
+
+                <com.diadiem.pos_components.PTextView
+                    style="@style/NumberPad"
+                    android:layout_marginHorizontal="@dimen/_3sdp"
+                    android:textAllCaps="@{isCapLock ? true : false}"
+                    android:layout_weight="1.498"
+                    android:onClick="@{(view) -> viewModel.inputString(view)}"
+                    android:text="d" />
+
+                <com.diadiem.pos_components.PTextView
+                    style="@style/NumberPad"
+                    android:layout_marginHorizontal="@dimen/_3sdp"
+                    android:textAllCaps="@{isCapLock ? true : false}"
+                    android:layout_weight="1.498"
+                    android:onClick="@{(view) -> viewModel.inputString(view)}"
+                    android:text="f" />
+
+                <com.diadiem.pos_components.PTextView
+                    style="@style/NumberPad"
+                    android:layout_marginHorizontal="@dimen/_3sdp"
+                    android:layout_weight="1.498"
+                    android:textAllCaps="@{isCapLock ? true : false}"
+                    android:onClick="@{(view) -> viewModel.inputString(view)}"
+                    android:text="g" />
+
+                <com.diadiem.pos_components.PTextView
+                    style="@style/NumberPad"
+                    android:layout_marginHorizontal="@dimen/_3sdp"
+                    android:textAllCaps="@{isCapLock ? true : false}"
+                    android:layout_weight="1.498"
+                    android:onClick="@{(view) -> viewModel.inputString(view)}"
+                    android:text="h" />
+
+                <com.diadiem.pos_components.PTextView
+                    style="@style/NumberPad"
+                    android:layout_marginHorizontal="@dimen/_3sdp"
+                    android:layout_weight="1.498"
+                    android:textAllCaps="@{isCapLock ? true : false}"
+                    android:onClick="@{(view) -> viewModel.inputString(view)}"
+                    android:text="j" />
+
+                <com.diadiem.pos_components.PTextView
+                    style="@style/NumberPad"
+                    android:layout_marginHorizontal="@dimen/_3sdp"
+                    android:layout_weight="1.498"
+                    android:textAllCaps="@{isCapLock ? true : false}"
+                    android:onClick="@{(view) -> viewModel.inputString(view)}"
+                    android:text="k" />
+
+                <com.diadiem.pos_components.PTextView
+                    style="@style/NumberPad"
+                    android:layout_marginHorizontal="@dimen/_3sdp"
+                    android:textAllCaps="@{isCapLock ? true : false}"
+                    android:layout_weight="1.498"
+                    android:onClick="@{(view) -> viewModel.inputString(view)}"
+                    android:text="l" />
+            </LinearLayout>
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/_10sdp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    style="@style/NumberPad"
+                    android:layout_marginHorizontal="@dimen/_3sdp"
+                    android:layout_weight="1.43"
+                    android:paddingVertical="@dimen/_10sdp"
+                    android:scaleType="centerInside"
+                    android:backgroundTint="@{isCapLock ? @color/_007EFF : @color/background}"
+                    android:onClick="@{(view) -> viewModel.onCapLock()}"
+                    android:src="@{isCapLock? @drawable/ic_upper_case_light_color : @drawable/ic_upper_case}" />
+
+                <com.diadiem.pos_components.PTextView
+                    style="@style/NumberPad"
+                    android:layout_marginHorizontal="@dimen/_3sdp"
+                    android:layout_weight="1.5"
+                    android:textAllCaps="@{isCapLock ? true : false}"
+                    android:onClick="@{(view) -> viewModel.inputString(view)}"
+                    android:text="z" />
+
+                <com.diadiem.pos_components.PTextView
+                    style="@style/NumberPad"
+                    android:layout_marginHorizontal="@dimen/_3sdp"
+                    android:layout_weight="1.5"
+                    android:textAllCaps="@{isCapLock ? true : false}"
+                    android:onClick="@{(view) -> viewModel.inputString(view)}"
+                    android:text="x" />
+
+                <com.diadiem.pos_components.PTextView
+                    style="@style/NumberPad"
+                    android:layout_marginHorizontal="@dimen/_3sdp"
+                    android:layout_weight="1.5"
+                    android:textAllCaps="@{isCapLock ? true : false}"
+                    android:onClick="@{(view) -> viewModel.inputString(view)}"
+                    android:text="c" />
+
+                <com.diadiem.pos_components.PTextView
+                    style="@style/NumberPad"
+                    android:layout_marginHorizontal="@dimen/_3sdp"
+                    android:textAllCaps="@{isCapLock ? true : false}"
+                    android:layout_weight="1.5"
+                    android:onClick="@{(view) -> viewModel.inputString(view)}"
+                    android:text="v" />
+
+                <com.diadiem.pos_components.PTextView
+                    style="@style/NumberPad"
+                    android:layout_marginHorizontal="@dimen/_3sdp"
+                    android:layout_weight="1.5"
+                    android:textAllCaps="@{isCapLock ? true : false}"
+                    android:onClick="@{(view) -> viewModel.inputString(view)}"
+                    android:text="b" />
+
+                <com.diadiem.pos_components.PTextView
+                    style="@style/NumberPad"
+                    android:layout_marginHorizontal="@dimen/_3sdp"
+                    android:layout_weight="1.5"
+                    android:textAllCaps="@{isCapLock ? true : false}"
+                    android:onClick="@{(view) -> viewModel.inputString(view)}"
+                    android:text="n" />
+
+                <com.diadiem.pos_components.PTextView
+                    style="@style/NumberPad"
+                    android:layout_marginHorizontal="@dimen/_3sdp"
+                    android:layout_weight="1.5"
+                    android:textAllCaps="@{isCapLock ? true : false}"
+                    android:onClick="@{(view) -> viewModel.inputString(view)}"
+                    android:text="m" />
+
+                <ImageView
+                    style="@style/NumberPad"
+                    android:layout_marginHorizontal="@dimen/_3sdp"
+                    android:layout_weight="1.43"
+                    android:onClick="@{() -> viewModel.delete()}"
+                    android:paddingVertical="@dimen/_10sdp"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_backspace" />
+            </LinearLayout>
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/_10sdp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.diadiem.pos_components.PTextView
+                    style="@style/NumberPad"
+                    android:layout_marginHorizontal="@dimen/_3sdp"
+                    android:layout_weight="1.449"
+                    android:onClick="@{v->viewModel.switchKeyBoardType()}"
+                    android:text="123" />
+
+                <com.diadiem.pos_components.PTextView
+                    style="@style/NumberPad"
+                    android:layout_marginHorizontal="@dimen/_3sdp"
+                    android:layout_weight="1.52"
+                    android:onClick="@{(view) -> viewModel.inputString(view)}"
+                    android:text="," />
+
+                <com.diadiem.pos_components.PTextView
+                    style="@style/NumberPad"
+                    android:layout_marginHorizontal="@dimen/_3sdp"
+                    android:layout_weight="1"
+                    android:onClick="@{(view) -> viewModel.inputString(view)}"
+                    android:text="space" />
+
+                <com.diadiem.pos_components.PTextView
+                    style="@style/NumberPad"
+                    android:layout_marginHorizontal="@dimen/_3sdp"
+                    android:layout_weight="1.52"
+                    android:onClick="@{(view) -> viewModel.inputString(view)}"
+                    android:text="." />
+
+                <com.diadiem.pos_components.PTextView
+                    style="@style/NumberPad"
+                    android:layout_marginHorizontal="@dimen/_3sdp"
+                    android:layout_weight="1.279"
+                    android:background="@drawable/bg_007eff_round_number_input"
+                    android:onClick="@{v->viewModel.listener.onComplete()}"
+                    android:text="@string/ok"
+                    android:textAllCaps="true"
+                    app:useTextColor="color2" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </FrameLayout>
+</layout>
