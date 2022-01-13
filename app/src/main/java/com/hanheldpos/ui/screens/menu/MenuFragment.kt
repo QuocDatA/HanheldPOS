@@ -84,19 +84,21 @@ class MenuFragment : BaseFragment<FragmentMenuBinding, MenuVM>(), MenuUV {
 
     fun onNavOptionClick(option: ItemMenuOptionNav) {
         when (option.type) {
-            NavBarOptionType.ORDERS -> TODO()
-            NavBarOptionType.TRANSACTIONS -> TODO()
-            NavBarOptionType.REPORTS -> navigateToReport()
-            NavBarOptionType.CUSTOMER -> TODO()
-            NavBarOptionType.ORDER_HISTORY -> TODO()
-            NavBarOptionType.SETTINGS -> TODO()
-            NavBarOptionType.SUPPORT -> TODO()
+            NavBarOptionType.ORDERS -> {}
+            NavBarOptionType.TRANSACTIONS -> {}
+            NavBarOptionType.REPORTS -> navigateToReport();
+            NavBarOptionType.CUSTOMER -> {}
+            NavBarOptionType.ORDER_HISTORY -> {}
+            NavBarOptionType.SETTINGS -> {}
+            NavBarOptionType.SUPPORT -> {}
             NavBarOptionType.LOGOUT_USER -> onLogoutOption(
                 LogoutType.LOGOUT_DEVICE,
                 title = getString(R.string.logout),
                 message = getString(R.string.are_you_sure_you_want_to_exit_this_account)
             )
-            NavBarOptionType.RESET_SYSTEM -> TODO()
+            NavBarOptionType.RESET_SYSTEM -> {
+
+            }
         }
     }
 
