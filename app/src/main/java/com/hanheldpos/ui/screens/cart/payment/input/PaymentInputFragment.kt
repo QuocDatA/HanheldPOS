@@ -74,8 +74,10 @@ class PaymentInputFragment(
 
     override fun initData() {
         keyBoardVM.input.value = payable.toNiceString();
+        keyBoardVM.keyBoardType = KeyBoardType.Number
         binding.keyBoardContainer.textPad.isCapLock = keyBoardVM.isCapLock
         binding.keyBoardContainer.keyBoardType = keyBoardVM.keyBoardType
+        binding.keyBoardContainer.numberPad.keyBoardType = keyBoardVM.keyBoardType
     }
 
     override fun initAction() {
