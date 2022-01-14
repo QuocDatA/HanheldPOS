@@ -2,7 +2,11 @@ package com.hanheldpos.ui.screens.cashdrawer.enddrawer
 
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentEndDrawerBinding
+import com.hanheldpos.extension.navigateTo
 import com.hanheldpos.ui.base.fragment.BaseFragment
+import com.hanheldpos.ui.screens.cashdrawer.CashDrawerHelper
+import com.hanheldpos.ui.screens.pincode.PinCodeActivity
+import com.hanheldpos.ui.screens.welcome.WelcomeActivity
 
 class EndDrawerFragment : BaseFragment<FragmentEndDrawerBinding, EndDrawerVM>(), EndDrawerUV {
     override fun layoutRes() = R.layout.fragment_end_drawer
@@ -19,6 +23,14 @@ class EndDrawerFragment : BaseFragment<FragmentEndDrawerBinding, EndDrawerVM>(),
     }
 
     override fun initView() {
+        binding.btnEndDrawer.setOnClickListener {
+            activity?.navigateTo(
+                PinCodeActivity::class.java,
+                alsoFinishCurrentActivity = true,
+                alsoClearActivity = true,
+            )
+            CashDrawerHelper.isEndDrawer = true
+        }
     }
 
     override fun initData() {
