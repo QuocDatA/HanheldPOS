@@ -1,9 +1,11 @@
 package com.hanheldpos.ui.screens.discount.discount_type.amount
 
 import androidx.core.widget.doAfterTextChanged
+import androidx.fragment.app.setFragmentResultListener
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentDiscountAmountBinding
 import com.hanheldpos.model.discount.DiscountTypeEnum
+import com.hanheldpos.model.discount.DiscountTypeFor
 import com.hanheldpos.model.discount.DiscountUser
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.discount.discount_type.DiscountTypeFragment
@@ -29,6 +31,20 @@ class DiscountAmountFragment(private val listener: DiscountTypeFragment.Discount
     }
 
     override fun initView() {
+        requireActivity().supportFragmentManager.setFragmentResultListener("saveDiscount",this) { _, bundle ->
+            if (bundle.getSerializable("DiscountTypeFor") == DiscountTypeFor.AMOUNT) {
+
+                listener.discountUserChoose(
+                    DiscountUser(
+                        DiscountName = viewModel.title.value!!,
+                        DiscountValue = viewModel.amountValue,
+                        DiscountType = DiscountTypeEnum.AMOUNT.value
+                    )
+                )
+            }
+
+        }
+
         binding.amountDiscount.let { input ->
             var isEditing = false
             input.doAfterTextChanged {
@@ -50,15 +66,10 @@ class DiscountAmountFragment(private val listener: DiscountTypeFragment.Discount
                 isEditing = false;
             }
         }
-        binding.btnSave.setOnClickListener {
-            listener.discountUserChoose(
-                DiscountUser(
-                    DiscountName = viewModel.title.value!!,
-                    DiscountValue = viewModel.amountValue,
-                    DiscountType = DiscountTypeEnum.AMOUNT.value
-                )
-            )
-        }
+
+
+
+
     }
 
     override fun initData() {
@@ -66,6 +77,11 @@ class DiscountAmountFragment(private val listener: DiscountTypeFragment.Discount
     }
 
     override fun initAction() {
-
+        viewModel.amount.observe(this,{
+            listener.validDiscount(viewModel.amountValue > 0.0 && !viewModel.title.value.isNullOrEmpty());
+        });
+        viewModel.title.observe(this,{
+            listener.validDiscount(viewModel.amountValue > 0.0 && !viewModel.title.value.isNullOrEmpty());
+        })
     }
 }

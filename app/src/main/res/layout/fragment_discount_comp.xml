@@ -10,15 +10,15 @@
             type="com.hanheldpos.ui.screens.discount.discount_type.comp.DiscountCompVM" />
     </data>
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingBottom="@dimen/_9sdp">
 
         <LinearLayout
+            android:id="@+id/layoutMain"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_above="@id/saveBtn"
+            android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/_8sdp"
             android:orientation="vertical"
             app:layout_constraintTop_toTopOf="parent">
@@ -39,10 +39,10 @@
 
                 <com.diadiem.pos_components.PTextView
                     android:id="@+id/removeComp"
-                    android:focusable="true"
-                    android:clickable="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:focusable="true"
                     android:text="@string/remove_comp"
                     app:useFontStyle="normal"
                     app:useTextColor="color6"
@@ -69,25 +69,5 @@
                 tools:itemCount="3"
                 tools:listitem="@layout/item_discount_comp" />
         </LinearLayout>
-
-        <com.diadiem.pos_components.PMaterialButton
-            android:id="@+id/saveBtn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="@dimen/_9sdp"
-            android:layout_marginEnd="@dimen/_9sdp"
-            android:background="@color/color_0"
-            android:clickable="true"
-
-            android:focusable="true"
-            android:foreground="?attr/selectableItemBackground"
-            android:gravity="center"
-            android:padding="@dimen/_5sdp"
-            android:text="@string/save"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:pbtn_useFontStyle="bold"
-            app:pbtn_useTextColor="color2"
-            app:pbtn_useTextHeader="h5" />
-    </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

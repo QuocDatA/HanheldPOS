@@ -1,7 +1,9 @@
 package com.hanheldpos.ui.screens.product
 
 import android.view.View
+import androidx.fragment.app.activityViewModels
 import com.hanheldpos.R
+import com.hanheldpos.data.api.pojo.order.settings.Reason
 import com.hanheldpos.data.api.pojo.product.ProductItem
 import com.hanheldpos.data.api.pojo.product.VariantsGroup
 import com.hanheldpos.data.api.pojo.product.getModifierList
@@ -14,10 +16,14 @@ import com.hanheldpos.model.cart.ModifierCart
 import com.hanheldpos.model.cart.Regular
 import com.hanheldpos.model.cart.VariantCart
 import com.hanheldpos.model.combo.ItemActionType
+import com.hanheldpos.model.discount.DiscountApplyToType
+import com.hanheldpos.model.discount.DiscountUser
 import com.hanheldpos.model.product.BaseProductInCart
 import com.hanheldpos.model.product.ItemExtra
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
+import com.hanheldpos.ui.screens.cart.CartDataVM
+import com.hanheldpos.ui.screens.discount.discount_type.DiscountTypeFragment
 import com.hanheldpos.ui.screens.home.order.OrderFragment
 import com.hanheldpos.ui.screens.product.adapter.GroupModifierAdapter
 import com.hanheldpos.ui.screens.product.adapter.GroupVariantAdapter
@@ -33,6 +39,8 @@ class ProductDetailFragment(
 
     private lateinit var groupVariantAdapter: GroupVariantAdapter;
     private lateinit var groupModifierAdapter: GroupModifierAdapter;
+
+    private val cartDataVM by activityViewModels<CartDataVM>();
 
     override fun layoutRes(): Int = R.layout.fragment_product_detail;
 
@@ -81,6 +89,26 @@ class ProductDetailFragment(
             binding.groupVariants.itemAnimator = null
         }
 
+        if (action == ItemActionType.Modify)
+            childFragmentManager.beginTransaction().replace(
+                R.id.fragment_container_discount,
+                DiscountTypeFragment(
+                    applyToType = DiscountApplyToType.ITEM_DISCOUNT_APPLY_TO,
+                    cart = cartDataVM.cartModelLD.value!!,
+                    listener = object : DiscountTypeFragment.DiscountTypeListener {
+                        override fun discountUserChoose(discount: DiscountUser) {
+
+                        }
+
+                        override fun compReasonChoose(item: Reason) {
+
+                        }
+
+                        override fun compRemoveAll() {
+
+                        }
+                    })
+            ).commit();
     }
 
     override fun initData() {
@@ -179,8 +207,7 @@ class ProductDetailFragment(
             item.extraQuantity,
             item.modifier.price
         )
-        if (item.extraQuantity > 0)
-        {
+        if (item.extraQuantity > 0) {
             viewModel.regularInCart.value?.apply {
                 modifierList.find { m ->
                     m.modifierId == modifier.modifierId
@@ -194,8 +221,7 @@ class ProductDetailFragment(
                 }
             }
 
-        }
-        else {
+        } else {
             viewModel.regularInCart.value
                 ?.apply {
                     modifierList.removeAll { it.modifierGuid == modifier.modifierGuid }

@@ -135,32 +135,19 @@ class CartDataVM : BaseViewModel() {
         cartModelLD.notifyValueChange();
     }
 
-    fun removeCompReason(productInCart: BaseProductInCart?) {
-        if (productInCart != null) {
-            productInCart.compReason = null;
-        }
-        else
+    fun removeCompReason() {
         cartModelLD.value!!.compReason = null;
         cartModelLD.notifyValueChange();
     }
 
-    fun addCompReason(reason: Reason,productInCart: BaseProductInCart?) {
-        if (productInCart != null) {
-            productInCart.compReason = reason;
-        }
-        else
+    fun addCompReason(reason: Reason) {
+
         this.cartModelLD.value!!.addCompReason(reason);
         cartModelLD.notifyValueChange();
     }
 
-    fun addDiscountUser(discount: DiscountUser,productInCart: BaseProductInCart?) {
-        if (productInCart != null) {
-            productInCart.discountUsersList = mutableListOf(discount);
-        }
-        else{
-            this.cartModelLD.value!!.addDiscountUser(discount);
-        }
-
+    fun addDiscountUser(discount: DiscountUser) {
+        this.cartModelLD.value!!.addDiscountUser(discount);
         cartModelLD.notifyValueChange();
     }
 

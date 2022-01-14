@@ -61,33 +61,43 @@
                 android:layout_height="1dp" />
         </LinearLayout>
 
-        <LinearLayout
-            android:orientation="vertical"
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
             app:layout_constraintBottom_toTopOf="@+id/bottomAction"
             app:layout_constraintTop_toBottomOf="@id/appBar"
-            android:layout_width="match_parent"
-            android:layout_height="0dp">
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/groupVariants"
+            >
+            <LinearLayout
+                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:clipToPadding="false"
-                android:overScrollMode="never"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintTop_toBottomOf="@id/appBar"
-                tools:itemCount="1"
-                tools:listitem="@layout/item_product_group_variant" />
+                android:layout_height="wrap_content">
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/groupVariants"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clipToPadding="false"
+                    android:overScrollMode="never"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintTop_toBottomOf="@id/appBar"
+                    tools:itemCount="1"
+                    tools:listitem="@layout/item_product_group_variant" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/groupModifiers"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:clipToPadding="false"
-                android:overScrollMode="never"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:itemCount="1"
-                tools:listitem="@layout/item_product_group_modifier" />
-        </LinearLayout>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/groupModifiers"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clipToPadding="false"
+                    android:overScrollMode="never"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:itemCount="1"
+                    tools:listitem="@layout/item_product_group_modifier" />
+                <androidx.fragment.app.FragmentContainerView
+                    android:id="@+id/fragment_container_discount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    />
+            </LinearLayout>
+        </ScrollView>
 
 
         <LinearLayout

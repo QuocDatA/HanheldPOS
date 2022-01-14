@@ -183,16 +183,16 @@ class CartFragment( private val listener : CartCallBack) : BaseFragment<Fragment
         navigator
             .goToWithCustomAnimation(DiscountFragment(listener = object :
                 DiscountFragment.DiscountCallback {
-                override fun onDiscountUserChoose(discount: DiscountUser,productInCart: BaseProductInCart?) {
-                    cartDataVM.addDiscountUser(discount,productInCart);
+                override fun onDiscountUserChoose(discount: DiscountUser) {
+                    cartDataVM.addDiscountUser(discount);
                 }
 
-                override fun onCompReasonChoose(reason: Reason,productInCart: BaseProductInCart?) {
-                    cartDataVM.addCompReason(reason,productInCart);
+                override fun onCompReasonChoose(reason: Reason) {
+                    cartDataVM.addCompReason(reason);
                 }
 
-                override fun onCompRemove(productInCart: BaseProductInCart?) {
-                    cartDataVM.removeCompReason(productInCart);
+                override fun onCompRemove() {
+                    cartDataVM.removeCompReason();
                 }
             }));
     }
