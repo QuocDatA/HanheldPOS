@@ -250,7 +250,7 @@ class CartFragment( private val listener : CartCallBack) : BaseFragment<Fragment
             ProductType.BUNDLE -> {
                 navigator.goToWithCustomAnimation(
                     ComboFragment(
-                        item = (item as Combo).clone(),
+                        combo = (item as Combo).clone(),
                         action = ItemActionType.Modify,
                         quantityCanChoose = 100,
                         listener = callbackEdit
