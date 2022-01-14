@@ -59,6 +59,7 @@ class Combo() : BaseProductInCart() {
         val totalModifierPrice = totalModifier();
 
         var totalPrice = subtotal - totalModifierPrice;
+
         val totalDiscUser = discountUsersList?.sumOf { disc -> disc.total(subtotal) } ?: 0.0;
         // TODO : Discount server
         //  var totalDiscServer = discountServersList?.sumOf { disc -> disc.total(totalPrice, totalModifierPrice, proOriginal?.id, quantity) } ?: 0.0;
@@ -97,7 +98,7 @@ class Combo() : BaseProductInCart() {
     }
 
     override fun clone(): Combo {
-        return Combo(
+        val cloneValue = Combo(
             proOriginal!!,
             groupList.toMutableList().map { it.clone() },
             diningOption!!,
@@ -107,6 +108,12 @@ class Combo() : BaseProductInCart() {
             priceOverride,
             fees
         );
+
+        cloneValue.compReason = this.compReason;
+        cloneValue.discountUsersList = this.discountUsersList?.map { it.copy() }?.toMutableList()
+        cloneValue.discountServersList = this.discountServersList?.map { it.copy() }?.toMutableList()
+
+        return cloneValue;
     }
 
     fun modSubTotal() : Double {

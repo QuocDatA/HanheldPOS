@@ -146,7 +146,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
                         )
                     else navigator.goToWithCustomAnimation(
                         ComboFragment(
-                            item = Combo(
+                            combo = Combo(
                                 it,
                                 it.groupComboList.map { pro ->
                                     GroupBundle(

@@ -13,12 +13,16 @@ import com.hanheldpos.model.cart.GroupBundle
 import com.hanheldpos.model.cart.Regular
 import com.hanheldpos.model.combo.ItemActionType
 import com.hanheldpos.model.combo.ItemComboGroup
+import com.hanheldpos.model.discount.DiscountTypeFor
 import com.hanheldpos.model.home.order.menu.OrderMenuDataMapper
 import com.hanheldpos.model.home.order.menu.ProductMenuItem
 import com.hanheldpos.model.product.BaseProductInCart
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
 
 class ComboVM : BaseUiViewModel<ComboUV>() {
+
+    val isValidDiscount = MutableLiveData<Boolean>(false);
+    var typeDiscountSelect : DiscountTypeFor?= null;
 
     val bundleInCart = MutableLiveData<Combo>();
     val actionType = MutableLiveData<ItemActionType>();
