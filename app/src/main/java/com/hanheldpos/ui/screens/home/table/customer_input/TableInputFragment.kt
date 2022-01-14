@@ -1,17 +1,19 @@
-package com.hanheldpos.ui.screens.home.table.input
+package com.hanheldpos.ui.screens.home.table.customer_input
 
-import androidx.fragment.app.activityViewModels
+import android.view.View
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentTableInputBinding
+import com.hanheldpos.model.keyboard.KeyBoardType
 import com.hanheldpos.ui.base.fragment.BaseFragment
+import com.hanheldpos.ui.input.KeyBoardVM
 
 
 class TableInputFragment(
     private val listener : TableInputListener? = null
-) : BaseFragment<FragmentTableInputBinding,TableInputVM>(),TableInputUV {
+) : BaseFragment<FragmentTableInputBinding, TableInputVM>(), TableInputUV {
 
     //ViewModel
-    private val numberPadVM  = NumberPadVM();
+    private val keyBoardVM  = KeyBoardVM();
 
     override fun layoutRes() = R.layout.fragment_table_input
 
@@ -23,14 +25,16 @@ class TableInputFragment(
         viewModel.run {
             init(this@TableInputFragment);
             binding.viewModel = this;
-            binding.numberPadVM = numberPadVM;
-            binding.numberPad.viewModel = numberPadVM;
+            binding.keyboardVM = keyBoardVM;
+            binding.keyBoardContainer.numberPad.viewModel = keyBoardVM;
+            binding.keyBoardContainer.textPad.viewModel = keyBoardVM;
+            binding.keyBoardContainer.keyboardVM = keyBoardVM;
         }
 
     }
 
     override fun initView() {
-        numberPadVM.onListener(listener = object : NumberPadVM.NumberPadCallBack{
+        keyBoardVM.onListener(listener = object : KeyBoardVM.KeyBoardCallBack {
             override fun onComplete() {
                 viewModel.onComplete();
             }
@@ -38,11 +42,25 @@ class TableInputFragment(
             override fun onCancel() {
                 viewModel.onCancel();
             }
+
+            override fun onSwitch() {
+                binding.keyBoardContainer.keyBoardType = keyBoardVM.keyBoardType
+            }
+
+            override fun onCapLock() {
+                binding.keyBoardContainer.textPad.isCapLock = keyBoardVM.isCapLock
+            }
+
+
         });
     }
 
     override fun initData() {
-        numberPadVM.input.value = "";
+        keyBoardVM.input.value = "";
+        binding.keyBoardContainer.textPad.isCapLock = keyBoardVM.isCapLock
+        binding.keyBoardContainer.keyBoardType = keyBoardVM.keyBoardType
+        keyBoardVM.keyBoardType = KeyBoardType.NumberOnly
+        binding.keyBoardContainer.numberPad.keyBoardType = keyBoardVM.keyBoardType
     }
 
     override fun initAction() {
@@ -71,8 +89,8 @@ class TableInputFragment(
 
     override fun onComplete() {
         navigator.goOneBack();
-        if (!numberPadVM.input.value?.trim().equals(""))
-        listener?.onCompleteTable(Integer.valueOf(numberPadVM.input.value));
+        if (!keyBoardVM.input.value?.trim().equals(""))
+        listener?.onCompleteTable(Integer.valueOf(keyBoardVM.input.value));
     }
 
 }

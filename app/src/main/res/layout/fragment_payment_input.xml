@@ -8,8 +8,8 @@
             name="viewModel"
             type="com.hanheldpos.ui.screens.cart.payment.input.PaymentInputVM" />
         <variable
-            name="numberPadVM"
-            type="com.hanheldpos.ui.screens.home.table.input.NumberPadVM" />
+            name="keyboardVM"
+            type="com.hanheldpos.ui.input.KeyBoardVM" />
         <variable
             name="paymentMethod"
             type="com.hanheldpos.data.api.pojo.payment.PaymentMethodResp" />
@@ -23,7 +23,7 @@
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/numberPad"
+            android:layout_above="@+id/keyBoardContainer"
             android:layout_marginBottom="@dimen/_80sdp"
             android:layout_marginHorizontal="@dimen/_15sdp"
             android:elevation="0dp"
@@ -47,7 +47,7 @@
                     tools:text = "TIEN MAT"/>
 
                 <com.diadiem.pos_components.PTextInputEditText
-                    android:text="@{numberPadVM.input}"
+                    android:text="@{keyboardVM.input}"
                     android:id="@+id/numberPayment"
                     style="@style/BaseTextInput"
                     android:layout_marginHorizontal="@dimen/_17sdp"
@@ -121,10 +121,11 @@
         </androidx.cardview.widget.CardView>
 
         <include
-            android:id="@id/numberPad"
-            layout="@layout/layout_number_input"
+            android:id="@+id/keyBoardContainer"
+            layout="@layout/layout_keyboard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true" />
+
     </RelativeLayout>
 </layout>

@@ -120,4 +120,8 @@
     <string name="end_drawer">End Drawer</string>
     <string name="pay_in_out">Pay In/Out</string>
     <string name="drawer_description">Drawer Description</string>
+    <string name="description">Description</string>
+    <string name="actual_amount">Actual Amount</string>
+    <string name="enter_amount">Enter Amount</string>
+    <string name="total_paid_in_out">Total Paid In/Out</string>
 </resources>

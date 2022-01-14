@@ -5,15 +5,15 @@ import android.graphics.Rect
 import android.view.MotionEvent
 import android.view.View
 import androidx.core.widget.doAfterTextChanged
-import androidx.fragment.app.activityViewModels
 import com.hanheldpos.R
 import com.hanheldpos.databinding.ActivityStartDrawerBinding
 import com.hanheldpos.extension.navigateTo
+import com.hanheldpos.model.keyboard.KeyBoardType
 import com.hanheldpos.ui.base.activity.BaseActivity
 import com.hanheldpos.ui.screens.cashdrawer.CashDrawerHelper
 import com.hanheldpos.ui.screens.cashdrawer.CashDrawerVM
 import com.hanheldpos.ui.screens.cashdrawer.CashDrawerUV
-import com.hanheldpos.ui.screens.home.table.input.NumberPadVM
+import com.hanheldpos.ui.input.KeyBoardVM
 import com.hanheldpos.ui.screens.main.MainActivity
 import com.utils.helper.SystemHelper
 import java.text.DecimalFormat
@@ -25,14 +25,14 @@ class StartDrawerActivity : BaseActivity<ActivityStartDrawerBinding, CashDrawerV
 
     override fun layoutRes(): Int = R.layout.activity_start_drawer;
 
-    private val numberPadVM = NumberPadVM();
+    private val keyBoardVM = KeyBoardVM();
     override fun initViewModel(viewModel: CashDrawerVM) {
         viewModel.run {
             init(this@StartDrawerActivity);
             binding.viewModel = this;
 
         }
-        binding.numberPad.viewModel = numberPadVM;
+        binding.keyBoardContainer.numberPad.viewModel = keyBoardVM;
     }
 
     override fun initView() {
@@ -67,18 +67,28 @@ class StartDrawerActivity : BaseActivity<ActivityStartDrawerBinding, CashDrawerV
     }
 
     override fun initData() {
-        numberPadVM.input.observe(this, {
+        keyBoardVM.input.observe(this, {
             viewModel.amountString.value = it;
         });
+        keyBoardVM.keyBoardType = KeyBoardType.NumberOnly
+        binding.keyBoardContainer.numberPad.keyBoardType = keyBoardVM.keyBoardType
     }
 
     override fun initAction() {
-        numberPadVM.listener = object : NumberPadVM.NumberPadCallBack {
+        keyBoardVM.listener = object : KeyBoardVM.KeyBoardCallBack {
             override fun onComplete() {
                 viewModel.startDrawer(this@StartDrawerActivity);
             }
 
             override fun onCancel() {
+
+            }
+
+            override fun onSwitch() {
+
+            }
+
+            override fun onCapLock() {
 
             }
 
@@ -111,7 +121,7 @@ class StartDrawerActivity : BaseActivity<ActivityStartDrawerBinding, CashDrawerV
         if (ev.action == MotionEvent.ACTION_DOWN) {
             val touchPoint = Point(ev.rawX.roundToInt(), ev.rawY.roundToInt())
             val viewNum = !isPointInsideViewBounds(
-                binding.numberPad.root,
+                binding.keyBoardContainer.numberPad.root,
                 touchPoint
             );
             val viewEdit = !isPointInsideViewBounds(
@@ -122,11 +132,11 @@ class StartDrawerActivity : BaseActivity<ActivityStartDrawerBinding, CashDrawerV
                 binding.btnStartDrawer,
                 touchPoint
             );
-            if (binding.numberPad.root.visibility == View.VISIBLE && viewNum && viewEdit && viewBtn
+            if (binding.keyBoardContainer.numberPad.root.visibility == View.VISIBLE && viewNum && viewEdit && viewBtn
             ) {
-                binding.numberPad.root.visibility = View.GONE;
+                binding.keyBoardContainer.numberPad.root.visibility = View.GONE;
             } else if (!viewEdit || !viewNum) {
-                binding.numberPad.root.visibility = View.VISIBLE;
+                binding.keyBoardContainer.numberPad.root.visibility = View.VISIBLE;
             }
         }
 
