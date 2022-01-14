@@ -78,10 +78,14 @@ class Regular() : BaseProductInCart(), Parcelable, Cloneable {
             this.sku,
             this.variants,
             this.priceOverride,
-            this.fees
+            this.fees,
         )
         cloneValue.variantList = this.variantList?.map { it.copy() }?.toMutableList()
         cloneValue.modifierList.addAll(this.modifierList.map { it.copy() }.toMutableList())
+        cloneValue.compReason = this.compReason;
+        cloneValue.discountUsersList = this.discountUsersList?.map { it.copy() }?.toMutableList()
+        cloneValue.discountServersList = this.discountServersList?.map { it.copy() }?.toMutableList()
+
         return cloneValue
     }
 

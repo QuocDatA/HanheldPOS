@@ -36,7 +36,7 @@ object CartConverter {
 
         // TODO : save temp order to local
         cart.createDate =
-            DateTimeHelper.dateToString(Date(), DateTimeHelper.Format.FULL_DATE_UTC_Z);
+            DateTimeHelper.dateToString(Date(), DateTimeHelper.Format.FULL_DATE_UTC_TIMEZONE);
 
         return OrderModel(
             Order = Order(

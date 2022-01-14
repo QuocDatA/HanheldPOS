@@ -2,7 +2,6 @@ package com.hanheldpos.ui.screens.product.temporary_style.adapter
 
 import androidx.recyclerview.widget.DiffUtil
 import com.hanheldpos.R
-import com.hanheldpos.databinding.ItemTemporaryCookOptionBinding
 import com.hanheldpos.databinding.ItemTemporaryModifierBinding
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder

@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewTreeObserver
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import android.view.WindowManager
+import androidx.activity.viewModels
 import androidx.fragment.app.activityViewModels
 import com.hanheldpos.R
 import com.hanheldpos.databinding.ActivityMainBinding
@@ -43,8 +44,8 @@ class MainActivity : BaseFragmentBindingActivity<ActivityMainBinding, MainVM>(),
 
             SystemHelper.hideSystemUI(window);
         }
+        getNavigator().rootFragment = HomeFragment()
 
-        getNavigator().rootFragment = HomeFragment();
     }
 
     override fun initData() {

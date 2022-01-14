@@ -13,183 +13,160 @@
     </data>
 
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-
-        style="@style/ProductDetailRoot"
-        android:orientation="vertical">
+    <androidx.constraintlayout.widget.ConstraintLayout style="@style/RootLayout">
 
         <LinearLayout
-            app:layout_constraintTop_toTopOf="parent"
-
-            android:id="@+id/productInfo"
+            android:id="@+id/appBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            app:layout_constraintTop_toTopOf="parent">
 
             <FrameLayout
-                android:id="@+id/toolbarLayout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
                 <FrameLayout
-                    style="@style/ProductDetailCloseBtn"
-                    android:layout_gravity="end">
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:onClick="@{v->viewModel.onGetBack()}"
+                    android:padding="@dimen/_14sdp">
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:adjustViewBounds="true"
-                        android:onClick="@{v -> viewModel.onBack()}"
-                        android:padding="@dimen/_10sdp"
-                        android:scaleType="centerInside"
-                        android:src="@drawable/ic_close_light" />
+                        android:contentDescription="TODO"
+                        android:src="@drawable/ic_close" />
                 </FrameLayout>
-            </FrameLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingHorizontal="@dimen/_9sdp"
-                android:paddingVertical="@dimen/_5sdp"
-                app:layout_constraintTop_toBottomOf="@+id/toolbarLayout">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <com.diadiem.pos_components.PTextView
-                        android:id="@+id/nameProduct"
-                        style="@style/ProductDetailTitle"
-                        android:layout_marginEnd="@dimen/_10sdp"
-                        android:layout_weight="1"
-                        android:text="@{viewModel.regularInCart.productName}"
-                        app:useFontStyle="normal"
-                        tools:text="Produc name" />
-
-                    <com.diadiem.pos_components.PTextView
-                        style="@style/ProductDetailPrice"
-                        priceView="@{viewModel.regularInCart.priceOverride}"
-                        tools:text="10,000" />
-                </LinearLayout>
 
                 <com.diadiem.pos_components.PTextView
-                    style="@style/ProductDetailSku"
-                    visibleObject="@{viewModel.regularInCart.sku}"
-                    android:layout_marginVertical="@dimen/_3sdp"
-                    android:background="@drawable/bg_food_detail_text"
-                    android:paddingHorizontal="@dimen/_8sdp"
-                    android:paddingVertical="@dimen/_1sdp"
-                    android:text="@{viewModel.regularInCart.sku}" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/tabLayout"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintTop_toBottomOf="@+id/productInfo"
-            app:layout_constraintBottom_toTopOf="@id/bottomAction"
-            android:layout_above="@+id/bottomAction"
-            android:layout_below="@+id/productInfo"
-            android:background="@color/color_2"
-            android:orientation="vertical">
-
-            <com.google.android.material.tabs.TabLayout
-                android:id="@+id/tabOption"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:tabGravity="fill"
-                app:tabMaxWidth="0dp"
-                app:tabMode="fixed"
-                app:tabSelectedTextColor="@color/color_4"
-                app:tabTextAppearance="@style/TabTitleStyle" />
+                    android:id="@+id/header_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@{viewModel.regularInCart.productName}"
+                    app:useFontStyle="bold"
+                    app:useTextColor="color4"
+                    app:useTextHeader="h4"
+                    tools:text="Pho Dac Biet" />
+            </FrameLayout>
 
             <include
                 layout="@layout/divider_vertical"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_1sdp" />
-
-            <androidx.viewpager2.widget.ViewPager2
-                android:id="@+id/optionContainer"
-                useInputEnable="@{false}"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
+                android:layout_height="1dp" />
         </LinearLayout>
 
-        <LinearLayout
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@+id/bottomAction"
+            app:layout_constraintTop_toBottomOf="@id/appBar"
+            >
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/groupVariants"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clipToPadding="false"
+                    android:overScrollMode="never"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintTop_toBottomOf="@id/appBar"
+                    tools:itemCount="1"
+                    tools:listitem="@layout/item_product_group_variant" />
 
-            app:layout_constraintBottom_toBottomOf="parent"
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/groupModifiers"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clipToPadding="false"
+                    android:overScrollMode="never"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:itemCount="1"
+                    tools:listitem="@layout/item_product_group_modifier" />
+                <LinearLayout
+                    android:layout_marginTop="@dimen/_19sdp"
+                    android:id="@+id/noteProduct"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/color_2"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="@dimen/_10sdp"
+                    app:layout_constraintBottom_toTopOf="@+id/dividerActin"
+                    app:layout_constraintTop_toBottomOf="@+id/tabLayout">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="@dimen/_16sdp"
+                            android:layout_height="@dimen/_16sdp"
+                            android:layout_marginTop="@dimen/_2sdp"
+                            android:src="@drawable/ic_note" />
+
+                        <com.diadiem.pos_components.PTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="@dimen/_4sdp"
+                            android:text="Special Instructions"
+                            app:useFontStyle="bold"
+                            app:useTextColor="color4"
+                            app:useTextHeader="h5" />
+
+                        <com.diadiem.pos_components.PTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Optional"
+                            app:useFontStyle="normal"
+                            app:useTextColor="color8"
+                            app:useTextHeader="h7" />
+                    </LinearLayout>
+
+                    <com.diadiem.pos_components.PTextInputEditText
+                        android:id="@+id/noteInput"
+                        style="@style/BaseTextInput"
+                        android:layout_marginVertical="@dimen/_8sdp"
+                        android:background="@drawable/bg_outline"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:hint="@string/special_instructions"
+                        android:inputType="text"
+                        android:maxLines="3"
+                        android:minHeight="@dimen/_40sdp"
+                        android:paddingHorizontal="@dimen/_6sdp"
+                        android:paddingVertical="@dimen/_7sdp"
+                        android:text="@={viewModel.regularInCart.note}"
+                        app:ipt_useFontStyle="normal"
+                        app:ipt_useHintTextColor="color8"
+                        app:ipt_useTextColor="color4"
+                        app:ipt_useTextHeader="h5" />
+                </LinearLayout>
+                <androidx.fragment.app.FragmentContainerView
+                    android:id="@+id/fragment_container_discount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    />
+            </LinearLayout>
+        </ScrollView>
+
+
+        <LinearLayout
             android:id="@+id/bottomAction"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:id="@+id/noteProduct"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/color_2"
-                android:orientation="vertical"
-                android:paddingHorizontal="@dimen/_10sdp"
-                app:layout_constraintBottom_toTopOf="@+id/dividerActin"
-                app:layout_constraintTop_toBottomOf="@+id/tabLayout">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="@dimen/_14sdp"
-                        android:layout_height="@dimen/_14sdp"
-                        android:layout_marginTop="@dimen/_2sdp"
-                        android:src="@drawable/ic_note" />
-
-                    <com.diadiem.pos_components.PTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="@dimen/_4sdp"
-                        android:text="Special Instructions"
-                        app:useFontStyle="bold"
-                        app:useTextColor="color5"
-                        app:useTextHeader="h6" />
-
-                    <com.diadiem.pos_components.PTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Optional"
-                        app:useFontStyle="normal"
-                        app:useTextColor="color8"
-
-                        app:useTextHeader="h7" />
-                </LinearLayout>
-
-                <com.diadiem.pos_components.PTextInputEditText
-                    style="@style/BaseTextInput"
-                    android:id="@+id/noteInput"
-                    android:layout_marginVertical="@dimen/_8sdp"
-                    android:background="@drawable/bg_outline"
-                    android:focusableInTouchMode="true"
-                    android:hint="@string/special_instructions"
-                    android:inputType="text"
-                    android:maxLines="3"
-                    android:focusable="true"
-                    android:minHeight="@dimen/_40sdp"
-                    android:paddingHorizontal="@dimen/_6sdp"
-                    android:paddingVertical="@dimen/_7sdp"
-                    android:text="@={viewModel.regularInCart.note}"
-                    app:ipt_useFontStyle="normal"
-                    app:ipt_useHintTextColor="color8"
-                    app:ipt_useTextColor="color4"
-                    app:ipt_useTextHeader="h5" />
-            </LinearLayout>
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent">
 
             <include
                 android:id="@+id/dividerActin"
@@ -286,7 +263,6 @@
                 </com.google.android.material.card.MaterialCardView>
             </RelativeLayout>
         </LinearLayout>
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
