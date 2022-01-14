@@ -73,4 +73,8 @@ class DiscountCodeFragment(private val applyToType: DiscountApplyToType) :
             }
     }
 
+    override fun onResume() {
+        super.onResume()
+    }
+
 }

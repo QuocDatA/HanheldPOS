@@ -58,16 +58,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
                 android:background="@color/color_6" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/reasonContainer"
+            <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:overScrollMode="never"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:itemCount="3"
-                tools:listitem="@layout/item_discount_comp" />
+                android:layout_height="wrap_content">
+                <androidx.recyclerview.widget.RecyclerView
+                    android:nestedScrollingEnabled="false"
+                    android:id="@+id/reasonContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:overScrollMode="never"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:itemCount="3"
+                    tools:listitem="@layout/item_discount_comp" />
+            </androidx.core.widget.NestedScrollView>
+
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

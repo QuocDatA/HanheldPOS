@@ -17,24 +17,19 @@
             name="discountType"
             type="com.hanheldpos.model.discount.DiscountApplyToType" />
     </data>
-
-    <ScrollView
-        style="@style/RootLayout"
-        android:fillViewport="true">
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
             <LinearLayout
-                app:layout_constraintTop_toTopOf="parent"
                 android:id="@+id/tabLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_8sdp"
                 android:layout_marginVertical="@dimen/_19sdp"
                 android:orientation="vertical"
-                >
+                app:layout_constraintTop_toTopOf="parent">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/tabDiscountType"
@@ -45,24 +40,21 @@
                     tools:itemCount="3"
                     tools:listitem="@layout/item_tab_discount_type" />
 
-                <include layout="@layout/divider_vertical"/>
+                <include layout="@layout/divider_vertical" />
             </LinearLayout>
 
             <androidx.viewpager2.widget.ViewPager2
-                app:layout_constraintHeight_min="wrap"
                 android:id="@+id/discountFragmentContainer"
                 useInputEnable="@{false}"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_18sdp"
                 app:layout_constrainedHeight="true"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintHeight_min="wrap"
                 app:layout_constraintTop_toBottomOf="@id/tabLayout"
-                app:layout_constraintVertical_bias="1.0"
-                tools:layout_editor_absoluteX="-16dp" />
+                />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </ScrollView>
 
 
 </layout>

@@ -1,6 +1,8 @@
 package com.hanheldpos.ui.screens.discount.discount_type
 
+import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.viewpager2.widget.ViewPager2
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.order.settings.Reason
 import com.hanheldpos.databinding.FragmentDiscountTypeBinding
@@ -64,7 +66,10 @@ class DiscountTypeFragment(
 
         // Container Fragment Type For Adapter
         optionsPagerAdapter = OptionsPagerAdapter(childFragmentManager, lifecycle);
-        binding.discountFragmentContainer.adapter = optionsPagerAdapter;
+        binding.discountFragmentContainer.apply {
+            adapter = optionsPagerAdapter;
+        }
+
     }
 
     override fun initData() {

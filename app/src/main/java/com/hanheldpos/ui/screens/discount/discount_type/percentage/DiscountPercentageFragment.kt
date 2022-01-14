@@ -60,7 +60,6 @@ class DiscountPercentageFragment(private val listener : DiscountTypeFragment.Dis
 
     override fun onResume() {
         super.onResume()
-
         requireActivity().supportFragmentManager.setFragmentResultListener("saveDiscount",this) { _, bundle ->
             if (bundle.getSerializable("DiscountTypeFor") == DiscountTypeFor.PERCENTAGE) {
                 listener.discountUserChoose(
