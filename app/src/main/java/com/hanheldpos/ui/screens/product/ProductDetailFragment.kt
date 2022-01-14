@@ -1,5 +1,6 @@
 package com.hanheldpos.ui.screens.product
 
+import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import com.hanheldpos.R
@@ -17,6 +18,7 @@ import com.hanheldpos.model.cart.Regular
 import com.hanheldpos.model.cart.VariantCart
 import com.hanheldpos.model.combo.ItemActionType
 import com.hanheldpos.model.discount.DiscountApplyToType
+import com.hanheldpos.model.discount.DiscountTypeFor
 import com.hanheldpos.model.discount.DiscountUser
 import com.hanheldpos.model.product.BaseProductInCart
 import com.hanheldpos.model.product.ItemExtra
@@ -93,23 +95,34 @@ class ProductDetailFragment(
             childFragmentManager.beginTransaction().replace(
                 R.id.fragment_container_discount,
                 DiscountTypeFragment(
+                    product = regular,
                     applyToType = DiscountApplyToType.ITEM_DISCOUNT_APPLY_TO,
                     cart = cartDataVM.cartModelLD.value!!,
                     listener = object : DiscountTypeFragment.DiscountTypeListener {
                         override fun discountUserChoose(discount: DiscountUser) {
-
+                            if (viewModel.isValidDiscount.value != true) return;
+                            viewModel.regularInCart.value?.discountUsersList =
+                                mutableListOf(discount);
+                            viewModel.regularInCart.notifyValueChange();
                         }
 
                         override fun compReasonChoose(item: Reason) {
-
+                            if (viewModel.isValidDiscount.value != true) return;
+                            viewModel.regularInCart.value?.compReason = item;
+                            viewModel.regularInCart.notifyValueChange();
                         }
 
                         override fun compRemoveAll() {
+                            viewModel.regularInCart.value?.compReason = null;
+                            viewModel.regularInCart.notifyValueChange();
+                        }
 
+                        override fun discountFocus(type: DiscountTypeFor) {
+                            viewModel.typeDiscountSelect = type;
                         }
 
                         override fun validDiscount(isValid: Boolean) {
-
+                            viewModel.isValidDiscount.postValue(isValid);
                         }
                     })
             ).commit();
@@ -239,6 +252,7 @@ class ProductDetailFragment(
     }
 
     override fun onAddCart(item: BaseProductInCart) {
+        requireActivity().supportFragmentManager.setFragmentResult("saveDiscount", Bundle().apply { putSerializable("DiscountTypeFor", viewModel.typeDiscountSelect) });
         getBack();
         listener?.onCartAdded(item, viewModel.actionType.value!!);
     }

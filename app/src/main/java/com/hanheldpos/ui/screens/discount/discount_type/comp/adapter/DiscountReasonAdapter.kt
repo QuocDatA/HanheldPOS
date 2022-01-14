@@ -15,7 +15,7 @@ class DiscountReasonAdapter(
 
     data class SelectedItem(var value: Int = -1)
 
-    private var selectedItem: SelectedItem = SelectedItem(-1)
+    var selectedItem: SelectedItem = SelectedItem(-1)
 
     override fun submitList(list: MutableList<Reason>?) {
         if (comp != null)
