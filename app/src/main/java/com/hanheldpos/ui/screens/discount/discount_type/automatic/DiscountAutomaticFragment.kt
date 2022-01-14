@@ -76,4 +76,8 @@ class DiscountAutomaticFragment(private val cart: CartModel?) :
         itemSelected.postValue(item);
     }
 
+    override fun onResume() {
+        super.onResume()
+    }
+
 }

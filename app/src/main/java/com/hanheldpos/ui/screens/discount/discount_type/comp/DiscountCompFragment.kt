@@ -75,7 +75,6 @@ class DiscountCompFragment(
 
     override fun onResume() {
         super.onResume()
-
         requireActivity().supportFragmentManager.setFragmentResultListener("saveDiscount",this) { _, bundle ->
             if (bundle.getSerializable("DiscountTypeFor") == DiscountTypeFor.COMP) {
                 listener.compReasonChoose(viewModel.reasonChosen.value!!);

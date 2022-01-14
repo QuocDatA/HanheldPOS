@@ -91,6 +91,65 @@
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:itemCount="1"
                     tools:listitem="@layout/item_product_group_modifier" />
+                <LinearLayout
+                    android:id="@+id/noteProduct"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/color_2"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="@dimen/_10sdp"
+                    app:layout_constraintBottom_toTopOf="@+id/dividerActin"
+                    app:layout_constraintTop_toBottomOf="@+id/tabLayout">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="@dimen/_16sdp"
+                            android:layout_height="@dimen/_16sdp"
+                            android:layout_marginTop="@dimen/_2sdp"
+                            android:src="@drawable/ic_note" />
+
+                        <com.diadiem.pos_components.PTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="@dimen/_4sdp"
+                            android:text="Special Instructions"
+                            app:useFontStyle="bold"
+                            app:useTextColor="color4"
+                            app:useTextHeader="h5" />
+
+                        <com.diadiem.pos_components.PTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Optional"
+                            app:useFontStyle="normal"
+                            app:useTextColor="color8"
+                            app:useTextHeader="h7" />
+                    </LinearLayout>
+
+                    <com.diadiem.pos_components.PTextInputEditText
+                        android:id="@+id/noteInput"
+                        style="@style/BaseTextInput"
+                        android:layout_marginVertical="@dimen/_8sdp"
+                        android:background="@drawable/bg_outline"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:hint="@string/special_instructions"
+                        android:inputType="text"
+                        android:maxLines="3"
+                        android:minHeight="@dimen/_40sdp"
+                        android:paddingHorizontal="@dimen/_6sdp"
+                        android:paddingVertical="@dimen/_7sdp"
+                        android:text="@={viewModel.regularInCart.note}"
+                        app:ipt_useFontStyle="normal"
+                        app:ipt_useHintTextColor="color8"
+                        app:ipt_useTextColor="color4"
+                        app:ipt_useTextHeader="h5" />
+                </LinearLayout>
                 <androidx.fragment.app.FragmentContainerView
                     android:id="@+id/fragment_container_discount"
                     android:layout_width="match_parent"
@@ -108,65 +167,7 @@
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent">
 
-            <LinearLayout
-                android:id="@+id/noteProduct"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/color_2"
-                android:orientation="vertical"
-                android:paddingHorizontal="@dimen/_10sdp"
-                app:layout_constraintBottom_toTopOf="@+id/dividerActin"
-                app:layout_constraintTop_toBottomOf="@+id/tabLayout">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="@dimen/_16sdp"
-                        android:layout_height="@dimen/_16sdp"
-                        android:layout_marginTop="@dimen/_2sdp"
-                        android:src="@drawable/ic_note" />
-
-                    <com.diadiem.pos_components.PTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="@dimen/_4sdp"
-                        android:text="Special Instructions"
-                        app:useFontStyle="bold"
-                        app:useTextColor="color4"
-                        app:useTextHeader="h5" />
-
-                    <com.diadiem.pos_components.PTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Optional"
-                        app:useFontStyle="normal"
-                        app:useTextColor="color8"
-                        app:useTextHeader="h7" />
-                </LinearLayout>
-
-                <com.diadiem.pos_components.PTextInputEditText
-                    android:id="@+id/noteInput"
-                    style="@style/BaseTextInput"
-                    android:layout_marginVertical="@dimen/_8sdp"
-                    android:background="@drawable/bg_outline"
-                    android:focusable="true"
-                    android:focusableInTouchMode="true"
-                    android:hint="@string/special_instructions"
-                    android:inputType="text"
-                    android:maxLines="3"
-                    android:minHeight="@dimen/_40sdp"
-                    android:paddingHorizontal="@dimen/_6sdp"
-                    android:paddingVertical="@dimen/_7sdp"
-                    android:text="@={viewModel.regularInCart.note}"
-                    app:ipt_useFontStyle="normal"
-                    app:ipt_useHintTextColor="color8"
-                    app:ipt_useTextColor="color4"
-                    app:ipt_useTextHeader="h5" />
-            </LinearLayout>
 
             <include
                 android:id="@+id/dividerActin"
