@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="com.hanheldpos.ui.screens.menu.option.report.drawer.end_drawer.EndDrawerVM" />
+            type="com.hanheldpos.ui.screens.cashdrawer.enddrawer.EndDrawerVM" />
     </data>
 
 
@@ -52,23 +52,20 @@
             android:layout_height="@dimen/_1sdp"
             android:background="@color/color_10" />
 
-
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <androidx.core.widget.NestedScrollView
-                android:id="@+id/endDrawerDetailContainer"
+            android:layout_height="wrap_content"
+            android:fillViewport="true">
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="parent"
-                >
+                android:layout_height="wrap_content">
 
                 <LinearLayout
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:id="@+id/endDrawerDetailContainer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                   >
+                    android:orientation="vertical">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -495,41 +492,43 @@
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
-            </androidx.core.widget.NestedScrollView>
 
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                app:layout_constraintHeight_min="wrap"
-                android:layout_marginHorizontal="@dimen/_8sdp"
-                android:layout_marginBottom="@dimen/_12sdp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/endDrawerDetailContainer">
-
-                <LinearLayout
-                    android:id="@+id/btnEndDrawer"
+                <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/color_11"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:foreground="?attr/selectableItemBackground"
-                    android:gravity="center"
-                    android:orientation="horizontal"
-                    android:padding="@dimen/_10sdp">
+                    android:layout_height="0dp"
+                    android:layout_marginHorizontal="@dimen/_8sdp"
+                    android:layout_marginVertical="@dimen/_12sdp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintHeight_min="wrap"
+                    app:layout_constraintTop_toBottomOf="@id/endDrawerDetailContainer">
 
-                    <com.diadiem.pos_components.PTextView
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:id="@+id/btnEndDrawer"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:background="@color/color_11"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?attr/selectableItemBackground"
                         android:gravity="center"
-                        android:text="@string/end_drawer"
-                        app:useFontStyle="bold"
-                        app:useTextColor="color0"
-                        app:useTextHeader="h5" />
-                </LinearLayout>
-            </FrameLayout>
+                        android:orientation="horizontal"
+                        android:padding="@dimen/_10sdp">
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                        <com.diadiem.pos_components.PTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="@string/end_drawer"
+                            app:useFontStyle="bold"
+                            app:useTextColor="color0"
+                            app:useTextHeader="h5" />
+                    </LinearLayout>
+                </FrameLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
+
+
 
 
     </LinearLayout>
