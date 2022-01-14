@@ -9,12 +9,14 @@ import com.hanheldpos.extension.notifyValueChange
 import com.hanheldpos.model.cart.ModifierCart
 import com.hanheldpos.model.cart.Regular
 import com.hanheldpos.model.combo.ItemActionType
+import com.hanheldpos.model.discount.DiscountTypeFor
 import com.hanheldpos.model.product.GroupExtra
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
 
 class ProductDetailVM : BaseUiViewModel<ProductDetailUV>() {
 
     val isValidDiscount = MutableLiveData<Boolean>(false);
+    var typeDiscountSelect : DiscountTypeFor?= null;
 
     val listVariantGroups : MutableList<VariantsGroup> =mutableListOf();
     val listModifierGroups :  MutableList<GroupExtra> = mutableListOf();
@@ -26,7 +28,9 @@ class ProductDetailVM : BaseUiViewModel<ProductDetailUV>() {
     val numberQuantity = Transformations.map(regularInCart) {
         return@map it.quantity;
     };
-    val totalPriceLD = MutableLiveData(0.0);
+    val totalPriceLD = Transformations.map(regularInCart) {
+        return@map regularInCart.value?.total() ?: 0.0
+    }
 
     var maxQuantity = -1;
 
@@ -40,9 +44,6 @@ class ProductDetailVM : BaseUiViewModel<ProductDetailUV>() {
 
     fun initLifeCycle(owner: LifecycleOwner) {
         owner.lifecycle.addObserver(this);
-        regularInCart.observe(owner, {
-            updateTotalPrice();
-        })
     }
 
     fun onQuantityAdded() {
@@ -57,40 +58,6 @@ class ProductDetailVM : BaseUiViewModel<ProductDetailUV>() {
         regularInCart.notifyValueChange();
     }
 
-    private fun updateTotalPrice() {
-        totalPriceLD.value = (regularInCart.value?.total() ?: 0.0);
-    }
-
-    //endregion
-
-
-    // region Modifier
-
-    fun onModifierAddItem(item: ModifierCart) {
-        regularInCart.value?.apply {
-            modifierList.find { modifier ->
-                item.modifierId == modifier.modifierId
-            }.let {
-                if (it != null) {
-                    val index = modifierList.indexOf(it);
-                    modifierList[index] = item;
-                } else {
-                    modifierList.add(item)
-                }
-            }
-        }
-        regularInCart.notifyValueChange();
-    }
-
-    fun onModifierRemoveItem(item: ModifierCart) {
-        regularInCart.value
-            ?.apply {
-                modifierList.removeAll { it.modifierGuid == item.modifierGuid }
-            }
-        regularInCart.notifyValueChange();
-    }
-
-    //endregion
     fun onAddCart() {
         uiCallback?.onAddCart(regularInCart.value!!);
     }
@@ -98,4 +65,6 @@ class ProductDetailVM : BaseUiViewModel<ProductDetailUV>() {
     fun onGetBack(){
         uiCallback?.getBack();
     }
+
+
 }

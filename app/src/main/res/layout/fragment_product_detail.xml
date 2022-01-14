@@ -92,6 +92,7 @@
                     tools:itemCount="1"
                     tools:listitem="@layout/item_product_group_modifier" />
                 <LinearLayout
+                    android:layout_marginTop="@dimen/_19sdp"
                     android:id="@+id/noteProduct"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -166,8 +167,6 @@
             android:layout_alignParentBottom="true"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent">
-
-
 
             <include
                 android:id="@+id/dividerActin"

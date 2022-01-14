@@ -1,5 +1,6 @@
 package com.hanheldpos.ui.screens.discount.discount_type.comp
 
+import android.annotation.SuppressLint
 import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.MutableLiveData
 import com.hanheldpos.R
@@ -33,19 +34,11 @@ class DiscountCompFragment(
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun initView() {
 
 
-        viewModel.reasonChosen.observe(this, { reason ->
-            binding.removeComp.apply {
-                reason?.run { setTextColor(resources.getColor(R.color.color_0)); }
-                setOnClickListener {
-                    reason?.run {
-                        listener.compRemoveAll();
-                    }
-                }
-            }
-        });
+
 
         adapter = DiscountReasonAdapter(
             comp,
@@ -57,6 +50,25 @@ class DiscountCompFragment(
             })
         binding.reasonContainer.adapter = adapter;
 
+        viewModel.reasonChosen.observe(this, { reason ->
+            binding.removeComp.apply {
+                if(reason != null) {
+                    setTextColor(resources.getColor(R.color.color_0));
+                }
+                else {
+                    setTextColor(resources.getColor(R.color.color_6));
+                }
+
+                setOnClickListener {
+                    reason?.run {
+                        adapter.selectedItem.value = -1;
+                        adapter.notifyDataSetChanged()
+                        viewModel.reasonChosen.postValue(null)
+                        listener.compRemoveAll();
+                    }
+                }
+            }
+        });
 
     }
 
@@ -77,7 +89,9 @@ class DiscountCompFragment(
         super.onResume()
         requireActivity().supportFragmentManager.setFragmentResultListener("saveDiscount",this) { _, bundle ->
             if (bundle.getSerializable("DiscountTypeFor") == DiscountTypeFor.COMP) {
-                listener.compReasonChoose(viewModel.reasonChosen.value!!);
+                viewModel.reasonChosen.value?.run {
+                    listener.compReasonChoose(viewModel.reasonChosen.value!!);
+                }
             }
 
         }
