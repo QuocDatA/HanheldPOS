@@ -14,6 +14,8 @@ import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
 
 class ProductDetailVM : BaseUiViewModel<ProductDetailUV>() {
 
+    val isValidDiscount = MutableLiveData<Boolean>(false);
+
     val listVariantGroups : MutableList<VariantsGroup> =mutableListOf();
     val listModifierGroups :  MutableList<GroupExtra> = mutableListOf();
 

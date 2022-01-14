@@ -107,6 +107,10 @@ class ProductDetailFragment(
                         override fun compRemoveAll() {
 
                         }
+
+                        override fun validDiscount(isValid: Boolean) {
+
+                        }
                     })
             ).commit();
     }

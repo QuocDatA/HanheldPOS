@@ -34,12 +34,7 @@ class DiscountCompFragment(
     }
 
     override fun initView() {
-        requireActivity().supportFragmentManager.setFragmentResultListener("saveDiscount",this) { _, bundle ->
-            if (bundle.getSerializable("DiscountTypeFor") == DiscountTypeFor.COMP) {
-                listener.compReasonChoose(viewModel.reasonChosen.value!!);
-            }
 
-        }
 
         viewModel.reasonChosen.observe(this, { reason ->
             binding.removeComp.apply {
@@ -76,6 +71,19 @@ class DiscountCompFragment(
         viewModel.reasonChosen.observe(this, {
             listener.validDiscount(it != comp);
         });
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        requireActivity().supportFragmentManager.setFragmentResultListener("saveDiscount",this) { _, bundle ->
+            if (bundle.getSerializable("DiscountTypeFor") == DiscountTypeFor.COMP) {
+                listener.compReasonChoose(viewModel.reasonChosen.value!!);
+            }
+
+        }
+
+        listener.validDiscount(viewModel.reasonChosen.value != comp);
     }
 
 }
