@@ -12,6 +12,7 @@ class DiscountTabAdapter(
     private val listener: BaseItemClickListener<DiscountTypeTab>
 ) : BaseBindingListAdapter<DiscountTypeTab>(DiffCallback(), listener) {
     data class SelectedItem(var value: Int = 0)
+
     private var selectedItem: SelectedItem = SelectedItem(0)
 
     override fun submitList(list: MutableList<DiscountTypeTab>?) {
@@ -33,8 +34,10 @@ class DiscountTabAdapter(
                 notifyItemChanged(selectedItem.value);
                 selectedItem.value = position;
                 notifyItemChanged(position);
-                listener.onItemClick(position, item);
+
             }
+            if (selectedItem.value == position)
+                listener.onItemClick(position, item);
 
         }
         binding.isSelected = position == selectedItem.value;
