@@ -1,10 +1,12 @@
 package com.hanheldpos.ui.screens.pincode
 
+import android.view.ViewTreeObserver
 import android.view.WindowManager
 import com.hanheldpos.R
 import com.hanheldpos.databinding.ActivityPinCodeBinding
 import com.hanheldpos.extension.navigateTo
 import com.hanheldpos.ui.base.activity.BaseActivity
+import com.hanheldpos.ui.screens.cashdrawer.CashDrawerHelper
 import com.hanheldpos.ui.screens.cashdrawer.startdrawer.StartDrawerActivity
 import com.hanheldpos.ui.screens.main.MainActivity
 import com.hanheldpos.ui.screens.pincode.adapter.PinCodeAdapter
@@ -18,6 +20,14 @@ class PinCodeActivity : BaseActivity<ActivityPinCodeBinding, PinCodeVM>(), PinCo
             window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
             SystemHelper.hideSystemUI(this.window);
         }
+
+        binding.root.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener{
+            override fun onGlobalLayout() {
+                if (CashDrawerHelper.isEndDrawer)
+                    CashDrawerHelper.showDrawerNotification(this@PinCodeActivity, isOnStarting = false);
+                binding.root.viewTreeObserver.removeOnGlobalLayoutListener(this);
+            }
+        })
     }
 
     override fun initData() {
