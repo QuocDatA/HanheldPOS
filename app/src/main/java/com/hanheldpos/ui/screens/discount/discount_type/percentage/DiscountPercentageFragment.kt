@@ -28,17 +28,7 @@ class DiscountPercentageFragment(private val listener : DiscountTypeFragment.Dis
     }
 
     override fun initView() {
-        requireActivity().supportFragmentManager.setFragmentResultListener("saveDiscount",this) { _, bundle ->
-            if (bundle.getSerializable("DiscountTypeFor") == DiscountTypeFor.PERCENTAGE) {
-                listener.discountUserChoose(
-                    DiscountUser(
-                        DiscountName = viewModel.title.value!!,
-                        DiscountValue = viewModel.percentValue,
-                        DiscountType = DiscountTypeEnum.PERCENT.value
-                    )
-                )
-            }
-        }
+
         binding.percentDiscount.let { input ->
             var isEditing = false
             input.doAfterTextChanged {
@@ -66,5 +56,23 @@ class DiscountPercentageFragment(private val listener : DiscountTypeFragment.Dis
         viewModel.title.observe(this,{
             listener.validDiscount(viewModel.percentValue > 0.0 && !viewModel.title.value.isNullOrEmpty());
         })
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        requireActivity().supportFragmentManager.setFragmentResultListener("saveDiscount",this) { _, bundle ->
+            if (bundle.getSerializable("DiscountTypeFor") == DiscountTypeFor.PERCENTAGE) {
+                listener.discountUserChoose(
+                    DiscountUser(
+                        DiscountName = viewModel.title.value!!,
+                        DiscountValue = viewModel.percentValue,
+                        DiscountType = DiscountTypeEnum.PERCENT.value
+                    )
+                )
+            }
+        }
+
+        listener.validDiscount(viewModel.percentValue > 0.0 && !viewModel.title.value.isNullOrEmpty());
     }
 }

@@ -65,9 +65,6 @@ class DiscountTypeFragment(
         // Container Fragment Type For Adapter
         optionsPagerAdapter = OptionsPagerAdapter(childFragmentManager, lifecycle);
         binding.discountFragmentContainer.adapter = optionsPagerAdapter;
-
-
-
     }
 
     override fun initData() {
