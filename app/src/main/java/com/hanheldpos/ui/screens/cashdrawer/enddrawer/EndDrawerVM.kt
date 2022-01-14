@@ -1,6 +1,5 @@
-package com.hanheldpos.ui.screens.menu.option.report.drawer.end_drawer
+package com.hanheldpos.ui.screens.cashdrawer.enddrawer
 
-import androidx.lifecycle.ViewModel
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
 
 class EndDrawerVM : BaseUiViewModel<EndDrawerUV>() {
