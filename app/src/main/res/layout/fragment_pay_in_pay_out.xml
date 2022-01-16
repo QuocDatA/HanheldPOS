@@ -82,7 +82,7 @@
                     android:focusable="true"
                     android:focusableInTouchMode="true"
                     android:hint="@string/enter_amount"
-                    android:inputType="text|textMultiLine"
+                    android:inputType="number"
                     android:maxLines="1"
 
                     android:minHeight="@dimen/_33sdp"
@@ -197,12 +197,12 @@
             android:orientation="horizontal">
 
             <LinearLayout
-                android:id="@+id/btnEndDrawer"
+                android:id="@+id/btnPayIn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/_3sdp"
                 android:layout_weight="1"
-                android:background="@color/color_11"
+                android:background="@drawable/bg_outline"
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?attr/selectableItemBackground"
@@ -211,22 +211,23 @@
                 android:padding="@dimen/_10sdp">
 
                 <com.diadiem.pos_components.PTextView
+                    android:id="@+id/btnPayInText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="@string/pay_in"
+                    android:text="@string/end_drawer"
                     app:useFontStyle="bold"
-                    app:useTextColor="color0"
+                    app:useTextColor="color8"
                     app:useTextHeader="h5" />
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/btnPayInOut"
+                android:id="@+id/btnPayOut"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_3sdp"
                 android:layout_weight="1"
-                android:background="@color/color_11"
+                android:background="@drawable/bg_outline"
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?attr/selectableItemBackground"
@@ -235,12 +236,13 @@
                 android:padding="@dimen/_10sdp">
 
                 <com.diadiem.pos_components.PTextView
+                    android:id="@+id/btnPayOutText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="@string/pay_out"
+                    android:text="@string/pay_in_out"
                     app:useFontStyle="bold"
-                    app:useTextColor="color0"
+                    app:useTextColor="color8"
                     app:useTextHeader="h5" />
             </LinearLayout>
         </LinearLayout>
