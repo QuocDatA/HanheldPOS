@@ -125,7 +125,7 @@
                             android:focusable="true"
                             android:focusableInTouchMode="true"
                             android:hint="@string/enter_amount"
-                            android:inputType="text|textMultiLine"
+                            android:inputType="number"
                             android:maxLines="1"
 
                             android:minHeight="@dimen/_33sdp"
@@ -515,6 +515,7 @@
                         android:padding="@dimen/_10sdp">
 
                         <com.diadiem.pos_components.PTextView
+                            android:id="@+id/btnEndDrawerText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center"

@@ -1,5 +1,8 @@
 package com.hanheldpos.ui.screens.cashdrawer.enddrawer
 
+import android.annotation.SuppressLint
+import androidx.core.content.ContextCompat
+import androidx.core.widget.doAfterTextChanged
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentEndDrawerBinding
 import com.hanheldpos.extension.navigateTo
@@ -30,6 +33,15 @@ class EndDrawerFragment : BaseFragment<FragmentEndDrawerBinding, EndDrawerVM>(),
                 alsoClearActivity = true,
             )
             CashDrawerHelper.isEndDrawer = true
+        }
+        binding.amountInput.doAfterTextChanged {
+            if(binding.amountInput.text.toString().toInt() > 1000) {
+                binding.btnEndDrawer.setBackgroundColor(ContextCompat.getColor(this.requireContext(),R.color.color_0))
+                binding.btnEndDrawerText.setTextColor(ContextCompat.getColor(this.requireContext(), R.color.color_2))
+            } else {
+                binding.btnEndDrawer.setBackgroundColor(ContextCompat.getColor(this.requireContext(),R.color.color_11))
+                binding.btnEndDrawerText.setTextColor(ContextCompat.getColor(this.requireContext(), R.color.color_0))
+            }
         }
     }
 

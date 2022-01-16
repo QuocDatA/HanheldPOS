@@ -3,6 +3,7 @@ package com.hanheldpos.ui.screens.menu.option.report.drawer
 
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentCurrentDrawerBinding
+import com.hanheldpos.ui.base.dialog.AppAlertDialog
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.cashdrawer.enddrawer.EndDrawerFragment
 import com.hanheldpos.ui.screens.menu.option.report.drawer.payin_payout.PayInPayOutFragment
@@ -36,6 +37,10 @@ class CurrentDrawerFragment : BaseFragment<FragmentCurrentDrawerBinding, Current
 
     override fun onOpenEndDrawer() {
         navigator.goTo(EndDrawerFragment())
+//        AppAlertDialog.get().show(
+//            title = "Notification", message = "Please sync local data before ending\n" +
+//                    "this cash drawer"
+//        )
     }
 
     override fun onOpenPayInPayOut() {
