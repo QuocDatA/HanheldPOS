@@ -11,6 +11,10 @@
         <variable
             name="keyboardVM"
             type="com.hanheldpos.ui.input.KeyBoardVM" />
+
+        <variable
+            name="keyBoardType"
+            type="com.hanheldpos.model.keyboard.KeyBoardType" />
     </data>
 
         <FrameLayout
@@ -20,19 +24,17 @@
             android:layout_gravity="bottom|center_horizontal">
 
             <include
-                app:viewModel="@{keyboardVM}"
                 android:id="@+id/textPad"
                 layout="@layout/layout_text_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="@{keyboardVM.keyBoardType == KeyBoardType.Text ? View.VISIBLE : View.GONE}" />
+                android:visibility="@{keyBoardType == KeyBoardType.Text ? View.VISIBLE : View.GONE}" />
 
             <include
-                app:viewModel="@{keyboardVM}"
                 android:id="@id/numberPad"
                 layout="@layout/layout_number_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="@{keyboardVM.keyBoardType == KeyBoardType.Number || keyboardVM.keyBoardType == KeyBoardType.NumberOnly? View.VISIBLE : View.GONE}" />
+                android:visibility="@{keyBoardType == KeyBoardType.Number ? View.VISIBLE : keyBoardType == KeyBoardType.NumberOnly ? View.VISIBLE : View.GONE}" />
         </FrameLayout>
 </layout>
