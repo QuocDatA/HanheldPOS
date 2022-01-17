@@ -71,7 +71,7 @@ class CartVM : BaseUiViewModel<CartUV>() {
             UserGuid = UserHelper.getUserGui(),
             LocationGuid = UserHelper.getLocationGui(),
             DeviceGuid = UserHelper.getDeviceGui(),
-            Device_key = DataHelper.getDeviceByDeviceCode()?.key!!.toString()
+            Device_key = DataHelper.getDeviceByDeviceCode()?.SecretKey!!.toString()
         )
         );
         settingResp.putSettingDeviceIds(

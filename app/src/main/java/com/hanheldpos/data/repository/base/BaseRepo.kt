@@ -21,7 +21,7 @@ abstract class BaseRepo : BaseApi() {
                 callback.run {
                     apiRequesting(false)
                     if (response.isSuccessful) {
-                        apiResponse(getBodyResponse(response)?.responseData)
+                        apiResponse(getBodyResponse(response)?.Model)
                         return
                     }
                     showMessage(getErrMessage(response))

@@ -61,7 +61,7 @@
                         app:useFontStyle="bold"
                         app:useTextColor="color2"
                         app:useTextHeader="h5"
-                        android:text="@{UserHelper.INSTANCE.curEmployee.nameAcronymn}"
+                        android:text="@{UserHelper.INSTANCE.curEmployee.NameAcronymn}"
                         tools:text="QN" />
                 </com.google.android.material.card.MaterialCardView>
 
