@@ -1,4 +1,4 @@
-package com.hanheldpos.ui.screens.menu.option.report.drawer
+package com.hanheldpos.ui.screens.menu.option.report.current_drawer
 
 
 import com.hanheldpos.R
@@ -6,7 +6,7 @@ import com.hanheldpos.databinding.FragmentCurrentDrawerBinding
 import com.hanheldpos.ui.base.dialog.AppAlertDialog
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.cashdrawer.enddrawer.EndDrawerFragment
-import com.hanheldpos.ui.screens.menu.option.report.drawer.payin_payout.PayInPayOutFragment
+import com.hanheldpos.ui.screens.menu.option.report.current_drawer.payin_payout.PayInPayOutFragment
 
 class CurrentDrawerFragment : BaseFragment<FragmentCurrentDrawerBinding, CurrentDrawerVM>() , CurrentDrawerUV {
     override fun layoutRes() = R.layout.fragment_current_drawer

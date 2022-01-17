@@ -35,13 +35,7 @@ class EndDrawerFragment : BaseFragment<FragmentEndDrawerBinding, EndDrawerVM>(),
             CashDrawerHelper.isEndDrawer = true
         }
         binding.amountInput.doAfterTextChanged {
-            if(binding.amountInput.text.toString().toInt() > 1000) {
-                binding.btnEndDrawer.setBackgroundColor(ContextCompat.getColor(this.requireContext(),R.color.color_0))
-                binding.btnEndDrawerText.setTextColor(ContextCompat.getColor(this.requireContext(), R.color.color_2))
-            } else {
-                binding.btnEndDrawer.setBackgroundColor(ContextCompat.getColor(this.requireContext(),R.color.color_11))
-                binding.btnEndDrawerText.setTextColor(ContextCompat.getColor(this.requireContext(), R.color.color_0))
-            }
+            binding.isActive = binding.amountInput.text.toString().toInt() > 1000
         }
     }
 

@@ -7,7 +7,11 @@
 
         <variable
             name="viewModel"
-            type="com.hanheldpos.ui.screens.menu.option.report.drawer.payin_payout.PayInPayOutVM" />
+            type="com.hanheldpos.ui.screens.menu.option.report.current_drawer.payin_payout.PayInPayOutVM" />
+
+        <variable
+            name="isActive"
+            type="Boolean" />
     </data>
 
     <RelativeLayout
@@ -202,8 +206,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/_3sdp"
                 android:layout_weight="1"
-                android:background="@drawable/bg_outline"
                 android:clickable="true"
+                android:background="@drawable/bg_outline"
                 android:focusable="true"
                 android:foreground="?attr/selectableItemBackground"
                 android:gravity="center"
@@ -215,9 +219,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="@string/end_drawer"
+                    android:text="@string/pay_in"
+                    android:textColor="@{isActive ? @color/color_11 : @color/color_8}"
                     app:useFontStyle="bold"
-                    app:useTextColor="color8"
                     app:useTextHeader="h5" />
             </LinearLayout>
 
@@ -240,9 +244,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="@string/pay_in_out"
+                    android:text="@string/pay_out"
                     app:useFontStyle="bold"
-                    app:useTextColor="color8"
+                    android:textColor="@{isActive ? @color/color_11 : @color/color_8}"
                     app:useTextHeader="h5" />
             </LinearLayout>
         </LinearLayout>
