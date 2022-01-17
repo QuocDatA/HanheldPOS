@@ -6,33 +6,28 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class GroupPriceItem(
-    @field:SerializedName("GroupTypeId")
-    val groupTypeID: Int,
-
-    @field:SerializedName("GroupGuid")
-    val groupGUID: String,
-
-    @field:SerializedName("Product")
-    val product: List<GroupPriceProductItem>
+    val GroupTypeId: Int,
+    val GroupGuid: String,
+    val Product: List<GroupPriceProductItem>
 ) : Parcelable {
 }
 
 @Parcelize
 data class GroupPriceProductItem(
     @field:SerializedName("ProductGuid")
-    val productGUID: String,
+    val ProductGuid: String,
 
     @field:SerializedName("ProductName")
-    val productName: String,
+    val ProductName: String,
 
     @field:SerializedName("ProductSKU")
-    val productSKU: String,
+    val ProductSKU: String,
 
     @field:SerializedName("ProductAmount")
-    val productAmount: Double,
+    val ProductAmount: Double,
 
     @field:SerializedName("Variants")
-    val variants: List<GroupPriceProductVariantItem>
+    val Variants: List<GroupPriceProductVariantItem>
 ) : Parcelable {
 
 }
@@ -40,16 +35,16 @@ data class GroupPriceProductItem(
 @Parcelize
 data class GroupPriceProductVariantItem(
     @field:SerializedName("GroupId")
-    val groupID: Int,
+    val GroupId: Int,
 
     @field:SerializedName("GroupName")
-    val groupName: String,
+    val GroupName: String,
 
     @field:SerializedName("GroupSKU")
-    val groupSKU: String,
+    val GroupSKU: String,
 
     @field:SerializedName("GroupAmount")
-    val groupAmount: Double
+    val GroupAmount: Double
 ) : Parcelable {
 
 }

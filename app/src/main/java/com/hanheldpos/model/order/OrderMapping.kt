@@ -147,7 +147,7 @@ abstract class OrderMapping {
             SurchargeFeeList = surchargeList,
             TaxFeeList = taxesList,
             OtherFee = totalFee,
-            Category_id = src.proOriginal!!.categoryGUID,
+            Category_id = src.proOriginal!!.CategoryGuid,
             Parent_id = parent_id,
             ParentName = parentName
         );

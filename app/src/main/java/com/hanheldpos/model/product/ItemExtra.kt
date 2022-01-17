@@ -1,18 +1,17 @@
 package com.hanheldpos.model.product
 
 import android.os.Parcelable
-import com.hanheldpos.data.api.pojo.order.menu.ModifierItem
-import com.hanheldpos.data.api.pojo.product.ProductItem
+import com.hanheldpos.data.api.pojo.product.ModifierItem
+import com.hanheldpos.data.api.pojo.product.Product
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class ItemExtra(
     val modifier: ModifierItem,
-    private val productPricing: ProductItem,
+    private val productPricing: Product,
     var extraQuantity: Int = 0,
     var maxExtraQuantity : Int = 100,
-    var isSelected: Boolean = false
 ) : Parcelable {
     @IgnoredOnParcel
     val price: Double = modifier.pricing(productPricing);

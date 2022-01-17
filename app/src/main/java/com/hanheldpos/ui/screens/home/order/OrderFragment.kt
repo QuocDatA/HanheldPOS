@@ -5,7 +5,7 @@ import android.os.SystemClock
 import android.util.Log
 import androidx.fragment.app.activityViewModels
 import com.hanheldpos.R
-import com.hanheldpos.data.api.pojo.order.menu.MenusItem
+import com.hanheldpos.data.api.pojo.order.menu.Menu
 import com.hanheldpos.databinding.FragmentOrderBinding
 import com.hanheldpos.model.cart.CartPresenter
 import com.hanheldpos.model.cart.Combo
@@ -91,7 +91,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
         screenViewModel.dropDownSelected.observe(this, {
             val screen = screenViewModel.screenEvent.value?.screen;
             if (screen == HomeFragment.HomePage.Order) {
-                if (it.realItem is MenusItem) {
+                if (it.realItem is Menu) {
                     dataVM.onMenuChange(it.position);
                 } else if (it.realItem == null)
                     dataVM.onMenuChange(0)
@@ -136,7 +136,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
                                     1,
                                     it.skuDefault,
                                     it.variantDefault,
-                                    it.price,
+                                    it.Price,
                                     null
                                 ),
                                 quantityCanChoose = 100,
@@ -157,8 +157,8 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
                                 cartDataVM.diningOptionLD.value!!,
                                 1,
                                 it.skuDefault,
-                                it.variants,
-                                it.price,
+                                it.Variants,
+                                it.Price,
                                 null
                             ),
                             action = ItemActionType.Add,

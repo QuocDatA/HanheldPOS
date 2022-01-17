@@ -1,6 +1,7 @@
 package com.hanheldpos.data.repository.menu
 
-import com.hanheldpos.data.api.pojo.order.menu.OrderMenuResp
+import com.hanheldpos.data.api.pojo.order.menu.MenuResp
+import com.hanheldpos.data.repository.BaseResponse
 import com.hanheldpos.data.repository.base.BaseRepo
 import com.hanheldpos.data.repository.base.BaseRepoCallback
 import retrofit2.Call
@@ -11,19 +12,19 @@ class MenuRepo : BaseRepo() {
     fun getOrderMenu(
         userGuid: String?,
         locationGuid: String?,
-        callback: BaseRepoCallback<OrderMenuResp?>
+        callback: BaseRepoCallback<BaseResponse<MenuResp>>
     ) {
         callback.apiRequesting(true);
         menuService.getOrderMenu(
             userGuid = userGuid,
             location = locationGuid
-        ).enqueue(object : Callback<OrderMenuResp> {
-            override fun onResponse(call: Call<OrderMenuResp>, response: Response<OrderMenuResp>) {
+        ).enqueue(object : Callback<BaseResponse<MenuResp>> {
+            override fun onResponse(call: Call<BaseResponse<MenuResp>>, response: Response<BaseResponse<MenuResp>>) {
                 callback.apiRequesting(false);
                 callback.apiResponse(getBodyResponse(response))
             }
 
-            override fun onFailure(call: Call<OrderMenuResp>, t: Throwable) {
+            override fun onFailure(call: Call<BaseResponse<MenuResp>>, t: Throwable) {
                 callback.apiRequesting(false);
                 t.printStackTrace();
                 callback.showMessage(t.message);

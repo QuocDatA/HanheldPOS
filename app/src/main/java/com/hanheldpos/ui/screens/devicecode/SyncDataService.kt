@@ -6,10 +6,11 @@ import com.hanheldpos.data.api.pojo.device.DeviceCodeResp
 import com.hanheldpos.data.api.pojo.discount.CouponResp
 import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.data.api.pojo.fee.FeeResp
-import com.hanheldpos.data.api.pojo.order.menu.OrderMenuResp
+import com.hanheldpos.data.api.pojo.order.menu.MenuResp
 import com.hanheldpos.data.api.pojo.order.settings.OrderSettingResp
 import com.hanheldpos.data.api.pojo.payment.PaymentsResp
 import com.hanheldpos.data.api.pojo.table.TableResp
+import com.hanheldpos.data.repository.BaseResponse
 import com.hanheldpos.data.repository.base.BaseRepoCallback
 import com.hanheldpos.data.repository.discount.DiscountRepo
 import com.hanheldpos.data.repository.fee.FeeRepo
@@ -35,12 +36,12 @@ class SyncDataService : BaseViewModel() {
         menuRepo.getOrderMenu(
             userGuid = userGuid,
             locationGuid = location,
-            callback = object : BaseRepoCallback<OrderMenuResp?> {
-                override fun apiResponse(data: OrderMenuResp?) {
-                    if (data == null || data?.didError == true) {
+            callback = object : BaseRepoCallback<BaseResponse<MenuResp>> {
+                override fun apiResponse(data: BaseResponse<MenuResp>?) {
+                    if (data == null || data.DidError) {
                         onDataFailure(context?.getString(R.string.failed_to_load_data),listener);
                     } else {
-                        DataHelper.orderMenuResp = data;
+                        DataHelper.menuResp = data.Model;
 
                         startMappingData(listener);
                     }
@@ -171,7 +172,7 @@ class SyncDataService : BaseViewModel() {
 
     private fun startMappingData(listener: SyncDataServiceListener) {
         DataHelper.let {
-            it.orderMenuResp ?: return;
+            it.menuResp ?: return;
             it.tableResp ?: return;
             it.feeResp ?: return;
             it.discountResp ?: return;

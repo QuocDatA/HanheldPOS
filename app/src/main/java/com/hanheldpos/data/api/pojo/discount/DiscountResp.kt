@@ -5,7 +5,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.hanheldpos.data.api.pojo.customer.CustomerGroup
 import com.hanheldpos.data.api.pojo.customer.CustomerResp
-import com.hanheldpos.data.api.pojo.product.ProductItem
+import com.hanheldpos.data.api.pojo.product.Product
 import com.hanheldpos.data.api.pojo.product.VariantsPriceOverrideLocation
 import com.hanheldpos.model.cart.CartModel
 import com.hanheldpos.model.discount.CtmEligibilityType
@@ -117,10 +117,10 @@ data class DiscountItem(
 
     private fun isValidProduct(baseProduct: BaseProductInCart): Boolean {
         val productApply =
-            Condition.CustomerBuys.ListApplyTo.firstOrNull { p -> p.id == baseProduct.proOriginal?.id };
+            Condition.CustomerBuys.ListApplyTo.firstOrNull { p -> p._id == baseProduct.proOriginal?._id };
 
         return if (Excluding == 1) productApply == null
-        else productApply != null && (productApply.variantsGroup?.isExistsVariant(baseProduct.variantList)
+        else productApply != null && (productApply.VariantsGroup?.isExistsVariant(baseProduct.variantList)
             ?: false);
     }
 
@@ -253,7 +253,7 @@ data class CustomerBuys(
     val IsDiscountLimit: Int,
     val IsMaxAmount: Int,
     val IsMaxQuantity: Int,
-    val ListApplyTo: List<ProductItem>,
+    val ListApplyTo: List<Product>,
     val MaximumDiscount: Double
 ) : Parcelable
 
