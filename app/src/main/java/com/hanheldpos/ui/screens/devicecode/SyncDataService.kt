@@ -55,12 +55,12 @@ class SyncDataService : BaseViewModel() {
         orderRepo.getOrderSetting(
             userGuid = userGuid,
             locationGuid = location,
-            callback = object : BaseRepoCallback<OrderSettingResp?> {
-                override fun apiResponse(data: OrderSettingResp?) {
-                    if (data == null || data.didError == true) {
+            callback = object : BaseRepoCallback<BaseResponse<List<OrderSettingResp>>?> {
+                override fun apiResponse(data: BaseResponse<List<OrderSettingResp>>?) {
+                    if (data == null || data.DidError) {
                         onDataFailure(context?.getString(R.string.failed_to_load_data),listener);
                     } else {
-                        DataHelper.orderSettingResp = data;
+                        DataHelper.orderSettingResp = data.Model.firstOrNull();
                         startMappingData(listener);
                     }
                 }

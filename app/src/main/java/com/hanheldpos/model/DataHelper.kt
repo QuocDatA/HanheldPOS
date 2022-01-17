@@ -84,24 +84,22 @@ object DataHelper {
             StorageHelper.setDataToEncryptedFile(PrefKey.Order.MENU_SETTING_RESP, value)
         }
 
-    private fun getOrderSettingModel() = orderSettingResp?.model?.firstOrNull()
+    fun getVoidInfo() = orderSettingResp?.ListVoid?.firstOrNull()
 
-    fun getVoidInfo() = getOrderSettingModel()?.listVoid?.firstOrNull()
+    fun getVoidList() = getVoidInfo()?.ListReasons
 
-    fun getVoidList() = getVoidInfo()?.listReasons
+    fun getVoidItemById(voidId: Int) = getVoidList()?.find { it.Id == voidId }
 
-    fun getVoidItemById(voidId: Int) = getVoidList()?.find { it?.id == voidId }
+    private fun getCompInfo() = orderSettingResp?.ListComp?.firstOrNull()
 
-    private fun getCompInfo() = getOrderSettingModel()?.listComp?.firstOrNull()
+    fun getCompList() = getCompInfo()?.ListReasons
 
-    fun getCompList() = getCompInfo()?.listReasons
+    fun getCompItemById(voidId: Int) = getCompList()?.find { it.Id == voidId }
 
-    fun getCompItemById(voidId: Int) = getCompList()?.find { it?.id == voidId }
-
-    fun getDiningOptionList() = getOrderSettingModel()?.diningOptions
+    fun getDiningOptionList() = orderSettingResp?.ListDiningOptions
 
     fun getDiningOptionItem(diningOptionId: Int) =
-        getDiningOptionList()?.find { it?.id == diningOptionId }
+        getDiningOptionList()?.find { it.Id == diningOptionId }
 
 
     fun getDefaultDiningOptionItem() = getDiningOptionList()?.firstOrNull()

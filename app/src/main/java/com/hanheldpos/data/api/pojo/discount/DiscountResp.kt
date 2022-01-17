@@ -6,7 +6,6 @@ import com.google.gson.reflect.TypeToken
 import com.hanheldpos.data.api.pojo.customer.CustomerGroup
 import com.hanheldpos.data.api.pojo.customer.CustomerResp
 import com.hanheldpos.data.api.pojo.product.Product
-import com.hanheldpos.data.api.pojo.product.VariantsPriceOverrideLocation
 import com.hanheldpos.model.cart.CartModel
 import com.hanheldpos.model.discount.CtmEligibilityType
 import com.hanheldpos.model.discount.DiscMinRequiredType
@@ -77,7 +76,7 @@ data class DiscountItem(
     fun isValid(cart: CartModel, curDateTime: Date): Boolean {
         val subTotal = cart.getSubTotal();
         val diningOptionList =
-            cart.productsList.map { baseProductInCart -> "${baseProductInCart.diningOption?.id}" }
+            cart.productsList.map { baseProductInCart -> "${baseProductInCart.diningOption?.Id}" }
                 .distinct().toList();
         if (isValidDiningOption(diningOptionList)) {
             if (DateRange == 0 || isValidDate(curDateTime)) {
@@ -98,7 +97,7 @@ data class DiscountItem(
         customer: CustomerResp,
         curDateTime: Date
     ): Boolean {
-        if (isValidDiningOption(mutableListOf(baseProduct?.diningOption?.id.toString()))) {
+        if (isValidDiningOption(mutableListOf(baseProduct?.diningOption?.Id.toString()))) {
             if (DateRange == 0 || isValidDate(curDateTime)) {
                 if (isValidProduct(baseProduct)) {
                     if (isValidMinRequired(

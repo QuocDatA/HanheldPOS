@@ -46,7 +46,7 @@ object CartConverter {
                 EmployeeGuid = UserHelper.getEmployeeGuid(),
                 LocationGuid = UserHelper.getLocationGui(),
                 DeviceGuid = UserHelper.getDeviceGui(),
-                DiningOptionId = cart.diningOption.id,
+                DiningOptionId = cart.diningOption.Id,
                 CreateDate = cart.createDate,
                 Code = cart.orderCode,
                 MenuLocationGuid = cart.menuLocationGuid,
@@ -55,10 +55,10 @@ object CartConverter {
             ),
             OrderDetail = OrderDetail(
                 DiningOption = OrderDiningOption(
-                    Id = cart.diningOption.id ?: 0,
-                    TypeId = cart.diningOption.typeId ?: 0,
-                    Title = cart.diningOption.title,
-                    Acronymn = cart.diningOption.acronymn
+                    Id = cart.diningOption.Id ?: 0,
+                    TypeId = cart.diningOption.TypeId ?: 0,
+                    Title = cart.diningOption.Title,
+                    Acronymn = cart.diningOption.Acronymn
                 ),
                 DeliveryTime = cart.deliveryTime,
                 TableList = mutableListOf(cart.table),
@@ -112,8 +112,8 @@ object CartConverter {
                 Description = description,
                 GrandTotal = total,
                 TableId = cart.table._id,
-                DiningOptionId = cart.diningOption.id,
-                DiningOptionName = cart.diningOption.title,
+                DiningOptionId = cart.diningOption.Id,
+                DiningOptionName = cart.diningOption.Title,
                 TableName = cart.table.TableName,
                 CreateDate = cart.createDate!!
             )
@@ -223,7 +223,7 @@ object CartConverter {
     private fun toOrderCompVoidList(reason: Reason?, totalPrice: Double?): List<CompVoid> {
         val compVoids = mutableListOf<CompVoid>();
         reason ?: return compVoids;
-        val parentId = DataHelper.getVoidInfo()?.id;
+        val parentId = DataHelper.getVoidInfo()?.Id;
         val compVoid = CompVoid(reason, parentId, totalPrice);
         compVoids.add(compVoid);
         return compVoids;

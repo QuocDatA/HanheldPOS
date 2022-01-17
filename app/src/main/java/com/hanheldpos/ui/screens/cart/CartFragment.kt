@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.customer.CustomerResp
-import com.hanheldpos.data.api.pojo.order.settings.DiningOptionItem
+import com.hanheldpos.data.api.pojo.order.settings.DiningOption
 import com.hanheldpos.data.api.pojo.order.settings.Reason
 import com.hanheldpos.databinding.FragmentCartBinding
 import com.hanheldpos.extension.notifyValueChange
@@ -64,8 +64,8 @@ class CartFragment( private val listener : CartCallBack) : BaseFragment<Fragment
         //region setup dining option recyclerview
         cartDiningOptionAdapter =
             CartDiningOptionAdapter(
-                onItemClickListener = object : BaseItemClickListener<DiningOptionItem> {
-                    override fun onItemClick(adapterPosition: Int, item: DiningOptionItem) {
+                onItemClickListener = object : BaseItemClickListener<DiningOption> {
+                    override fun onItemClick(adapterPosition: Int, item: DiningOption) {
                         cartDataVM.cartModelLD.value!!.diningOption = item;
                         cartDataVM.cartModelLD.notifyValueChange();
                     }
@@ -128,14 +128,14 @@ class CartFragment( private val listener : CartCallBack) : BaseFragment<Fragment
 
     override fun initData() {
         //region init dining option data
-        val diningOptions: MutableList<DiningOptionItem> =
-            (DataHelper.getDiningOptionList() as List<DiningOptionItem>).toMutableList();
-        val currentDiningOption: DiningOptionItem? = cartDataVM.diningOptionLD.value;
+        val diningOptions: MutableList<DiningOption> =
+            (DataHelper.getDiningOptionList() as List<DiningOption>).toMutableList();
+        val currentDiningOption: DiningOption? = cartDataVM.diningOptionLD.value;
         var selectedIndex = 0;
 
         if (currentDiningOption != null) {
             diningOptions.forEachIndexed { index, diningOptionItem ->
-                if (diningOptionItem.id == currentDiningOption.id) selectedIndex = index
+                if (diningOptionItem.Id == currentDiningOption.Id) selectedIndex = index
             }
         }
         cartDiningOptionAdapter.setSelectedIndex(selectedIndex);

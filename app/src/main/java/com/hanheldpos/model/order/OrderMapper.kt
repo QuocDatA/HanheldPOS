@@ -54,7 +54,7 @@ object OrderMapper : OrderMapping() {
     fun mappingCompVoidList(reason: Reason?, totalPrice: Double?): List<CompVoid> {
         val compVoids = mutableListOf<CompVoid>();
         reason ?: return compVoids;
-        val parentId = DataHelper.getVoidInfo()?.id;
+        val parentId = DataHelper.getVoidInfo()?.Id;
         val compVoid = iMapperCompVoid(reason, parentId, totalPrice);
         compVoids.add(compVoid);
         return compVoids;

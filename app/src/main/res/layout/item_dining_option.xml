@@ -6,7 +6,7 @@
 
         <variable
             name="item"
-            type="com.hanheldpos.data.api.pojo.order.settings.DiningOptionItem" />
+            type="com.hanheldpos.data.api.pojo.order.settings.DiningOption" />
 
     </data>
 
@@ -19,7 +19,7 @@
         android:gravity="center"
         android:paddingHorizontal="@dimen/_5sdp"
         android:paddingVertical="@dimen/_5sdp"
-        android:text="@{item.title}"
+        android:text="@{item.Title}"
 
         app:useTextColor="color6"
         app:useTextHeader="h6" />

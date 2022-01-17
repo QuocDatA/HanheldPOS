@@ -1,7 +1,7 @@
 package com.hanheldpos.model.product
 
 import com.hanheldpos.data.api.pojo.fee.Fee
-import com.hanheldpos.data.api.pojo.order.settings.DiningOptionItem
+import com.hanheldpos.data.api.pojo.order.settings.DiningOption
 import com.hanheldpos.data.api.pojo.order.settings.Reason
 import com.hanheldpos.data.api.pojo.product.Product
 import com.hanheldpos.model.cart.ModifierCart
@@ -19,7 +19,7 @@ abstract class BaseProductInCart  {
     open var priceOverride : Double? = null
     open var proOriginal: Product? = null
     open var compReason: Reason? = null
-    open var diningOption: DiningOptionItem? = null
+    open var diningOption: DiningOption? = null
     open var fees : List<Fee>? = null
     val modifierList : MutableList<ModifierCart> = mutableListOf();
     var variantList : MutableList<VariantCart>? = null

@@ -133,7 +133,7 @@ class CartVM : BaseUiViewModel<CartUV>() {
             list.add(DiscountCart(it, it.DiscountName, it.total(cart.getSubTotal())));
         }
         cart.compReason?.let {
-            list.add(DiscountCart(it, it.title!!, cart.totalComp(cart.totalTemp())));
+            list.add(DiscountCart(it, it.Title!!, cart.totalComp(cart.totalTemp())));
         }
         return list;
     }

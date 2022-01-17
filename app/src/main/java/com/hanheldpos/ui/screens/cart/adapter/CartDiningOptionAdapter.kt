@@ -3,14 +3,14 @@ package com.hanheldpos.ui.screens.cart.adapter
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import com.hanheldpos.R
-import com.hanheldpos.data.api.pojo.order.settings.DiningOptionItem
+import com.hanheldpos.data.api.pojo.order.settings.DiningOption
 import com.hanheldpos.databinding.ItemDiningOptionBinding
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 
-class CartDiningOptionAdapter(private val onItemClickListener: BaseItemClickListener<DiningOptionItem>,private var selectedIndex: Int = 0 ) :
-    BaseBindingListAdapter<DiningOptionItem>(DiffCallback(), onItemClickListener) {
+class CartDiningOptionAdapter(private val onItemClickListener: BaseItemClickListener<DiningOption>, private var selectedIndex: Int = 0 ) :
+    BaseBindingListAdapter<DiningOption>(DiffCallback(), onItemClickListener) {
 
 
 
@@ -22,15 +22,15 @@ class CartDiningOptionAdapter(private val onItemClickListener: BaseItemClickList
         return R.layout.item_dining_option;
     }
 
-    override fun submitList(list: MutableList<DiningOptionItem>?) {
+    override fun submitList(list: MutableList<DiningOption>?) {
         super.submitList(list)
     }
 
     override fun onBindViewHolder(
-        holder: BaseBindingViewHolder<DiningOptionItem>,
+        holder: BaseBindingViewHolder<DiningOption>,
         position: Int
     ) {
-        val item: DiningOptionItem = getItem(position);
+        val item: DiningOption = getItem(position);
         holder.bindItem(item);
         val binding = (holder.binding as ItemDiningOptionBinding);
 
@@ -64,17 +64,17 @@ class CartDiningOptionAdapter(private val onItemClickListener: BaseItemClickList
 
     }
 
-    private class DiffCallback : DiffUtil.ItemCallback<DiningOptionItem>() {
+    private class DiffCallback : DiffUtil.ItemCallback<DiningOption>() {
         override fun areItemsTheSame(
-            oldItem: DiningOptionItem,
-            newItem: DiningOptionItem
+            oldItem: DiningOption,
+            newItem: DiningOption
         ): Boolean {
             return oldItem == newItem;
         }
 
         override fun areContentsTheSame(
-            oldItem: DiningOptionItem,
-            newItem: DiningOptionItem
+            oldItem: DiningOption,
+            newItem: DiningOption
         ): Boolean {
             return false
         }
