@@ -2,7 +2,7 @@ package com.hanheldpos.model.cart
 
 import com.hanheldpos.data.api.pojo.customer.CustomerResp
 import com.hanheldpos.data.api.pojo.fee.Fee
-import com.hanheldpos.data.api.pojo.order.settings.DiningOptionItem
+import com.hanheldpos.data.api.pojo.order.settings.DiningOption
 import com.hanheldpos.data.api.pojo.order.settings.Reason
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.cart.fee.FeeApplyToType
@@ -20,7 +20,7 @@ data class CartModel(
     var table: TableSummary,
     var customer: CustomerResp? = null,
     var shipping: Shipping? = null,
-    var diningOption: DiningOptionItem,
+    var diningOption: DiningOption,
     var deliveryTime: DeliveryTime? = null,
     val fees: List<Fee>,
     var paymentsList : MutableList<PaymentOrder>,

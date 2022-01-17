@@ -1,6 +1,5 @@
 package com.hanheldpos.model.order
 
-import com.diadiem.pos_config.utils.Const
 import com.hanheldpos.data.api.pojo.fee.Fee
 import com.hanheldpos.data.api.pojo.order.settings.Reason
 import com.hanheldpos.model.cart.ModifierCart
@@ -47,10 +46,10 @@ abstract class OrderMapping {
 
     protected fun iMapperCompVoid(src: Reason, parent_id: Int?, totalPrice: Double?): CompVoid {
         return CompVoid(
-            CompVoidGuid = src.compVoidGuid,
+            CompVoidGuid = src.CompVoidGuid,
             CompVoidGroupId = parent_id,
-            CompVoidTitle = src.title,
-            CompVoidValue = src.compVoidValue,
+            CompVoidTitle = src.Title,
+            CompVoidValue = src.CompVoidValue,
             CompVoidTotalPrice = totalPrice
         )
     }
@@ -119,10 +118,10 @@ abstract class OrderMapping {
             Note = src.note,
 
             DiningOption = if (src.diningOption == null) null else OrderDiningOption(
-                Id = src.diningOption?.id ?: 0,
-                TypeId = src.diningOption?.typeId ?: 0,
-                Title = src.diningOption?.title,
-                Acronymn = src.diningOption?.acronymn
+                Id = src.diningOption?.Id ?: 0,
+                TypeId = src.diningOption?.TypeId ?: 0,
+                Title = src.diningOption?.Title,
+                Acronymn = src.diningOption?.Acronymn
             ),
 
             VariantList = src.variantList,

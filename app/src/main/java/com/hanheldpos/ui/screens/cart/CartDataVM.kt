@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.hanheldpos.data.api.pojo.customer.CustomerResp
-import com.hanheldpos.data.api.pojo.order.settings.DiningOptionItem
+import com.hanheldpos.data.api.pojo.order.settings.DiningOption
 import com.hanheldpos.data.api.pojo.order.settings.Reason
 import com.hanheldpos.data.api.pojo.table.FloorTableItem
 import com.hanheldpos.extension.notifyValueChange
@@ -23,7 +23,7 @@ class CartDataVM : BaseViewModel() {
 
     val cartModelLD: MutableLiveData<CartModel> = MutableLiveData();
 
-    val diningOptionLD: LiveData<DiningOptionItem> = Transformations.map(cartModelLD) {
+    val diningOptionLD: LiveData<DiningOption> = Transformations.map(cartModelLD) {
         return@map it?.diningOption ?: DataHelper.getDefaultDiningOptionItem()
     }
     val linePerTotalQuantity: LiveData<String> = Transformations.map(cartModelLD) {

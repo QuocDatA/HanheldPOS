@@ -2,7 +2,7 @@ package com.hanheldpos.model.cart
 
 import android.os.Parcelable
 import com.hanheldpos.data.api.pojo.fee.Fee
-import com.hanheldpos.data.api.pojo.order.settings.DiningOptionItem
+import com.hanheldpos.data.api.pojo.order.settings.DiningOption
 import com.hanheldpos.data.api.pojo.product.Product
 import com.hanheldpos.model.cart.fee.FeeApplyToType
 import com.hanheldpos.model.product.BaseProductInCart
@@ -14,7 +14,7 @@ class Regular() : BaseProductInCart(), Parcelable, Cloneable {
 
     constructor(
         productItem: Product,
-        diningOptionItem: DiningOptionItem,
+        diningOptionItem: DiningOption,
         quantity: Int?,
         sku: String?,
         variants: String?,

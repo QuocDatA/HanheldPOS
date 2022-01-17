@@ -1,7 +1,7 @@
 package com.hanheldpos.model.cart
 
 import com.hanheldpos.data.api.pojo.fee.Fee
-import com.hanheldpos.data.api.pojo.order.settings.DiningOptionItem
+import com.hanheldpos.data.api.pojo.order.settings.DiningOption
 import com.hanheldpos.data.api.pojo.product.Product
 import com.hanheldpos.model.cart.fee.FeeApplyToType
 import com.hanheldpos.model.product.BaseProductInCart
@@ -16,7 +16,7 @@ class Combo() : BaseProductInCart() {
     constructor(
         productItem: Product,
         groupProducts: List<GroupBundle>,
-        diningOptionItem: DiningOptionItem,
+        diningOptionItem: DiningOption,
         quantity: Int?,
         sku: String?,
         variants: String?,

@@ -4,17 +4,15 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import com.hanheldpos.data.api.pojo.order.settings.DiningOptionItem
+import com.hanheldpos.data.api.pojo.order.settings.DiningOption
 import com.hanheldpos.extension.notifyValueChange
 import com.hanheldpos.model.DataHelper
-import com.hanheldpos.model.UserHelper
 import com.hanheldpos.model.cart.Combo
 import com.hanheldpos.model.cart.GroupBundle
 import com.hanheldpos.model.cart.Regular
 import com.hanheldpos.model.combo.ItemActionType
 import com.hanheldpos.model.combo.ItemComboGroup
 import com.hanheldpos.model.discount.DiscountTypeFor
-import com.hanheldpos.model.home.order.menu.MenuDataMapper
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
 
 class ComboVM : BaseUiViewModel<ComboUV>() {
@@ -55,7 +53,7 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
 
     fun initDefaultComboList(
         listGroup: MutableList<GroupBundle>,
-        diningOption: DiningOptionItem,
+        diningOption: DiningOption,
         menuOrderId : String
     ) {
 

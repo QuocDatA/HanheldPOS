@@ -1,7 +1,6 @@
 package com.hanheldpos.model.order
 
 import android.os.Parcelable
-import com.hanheldpos.data.api.pojo.order.settings.DiningOptionItem
 import com.hanheldpos.model.cart.VariantCart
 import kotlinx.parcelize.Parcelize
 

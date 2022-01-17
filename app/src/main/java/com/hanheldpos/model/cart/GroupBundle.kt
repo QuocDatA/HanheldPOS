@@ -1,7 +1,7 @@
 package com.hanheldpos.model.cart
 
 import com.hanheldpos.data.api.pojo.order.menu.MenuResp
-import com.hanheldpos.data.api.pojo.order.settings.DiningOptionItem
+import com.hanheldpos.data.api.pojo.order.settings.DiningOption
 import com.hanheldpos.data.api.pojo.product.Product
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.home.order.menu.MenuDataMapper
@@ -29,7 +29,7 @@ data class GroupBundle(
         }
     }
 
-    public fun productsForChoose(menuResp : MenuResp,locationGuid : String,diningOption : DiningOptionItem,product : Product) : List<Regular> {
+    public fun productsForChoose(menuResp : MenuResp, locationGuid : String, diningOption : DiningOption, product : Product) : List<Regular> {
         val listRegular: List<Regular> =
             MenuDataMapper.getProductListByGroupGuid(comboInfo.ComboGuid,menuResp).map { it.proOriginal }
                 .map {

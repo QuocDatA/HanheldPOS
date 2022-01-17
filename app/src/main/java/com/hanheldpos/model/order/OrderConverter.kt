@@ -4,7 +4,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.hanheldpos.data.api.pojo.fee.Fee
 import com.hanheldpos.data.api.pojo.fee.FeeAssignToProductItem
-import com.hanheldpos.data.api.pojo.order.settings.DiningOptionItem
+import com.hanheldpos.data.api.pojo.order.settings.DiningOption
 import com.hanheldpos.data.api.pojo.order.settings.Reason
 import com.hanheldpos.data.api.pojo.product.Product
 import com.hanheldpos.model.DataHelper
@@ -55,11 +55,11 @@ object OrderConverter {
     private fun toReasonComp(compVoids: List<CompVoid>): Reason? {
         return compVoids.map { comp ->
             Reason(
-                compVoidGuid = comp.CompVoidGuid,
-                compVoidValue = comp.CompVoidValue,
-                visible = 1,
-                title = comp.CompVoidTitle,
-                id = comp.CompVoidGroupId,
+                CompVoidGuid = comp.CompVoidGuid,
+                CompVoidValue = comp.CompVoidValue,
+                Visible = 1,
+                Title = comp.CompVoidTitle,
+                Id = comp.CompVoidGroupId,
             )
         }.firstOrNull()
     }
@@ -174,7 +174,7 @@ object OrderConverter {
     private fun toRegular(
         productBuy: ProductBuy,
         proOriginal: Product,
-        diningOption: DiningOptionItem,
+        diningOption: DiningOption,
         compReason: Reason?,
         discountUserList: List<DiscountUser>,
         discountServerList: List<DiscountServer>,
