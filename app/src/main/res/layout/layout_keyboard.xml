@@ -35,6 +35,6 @@
                 layout="@layout/layout_number_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="@{keyBoardType == KeyBoardType.Number ? View.VISIBLE : View.GONE}" />
+                android:visibility="@{keyBoardType == KeyBoardType.Number ? View.VISIBLE : keyBoardType == KeyBoardType.NumberOnly ? View.VISIBLE : View.GONE}" />
         </FrameLayout>
 </layout>
