@@ -15,10 +15,6 @@ import com.hanheldpos.data.api.pojo.table.TableResp
 import com.hanheldpos.model.cart.fee.FeeApplyToType
 import com.hanheldpos.prefs.PrefKey
 import com.utils.helper.AppPreferences
-import java.text.DateFormat
-import java.text.SimpleDateFormat
-import java.time.ZonedDateTime
-import java.util.*
 
 object DataHelper {
 
@@ -39,12 +35,12 @@ object DataHelper {
     }
 
     fun generateOrderIdByFormat() : String {
-        var numberIncrement = if ((getDeviceCodeModel()?.listSettingsId?.firstOrNull()?.NumberIncrement?: 0) > numberIncreaseOrder) getDeviceCodeModel()?.listSettingsId?.firstOrNull()?.NumberIncrement?: 0 else numberIncreaseOrder;
+        var numberIncrement : Long = if (getDeviceCodeModel()?.SettingsId?.firstOrNull()?.NumberIncrement?.toLong() ?: 0 > numberIncreaseOrder) getDeviceCodeModel()?.SettingsId?.firstOrNull()?.NumberIncrement?.toLong() ?: 0 else numberIncreaseOrder;
         numberIncrement = numberIncrement.plus(1);
         numberIncreaseOrder = numberIncrement;
-        val prefix = getDeviceCodeModel()?.listSettingsId?.firstOrNull()?.Prefix ?: ""
-        val deviceAcronymn =getDeviceCodeModel()?.device?.firstOrNull()?.acronymn ?: ""
-        val minimumNumber = getDeviceCodeModel()?.listSettingsId?.firstOrNull()?.MinimumNumber ?: 0
+        val prefix = getDeviceCodeModel()?.SettingsId?.firstOrNull()?.Prefix ?: ""
+        val deviceAcronymn =getDeviceCodeModel()?.Device?.firstOrNull()?.Acronymn ?: ""
+        val minimumNumber = getDeviceCodeModel()?.SettingsId?.firstOrNull()?.MinimumNumber ?: 0
         return "${prefix}${deviceAcronymn}${numberIncrement.toString().padEnd(minimumNumber, '0')}";
     }
 
@@ -128,47 +124,19 @@ object DataHelper {
             StorageHelper.setDataToEncryptedFile(PrefKey.Setting.DEVICE_CODE, value)
         }
 
-    private fun getDeviceCodeModel() = deviceCodeResp?.model?.firstOrNull()
+    private fun getDeviceCodeModel() = deviceCodeResp;
 
-    fun getDeviceCodeEmployee() = getDeviceCodeModel()?.employees
+    fun getDeviceCodeEmployee() = getDeviceCodeModel()?.EmployeeList;
 
-    fun getDeviceByDeviceCode() = getDeviceCodeModel()?.device?.firstOrNull()
+    fun getDeviceByDeviceCode() = getDeviceCodeModel()?.Device?.firstOrNull()
 
-    fun getShowReceiptScreen() = getDeviceByDeviceCode()?.showReceiptScreen
+    fun getCurrencySymbol() = getDeviceCodeModel()?.Users?.CurrencySymbol
 
-    fun getStyleUI() = getDeviceByDeviceCode()?.styleUI
-    fun getIsModifierNewPage() = getDeviceByDeviceCode()?.isModifierNewPage == 1
-    fun getModifierStyle() = getDeviceByDeviceCode()?.modifierStyle
+    fun getDeviceGuidByDeviceCode() = getDeviceByDeviceCode()?._Id
 
-    fun getViewMode() = getDeviceCodeModel()?.viewItemMode?.firstOrNull()?.viewMode?.firstOrNull()
+    fun getLocationGuidByDeviceCode() = getDeviceByDeviceCode()?.Location
 
-    fun getPictureMode() =
-        getDeviceCodeModel()?.viewItemMode?.firstOrNull()?.pictureMode?.firstOrNull()
-
-    fun getCurrencySymbol() = getDeviceCodeModel()?.users?.currencySymbol
-
-    fun getDeviceGuidByDeviceCode() = getDeviceByDeviceCode()?.id
-
-    fun getLocationGuidByDeviceCode() = getDeviceByDeviceCode()?.location
-
-    fun getUserGuidByDeviceCode() = getDeviceByDeviceCode()?.userGuid
-
-    fun getEmployeeListByDeviceCode() = getDeviceCodeModel()?.employees
-
-
-    fun getEmployeeByEmployeeGui(employeeGuid: String?): EmployeeResp? {
-        if (employeeGuid == null) return null
-        return getEmployeeListByDeviceCode()?.find { it?.id == employeeGuid }
-    }
-
-    fun isLocker() = getDeviceByDeviceCode()?.deviceType == 4
-
-    private fun getListEmployeeByEmployeeGui(employeeGuidList: List<String>?): List<EmployeeResp>? {
-        if (employeeGuidList.isNullOrEmpty()) return null
-        return getEmployeeListByDeviceCode()?.filterNotNull()?.filter { it ->
-            employeeGuidList.contains(it.id)
-        }
-    }
+    fun getUserGuidByDeviceCode() = getDeviceByDeviceCode()?.UserGuid
 
     //endregion
 

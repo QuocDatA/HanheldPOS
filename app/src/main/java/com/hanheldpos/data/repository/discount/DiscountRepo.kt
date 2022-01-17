@@ -2,8 +2,6 @@ package com.hanheldpos.data.repository.discount
 
 import com.hanheldpos.data.api.pojo.discount.CouponResp
 import com.hanheldpos.data.api.pojo.discount.DiscountResp
-import com.hanheldpos.data.api.pojo.employee.EmployeeResp
-import com.hanheldpos.data.repository.GDataResp
 import com.hanheldpos.data.repository.base.BaseRepo
 import com.hanheldpos.data.repository.base.BaseRepoCallback
 import retrofit2.Call
