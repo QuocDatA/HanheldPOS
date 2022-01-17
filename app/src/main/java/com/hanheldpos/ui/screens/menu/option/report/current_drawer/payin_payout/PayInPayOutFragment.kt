@@ -1,5 +1,6 @@
 package com.hanheldpos.ui.screens.menu.option.report.current_drawer.payin_payout
 
+import android.content.res.ColorStateList
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
 import com.hanheldpos.R
@@ -23,74 +24,33 @@ class PayInPayOutFragment : BaseFragment<FragmentPayInPayOutBinding, PayInPayOut
 
     override fun initView() {
         binding.amountInput.doAfterTextChanged {
+            binding.isActive = false
+            binding.btnPayIn.setBackgroundResource(R.drawable.bg_outline)
+            binding.btnPayOut.setBackgroundResource(R.drawable.bg_outline)
             if(binding.amountInput.text.toString().toInt() > 1000) {
                 if(binding.noteInput.text?.length ?: 0 > 0){
+                    binding.isActive = true
                     binding.btnPayIn.setBackgroundColor(ContextCompat.getColor(this.requireContext(), R.color.color_11))
-                    binding.btnPayInText.setTextColor(ContextCompat.getColor(this.requireContext(), R.color.color_0))
-
                     binding.btnPayOut.setBackgroundColor(ContextCompat.getColor(this.requireContext(), R.color.color_11))
-                    binding.btnPayOutText.setTextColor(ContextCompat.getColor(this.requireContext(), R.color.color_0))
-
-                    binding.btnPayInText.setText(R.string.pay_in)
-                    binding.btnPayOutText.setText(R.string.pay_out)
-                } else {
-                    binding.btnPayIn.setBackgroundResource(R.drawable.bg_outline)
-                    binding.btnPayInText.setTextColor(ContextCompat.getColor(this.requireContext(), R.color.color_8))
-
-                    binding.btnPayOut.setBackgroundResource(R.drawable.bg_outline)
-                    binding.btnPayOutText.setTextColor(ContextCompat.getColor(this.requireContext(), R.color.color_8))
-
-                    binding.btnPayInText.setText(R.string.end_drawer)
-                    binding.btnPayOutText.setText(R.string.pay_in_out)
                 }
-            } else {
-                binding.btnPayIn.setBackgroundResource(R.drawable.bg_outline)
-                binding.btnPayInText.setTextColor(ContextCompat.getColor(this.requireContext(), R.color.color_8))
-
-                binding.btnPayOut.setBackgroundResource(R.drawable.bg_outline)
-                binding.btnPayOutText.setTextColor(ContextCompat.getColor(this.requireContext(), R.color.color_8))
-
-                binding.btnPayInText.setText(R.string.end_drawer)
-                binding.btnPayOutText.setText(R.string.pay_in_out)
             }
         }
         binding.noteInput.doAfterTextChanged {
+            binding.isActive = false
+            binding.btnPayIn.setBackgroundResource(R.drawable.bg_outline)
+            binding.btnPayOut.setBackgroundResource(R.drawable.bg_outline)
             if(binding.amountInput.text.toString().toInt() > 1000) {
                 if(binding.noteInput.text?.length ?: 0 > 0){
-                    binding.btnPayIn.setBackgroundColor(ContextCompat.getColor(this.requireContext(), R.color.color_11))
-                    binding.btnPayInText.setTextColor(ContextCompat.getColor(this.requireContext(), R.color.color_0))
-
-                    binding.btnPayOut.setBackgroundColor(ContextCompat.getColor(this.requireContext(), R.color.color_11))
-                    binding.btnPayOutText.setTextColor(ContextCompat.getColor(this.requireContext(), R.color.color_0))
-
-                    binding.btnPayInText.setText(R.string.pay_in)
-                    binding.btnPayOutText.setText(R.string.pay_out)
-                } else {
-                    binding.btnPayIn.setBackgroundResource(R.drawable.bg_outline)
-                    binding.btnPayInText.setTextColor(ContextCompat.getColor(this.requireContext(), R.color.color_8))
-
-                    binding.btnPayOut.setBackgroundResource(R.drawable.bg_outline)
-                    binding.btnPayOutText.setTextColor(ContextCompat.getColor(this.requireContext(), R.color.color_8))
-
-
-                    binding.btnPayInText.setText(R.string.end_drawer)
-                    binding.btnPayOutText.setText(R.string.pay_in_out)
+                    binding.isActive = true
+                    binding.btnPayIn.setBackgroundColor(ContextCompat.getColor(this.requireContext(), R.color.color_0))
+                    binding.btnPayOut.setBackgroundColor(ContextCompat.getColor(this.requireContext(), R.color.color_0))
                 }
-            } else {
-                binding.btnPayIn.setBackgroundResource(R.drawable.bg_outline)
-                binding.btnPayInText.setTextColor(ContextCompat.getColor(this.requireContext(), R.color.color_8))
-
-                binding.btnPayOut.setBackgroundResource(R.drawable.bg_outline)
-                binding.btnPayOutText.setTextColor(ContextCompat.getColor(this.requireContext(), R.color.color_8))
-
-                binding.btnPayInText.setText(R.string.end_drawer)
-                binding.btnPayOutText.setText(R.string.pay_in_out)
             }
         }
     }
 
     override fun initData() {
-
+        binding.isActive = false
     }
 
     override fun initAction() {
