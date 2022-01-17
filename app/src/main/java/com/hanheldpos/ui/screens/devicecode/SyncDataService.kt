@@ -2,14 +2,13 @@ package com.hanheldpos.ui.screens.devicecode
 
 import android.content.Context
 import com.hanheldpos.R
-import com.hanheldpos.data.api.pojo.device.DeviceCodeResp
 import com.hanheldpos.data.api.pojo.discount.CouponResp
 import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.data.api.pojo.fee.FeeResp
+import com.hanheldpos.data.api.pojo.floor.FloorResp
 import com.hanheldpos.data.api.pojo.order.menu.MenuResp
 import com.hanheldpos.data.api.pojo.order.settings.OrderSettingResp
 import com.hanheldpos.data.api.pojo.payment.PaymentsResp
-import com.hanheldpos.data.api.pojo.table.TableResp
 import com.hanheldpos.data.repository.BaseResponse
 import com.hanheldpos.data.repository.base.BaseRepoCallback
 import com.hanheldpos.data.repository.discount.DiscountRepo
@@ -73,12 +72,12 @@ class SyncDataService : BaseViewModel() {
         floorRepo.getPosFloor(
             userGuid = userGuid,
             locationGuid = location,
-            callback = object : BaseRepoCallback<TableResp?> {
-                override fun apiResponse(data: TableResp?) {
-                    if (data == null || data.didError == true) {
+            callback = object : BaseRepoCallback<BaseResponse<List<FloorResp>>?> {
+                override fun apiResponse(data: BaseResponse<List<FloorResp>>?) {
+                    if (data == null || data.DidError) {
                         onDataFailure(context?.getString(R.string.failed_to_load_data),listener);
                     } else {
-                        DataHelper.tableResp = data;
+                        DataHelper.floorResp = data.Model.firstOrNull();
                         startMappingData(listener);
                     }
                 }
@@ -173,7 +172,7 @@ class SyncDataService : BaseViewModel() {
     private fun startMappingData(listener: SyncDataServiceListener) {
         DataHelper.let {
             it.menuResp ?: return;
-            it.tableResp ?: return;
+            it.floorResp ?: return;
             it.feeResp ?: return;
             it.discountResp ?: return;
             it.discountDetailResp ?: return;

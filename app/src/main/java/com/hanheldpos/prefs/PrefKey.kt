@@ -19,8 +19,8 @@ object  PrefKey {
         const val FILE_NAME_NUMBER_INCREASEMENT = "FILE_NAME_NUMBER_INCREASEMENT"
     }
 
-    object Table {
-        const val TABLE_RESP = "TABLE_RESP"
+    object Floor {
+        const val FLOOR_RESP = "FLOOR_RESP"
     }
 
     object Fee {
