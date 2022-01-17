@@ -21,7 +21,7 @@
             app:useTextColor="color4"
             app:useFontStyle="bold"
             app:useTextHeader="h6"
-            android:text="@{item.modifierExtra.modifierName}"
+            android:text="@{item.modifierExtra.name}"
             />
         <androidx.recyclerview.widget.RecyclerView
             android:overScrollMode="never"

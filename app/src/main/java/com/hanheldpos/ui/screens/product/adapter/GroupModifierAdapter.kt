@@ -50,7 +50,7 @@ class GroupModifierAdapter(
             itemSelected?.forEach { it1 ->
                 run lit@{
                     list.forEach { it2 ->
-                        if (it1.modifierId == it2.modifier.id) {
+                        if (it1.modifierId == it2.modifier._Id) {
                             it2.extraQuantity = it1.quantity;
                             return@lit
                         }

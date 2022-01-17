@@ -2,20 +2,19 @@ package com.hanheldpos.model.product
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class ProductComboItem(
-
     @field:SerializedName("AppliesTo")
-    val appliesTo: Int? = null,
+    val AppliesTo: Int? = null,
 
     @field:SerializedName("Quantity")
-    val quantity: Int? = null,
+    val Quantity: Int? = null,
 
     @field:SerializedName("Id")
-    val id: Int? = null,
+    val Id: Int? = null,
 
     @field:SerializedName("ComboGuid")
-    val comboGuid: String? = null
+    val ComboGuid: String? = null
 ) : Parcelable

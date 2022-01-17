@@ -2,7 +2,7 @@ package com.hanheldpos.model.cart
 
 import com.hanheldpos.data.api.pojo.fee.Fee
 import com.hanheldpos.data.api.pojo.order.settings.DiningOptionItem
-import com.hanheldpos.data.api.pojo.product.ProductItem
+import com.hanheldpos.data.api.pojo.product.Product
 import com.hanheldpos.model.cart.fee.FeeApplyToType
 import com.hanheldpos.model.product.BaseProductInCart
 import com.hanheldpos.model.product.PricingMethodType
@@ -14,7 +14,7 @@ class Combo() : BaseProductInCart() {
     var groupList: MutableList<GroupBundle> = mutableListOf()
     var isShowDetail : Boolean = false;
     constructor(
-        productItem: ProductItem,
+        productItem: Product,
         groupProducts: List<GroupBundle>,
         diningOptionItem: DiningOptionItem,
         quantity: Int?,
@@ -38,7 +38,7 @@ class Combo() : BaseProductInCart() {
     }
 
     override fun getProductName(): String? {
-        return proOriginal?.name;
+        return proOriginal?.Name;
     }
 
     override fun getFeeString(): String {
@@ -93,7 +93,7 @@ class Combo() : BaseProductInCart() {
         return groupList.firstOrNull { gr -> !gr.isComplete() } == null;
     }
 
-    override fun isMatching(productItem: ProductItem): Boolean {
+    override fun isMatching(productItem: Product): Boolean {
         return false;
     }
 
@@ -132,7 +132,7 @@ class Combo() : BaseProductInCart() {
     }
 
     fun proModSubTotal() : Double {
-        val pricingMethodType = proOriginal?.pricingMethodType ?: 1;
+        val pricingMethodType = proOriginal?.PricingMethodType ?: 1;
 
         val modSubtotal = modSubTotal();
         val proSubtotal = priceOverride ?: 0.0;

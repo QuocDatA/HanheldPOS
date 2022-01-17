@@ -5,9 +5,8 @@ import android.view.View
 import androidx.fragment.app.activityViewModels
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.order.settings.Reason
-import com.hanheldpos.data.api.pojo.product.ProductItem
+import com.hanheldpos.data.api.pojo.product.Product
 import com.hanheldpos.data.api.pojo.product.VariantsGroup
-import com.hanheldpos.data.api.pojo.product.getModifierList
 import com.hanheldpos.databinding.FragmentProductDetailBinding
 import com.hanheldpos.extension.notifyValueChange
 import com.hanheldpos.model.DataHelper
@@ -21,6 +20,7 @@ import com.hanheldpos.model.discount.DiscountApplyToType
 import com.hanheldpos.model.discount.DiscountTypeFor
 import com.hanheldpos.model.discount.DiscountUser
 import com.hanheldpos.model.product.BaseProductInCart
+import com.hanheldpos.model.product.GroupExtra
 import com.hanheldpos.model.product.ItemExtra
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
@@ -33,7 +33,7 @@ import com.hanheldpos.ui.screens.product.adapter.GroupVariantAdapter
 class ProductDetailFragment(
     private val regular: Regular,
     private val groupBundle: GroupBundle? = null,
-    private val productBundle: ProductItem? = null,
+    private val productBundle: Product? = null,
     private val quantityCanChoose: Int = -1,
     private val action: ItemActionType,
     private val listener: OrderFragment.OrderMenuListener? = null,
@@ -56,8 +56,6 @@ class ProductDetailFragment(
             initLifeCycle(this@ProductDetailFragment);
             binding.viewModel = this;
         }
-
-
     }
 
 
@@ -139,7 +137,7 @@ class ProductDetailFragment(
 
         regular.apply {
 
-            proOriginal?.variantsGroup.let {
+            proOriginal?.VariantsGroup.let {
                 if (it == null) {
                     binding.groupVariants.visibility = View.GONE;
                 } else
@@ -148,16 +146,24 @@ class ProductDetailFragment(
             variantList?.let {
                 groupVariantAdapter.itemSelected = it;
             };
-
-            proOriginal?.getModifierList(
-                DataHelper.orderMenuResp!!
-            ).let {
-                if (it == null) {
+            proOriginal?.ProductModifiersList.let { modifiers ->
+                if (modifiers == null) {
                     binding.groupModifiers.visibility = View.GONE;
                 } else
-                    viewModel.listModifierGroups.addAll(it)
-            }
 
+                    viewModel.listModifierGroups.addAll(modifiers.map {
+                        GroupExtra(
+                            modifierExtra = it,
+                            modifierList = it.ModifierItemList.map { modifierItem ->
+                                ItemExtra(
+                                    modifier = modifierItem,
+                                    productPricing = proOriginal!!,
+                                    maxExtraQuantity = it.MaximumModifier,
+                                )
+                            }
+                        )
+                    })
+            }
         }
 
     }
@@ -218,11 +224,11 @@ class ProductDetailFragment(
 
     fun onSelectedModifier(item: ItemExtra) {
         val modifier = ModifierCart(
-            item.modifier.id!!,
-            item.modifier.modifierGuid!!,
-            item.modifier.modifier!!,
+            item.modifier._Id,
+            item.modifier.ModifierGuid,
+            item.modifier.Modifier,
             item.extraQuantity,
-            item.modifier.price
+            item.modifier.Price
         )
         if (item.extraQuantity > 0) {
             viewModel.regularInCart.value?.apply {
@@ -252,7 +258,9 @@ class ProductDetailFragment(
     }
 
     override fun onAddCart(item: BaseProductInCart) {
-        requireActivity().supportFragmentManager.setFragmentResult("saveDiscount", Bundle().apply { putSerializable("DiscountTypeFor", viewModel.typeDiscountSelect) });
+        requireActivity().supportFragmentManager.setFragmentResult(
+            "saveDiscount",
+            Bundle().apply { putSerializable("DiscountTypeFor", viewModel.typeDiscountSelect) });
         getBack();
         listener?.onCartAdded(item, viewModel.actionType.value!!);
     }

@@ -8,7 +8,7 @@ import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.data.api.pojo.employee.EmployeeResp
 import com.hanheldpos.data.api.pojo.fee.Fee
 import com.hanheldpos.data.api.pojo.fee.FeeResp
-import com.hanheldpos.data.api.pojo.order.menu.OrderMenuResp
+import com.hanheldpos.data.api.pojo.order.menu.MenuResp
 import com.hanheldpos.data.api.pojo.order.settings.OrderSettingResp
 import com.hanheldpos.data.api.pojo.payment.PaymentsResp
 import com.hanheldpos.data.api.pojo.table.TableResp
@@ -22,7 +22,7 @@ object DataHelper {
 
     fun clearData() {
         deviceCodeResp = null
-        orderMenuResp = null
+        menuResp = null
         orderSettingResp = null
         tableResp = null
         feeResp = null
@@ -46,26 +46,25 @@ object DataHelper {
 
     //region ## Order Menu
 
-    var orderMenuResp: OrderMenuResp? = null
+    var menuResp: MenuResp? = null
         get() {
             if (field == null) {
                 field = StorageHelper.getDataFromEncryptedFile(
-                    PrefKey.Order.ORDER_MENU_RESP,
-                    OrderMenuResp::class.java
+                    PrefKey.Order.MENU_RESP,
+                    MenuResp::class.java
                 )
             }
             return field
         }
         set(value) {
             field = value
-            StorageHelper.setDataToEncryptedFile(PrefKey.Order.ORDER_MENU_RESP, value)
+            StorageHelper.setDataToEncryptedFile(PrefKey.Order.MENU_RESP, value)
         }
 
-    private fun getOrderMenuModel() = orderMenuResp?.model?.firstOrNull()
-    private fun getGroupsOrderMenu() = getOrderMenuModel()?.groups
+    private fun getGroupsOrderMenu() = menuResp?.GroupList;
 
     fun findGroupNameOrderMenu(group_id : String) : String{
-        return getGroupsOrderMenu()?.firstOrNull { groupsItem ->  groupsItem?.id.equals(group_id)}?.groupName ?: ""
+        return getGroupsOrderMenu()?.firstOrNull { groupsItem -> groupsItem._Id == group_id }?.GroupName ?: ""
     }
 
     //endregion
@@ -74,7 +73,7 @@ object DataHelper {
         get() {
             if (field == null) {
                 field = StorageHelper.getDataFromEncryptedFile(
-                    PrefKey.Order.ORDER_SETTING_RESP,
+                    PrefKey.Order.MENU_SETTING_RESP,
                     OrderSettingResp::class.java
                 )
             }
@@ -82,7 +81,7 @@ object DataHelper {
         }
         set(value) {
             field = value
-            StorageHelper.setDataToEncryptedFile(PrefKey.Order.ORDER_SETTING_RESP, value)
+            StorageHelper.setDataToEncryptedFile(PrefKey.Order.MENU_SETTING_RESP, value)
         }
 
     private fun getOrderSettingModel() = orderSettingResp?.model?.firstOrNull()
@@ -267,7 +266,7 @@ object DataHelper {
     var numberIncreaseOrder : Long = 0
         get() {
             if (field == null) {
-                field = AppPreferences.get().getLong(PrefKey.Order.FILE_NAME_NUMBER_INCREAMENT)
+                field = AppPreferences.get().getLong(PrefKey.Order.FILE_NAME_NUMBER_INCREASEMENT)
             }
             return field
         }

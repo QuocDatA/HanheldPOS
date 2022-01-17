@@ -4,6 +4,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
+import com.hanheldpos.data.api.pojo.product.ProductModifiers
 import com.hanheldpos.data.api.pojo.product.VariantsGroup
 import com.hanheldpos.extension.notifyValueChange
 import com.hanheldpos.model.cart.ModifierCart

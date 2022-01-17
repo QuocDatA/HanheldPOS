@@ -96,13 +96,13 @@ data class CartModel(
     }
 
     fun addRegular(regular: Regular){
-        val listFee = DataHelper.findFeeProductList(regular.proOriginal!!.id);
+        val listFee = DataHelper.findFeeProductList(regular.proOriginal!!._id);
         regular.fees = listFee;
         productsList.add(regular);
     }
 
     fun addBundle(combo : Combo){
-        val listFee = DataHelper.findFeeProductList(combo.proOriginal!!.id);
+        val listFee = DataHelper.findFeeProductList(combo.proOriginal!!._id);
         combo.fees = listFee;
         productsList.add(combo);
     }

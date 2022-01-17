@@ -4,11 +4,9 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.hanheldpos.data.api.pojo.fee.Fee
 import com.hanheldpos.data.api.pojo.fee.FeeAssignToProductItem
-import com.hanheldpos.data.api.pojo.order.menu.getProductByListProduct
-import com.hanheldpos.data.api.pojo.order.menu.getProductImage
 import com.hanheldpos.data.api.pojo.order.settings.DiningOptionItem
 import com.hanheldpos.data.api.pojo.order.settings.Reason
-import com.hanheldpos.data.api.pojo.product.ProductItem
+import com.hanheldpos.data.api.pojo.product.Product
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.cart.CartModel
 import com.hanheldpos.model.cart.Combo
@@ -20,9 +18,9 @@ import com.hanheldpos.model.discount.DiscountUser
 import com.hanheldpos.model.product.BaseProductInCart
 import com.hanheldpos.model.product.ProductComboItem
 import com.hanheldpos.model.product.ProductType
-import java.net.URI
 
 object OrderConverter {
+
     public fun toCart(orderModel: OrderModel, orderGuid: String): CartModel {
         val orderPayment = orderModel.OrderDetail.PaymentList;
         val orderData = orderModel.OrderDetail;
@@ -84,28 +82,24 @@ object OrderConverter {
     ): MutableList<BaseProductInCart> {
         val productList: MutableList<BaseProductInCart> = mutableListOf()
         orderProducts.forEachIndexed { index, productOrder ->
-            val productBuy = productOrder
-            val diningOption = DataHelper.getDiningOptionItem(productBuy.DiningOption?.Id ?: 0)!!
+            val diningOption = DataHelper.getDiningOptionItem(productOrder.DiningOption?.Id ?: 0)!!
 
-            val compReason = toReasonComp(productBuy.CompVoidList!!)
-            val discountServerList = toDiscountsServer(productBuy.DiscountList!!)
-            val discountUserList = toDiscountsUser(productBuy.DiscountList!!)
+            val compReason = toReasonComp(productOrder.CompVoidList!!)
+            val discountServerList = toDiscountsServer(productOrder.DiscountList!!)
+            val discountUserList = toDiscountsUser(productOrder.DiscountList)
             val feeList = toFeeList(
-                serviceFeeList = productBuy.ServiceFeeList,
-                surchargeFeeList = productBuy.SurchargeFeeList,
-                shippingFeeList = productBuy.ShippingFeeList,
-                taxesFeeList = productBuy.TaxFeeList
+                serviceFeeList = productOrder.ServiceFeeList,
+                surchargeFeeList = productOrder.SurchargeFeeList,
+                shippingFeeList = productOrder.ShippingFeeList,
+                taxesFeeList = productOrder.TaxFeeList
             )
 
-            when (ProductType.values()[productBuy.ProductTypeId]) {
+            when (ProductType.values()[productOrder.ProductTypeId]) {
                 ProductType.REGULAR -> run {
-                    val proOriginal = findProduct(productBuy._id)
-                    if (proOriginal == null)
-                        return@run
-                    proOriginal.url = findUrlProduct(proOriginal.id).toString()
+                    val proOriginal = findProduct(productOrder._id) ?: return@run
                     productList.add(
                         toRegular(
-                            productBuy = productBuy,
+                            productBuy = productOrder,
                             proOriginal = proOriginal,
                             diningOption = diningOption,
                             compReason = compReason!!,
@@ -116,9 +110,9 @@ object OrderConverter {
                     )
                 }
                 ProductType.BUNDLE -> run {
-                    val productBundleOriginal = findProduct(productBuy._id)
+                    val productBundleOriginal = findProduct(productOrder._id)
                     val comboList: List<ProductComboItem> = Gson().fromJson(
-                        productBundleOriginal?.combo,
+                        productBundleOriginal?.Combo,
                         object : TypeToken<List<ProductComboItem>>() {}.type
                     )
                     if (!comboList.any())
@@ -127,7 +121,7 @@ object OrderConverter {
                     comboList.forEachIndexed { index, comboInfo ->
 
                         val listProduct: MutableList<Regular> = mutableListOf()
-                        productOrder.ProductChoosedList?.filter { it.Parent_id.equals(comboInfo.comboGuid) }
+                        productOrder.ProductChoosedList?.filter { it.Parent_id.equals(comboInfo.ComboGuid) }
                             ?.toList()?.forEach { productChoosed ->
                                 val productChoosedOriginal = findProduct(productChoosed._id)
                                 listProduct.add(
@@ -145,17 +139,17 @@ object OrderConverter {
                     }
                     val priceOverride = productBundleOriginal?.priceOverride(
                         menuLocation_id,
-                        productBuy.Sku,
-                        productBundleOriginal.price
+                        productOrder.Sku,
+                        productBundleOriginal.Price
                     )
                     productList.add(
                         Combo(
                             productBundleOriginal!!,
                             groupBundleList,
                             diningOption,
-                            productBuy.Quantity,
-                            productBuy.Sku,
-                            productBuy.Variant,
+                            productOrder.Quantity,
+                            productOrder.Sku,
+                            productOrder.Variant,
                             priceOverride,
                             feeList
                         ).apply {
@@ -170,22 +164,16 @@ object OrderConverter {
         return productList
     }
 
-    private fun findUrlProduct(productId: String): URI {
-        // TODO: check this fun logic
-        return URI.create(DataHelper.orderMenuResp?.getProductImage()?.firstOrNull {
-            it?.id == productId
-        }?.url)
-    }
 
-    private fun findProduct(productGuid: String): ProductItem? {
-        return DataHelper.orderMenuResp?.getProductByListProduct()?.firstOrNull {
-            it.id == productGuid
+    private fun findProduct(productGuid: String): Product? {
+        return DataHelper.menuResp?.ProductList?.firstOrNull {
+            it._id == productGuid
         }
     }
 
     private fun toRegular(
         productBuy: ProductBuy,
-        proOriginal: ProductItem,
+        proOriginal: Product,
         diningOption: DiningOptionItem,
         compReason: Reason?,
         discountUserList: List<DiscountUser>,

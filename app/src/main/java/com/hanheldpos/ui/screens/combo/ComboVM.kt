@@ -4,19 +4,17 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import com.hanheldpos.data.api.pojo.order.menu.OrderMenuResp
 import com.hanheldpos.data.api.pojo.order.settings.DiningOptionItem
-import com.hanheldpos.data.repository.GenerateId
 import com.hanheldpos.extension.notifyValueChange
+import com.hanheldpos.model.DataHelper
+import com.hanheldpos.model.UserHelper
 import com.hanheldpos.model.cart.Combo
 import com.hanheldpos.model.cart.GroupBundle
 import com.hanheldpos.model.cart.Regular
 import com.hanheldpos.model.combo.ItemActionType
 import com.hanheldpos.model.combo.ItemComboGroup
 import com.hanheldpos.model.discount.DiscountTypeFor
-import com.hanheldpos.model.home.order.menu.OrderMenuDataMapper
-import com.hanheldpos.model.home.order.menu.ProductMenuItem
-import com.hanheldpos.model.product.BaseProductInCart
+import com.hanheldpos.model.home.order.menu.MenuDataMapper
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
 
 class ComboVM : BaseUiViewModel<ComboUV>() {
@@ -63,15 +61,7 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
 
         bundleInCart.value!!.let { combo ->
             listGroup.map { group ->
-                val listRegular: List<Regular> =
-                    OrderMenuDataMapper.getProductItemListByComboGuid(group.comboInfo.comboGuid)
-                        .map {
-                            var priceOverride =
-                                it.priceOverride(menuOrderId, it.skuDefault, it.price?: 0.0);
-                            val regular = Regular(it, diningOption, 1, it.skuDefault, it.variants,priceOverride,null)
-                            regular.priceOverride = regular.groupPrice(group,combo.proOriginal!!);
-                            return@map regular
-                        }
+                val listRegular: List<Regular> = group.productsForChoose(menuResp = DataHelper.menuResp!!,menuOrderId,diningOption,combo.proOriginal!!);
                 ItemComboGroup(
                     groupBundle = group,
                     productsForChoose = listRegular
