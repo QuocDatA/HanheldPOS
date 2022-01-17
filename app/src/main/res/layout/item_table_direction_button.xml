@@ -10,7 +10,7 @@
 
         <variable
             name="item"
-            type="com.hanheldpos.data.api.pojo.table.FloorTableItem" />
+            type="com.hanheldpos.data.api.pojo.floor.FloorTable" />
 
     </data>
 

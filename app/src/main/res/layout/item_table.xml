@@ -8,7 +8,7 @@
 
         <variable
             name="item"
-            type="com.hanheldpos.data.api.pojo.table.FloorTableItem" />
+            type="com.hanheldpos.data.api.pojo.floor.FloorTable" />
 
     </data>
 
@@ -35,7 +35,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:text="@{item.tableName,default=`Table`}"
+                    android:text="@{item.TableName,default=`Table`}"
                     app:useFontStyle="normal"
                     app:useTextColor="color3"
                     app:useTextHeader="h4" />

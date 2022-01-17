@@ -5,13 +5,12 @@ import com.hanheldpos.data.api.ApiConst
 import com.hanheldpos.data.api.pojo.device.DeviceCodeResp
 import com.hanheldpos.data.api.pojo.discount.CouponResp
 import com.hanheldpos.data.api.pojo.discount.DiscountResp
-import com.hanheldpos.data.api.pojo.employee.EmployeeResp
 import com.hanheldpos.data.api.pojo.fee.Fee
 import com.hanheldpos.data.api.pojo.fee.FeeResp
+import com.hanheldpos.data.api.pojo.floor.FloorResp
 import com.hanheldpos.data.api.pojo.order.menu.MenuResp
 import com.hanheldpos.data.api.pojo.order.settings.OrderSettingResp
 import com.hanheldpos.data.api.pojo.payment.PaymentsResp
-import com.hanheldpos.data.api.pojo.table.TableResp
 import com.hanheldpos.model.cart.fee.FeeApplyToType
 import com.hanheldpos.prefs.PrefKey
 import com.utils.helper.AppPreferences
@@ -24,7 +23,7 @@ object DataHelper {
         deviceCodeResp = null
         menuResp = null
         orderSettingResp = null
-        tableResp = null
+        floorResp = null
         feeResp = null
         discountResp = null
         discountDetailResp = null
@@ -139,29 +138,26 @@ object DataHelper {
 
     //region ## TableStatus
 
-    var tableResp: TableResp? = null
+    var floorResp: FloorResp? = null
         get() {
             if (field == null) {
                 field = StorageHelper.getDataFromEncryptedFile(
-                    PrefKey.Table.TABLE_RESP,
-                    TableResp::class.java
+                    PrefKey.Floor.FLOOR_RESP,
+                    FloorResp::class.java
                 )
             }
             return field
         }
         set(value) {
             // TODO reInit floor table status - this should be done by the server
-            value?.model?.firstOrNull()?.floorTable?.forEach {
-                it?.visible = ApiConst.VISIBLE
+            value?.FloorTable?.forEach {
+                it.Visible = ApiConst.VISIBLE
             }
 
             field = value
 
-            StorageHelper.setDataToEncryptedFile(PrefKey.Table.TABLE_RESP, value)
+            StorageHelper.setDataToEncryptedFile(PrefKey.Floor.FLOOR_RESP, value)
         }
-
-    private fun getTableModel() = tableResp?.model?.firstOrNull()
-    fun getTableStatus() = getTableModel()?.tableStatus
 
     //endregion
 

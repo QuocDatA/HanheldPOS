@@ -1,6 +1,8 @@
 package com.hanheldpos.data.api.services
 
-import com.hanheldpos.data.api.pojo.table.TableResp
+import com.hanheldpos.data.api.pojo.floor.FloorResp
+import com.hanheldpos.data.repository.BaseResponse
+import com.hanheldpos.data.repository.floor.FloorRepo
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -10,5 +12,5 @@ interface FloorService {
     fun getPosFloor(
         @Query("userGuid") userGuid: String?,
         @Query("locationGuid") location: String?,
-    ): Call<TableResp>
+    ): Call<BaseResponse<List<FloorResp>>>
 }
