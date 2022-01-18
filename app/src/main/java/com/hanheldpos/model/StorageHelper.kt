@@ -8,6 +8,7 @@ import com.google.gson.Gson
 import com.hanheldpos.prefs.PrefKey
 import com.utils.helper.AppPreferences
 import java.io.*
+import java.lang.reflect.Type
 import java.security.SecureRandom
 import javax.crypto.Cipher
 import javax.crypto.KeyGenerator
@@ -23,9 +24,14 @@ object StorageHelper {
         encryptAndSaveFile(key, data)
     }
 
-    public fun <T : Parcelable> getDataFromEncryptedFile(key: String, type: Class<T>?): T? {
-        var data = decryptEncryptedFile(key)
-        return Gson().fromJson(data, type)
+    public fun <T : Parcelable> getDataFromEncryptedFile(key: String, classOff: Class<T>?): T? {
+        val data = decryptEncryptedFile(key)
+        return Gson().fromJson(data, classOff)
+    }
+
+    public fun <T > getDataFromEncryptedFile(key: String, typeOff: Type): T? {
+        val data = decryptEncryptedFile(key)
+        return Gson().fromJson(data, typeOff)
     }
 
      fun encryptAndSaveFile(fileName: String, data: Any?) {

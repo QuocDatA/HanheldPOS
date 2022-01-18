@@ -1,6 +1,7 @@
 package com.hanheldpos.model
 
 
+import com.google.gson.reflect.TypeToken
 import com.hanheldpos.data.api.ApiConst
 import com.hanheldpos.data.api.pojo.device.DeviceCodeResp
 import com.hanheldpos.data.api.pojo.discount.CouponResp
@@ -12,6 +13,7 @@ import com.hanheldpos.data.api.pojo.order.menu.MenuResp
 import com.hanheldpos.data.api.pojo.order.settings.OrderSettingResp
 import com.hanheldpos.data.api.pojo.payment.PaymentsResp
 import com.hanheldpos.model.cart.fee.FeeApplyToType
+import com.hanheldpos.model.product.ProductComboItem
 import com.hanheldpos.prefs.PrefKey
 import com.utils.helper.AppPreferences
 
@@ -25,8 +27,8 @@ object DataHelper {
         orderSettingResp = null
         floorResp = null
         feeResp = null
-        discountResp = null
-        discountDetailResp = null
+        discountsResp = null
+        discountDetailsResp = null
         paymentsResp = null
         CurrentDrawer_id = null
         numberIncreaseOrder = 0;
@@ -50,7 +52,7 @@ object DataHelper {
             if (field == null) {
                 field = StorageHelper.getDataFromEncryptedFile(
                     PrefKey.Order.MENU_RESP,
-                    MenuResp::class.java
+                    classOff =  MenuResp::class.java
                 )
             }
             return field
@@ -73,7 +75,7 @@ object DataHelper {
             if (field == null) {
                 field = StorageHelper.getDataFromEncryptedFile(
                     PrefKey.Order.MENU_SETTING_RESP,
-                    OrderSettingResp::class.java
+                    classOff =  OrderSettingResp::class.java
                 )
             }
             return field
@@ -110,7 +112,7 @@ object DataHelper {
             if (field == null) {
                 field = StorageHelper.getDataFromEncryptedFile(
                     PrefKey.Setting.DEVICE_CODE,
-                    DeviceCodeResp::class.java
+                    classOff =  DeviceCodeResp::class.java
                 )
             }
             return field
@@ -143,7 +145,7 @@ object DataHelper {
             if (field == null) {
                 field = StorageHelper.getDataFromEncryptedFile(
                     PrefKey.Floor.FLOOR_RESP,
-                    FloorResp::class.java
+                    classOff =  FloorResp::class.java
                 )
             }
             return field
@@ -168,7 +170,7 @@ object DataHelper {
             if (field == null) {
                 field = StorageHelper.getDataFromEncryptedFile(
                     PrefKey.Fee.FEE_RESP,
-                    FeeResp::class.java
+                    classOff =  FeeResp::class.java
                 )
             }
             return field
@@ -204,12 +206,12 @@ object DataHelper {
 
     //region Discount
 
-    var discountResp: DiscountResp? = null
+    var discountsResp: List<DiscountResp>? = null
         get() {
             if (field == null) {
                 field = StorageHelper.getDataFromEncryptedFile(
                     PrefKey.Discount.DISCOUNT_RESP,
-                    DiscountResp::class.java
+                    object : TypeToken<List<DiscountResp>>() {}.type
                 )
             }
             return field
@@ -219,12 +221,12 @@ object DataHelper {
             StorageHelper.setDataToEncryptedFile(PrefKey.Discount.DISCOUNT_RESP, value)
         }
 
-    var discountDetailResp: CouponResp? = null
+    var discountDetailsResp: List<CouponResp>? = null
         get() {
             if (field == null) {
                 field = StorageHelper.getDataFromEncryptedFile(
                     PrefKey.Discount.DISCOUNT_DETAIL_RESP,
-                    CouponResp::class.java
+                    object : TypeToken<List<CouponResp>>() {}.type
                 )
             }
             return field
@@ -243,7 +245,7 @@ object DataHelper {
             if (field == null) {
                 field = StorageHelper.getDataFromEncryptedFile(
                     PrefKey.Payment.PAYMENTS_RESP,
-                    PaymentsResp::class.java
+                    classOff =  PaymentsResp::class.java
                 )
             }
             return field

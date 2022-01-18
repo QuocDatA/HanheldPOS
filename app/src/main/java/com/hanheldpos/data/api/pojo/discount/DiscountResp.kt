@@ -14,16 +14,9 @@ import com.hanheldpos.utils.time.DateTimeHelper
 import kotlinx.parcelize.Parcelize
 import java.util.*
 
-@Parcelize
-data class DiscountResp(
-    val DidError: Boolean,
-    val ErrorMessage: String?,
-    val Message: String?,
-    val Model: List<DiscountItem>
-) : Parcelable
 
 @Parcelize
-data class DiscountItem(
+data class DiscountResp(
     val Acronymn: String,
     val ApplyToDiningOptionText: String,
     val ApplyToPriceProduct: Int,
