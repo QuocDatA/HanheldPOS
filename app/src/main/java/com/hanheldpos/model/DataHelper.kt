@@ -35,7 +35,7 @@ object DataHelper {
     }
 
     fun generateOrderIdByFormat() : String {
-        var numberIncrement : Long = if (getDeviceCodeModel()?.SettingsId?.firstOrNull()?.NumberIncrement?.toLong() ?: 0 > numberIncreaseOrder) getDeviceCodeModel()?.SettingsId?.firstOrNull()?.NumberIncrement?.toLong() ?: 0 else numberIncreaseOrder;
+        var numberIncrement : Long = numberIncreaseOrder;
         numberIncrement = numberIncrement.plus(1);
         numberIncreaseOrder = numberIncrement;
         val prefix = getDeviceCodeModel()?.SettingsId?.firstOrNull()?.Prefix ?: ""
@@ -264,8 +264,10 @@ object DataHelper {
         }
         set(value) {
             field = value
-            AppPreferences.get().storeValue(PrefKey.Payment.PAYMENTS_RESP, value)
+            AppPreferences.get().storeValue(PrefKey.Order.FILE_NAME_NUMBER_INCREASEMENT, value)
         }
+
+
 
     //endregion
 }

@@ -71,7 +71,7 @@ class CartVM : BaseUiViewModel<CartUV>() {
             UserGuid = UserHelper.getUserGui(),
             LocationGuid = UserHelper.getLocationGui(),
             DeviceGuid = UserHelper.getDeviceGui(),
-            Device_key = DataHelper.getDeviceByDeviceCode()?.SecretKey!!.toString()
+            Device_key = DataHelper.getDeviceByDeviceCode()?._key!!.toString()
         )
         );
         settingResp.putSettingDeviceIds(
@@ -84,6 +84,7 @@ class CartVM : BaseUiViewModel<CartUV>() {
                                 "Error",
                                 data?.ErrorMessage,
                             )
+                        showLoading(true)
                     } else {
                         val orderJson = JsonHelper.stringify(
                             CartConverter.toOrder(
@@ -95,12 +96,20 @@ class CartVM : BaseUiViewModel<CartUV>() {
                             BaseRepoCallback<OrderSubmitResp> {
                             override fun apiResponse(data: OrderSubmitResp?) {
                                 showLoading(false);
-                                AppAlertDialog.get()
-                                    .show(
-                                        "Notification",
-                                        "Push order success",
-                                    );
-                                uiCallback?.onBillSuccess();
+                                if (data== null || data.Message?.contains("exist") == true){
+                                    AppAlertDialog.get()
+                                        .show(
+                                            "Notification",
+                                            data?.Message ?: "Push order failed",
+                                        );
+                                }else {
+                                    AppAlertDialog.get()
+                                        .show(
+                                            "Notification",
+                                            "Push order succeeded",
+                                        );
+                                    uiCallback?.onBillSuccess();
+                                }
                             }
 
                             override fun showMessage(message: String?) {

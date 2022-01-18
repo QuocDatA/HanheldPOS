@@ -25,7 +25,7 @@ object CartConverter {
             ?.price(subTotal, totalDisc);
         val totalSurcharge = cart.fees.firstOrNull { fee -> fee.FeeTypeId == FeeType.SurchargeFee }
             ?.price(subTotal, totalDisc);
-        val totalTaxe = cart.fees.firstOrNull { fee -> fee.FeeTypeId == FeeType.TaxFee }
+        val totalTaxes = cart.fees.firstOrNull { fee -> fee.FeeTypeId == FeeType.TaxFee }
             ?.price(subTotal, totalDisc);
 
         val totalFees = cart.totalFee(subTotal, totalDisc);
@@ -99,7 +99,7 @@ object CartConverter {
                     totalDisc = totalDisc,
                     totalService = totalService,
                     totalSurcharge = totalSurcharge,
-                    totalTaxe = totalTaxe,
+                    totalTaxe = totalTaxes,
                     note = cart.note,
                     otherFee = totalFees,
                     paymentList = cart.paymentsList

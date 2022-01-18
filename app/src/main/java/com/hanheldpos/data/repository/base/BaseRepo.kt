@@ -38,7 +38,14 @@ abstract class BaseRepo : BaseApi() {
     }
 
     protected fun <T> getBodyResponse(response: Response<T>): T? {
+
         if (response.isSuccessful) {
+            val bodyResponse = response.body()
+            bodyResponse?.let { body ->
+                return body
+            }
+        }
+        else {
             val bodyResponse = response.body()
             bodyResponse?.let { body ->
                 return body
