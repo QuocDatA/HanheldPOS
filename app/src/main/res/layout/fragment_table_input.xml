@@ -117,10 +117,11 @@
 
 
         <include
+            app:keyboardVM="@{keyboardVM}"
             android:id="@+id/keyBoardContainer"
             layout="@layout/layout_keyboard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"/>
+            android:layout_alignParentBottom="true" />
     </RelativeLayout>
 </layout>

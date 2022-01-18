@@ -31,8 +31,7 @@ class PaymentInputFragment(
             init(this@PaymentInputFragment);
             binding.viewModel = this;
             binding.keyboardVM = keyBoardVM;
-            binding.keyBoardContainer.textPad.viewModel = keyBoardVM;
-            binding.keyBoardContainer.numberPad.viewModel = keyBoardVM;
+            binding.keyBoardContainer.keyboardVM = keyBoardVM;
         }
     }
 
@@ -45,14 +44,6 @@ class PaymentInputFragment(
 
             override fun onCancel() {
                 viewModel.onCancel();
-            }
-
-            override fun onSwitch() {
-                binding.keyBoardContainer.keyBoardType = keyBoardVM.keyBoardType
-            }
-
-            override fun onCapLock() {
-                binding.keyBoardContainer.textPad.isCapLock = keyBoardVM.isCapLock
             }
         });
         binding.paymentInputTitle.setText(paymentMethod.Title + " (Amount Due " + payable.toNiceString() + ")")
@@ -70,10 +61,7 @@ class PaymentInputFragment(
 
     override fun initData() {
         keyBoardVM.input.value = payable.toNiceString();
-        keyBoardVM.keyBoardType = KeyBoardType.Number
-        binding.keyBoardContainer.textPad.isCapLock = keyBoardVM.isCapLock
-        binding.keyBoardContainer.keyBoardType = keyBoardVM.keyBoardType
-        binding.keyBoardContainer.numberPad.keyBoardType = keyBoardVM.keyBoardType
+        keyBoardVM.keyBoardType.postValue(KeyBoardType.Number)
     }
 
     override fun initAction() {

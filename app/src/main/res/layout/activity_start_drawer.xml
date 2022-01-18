@@ -8,6 +8,9 @@
         <variable
             name="viewModel"
             type="com.hanheldpos.ui.screens.cashdrawer.CashDrawerVM" />
+        <variable
+            name="keyboardVM"
+            type="com.hanheldpos.ui.input.KeyBoardVM"/>
     </data>
 
     <LinearLayout style="@style/RootLayout">
@@ -111,6 +114,7 @@
 
         <include
             visibleObject="@{false}"
+            app:keyboardVM="@{keyboardVM}"
             android:id="@+id/keyBoardContainer"
             layout="@layout/layout_keyboard"
             android:layout_width="match_parent"

@@ -7,9 +7,6 @@
             name="viewModel"
             type="com.hanheldpos.ui.input.KeyBoardVM" />
 
-        <variable
-            name="keyBoardType"
-            type="com.hanheldpos.model.keyboard.KeyBoardType" />
 
         <import type="com.hanheldpos.model.keyboard.KeyBoardType" />
 
@@ -79,7 +76,7 @@
                             android:layout_weight="1.5"
                             android:onClick="@{v->viewModel.switchKeyBoardType()}"
                             android:text="abc"
-                            android:visibility="@{keyBoardType == KeyBoardType.NumberOnly ? View.GONE : View.VISIBLE}" />
+                            android:visibility="@{viewModel.keyBoardType == KeyBoardType.NumberOnly ? View.GONE : View.VISIBLE}" />
 
                     </LinearLayout>
 
@@ -128,7 +125,7 @@
                             android:layout_weight="1.5"
                             android:onClick="@{(view) -> viewModel.concatenateInputString(view)}"
                             android:text="0"
-                            android:visibility="@{keyBoardType == KeyBoardType.NumberOnly ? View.GONE : View.VISIBLE}" />
+                            android:visibility="@{viewModel.keyBoardType == KeyBoardType.NumberOnly ? View.GONE : View.VISIBLE}" />
 
                     </LinearLayout>
                 </LinearLayout>
@@ -138,7 +135,7 @@
                     android:layout_weight="1.5"
                     android:onClick="@{(view) -> viewModel.concatenateInputString(view)}"
                     android:text="0"
-                    android:visibility="@{keyBoardType == KeyBoardType.NumberOnly ? View.VISIBLE : View.GONE}" />
+                    android:visibility="@{viewModel.keyBoardType == KeyBoardType.NumberOnly ? View.VISIBLE : View.GONE}" />
             </LinearLayout>
 
 

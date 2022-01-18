@@ -26,9 +26,6 @@ class TableInputFragment(
             init(this@TableInputFragment);
             binding.viewModel = this;
             binding.keyboardVM = keyBoardVM;
-            binding.keyBoardContainer.numberPad.viewModel = keyBoardVM;
-            binding.keyBoardContainer.textPad.viewModel = keyBoardVM;
-            binding.keyBoardContainer.keyboardVM = keyBoardVM;
         }
 
     }
@@ -43,13 +40,6 @@ class TableInputFragment(
                 viewModel.onCancel();
             }
 
-            override fun onSwitch() {
-                binding.keyBoardContainer.keyBoardType = keyBoardVM.keyBoardType
-            }
-
-            override fun onCapLock() {
-                binding.keyBoardContainer.textPad.isCapLock = keyBoardVM.isCapLock
-            }
 
 
         });
@@ -57,10 +47,7 @@ class TableInputFragment(
 
     override fun initData() {
         keyBoardVM.input.value = "";
-        binding.keyBoardContainer.textPad.isCapLock = keyBoardVM.isCapLock
-        binding.keyBoardContainer.keyBoardType = keyBoardVM.keyBoardType
-        keyBoardVM.keyBoardType = KeyBoardType.NumberOnly
-        binding.keyBoardContainer.numberPad.keyBoardType = keyBoardVM.keyBoardType
+        keyBoardVM.keyBoardType.postValue(KeyBoardType.NumberOnly);
     }
 
     override fun initAction() {

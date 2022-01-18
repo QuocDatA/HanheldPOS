@@ -169,7 +169,7 @@ class PinCodeVM : BaseRepoViewModel<EmployeeRepo, PinCodeUV>() {
                     when(DrawerStatus.fromInt(data.Model.first().StatusId)) {
                         DrawerStatus.NOT_FOUND -> uiCallback?.goStartDrawer();
                         else->{
-                            DataHelper.CurrentDrawer_id = data.Model.first().CashDrawerGuid;
+                            DataHelper.CurrentDrawerId = data.Model.first().CashDrawerGuid;
                             uiCallback?.goHome()
                         };
                     }
