@@ -14,7 +14,7 @@ data class GroupBundle(
 ) : Cloneable {
     val totalQuantity get() = productList.sumOf { it.quantity?: 0 }
     val requireQuantity get() = comboInfo.Quantity?.minus(totalQuantity);
-    val groupName get() = MenuDataMapper.getGroupNameFromGroupGuid(comboInfo.ComboGuid,DataHelper.menuResp!!);
+    val groupName get() = MenuDataMapper.getGroupNameFromGroupGuid(comboInfo.ComboGuid,DataHelper.menu!!);
     fun isComplete() = totalQuantity >= comboInfo.Quantity ?: 0;
 
     fun addRegular(regular: Regular){

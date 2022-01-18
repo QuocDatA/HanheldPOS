@@ -16,7 +16,7 @@ class OrderDataVM : BaseRepoViewModel<OrderRepo, OrderUV>() {
     }
 
     fun onMenuChange(position: Int){
-        menus.value = MenuDataMapper.getMenuByBranch(position,DataHelper.menuResp!!).toMutableList();
+        menus.value = MenuDataMapper.getMenuByBranch(position,DataHelper.menu!!).toMutableList();
         // Init First Page
         selectedMenu.value = menus.value?.firstOrNull();
     }

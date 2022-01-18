@@ -11,9 +11,8 @@ import com.hanheldpos.data.api.pojo.fee.FeeResp
 import com.hanheldpos.data.api.pojo.floor.FloorResp
 import com.hanheldpos.data.api.pojo.order.menu.MenuResp
 import com.hanheldpos.data.api.pojo.order.settings.OrderSettingResp
-import com.hanheldpos.data.api.pojo.payment.PaymentsResp
+import com.hanheldpos.data.api.pojo.payment.PaymentMethodResp
 import com.hanheldpos.model.cart.fee.FeeApplyToType
-import com.hanheldpos.model.product.ProductComboItem
 import com.hanheldpos.prefs.PrefKey
 import com.utils.helper.AppPreferences
 
@@ -22,14 +21,14 @@ object DataHelper {
     var CurrentDrawer_id : String? = null;
 
     fun clearData() {
-        deviceCodeResp = null
-        menuResp = null
-        orderSettingResp = null
-        floorResp = null
-        feeResp = null
-        discountsResp = null
-        discountDetailsResp = null
-        paymentsResp = null
+        deviceCode = null
+        menu = null
+        orderSetting = null
+        floor = null
+        fee = null
+        discounts = null
+        discountDetails = null
+        paymentMethods = null
         CurrentDrawer_id = null
         numberIncreaseOrder = 0;
         AppPreferences.get().storeValue(PrefKey.Setting.DEVICE_CODE, null)
@@ -47,7 +46,7 @@ object DataHelper {
 
     //region ## Order Menu
 
-    var menuResp: MenuResp? = null
+    var menu: MenuResp? = null
         get() {
             if (field == null) {
                 field = StorageHelper.getDataFromEncryptedFile(
@@ -62,7 +61,7 @@ object DataHelper {
             StorageHelper.setDataToEncryptedFile(PrefKey.Order.MENU_RESP, value)
         }
 
-    private fun getGroupsOrderMenu() = menuResp?.GroupList;
+    private fun getGroupsOrderMenu() = menu?.GroupList;
 
     fun findGroupNameOrderMenu(group_id : String) : String{
         return getGroupsOrderMenu()?.firstOrNull { groupsItem -> groupsItem._Id == group_id }?.GroupName ?: ""
@@ -70,7 +69,7 @@ object DataHelper {
 
     //endregion
     //region ### Order Settings
-    var orderSettingResp: OrderSettingResp? = null
+    var orderSetting: OrderSettingResp? = null
         get() {
             if (field == null) {
                 field = StorageHelper.getDataFromEncryptedFile(
@@ -85,19 +84,19 @@ object DataHelper {
             StorageHelper.setDataToEncryptedFile(PrefKey.Order.MENU_SETTING_RESP, value)
         }
 
-    fun getVoidInfo() = orderSettingResp?.ListVoid?.firstOrNull()
+    fun getVoidInfo() = orderSetting?.ListVoid?.firstOrNull()
 
     fun getVoidList() = getVoidInfo()?.ListReasons
 
     fun getVoidItemById(voidId: Int) = getVoidList()?.find { it.Id == voidId }
 
-    private fun getCompInfo() = orderSettingResp?.ListComp?.firstOrNull()
+    private fun getCompInfo() = orderSetting?.ListComp?.firstOrNull()
 
     fun getCompList() = getCompInfo()?.ListReasons
 
     fun getCompItemById(voidId: Int) = getCompList()?.find { it.Id == voidId }
 
-    fun getDiningOptionList() = orderSettingResp?.ListDiningOptions
+    fun getDiningOptionList() = orderSetting?.ListDiningOptions
 
     fun getDiningOptionItem(diningOptionId: Int) =
         getDiningOptionList()?.find { it.Id == diningOptionId }
@@ -107,7 +106,7 @@ object DataHelper {
 
     //endregion
     //region ## Device Code
-    var deviceCodeResp: DeviceCodeResp? = null
+    var deviceCode: DeviceCodeResp? = null
         get() {
             if (field == null) {
                 field = StorageHelper.getDataFromEncryptedFile(
@@ -122,7 +121,7 @@ object DataHelper {
             StorageHelper.setDataToEncryptedFile(PrefKey.Setting.DEVICE_CODE, value)
         }
 
-    private fun getDeviceCodeModel() = deviceCodeResp;
+    private fun getDeviceCodeModel() = deviceCode;
 
     fun getDeviceCodeEmployee() = getDeviceCodeModel()?.EmployeeList;
 
@@ -140,7 +139,7 @@ object DataHelper {
 
     //region ## TableStatus
 
-    var floorResp: FloorResp? = null
+    var floor: FloorResp? = null
         get() {
             if (field == null) {
                 field = StorageHelper.getDataFromEncryptedFile(
@@ -165,7 +164,7 @@ object DataHelper {
 
 
     //region ## Fee
-    var feeResp: FeeResp? = null
+    var fee: FeeResp? = null
         get() {
             if (field == null) {
                 field = StorageHelper.getDataFromEncryptedFile(
@@ -180,7 +179,7 @@ object DataHelper {
             StorageHelper.setDataToEncryptedFile(PrefKey.Fee.FEE_RESP, value)
         }
 
-    private fun getListFee() : List<Fee>? = feeResp?.Fees
+    private fun getListFee() : List<Fee>? = fee?.Fees
 
     /**
      * Get Fee type [FeeApplyToType] with product id
@@ -206,7 +205,7 @@ object DataHelper {
 
     //region Discount
 
-    var discountsResp: List<DiscountResp>? = null
+    var discounts: List<DiscountResp>? = null
         get() {
             if (field == null) {
                 field = StorageHelper.getDataFromEncryptedFile(
@@ -221,7 +220,7 @@ object DataHelper {
             StorageHelper.setDataToEncryptedFile(PrefKey.Discount.DISCOUNT_RESP, value)
         }
 
-    var discountDetailsResp: List<CouponResp>? = null
+    var discountDetails: List<CouponResp>? = null
         get() {
             if (field == null) {
                 field = StorageHelper.getDataFromEncryptedFile(
@@ -240,12 +239,12 @@ object DataHelper {
 
     //region Payment
 
-    var paymentsResp : PaymentsResp? = null
+    var paymentMethods : List<PaymentMethodResp>? = null
         get() {
             if (field == null) {
                 field = StorageHelper.getDataFromEncryptedFile(
                     PrefKey.Payment.PAYMENTS_RESP,
-                    classOff =  PaymentsResp::class.java
+                    object : TypeToken<List<PaymentMethodResp>>() {}.type
                 )
             }
             return field
@@ -255,16 +254,13 @@ object DataHelper {
             StorageHelper.setDataToEncryptedFile(PrefKey.Payment.PAYMENTS_RESP, value)
         }
 
-    fun getPaymentMethodList()= this.paymentsResp?.Model
+    fun getPaymentMethodList()= this.paymentMethods
 
     //region Order Storage
 
     var numberIncreaseOrder : Long = 0
         get() {
-            if (field == null) {
-                field = AppPreferences.get().getLong(PrefKey.Order.FILE_NAME_NUMBER_INCREASEMENT)
-            }
-            return field
+            return AppPreferences.get().getLong(PrefKey.Order.FILE_NAME_NUMBER_INCREASEMENT)
         }
         set(value) {
             field = value
