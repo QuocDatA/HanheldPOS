@@ -12,9 +12,9 @@ abstract class OrderMapping {
     protected fun iMapperFee(src: Fee, subtotal: Double, totalDiscounts: Double): OrderFee {
         return OrderFee(
             _id = src._id,
-            FeeType = src.feeApplyToType,
-            FeeName = src.name,
-            FeeValue = src.value,
+            FeeType = src.Id,
+            FeeName = src.Name,
+            FeeValue = src.Value,
             TotalPrice = src.price(subtotal, totalDiscounts)
         );
     }

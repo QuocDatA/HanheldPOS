@@ -158,7 +158,9 @@ class ProductDetailFragment(
                                 ItemExtra(
                                     modifier = modifierItem,
                                     productPricing = proOriginal!!,
-                                    maxExtraQuantity = it.MaximumModifier,
+                                    //maxExtraQuantity = it.MaximumModifier,
+                                    // TODO : Temp replace max quantity
+                                    maxExtraQuantity = 100,
                                 )
                             }
                         )

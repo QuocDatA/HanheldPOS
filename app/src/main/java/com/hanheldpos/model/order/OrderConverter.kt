@@ -213,48 +213,48 @@ object OrderConverter {
         fees.addAll(serviceFeeList?.map { fee ->
             Fee(
                 _id = fee._id,
-                feeApplyToType = fee.FeeType,
-                feeType = FeeType.ServiceFee,
-                value = fee.FeeValue,
-                name = fee.FeeName,
-                total = fee.TotalPrice,
-                assignToProducts = assignToProductList
+                Id = fee.FeeType,
+                FeeTypeId = FeeType.ServiceFee,
+                Value = fee.FeeValue,
+                Name = fee.FeeName,
+                Total = fee.TotalPrice,
+                AssignToProductList = assignToProductList
             )
         } ?: mutableListOf())
 
         fees.addAll(surchargeFeeList?.map { fee ->
             Fee(
                 _id = fee._id,
-                feeApplyToType = fee.FeeType,
-                feeType = FeeType.SurchargeFee,
-                value = fee.FeeValue,
-                name = fee.FeeName,
-                total = fee.TotalPrice,
-                assignToProducts = assignToProductList
+                Id = fee.FeeType,
+                FeeTypeId = FeeType.SurchargeFee,
+                Value = fee.FeeValue,
+                Name = fee.FeeName,
+                Total = fee.TotalPrice,
+                AssignToProductList = assignToProductList
             )
         } ?: mutableListOf())
 
         fees.addAll(taxesFeeList?.map { fee ->
             Fee(
                 _id = fee._id,
-                feeApplyToType = fee.FeeType,
-                feeType = FeeType.TaxFee,
-                value = fee.FeeValue,
-                name = fee.FeeName,
-                total = fee.TotalPrice,
-                assignToProducts = assignToProductList
+                Id = fee.FeeType,
+                FeeTypeId = FeeType.TaxFee,
+                Value = fee.FeeValue,
+                Name = fee.FeeName,
+                Total = fee.TotalPrice,
+                AssignToProductList = assignToProductList
             )
         } ?: mutableListOf())
 
         fees.addAll(shippingFeeList?.map { fee ->
             Fee(
                 _id = fee._id,
-                feeApplyToType = fee.FeeType,
-                feeType = FeeType.ShippingFee,
-                value = fee.FeeValue,
-                name = fee.FeeName,
-                total = fee.TotalPrice,
-                assignToProducts = assignToProductList
+                Id = fee.FeeType,
+                FeeTypeId = FeeType.ShippingFee,
+                Value = fee.FeeValue,
+                Name = fee.FeeName,
+                Total = fee.TotalPrice,
+                AssignToProductList = assignToProductList
             )
         } ?: mutableListOf())
 

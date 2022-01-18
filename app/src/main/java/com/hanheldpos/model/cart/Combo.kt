@@ -148,7 +148,7 @@ class Combo() : BaseProductInCart() {
     }
 
     fun totalFee(subtotal: Double, totalDisc: Double): Double {
-        return fees?.filter { it.feeApplyToType != FeeApplyToType.Included.value }
+        return fees?.filter { it.Id != FeeApplyToType.Included.value }
             ?.sumOf { it.price(subtotal, totalDisc) } ?: 0.0
     }
 

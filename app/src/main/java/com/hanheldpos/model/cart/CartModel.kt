@@ -59,7 +59,7 @@ data class CartModel(
     }
 
     fun totalFee(subTotal: Double, totalDiscount : Double) : Double {
-        return fees.filter { FeeApplyToType.fromInt(it.feeApplyToType) != FeeApplyToType.Included }.sumOf { fee->
+        return fees.filter { FeeApplyToType.fromInt(it.Id) != FeeApplyToType.Included }.sumOf { fee->
             fee.price(subTotal,totalDiscount)
         }
     }
