@@ -46,7 +46,7 @@ class CashDrawerVM : BaseRepoViewModel<CashDrawerRepo, CashDrawerUV>() {
                     if (data == null || data.DidError) {
                         showError(context?.getString(R.string.failed_to_load_data));
                     } else {
-                        DataHelper.CurrentDrawer_id = data.Model.first().CashDrawerGuid;
+                        DataHelper.CurrentDrawerId = data.Model.first().CashDrawerGuid;
                         uiCallback?.goMain();
                     }
                 }

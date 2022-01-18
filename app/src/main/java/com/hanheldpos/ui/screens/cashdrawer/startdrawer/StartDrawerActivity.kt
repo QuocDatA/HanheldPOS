@@ -32,7 +32,8 @@ class StartDrawerActivity : BaseActivity<ActivityStartDrawerBinding, CashDrawerV
             binding.viewModel = this;
 
         }
-        binding.keyBoardContainer.numberPad.viewModel = keyBoardVM;
+        binding.keyboardVM = keyBoardVM;
+
     }
 
     override fun initView() {
@@ -70,8 +71,7 @@ class StartDrawerActivity : BaseActivity<ActivityStartDrawerBinding, CashDrawerV
         keyBoardVM.input.observe(this, {
             viewModel.amountString.value = it;
         });
-        keyBoardVM.keyBoardType = KeyBoardType.NumberOnly
-        binding.keyBoardContainer.numberPad.keyBoardType = keyBoardVM.keyBoardType
+        keyBoardVM.keyBoardType.postValue(KeyBoardType.NumberOnly)
     }
 
     override fun initAction() {
@@ -81,14 +81,6 @@ class StartDrawerActivity : BaseActivity<ActivityStartDrawerBinding, CashDrawerV
             }
 
             override fun onCancel() {
-
-            }
-
-            override fun onSwitch() {
-
-            }
-
-            override fun onCapLock() {
 
             }
 
@@ -121,7 +113,7 @@ class StartDrawerActivity : BaseActivity<ActivityStartDrawerBinding, CashDrawerV
         if (ev.action == MotionEvent.ACTION_DOWN) {
             val touchPoint = Point(ev.rawX.roundToInt(), ev.rawY.roundToInt())
             val viewNum = !isPointInsideViewBounds(
-                binding.keyBoardContainer.numberPad.root,
+                binding.keyBoardContainer.root,
                 touchPoint
             );
             val viewEdit = !isPointInsideViewBounds(
@@ -132,11 +124,11 @@ class StartDrawerActivity : BaseActivity<ActivityStartDrawerBinding, CashDrawerV
                 binding.btnStartDrawer,
                 touchPoint
             );
-            if (binding.keyBoardContainer.numberPad.root.visibility == View.VISIBLE && viewNum && viewEdit && viewBtn
+            if (binding.keyBoardContainer.root.visibility == View.VISIBLE && viewNum && viewEdit && viewBtn
             ) {
-                binding.keyBoardContainer.numberPad.root.visibility = View.GONE;
+                binding.keyBoardContainer.root.visibility = View.GONE;
             } else if (!viewEdit || !viewNum) {
-                binding.keyBoardContainer.numberPad.root.visibility = View.VISIBLE;
+                binding.keyBoardContainer.root.visibility = View.VISIBLE;
             }
         }
 

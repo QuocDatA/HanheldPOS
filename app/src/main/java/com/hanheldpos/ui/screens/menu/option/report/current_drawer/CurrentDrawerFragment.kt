@@ -1,11 +1,13 @@
-package com.hanheldpos.ui.screens.menu.option.report.drawer
+package com.hanheldpos.ui.screens.menu.option.report.current_drawer
 
 
+import android.view.View
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentCurrentDrawerBinding
+import com.hanheldpos.model.DataHelper
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.cashdrawer.enddrawer.EndDrawerFragment
-import com.hanheldpos.ui.screens.menu.option.report.drawer.payin_payout.PayInPayOutFragment
+import com.hanheldpos.ui.screens.menu.option.report.current_drawer.payin_payout.PayInPayOutFragment
 
 class CurrentDrawerFragment : BaseFragment<FragmentCurrentDrawerBinding, CurrentDrawerVM>() , CurrentDrawerUV {
     override fun layoutRes() = R.layout.fragment_current_drawer
@@ -22,6 +24,10 @@ class CurrentDrawerFragment : BaseFragment<FragmentCurrentDrawerBinding, Current
     }
 
     override fun initView() {
+        if(DataHelper.CurrentDrawerId != null) {
+           binding.currentDrawerText.text = "(${DataHelper.CurrentDrawerId})"
+        }
+        else binding.currentDrawerText.visibility = View.GONE;
     }
 
     override fun initData() {

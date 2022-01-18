@@ -18,7 +18,7 @@ import com.utils.helper.AppPreferences
 
 object DataHelper {
 
-    var CurrentDrawer_id : String? = null;
+    var CurrentDrawerId : String? = null;
 
     fun clearData() {
         deviceCode = null
@@ -29,7 +29,7 @@ object DataHelper {
         discounts = null
         discountDetails = null
         paymentMethods = null
-        CurrentDrawer_id = null
+        CurrentDrawerId = null
         numberIncreaseOrder = 0;
         AppPreferences.get().storeValue(PrefKey.Setting.DEVICE_CODE, null)
     }
