@@ -178,15 +178,15 @@ object DataHelper {
             StorageHelper.setDataToEncryptedFile(PrefKey.Fee.FEE_RESP, value)
         }
 
-    private fun getListFee() : List<Fee>? = feeResp?.feeModel?.fees
+    private fun getListFee() : List<Fee>? = feeResp?.Fees
 
     /**
      * Get Fee type [FeeApplyToType] with product id
      */
     fun findFeeProductList(productId : String) : List<Fee>? {
         return getListFee()?.filter { fee->
-            FeeApplyToType.fromInt(fee.feeApplyToType) != FeeApplyToType.Order && fee.assignToProducts.firstOrNull{ assign_p->
-                assign_p.productId == productId
+            FeeApplyToType.fromInt(fee.Id) != FeeApplyToType.Order && fee.AssignToProductList.firstOrNull{ assign_p->
+                assign_p.ProductGuid == productId
             } != null
         }?.toList()
     }
@@ -195,7 +195,7 @@ object DataHelper {
      */
     fun findFeeOrderList() : List<Fee>? {
         return getListFee()?.filter { fee->
-            FeeApplyToType.fromInt(fee.feeApplyToType) != FeeApplyToType.Order
+            FeeApplyToType.fromInt(fee.Id) != FeeApplyToType.Order
         }?.toList()
     }
 

@@ -90,12 +90,12 @@ class SyncDataService : BaseViewModel() {
         feeRepo.getFees(
             userGuid = userGuid,
             locationGuid = location,
-            callback = object : BaseRepoCallback<FeeResp?> {
-                override fun apiResponse(data: FeeResp?) {
-                    if (data == null || data.didError) {
+            callback = object : BaseRepoCallback<BaseResponse<FeeResp>?> {
+                override fun apiResponse(data: BaseResponse<FeeResp>?) {
+                    if (data == null || data.DidError) {
                         onDataFailure(context?.getString(R.string.failed_to_load_data),listener);
                     } else {
-                        DataHelper.feeResp = data;
+                        DataHelper.feeResp = data.Model;
                         startMappingData(listener);
                     }
                 }
