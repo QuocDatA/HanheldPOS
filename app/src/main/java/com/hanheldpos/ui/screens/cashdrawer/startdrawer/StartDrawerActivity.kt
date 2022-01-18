@@ -26,6 +26,7 @@ class StartDrawerActivity : BaseActivity<ActivityStartDrawerBinding, CashDrawerV
     override fun layoutRes(): Int = R.layout.activity_start_drawer;
 
     private val keyBoardVM = KeyBoardVM();
+
     override fun initViewModel(viewModel: CashDrawerVM) {
         viewModel.run {
             init(this@StartDrawerActivity);

@@ -2,6 +2,8 @@ package com.hanheldpos.ui.screens.cashdrawer
 
 import android.content.Context
 import android.util.Log
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.hanheldpos.R
@@ -18,23 +20,21 @@ import com.hanheldpos.utils.JsonHelper
 class CashDrawerVM : BaseRepoViewModel<CashDrawerRepo, CashDrawerUV>() {
 
     val amountString = MutableLiveData<String>(0.toString());
-    val amount = Transformations.map(amountString) {
-        return@map it.replace(",","").toDouble();
-    }
+
     fun backPress(){
         uiCallback?.backPress();
     }
 
-
     fun startDrawer(context: Context) {
         showLoading(true);
+        val startingCash = amountString.value!!.replace(",","").toDouble();
         val startDrawerReq = CreateCashDrawerReq(
             UserGuid = UserHelper.getUserGui(),
             LocationGuid = UserHelper.getLocationGui(),
             DeviceGuid = UserHelper.getDeviceGui(),
             EmployeeGuid = UserHelper.getEmployeeGuid(),
             CashDrawerType = CashDrawerType.START.value,
-            StartingCash = amount.value,
+            StartingCash = startingCash,
             ActualInDrawer = 0.0,
             DrawerDescription = ""
         );
