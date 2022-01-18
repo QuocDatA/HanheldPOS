@@ -178,7 +178,7 @@ class SyncDataService : BaseViewModel() {
             it.discountDetails ?: return;
             it.paymentMethods ?: return;
         }
-
+        DataHelper.numberIncreaseOrder = DataHelper.deviceCode?.SettingsId?.firstOrNull()?.NumberIncrement?.toLong() ?: 0;
         listener.onLoadedResources();
 
     }
