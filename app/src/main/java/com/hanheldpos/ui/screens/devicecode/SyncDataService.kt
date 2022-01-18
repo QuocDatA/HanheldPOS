@@ -111,12 +111,12 @@ class SyncDataService : BaseViewModel() {
         discountRepo.getDiscountList(
             userGuid = userGuid,
             locationGuid = location,
-            callback = object : BaseRepoCallback<DiscountResp> {
-                override fun apiResponse(data: DiscountResp?) {
+            callback = object : BaseRepoCallback<BaseResponse<List<DiscountResp>>> {
+                override fun apiResponse(data: BaseResponse<List<DiscountResp>>?) {
                     if (data == null || data.DidError) {
                         onDataFailure(context?.getString(R.string.failed_to_load_data),listener);
                     } else {
-                        DataHelper.discountResp = data;
+                        DataHelper.discountsResp = data.Model;
                         startMappingData(listener);
                     }
                 }
@@ -130,12 +130,12 @@ class SyncDataService : BaseViewModel() {
         discountRepo.getDiscountDetailList(
             userGuid = userGuid,
             locationGuid = location,
-            callback = object : BaseRepoCallback<CouponResp> {
-                override fun apiResponse(data: CouponResp?) {
+            callback = object : BaseRepoCallback<BaseResponse<List<CouponResp>>> {
+                override fun apiResponse(data: BaseResponse<List<CouponResp>>?) {
                     if (data == null || data.DidError) {
                         onDataFailure(context?.getString(R.string.failed_to_load_data),listener);
                     } else {
-                        DataHelper.discountDetailResp = data;
+                        DataHelper.discountDetailsResp = data.Model;
                         startMappingData(listener);
                     }
                 }
@@ -174,8 +174,8 @@ class SyncDataService : BaseViewModel() {
             it.menuResp ?: return;
             it.floorResp ?: return;
             it.feeResp ?: return;
-            it.discountResp ?: return;
-            it.discountDetailResp ?: return;
+            it.discountsResp ?: return;
+            it.discountDetailsResp ?: return;
             it.paymentsResp ?: return;
         }
 

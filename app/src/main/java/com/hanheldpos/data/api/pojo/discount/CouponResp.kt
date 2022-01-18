@@ -3,16 +3,9 @@ package com.hanheldpos.data.api.pojo.discount
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
-@Parcelize
-data class CouponResp(
-    val DidError: Boolean,
-    val ErrorMessage: String?,
-    val Message: String?,
-    val Model: List<DiscountDetail>
-) : Parcelable
 
 @Parcelize
-data class DiscountDetail(
+data class CouponResp(
     val CombineValue: String,
     val CustomerEligibilityValue: String,
     val Description: String,

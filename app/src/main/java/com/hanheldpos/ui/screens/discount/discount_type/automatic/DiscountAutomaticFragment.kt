@@ -3,7 +3,7 @@ package com.hanheldpos.ui.screens.discount.discount_type.automatic
 import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.MutableLiveData
 import com.hanheldpos.R
-import com.hanheldpos.data.api.pojo.discount.DiscountItem
+import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.databinding.FragmentDiscountAutomaticBinding
 import com.hanheldpos.model.cart.CartModel
 import com.hanheldpos.model.discount.DiscountTypeFor
@@ -46,8 +46,8 @@ class DiscountAutomaticFragment(private val cart: CartModel?) :
 
         }
         discountCodeAdapter =
-            DiscountCodeAdapter(listener = object : BaseItemClickListener<DiscountItem> {
-                override fun onItemClick(adapterPosition: Int, item: DiscountItem) {
+            DiscountCodeAdapter(listener = object : BaseItemClickListener<DiscountResp> {
+                override fun onItemClick(adapterPosition: Int, item: DiscountResp) {
 
                 }
             });
@@ -67,7 +67,7 @@ class DiscountAutomaticFragment(private val cart: CartModel?) :
 
     }
 
-    override fun loadDataDiscountCode(list: List<DiscountItem>) {
+    override fun loadDataDiscountCode(list: List<DiscountResp>) {
         discountCodeAdapter.submitList(list);
         discountCodeAdapter.notifyDataSetChanged();
     }

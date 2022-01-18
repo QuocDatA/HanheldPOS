@@ -4,7 +4,7 @@ import android.annotation.SuppressLint
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.setFragmentResultListener
 import com.hanheldpos.R
-import com.hanheldpos.data.api.pojo.discount.DiscountItem
+import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.databinding.FragmentDiscountCodeBinding
 import com.hanheldpos.model.discount.DiscountApplyToType
 import com.hanheldpos.model.discount.DiscountTypeFor
@@ -42,8 +42,8 @@ class DiscountCodeFragment(private val applyToType: DiscountApplyToType) :
 
         }
         discountCodeAdapter =
-            DiscountCodeAdapter(listener = object : BaseItemClickListener<DiscountItem> {
-                override fun onItemClick(adapterPosition: Int, item: DiscountItem) {
+            DiscountCodeAdapter(listener = object : BaseItemClickListener<DiscountResp> {
+                override fun onItemClick(adapterPosition: Int, item: DiscountResp) {
 
                 }
             });
@@ -66,7 +66,7 @@ class DiscountCodeFragment(private val applyToType: DiscountApplyToType) :
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    override fun loadDataDiscountCode(list: List<DiscountItem>) {
+    override fun loadDataDiscountCode(list: List<DiscountResp>) {
             GlobalScope.launch (Dispatchers.Main) {
                 discountCodeAdapter.submitList(list);
                 discountCodeAdapter.notifyDataSetChanged();

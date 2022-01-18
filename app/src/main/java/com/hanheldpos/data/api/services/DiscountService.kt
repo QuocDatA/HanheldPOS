@@ -3,6 +3,7 @@ package com.hanheldpos.data.api.services
 import com.hanheldpos.data.api.pojo.discount.CouponResp
 import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.data.api.pojo.fee.FeeResp
+import com.hanheldpos.data.repository.BaseResponse
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -13,12 +14,12 @@ interface DiscountService {
         @Query("userGuid") userGuid: String?,
         @Query("locationGuid") location: String?,
         @Query("locationGuid") language: String? = "en",
-    ): Call<DiscountResp>
+    ): Call<BaseResponse<List<DiscountResp>>>
 
     @GET("coupon/list")
     fun getDiscountDetails(
         @Query("userGuid") userGuid: String?,
         @Query("locationGuid") location: String?,
         @Query("locationGuid") language: String? = "en",
-    ): Call<CouponResp>
+    ): Call<BaseResponse<List<CouponResp>>>
 }
