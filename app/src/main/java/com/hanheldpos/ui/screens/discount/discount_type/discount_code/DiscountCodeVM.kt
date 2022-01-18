@@ -10,12 +10,12 @@ class DiscountCodeVM : BaseUiViewModel<DiscountCodeUV>() {
     val isLoading = MutableLiveData<Boolean>(false);
 
     fun initData() {
-        val listDiscountCode = DataHelper.discountsResp?.filter { !it.DiscountAutomatic };
+        val listDiscountCode = DataHelper.discounts?.filter { !it.DiscountAutomatic };
         if (listDiscountCode != null) uiCallback?.loadDataDiscountCode(listDiscountCode as List<DiscountResp>);
     }
 
     fun searchDiscountCode(keyword: String) {
-        val listDiscountCode = DataHelper.discountsResp?.filter { !it.DiscountAutomatic };
+        val listDiscountCode = DataHelper.discounts?.filter { !it.DiscountAutomatic };
         val searchList =  listDiscountCode?.filter { it.DiscountCode.lowercase().contains(keyword.lowercase()) }
         uiCallback?.loadDataDiscountCode(searchList as List<DiscountResp>);
     }

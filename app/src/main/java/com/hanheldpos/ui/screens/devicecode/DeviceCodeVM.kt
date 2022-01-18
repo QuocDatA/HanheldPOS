@@ -40,7 +40,7 @@ class DeviceCodeVM : BaseRepoViewModel<DeviceRepo, DeviceCodeUV>() {
                 if (data == null || data.DidError) {
                     showError(context?.getString(R.string.failed_to_load_data));
                 } else {
-                    DataHelper.deviceCodeResp = data.Model;
+                    DataHelper.deviceCode = data.Model;
                     loadResource();
                 }
             }

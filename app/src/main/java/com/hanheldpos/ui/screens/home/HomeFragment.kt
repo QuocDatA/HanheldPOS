@@ -151,7 +151,7 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
                 Log.d("home", "switchPage: page_table");
                 binding.homeViewPager.currentItem = 0;
                 var i = 1;
-                DataHelper.floorResp?.Floor?.map {
+                DataHelper.floor?.Floor?.map {
                     DropDownItem(name = it.Name, realItem = it, position = i++)
                 }?.let {
                     listDropdown.add(DropDownItem(name = "All", position = 0))
@@ -162,7 +162,7 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
                 Log.d("home", "switchPage: page_order")
                 binding.homeViewPager.currentItem = 1;
                 var i = 0;
-                DataHelper.menuResp?.MenuList?.map {
+                DataHelper.menu?.MenuList?.map {
                     DropDownItem(name = it.Name, realItem = it, position = i++)
                 }?.let {
                     listDropdown.addAll(it);

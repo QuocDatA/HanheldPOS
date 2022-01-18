@@ -8,7 +8,7 @@ import com.hanheldpos.data.api.pojo.fee.FeeResp
 import com.hanheldpos.data.api.pojo.floor.FloorResp
 import com.hanheldpos.data.api.pojo.order.menu.MenuResp
 import com.hanheldpos.data.api.pojo.order.settings.OrderSettingResp
-import com.hanheldpos.data.api.pojo.payment.PaymentsResp
+import com.hanheldpos.data.api.pojo.payment.PaymentMethodResp
 import com.hanheldpos.data.repository.BaseResponse
 import com.hanheldpos.data.repository.base.BaseRepoCallback
 import com.hanheldpos.data.repository.discount.DiscountRepo
@@ -40,7 +40,7 @@ class SyncDataService : BaseViewModel() {
                     if (data == null || data.DidError) {
                         onDataFailure(context?.getString(R.string.failed_to_load_data),listener);
                     } else {
-                        DataHelper.menuResp = data.Model;
+                        DataHelper.menu = data.Model;
 
                         startMappingData(listener);
                     }
@@ -59,7 +59,7 @@ class SyncDataService : BaseViewModel() {
                     if (data == null || data.DidError) {
                         onDataFailure(context?.getString(R.string.failed_to_load_data),listener);
                     } else {
-                        DataHelper.orderSettingResp = data.Model.firstOrNull();
+                        DataHelper.orderSetting = data.Model.firstOrNull();
                         startMappingData(listener);
                     }
                 }
@@ -77,7 +77,7 @@ class SyncDataService : BaseViewModel() {
                     if (data == null || data.DidError) {
                         onDataFailure(context?.getString(R.string.failed_to_load_data),listener);
                     } else {
-                        DataHelper.floorResp = data.Model.firstOrNull();
+                        DataHelper.floor = data.Model.firstOrNull();
                         startMappingData(listener);
                     }
                 }
@@ -95,7 +95,7 @@ class SyncDataService : BaseViewModel() {
                     if (data == null || data.DidError) {
                         onDataFailure(context?.getString(R.string.failed_to_load_data),listener);
                     } else {
-                        DataHelper.feeResp = data.Model;
+                        DataHelper.fee = data.Model;
                         startMappingData(listener);
                     }
                 }
@@ -116,7 +116,7 @@ class SyncDataService : BaseViewModel() {
                     if (data == null || data.DidError) {
                         onDataFailure(context?.getString(R.string.failed_to_load_data),listener);
                     } else {
-                        DataHelper.discountsResp = data.Model;
+                        DataHelper.discounts = data.Model;
                         startMappingData(listener);
                     }
                 }
@@ -135,7 +135,7 @@ class SyncDataService : BaseViewModel() {
                     if (data == null || data.DidError) {
                         onDataFailure(context?.getString(R.string.failed_to_load_data),listener);
                     } else {
-                        DataHelper.discountDetailsResp = data.Model;
+                        DataHelper.discountDetails = data.Model;
                         startMappingData(listener);
                     }
                 }
@@ -147,12 +147,12 @@ class SyncDataService : BaseViewModel() {
         );
 
         paymentRepo.getPaymentMethods(userGuid = userGuid, callback = object :
-            BaseRepoCallback<PaymentsResp> {
-            override fun apiResponse(data: PaymentsResp?) {
+            BaseRepoCallback<BaseResponse<List<PaymentMethodResp>>> {
+            override fun apiResponse(data: BaseResponse<List<PaymentMethodResp>>?) {
                 if (data == null || data.DidError) {
                     onDataFailure(context?.getString(R.string.failed_to_load_data),listener);
                 } else {
-                    DataHelper.paymentsResp = data;
+                    DataHelper.paymentMethods = data.Model;
                     startMappingData(listener);
                 }
             }
@@ -171,12 +171,12 @@ class SyncDataService : BaseViewModel() {
 
     private fun startMappingData(listener: SyncDataServiceListener) {
         DataHelper.let {
-            it.menuResp ?: return;
-            it.floorResp ?: return;
-            it.feeResp ?: return;
-            it.discountsResp ?: return;
-            it.discountDetailsResp ?: return;
-            it.paymentsResp ?: return;
+            it.menu ?: return;
+            it.floor ?: return;
+            it.fee ?: return;
+            it.discounts ?: return;
+            it.discountDetails ?: return;
+            it.paymentMethods ?: return;
         }
 
         listener.onLoadedResources();

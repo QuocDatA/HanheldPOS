@@ -166,7 +166,7 @@ object OrderConverter {
 
 
     private fun findProduct(productGuid: String): Product? {
-        return DataHelper.menuResp?.ProductList?.firstOrNull {
+        return DataHelper.menu?.ProductList?.firstOrNull {
             it._id == productGuid
         }
     }

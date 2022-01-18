@@ -24,7 +24,7 @@ class TableVM : BaseUiViewModel<TableUV>() {
 
 
     fun initData() {
-        floorResp = DataHelper.floorResp
+        floorResp = DataHelper.floor
         initFloor();
         /*floorItemSelected.value = floorList.value?.firstOrNull();*/
     }
