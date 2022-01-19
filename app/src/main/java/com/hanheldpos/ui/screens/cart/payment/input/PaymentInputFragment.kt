@@ -3,6 +3,7 @@ package com.hanheldpos.ui.screens.cart.payment.input
 import android.annotation.SuppressLint
 import android.view.View
 import com.hanheldpos.R
+import com.hanheldpos.binding.setPriceView
 import com.hanheldpos.data.api.pojo.payment.PaymentMethodResp
 import com.hanheldpos.databinding.FragmentPaymentInputBinding
 import com.hanheldpos.extension.toNiceString
@@ -31,7 +32,6 @@ class PaymentInputFragment(
             init(this@PaymentInputFragment);
             binding.viewModel = this;
             binding.keyboardVM = keyBoardVM;
-            binding.keyBoardContainer.keyboardVM = keyBoardVM;
         }
     }
 
@@ -65,22 +65,6 @@ class PaymentInputFragment(
     }
 
     override fun initAction() {
-    }
-
-    companion object {
-        fun getInstance(
-            listener: PaymentInputFragment.PaymentInputListener? = null,
-            paymentMethod: PaymentMethodResp,
-            payable: Double
-        ): PaymentInputFragment {
-            return PaymentInputFragment(
-                listener = listener,
-                paymentMethod = paymentMethod,
-                payable = payable
-            ).apply {
-
-            };
-        }
     }
 
     interface PaymentInputListener {

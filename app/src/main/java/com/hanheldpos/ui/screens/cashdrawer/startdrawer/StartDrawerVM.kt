@@ -1,11 +1,8 @@
-package com.hanheldpos.ui.screens.cashdrawer
+package com.hanheldpos.ui.screens.cashdrawer.startdrawer
 
 import android.content.Context
 import android.util.Log
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.cashdrawer.CreateCashDrawerResp
 import com.hanheldpos.data.repository.base.BaseRepoCallback
@@ -17,7 +14,7 @@ import com.hanheldpos.model.cashdrawer.CreateCashDrawerReq
 import com.hanheldpos.ui.base.viewmodel.BaseRepoViewModel
 import com.hanheldpos.utils.JsonHelper
 
-class CashDrawerVM : BaseRepoViewModel<CashDrawerRepo, CashDrawerUV>() {
+class StartDrawerVM : BaseRepoViewModel<CashDrawerRepo, StartDrawerUV>() {
 
     val amountString = MutableLiveData<String>(0.toString());
 
