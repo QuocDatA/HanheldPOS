@@ -12,7 +12,7 @@ import com.hanheldpos.model.UserHelper
 import com.hanheldpos.model.cashdrawer.CashDrawerType
 import com.hanheldpos.model.cashdrawer.CreateCashDrawerReq
 import com.hanheldpos.ui.base.viewmodel.BaseRepoViewModel
-import com.hanheldpos.utils.JsonHelper
+import com.hanheldpos.utils.GSonUtils
 
 class StartDrawerVM : BaseRepoViewModel<CashDrawerRepo, StartDrawerUV>() {
 
@@ -35,9 +35,9 @@ class StartDrawerVM : BaseRepoViewModel<CashDrawerRepo, StartDrawerUV>() {
             ActualInDrawer = 0.0,
             DrawerDescription = ""
         );
-        Log.d("Data Pass",JsonHelper.stringify(startDrawerReq));
+        Log.d("Data Pass",GSonUtils.toServerJson(startDrawerReq));
         repo?.createCashDrawer(
-            JsonHelper.stringify(startDrawerReq),object : BaseRepoCallback<CreateCashDrawerResp> {
+            GSonUtils.toServerJson(startDrawerReq),object : BaseRepoCallback<CreateCashDrawerResp> {
                 override fun apiResponse(data: CreateCashDrawerResp?) {
                     showLoading(false)
                     if (data == null || data.DidError) {

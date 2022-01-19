@@ -2,6 +2,7 @@ package com.hanheldpos.ui.screens.devicecode
 
 import android.content.Context
 import android.os.SystemClock
+import android.view.View
 import androidx.lifecycle.MutableLiveData
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.device.DeviceCodeResp
@@ -13,10 +14,9 @@ import com.hanheldpos.ui.base.viewmodel.BaseRepoViewModel
 import java.util.*
 
 class DeviceCodeVM : BaseRepoViewModel<DeviceRepo, DeviceCodeUV>() {
-    val syncDataService = SyncDataService();
+    private val syncDataService = SyncDataService();
     val pinGroupSize = 4;
     val pinTextLD = MutableLiveData<String>();
-    var context : Context? = null;
 
     private var mLastTimeClick: Long = 0;
 
@@ -25,12 +25,7 @@ class DeviceCodeVM : BaseRepoViewModel<DeviceRepo, DeviceCodeUV>() {
         return DeviceRepo();
     }
 
-    fun initContext(context : Context) {
-        this.context = context;
-
-    }
-
-    fun signIn() {
+    fun signIn(view : View) {
         if (SystemClock.elapsedRealtime() - mLastTimeClick < 1000) return;
         mLastTimeClick = SystemClock.elapsedRealtime();
         uiCallback?.showLoading(true);
@@ -38,10 +33,10 @@ class DeviceCodeVM : BaseRepoViewModel<DeviceRepo, DeviceCodeUV>() {
         repo?.getDataByAppCode(result, object : BaseRepoCallback<BaseResponse<DeviceCodeResp>> {
             override fun apiResponse(data: BaseResponse<DeviceCodeResp>?) {
                 if (data == null || data.DidError) {
-                    showError(context?.getString(R.string.failed_to_load_data));
+                    showError(view.context?.getString(R.string.failed_to_load_data));
                 } else {
                     DataHelper.deviceCode = data.Model;
-                    loadResource();
+                    loadResource(view.context);
                 }
             }
 
@@ -52,7 +47,7 @@ class DeviceCodeVM : BaseRepoViewModel<DeviceRepo, DeviceCodeUV>() {
         })
     }
 
-    private fun loadResource(){
+    private fun loadResource(context: Context){
         showLoading(true);
         syncDataService.fetchAllData(context, listener = object : SyncDataService.SyncDataServiceListener{
             override fun onLoadedResources() {
