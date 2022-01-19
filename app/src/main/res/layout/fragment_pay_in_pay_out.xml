@@ -84,7 +84,7 @@
                     android:hint="@string/enter_amount"
                     android:inputType="number"
                     android:maxLines="1"
-                    android:text="@{viewModel.amountString}"
+                    android:text="@={viewModel.amountString}"
 
                     android:minHeight="@dimen/_33sdp"
                     android:paddingHorizontal="@dimen/_6sdp"
@@ -203,7 +203,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/_3sdp"
                 android:layout_weight="1"
-                android:background="@drawable/bg_outline"
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="@{ viewModel.isValid ? android.R.attr.selectableItemBackground : @android:color/transparent }"
@@ -212,12 +211,12 @@
                 android:padding="@dimen/_10sdp">
 
                 <com.diadiem.pos_components.PTextView
+                    android:id="@+id/textBtnEndDrawer"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="@string/pay_in"
                     app:useFontStyle="bold"
-                    app:useTextColor="color0"
                     app:useTextHeader="h5" />
             </LinearLayout>
 
@@ -227,7 +226,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_3sdp"
                 android:layout_weight="1"
-                android:background="@drawable/bg_outline"
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="@{ viewModel.isValid ? android.R.attr.selectableItemBackground : @android:color/transparent }"
@@ -236,12 +234,12 @@
                 android:padding="@dimen/_10sdp">
 
                 <com.diadiem.pos_components.PTextView
+                    android:id="@+id/textBtnPayInOut"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="@string/pay_out"
                     app:useFontStyle="bold"
-                    app:useTextColor="color0"
                     app:useTextHeader="h5" />
             </LinearLayout>
         </LinearLayout>
