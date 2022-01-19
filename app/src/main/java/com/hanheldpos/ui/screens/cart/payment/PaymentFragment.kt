@@ -4,7 +4,10 @@ import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.payment.PaymentMethodResp
 import com.hanheldpos.data.api.pojo.payment.PaymentSuggestionItem
 import com.hanheldpos.databinding.FragmentPaymentBinding
+import com.hanheldpos.model.cart.payment.PaymentAppyTo
+import com.hanheldpos.model.cart.payment.PaymentMethodType
 import com.hanheldpos.model.cart.payment.PaymentOrder
+import com.hanheldpos.model.keyboard.KeyBoardType
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.adapter.GridSpacingItemDecoration
 import com.hanheldpos.ui.base.fragment.BaseFragment
@@ -41,11 +44,15 @@ class PaymentFragment(private val payable : Double ,private var listener: Paymen
         paymentMethodAdapter = PaymentMethodAdapter(
             onPaymentMethodClickListener = object : BaseItemClickListener<PaymentMethodResp> {
                 override fun onItemClick(adapterPosition: Int, item: PaymentMethodResp) {
-                    navigator.goTo(PaymentInputFragment.getInstance(listener = object :
-                        PaymentInputFragment.PaymentInputListener {
-                        override fun onCompleteTable(numberCustomer: Int) {
-                        }
-                    }, paymentMethod = item, payable = payable));
+                    if(item.ApplyToId == PaymentAppyTo.CASH_VOUCHER.value){
+
+                    } else {
+                        navigator.goTo(PaymentInputFragment.getInstance(listener = object :
+                            PaymentInputFragment.PaymentInputListener {
+                            override fun onCompleteTable(numberCustomer: Int) {
+                            }
+                        }, paymentMethod = item, payable = payable));
+                    }
                 }
             },
         );

@@ -8,6 +8,10 @@
         <variable
             name="viewModel"
             type="com.hanheldpos.ui.screens.cashdrawer.enddrawer.EndDrawerVM" />
+
+        <variable
+            name="isActive"
+            type="Boolean" />
     </data>
 
 
@@ -125,7 +129,7 @@
                             android:focusable="true"
                             android:focusableInTouchMode="true"
                             android:hint="@string/enter_amount"
-                            android:inputType="text|textMultiLine"
+                            android:inputType="number"
                             android:maxLines="1"
 
                             android:minHeight="@dimen/_33sdp"
@@ -506,7 +510,7 @@
                         android:id="@+id/btnEndDrawer"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@color/color_11"
+                        android:background="@{isActive ? @color/color_0 : @color/color_11}"
                         android:clickable="true"
                         android:focusable="true"
                         android:foreground="?attr/selectableItemBackground"
@@ -515,12 +519,13 @@
                         android:padding="@dimen/_10sdp">
 
                         <com.diadiem.pos_components.PTextView
+                            android:id="@+id/btnEndDrawerText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:text="@string/end_drawer"
+                            android:textColor="@{isActive ? @color/color_2 : @color/color_0}"
                             app:useFontStyle="bold"
-                            app:useTextColor="color0"
                             app:useTextHeader="h5" />
                     </LinearLayout>
                 </FrameLayout>

@@ -1,5 +1,11 @@
 package com.hanheldpos.ui.screens.menu.option.report.current_drawer.payin_payout
 
+<<<<<<< HEAD
+=======
+import android.content.res.ColorStateList
+import androidx.core.content.ContextCompat
+import androidx.core.widget.doAfterTextChanged
+>>>>>>> origin/feature/payment
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentPayInPayOutBinding
 import com.hanheldpos.ui.base.fragment.BaseFragment
@@ -20,11 +26,34 @@ class PayInPayOutFragment : BaseFragment<FragmentPayInPayOutBinding, PayInPayOut
     }
 
     override fun initView() {
-
+        binding.amountInput.doAfterTextChanged {
+            binding.isActive = false
+            binding.btnPayIn.setBackgroundResource(R.drawable.bg_outline)
+            binding.btnPayOut.setBackgroundResource(R.drawable.bg_outline)
+            if(binding.amountInput.text.toString().toInt() > 1000) {
+                if(binding.noteInput.text?.length ?: 0 > 0){
+                    binding.isActive = true
+                    binding.btnPayIn.setBackgroundColor(ContextCompat.getColor(this.requireContext(), R.color.color_11))
+                    binding.btnPayOut.setBackgroundColor(ContextCompat.getColor(this.requireContext(), R.color.color_11))
+                }
+            }
+        }
+        binding.noteInput.doAfterTextChanged {
+            binding.isActive = false
+            binding.btnPayIn.setBackgroundResource(R.drawable.bg_outline)
+            binding.btnPayOut.setBackgroundResource(R.drawable.bg_outline)
+            if(binding.amountInput.text.toString().toInt() > 1000) {
+                if(binding.noteInput.text?.length ?: 0 > 0){
+                    binding.isActive = true
+                    binding.btnPayIn.setBackgroundColor(ContextCompat.getColor(this.requireContext(), R.color.color_0))
+                    binding.btnPayOut.setBackgroundColor(ContextCompat.getColor(this.requireContext(), R.color.color_0))
+                }
+            }
+        }
     }
 
     override fun initData() {
-
+        binding.isActive = false
     }
 
     override fun initAction() {
