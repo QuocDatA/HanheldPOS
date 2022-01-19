@@ -27,9 +27,6 @@ class ReportFragment : BaseFragment<FragmentReportBinding, ReportVM>(), ReportUV
         binding.currentDrawerText.setOnClickListener {
             navigator.goTo(CurrentDrawerFragment())
         }
-        binding.saleReportOption.setOnClickListener{
-            navigator.goTo(CustomizeReportFragment())
-        }
     }
 
     override fun initData() {
