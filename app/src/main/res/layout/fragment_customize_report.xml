@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.hanheldpos.ui.screens.menu.option.report.sale.customize_report.CustomizeReportVM" />
+    </data>
+
+
+    <LinearLayout
+        style="@style/RootLayout"
+        android:background="@color/color_2"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_42sdp">
+
+            <ImageButton
+                style="@style/MaterialButton.Icon"
+                android:layout_height="match_parent"
+                android:layout_gravity="center|start"
+                android:adjustViewBounds="true"
+                android:backgroundTint="@color/textPrimary"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="@{v -> viewModel.backPress()}"
+                android:padding="@dimen/_14sdp"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_close"
+                tools:ignore="ContentDescription" />
+
+            <com.diadiem.pos_components.PTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Customize Report"
+                app:useFontStyle="bold"
+                app:useTextColor="color4"
+                app:useTextHeader="h4" />
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center|end"
+                android:clickable="true"
+                android:focusable="true"
+                android:paddingHorizontal="@dimen/_10sdp">
+
+                <com.diadiem.pos_components.PTextView
+                    style="@style/CartDelete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/done" />
+            </FrameLayout>
+        </FrameLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_1sdp"
+            android:background="@color/color_10" />
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+
+                <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+                    android:id="@+id/calendarView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginHorizontal="@dimen/_5sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    app:mcv_arrowColor="@color/textPrimary"
+                    app:mcv_dateTextAppearance="@style/TextAppearance.CalendarDates"
+                    app:mcv_firstDayOfWeek="sunday"
+                    app:mcv_headerTextAppearance="@style/TextAppearance"
+                    app:mcv_selectionColor="@color/color_0"
+                    app:mcv_selectionMode="range"
+                    app:mcv_showOtherDates="all"
+                    app:mcv_weekDayLabels="@array/weekDayLabels"
+                    app:mcv_weekDayTextAppearance="@style/TextAppearance" />
+
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_8sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:orientation="vertical">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_1sdp"
+                        android:layout_gravity="top"
+                        android:background="@color/color_10" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <com.diadiem.pos_components.PTextView
+                            style="@style/CartTitle"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="start"
+                            android:layout_weight="1"
+                            android:paddingVertical="@dimen/_11sdp"
+                            android:text="@string/drawer"
+                            app:useFontStyle="normal"
+                            app:useTextColor="color4"
+                            app:useTextHeader="h5" />
+
+                        <CheckBox
+                            android:id="@+id/checkbox"
+                            style="@style/CartTitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginEnd="@dimen/_9sdp"
+                            android:background="@drawable/bg_checkbox_selector"
+                            android:button="@null"
+                            android:minWidth="0dp"
+                            android:minHeight="0dp" />
+
+                        <com.diadiem.pos_components.PTextView
+                            style="@style/CartTitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="@string/current_drawer"
+                            app:useFontStyle="normal"
+                            app:useTextColor="color4"
+                            app:useTextHeader="h5" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_1sdp"
+                        android:layout_gravity="top"
+                        android:background="@color/color_10" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <com.diadiem.pos_components.PTextView
+                            style="@style/CartTitle"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="start"
+                            android:layout_weight="1"
+                            android:paddingVertical="@dimen/_11sdp"
+                            android:text="@string/all_device"
+                            app:useFontStyle="normal"
+                            app:useTextColor="color4"
+                            app:useTextHeader="h5" />
+
+                        <com.diadiem.pos_components.PRadioButton
+                            android:id="@+id/btnAllDevice"
+                            style="@style/RadioCustom"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:gravity="center" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_1sdp"
+                        android:layout_gravity="top"
+                        android:background="@color/color_10" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <com.diadiem.pos_components.PTextView
+                            style="@style/CartTitle"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="start"
+                            android:layout_weight="1"
+                            android:paddingVertical="@dimen/_11sdp"
+                            android:text="@string/this_device_only"
+                            app:useFontStyle="normal"
+                            app:useTextColor="color4"
+                            app:useTextHeader="h5" />
+
+                        <com.diadiem.pos_components.PRadioButton
+                            android:id="@+id/btnDeviceOnly"
+                            style="@style/RadioCustom"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:gravity="center" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_1sdp"
+                        android:layout_gravity="top"
+                        android:background="@color/color_10" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <com.diadiem.pos_components.PTextView
+                            style="@style/CartTitle"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="start"
+                            android:layout_weight="1"
+                            android:paddingVertical="@dimen/_11sdp"
+                            android:text="@string/all_day"
+                            app:useFontStyle="normal"
+                            app:useTextColor="color4"
+                            app:useTextHeader="h5" />
+
+                        <androidx.appcompat.widget.SwitchCompat
+                            style="@style/SCBSwitch"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:paddingStart="@dimen/_5sdp"
+                            android:thumb="@drawable/switch_thumb"
+                            app:track="@drawable/switch_track" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_1sdp"
+                        android:layout_gravity="top"
+                        android:background="@color/color_10" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <com.diadiem.pos_components.PTextView
+                            style="@style/CartTitle"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="start"
+                            android:layout_weight="1"
+                            android:paddingVertical="@dimen/_11sdp"
+                            android:text="@string/start"
+                            app:useFontStyle="normal"
+                            app:useTextColor="color4"
+                            app:useTextHeader="h5" />
+
+                        <com.diadiem.pos_components.PTextView
+                            style="@style/CartTitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="start"
+                            android:layout_marginEnd="@dimen/_13sdp"
+                            android:paddingVertical="@dimen/_11sdp"
+                            android:text="00:00"
+                            app:useFontStyle="normal"
+                            app:useTextColor="color4"
+                            app:useTextHeader="h5" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_1sdp"
+                        android:layout_gravity="top"
+                        android:background="@color/color_10" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <com.diadiem.pos_components.PTextView
+                            style="@style/CartTitle"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="start"
+                            android:layout_weight="1"
+                            android:paddingVertical="@dimen/_11sdp"
+                            android:text="End"
+                            app:useFontStyle="normal"
+                            app:useTextColor="color4"
+                            app:useTextHeader="h5" />
+
+                        <com.diadiem.pos_components.PTextView
+                            style="@style/CartTitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="start"
+                            android:layout_marginEnd="@dimen/_13sdp"
+                            android:paddingVertical="@dimen/_11sdp"
+                            android:text="00:00"
+                            app:useFontStyle="normal"
+                            app:useTextColor="color4"
+                            app:useTextHeader="h5" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_1sdp"
+                        android:layout_gravity="top"
+                        android:background="@color/color_10" />
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+    </LinearLayout>
+
+</layout>

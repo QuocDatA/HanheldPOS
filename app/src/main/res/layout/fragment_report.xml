@@ -96,47 +96,53 @@
             android:layout_marginHorizontal="@dimen/_12sdp"
             android:background="@color/color_10" />
 
-        <RelativeLayout
-            android:id="@+id/saleReportOption"
-            android:layout_width="wrap_content"
+        <FrameLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:focusable="true"
+            android:id="@+id/saleReportOption"
             android:clickable="true"
-            android:background="@color/color_2"
-            android:foreground="?attr/selectableItemBackground"
-            app:cardCornerRadius="@dimen/_2sdp">
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground">
 
-            <com.diadiem.pos_components.PTextView
-                android:id="@+id/saleReportText"
+            <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_14sdp"
-                android:clickable="true"
-                android:focusable="true"
-                android:gravity="center"
-                android:paddingVertical="@dimen/_16sdp"
-                android:text="@string/sales_report"
-                app:useTextColor="color4"
-                app:useTextHeader="h5"
-                tools:text="Order" />
+                android:background="@color/color_2"
+                app:cardCornerRadius="@dimen/_2sdp">
 
-            <FrameLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:layout_gravity="end"
-                android:layout_marginEnd="@dimen/_14sdp">
+                <com.diadiem.pos_components.PTextView
+                    android:id="@+id/saleReportText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_14sdp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:paddingVertical="@dimen/_16sdp"
+                    android:text="@string/sales_report"
+                    app:useTextColor="color4"
+                    app:useTextHeader="h5"
+                    tools:text="Order" />
 
-                <ImageView
-                    android:layout_width="@dimen/_6sdp"
-                    android:layout_height="@dimen/_10sdp"
-                    android:layout_gravity="center"
-                    android:backgroundTint="@color/color_8"
-                    android:src="@drawable/ic_arrow_forward_color9" />
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="end"
+                    android:layout_marginEnd="@dimen/_14sdp">
 
-            </FrameLayout>
+                    <ImageView
+                        android:layout_width="@dimen/_6sdp"
+                        android:layout_height="@dimen/_10sdp"
+                        android:layout_gravity="center"
+                        android:backgroundTint="@color/color_8"
+                        android:src="@drawable/ic_arrow_forward_color9" />
 
-        </RelativeLayout>
+                </FrameLayout>
+
+            </RelativeLayout>
+        </FrameLayout>
+
     </LinearLayout>
 </layout>
