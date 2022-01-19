@@ -8,10 +8,6 @@
         <variable
             name="viewModel"
             type="com.hanheldpos.ui.screens.cashdrawer.enddrawer.EndDrawerVM" />
-
-        <variable
-            name="isActive"
-            type="Boolean" />
     </data>
 
 
@@ -60,16 +56,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fillViewport="true">
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <LinearLayout
-                    app:layout_constraintTop_toTopOf="parent"
                     android:id="@+id/endDrawerDetailContainer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    app:layout_constraintTop_toTopOf="parent">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -131,10 +128,10 @@
                             android:hint="@string/enter_amount"
                             android:inputType="number"
                             android:maxLines="1"
-
                             android:minHeight="@dimen/_33sdp"
                             android:paddingHorizontal="@dimen/_6sdp"
                             android:paddingVertical="@dimen/_7sdp"
+                            android:text="@={viewModel.amountString}"
                             app:ipt_useFontStyle="normal"
                             app:ipt_useHintTextColor="color8"
                             app:ipt_useTextColor="color4"
@@ -160,11 +157,11 @@
                             android:focusableInTouchMode="true"
                             android:hint="@string/enter_description"
                             android:inputType="text|textMultiLine"
-                            android:maxLines="4"
-
+                            android:maxLength="200"
                             android:minHeight="@dimen/_66sdp"
                             android:paddingHorizontal="@dimen/_6sdp"
                             android:paddingVertical="@dimen/_7sdp"
+                            android:text="@={viewModel.description}"
                             app:ipt_useFontStyle="normal"
                             app:ipt_useHintTextColor="color8"
                             app:ipt_useTextColor="color4"
@@ -510,10 +507,10 @@
                         android:id="@+id/btnEndDrawer"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@{isActive ? @color/color_0 : @color/color_11}"
+                        android:background="@{viewModel.isValid() ? @color/color_0 : @color/color_11}"
                         android:clickable="true"
                         android:focusable="true"
-                        android:foreground="?attr/selectableItemBackground"
+                        android:foreground="@{viewModel.isValid() ? android.R.attr.selectableItemBackground : @android:color/transparent}"
                         android:gravity="center"
                         android:orientation="horizontal"
                         android:padding="@dimen/_10sdp">
@@ -524,7 +521,6 @@
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:text="@string/end_drawer"
-                            android:textColor="@{isActive ? @color/color_2 : @color/color_0}"
                             app:useFontStyle="bold"
                             app:useTextHeader="h5" />
                     </LinearLayout>
@@ -532,8 +528,6 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
-
-
 
 
     </LinearLayout>

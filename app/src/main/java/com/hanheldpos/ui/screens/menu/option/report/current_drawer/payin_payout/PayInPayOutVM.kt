@@ -21,7 +21,10 @@ class PayInPayOutVM : BaseUiViewModel<PayInPayOutUV>() {
 
     fun initLifeCycle(owner: LifecycleOwner) {
         isValid.addSource(amountString) {
-            amount = it.replace(",","").toDouble();
+            amount = if (it.isNullOrEmpty()) {
+                null;
+            } else
+                it.replace(",", "").toDouble();
             isValid.value = if (amount == null || description.value == null) {
                 false
             } else {

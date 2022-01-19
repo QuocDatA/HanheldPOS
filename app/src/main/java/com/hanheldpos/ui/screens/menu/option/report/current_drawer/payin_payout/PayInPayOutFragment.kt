@@ -28,9 +28,11 @@ class PayInPayOutFragment : BaseFragment<FragmentPayInPayOutBinding, PayInPayOut
             var isEditing = false
             input.doAfterTextChanged {
                 if (isEditing) return@doAfterTextChanged;
-                isEditing = true;
-                val text = it.toString()
-                input.setText(PriceHelper.formatStringPrice(text))
+                if (it.toString().isEmpty()) input.setText("0");
+                else {
+                    isEditing = true;
+                    input.setText(PriceHelper.formatStringPrice(it.toString()))
+                }
                 input.setSelection(input.length());
                 isEditing = false;
             }

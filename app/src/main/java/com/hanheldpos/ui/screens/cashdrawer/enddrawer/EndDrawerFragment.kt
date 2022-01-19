@@ -10,6 +10,7 @@ import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.cashdrawer.CashDrawerHelper
 import com.hanheldpos.ui.screens.pincode.PinCodeActivity
 import com.hanheldpos.ui.screens.welcome.WelcomeActivity
+import com.hanheldpos.utils.PriceHelper
 
 class EndDrawerFragment : BaseFragment<FragmentEndDrawerBinding, EndDrawerVM>(), EndDrawerUV {
     override fun layoutRes() = R.layout.fragment_end_drawer
@@ -27,16 +28,46 @@ class EndDrawerFragment : BaseFragment<FragmentEndDrawerBinding, EndDrawerVM>(),
 
     override fun initView() {
         binding.btnEndDrawer.setOnClickListener {
-            activity?.navigateTo(
-                PinCodeActivity::class.java,
-                alsoFinishCurrentActivity = true,
-                alsoClearActivity = true,
-            )
-            CashDrawerHelper.isEndDrawer = true
+            if (viewModel.isValid.value == true) {
+                activity?.navigateTo(
+                    PinCodeActivity::class.java,
+                    alsoFinishCurrentActivity = true,
+                    alsoClearActivity = true,
+                )
+                CashDrawerHelper.isEndDrawer = true
+            }
         }
-        binding.amountInput.doAfterTextChanged {
-            binding.isActive = binding.amountInput.text.toString().toInt() > 1000
+        binding.amountInput.let { input ->
+            var isEditing = false
+            input.doAfterTextChanged {
+                if (isEditing) return@doAfterTextChanged;
+                if (it.toString().isEmpty()) input.setText("0");
+                else {
+                    isEditing = true;
+                    input.setText(PriceHelper.formatStringPrice(it.toString()));
+                }
+                input.setSelection(input.length());
+                isEditing = false;
+            }
         }
+
+        viewModel.isValid.observe(this, {
+            if (it) {
+                binding.btnEndDrawerText.setTextColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.color_2
+                    )
+                );
+            } else {
+                binding.btnEndDrawerText.setTextColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.color_0
+                    )
+                );
+            }
+        });
     }
 
     override fun initData() {

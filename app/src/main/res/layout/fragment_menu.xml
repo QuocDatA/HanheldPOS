@@ -30,14 +30,14 @@
 
                 <ImageButton
                     style="@style/MaterialButton.Icon"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center|start"
                     android:adjustViewBounds="true"
                     android:backgroundTint="@color/textPrimary"
                     android:clickable="true"
                     android:focusable="true"
                     android:onClick="@{v -> viewModel.backPress()}"
-                    android:padding="@dimen/_22sdp"
+                    android:padding="@dimen/_14sdp"
                     android:scaleType="centerInside"
                     android:src="@drawable/ic_close"
                     tools:ignore="ContentDescription" />
