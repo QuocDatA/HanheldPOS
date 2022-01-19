@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="com.hanheldpos.ui.screens.cashdrawer.CashDrawerVM" />
+            type="com.hanheldpos.ui.screens.cashdrawer.startdrawer.StartDrawerVM" />
         <variable
             name="keyboardVM"
             type="com.hanheldpos.ui.input.KeyBoardVM"/>

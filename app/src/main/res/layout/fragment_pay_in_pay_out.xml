@@ -8,10 +8,6 @@
         <variable
             name="viewModel"
             type="com.hanheldpos.ui.screens.menu.option.report.current_drawer.payin_payout.PayInPayOutVM" />
-
-        <variable
-            name="isActive"
-            type="Boolean" />
     </data>
 
     <RelativeLayout
@@ -88,6 +84,7 @@
                     android:hint="@string/enter_amount"
                     android:inputType="number"
                     android:maxLines="1"
+                    android:text="@{viewModel.amountString}"
 
                     android:minHeight="@dimen/_33sdp"
                     android:paddingHorizontal="@dimen/_6sdp"
@@ -117,7 +114,7 @@
                     android:focusableInTouchMode="true"
                     android:hint="@string/enter_description"
                     android:inputType="text|textMultiLine"
-                    android:maxLines="4"
+                    android:text="@={viewModel.description}"
                     android:minHeight="@dimen/_66sdp"
                     android:paddingHorizontal="@dimen/_6sdp"
                     android:paddingVertical="@dimen/_7sdp"
@@ -201,32 +198,31 @@
             android:orientation="horizontal">
 
             <LinearLayout
-                android:id="@+id/btnPayIn"
+                android:id="@+id/btnEndDrawer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/_3sdp"
                 android:layout_weight="1"
-                android:clickable="true"
                 android:background="@drawable/bg_outline"
+                android:clickable="true"
                 android:focusable="true"
-                android:foreground="?attr/selectableItemBackground"
+                android:foreground="@{ viewModel.isValid ? android.R.attr.selectableItemBackground : @android:color/transparent }"
                 android:gravity="center"
                 android:orientation="horizontal"
                 android:padding="@dimen/_10sdp">
 
                 <com.diadiem.pos_components.PTextView
-                    android:id="@+id/btnPayInText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="@string/pay_in"
-                    android:textColor="@{isActive ? @color/color_11 : @color/color_8}"
                     app:useFontStyle="bold"
+                    app:useTextColor="color0"
                     app:useTextHeader="h5" />
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/btnPayOut"
+                android:id="@+id/btnPayInOut"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_3sdp"
@@ -234,19 +230,18 @@
                 android:background="@drawable/bg_outline"
                 android:clickable="true"
                 android:focusable="true"
-                android:foreground="?attr/selectableItemBackground"
+                android:foreground="@{ viewModel.isValid ? android.R.attr.selectableItemBackground : @android:color/transparent }"
                 android:gravity="center"
                 android:orientation="horizontal"
                 android:padding="@dimen/_10sdp">
 
                 <com.diadiem.pos_components.PTextView
-                    android:id="@+id/btnPayOutText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="@string/pay_out"
                     app:useFontStyle="bold"
-                    android:textColor="@{isActive ? @color/color_11 : @color/color_8}"
+                    app:useTextColor="color0"
                     app:useTextHeader="h5" />
             </LinearLayout>
         </LinearLayout>

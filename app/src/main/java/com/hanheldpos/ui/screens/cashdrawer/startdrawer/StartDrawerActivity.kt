@@ -11,27 +11,25 @@ import com.hanheldpos.extension.navigateTo
 import com.hanheldpos.model.keyboard.KeyBoardType
 import com.hanheldpos.ui.base.activity.BaseActivity
 import com.hanheldpos.ui.screens.cashdrawer.CashDrawerHelper
-import com.hanheldpos.ui.screens.cashdrawer.CashDrawerVM
-import com.hanheldpos.ui.screens.cashdrawer.CashDrawerUV
 import com.hanheldpos.ui.input.KeyBoardVM
 import com.hanheldpos.ui.screens.main.MainActivity
+import com.hanheldpos.utils.PriceHelper
 import com.utils.helper.SystemHelper
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import kotlin.math.roundToInt
 
-class StartDrawerActivity : BaseActivity<ActivityStartDrawerBinding, CashDrawerVM>(), CashDrawerUV {
+class StartDrawerActivity : BaseActivity<ActivityStartDrawerBinding, StartDrawerVM>(), StartDrawerUV {
 
 
     override fun layoutRes(): Int = R.layout.activity_start_drawer;
 
     private val keyBoardVM = KeyBoardVM();
 
-    override fun initViewModel(viewModel: CashDrawerVM) {
+    override fun initViewModel(viewModel: StartDrawerVM) {
         viewModel.run {
             init(this@StartDrawerActivity);
             binding.viewModel = this;
-
         }
         binding.keyboardVM = keyBoardVM;
 
@@ -50,14 +48,7 @@ class StartDrawerActivity : BaseActivity<ActivityStartDrawerBinding, CashDrawerV
                 if (it.toString().isEmpty()) input.setText("0");
                 else {
                     isEditing = true;
-                    val dfSymbols = DecimalFormatSymbols()
-                    dfSymbols.decimalSeparator = '.'
-                    dfSymbols.groupingSeparator = ','
-                    val df = DecimalFormat("###", dfSymbols)
-                    df.groupingSize = 3
-                    df.isGroupingUsed = true
-                    val text = df.format(it.toString().replace(",", "").toDouble());
-                    input.setText(text);
+                    input.setText(PriceHelper.formatStringPrice(it.toString()));
 
                 }
                 input.setSelection(input.length());
@@ -91,8 +82,8 @@ class StartDrawerActivity : BaseActivity<ActivityStartDrawerBinding, CashDrawerV
         }
     }
 
-    override fun viewModelClass(): Class<CashDrawerVM> {
-        return CashDrawerVM::class.java;
+    override fun viewModelClass(): Class<StartDrawerVM> {
+        return StartDrawerVM::class.java;
     }
 
     override fun backPress() {

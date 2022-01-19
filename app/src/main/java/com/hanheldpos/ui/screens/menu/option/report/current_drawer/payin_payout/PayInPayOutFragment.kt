@@ -1,11 +1,10 @@
 package com.hanheldpos.ui.screens.menu.option.report.current_drawer.payin_payout
 
-import android.content.res.ColorStateList
-import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentPayInPayOutBinding
 import com.hanheldpos.ui.base.fragment.BaseFragment
+import com.hanheldpos.utils.PriceHelper
 
 class PayInPayOutFragment : BaseFragment<FragmentPayInPayOutBinding, PayInPayOutVM>(),
     PayInPayOutUV {
@@ -16,41 +15,30 @@ class PayInPayOutFragment : BaseFragment<FragmentPayInPayOutBinding, PayInPayOut
     }
 
     override fun initViewModel(viewModel: PayInPayOutVM) {
-        return viewModel.run {
+        viewModel.run {
             init(this@PayInPayOutFragment)
+            initLifeCycle(this@PayInPayOutFragment);
             binding.viewModel = this
         }
     }
 
     override fun initView() {
-        binding.amountInput.doAfterTextChanged {
-            binding.isActive = false
-            binding.btnPayIn.setBackgroundResource(R.drawable.bg_outline)
-            binding.btnPayOut.setBackgroundResource(R.drawable.bg_outline)
-            if(binding.amountInput.text.toString().toInt() > 1000) {
-                if(binding.noteInput.text?.length ?: 0 > 0){
-                    binding.isActive = true
-                    binding.btnPayIn.setBackgroundColor(ContextCompat.getColor(this.requireContext(), R.color.color_11))
-                    binding.btnPayOut.setBackgroundColor(ContextCompat.getColor(this.requireContext(), R.color.color_11))
-                }
+        binding.amountInput.let { input ->
+            var isEditing = false
+            input.doAfterTextChanged {
+                if (isEditing) return@doAfterTextChanged;
+                isEditing = true;
+                val text = it.toString()
+                input.setText(PriceHelper.formatStringPrice(text))
+                input.setSelection(input.length());
+                isEditing = false;
             }
         }
-        binding.noteInput.doAfterTextChanged {
-            binding.isActive = false
-            binding.btnPayIn.setBackgroundResource(R.drawable.bg_outline)
-            binding.btnPayOut.setBackgroundResource(R.drawable.bg_outline)
-            if(binding.amountInput.text.toString().toInt() > 1000) {
-                if(binding.noteInput.text?.length ?: 0 > 0){
-                    binding.isActive = true
-                    binding.btnPayIn.setBackgroundColor(ContextCompat.getColor(this.requireContext(), R.color.color_0))
-                    binding.btnPayOut.setBackgroundColor(ContextCompat.getColor(this.requireContext(), R.color.color_0))
-                }
-            }
-        }
+
     }
 
     override fun initData() {
-        binding.isActive = false
+
     }
 
     override fun initAction() {
