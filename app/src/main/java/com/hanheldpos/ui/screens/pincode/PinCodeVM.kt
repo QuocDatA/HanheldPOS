@@ -16,7 +16,7 @@ import com.hanheldpos.model.cashdrawer.CashDrawerStatusReq
 import com.hanheldpos.model.cashdrawer.DrawerStatus
 
 import com.hanheldpos.ui.base.viewmodel.BaseRepoViewModel
-import com.hanheldpos.utils.JsonHelper
+import com.hanheldpos.utils.GSonUtils
 import java.util.*
 
 class PinCodeVM : BaseRepoViewModel<EmployeeRepo, PinCodeUV>() {
@@ -150,7 +150,7 @@ class PinCodeVM : BaseRepoViewModel<EmployeeRepo, PinCodeUV>() {
     }
 
     private fun checkDrawerStatus() {
-        val body = JsonHelper.stringify(
+        val body = GSonUtils.toServerJson(
             CashDrawerStatusReq(
                 UserGuid = UserHelper.getUserGui(),
                 DeviceGuid = UserHelper.getDeviceGui(),
