@@ -1,5 +1,6 @@
 package com.hanheldpos.ui.screens.menu.option.report.current_drawer.payin_payout
 
+import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentPayInPayOutBinding
@@ -27,14 +28,29 @@ class PayInPayOutFragment : BaseFragment<FragmentPayInPayOutBinding, PayInPayOut
             var isEditing = false
             input.doAfterTextChanged {
                 if (isEditing) return@doAfterTextChanged;
-                isEditing = true;
-                val text = it.toString()
-                input.setText(PriceHelper.formatStringPrice(text))
+                if (it.toString().isEmpty()) input.setText("0");
+                else {
+                    isEditing = true;
+                    input.setText(PriceHelper.formatStringPrice(it.toString()))
+                }
                 input.setSelection(input.length());
                 isEditing = false;
             }
         }
 
+        viewModel.isValid.observe(this, {
+            if (it) {
+                binding.textBtnEndDrawer.setTextColor(ContextCompat.getColor(requireContext(),R.color.color_0));
+                binding.textBtnPayInOut.setTextColor(ContextCompat.getColor(requireContext(),R.color.color_0));
+                binding.btnPayInOut.background = ContextCompat.getDrawable(requireContext(),R.color.color_11);
+                binding.btnEndDrawer.background = ContextCompat.getDrawable(requireContext(),R.color.color_11);
+            } else {
+                binding.textBtnEndDrawer.setTextColor(ContextCompat.getColor(requireContext(),R.color.color_8));
+                binding.textBtnPayInOut.setTextColor(ContextCompat.getColor(requireContext(),R.color.color_8));
+                binding.btnPayInOut.background = ContextCompat.getDrawable(requireContext(),R.drawable.bg_outline);
+                binding.btnEndDrawer.background = ContextCompat.getDrawable(requireContext(),R.drawable.bg_outline);
+            }
+        });
     }
 
     override fun initData() {

@@ -19,16 +19,6 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize">
 
-            <!--            <ImageButton-->
-            <!--                style="@style/MaterialButton.Icon"-->
-            <!--                android:layout_height="match_parent"-->
-            <!--                android:layout_gravity="center|start"-->
-            <!--                android:adjustViewBounds="true"-->
-            <!--                android:backgroundTint="@color/textPrimary"-->
-            <!--                android:onClick="@{() -> viewModel.backPress()}"-->
-            <!--                android:scaleType="centerInside"-->
-            <!--                android:src="@drawable/ic_baseline_arrow_back_ios_13"-->
-            <!--                tools:ignore="ContentDescription" />-->
 
             <com.diadiem.pos_components.PTextView
                 style="@style/Base.TextAppearance"
@@ -39,21 +29,6 @@
                 app:useTextColor="color4"
                 app:useTextHeader="h4" />
 
-            <!--            <com.diadiem.pos_components.PMaterialButton-->
-            <!--                style="@style/Base.MaterialButton"-->
-            <!--                android:layout_width="wrap_content"-->
-            <!--                android:layout_height="match_parent"-->
-            <!--                android:layout_gravity="end"-->
-            <!--                android:background="@drawable/bg_primary_button"-->
-            <!--                android:gravity="center"-->
-            <!--                android:paddingStart="@dimen/_10sdp"-->
-            <!--                android:paddingTop="0dp"-->
-            <!--                android:paddingEnd="@dimen/_10sdp"-->
-            <!--                android:paddingBottom="0dp"-->
-            <!--                android:text="@string/start_drawer"-->
-            <!--                app:pbtn_useFontStyle="bold"-->
-            <!--                app:pbtn_useTextColor="color2"-->
-            <!--                app:pbtn_useTextHeader="h4" />-->
         </FrameLayout>
 
         <include layout="@layout/divider_ver" />
