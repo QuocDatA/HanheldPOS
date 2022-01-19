@@ -28,6 +28,8 @@ object CashDrawerHelper {
         val close =
             notificationView.findViewById<View>(if (isOnStarting) R.id.btn_close_notification else R.id.btn_start_again)
         close.setOnClickListener {
+            isStartDrawer = false;
+            isEndDrawer = false;
             alert.dismiss()
         }
 

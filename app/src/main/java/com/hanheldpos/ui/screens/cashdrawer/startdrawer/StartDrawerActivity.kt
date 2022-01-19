@@ -91,7 +91,6 @@ class StartDrawerActivity : BaseActivity<ActivityStartDrawerBinding, StartDrawer
     }
 
     override fun goMain() {
-        CashDrawerHelper.isStartDrawer = true;
         navigateTo(
             MainActivity::class.java,
             alsoFinishCurrentActivity = true,
