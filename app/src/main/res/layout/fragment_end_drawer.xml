@@ -77,7 +77,7 @@
 
                         <com.diadiem.pos_components.PTextView
                             style="@style/CartTitle"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="start"
                             android:layout_weight="1"
@@ -94,7 +94,7 @@
                             android:layout_gravity="start"
                             android:layout_marginEnd="@dimen/_8sdp"
                             android:paddingVertical="@dimen/_11sdp"
-                            android:text="0"
+                            android:text="@{0}"
                             app:useFontStyle="normal"
                             app:useTextColor="color4"
                             app:useTextHeader="h5" />
@@ -180,12 +180,12 @@
 
                         <com.diadiem.pos_components.PTextView
                             style="@style/CartTitle"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="start"
                             android:layout_weight="1"
                             android:paddingVertical="@dimen/_11sdp"
-                            android:text="@string/expected_in_drawer"
+                            android:text="@string/difference"
                             app:useFontStyle="normal"
                             app:useTextColor="color4"
                             app:useTextHeader="h5" />
@@ -197,7 +197,7 @@
                             android:layout_gravity="start"
                             android:layout_marginEnd="@dimen/_8sdp"
                             android:paddingVertical="@dimen/_11sdp"
-                            android:text="0"
+                            android:text="@{0}"
                             app:useFontStyle="normal"
                             app:useTextColor="color4"
                             app:useTextHeader="h5" />
