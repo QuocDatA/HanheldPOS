@@ -1,6 +1,8 @@
 package com.hanheldpos.ui.screens.cart
 
+import android.content.Context
 import androidx.lifecycle.LifecycleOwner
+import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.setting.SettingDeviceResp
 import com.hanheldpos.data.repository.base.BaseRepoCallback
 import com.hanheldpos.data.repository.order.OrderAsyncRepo
@@ -47,16 +49,26 @@ class CartVM : BaseUiViewModel<CartUV>() {
         uiCallback?.onOpenAddCustomer();
     }
 
-    fun billCart(cart : CartModel) {
-        if (cart.paymentsList.isEmpty()) {
+    fun billCart(context : Context, cart : CartModel) {
+
+        if (cart.productsList.isEmpty()){
             AppAlertDialog.get()
                 .show(
-                    "Warning",
-                    "Please choose payment method",
+                    context.getString(R.string.notification),
+                    context.getString(R.string.order_not_completed),
                 )
             return;
         }
-        ;
+
+        if (cart.paymentsList.isEmpty()) {
+            AppAlertDialog.get()
+                .show(
+                    context.getString(R.string.notification),
+                    context.getString(R.string.please_choose_payment_method),
+                )
+            return;
+        }
+
         onOrderProcessing(cart);
 
     }

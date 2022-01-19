@@ -124,4 +124,7 @@
     <string name="actual_amount">Actual Amount</string>
     <string name="enter_amount">Enter Amount</string>
     <string name="total_paid_in_out">Total Paid In/Out</string>
+    <string name="notification">Notification</string>
+    <string name="please_choose_payment_method">Please choose payment method</string>
+    <string name="order_not_completed">Order not completed!</string>
 </resources>
