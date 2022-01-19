@@ -19,7 +19,7 @@ class EndDrawerFragment : BaseFragment<FragmentEndDrawerBinding, EndDrawerVM>(),
     }
 
     override fun initViewModel(viewModel: EndDrawerVM) {
-        return viewModel.run {
+        viewModel.run {
             init(this@EndDrawerFragment)
             binding.viewModel = this
         }

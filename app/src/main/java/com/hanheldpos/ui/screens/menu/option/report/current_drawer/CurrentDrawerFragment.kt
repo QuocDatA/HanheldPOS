@@ -17,7 +17,7 @@ class CurrentDrawerFragment : BaseFragment<FragmentCurrentDrawerBinding, Current
     }
 
     override fun initViewModel(viewModel: CurrentDrawerVM) {
-        return viewModel.run {
+        viewModel.run {
             init(this@CurrentDrawerFragment);
             binding.viewModel = this;
         }

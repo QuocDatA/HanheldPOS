@@ -148,4 +148,6 @@ dependencies {
     // Module that adds support for serialization/deserialization of Kotlin
     implementation "com.fasterxml.jackson.module:jackson-module-kotlin:2.13.0"
 
+    // Calendar
+    implementation 'com.github.prolificinteractive:material-calendarview:2.0.0'
 }
