@@ -60,7 +60,7 @@ class SyncDataService : BaseViewModel() {
                     if (data == null || data.DidError) {
                         onDataFailure(context?.getString(R.string.failed_to_load_data),listener);
                     } else {
-                        DataHelper.orderSetting = data.Model.firstOrNull();
+                        DataHelper.orderSetting = data.Model?.firstOrNull();
                         startMappingData(listener);
                     }
                 }
@@ -78,7 +78,7 @@ class SyncDataService : BaseViewModel() {
                     if (data == null || data.DidError) {
                         onDataFailure(context?.getString(R.string.failed_to_load_data),listener);
                     } else {
-                        DataHelper.floor = data.Model.firstOrNull();
+                        DataHelper.floor = data.Model?.firstOrNull();
                         startMappingData(listener);
                     }
                 }

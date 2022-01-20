@@ -7,5 +7,5 @@ data class BaseResponse<T> (
     val Message: String?,
     val DidError: Boolean,
     val ErrorMessage: String?,
-    val Model: T,
+    val Model: T?,
 )
