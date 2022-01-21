@@ -128,4 +128,5 @@
     <string name="please_choose_payment_method">Please choose payment method</string>
     <string name="order_not_completed">Order not completed!</string>
     <string name="difference">Difference</string>
+    <string name="please_sync_local_data_before_ending_this_cash_drawer">Please sync local data before ending this cash drawer</string>
 </resources>

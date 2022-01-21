@@ -10,15 +10,11 @@ import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.cashdrawer.report.ReportCashDrawerResp
 import com.hanheldpos.databinding.FragmentCurrentDrawerBinding
 import com.hanheldpos.model.DataHelper
+import com.hanheldpos.ui.base.dialog.AppAlertDialog
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.cashdrawer.enddrawer.EndDrawerFragment
 import com.hanheldpos.ui.screens.menu.option.report.current_drawer.adapter.ReportDrawerInfoAdapter
 import com.hanheldpos.ui.screens.menu.option.report.current_drawer.payin_payout.PayInPayOutFragment
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
-import kotlin.coroutines.coroutineContext
 
 class CurrentDrawerFragment : BaseFragment<FragmentCurrentDrawerBinding, CurrentDrawerVM>(),
     CurrentDrawerUV {
@@ -78,7 +74,15 @@ class CurrentDrawerFragment : BaseFragment<FragmentCurrentDrawerBinding, Current
     }
 
     override fun onOpenEndDrawer() {
-        navigator.goTo(EndDrawerFragment())
+        if (DataHelper.ordersCompleted == null || DataHelper.ordersCompleted?.isEmpty() == true) {
+            AppAlertDialog.get().show(
+                getString(R.string.notification),
+                getString(R.string.please_sync_local_data_before_ending_this_cash_drawer)
+            )
+        } else
+            navigator.goTo(EndDrawerFragment())
+
+
     }
 
     override fun onOpenPayInPayOut() {
@@ -88,11 +92,8 @@ class CurrentDrawerFragment : BaseFragment<FragmentCurrentDrawerBinding, Current
     @SuppressLint("NotifyDataSetChanged")
     override fun showInfoCurrentDrawer(report: ReportCashDrawerResp?) {
         report?.let {
-
             reportDrawerInfoAdapter.submitList(report.Reports);
             reportDrawerInfoAdapter.notifyDataSetChanged();
-
-
         }
     }
 
