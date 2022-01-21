@@ -12,7 +12,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.DiffUtil
 import com.hanheldpos.R
-import com.hanheldpos.data.api.pojo.table.FloorTableItem
+import com.hanheldpos.data.api.pojo.floor.FloorTable
 import com.hanheldpos.databinding.ItemTableBinding
 import com.hanheldpos.databinding.ItemTableDirectionButtonBinding
 import com.hanheldpos.databinding.ItemTableEmptyBinding
@@ -23,8 +23,8 @@ import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 
 class TableAdapter(
-    private val listener: BaseItemClickListener<FloorTableItem>
-) : BaseBindingListAdapter<FloorTableItem>(DiffCallBack(),listener) {
+    private val listener: BaseItemClickListener<FloorTable>
+) : BaseBindingListAdapter<FloorTable>(DiffCallBack(),listener) {
 
     lateinit var context: Context
 
@@ -41,7 +41,7 @@ class TableAdapter(
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): BaseBindingViewHolder<FloorTableItem> {
+    ): BaseBindingViewHolder<FloorTable> {
         DataBindingUtil.inflate<ViewDataBinding>(
             LayoutInflater.from(parent.context),
             viewType,
@@ -65,7 +65,7 @@ class TableAdapter(
         }
     }
 
-    override fun onBindViewHolder(holder: BaseBindingViewHolder<FloorTableItem>, position: Int) {
+    override fun onBindViewHolder(holder: BaseBindingViewHolder<FloorTable>, position: Int) {
         val item = getItem(position);
 
         //Color for the Relative Layout Background
@@ -151,12 +151,12 @@ class TableAdapter(
         holder.bindItem(item);
     }
 
-    private class DiffCallBack : DiffUtil.ItemCallback<FloorTableItem>() {
-        override fun areItemsTheSame(oldItem: FloorTableItem, newItem: FloorTableItem): Boolean {
-            return oldItem.id.equals(newItem.id) && ((oldItem.uiType == newItem.uiType) || (oldItem.uiType != TableModeViewType.Table && oldItem.uiType != TableModeViewType.Empty && newItem.uiType != TableModeViewType.Table && newItem.uiType != TableModeViewType.Empty))
+    private class DiffCallBack : DiffUtil.ItemCallback<FloorTable>() {
+        override fun areItemsTheSame(oldItem: FloorTable, newItem: FloorTable): Boolean {
+            return oldItem._Id.equals(newItem._Id) && ((oldItem.uiType == newItem.uiType) || (oldItem.uiType != TableModeViewType.Table && oldItem.uiType != TableModeViewType.Empty && newItem.uiType != TableModeViewType.Table && newItem.uiType != TableModeViewType.Empty))
         }
 
-        override fun areContentsTheSame(oldItem: FloorTableItem, newItem: FloorTableItem): Boolean {
+        override fun areContentsTheSame(oldItem: FloorTable, newItem: FloorTable): Boolean {
             return oldItem == newItem && (oldItem.uiType == newItem.uiType)
         }
 

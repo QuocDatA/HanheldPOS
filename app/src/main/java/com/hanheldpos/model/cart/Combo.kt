@@ -1,8 +1,8 @@
 package com.hanheldpos.model.cart
 
 import com.hanheldpos.data.api.pojo.fee.Fee
-import com.hanheldpos.data.api.pojo.order.settings.DiningOptionItem
-import com.hanheldpos.data.api.pojo.product.ProductItem
+import com.hanheldpos.data.api.pojo.order.settings.DiningOption
+import com.hanheldpos.data.api.pojo.product.Product
 import com.hanheldpos.model.cart.fee.FeeApplyToType
 import com.hanheldpos.model.product.BaseProductInCart
 import com.hanheldpos.model.product.PricingMethodType
@@ -14,9 +14,9 @@ class Combo() : BaseProductInCart() {
     var groupList: MutableList<GroupBundle> = mutableListOf()
     var isShowDetail : Boolean = false;
     constructor(
-        productItem: ProductItem,
+        productItem: Product,
         groupProducts: List<GroupBundle>,
-        diningOptionItem: DiningOptionItem,
+        diningOptionItem: DiningOption,
         quantity: Int?,
         sku: String?,
         variants: String?,
@@ -38,7 +38,7 @@ class Combo() : BaseProductInCart() {
     }
 
     override fun getProductName(): String? {
-        return proOriginal?.name;
+        return proOriginal?.Name;
     }
 
     override fun getFeeString(): String {
@@ -59,6 +59,7 @@ class Combo() : BaseProductInCart() {
         val totalModifierPrice = totalModifier();
 
         var totalPrice = subtotal - totalModifierPrice;
+
         val totalDiscUser = discountUsersList?.sumOf { disc -> disc.total(subtotal) } ?: 0.0;
         // TODO : Discount server
         //  var totalDiscServer = discountServersList?.sumOf { disc -> disc.total(totalPrice, totalModifierPrice, proOriginal?.id, quantity) } ?: 0.0;
@@ -92,14 +93,14 @@ class Combo() : BaseProductInCart() {
         return groupList.firstOrNull { gr -> !gr.isComplete() } == null;
     }
 
-    override fun isMatching(productItem: ProductItem): Boolean {
+    override fun isMatching(productItem: Product): Boolean {
         return false;
     }
 
     override fun clone(): Combo {
-        return Combo(
+        val cloneValue = Combo(
             proOriginal!!,
-            groupList.toMutableList().map { it.copy() },
+            groupList.toMutableList().map { it.clone() },
             diningOption!!,
             quantity,
             sku,
@@ -107,6 +108,12 @@ class Combo() : BaseProductInCart() {
             priceOverride,
             fees
         );
+
+        cloneValue.compReason = this.compReason;
+        cloneValue.discountUsersList = this.discountUsersList?.map { it.copy() }?.toMutableList()
+        cloneValue.discountServersList = this.discountServersList?.map { it.copy() }?.toMutableList()
+
+        return cloneValue;
     }
 
     fun modSubTotal() : Double {
@@ -125,7 +132,7 @@ class Combo() : BaseProductInCart() {
     }
 
     fun proModSubTotal() : Double {
-        val pricingMethodType = proOriginal?.pricingMethodType ?: 1;
+        val pricingMethodType = proOriginal?.PricingMethodType ?: 1;
 
         val modSubtotal = modSubTotal();
         val proSubtotal = priceOverride ?: 0.0;
@@ -141,7 +148,7 @@ class Combo() : BaseProductInCart() {
     }
 
     fun totalFee(subtotal: Double, totalDisc: Double): Double {
-        return fees?.filter { it.feeApplyToType != FeeApplyToType.Included.value }
+        return fees?.filter { it.Id != FeeApplyToType.Included.value }
             ?.sumOf { it.price(subtotal, totalDisc) } ?: 0.0
     }
 

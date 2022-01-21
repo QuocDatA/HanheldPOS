@@ -27,7 +27,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_outline"
+                android:background="@drawable/bg_outline_round"
                 android:orientation="vertical"
                 android:paddingHorizontal="@dimen/_10sdp"
                 android:paddingVertical="@dimen/_5sdp">
@@ -59,7 +59,7 @@
                         android:textColorHint="@color/color_4"
                         app:ipt_useFontStyle="normal"
                         app:ipt_useTextColor="color4"
-                        app:ipt_useTextHeader="h4" />
+                        app:ipt_useTextHeader="h5" />
 
                     <com.diadiem.pos_components.PTextView
                         android:layout_width="wrap_content"
@@ -79,7 +79,7 @@
             <com.diadiem.pos_components.PTextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_outline"
+                android:background="@drawable/bg_outline_round"
                 android:focusableInTouchMode="true"
                 android:hint="@string/title"
                 android:inputType="text"
@@ -89,26 +89,7 @@
                 android:textColorHint="@color/color_4"
                 app:ipt_useFontStyle="normal"
                 app:ipt_useTextColor="color4"
-                app:ipt_useTextHeader="h4" />
+                app:ipt_useTextHeader="h5" />
         </LinearLayout>
-
-        <com.diadiem.pos_components.PMaterialButton
-            android:id="@+id/btnSave"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginHorizontal="@dimen/_9sdp"
-            android:background="@color/color_0"
-            android:clickable="true"
-            android:enabled="@{!viewModel.percent.equals(`0`) &amp;&amp; !TextUtils.isEmpty(viewModel.title)}"
-            android:focusable="true"
-            android:foreground="?attr/selectableItemBackground"
-            android:gravity="center"
-            android:padding="@dimen/_5sdp"
-            android:text="@string/save"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:pbtn_useFontStyle="bold"
-            app:pbtn_useTextColor="color2"
-            app:pbtn_useTextHeader="h5" />
     </RelativeLayout>
 </layout>

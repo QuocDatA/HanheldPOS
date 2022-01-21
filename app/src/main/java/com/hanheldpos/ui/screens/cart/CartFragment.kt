@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.customer.CustomerResp
-import com.hanheldpos.data.api.pojo.order.settings.DiningOptionItem
+import com.hanheldpos.data.api.pojo.order.settings.DiningOption
 import com.hanheldpos.data.api.pojo.order.settings.Reason
 import com.hanheldpos.databinding.FragmentCartBinding
 import com.hanheldpos.databinding.ItemCartTipBinding
@@ -69,8 +69,8 @@ class CartFragment( private val listener : CartCallBack) : BaseFragment<Fragment
         //region setup dining option recyclerview
         cartDiningOptionAdapter =
             CartDiningOptionAdapter(
-                onItemClickListener = object : BaseItemClickListener<DiningOptionItem> {
-                    override fun onItemClick(adapterPosition: Int, item: DiningOptionItem) {
+                onItemClickListener = object : BaseItemClickListener<DiningOption> {
+                    override fun onItemClick(adapterPosition: Int, item: DiningOption) {
                         cartDataVM.cartModelLD.value!!.diningOption = item;
                         cartDataVM.cartModelLD.notifyValueChange();
                     }
@@ -149,14 +149,14 @@ class CartFragment( private val listener : CartCallBack) : BaseFragment<Fragment
 
     override fun initData() {
         //region init dining option data
-        val diningOptions: MutableList<DiningOptionItem> =
-            (DataHelper.getDiningOptionList() as List<DiningOptionItem>).toMutableList();
-        val currentDiningOption: DiningOptionItem? = cartDataVM.diningOptionLD.value;
+        val diningOptions: MutableList<DiningOption> =
+            (DataHelper.getDiningOptionList() as List<DiningOption>).toMutableList();
+        val currentDiningOption: DiningOption? = cartDataVM.diningOptionLD.value;
         var selectedIndex = 0;
 
         if (currentDiningOption != null) {
             diningOptions.forEachIndexed { index, diningOptionItem ->
-                if (diningOptionItem.id == currentDiningOption.id) selectedIndex = index
+                if (diningOptionItem.Id == currentDiningOption.Id) selectedIndex = index
             }
         }
         cartDiningOptionAdapter.setSelectedIndex(selectedIndex);
@@ -216,16 +216,16 @@ class CartFragment( private val listener : CartCallBack) : BaseFragment<Fragment
         navigator
             .goToWithCustomAnimation(DiscountFragment(listener = object :
                 DiscountFragment.DiscountCallback {
-                override fun onDiscountUserChoose(discount: DiscountUser,productInCart: BaseProductInCart?) {
-                    cartDataVM.addDiscountUser(discount,productInCart);
+                override fun onDiscountUserChoose(discount: DiscountUser) {
+                    cartDataVM.addDiscountUser(discount);
                 }
 
-                override fun onCompReasonChoose(reason: Reason,productInCart: BaseProductInCart?) {
-                    cartDataVM.addCompReason(reason,productInCart);
+                override fun onCompReasonChoose(reason: Reason) {
+                    cartDataVM.addCompReason(reason);
                 }
 
-                override fun onCompRemove(productInCart: BaseProductInCart?) {
-                    cartDataVM.removeCompReason(productInCart);
+                override fun onCompRemove() {
+                    cartDataVM.removeCompReason();
                 }
             }));
     }
@@ -250,11 +250,11 @@ class CartFragment( private val listener : CartCallBack) : BaseFragment<Fragment
     override fun onBillSuccess() {
         getBack();
         cartDataVM.removeCart();
-        screenViewModel.showTablePage();
+        listener.onBillSuccess();
     }
 
     private fun onBillCart() {
-        viewModel.billCart(cartDataVM.cartModelLD.value!!);
+        viewModel.billCart(requireContext(),cartDataVM.cartModelLD.value!!);
     }
 
     fun onEditItemInCart(position: Int, item: BaseProductInCart) {
@@ -273,7 +273,7 @@ class CartFragment( private val listener : CartCallBack) : BaseFragment<Fragment
             ProductType.REGULAR -> {
                 navigator.goToWithCustomAnimation(
                     ProductDetailFragment(
-                        item = (item as Regular).clone(),
+                        regular = (item as Regular).clone(),
                         action = ItemActionType.Modify,
                         quantityCanChoose = 100,
                         listener = callbackEdit
@@ -283,7 +283,7 @@ class CartFragment( private val listener : CartCallBack) : BaseFragment<Fragment
             ProductType.BUNDLE -> {
                 navigator.goToWithCustomAnimation(
                     ComboFragment(
-                        item = (item as Combo).clone(),
+                        combo = (item as Combo).clone(),
                         action = ItemActionType.Modify,
                         quantityCanChoose = 100,
                         listener = callbackEdit
@@ -299,19 +299,8 @@ class CartFragment( private val listener : CartCallBack) : BaseFragment<Fragment
         cartProductAdapter.notifyDataSetChanged();
     }
 
-    companion object {
-        fun getInstance(
-            listener: CartCallBack
-        ): CartFragment {
-            return CartFragment(
-                listener
-            ).apply {
-
-            };
-        }
-    }
-
     interface CartCallBack {
         fun onCartDelete();
+        fun onBillSuccess();
     }
 }

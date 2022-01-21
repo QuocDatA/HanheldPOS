@@ -17,60 +17,19 @@
             name="discountType"
             type="com.hanheldpos.model.discount.DiscountApplyToType" />
     </data>
-
-    <ScrollView
-        style="@style/RootLayout"
-        android:fillViewport="true">
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <LinearLayout
-                android:id="@+id/layoutItems"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:visibility="@{discountType == DiscountApplyToType.ORDER_DISCOUNT_APPLY_TO ? View.GONE : View.VISIBLE}"
-                app:layout_constrainedHeight="true"
-                app:layout_constraintHeight_max="@dimen/_200sdp"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <com.diadiem.pos_components.PTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/_8sdp"
-                    android:layout_marginTop="@dimen/_14sdp"
-                    android:layout_marginBottom="@dimen/_5sdp"
-                    android:text="@string/apply_to"
-                    android:textAllCaps="true"
-                    app:useFontStyle="bold"
-                    app:useTextColor="color4"
-                    app:useTextHeader="h6" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/itemDiscountContainer"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:overScrollMode="never"
-                    android:paddingHorizontal="@dimen/_8sdp"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    tools:itemCount="3"
-                    tools:listitem="@layout/item_discount" />
-            </LinearLayout>
-
-
-            <LinearLayout
-                app:layout_constraintTop_toBottomOf="@id/layoutItems"
                 android:id="@+id/tabLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_8sdp"
                 android:layout_marginVertical="@dimen/_19sdp"
                 android:orientation="vertical"
-                >
+                app:layout_constraintTop_toTopOf="parent">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/tabDiscountType"
@@ -81,27 +40,21 @@
                     tools:itemCount="3"
                     tools:listitem="@layout/item_tab_discount_type" />
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:background="@color/color_6" />
+                <include layout="@layout/divider_vertical" />
             </LinearLayout>
 
             <androidx.viewpager2.widget.ViewPager2
-                app:layout_constraintHeight_min="@dimen/_200sdp"
                 android:id="@+id/discountFragmentContainer"
                 useInputEnable="@{false}"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_18sdp"
                 app:layout_constrainedHeight="true"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintHeight_min="wrap"
                 app:layout_constraintTop_toBottomOf="@id/tabLayout"
-                app:layout_constraintVertical_bias="1.0"
-                tools:layout_editor_absoluteX="-16dp" />
+                />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </ScrollView>
 
 
 </layout>

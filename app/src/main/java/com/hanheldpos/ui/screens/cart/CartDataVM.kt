@@ -4,9 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.hanheldpos.data.api.pojo.customer.CustomerResp
-import com.hanheldpos.data.api.pojo.order.settings.DiningOptionItem
+import com.hanheldpos.data.api.pojo.floor.FloorTable
+import com.hanheldpos.data.api.pojo.order.settings.DiningOption
 import com.hanheldpos.data.api.pojo.order.settings.Reason
-import com.hanheldpos.data.api.pojo.table.FloorTableItem
 import com.hanheldpos.extension.notifyValueChange
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.cart.*
@@ -23,7 +23,7 @@ class CartDataVM : BaseViewModel() {
 
     val cartModelLD: MutableLiveData<CartModel> = MutableLiveData();
 
-    val diningOptionLD: LiveData<DiningOptionItem> = Transformations.map(cartModelLD) {
+    val diningOptionLD: LiveData<DiningOption> = Transformations.map(cartModelLD) {
         return@map it?.diningOption ?: DataHelper.getDefaultDiningOptionItem()
     }
     val linePerTotalQuantity: LiveData<String> = Transformations.map(cartModelLD) {
@@ -35,11 +35,11 @@ class CartDataVM : BaseViewModel() {
         return@map it?.table?.PeopleQuantity;
     }
 
-    fun initCart(numberCustomer: Int, table: FloorTableItem) {
+    fun initCart(numberCustomer: Int, table: FloorTable) {
         cartModelLD.value = CartModel(
             table = TableSummary(
-                _id = table.id!!,
-                TableName = table.tableName!!,
+                _id = table._Id,
+                TableName = table.TableName,
                 PeopleQuantity = numberCustomer
             ),
             fees = DataHelper.findFeeOrderList() ?: mutableListOf(),
@@ -135,32 +135,19 @@ class CartDataVM : BaseViewModel() {
         cartModelLD.notifyValueChange();
     }
 
-    fun removeCompReason(productInCart: BaseProductInCart?) {
-        if (productInCart != null) {
-            productInCart.compReason = null;
-        }
-        else
+    fun removeCompReason() {
         cartModelLD.value!!.compReason = null;
         cartModelLD.notifyValueChange();
     }
 
-    fun addCompReason(reason: Reason,productInCart: BaseProductInCart?) {
-        if (productInCart != null) {
-            productInCart.compReason = reason;
-        }
-        else
+    fun addCompReason(reason: Reason) {
+
         this.cartModelLD.value!!.addCompReason(reason);
         cartModelLD.notifyValueChange();
     }
 
-    fun addDiscountUser(discount: DiscountUser,productInCart: BaseProductInCart?) {
-        if (productInCart != null) {
-            productInCart.discountUsersList = mutableListOf(discount);
-        }
-        else{
-            this.cartModelLD.value!!.addDiscountUser(discount);
-        }
-
+    fun addDiscountUser(discount: DiscountUser) {
+        this.cartModelLD.value!!.addDiscountUser(discount);
         cartModelLD.notifyValueChange();
     }
 

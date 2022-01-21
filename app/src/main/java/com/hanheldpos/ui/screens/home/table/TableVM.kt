@@ -2,10 +2,9 @@ package com.hanheldpos.ui.screens.home.table
 
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
-import com.hanheldpos.data.api.pojo.table.*
-import com.hanheldpos.data.api.pojo.table.getFloorList
-import com.hanheldpos.data.api.pojo.table.getFloorTableList
-import com.hanheldpos.data.api.pojo.table.getTableWithFloorGuid
+import com.hanheldpos.data.api.pojo.floor.Floor
+import com.hanheldpos.data.api.pojo.floor.FloorResp
+import com.hanheldpos.data.api.pojo.floor.FloorTable
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
 
@@ -18,33 +17,33 @@ class TableVM : BaseUiViewModel<TableUV>() {
     }
 
     // Value
-    private var tableResp: TableResp? = null;
-    private val floorList = MutableLiveData<MutableList<FloorItem?>>(mutableListOf());
-    val floorItemSelected = MutableLiveData<FloorItem>();
-    val floorTableList = MutableLiveData<MutableList<FloorTableItem?>>(mutableListOf());
+    private var floorResp: FloorResp? = null;
+    private val floorList = MutableLiveData<MutableList<Floor>>(mutableListOf());
+    val floorItemSelected = MutableLiveData<Floor>();
+    val floorTableList = MutableLiveData<MutableList<FloorTable>>(mutableListOf());
 
 
     fun initData() {
-        tableResp = DataHelper.tableResp
+        floorResp = DataHelper.floor
         initFloor();
         /*floorItemSelected.value = floorList.value?.firstOrNull();*/
     }
 
 
     private fun initFloor() {
-        floorList.value = tableResp?.getFloorList()?.toMutableList();
+        floorList.value = floorResp?.Floor?.toMutableList();
     }
 
 
-    fun getTableListByFloor(floorItem : FloorItem) : List<FloorTableItem?>?{
-        return tableResp?.getTableWithFloorGuid(floorGuid = floorItem.id);
+    fun getTableListByFloor(floorItem : Floor) : List<FloorTable>?{
+        return floorResp?.FloorTable?.filter { it.FloorGuid == floorItem._Id };
     }
 
-    fun getTableList() :List<FloorTableItem?>?{
-        return tableResp?.getFloorTableList();
+    fun getTableList() :List<FloorTable>?{
+        return floorResp?.FloorTable;
     }
 
-    fun onTableClick(item : FloorTableItem){
+    fun onTableClick(item : FloorTable){
 
     }
 }

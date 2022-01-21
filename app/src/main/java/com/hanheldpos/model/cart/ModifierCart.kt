@@ -2,7 +2,7 @@ package com.hanheldpos.model.cart
 
 import android.os.Parcelable
 import android.util.Log
-import com.hanheldpos.data.api.pojo.product.ProductItem
+import com.hanheldpos.data.api.pojo.product.Product
 import com.hanheldpos.model.product.ModPricingType
 import kotlinx.parcelize.Parcelize
 
@@ -21,14 +21,14 @@ data class ModifierCart(
         return discountValue;
     }
 
-    fun subTotal(productPricing: ProductItem): Double {
+    fun subTotal(productPricing: Product): Double {
         val subtotal = pricing(productPricing) * quantity;
         return subtotal;
     }
 
-    fun pricing(productPricing: ProductItem): Double {
-        val pricingType = productPricing.modifierPricingType ?: -1;
-        val pricingValue = productPricing.modifierPricingValue ?: 0.0;
+    fun pricing(productPricing: Product): Double {
+        val pricingType = productPricing.ModifierPricingType ?: -1;
+        val pricingValue = productPricing.ModifierPricingValue ?: 0.0;
         when (ModPricingType.fromInt(pricingType)) {
             ModPricingType.FIX_AMOUNT -> {
                 return pricingValue;

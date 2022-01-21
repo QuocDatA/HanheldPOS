@@ -43,7 +43,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="end"
                 android:gravity="center"
-                android:onClick="@{v -> viewModel.signIn()}"
+                android:onClick="@{v -> viewModel.signIn(v)}"
                 android:paddingTop="0dp"
                 android:paddingBottom="0dp"
                 android:paddingStart="@dimen/_18sdp"

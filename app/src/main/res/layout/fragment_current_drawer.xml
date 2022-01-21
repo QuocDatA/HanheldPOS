@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.hanheldpos.ui.screens.menu.option.report.current_drawer.CurrentDrawerVM" />
+
+        <import type="android.view.View" />
+    </data>
+
+    <LinearLayout
+        style="@style/RootLayout"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_42sdp">
+
+            <ImageButton
+                style="@style/MaterialButton.Icon"
+                android:layout_height="match_parent"
+                android:layout_gravity="center|start"
+                android:adjustViewBounds="true"
+                android:backgroundTint="@color/textPrimary"
+                android:onClick="@{v -> viewModel.backPress()}"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_baseline_arrow_back_ios_13"
+                tools:ignore="ContentDescription" />
+
+            <LinearLayout
+                style="@style/CartTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.diadiem.pos_components.PTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/current_drawer"
+                    app:useFontStyle="bold"
+                    app:useTextColor="color4"
+                    app:useTextHeader="h4" />
+
+                <androidx.legacy.widget.Space
+                    android:layout_width="@dimen/_5sdp"
+                    android:layout_height="wrap_content" />
+
+                <com.diadiem.pos_components.PTextView
+                    android:id="@+id/currentDrawerText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:useTextColor="color6"
+                    app:useTextHeader="h4"
+                    tools:text="(CashDrawer/1471)" />
+            </LinearLayout>
+        </FrameLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_1sdp"
+            android:background="@color/color_10" />
+
+        <ScrollView
+            android:fillViewport="true"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+            <LinearLayout
+                android:paddingVertical="@dimen/_17sdp"
+                android:paddingHorizontal="@dimen/_8sdp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/color_2"
+                android:orientation="vertical">
+
+                <com.diadiem.pos_components.PTextView
+                    style="@style/CartTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:text="@string/drawer_description"
+                    android:textAllCaps="true"
+                    app:useFontStyle="bold"
+                    app:useTextColor="color4"
+                    app:useTextHeader="h6" />
+
+                <com.diadiem.pos_components.PTextInputEditText
+                    android:id="@+id/noteInput"
+                    style="@style/BaseTextInput"
+                    android:layout_marginVertical="@dimen/_8sdp"
+                    android:background="@drawable/bg_outline"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:hint="@string/enter_description"
+                    android:inputType="text|textMultiLine"
+                    android:maxLines="4"
+
+                    android:minHeight="@dimen/_66sdp"
+                    android:paddingHorizontal="@dimen/_6sdp"
+                    android:paddingVertical="@dimen/_7sdp"
+                    app:ipt_useFontStyle="normal"
+                    app:ipt_useHintTextColor="color8"
+                    app:ipt_useTextColor="color4"
+                    app:ipt_useTextHeader="h5" />
+
+                <com.diadiem.pos_components.PTextView
+                    style="@style/CartTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:layout_marginTop="@dimen/_31sdp"
+                    android:text="@string/current_drawer"
+                    android:textAllCaps="true"
+                    app:useFontStyle="bold"
+                    app:useTextColor="color4"
+                    app:useTextHeader="h6" />
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/currentDrawerRecycle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false"
+                    android:orientation="vertical"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:itemCount="6"
+                    tools:listitem="@layout/item_current_drawer_info" />
+            </LinearLayout>
+        </ScrollView>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/color_2"
+            android:baselineAligned="false"
+            android:orientation="horizontal"
+            android:paddingHorizontal="@dimen/_8sdp"
+            android:paddingVertical="@dimen/_12sdp">
+
+            <LinearLayout
+                android:id="@+id/btnEndDrawer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/_3sdp"
+                android:layout_weight="1"
+                android:background="@color/color_11"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                android:gravity="center"
+                android:onClick="@{(v)-> viewModel.onOpenEndDrawer()}"
+                android:orientation="horizontal"
+                android:padding="@dimen/_10sdp">
+
+                <com.diadiem.pos_components.PTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/end_drawer"
+                    app:useFontStyle="bold"
+                    app:useTextColor="color0"
+                    app:useTextHeader="h5" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/btnPayInOut"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_3sdp"
+                android:layout_weight="1"
+                android:background="@color/color_11"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                android:gravity="center"
+                android:onClick="@{(v)-> viewModel.onOpenPayInPayOut()}"
+                android:orientation="horizontal"
+                android:padding="@dimen/_10sdp">
+
+                <com.diadiem.pos_components.PTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/pay_in_out"
+                    app:useFontStyle="bold"
+                    app:useTextColor="color0"
+                    app:useTextHeader="h5" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</layout>

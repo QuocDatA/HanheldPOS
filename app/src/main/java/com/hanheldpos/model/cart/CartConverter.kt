@@ -21,11 +21,11 @@ object CartConverter {
         val total = cart.total();
         val totalCompVoid = cart.totalComp();
         val totalDisc = cart.totalDiscount(subTotal);
-        val totalService = cart.fees.firstOrNull { fee -> fee.feeType == FeeType.ServiceFee }
+        val totalService = cart.fees.firstOrNull { fee -> fee.FeeTypeId == FeeType.ServiceFee }
             ?.price(subTotal, totalDisc);
-        val totalSurcharge = cart.fees.firstOrNull { fee -> fee.feeType == FeeType.SurchargeFee }
+        val totalSurcharge = cart.fees.firstOrNull { fee -> fee.FeeTypeId == FeeType.SurchargeFee }
             ?.price(subTotal, totalDisc);
-        val totalTaxe = cart.fees.firstOrNull { fee -> fee.feeType == FeeType.TaxFee }
+        val totalTaxes = cart.fees.firstOrNull { fee -> fee.FeeTypeId == FeeType.TaxFee }
             ?.price(subTotal, totalDisc);
 
         val totalFees = cart.totalFee(subTotal, totalDisc);
@@ -36,7 +36,7 @@ object CartConverter {
 
         // TODO : save temp order to local
         cart.createDate =
-            DateTimeHelper.dateToString(Date(), DateTimeHelper.Format.FULL_DATE_UTC_Z);
+            DateTimeHelper.dateToString(Date(), DateTimeHelper.Format.FULL_DATE_UTC_TIMEZONE);
 
         return OrderModel(
             Order = Order(
@@ -46,19 +46,19 @@ object CartConverter {
                 EmployeeGuid = UserHelper.getEmployeeGuid(),
                 LocationGuid = UserHelper.getLocationGui(),
                 DeviceGuid = UserHelper.getDeviceGui(),
-                DiningOptionId = cart.diningOption.id,
+                DiningOptionId = cart.diningOption.Id,
                 CreateDate = cart.createDate,
                 Code = cart.orderCode,
                 MenuLocationGuid = cart.menuLocationGuid,
                 CurrencySymbol = DataHelper.getCurrencySymbol()!!,
-                CashDrawer_id = DataHelper.CurrentDrawer_id,
+                CashDrawer_id = DataHelper.currentDrawerId,
             ),
             OrderDetail = OrderDetail(
                 DiningOption = OrderDiningOption(
-                    Id = cart.diningOption.id ?: 0,
-                    TypeId = cart.diningOption.typeId ?: 0,
-                    Title = cart.diningOption.title,
-                    Acronymn = cart.diningOption.acronymn
+                    Id = cart.diningOption.Id ?: 0,
+                    TypeId = cart.diningOption.TypeId ?: 0,
+                    Title = cart.diningOption.Title,
+                    Acronymn = cart.diningOption.Acronymn
                 ),
                 DeliveryTime = cart.deliveryTime,
                 TableList = mutableListOf(cart.table),
@@ -99,7 +99,7 @@ object CartConverter {
                     totalDisc = totalDisc,
                     totalService = totalService,
                     totalSurcharge = totalSurcharge,
-                    totalTaxe = totalTaxe,
+                    totalTaxe = totalTaxes,
                     note = cart.note,
                     otherFee = totalFees,
                     paymentList = cart.paymentsList
@@ -112,8 +112,8 @@ object CartConverter {
                 Description = description,
                 GrandTotal = total,
                 TableId = cart.table._id,
-                DiningOptionId = cart.diningOption.id,
-                DiningOptionName = cart.diningOption.title,
+                DiningOptionId = cart.diningOption.Id,
+                DiningOptionName = cart.diningOption.Title,
                 TableName = cart.table.TableName,
                 CreateDate = cart.createDate!!
             )
@@ -216,14 +216,14 @@ object CartConverter {
         subtotal: Double?,
         totalDiscounts: Double?
     ): List<OrderFee> {
-        return fees.filter { f -> f.feeType == feeType }
+        return fees.filter { f -> f.FeeTypeId == feeType }
             .map { fee -> OrderFee(fee, subtotal ?: 0.0, totalDiscounts ?: 0.0) }
     }
 
     private fun toOrderCompVoidList(reason: Reason?, totalPrice: Double?): List<CompVoid> {
         val compVoids = mutableListOf<CompVoid>();
         reason ?: return compVoids;
-        val parentId = DataHelper.getVoidInfo()?.id;
+        val parentId = DataHelper.getVoidInfo()?.Id;
         val compVoid = CompVoid(reason, parentId, totalPrice);
         compVoids.add(compVoid);
         return compVoids;

@@ -1,24 +1,28 @@
 package com.hanheldpos.ui.screens.home.table.adapter
 
 
-import com.hanheldpos.data.api.pojo.table.FloorTableItem
+import com.hanheldpos.data.api.pojo.floor.FloorTable
 import com.hanheldpos.model.home.table.TableModeViewType
+import com.hanheldpos.model.home.table.TableStatusType
 import com.hanheldpos.ui.screens.home.order.adapter.OrderProductAdapterHelper
 
 
 class TableAdapterHelper(private val callback: AdapterCallBack) {
 
     interface AdapterCallBack {
-        fun onListSplitCallBack(list: List<FloorTableItem?>)
+        fun onListSplitCallBack(list: List<FloorTable>)
     }
 
     private var currentIndex: Int = 1;
 
-    private var list: MutableList<FloorTableItem?> = mutableListOf();
-    private var listOfTablePage: MutableList<List<FloorTableItem?>> = mutableListOf();
+    private var list: MutableList<FloorTable> = mutableListOf();
+    private var listOfTablePage: MutableList<List<FloorTable>> = mutableListOf();
 
-    fun submitList(list: MutableList<FloorTableItem?>) {
-        this.list = list;
+    fun submitList(list: MutableList<FloorTable>) {
+        this.list = list.onEach {
+            it.uiType =  TableModeViewType.Table
+            it.tableStatus = TableStatusType.Available
+        }
         currentIndex = 1;
         listOfTablePage.clear()
         var sizeOfMainList: Int = this.list.size
@@ -56,20 +60,20 @@ class TableAdapterHelper(private val callback: AdapterCallBack) {
 
     }
 
-    private fun split(pagePosition: Int): MutableList<FloorTableItem> {
-        val rs: MutableList<FloorTableItem> = mutableListOf();
+    private fun split(pagePosition: Int): MutableList<FloorTable> {
+        val rs: MutableList<FloorTable> = mutableListOf();
         list.let {
             if (it.size != 0) {
                 val start: Int = (pagePosition - 1) * maxItemViewProduct;
                 val end: Int =
                     if (it.size > maxItemViewProduct * pagePosition) maxItemViewProduct * pagePosition else it.size;
-                rs.addAll(it.toList().subList(start, end) as List<FloorTableItem>);
+                rs.addAll(it.toList().subList(start, end) as List<FloorTable>);
             }
         }
 
         // Add Empty
         for (i in rs.size until maxItemViewProduct) {
-            rs.add(FloorTableItem().apply {
+            rs.add( FloorTable("","",0.0,0.0,0,0,"","",0,0.0,"",0,0.0,"",0,"").apply {
                 uiType = TableModeViewType.Empty;
             })
         }
@@ -90,10 +94,10 @@ class TableAdapterHelper(private val callback: AdapterCallBack) {
             * 1 : Enable
             * 2 : Disable
             * */
-            FloorTableItem().apply {
+            FloorTable("","",0.0,0.0,0,0,"","",0,0.0,"",0,0.0,"",0,"").apply {
                 uiType = prevButtonType
             },
-            FloorTableItem().apply {
+            FloorTable("","",0.0,0.0,0,0,"","",0,0.0,"",0,0.0,"",0,"").apply {
                 uiType = nextButtonType
             } )
         )

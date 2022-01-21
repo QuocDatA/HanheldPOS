@@ -3,13 +3,8 @@ package com.hanheldpos.ui.screens.product.temporary_style.adapter
 import androidx.recyclerview.widget.DiffUtil
 import com.hanheldpos.R
 import com.hanheldpos.databinding.ItemTemporaryCookOptionBinding
-import com.hanheldpos.databinding.ItemTemporaryModifierBinding
-import com.hanheldpos.databinding.ItemTemporaryVariantBinding
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
-import com.hanheldpos.ui.screens.cart.adapter.CartDiscountAdapter
-import com.hanheldpos.ui.screens.cart.customer.adapter.CustomerAdapter
-import com.hanheldpos.ui.screens.combo.adapter.ComboItemPickerAdapter
 
 class TemporaryModifierTwoAdapter : BaseBindingListAdapter<String>(DiffCallBack()) {
 

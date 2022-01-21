@@ -41,36 +41,35 @@
                 android:layout_height="wrap_content"
                 android:text="@string/add_discount" />
         </FrameLayout>
-
-        <androidx.legacy.widget.Space
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/_5sdp" />
-
+        <include layout="@layout/divider_vertical"/>
         <LinearLayout
             android:background="@color/color_2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-            <com.google.android.material.tabs.TabLayout
-                android:id="@+id/tabLayout"
-                app:tabGravity="fill"
-                app:tabMaxWidth="0dp"
-                app:tabMode="fixed"
-                app:tabSelectedTextColor="@color/color_4"
-                app:tabTextAppearance="@style/TabTitleStyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-            <include
-                layout="@layout/divider_vertical"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_1sdp" />
 
-            <androidx.viewpager2.widget.ViewPager2
-                android:id="@+id/fragmentContainer"
-                useInputEnable="@{false}"
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/fragment_container"
                 android:layout_width="match_parent"
+                android:layout_weight="1"
                 android:layout_height="0dp"
-                android:layout_weight="1"/>
+                />
+            <com.diadiem.pos_components.PMaterialButton
+                android:layout_margin="@dimen/_9sdp"
+                android:id="@+id/btnSave"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_9sdp"
+                android:background="@color/color_0"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                android:gravity="center"
+                android:padding="@dimen/_5sdp"
+                android:text="@string/save"
+                app:pbtn_useFontStyle="bold"
+                app:pbtn_useTextColor="color2"
+                app:pbtn_useTextHeader="h5" />
         </LinearLayout>
     </LinearLayout>
 </layout>

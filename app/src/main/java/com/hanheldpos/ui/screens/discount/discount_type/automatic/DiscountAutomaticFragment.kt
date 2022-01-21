@@ -1,10 +1,12 @@
 package com.hanheldpos.ui.screens.discount.discount_type.automatic
 
+import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.MutableLiveData
 import com.hanheldpos.R
-import com.hanheldpos.data.api.pojo.discount.DiscountItem
+import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.databinding.FragmentDiscountAutomaticBinding
 import com.hanheldpos.model.cart.CartModel
+import com.hanheldpos.model.discount.DiscountTypeFor
 import com.hanheldpos.model.product.BaseProductInCart
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
@@ -37,9 +39,15 @@ class DiscountAutomaticFragment(private val cart: CartModel?) :
     }
 
     override fun initView() {
+        setFragmentResultListener("saveDiscount") { _, bundle ->
+            if (bundle.getSerializable("DiscountTypeFor") == DiscountTypeFor.AUTOMATIC) {
+
+            }
+
+        }
         discountCodeAdapter =
-            DiscountCodeAdapter(listener = object : BaseItemClickListener<DiscountItem> {
-                override fun onItemClick(adapterPosition: Int, item: DiscountItem) {
+            DiscountCodeAdapter(listener = object : BaseItemClickListener<DiscountResp> {
+                override fun onItemClick(adapterPosition: Int, item: DiscountResp) {
 
                 }
             });
@@ -59,13 +67,17 @@ class DiscountAutomaticFragment(private val cart: CartModel?) :
 
     }
 
-    override fun loadDataDiscountCode(list: List<DiscountItem>) {
+    override fun loadDataDiscountCode(list: List<DiscountResp>) {
         discountCodeAdapter.submitList(list);
         discountCodeAdapter.notifyDataSetChanged();
     }
 
     fun onItemSelectChange(item: BaseProductInCart?) {
         itemSelected.postValue(item);
+    }
+
+    override fun onResume() {
+        super.onResume()
     }
 
 }

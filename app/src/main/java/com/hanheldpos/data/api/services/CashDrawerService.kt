@@ -1,15 +1,13 @@
 package com.hanheldpos.data.api.services
 
 import com.hanheldpos.data.api.pojo.cashdrawer.CashDrawerStatusResp
-import com.hanheldpos.data.api.pojo.cashdrawer.CreateCashDrawer
 import com.hanheldpos.data.api.pojo.cashdrawer.CreateCashDrawerResp
-import com.hanheldpos.data.api.pojo.customer.CustomerSearchResp
-import com.hanheldpos.model.cashdrawer.CreateCashDrawerReq
+import com.hanheldpos.data.api.pojo.cashdrawer.report.ReportCashDrawerResp
+import com.hanheldpos.data.repository.BaseResponse
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.Headers
 import retrofit2.http.POST
-import retrofit2.http.Query
 
 interface CashDrawerService {
     @POST("Orders/CashDrawer/check")
@@ -17,12 +15,19 @@ interface CashDrawerService {
         "Content-Type: application/json")
     fun getStatusCashDrawer(
         @Body body: String,
-    ): Call<CashDrawerStatusResp>
+    ): Call<BaseResponse<List<CashDrawerStatusResp>>?>
 
     @POST("Orders/CashDrawer")
     @Headers("Accept: text/plain",
         "Content-Type: application/json")
     fun postCreateCashDrawer(
         @Body body: String,
-    ): Call<CreateCashDrawerResp>
+    ): Call<BaseResponse<List<CreateCashDrawerResp>>?>
+
+    @POST("Orders/CashDrawer/Report")
+    @Headers("Accept: text/plain",
+        "Content-Type: application/json")
+    fun getReportCurrentDrawer(
+        @Body body: String,
+    ): Call<BaseResponse<List<ReportCashDrawerResp>>?>
 }

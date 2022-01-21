@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="item"
+            type="com.hanheldpos.data.api.pojo.product.VariantsGroup.OptionValueVariantsGroup" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.diadiem.pos_components.PRadioButton
+            android:gravity="center_vertical"
+            style="@style/RadioCustom"
+            android:id="@+id/btnProductItem"
+            android:text="@{item.value}"
+            tools:text="BBQ sauce"
+            android:paddingHorizontal="@dimen/_10sdp"
+            android:paddingVertical="@dimen/_10sdp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+</layout>

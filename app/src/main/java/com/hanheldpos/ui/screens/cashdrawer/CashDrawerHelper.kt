@@ -12,7 +12,7 @@ import com.hanheldpos.R
 
 object CashDrawerHelper {
     var isStartDrawer : Boolean = false;
-
+    var isEndDrawer: Boolean = false
 
     fun showDrawerNotification(activity: Activity, isOnStarting: Boolean = true) {
         val builder = AlertDialog.Builder(activity)
@@ -28,6 +28,8 @@ object CashDrawerHelper {
         val close =
             notificationView.findViewById<View>(if (isOnStarting) R.id.btn_close_notification else R.id.btn_start_again)
         close.setOnClickListener {
+            isStartDrawer = false;
+            isEndDrawer = false;
             alert.dismiss()
         }
 

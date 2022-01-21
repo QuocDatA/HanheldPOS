@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.hanheldpos.ui.screens.menu.option.report.current_drawer.payin_payout.PayInPayOutVM" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            style="@style/RootLayout"
+            android:background="@color/color_2"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_42sdp">
+
+                <ImageButton
+                    style="@style/MaterialButton.Icon"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center|start"
+                    android:adjustViewBounds="true"
+                    android:backgroundTint="@color/textPrimary"
+                    android:onClick="@{v -> viewModel.backPress()}"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_baseline_arrow_back_ios_13"
+                    tools:ignore="ContentDescription" />
+
+                <LinearLayout
+                    style="@style/CartTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <com.diadiem.pos_components.PTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/pay_in_out"
+                        app:useFontStyle="bold"
+                        app:useTextColor="color4"
+                        app:useTextHeader="h4" />
+                </LinearLayout>
+            </FrameLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_1sdp"
+                android:background="@color/color_10" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_8sdp"
+                android:layout_marginTop="@dimen/_14sdp"
+                android:orientation="vertical">
+
+                <com.diadiem.pos_components.PTextView
+                    style="@style/CartTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:text="@string/actual_amount"
+                    android:textAllCaps="true"
+                    app:useFontStyle="bold"
+                    app:useTextColor="color4"
+                    app:useTextHeader="h6" />
+
+                <com.diadiem.pos_components.PTextInputEditText
+                    android:id="@+id/amountInput"
+                    style="@style/BaseTextInput"
+                    android:layout_marginVertical="@dimen/_8sdp"
+                    android:background="@drawable/bg_outline"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:hint="@string/enter_amount"
+                    android:inputType="number"
+                    android:maxLines="1"
+                    android:text="@={viewModel.amountString}"
+
+                    android:minHeight="@dimen/_33sdp"
+                    android:paddingHorizontal="@dimen/_6sdp"
+                    android:paddingVertical="@dimen/_7sdp"
+                    app:ipt_useFontStyle="normal"
+                    app:ipt_useHintTextColor="color8"
+                    app:ipt_useTextColor="color4"
+                    app:ipt_useTextHeader="h5" />
+
+                <com.diadiem.pos_components.PTextView
+                    style="@style/CartTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:text="@string/description"
+                    android:textAllCaps="true"
+                    app:useFontStyle="bold"
+                    app:useTextColor="color4"
+                    app:useTextHeader="h6" />
+
+                <com.diadiem.pos_components.PTextInputEditText
+                    android:id="@+id/noteInput"
+                    style="@style/BaseTextInput"
+                    android:layout_marginVertical="@dimen/_8sdp"
+                    android:background="@drawable/bg_outline"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:hint="@string/enter_description"
+                    android:inputType="text|textMultiLine"
+                    android:text="@={viewModel.description}"
+                    android:minHeight="@dimen/_66sdp"
+                    android:paddingHorizontal="@dimen/_6sdp"
+                    android:paddingVertical="@dimen/_7sdp"
+                    app:ipt_useFontStyle="normal"
+                    app:ipt_useHintTextColor="color8"
+                    app:ipt_useTextColor="color4"
+                    app:ipt_useTextHeader="h5" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_8sdp"
+                android:layout_marginTop="@dimen/_14sdp"
+                android:orientation="vertical">
+
+                <com.diadiem.pos_components.PTextView
+                    style="@style/CartTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:layout_marginBottom="@dimen/_11sdp"
+                    android:text="@string/paid_in_out"
+                    android:textAllCaps="true"
+                    app:useFontStyle="bold"
+                    app:useTextColor="color4"
+                    app:useTextHeader="h6" />
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_1sdp"
+                    android:layout_gravity="top"
+                    android:background="@color/color_10" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <com.diadiem.pos_components.PTextView
+                        style="@style/CartTitle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start"
+                        android:layout_weight="1"
+                        android:paddingVertical="@dimen/_11sdp"
+                        android:text="@string/total_paid_in_out"
+                        app:useFontStyle="normal"
+                        app:useTextColor="color4"
+                        app:useTextHeader="h5" />
+
+                    <com.diadiem.pos_components.PTextView
+                        style="@style/CartTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start"
+                        android:layout_marginEnd="@dimen/_8sdp"
+                        android:paddingVertical="@dimen/_11sdp"
+                        android:text="0"
+                        app:useFontStyle="normal"
+                        app:useTextColor="color4"
+                        app:useTextHeader="h5" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_1sdp"
+                    android:layout_gravity="top"
+                    android:background="@color/color_10" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginHorizontal="@dimen/_8sdp"
+            android:layout_marginBottom="@dimen/_12sdp"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/btnEndDrawer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/_3sdp"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="@{ viewModel.isValid ? android.R.attr.selectableItemBackground : @android:color/transparent }"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="@dimen/_10sdp">
+
+                <com.diadiem.pos_components.PTextView
+                    android:id="@+id/textBtnEndDrawer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/pay_in"
+                    app:useFontStyle="bold"
+                    app:useTextHeader="h5" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/btnPayInOut"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_3sdp"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="@{ viewModel.isValid ? android.R.attr.selectableItemBackground : @android:color/transparent }"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="@dimen/_10sdp">
+
+                <com.diadiem.pos_components.PTextView
+                    android:id="@+id/textBtnPayInOut"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/pay_out"
+                    app:useFontStyle="bold"
+                    app:useTextHeader="h5" />
+            </LinearLayout>
+        </LinearLayout>
+
+    </RelativeLayout>
+</layout>

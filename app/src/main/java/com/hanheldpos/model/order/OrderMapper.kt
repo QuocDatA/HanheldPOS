@@ -1,9 +1,8 @@
 package com.hanheldpos.model.order
 
 import com.hanheldpos.data.api.pojo.fee.Fee
-import com.hanheldpos.data.api.pojo.order.menu.getProductImage
 import com.hanheldpos.data.api.pojo.order.settings.Reason
-import com.hanheldpos.data.api.pojo.product.ProductItem
+import com.hanheldpos.data.api.pojo.product.Product
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.cart.Combo
 import com.hanheldpos.model.cart.GroupBundle
@@ -22,7 +21,7 @@ object OrderMapper : OrderMapping() {
         subtotal: Double?,
         totalDiscounts: Double?
     ): List<OrderFee> {
-        return fees.filter { f -> f.feeType == feeType }
+        return fees.filter { f -> f.FeeTypeId == feeType }
             .map { fee -> iMapperFee(fee, subtotal ?: 0.0, totalDiscounts ?: 0.0) }
     }
 
@@ -55,7 +54,7 @@ object OrderMapper : OrderMapping() {
     fun mappingCompVoidList(reason: Reason?, totalPrice: Double?): List<CompVoid> {
         val compVoids = mutableListOf<CompVoid>();
         reason ?: return compVoids;
-        val parentId = DataHelper.getVoidInfo()?.id;
+        val parentId = DataHelper.getVoidInfo()?.Id;
         val compVoid = iMapperCompVoid(reason, parentId, totalPrice);
         compVoids.add(compVoid);
         return compVoids;
@@ -63,7 +62,7 @@ object OrderMapper : OrderMapping() {
 
     fun mappingModifierList(
         modifierCarts: List<ModifierCart>,
-        proOriginal: ProductItem
+        proOriginal: Product
     ): List<OrderModifier> {
         val modifierOrders = mutableListOf<OrderModifier>()
 
@@ -72,8 +71,8 @@ object OrderMapper : OrderMapping() {
 
             var modifier = iMapperModifier(
                 modifierCart,
-                proOriginal.pricingMethodType,
-                proOriginal.modifierPricingValue,
+                proOriginal.PricingMethodType,
+                proOriginal.ModifierPricingValue,
                 pricingPrice
             );
             modifierOrders.add(modifier);
@@ -87,48 +86,44 @@ object OrderMapper : OrderMapping() {
         quantity: Int,
         parentName: String? = null
     ): ProductBuy {
-        var modSubtotal = regular.modSubTotal(regular.proOriginal!!);
-        var totalModifier = modSubtotal * regular.quantity!!;
-        var proModSubtotal = regular.priceOverride!! + modSubtotal;
-        var subtotal = regular.subTotal(regular.proOriginal!!);
-        var lineTotal = regular.total(regular.proOriginal!!);
-        var totalPrice = regular.totalPrice();
+        val modSubtotal = regular.modSubTotal(regular.proOriginal!!);
+        val totalModifier = modSubtotal * regular.quantity!!;
+        val proModSubtotal = regular.priceOverride!! + modSubtotal;
+        val subtotal = regular.subTotal(regular.proOriginal!!);
+        val lineTotal = regular.total(regular.proOriginal!!);
+        val totalPrice = regular.totalPrice();
 
-        var url = DataHelper.orderMenuResp?.getProductImage()?.firstOrNull { p ->
-            p?.productGuid
-                .equals(regular.proOriginal?.id)
-        }?.url;
 
-        var totalDiscount = regular.totalDiscount(regular.proOriginal!!);
-        var totalCompVoid = regular.totalComp(regular.proOriginal!!);
-        var totalService = regular.fees?.firstOrNull { fee -> fee.feeType == FeeType.ServiceFee }
+        val totalDiscount = regular.totalDiscount(regular.proOriginal!!);
+        val totalCompVoid = regular.totalComp(regular.proOriginal!!);
+        val totalService = regular.fees?.firstOrNull { fee -> fee.FeeTypeId == FeeType.ServiceFee }
             ?.price(subtotal, totalDiscount);
-        var totalSurcharge =
-            regular.fees?.firstOrNull { fee -> fee.feeType == FeeType.SurchargeFee }
+        val totalSurcharge =
+            regular.fees?.firstOrNull { fee -> fee.FeeTypeId == FeeType.SurchargeFee }
                 ?.price(subtotal, totalDiscount);
-        var totalTax = regular.fees?.firstOrNull { fee -> fee.feeType == FeeType.TaxFee }
+        val totalTax = regular.fees?.firstOrNull { fee -> fee.FeeTypeId == FeeType.TaxFee }
             ?.price(subtotal, totalDiscount);
 
-        var totalFee = regular.totalFee(subtotal, totalDiscount);
-        var grossPrice = regular.grossPrice(subtotal, totalFee);
+        val totalFee = regular.totalFee(subtotal, totalDiscount);
+        val grossPrice = regular.grossPrice(subtotal, totalFee);
 
-        var modifierList = mappingModifierList(regular.modifierList, regular.proOriginal!!);
-        var compVoidList = mappingCompVoidList(regular.compReason, totalCompVoid);
-        var discountList = mappingDiscountList(
+        val modifierList = mappingModifierList(regular.modifierList, regular.proOriginal!!);
+        val compVoidList = mappingCompVoidList(regular.compReason, totalCompVoid);
+        val discountList = mappingDiscountList(
             regular.discountServersList,
             regular.discountUsersList,
             totalPrice,
             totalModifier,
-            regular.proOriginal!!.id,
+            regular.proOriginal!!._id,
             regular.quantity
         );
-        var surchargeFeeList = mappingFeeList(
+        val surchargeFeeList = mappingFeeList(
             regular.fees ?: mutableListOf(),
             FeeType.SurchargeFee,
             subtotal,
             totalDiscount
         );
-        var serviceFeeList = mappingFeeList(
+        val serviceFeeList = mappingFeeList(
             regular.fees ?: mutableListOf(),
             FeeType.ServiceFee,
             subtotal,
@@ -144,9 +139,9 @@ object OrderMapper : OrderMapping() {
         return iMapperProductBuy(
             regular,
             indexOfList,
-            regular.proOriginal!!.name,
-            regular.proOriginal!!.name3,
-            regular.proOriginal!!.id,
+            regular.proOriginal!!.Name,
+            regular.proOriginal!!.Name3,
+            regular.proOriginal!!._id,
             regular.priceOverride,
             quantity,
             totalDiscount,
@@ -154,13 +149,13 @@ object OrderMapper : OrderMapping() {
             totalSurcharge,
             totalTax,
             totalModifier,
-            regular.proOriginal!!.pricingMethodType,
+            regular.proOriginal!!.PricingMethodType,
             subtotal,
             totalPrice,
             lineTotal,
             grossPrice,
             ProductType.REGULAR,
-            url,
+            null,
             modifierList,
             compVoidList,
             discountList,
@@ -175,38 +170,66 @@ object OrderMapper : OrderMapping() {
         );
     }
 
-    fun mappingSubProductBuyBundle(regular :Regular, proOriginalCombo :ProductItem, group : GroupBundle, index : Int,  orderDetailId : Int) :ProductBuy {
-        var parentName = DataHelper.findGroupNameOrderMenu(group.comboInfo.comboGuid!!);
-        var url = DataHelper.orderMenuResp?.getProductImage()?.firstOrNull { p ->
-            p?.productGuid
-                .equals(regular.proOriginal?.id)
-        }?.url;
+    fun mappingSubProductBuyBundle(
+        regular: Regular,
+        proOriginalCombo: Product,
+        group: GroupBundle,
+        index: Int,
+        orderDetailId: Int
+    ): ProductBuy {
+        val parentName = DataHelper.findGroupNameOrderMenu(group.comboInfo.ComboGuid!!);
+        val url = null;
+        val modSubtotal = regular.modSubTotal(proOriginalCombo);
+        val groupPrice = regular.groupPrice(group, proOriginalCombo);
+        val totalPrice = groupPrice * regular.quantity!!;
+        val modifierList = mappingModifierList(regular.modifierList, proOriginalCombo);
+        val totalModifier = modSubtotal * regular.quantity!!;
+        val subtotal = totalPrice + totalModifier;
+        val proModSubtotal = groupPrice + modSubtotal;
 
-        var modSubtotal = regular.modSubTotal(proOriginalCombo);
-        var groupPrice = regular.groupPrice(group, proOriginalCombo);
-        var totalPrice = groupPrice * regular.quantity!!;
-        var modifierList = mappingModifierList(regular.modifierList, proOriginalCombo);
-        var totalModifier = modSubtotal * regular.quantity!!;
-        var subtotal = totalPrice + totalModifier;
-        var proModSubtotal = groupPrice + modSubtotal;
-
-        return iMapperProductBuy(regular, orderDetailId, regular.proOriginal!!.name, regular.proOriginal!!.name3, regular.proOriginal!!.id, groupPrice, regular.quantity!!, 0.0,
-            0.0, 0.0, 0.0, totalModifier, null, subtotal, totalPrice, subtotal, 0.0, ProductType.REGULAR,
-            url, modifierList, null, null, null, null, null, parentName, group.comboInfo.comboGuid, 0.0, proModSubtotal, modSubtotal);
+        return iMapperProductBuy(
+            regular,
+            orderDetailId,
+            regular.proOriginal!!.Name,
+            regular.proOriginal!!.Name3,
+            regular.proOriginal!!._id,
+            groupPrice,
+            regular.quantity!!,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            totalModifier,
+            null,
+            subtotal,
+            totalPrice,
+            subtotal,
+            0.0,
+            ProductType.REGULAR,
+            url,
+            modifierList,
+            null,
+            null,
+            null,
+            null,
+            null,
+            parentName,
+            group.comboInfo.ComboGuid,
+            0.0,
+            proModSubtotal,
+            modSubtotal
+        );
     }
 
     fun mappingProductBuy(bundle: Combo, indexOfList: Int, parentName: String? = null): ProductBuy {
-        var proChooseList = mutableListOf<ProductBuy>();
+        val proChooseList = mutableListOf<ProductBuy>();
 
-        var totalModifier = bundle.totalModifier();
-        var subtotal = bundle.subTotal();
-        var lineTotal = bundle.total();
+        val totalModifier = bundle.totalModifier();
+        val subtotal = bundle.subTotal();
+        val lineTotal = bundle.total();
 
-        var totalCompVoid = bundle.totalComp();
-        var url = DataHelper.orderMenuResp?.getProductImage()?.firstOrNull { p ->
-            p?.productGuid
-                .equals(bundle.proOriginal?.id)
-        }?.url;
+        val totalCompVoid = bundle.totalComp();
+        val url = null;
 
         var orderDetailId = 0;
         bundle.groupList.forEachIndexed { index, groupBundle ->
@@ -225,43 +248,49 @@ object OrderMapper : OrderMapping() {
         }
 
 
-        val totalProductChoosedList = proChooseList.sumOf { pro -> pro.LineTotal?: 0.0 };
-        val proModSubtotal = bundle.priceOverride!! + totalProductChoosedList;
+        val totalProductChosenList = proChooseList.sumOf { pro -> pro.LineTotal ?: 0.0 };
+        val proModSubtotal = bundle.priceOverride!! + totalProductChosenList;
         val totalPrice = proModSubtotal * bundle.quantity!!;
 
         val totalDiscount = bundle.totalDiscount();
-        val totalService = bundle.fees?.firstOrNull { fee -> fee.feeType == FeeType.ServiceFee }
+        val totalService = bundle.fees?.firstOrNull { fee -> fee.FeeTypeId == FeeType.ServiceFee }
             ?.price(subtotal, totalDiscount);
         val totalSurcharge =
-            bundle.fees?.firstOrNull { fee -> fee.feeType == FeeType.SurchargeFee }
+            bundle.fees?.firstOrNull { fee -> fee.FeeTypeId == FeeType.SurchargeFee }
                 ?.price(subtotal, totalDiscount);
-        val totalTax = bundle.fees?.firstOrNull { fee -> fee.feeType == FeeType.TaxFee }
+        val totalTax = bundle.fees?.firstOrNull { fee -> fee.FeeTypeId == FeeType.TaxFee }
             ?.price(subtotal, totalDiscount);
         val totalFee = bundle.totalFee(subtotal, totalDiscount);
         val grossPrice = bundle.grossPrice(subtotal, totalFee);
 
-        val DiscountList = mappingDiscountList(
+        val discountList = mappingDiscountList(
             bundle.discountServersList,
             bundle.discountUsersList,
-            totalPrice ?: 0.0, totalModifier, bundle.proOriginal!!.id, bundle.quantity);
-        val CompVoidList = mappingCompVoidList(bundle.compReason, totalCompVoid);
-        val ServiceFeeList =
-            mappingFeeList(bundle.fees?: mutableListOf(), FeeType.ServiceFee, subtotal, totalDiscount);
-        val TaxesFeeList =
-            mappingFeeList(bundle.fees?: mutableListOf(), FeeType.TaxFee, subtotal, totalDiscount);
-        val SurchargeFeeList = mappingFeeList(
-            bundle.fees?: mutableListOf(),
+            totalPrice ?: 0.0, totalModifier, bundle.proOriginal!!._id, bundle.quantity
+        );
+        val compVoidList = mappingCompVoidList(bundle.compReason, totalCompVoid);
+        val serviceFeeList =
+            mappingFeeList(
+                bundle.fees ?: mutableListOf(),
+                FeeType.ServiceFee,
+                subtotal,
+                totalDiscount
+            );
+        val taxesFeeList =
+            mappingFeeList(bundle.fees ?: mutableListOf(), FeeType.TaxFee, subtotal, totalDiscount);
+        val surchargeFeeList = mappingFeeList(
+            bundle.fees ?: mutableListOf(),
             FeeType.SurchargeFee,
             subtotal,
             totalDiscount
         );
 
-        var proBuy = iMapperProductBuy(
+        val proBuy = iMapperProductBuy(
             bundle,
             indexOfList,
-            bundle.proOriginal!!.name,
-            bundle.proOriginal!!.name3,
-            bundle.proOriginal!!.id,
+            bundle.proOriginal!!.Name,
+            bundle.proOriginal!!.Name3,
+            bundle.proOriginal!!._id,
             bundle.priceOverride,
             bundle.quantity!!,
             totalDiscount,
@@ -269,7 +298,7 @@ object OrderMapper : OrderMapping() {
             totalSurcharge,
             totalTax,
             totalModifier,
-            bundle.proOriginal!!.pricingMethodType,
+            bundle.proOriginal!!.PricingMethodType,
             subtotal,
             totalPrice,
             lineTotal,
@@ -277,11 +306,11 @@ object OrderMapper : OrderMapping() {
             ProductType.BUNDLE,
             url,
             null,
-            CompVoidList,
-            DiscountList,
-            ServiceFeeList,
-            SurchargeFeeList,
-            TaxesFeeList,
+            compVoidList,
+            discountList,
+            serviceFeeList,
+            surchargeFeeList,
+            taxesFeeList,
             parentName,
             null,
             totalFee,

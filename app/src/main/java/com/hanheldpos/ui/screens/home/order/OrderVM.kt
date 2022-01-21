@@ -31,6 +31,4 @@ class OrderVM : BaseUiViewModel<OrderUV>() {
     fun showCart(){
         uiCallback?.showCart();
     }
-
-
 }

@@ -2,10 +2,12 @@ package com.hanheldpos.ui.screens.discount.discount_type.discount_code
 
 import android.annotation.SuppressLint
 import androidx.core.widget.doAfterTextChanged
+import androidx.fragment.app.setFragmentResultListener
 import com.hanheldpos.R
-import com.hanheldpos.data.api.pojo.discount.DiscountItem
+import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.databinding.FragmentDiscountCodeBinding
 import com.hanheldpos.model.discount.DiscountApplyToType
+import com.hanheldpos.model.discount.DiscountTypeFor
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.discount.discount_type.discount_code.adapter.DiscountCodeAdapter
@@ -33,9 +35,15 @@ class DiscountCodeFragment(private val applyToType: DiscountApplyToType) :
     }
 
     override fun initView() {
+        setFragmentResultListener("saveDiscount") { _, bundle ->
+            if (bundle.getSerializable("DiscountTypeFor") == DiscountTypeFor.DISCOUNT_CODE) {
+
+            }
+
+        }
         discountCodeAdapter =
-            DiscountCodeAdapter(listener = object : BaseItemClickListener<DiscountItem> {
-                override fun onItemClick(adapterPosition: Int, item: DiscountItem) {
+            DiscountCodeAdapter(listener = object : BaseItemClickListener<DiscountResp> {
+                override fun onItemClick(adapterPosition: Int, item: DiscountResp) {
 
                 }
             });
@@ -58,11 +66,15 @@ class DiscountCodeFragment(private val applyToType: DiscountApplyToType) :
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    override fun loadDataDiscountCode(list: List<DiscountItem>) {
+    override fun loadDataDiscountCode(list: List<DiscountResp>) {
             GlobalScope.launch (Dispatchers.Main) {
                 discountCodeAdapter.submitList(list);
                 discountCodeAdapter.notifyDataSetChanged();
             }
+    }
+
+    override fun onResume() {
+        super.onResume()
     }
 
 }

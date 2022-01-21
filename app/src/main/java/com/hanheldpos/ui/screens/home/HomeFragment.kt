@@ -7,8 +7,6 @@ import android.widget.AdapterView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.hanheldpos.R
-import com.hanheldpos.data.api.pojo.order.menu.getMenuList
-import com.hanheldpos.data.api.pojo.table.getFloorList
 import com.hanheldpos.databinding.FragmentHomeBinding
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.ui.base.dialog.AppAlertDialog
@@ -153,8 +151,8 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
                 Log.d("home", "switchPage: page_table");
                 binding.homeViewPager.currentItem = 0;
                 var i = 1;
-                DataHelper.tableResp?.getFloorList()?.map {
-                    DropDownItem(name = it?.name.toString(), realItem = it, position = i++)
+                DataHelper.floor?.Floor?.map {
+                    DropDownItem(name = it.Name, realItem = it, position = i++)
                 }?.let {
                     listDropdown.add(DropDownItem(name = "All", position = 0))
                     listDropdown.addAll(it)
@@ -164,8 +162,8 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
                 Log.d("home", "switchPage: page_order")
                 binding.homeViewPager.currentItem = 1;
                 var i = 0;
-                DataHelper.orderMenuResp?.getMenuList()?.map {
-                    DropDownItem(name = it?.name.toString(), realItem = it, position = i++)
+                DataHelper.menu?.MenuList?.map {
+                    DropDownItem(name = it.Name, realItem = it, position = i++)
                 }?.let {
                     listDropdown.addAll(it);
                 }
