@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="item"
+            type="com.hanheldpos.model.cart.fee.FeeTip" />
+
+    </data>
+
+
+    <com.diadiem.pos_components.PRadioButton
+        android:id="@+id/tip_button"
+        android:layout_width="@dimen/_42sdp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_cart_tip_item"
+        android:gravity="center"
+        android:text="@{item.title}"
+        android:paddingVertical="@dimen/_5sdp"
+        app:useTextColor="color5"
+        app:useTextHeader="h4" />
+
+
+</layout>
