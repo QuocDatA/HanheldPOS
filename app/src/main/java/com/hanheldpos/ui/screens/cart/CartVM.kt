@@ -13,6 +13,8 @@ import com.hanheldpos.model.cart.CartConverter
 import com.hanheldpos.model.cart.CartModel
 import com.hanheldpos.model.cart.DiscountCart
 import com.hanheldpos.model.cart.payment.PaymentStatus
+import com.hanheldpos.model.order.Order
+import com.hanheldpos.model.order.OrderModel
 import com.hanheldpos.model.order.OrderStatus
 import com.hanheldpos.model.order.OrderSubmitResp
 import com.hanheldpos.model.setting.SettingDevicePut
@@ -41,7 +43,7 @@ class CartVM : BaseUiViewModel<CartUV>() {
         uiCallback?.onOpenDiscount();
     }
 
-    fun openSelectPayment(payable : Double) {
+    fun openSelectPayment(payable: Double) {
         uiCallback?.openSelectPayment(payable);
     }
 
@@ -49,9 +51,9 @@ class CartVM : BaseUiViewModel<CartUV>() {
         uiCallback?.onOpenAddCustomer();
     }
 
-    fun billCart(context : Context, cart : CartModel) {
+    fun billCart(context: Context, cart: CartModel) {
 
-        if (cart.productsList.isEmpty()){
+        if (cart.productsList.isEmpty()) {
             AppAlertDialog.get()
                 .show(
                     context.getString(R.string.notification),
@@ -73,78 +75,117 @@ class CartVM : BaseUiViewModel<CartUV>() {
 
     }
 
-    private fun onOrderProcessing(cart : CartModel) {
+    private fun onOrderProcessing(cart: CartModel) {
         showLoading(true)
-        cart.orderCode = DataHelper.generateOrderIdByFormat();
-        val json = GSonUtils.toServerJson(
-            SettingDevicePut(
-            MaxChar = DataHelper.numberIncreaseOrder.toString().length.toLong(),
-            NumberIncrement = DataHelper.numberIncreaseOrder.toString(),
-            UserGuid = UserHelper.getUserGui(),
-            LocationGuid = UserHelper.getLocationGui(),
-            DeviceGuid = UserHelper.getDeviceGui(),
-            Device_key = DataHelper.getDeviceByDeviceCode()?._key!!.toString()
-        )
-        );
-        settingResp.putSettingDeviceIds(
-            json,
-            callback = object : BaseRepoCallback<SettingDeviceResp> {
-                override fun apiResponse(data: SettingDeviceResp?) {
-                    if (data == null || data.DidError) {
-                        AppAlertDialog.get()
-                            .show(
-                                "Error",
-                                data?.ErrorMessage,
-                            )
-                        showLoading(true)
-                    } else {
-                        val orderJson = GSonUtils.toServerJson(
-                            CartConverter.toOrder(
+        try {
+            cart.orderCode = DataHelper.generateOrderIdByFormat();
+
+            if (DataHelper.ordersCompleted == null) {
+                DataHelper.ordersCompleted = mutableListOf(
+                    CartConverter.toOrder(
+                        cart,
+                        OrderStatus.COMPLETED.value,
+                        PaymentStatus.PAID.value
+                    )
+                );
+            } else {
+                DataHelper.ordersCompleted = DataHelper.ordersCompleted.apply {
+                    (this as MutableList).add(
+                        CartConverter.toOrder(
                             cart,
                             OrderStatus.COMPLETED.value,
                             PaymentStatus.PAID.value
-                        ));
-                        orderAlterRepo.postOrderSubmit(orderJson, callback = object :
-                            BaseRepoCallback<OrderSubmitResp> {
-                            override fun apiResponse(data: OrderSubmitResp?) {
-                                showLoading(false);
-                                if (data== null || data.Message?.contains("exist") == true){
-                                    AppAlertDialog.get()
-                                        .show(
-                                            "Notification",
-                                            data?.Message ?: "Push order failed",
-                                        );
-                                }else {
-                                    AppAlertDialog.get()
-                                        .show(
-                                            "Notification",
-                                            "Push order succeeded",
-                                        );
-                                    uiCallback?.onBillSuccess();
-                                }
-                            }
-
-                            override fun showMessage(message: String?) {
-                                showLoading(false);
-                                AppAlertDialog.get()
-                                    .show(
-                                        "Error",
-                                        message,
-                                    )
-                            }
-                        })
-
-                        print(orderJson);
-                    }
+                        )
+                    );
                 }
+            }
+            showLoading(false);
+            AppAlertDialog.get()
+                .show(
+                    "Notification",
+                    "Successful bill payment",
+                );
+            uiCallback?.onBillSuccess();
+        } catch (ex: Exception) {
+            showLoading(false)
+            AppAlertDialog.get()
+                .show(
+                    "Notification",
+                    "Bill payment failed!",
+                );
+        }
 
-                override fun showMessage(message: String?) {
-                    showLoading(false);
-                    showError(message);
-                }
-            });
+
+        // TODO : sync order
+//        val json = GSonUtils.toServerJson(
+//            SettingDevicePut(
+//                MaxChar = DataHelper.numberIncreaseOrder.toString().length.toLong(),
+//                NumberIncrement = DataHelper.numberIncreaseOrder.toString(),
+//                UserGuid = UserHelper.getUserGui(),
+//                LocationGuid = UserHelper.getLocationGui(),
+//                DeviceGuid = UserHelper.getDeviceGui(),
+//                Device_key = DataHelper.getDeviceByDeviceCode()?._key!!.toString()
+//            )
+//        );
+//        settingResp.putSettingDeviceIds(
+//            json,
+//            callback = object : BaseRepoCallback<SettingDeviceResp> {
+//                override fun apiResponse(data: SettingDeviceResp?) {
+//                    if (data == null || data.DidError) {
+//                        AppAlertDialog.get()
+//                            .show(
+//                                "Error",
+//                                data?.ErrorMessage,
+//                            )
+//                        showLoading(true)
+//                    } else {
+//                        val orderJson = GSonUtils.toServerJson(
+//                            CartConverter.toOrder(
+//                                cart,
+//                                OrderStatus.COMPLETED.value,
+//                                PaymentStatus.PAID.value
+//                            )
+//                        );
+//                        orderAlterRepo.postOrderSubmit(orderJson, callback = object :
+//                            BaseRepoCallback<OrderSubmitResp> {
+//                            override fun apiResponse(data: OrderSubmitResp?) {
+//                                showLoading(false);
+//                                if (data == null || data.Message?.contains("exist") == true) {
+//                                    AppAlertDialog.get()
+//                                        .show(
+//                                            "Notification",
+//                                            data?.Message ?: "Push order failed",
+//                                        );
+//                                } else {
+//                                    AppAlertDialog.get()
+//                                        .show(
+//                                            "Notification",
+//                                            "Push order succeeded",
+//                                        );
+//                                    uiCallback?.onBillSuccess();
+//                                }
+//                            }
+//
+//                            override fun showMessage(message: String?) {
+//                                showLoading(false);
+//                                AppAlertDialog.get()
+//                                    .show(
+//                                        "Error",
+//                                        message,
+//                                    )
+//                            }
+//                        })
+//
+//                        print(orderJson);
+//                    }
+//                }
+//
+//                override fun showMessage(message: String?) {
+//                    showLoading(false);
+//                    showError(message);
+//                }
+//            });
     }
-
 
 
     fun processDataDiscount(cart: CartModel): List<DiscountCart> {

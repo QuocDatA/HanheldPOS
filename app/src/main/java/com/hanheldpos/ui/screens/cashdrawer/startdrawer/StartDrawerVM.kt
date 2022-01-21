@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.cashdrawer.CreateCashDrawerResp
+import com.hanheldpos.data.repository.BaseResponse
 import com.hanheldpos.data.repository.base.BaseRepoCallback
 import com.hanheldpos.data.repository.cashdrawer.CashDrawerRepo
 import com.hanheldpos.model.DataHelper
@@ -38,14 +39,14 @@ class StartDrawerVM : BaseRepoViewModel<CashDrawerRepo, StartDrawerUV>() {
         );
         Log.d("Data Pass",GSonUtils.toServerJson(startDrawerReq));
         repo?.createCashDrawer(
-            GSonUtils.toServerJson(startDrawerReq),object : BaseRepoCallback<CreateCashDrawerResp> {
-                override fun apiResponse(data: CreateCashDrawerResp?) {
+            GSonUtils.toServerJson(startDrawerReq),object : BaseRepoCallback<BaseResponse<List<CreateCashDrawerResp>>?> {
+                override fun apiResponse(data: BaseResponse<List<CreateCashDrawerResp>>?) {
                     showLoading(false)
                     if (data == null || data.DidError) {
                         CashDrawerHelper.isStartDrawer = false;
                         showError(data?.ErrorMessage ?: context.getString(R.string.failed_to_load_data));
                     } else {
-                        DataHelper.CurrentDrawerId = data.Model.first().CashDrawerGuid;
+                        DataHelper.currentDrawerId = data.Model?.first()?.CashDrawerGuid;
                         CashDrawerHelper.isStartDrawer = true;
                         uiCallback?.goMain();
                     }
