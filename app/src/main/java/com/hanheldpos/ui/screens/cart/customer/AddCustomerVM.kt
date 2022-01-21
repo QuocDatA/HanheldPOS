@@ -2,6 +2,7 @@ package com.hanheldpos.ui.screens.cart.customer
 
 import androidx.lifecycle.MutableLiveData
 import com.hanheldpos.data.api.pojo.customer.CustomerSearchResp
+import com.hanheldpos.data.repository.BaseResponse
 import com.hanheldpos.data.repository.base.BaseRepoCallback
 import com.hanheldpos.data.repository.customer.CustomerRepo
 import com.hanheldpos.model.DataHelper
@@ -23,17 +24,17 @@ class AddCustomerVM : BaseRepoViewModel<CustomerRepo, AddCustomerUV>() {
             userGuid = userGuid,
             keyword = keyword,
             pageNo = pageNo,
-            object : BaseRepoCallback<CustomerSearchResp> {
+            object : BaseRepoCallback<BaseResponse<List<CustomerSearchResp>>?> {
                 override fun apiRequesting(showLoading: Boolean) {
                     if (pageNo == 1)
                         isLoading.postValue(showLoading)
                 }
 
-                override fun apiResponse(data: CustomerSearchResp?) {
+                override fun apiResponse(data: BaseResponse<List<CustomerSearchResp>>?) {
                     if (data == null || data.DidError) {
                         uiCallback?.loadCustomer(mutableListOf(),false);
                     } else {
-                        data.Model.firstOrNull()?.List?.let { uiCallback?.loadCustomer(it,true) }
+                        data.Model?.firstOrNull()?.List?.let { uiCallback?.loadCustomer(it,true) }
                     }
                 }
 

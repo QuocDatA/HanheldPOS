@@ -1,6 +1,8 @@
 package com.hanheldpos.ui.screens.cart
 
+import android.content.Context
 import androidx.lifecycle.LifecycleOwner
+import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.setting.SettingDeviceResp
 import com.hanheldpos.data.repository.base.BaseRepoCallback
 import com.hanheldpos.data.repository.order.OrderAsyncRepo
@@ -16,7 +18,7 @@ import com.hanheldpos.model.order.OrderSubmitResp
 import com.hanheldpos.model.setting.SettingDevicePut
 import com.hanheldpos.ui.base.dialog.AppAlertDialog
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
-import com.hanheldpos.utils.JsonHelper
+import com.hanheldpos.utils.GSonUtils
 
 class CartVM : BaseUiViewModel<CartUV>() {
 
@@ -47,16 +49,26 @@ class CartVM : BaseUiViewModel<CartUV>() {
         uiCallback?.onOpenAddCustomer();
     }
 
-    fun billCart(cart : CartModel) {
-        if (cart.paymentsList.isEmpty()) {
+    fun billCart(context : Context, cart : CartModel) {
+
+        if (cart.productsList.isEmpty()){
             AppAlertDialog.get()
                 .show(
-                    "Warning",
-                    "Please choose payment method",
+                    context.getString(R.string.notification),
+                    context.getString(R.string.order_not_completed),
                 )
             return;
         }
-        ;
+
+        if (cart.paymentsList.isEmpty()) {
+            AppAlertDialog.get()
+                .show(
+                    context.getString(R.string.notification),
+                    context.getString(R.string.please_choose_payment_method),
+                )
+            return;
+        }
+
         onOrderProcessing(cart);
 
     }
@@ -64,7 +76,7 @@ class CartVM : BaseUiViewModel<CartUV>() {
     private fun onOrderProcessing(cart : CartModel) {
         showLoading(true)
         cart.orderCode = DataHelper.generateOrderIdByFormat();
-        val json = JsonHelper.stringify(
+        val json = GSonUtils.toServerJson(
             SettingDevicePut(
             MaxChar = DataHelper.numberIncreaseOrder.toString().length.toLong(),
             NumberIncrement = DataHelper.numberIncreaseOrder.toString(),
@@ -86,7 +98,7 @@ class CartVM : BaseUiViewModel<CartUV>() {
                             )
                         showLoading(true)
                     } else {
-                        val orderJson = JsonHelper.stringify(
+                        val orderJson = GSonUtils.toServerJson(
                             CartConverter.toOrder(
                             cart,
                             OrderStatus.COMPLETED.value,

@@ -254,7 +254,7 @@ class CartFragment( private val listener : CartCallBack) : BaseFragment<Fragment
     }
 
     private fun onBillCart() {
-        viewModel.billCart(cartDataVM.cartModelLD.value!!);
+        viewModel.billCart(requireContext(),cartDataVM.cartModelLD.value!!);
     }
 
     fun onEditItemInCart(position: Int, item: BaseProductInCart) {

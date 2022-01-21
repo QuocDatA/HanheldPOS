@@ -5,7 +5,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Time(
-    val PerLocation: String?,
+//    val PerLocation: List<Any>?,
     val TimeId: Int,
     val TimeOff: String,
     val TimeOn: String

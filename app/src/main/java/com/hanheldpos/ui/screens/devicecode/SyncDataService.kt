@@ -21,14 +21,15 @@ import com.hanheldpos.model.DataHelper
 import com.hanheldpos.ui.base.viewmodel.BaseViewModel
 
 class SyncDataService : BaseViewModel() {
-    //var context : Context? = null;
 
+    //var context : Context? = null;
     private var menuRepo: MenuRepo = MenuRepo();
     private var orderRepo: OrderRepo = OrderRepo();
     private var floorRepo: FloorRepo = FloorRepo();
     private var feeRepo: FeeRepo = FeeRepo();
     private var discountRepo: DiscountRepo = DiscountRepo();
     private var paymentRepo: PaymentRepo = PaymentRepo();
+
     fun fetchAllData(context: Context?, listener: SyncDataServiceListener) {
         val location = DataHelper.getLocationGuidByDeviceCode()
         val userGuid = DataHelper.getUserGuidByDeviceCode()
@@ -59,7 +60,7 @@ class SyncDataService : BaseViewModel() {
                     if (data == null || data.DidError) {
                         onDataFailure(context?.getString(R.string.failed_to_load_data),listener);
                     } else {
-                        DataHelper.orderSetting = data.Model.firstOrNull();
+                        DataHelper.orderSetting = data.Model?.firstOrNull();
                         startMappingData(listener);
                     }
                 }
@@ -77,7 +78,7 @@ class SyncDataService : BaseViewModel() {
                     if (data == null || data.DidError) {
                         onDataFailure(context?.getString(R.string.failed_to_load_data),listener);
                     } else {
-                        DataHelper.floor = data.Model.firstOrNull();
+                        DataHelper.floor = data.Model?.firstOrNull();
                         startMappingData(listener);
                     }
                 }
