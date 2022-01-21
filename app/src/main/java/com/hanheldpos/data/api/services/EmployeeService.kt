@@ -1,10 +1,9 @@
 package com.hanheldpos.data.api.services
 
 import com.hanheldpos.data.api.pojo.employee.EmployeeResp
-import com.hanheldpos.data.repository.GDataResp
+import com.hanheldpos.data.repository.BaseResponse
 import retrofit2.Call
 import retrofit2.http.GET
-import retrofit2.http.Headers
 import retrofit2.http.Query
 
 interface EmployeeService {
@@ -13,5 +12,5 @@ interface EmployeeService {
         @Query("userGuid") userGuid: String,
         @Query("passCode") passCode: String,
         @Query("locationGuid") locationGuid: String,
-    ) : Call<GDataResp<EmployeeResp>>
+    ) : Call<BaseResponse<List<EmployeeResp>>>
 }

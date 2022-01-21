@@ -3,7 +3,6 @@ package com.hanheldpos.ui.screens.home
 import android.os.Parcelable
 import androidx.lifecycle.MutableLiveData
 import com.hanheldpos.R
-import com.hanheldpos.data.api.pojo.table.FloorItem
 import com.hanheldpos.ui.base.dialog.AppAlertDialog
 import com.hanheldpos.ui.base.viewmodel.BaseViewModel
 

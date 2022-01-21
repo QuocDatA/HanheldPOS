@@ -5,8 +5,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.hanheldpos.data.api.pojo.customer.CustomerGroup
 import com.hanheldpos.data.api.pojo.customer.CustomerResp
-import com.hanheldpos.data.api.pojo.product.ProductItem
-import com.hanheldpos.data.api.pojo.product.VariantsPriceOverrideLocation
+import com.hanheldpos.data.api.pojo.product.Product
 import com.hanheldpos.model.cart.CartModel
 import com.hanheldpos.model.discount.CtmEligibilityType
 import com.hanheldpos.model.discount.DiscMinRequiredType
@@ -15,16 +14,9 @@ import com.hanheldpos.utils.time.DateTimeHelper
 import kotlinx.parcelize.Parcelize
 import java.util.*
 
-@Parcelize
-data class DiscountResp(
-    val DidError: Boolean,
-    val ErrorMessage: String?,
-    val Message: String?,
-    val Model: List<DiscountItem>
-) : Parcelable
 
 @Parcelize
-data class DiscountItem(
+data class DiscountResp(
     val Acronymn: String,
     val ApplyToDiningOptionText: String,
     val ApplyToPriceProduct: Int,
@@ -77,7 +69,7 @@ data class DiscountItem(
     fun isValid(cart: CartModel, curDateTime: Date): Boolean {
         val subTotal = cart.getSubTotal();
         val diningOptionList =
-            cart.productsList.map { baseProductInCart -> "${baseProductInCart.diningOption?.id}" }
+            cart.productsList.map { baseProductInCart -> "${baseProductInCart.diningOption?.Id}" }
                 .distinct().toList();
         if (isValidDiningOption(diningOptionList)) {
             if (DateRange == 0 || isValidDate(curDateTime)) {
@@ -98,7 +90,7 @@ data class DiscountItem(
         customer: CustomerResp,
         curDateTime: Date
     ): Boolean {
-        if (isValidDiningOption(mutableListOf(baseProduct?.diningOption?.id.toString()))) {
+        if (isValidDiningOption(mutableListOf(baseProduct?.diningOption?.Id.toString()))) {
             if (DateRange == 0 || isValidDate(curDateTime)) {
                 if (isValidProduct(baseProduct)) {
                     if (isValidMinRequired(
@@ -117,10 +109,10 @@ data class DiscountItem(
 
     private fun isValidProduct(baseProduct: BaseProductInCart): Boolean {
         val productApply =
-            Condition.CustomerBuys.ListApplyTo.firstOrNull { p -> p.id == baseProduct.proOriginal?.id };
+            Condition.CustomerBuys.ListApplyTo.firstOrNull { p -> p._id == baseProduct.proOriginal?._id };
 
         return if (Excluding == 1) productApply == null
-        else productApply != null && (productApply.variantsGroup?.isExistsVariant(baseProduct.variantList)
+        else productApply != null && (productApply.VariantsGroup?.isExistsVariant(baseProduct.variantList)
             ?: false);
     }
 
@@ -253,7 +245,7 @@ data class CustomerBuys(
     val IsDiscountLimit: Int,
     val IsMaxAmount: Int,
     val IsMaxQuantity: Int,
-    val ListApplyTo: List<ProductItem>,
+    val ListApplyTo: List<Product>,
     val MaximumDiscount: Double
 ) : Parcelable
 

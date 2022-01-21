@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.hanheldpos.ui.screens.menu.option.report.ReportVM" />
+    </data>
+
+    <LinearLayout
+        android:orientation="vertical"
+        style="@style/RootLayout"
+        android:background="@color/color_2">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_42sdp"
+            android:background="@color/color_2">
+
+            <ImageView
+                style="@style/MaterialButton.Icon"
+                android:id="@+id/homeMenu"
+                android:layout_width="@dimen/_48sdp"
+                android:layout_height="match_parent"
+                android:scaleType="centerInside"
+                android:layout_gravity="center|start"
+                android:adjustViewBounds="true"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="@{v -> viewModel.backPress()}"
+                android:backgroundTint="@color/textPrimary"
+                android:src="@drawable/ic_toolbar_menu"
+                tools:ignore="ContentDescription" />
+
+            <com.diadiem.pos_components.PTextView
+                style="@style/CartTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/reports" />
+        </FrameLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_1sdp"
+            android:background="@color/color_10" />
+
+        <RelativeLayout
+            android:id="@+id/currentDrawerOption"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:focusable="true"
+            android:clickable="true"
+            android:background="@color/color_2"
+            android:foreground="?attr/selectableItemBackground"
+            app:cardCornerRadius="@dimen/_2sdp">
+
+            <com.diadiem.pos_components.PTextView
+                android:id="@+id/currentDrawerText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_14sdp"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:paddingVertical="@dimen/_16sdp"
+                android:text="@string/current_drawer"
+                app:useTextColor="color4"
+                app:useTextHeader="h5"
+                tools:text="Order" />
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="end"
+                android:layout_marginEnd="@dimen/_14sdp">
+
+                <ImageView
+                    android:layout_width="@dimen/_6sdp"
+                    android:layout_height="@dimen/_10sdp"
+                    android:layout_gravity="center"
+                    android:backgroundTint="@color/color_8"
+                    android:src="@drawable/ic_arrow_forward_color9" />
+
+            </FrameLayout>
+
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_1sdp"
+            android:layout_marginHorizontal="@dimen/_12sdp"
+            android:background="@color/color_10" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/saleReportOption"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/color_2"
+                app:cardCornerRadius="@dimen/_2sdp">
+
+                <com.diadiem.pos_components.PTextView
+                    android:id="@+id/saleReportText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_14sdp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:paddingVertical="@dimen/_16sdp"
+                    android:text="@string/sales_report"
+                    app:useTextColor="color4"
+                    app:useTextHeader="h5"
+                    tools:text="Order" />
+
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="end"
+                    android:layout_marginEnd="@dimen/_14sdp">
+
+                    <ImageView
+                        android:layout_width="@dimen/_6sdp"
+                        android:layout_height="@dimen/_10sdp"
+                        android:layout_gravity="center"
+                        android:backgroundTint="@color/color_8"
+                        android:src="@drawable/ic_arrow_forward_color9" />
+
+                </FrameLayout>
+
+            </RelativeLayout>
+        </FrameLayout>
+
+    </LinearLayout>
+</layout>

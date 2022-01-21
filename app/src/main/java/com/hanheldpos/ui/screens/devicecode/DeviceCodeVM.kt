@@ -5,6 +5,7 @@ import android.os.SystemClock
 import androidx.lifecycle.MutableLiveData
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.device.DeviceCodeResp
+import com.hanheldpos.data.repository.BaseResponse
 import com.hanheldpos.data.repository.base.BaseRepoCallback
 import com.hanheldpos.data.repository.device.DeviceRepo
 import com.hanheldpos.model.DataHelper
@@ -34,12 +35,12 @@ class DeviceCodeVM : BaseRepoViewModel<DeviceRepo, DeviceCodeUV>() {
         mLastTimeClick = SystemClock.elapsedRealtime();
         uiCallback?.showLoading(true);
         val result = getPinWithSymbol(pinTextLD.value.toString());
-        repo?.getDataByAppCode(result, object : BaseRepoCallback<DeviceCodeResp> {
-            override fun apiResponse(data: DeviceCodeResp?) {
-                if (data == null || data.didError == true) {
+        repo?.getDataByAppCode(result, object : BaseRepoCallback<BaseResponse<DeviceCodeResp>> {
+            override fun apiResponse(data: BaseResponse<DeviceCodeResp>?) {
+                if (data == null || data.DidError) {
                     showError(context?.getString(R.string.failed_to_load_data));
                 } else {
-                    DataHelper.deviceCodeResp = data;
+                    DataHelper.deviceCode = data.Model;
                     loadResource();
                 }
             }

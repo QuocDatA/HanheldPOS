@@ -36,8 +36,8 @@
             android:layout_height="@dimen/_100sdp">
 
             <com.diadiem.pos_components.PTextView
-                visibleObject="@{item.proOriginal.sku}"
                 android:id="@+id/skuProduct"
+                visibleObject="@{item.proOriginal.SKU}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_4sdp"
@@ -46,7 +46,7 @@
                 android:layout_marginBottom="@dimen/_4sdp"
                 android:background="@drawable/bg_food_text"
                 android:paddingHorizontal="@dimen/_6sdp"
-                android:text="@{item.proOriginal.sku}"
+                android:text="@{item.proOriginal.SKU}"
                 app:useTextColor="color2"
                 app:useTextHeader="h6" />
 

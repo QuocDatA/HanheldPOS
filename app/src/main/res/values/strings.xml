@@ -107,4 +107,43 @@
     <string name="logout">Logout</string>
     <string name="check_out">Check Out</string>
     <string name="are_you_sure_you_want_to_exit_this_employee">Are you sure you want to exit this employee?</string>
+    <string name="sales_report">Sales Report</string>
+    <string name="enter_description">Enter Description</string>
+    <string name="started">Started</string>
+    <string name="starting_cash">Starting Cash</string>
+    <string name="paid_in_out">Paid In/Out</string>
+    <string name="cash_sales">Cash Sales</string>
+    <string name="cash_refunds">Cash Refunds</string>
+    <string name="expected_in_drawer">Expected In Drawer</string>
+    <string name="pay_in">Pay In</string>
+    <string name="pay_out">Pay Out</string>
+    <string name="end_drawer">End Drawer</string>
+    <string name="pay_in_out">Pay In/Out</string>
+    <string name="drawer_description">Drawer Description</string>
+    <string name="description">Description</string>
+    <string name="actual_amount">Actual Amount</string>
+    <string name="enter_amount">Enter Amount</string>
+    <string name="total_paid_in_out">Total Paid In/Out</string>
+
+    <string name="material_calendar_monday">Mo</string>
+    <string name="material_calendar_tuesday">Tu</string>
+    <string name="material_calendar_wednesday">We</string>
+    <string name="material_calendar_thursday">Th</string>
+    <string name="material_calendar_friday">Fr</string>
+    <string name="material_calendar_saturday">Sa</string>
+    <string name="material_calendar_sunday">Su</string>
+    <string name="drawer">Drawer</string>
+    <string name="all_device">All Device</string>
+    <string name="this_device_only">This Device only</string>
+    <string name="all_day">All Day</string>
+    <string name="start">Start</string>
+    <string-array name="weekDayLabels">
+        <item>@string/material_calendar_monday</item>
+        <item>@string/material_calendar_tuesday</item>
+        <item>@string/material_calendar_wednesday</item>
+        <item>@string/material_calendar_thursday</item>
+        <item>@string/material_calendar_friday</item>
+        <item>@string/material_calendar_saturday</item>
+        <item>@string/material_calendar_sunday</item>
+    </string-array>
 </resources>

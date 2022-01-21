@@ -3,6 +3,7 @@ package com.hanheldpos.ui.screens.cart.payment.input
 import android.annotation.SuppressLint
 import android.view.View
 import com.hanheldpos.R
+import com.hanheldpos.binding.setPriceView
 import com.hanheldpos.data.api.pojo.payment.PaymentMethodResp
 import com.hanheldpos.databinding.FragmentPaymentInputBinding
 import com.hanheldpos.extension.toNiceString
@@ -16,10 +17,6 @@ class PaymentInputFragment(
     private val listener: PaymentInputListener? = null
 ) :
     BaseFragment<FragmentPaymentInputBinding, PaymentInputVM>(), PaymentInputUV {
-
-    interface PaymentInputListener {
-        fun onCompleteTable(numberCustomer: Int)
-    }
 
     //ViewModel
     private val keyBoardVM = KeyBoardVM();
@@ -35,8 +32,6 @@ class PaymentInputFragment(
             init(this@PaymentInputFragment);
             binding.viewModel = this;
             binding.keyboardVM = keyBoardVM;
-            binding.keyBoardContainer.textPad.viewModel = keyBoardVM;
-            binding.keyBoardContainer.numberPad.viewModel = keyBoardVM;
         }
     }
 
@@ -49,14 +44,6 @@ class PaymentInputFragment(
 
             override fun onCancel() {
                 viewModel.onCancel();
-            }
-
-            override fun onSwitch() {
-                binding.keyBoardContainer.keyBoardType = keyBoardVM.keyBoardType
-            }
-
-            override fun onCapLock() {
-                binding.keyBoardContainer.textPad.isCapLock = keyBoardVM.isCapLock
             }
         });
         binding.paymentInputTitle.setText(paymentMethod.Title + " (Amount Due " + payable.toNiceString() + ")")
@@ -74,28 +61,13 @@ class PaymentInputFragment(
 
     override fun initData() {
         keyBoardVM.input.value = payable.toNiceString();
-        keyBoardVM.keyBoardType = KeyBoardType.Number
-        binding.keyBoardContainer.textPad.isCapLock = keyBoardVM.isCapLock
-        binding.keyBoardContainer.keyBoardType = keyBoardVM.keyBoardType
-        binding.keyBoardContainer.numberPad.keyBoardType = keyBoardVM.keyBoardType
+        keyBoardVM.keyBoardType.postValue(KeyBoardType.Number)
     }
 
     override fun initAction() {
     }
 
-    companion object {
-        fun getInstance(
-            listener: PaymentInputFragment.PaymentInputListener? = null,
-            paymentMethod: PaymentMethodResp,
-            payable: Double
-        ): PaymentInputFragment {
-            return PaymentInputFragment(
-                listener = listener,
-                paymentMethod = paymentMethod,
-                payable = payable
-            ).apply {
-
-            };
-        }
+    interface PaymentInputListener {
+        fun onCompleteTable(numberCustomer: Int)
     }
 }

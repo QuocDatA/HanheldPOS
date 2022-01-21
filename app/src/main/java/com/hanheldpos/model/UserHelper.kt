@@ -19,19 +19,10 @@ object UserHelper {
     var curEmployee: EmployeeResp? = null
 
     fun getEmployeeGuid(): String {
-        return if (curEmployee?.id != null) {
-            curEmployee?.id!!
+        return if (curEmployee?._Id != null) {
+            curEmployee?._Id!!
         } else {
             NullPointerException("getEmployeeGui null value").printStackTrace()
-            ""
-        }
-    }
-
-    fun getEmployeeUserGui(): String {
-        return if (curEmployee?.id != null) {
-            curEmployee?.userGuid!!
-        } else {
-            NullPointerException("getEmployeeUserGui null value").printStackTrace()
             ""
         }
     }

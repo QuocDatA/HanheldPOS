@@ -1,12 +1,13 @@
 package com.hanheldpos.ui.screens.home.table
 
+import android.annotation.SuppressLint
 import android.os.SystemClock
 import android.util.Log
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import androidx.fragment.app.activityViewModels
 import com.hanheldpos.R
-import com.hanheldpos.data.api.pojo.table.FloorItem
-import com.hanheldpos.data.api.pojo.table.FloorTableItem
+import com.hanheldpos.data.api.pojo.floor.Floor
+import com.hanheldpos.data.api.pojo.floor.FloorTable
 import com.hanheldpos.databinding.FragmentTableBinding
 import com.hanheldpos.model.home.table.TableModeViewType
 import com.hanheldpos.model.home.table.TableStatusType
@@ -49,7 +50,8 @@ class TableFragment : BaseFragment<FragmentTableBinding, TableVM>(), TableUV {
         // table adapter vs listener
         tableAdapterHelper =
             TableAdapterHelper(callback = object : TableAdapterHelper.AdapterCallBack {
-                override fun onListSplitCallBack(list: List<FloorTableItem?>) {
+                @SuppressLint("NotifyDataSetChanged")
+                override fun onListSplitCallBack(list: List<FloorTable>) {
                     tableAdapter.submitList(list);
                     tableAdapter.notifyDataSetChanged();
                 }
@@ -57,13 +59,13 @@ class TableFragment : BaseFragment<FragmentTableBinding, TableVM>(), TableUV {
             })
 
         tableAdapter = TableAdapter(
-            listener = object : BaseItemClickListener<FloorTableItem> {
-                override fun onItemClick(adapterPosition: Int, item: FloorTableItem) {
+            listener = object : BaseItemClickListener<FloorTable> {
+                override fun onItemClick(adapterPosition: Int, item: FloorTable) {
                     Log.d("OrderFragment", "Product Selected");
 
                     when (item.uiType) {
                         TableModeViewType.Table -> {
-                            onTableChoosen(adapterPosition, item);
+                            onTableChosen(adapterPosition, item);
                         }
                         TableModeViewType.PrevButtonEnable -> {
                             tableAdapterHelper.previous();
@@ -95,8 +97,8 @@ class TableFragment : BaseFragment<FragmentTableBinding, TableVM>(), TableUV {
         screenViewModel.dropDownSelected.observe(this, {
             val screen = screenViewModel.screenEvent.value?.screen;
             if (screen == HomeFragment.HomePage.Table) {
-                if (it.realItem is FloorItem) {
-                    viewModel.floorItemSelected.value = it.realItem as FloorItem;
+                if (it.realItem is Floor) {
+                    viewModel.floorItemSelected.value = it.realItem as Floor;
                 } else if (it.realItem == null)
                     viewModel.getTableList()?.toMutableList()
                         ?.let { it1 -> tableAdapterHelper.submitList(it1); };
@@ -119,7 +121,7 @@ class TableFragment : BaseFragment<FragmentTableBinding, TableVM>(), TableUV {
         })
     }
 
-    private fun onTableChoosen(adapterPosition: Int, item: FloorTableItem) {
+    private fun onTableChosen(adapterPosition: Int, item: FloorTable) {
         when (item.tableStatus) {
             TableStatusType.Available -> {
                 // Check list has any pending table, if has change to available

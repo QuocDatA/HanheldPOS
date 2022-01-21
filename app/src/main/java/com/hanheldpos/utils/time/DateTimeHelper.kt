@@ -166,6 +166,7 @@ object DateTimeHelper {
     object Format {
         const val FULL_DATE_UTC_NOT_MILI = "yyyy-MM-dd'T'HH:mm:ss"
         const val FULL_DATE_UTC_Z = "yyyy-MM-dd'T'HH:mm:ss'Z'"
+        const val FULL_DATE_UTC_TIMEZONE = "yyyy-MM-dd'T'HH:mm:ssZZZZZ"
         const val DD_MM_YYYY = "dd/MM/yyyy"
         const val DD_MM = "dd/MM"
         const val MM_DD_YYYY_HH_MM_SS_aa = "MM/dd/yyyy HH:mm:ss aa"

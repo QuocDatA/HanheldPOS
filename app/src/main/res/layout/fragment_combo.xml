@@ -17,84 +17,64 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:background="@color/color_11"
+            android:background="@color/color_2"
             android:orientation="vertical">
-
-            <FrameLayout
-                android:id="@+id/toolbarLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <FrameLayout
-                    style="@style/ProductDetailCloseBtn"
-                    android:layout_gravity="end">
-
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:onClick="@{v -> viewModel.onBack()}"
-                        android:padding="@dimen/_10sdp"
-                        android:scaleType="centerInside"
-                        android:src="@drawable/ic_close_light" />
-                </FrameLayout>
-            </FrameLayout>
-
             <LinearLayout
-                android:id="@+id/productInfo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/toolbarLayout"
-                android:orientation="vertical"
-                android:paddingHorizontal="@dimen/_9sdp"
-                android:paddingVertical="@dimen/_5sdp">
+                android:orientation="horizontal">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <FrameLayout
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:onClick="@{v->viewModel.onBack()}"
+                    android:padding="@dimen/_14sdp">
 
-                    <com.diadiem.pos_components.PTextView
-                        android:id="@+id/nameProduct"
-                        style="@style/ProductDetailTitle"
-                        android:layout_marginEnd="@dimen/_10sdp"
-                        android:layout_weight="1"
-                        app:useFontStyle="normal"
-                        android:text="@{viewModel.bundleInCart.name}" />
-
-                    <com.diadiem.pos_components.PTextView
-                        style="@style/ProductDetailPrice"
-                        app:useFontStyle="normal"
-                        priceView="@{viewModel.bundleInCart.proModSubTotal()}" />
-                </LinearLayout>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <com.diadiem.pos_components.PTextView
-                        style="@style/ProductDetailSku"
-                        visibleObject="@{viewModel.bundleInCart.sku}"
-                        android:layout_marginVertical="@dimen/_3sdp"
-                        android:background="@drawable/bg_food_detail_text"
-                        android:paddingHorizontal="@dimen/_8sdp"
-                        android:paddingVertical="@dimen/_1sdp"
-                        android:layout_alignParentStart="true"
-                        android:text="@{viewModel.bundleInCart.sku}" />
-
-                    <com.diadiem.pos_components.PTextView
+                    <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:paddingVertical="@dimen/_1sdp"
-                        android:text="(Base Price)"
-                        app:useFontStyle="normal"
-                        app:useTextColor="color6"
-                        app:useTextHeader="h7" />
-                </RelativeLayout>
+                        android:contentDescription="TODO"
+                        android:src="@drawable/ic_close" />
+                </FrameLayout>
 
+
+                <com.diadiem.pos_components.PTextView
+                    android:id="@+id/header_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    app:layout_constrainedWidth="true"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="@{viewModel.bundleInCart.productName}"
+                    app:useFontStyle="bold"
+                    app:useTextColor="color4"
+                    app:useTextHeader="h4"
+                    android:gravity="center"
+                    tools:text="Combo" />
+
+                <com.diadiem.pos_components.PTextView
+                    android:layout_gravity="center_vertical|end"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_9sdp"
+                    android:background="@drawable/bg_food_text"
+                    android:paddingHorizontal="@dimen/_6sdp"
+                    android:paddingVertical="@dimen/_3sdp"
+                    app:priceView="@{viewModel.bundleInCart.proModSubTotal()}"
+                    app:useTextColor="color2"
+                    app:useTextHeader="h6"
+                    />
             </LinearLayout>
+
+            <include
+                layout="@layout/divider_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="1dp" />
+
         </LinearLayout>
 
         <androidx.core.widget.NestedScrollView
@@ -103,79 +83,88 @@
             android:layout_height="wrap_content"
             android:layout_above="@+id/actionBar"
             android:layout_below="@+id/toolbarContainer">
-            <LinearLayout
+            <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/comboGroupAdapter"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:overScrollMode="never"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    tools:itemCount="1"
-                    tools:listitem="@layout/item_combo_group" />
+                android:layout_height="wrap_content">
                 <LinearLayout
-                    visibleObject="@{viewModel.isSelectedComplete()}"
-                    android:layout_marginTop="@dimen/_30sdp"
-                    android:id="@+id/noteProduct"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_above="@+id/dividerActin"
-                    android:background="@color/color_2"
-                    android:orientation="vertical"
-                    android:paddingHorizontal="@dimen/_10sdp">
-
-                    <LinearLayout
+                    android:orientation="vertical">
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/comboGroupAdapter"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
+                        android:overScrollMode="never"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:itemCount="1"
+                        tools:listitem="@layout/item_combo_group" />
+                    <LinearLayout
+                        visibleObject="@{viewModel.isSelectedComplete()}"
+                        android:layout_marginTop="@dimen/_19sdp"
+                        android:id="@+id/noteProduct"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/color_2"
+                        android:orientation="vertical"
+                        android:paddingHorizontal="@dimen/_10sdp">
 
-                        <ImageView
-                            android:layout_width="@dimen/_14sdp"
-                            android:layout_height="@dimen/_14sdp"
-                            android:layout_marginTop="@dimen/_2sdp"
-                            android:src="@drawable/ic_note" />
-
-                        <com.diadiem.pos_components.PTextView
-                            android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginHorizontal="@dimen/_4sdp"
-                            android:text="Special Instructions"
-                            app:useFontStyle="bold"
-                            app:useTextColor="color5"
-                            app:useTextHeader="h6" />
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
 
-                        <com.diadiem.pos_components.PTextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Optional"
-                            app:useFontStyle="normal"
-                            app:useTextColor="color8"
+                            <ImageView
+                                android:layout_width="@dimen/_16sdp"
+                                android:layout_height="@dimen/_16sdp"
+                                android:layout_marginTop="@dimen/_2sdp"
+                                android:src="@drawable/ic_note" />
 
-                            app:useTextHeader="h7" />
+                            <com.diadiem.pos_components.PTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginHorizontal="@dimen/_4sdp"
+                                android:text="Special Instructions"
+                                app:useFontStyle="bold"
+                                app:useTextColor="color4"
+                                app:useTextHeader="h5" />
+
+                            <com.diadiem.pos_components.PTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Optional"
+                                app:useFontStyle="normal"
+                                app:useTextColor="color8"
+
+                                app:useTextHeader="h7" />
+                        </LinearLayout>
+
+                        <com.diadiem.pos_components.PTextInputEditText
+                            style="@style/BaseTextInput"
+                            android:layout_marginVertical="@dimen/_8sdp"
+                            android:background="@drawable/bg_outline"
+                            android:id="@+id/noteInput"
+                            android:focusable="true"
+                            android:focusableInTouchMode="true"
+                            android:hint="Special Instructions"
+                            android:inputType="text"
+                            android:minHeight="@dimen/_40sdp"
+                            android:paddingHorizontal="@dimen/_6sdp"
+                            android:paddingVertical="@dimen/_7sdp"
+                            app:ipt_useFontStyle="normal"
+                            app:ipt_useHintTextColor="color8"
+                            android:text="@={viewModel.bundleInCart.note}"
+                            app:ipt_useTextColor="color4"
+                            app:ipt_useTextHeader="h5" />
                     </LinearLayout>
-
-                    <com.diadiem.pos_components.PTextInputEditText
-                        style="@style/BaseTextInput"
-                        android:layout_marginVertical="@dimen/_8sdp"
-                        android:background="@drawable/bg_outline"
-                        android:id="@+id/noteInput"
-                        android:focusable="true"
-                        android:focusableInTouchMode="true"
-                        android:hint="Special Instructions"
-                        android:inputType="text"
-                        android:minHeight="@dimen/_40sdp"
-                        android:paddingHorizontal="@dimen/_6sdp"
-                        android:paddingVertical="@dimen/_7sdp"
-                        app:ipt_useFontStyle="normal"
-                        app:ipt_useHintTextColor="color8"
-                        android:text="@={viewModel.bundleInCart.note}"
-                        app:ipt_useTextColor="color4"
-                        app:ipt_useTextHeader="h5" />
+                    <androidx.fragment.app.FragmentContainerView
+                        android:id="@+id/fragment_container_discount"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        />
                 </LinearLayout>
-            </LinearLayout>
+            </ScrollView>
+
 
 
         </androidx.core.widget.NestedScrollView>

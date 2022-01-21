@@ -7,10 +7,6 @@
         <variable
             name="viewModel"
             type="com.hanheldpos.ui.input.KeyBoardVM" />
-
-        <variable
-            name="isCapLock"
-            type="Boolean" />
     </data>
 
     <FrameLayout
@@ -35,7 +31,7 @@
                     style="@style/NumberPad"
                     android:layout_marginHorizontal="@dimen/_3sdp"
                     android:layout_weight="1.5"
-                    android:textAllCaps="@{isCapLock ? true : false}"
+                    android:textAllCaps="@{viewModel.isCapLock ? true : false}"
                     android:onClick="@{(v) -> viewModel.inputString(v)}"
                     android:text="q" />
 
@@ -45,7 +41,7 @@
                     android:layout_weight="1.5"
                     android:clickable="true"
                     android:focusable="true"
-                    android:textAllCaps="@{isCapLock ? true : false}"
+                    android:textAllCaps="@{viewModel.isCapLock ? true : false}"
                     android:onClick="@{(view) -> viewModel.inputString(view)}"
                     android:text="w" />
 
@@ -55,7 +51,7 @@
                     android:layout_weight="1.5"
                     android:clickable="true"
                     android:focusable="true"
-                    android:textAllCaps="@{isCapLock ? true : false}"
+                    android:textAllCaps="@{viewModel.isCapLock ? true : false}"
                     android:onClick="@{(view) -> viewModel.inputString(view)}"
                     android:text="e" />
 
@@ -65,7 +61,7 @@
                     android:layout_weight="1.5"
                     android:clickable="true"
                     android:focusable="true"
-                    android:textAllCaps="@{isCapLock ? true : false}"
+                    android:textAllCaps="@{viewModel.isCapLock ? true : false}"
                     android:onClick="@{(view) -> viewModel.inputString(view)}"
                     android:text="r" />
 
@@ -75,7 +71,7 @@
                     android:layout_weight="1.5"
                     android:clickable="true"
                     android:focusable="true"
-                    android:textAllCaps="@{isCapLock ? true : false}"
+                    android:textAllCaps="@{viewModel.isCapLock ? true : false}"
                     android:onClick="@{(view) -> viewModel.inputString(view)}"
                     android:text="t" />
 
@@ -83,7 +79,7 @@
                     style="@style/NumberPad"
                     android:layout_marginHorizontal="@dimen/_3sdp"
                     android:layout_weight="1.5"
-                    android:textAllCaps="@{isCapLock ? true : false}"
+                    android:textAllCaps="@{viewModel.isCapLock ? true : false}"
                     android:onClick="@{(view) -> viewModel.inputString(view)}"
                     android:text="y" />
 
@@ -91,7 +87,7 @@
                     style="@style/NumberPad"
                     android:layout_marginHorizontal="@dimen/_3sdp"
                     android:layout_weight="1.5"
-                    android:textAllCaps="@{isCapLock ? true : false}"
+                    android:textAllCaps="@{viewModel.isCapLock ? true : false}"
                     android:onClick="@{(view) -> viewModel.inputString(view)}"
                     android:text="u" />
 
@@ -99,7 +95,7 @@
                     style="@style/NumberPad"
                     android:layout_marginHorizontal="@dimen/_3sdp"
                     android:layout_weight="1.5"
-                    android:textAllCaps="@{isCapLock ? true : false}"
+                    android:textAllCaps="@{viewModel.isCapLock ? true : false}"
                     android:onClick="@{(view) -> viewModel.inputString(view)}"
                     android:text="i" />
 
@@ -107,7 +103,7 @@
                     style="@style/NumberPad"
                     android:layout_marginHorizontal="@dimen/_3sdp"
                     android:layout_weight="1.5"
-                    android:textAllCaps="@{isCapLock ? true : false}"
+                    android:textAllCaps="@{viewModel.isCapLock ? true : false}"
                     android:onClick="@{(view) -> viewModel.inputString(view)}"
                     android:text="o" />
 
@@ -115,7 +111,7 @@
                     style="@style/NumberPad"
                     android:layout_marginHorizontal="@dimen/_3sdp"
                     android:layout_weight="1.5"
-                    android:textAllCaps="@{isCapLock ? true : false}"
+                    android:textAllCaps="@{viewModel.isCapLock ? true : false}"
                     android:onClick="@{(view) -> viewModel.inputString(view)}"
                     android:text="p" />
             </LinearLayout>
@@ -134,7 +130,7 @@
                     style="@style/NumberPad"
                     android:layout_marginHorizontal="@dimen/_3sdp"
                     android:layout_weight="1.498"
-                    android:textAllCaps="@{isCapLock ? true : false}"
+                    android:textAllCaps="@{viewModel.isCapLock ? true : false}"
                     android:onClick="@{(view) -> viewModel.inputString(view)}"
                     android:text="a" />
 
@@ -142,14 +138,14 @@
                     style="@style/NumberPad"
                     android:layout_marginHorizontal="@dimen/_3sdp"
                     android:layout_weight="1.498"
-                    android:textAllCaps="@{isCapLock ? true : false}"
+                    android:textAllCaps="@{viewModel.isCapLock ? true : false}"
                     android:onClick="@{(view) -> viewModel.inputString(view)}"
                     android:text="s" />
 
                 <com.diadiem.pos_components.PTextView
                     style="@style/NumberPad"
                     android:layout_marginHorizontal="@dimen/_3sdp"
-                    android:textAllCaps="@{isCapLock ? true : false}"
+                    android:textAllCaps="@{viewModel.isCapLock ? true : false}"
                     android:layout_weight="1.498"
                     android:onClick="@{(view) -> viewModel.inputString(view)}"
                     android:text="d" />
@@ -157,7 +153,7 @@
                 <com.diadiem.pos_components.PTextView
                     style="@style/NumberPad"
                     android:layout_marginHorizontal="@dimen/_3sdp"
-                    android:textAllCaps="@{isCapLock ? true : false}"
+                    android:textAllCaps="@{viewModel.isCapLock ? true : false}"
                     android:layout_weight="1.498"
                     android:onClick="@{(view) -> viewModel.inputString(view)}"
                     android:text="f" />
@@ -166,14 +162,14 @@
                     style="@style/NumberPad"
                     android:layout_marginHorizontal="@dimen/_3sdp"
                     android:layout_weight="1.498"
-                    android:textAllCaps="@{isCapLock ? true : false}"
+                    android:textAllCaps="@{viewModel.isCapLock ? true : false}"
                     android:onClick="@{(view) -> viewModel.inputString(view)}"
                     android:text="g" />
 
                 <com.diadiem.pos_components.PTextView
                     style="@style/NumberPad"
                     android:layout_marginHorizontal="@dimen/_3sdp"
-                    android:textAllCaps="@{isCapLock ? true : false}"
+                    android:textAllCaps="@{viewModel.isCapLock ? true : false}"
                     android:layout_weight="1.498"
                     android:onClick="@{(view) -> viewModel.inputString(view)}"
                     android:text="h" />
@@ -182,7 +178,7 @@
                     style="@style/NumberPad"
                     android:layout_marginHorizontal="@dimen/_3sdp"
                     android:layout_weight="1.498"
-                    android:textAllCaps="@{isCapLock ? true : false}"
+                    android:textAllCaps="@{viewModel.isCapLock ? true : false}"
                     android:onClick="@{(view) -> viewModel.inputString(view)}"
                     android:text="j" />
 
@@ -190,14 +186,14 @@
                     style="@style/NumberPad"
                     android:layout_marginHorizontal="@dimen/_3sdp"
                     android:layout_weight="1.498"
-                    android:textAllCaps="@{isCapLock ? true : false}"
+                    android:textAllCaps="@{viewModel.isCapLock ? true : false}"
                     android:onClick="@{(view) -> viewModel.inputString(view)}"
                     android:text="k" />
 
                 <com.diadiem.pos_components.PTextView
                     style="@style/NumberPad"
                     android:layout_marginHorizontal="@dimen/_3sdp"
-                    android:textAllCaps="@{isCapLock ? true : false}"
+                    android:textAllCaps="@{viewModel.isCapLock ? true : false}"
                     android:layout_weight="1.498"
                     android:onClick="@{(view) -> viewModel.inputString(view)}"
                     android:text="l" />
@@ -218,15 +214,15 @@
                     android:layout_weight="1.43"
                     android:paddingVertical="@dimen/_10sdp"
                     android:scaleType="centerInside"
-                    android:backgroundTint="@{isCapLock ? @color/_007EFF : @color/background}"
+                    android:backgroundTint="@{viewModel.isCapLock ? @color/_007EFF : @color/background}"
                     android:onClick="@{(view) -> viewModel.onCapLock()}"
-                    android:src="@{isCapLock? @drawable/ic_upper_case_light_color : @drawable/ic_upper_case}" />
+                    android:src="@{viewModel.isCapLock? @drawable/ic_upper_case_light_color : @drawable/ic_upper_case}" />
 
                 <com.diadiem.pos_components.PTextView
                     style="@style/NumberPad"
                     android:layout_marginHorizontal="@dimen/_3sdp"
                     android:layout_weight="1.5"
-                    android:textAllCaps="@{isCapLock ? true : false}"
+                    android:textAllCaps="@{viewModel.isCapLock ? true : false}"
                     android:onClick="@{(view) -> viewModel.inputString(view)}"
                     android:text="z" />
 
@@ -234,7 +230,7 @@
                     style="@style/NumberPad"
                     android:layout_marginHorizontal="@dimen/_3sdp"
                     android:layout_weight="1.5"
-                    android:textAllCaps="@{isCapLock ? true : false}"
+                    android:textAllCaps="@{viewModel.isCapLock ? true : false}"
                     android:onClick="@{(view) -> viewModel.inputString(view)}"
                     android:text="x" />
 
@@ -242,14 +238,14 @@
                     style="@style/NumberPad"
                     android:layout_marginHorizontal="@dimen/_3sdp"
                     android:layout_weight="1.5"
-                    android:textAllCaps="@{isCapLock ? true : false}"
+                    android:textAllCaps="@{viewModel.isCapLock ? true : false}"
                     android:onClick="@{(view) -> viewModel.inputString(view)}"
                     android:text="c" />
 
                 <com.diadiem.pos_components.PTextView
                     style="@style/NumberPad"
                     android:layout_marginHorizontal="@dimen/_3sdp"
-                    android:textAllCaps="@{isCapLock ? true : false}"
+                    android:textAllCaps="@{viewModel.isCapLock ? true : false}"
                     android:layout_weight="1.5"
                     android:onClick="@{(view) -> viewModel.inputString(view)}"
                     android:text="v" />
@@ -258,7 +254,7 @@
                     style="@style/NumberPad"
                     android:layout_marginHorizontal="@dimen/_3sdp"
                     android:layout_weight="1.5"
-                    android:textAllCaps="@{isCapLock ? true : false}"
+                    android:textAllCaps="@{viewModel.isCapLock ? true : false}"
                     android:onClick="@{(view) -> viewModel.inputString(view)}"
                     android:text="b" />
 
@@ -266,7 +262,7 @@
                     style="@style/NumberPad"
                     android:layout_marginHorizontal="@dimen/_3sdp"
                     android:layout_weight="1.5"
-                    android:textAllCaps="@{isCapLock ? true : false}"
+                    android:textAllCaps="@{viewModel.isCapLock ? true : false}"
                     android:onClick="@{(view) -> viewModel.inputString(view)}"
                     android:text="n" />
 
@@ -274,7 +270,7 @@
                     style="@style/NumberPad"
                     android:layout_marginHorizontal="@dimen/_3sdp"
                     android:layout_weight="1.5"
-                    android:textAllCaps="@{isCapLock ? true : false}"
+                    android:textAllCaps="@{viewModel.isCapLock ? true : false}"
                     android:onClick="@{(view) -> viewModel.inputString(view)}"
                     android:text="m" />
 

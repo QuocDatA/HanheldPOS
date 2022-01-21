@@ -1,124 +1,117 @@
 package com.hanheldpos.model
 
 
+import com.google.gson.reflect.TypeToken
 import com.hanheldpos.data.api.ApiConst
 import com.hanheldpos.data.api.pojo.device.DeviceCodeResp
 import com.hanheldpos.data.api.pojo.discount.CouponResp
 import com.hanheldpos.data.api.pojo.discount.DiscountResp
-import com.hanheldpos.data.api.pojo.employee.EmployeeResp
 import com.hanheldpos.data.api.pojo.fee.Fee
 import com.hanheldpos.data.api.pojo.fee.FeeResp
-import com.hanheldpos.data.api.pojo.order.menu.OrderMenuResp
+import com.hanheldpos.data.api.pojo.floor.FloorResp
+import com.hanheldpos.data.api.pojo.order.menu.MenuResp
 import com.hanheldpos.data.api.pojo.order.settings.OrderSettingResp
-import com.hanheldpos.data.api.pojo.payment.PaymentsResp
-import com.hanheldpos.data.api.pojo.table.TableResp
+import com.hanheldpos.data.api.pojo.payment.PaymentMethodResp
 import com.hanheldpos.model.cart.fee.FeeApplyToType
 import com.hanheldpos.prefs.PrefKey
 import com.utils.helper.AppPreferences
-import java.text.DateFormat
-import java.text.SimpleDateFormat
-import java.time.ZonedDateTime
-import java.util.*
 
 object DataHelper {
 
-    var CurrentDrawer_id : String? = null;
+    var CurrentDrawerId : String? = null;
 
     fun clearData() {
-        deviceCodeResp = null
-        orderMenuResp = null
-        orderSettingResp = null
-        tableResp = null
-        feeResp = null
-        discountResp = null
-        discountDetailResp = null
-        paymentsResp = null
-        CurrentDrawer_id = null
+        deviceCode = null
+        menu = null
+        orderSetting = null
+        floor = null
+        fee = null
+        discounts = null
+        discountDetails = null
+        paymentMethods = null
+        CurrentDrawerId = null
         numberIncreaseOrder = 0;
         AppPreferences.get().storeValue(PrefKey.Setting.DEVICE_CODE, null)
     }
 
     fun generateOrderIdByFormat() : String {
-        var numberIncrement = if ((getDeviceCodeModel()?.listSettingsId?.firstOrNull()?.NumberIncrement?: 0) > numberIncreaseOrder) getDeviceCodeModel()?.listSettingsId?.firstOrNull()?.NumberIncrement?: 0 else numberIncreaseOrder;
+        var numberIncrement : Long = numberIncreaseOrder;
         numberIncrement = numberIncrement.plus(1);
         numberIncreaseOrder = numberIncrement;
-        val prefix = getDeviceCodeModel()?.listSettingsId?.firstOrNull()?.Prefix ?: ""
-        val deviceAcronymn =getDeviceCodeModel()?.device?.firstOrNull()?.acronymn ?: ""
-        val minimumNumber = getDeviceCodeModel()?.listSettingsId?.firstOrNull()?.MinimumNumber ?: 0
+        val prefix = getDeviceCodeModel()?.SettingsId?.firstOrNull()?.Prefix ?: ""
+        val deviceAcronymn =getDeviceCodeModel()?.Device?.firstOrNull()?.Acronymn ?: ""
+        val minimumNumber = getDeviceCodeModel()?.SettingsId?.firstOrNull()?.MinimumNumber ?: 0
         return "${prefix}${deviceAcronymn}${numberIncrement.toString().padEnd(minimumNumber, '0')}";
     }
 
     //region ## Order Menu
 
-    var orderMenuResp: OrderMenuResp? = null
+    var menu: MenuResp? = null
         get() {
             if (field == null) {
                 field = StorageHelper.getDataFromEncryptedFile(
-                    PrefKey.Order.ORDER_MENU_RESP,
-                    OrderMenuResp::class.java
+                    PrefKey.Order.MENU_RESP,
+                    classOff =  MenuResp::class.java
                 )
             }
             return field
         }
         set(value) {
             field = value
-            StorageHelper.setDataToEncryptedFile(PrefKey.Order.ORDER_MENU_RESP, value)
+            StorageHelper.setDataToEncryptedFile(PrefKey.Order.MENU_RESP, value)
         }
 
-    private fun getOrderMenuModel() = orderMenuResp?.model?.firstOrNull()
-    private fun getGroupsOrderMenu() = getOrderMenuModel()?.groups
+    private fun getGroupsOrderMenu() = menu?.GroupList;
 
     fun findGroupNameOrderMenu(group_id : String) : String{
-        return getGroupsOrderMenu()?.firstOrNull { groupsItem ->  groupsItem?.id.equals(group_id)}?.groupName ?: ""
+        return getGroupsOrderMenu()?.firstOrNull { groupsItem -> groupsItem._Id == group_id }?.GroupName ?: ""
     }
 
     //endregion
     //region ### Order Settings
-    var orderSettingResp: OrderSettingResp? = null
+    var orderSetting: OrderSettingResp? = null
         get() {
             if (field == null) {
                 field = StorageHelper.getDataFromEncryptedFile(
-                    PrefKey.Order.ORDER_SETTING_RESP,
-                    OrderSettingResp::class.java
+                    PrefKey.Order.MENU_SETTING_RESP,
+                    classOff =  OrderSettingResp::class.java
                 )
             }
             return field
         }
         set(value) {
             field = value
-            StorageHelper.setDataToEncryptedFile(PrefKey.Order.ORDER_SETTING_RESP, value)
+            StorageHelper.setDataToEncryptedFile(PrefKey.Order.MENU_SETTING_RESP, value)
         }
 
-    private fun getOrderSettingModel() = orderSettingResp?.model?.firstOrNull()
+    fun getVoidInfo() = orderSetting?.ListVoid?.firstOrNull()
 
-    fun getVoidInfo() = getOrderSettingModel()?.listVoid?.firstOrNull()
+    fun getVoidList() = getVoidInfo()?.ListReasons
 
-    fun getVoidList() = getVoidInfo()?.listReasons
+    fun getVoidItemById(voidId: Int) = getVoidList()?.find { it.Id == voidId }
 
-    fun getVoidItemById(voidId: Int) = getVoidList()?.find { it?.id == voidId }
+    private fun getCompInfo() = orderSetting?.ListComp?.firstOrNull()
 
-    private fun getCompInfo() = getOrderSettingModel()?.listComp?.firstOrNull()
+    fun getCompList() = getCompInfo()?.ListReasons
 
-    fun getCompList() = getCompInfo()?.listReasons
+    fun getCompItemById(voidId: Int) = getCompList()?.find { it.Id == voidId }
 
-    fun getCompItemById(voidId: Int) = getCompList()?.find { it?.id == voidId }
-
-    fun getDiningOptionList() = getOrderSettingModel()?.diningOptions
+    fun getDiningOptionList() = orderSetting?.ListDiningOptions
 
     fun getDiningOptionItem(diningOptionId: Int) =
-        getDiningOptionList()?.find { it?.id == diningOptionId }
+        getDiningOptionList()?.find { it.Id == diningOptionId }
 
 
     fun getDefaultDiningOptionItem() = getDiningOptionList()?.firstOrNull()
 
     //endregion
     //region ## Device Code
-    var deviceCodeResp: DeviceCodeResp? = null
+    var deviceCode: DeviceCodeResp? = null
         get() {
             if (field == null) {
                 field = StorageHelper.getDataFromEncryptedFile(
                     PrefKey.Setting.DEVICE_CODE,
-                    DeviceCodeResp::class.java
+                    classOff =  DeviceCodeResp::class.java
                 )
             }
             return field
@@ -128,86 +121,55 @@ object DataHelper {
             StorageHelper.setDataToEncryptedFile(PrefKey.Setting.DEVICE_CODE, value)
         }
 
-    private fun getDeviceCodeModel() = deviceCodeResp?.model?.firstOrNull()
+    private fun getDeviceCodeModel() = deviceCode;
 
-    fun getDeviceCodeEmployee() = getDeviceCodeModel()?.employees
+    fun getDeviceCodeEmployee() = getDeviceCodeModel()?.EmployeeList;
 
-    fun getDeviceByDeviceCode() = getDeviceCodeModel()?.device?.firstOrNull()
+    fun getDeviceByDeviceCode() = getDeviceCodeModel()?.Device?.firstOrNull()
 
-    fun getShowReceiptScreen() = getDeviceByDeviceCode()?.showReceiptScreen
+    fun getCurrencySymbol() = getDeviceCodeModel()?.Users?.CurrencySymbol
 
-    fun getStyleUI() = getDeviceByDeviceCode()?.styleUI
-    fun getIsModifierNewPage() = getDeviceByDeviceCode()?.isModifierNewPage == 1
-    fun getModifierStyle() = getDeviceByDeviceCode()?.modifierStyle
+    fun getDeviceGuidByDeviceCode() = getDeviceByDeviceCode()?._Id
 
-    fun getViewMode() = getDeviceCodeModel()?.viewItemMode?.firstOrNull()?.viewMode?.firstOrNull()
+    fun getLocationGuidByDeviceCode() = getDeviceByDeviceCode()?.Location
 
-    fun getPictureMode() =
-        getDeviceCodeModel()?.viewItemMode?.firstOrNull()?.pictureMode?.firstOrNull()
-
-    fun getCurrencySymbol() = getDeviceCodeModel()?.users?.currencySymbol
-
-    fun getDeviceGuidByDeviceCode() = getDeviceByDeviceCode()?.id
-
-    fun getLocationGuidByDeviceCode() = getDeviceByDeviceCode()?.location
-
-    fun getUserGuidByDeviceCode() = getDeviceByDeviceCode()?.userGuid
-
-    fun getEmployeeListByDeviceCode() = getDeviceCodeModel()?.employees
-
-
-    fun getEmployeeByEmployeeGui(employeeGuid: String?): EmployeeResp? {
-        if (employeeGuid == null) return null
-        return getEmployeeListByDeviceCode()?.find { it?.id == employeeGuid }
-    }
-
-    fun isLocker() = getDeviceByDeviceCode()?.deviceType == 4
-
-    private fun getListEmployeeByEmployeeGui(employeeGuidList: List<String>?): List<EmployeeResp>? {
-        if (employeeGuidList.isNullOrEmpty()) return null
-        return getEmployeeListByDeviceCode()?.filterNotNull()?.filter { it ->
-            employeeGuidList.contains(it.id)
-        }
-    }
+    fun getUserGuidByDeviceCode() = getDeviceByDeviceCode()?.UserGuid
 
     //endregion
 
     //region ## TableStatus
 
-    var tableResp: TableResp? = null
+    var floor: FloorResp? = null
         get() {
             if (field == null) {
                 field = StorageHelper.getDataFromEncryptedFile(
-                    PrefKey.Table.TABLE_RESP,
-                    TableResp::class.java
+                    PrefKey.Floor.FLOOR_RESP,
+                    classOff =  FloorResp::class.java
                 )
             }
             return field
         }
         set(value) {
             // TODO reInit floor table status - this should be done by the server
-            value?.model?.firstOrNull()?.floorTable?.forEach {
-                it?.visible = ApiConst.VISIBLE
+            value?.FloorTable?.forEach {
+                it.Visible = ApiConst.VISIBLE
             }
 
             field = value
 
-            StorageHelper.setDataToEncryptedFile(PrefKey.Table.TABLE_RESP, value)
+            StorageHelper.setDataToEncryptedFile(PrefKey.Floor.FLOOR_RESP, value)
         }
-
-    private fun getTableModel() = tableResp?.model?.firstOrNull()
-    fun getTableStatus() = getTableModel()?.tableStatus
 
     //endregion
 
 
     //region ## Fee
-    var feeResp: FeeResp? = null
+    var fee: FeeResp? = null
         get() {
             if (field == null) {
                 field = StorageHelper.getDataFromEncryptedFile(
                     PrefKey.Fee.FEE_RESP,
-                    FeeResp::class.java
+                    classOff =  FeeResp::class.java
                 )
             }
             return field
@@ -217,15 +179,15 @@ object DataHelper {
             StorageHelper.setDataToEncryptedFile(PrefKey.Fee.FEE_RESP, value)
         }
 
-    private fun getListFee() : List<Fee>? = feeResp?.feeModel?.fees
+    private fun getListFee() : List<Fee>? = fee?.Fees
 
     /**
      * Get Fee type [FeeApplyToType] with product id
      */
     fun findFeeProductList(productId : String) : List<Fee>? {
         return getListFee()?.filter { fee->
-            FeeApplyToType.fromInt(fee.feeApplyToType) != FeeApplyToType.Order && fee.assignToProducts.firstOrNull{ assign_p->
-                assign_p.productId == productId
+            FeeApplyToType.fromInt(fee.Id) != FeeApplyToType.Order && fee.AssignToProductList.firstOrNull{ assign_p->
+                assign_p.ProductGuid == productId
             } != null
         }?.toList()
     }
@@ -234,7 +196,7 @@ object DataHelper {
      */
     fun findFeeOrderList() : List<Fee>? {
         return getListFee()?.filter { fee->
-            FeeApplyToType.fromInt(fee.feeApplyToType) != FeeApplyToType.Order
+            FeeApplyToType.fromInt(fee.Id) != FeeApplyToType.Order
         }?.toList()
     }
 
@@ -243,12 +205,12 @@ object DataHelper {
 
     //region Discount
 
-    var discountResp: DiscountResp? = null
+    var discounts: List<DiscountResp>? = null
         get() {
             if (field == null) {
                 field = StorageHelper.getDataFromEncryptedFile(
                     PrefKey.Discount.DISCOUNT_RESP,
-                    DiscountResp::class.java
+                    object : TypeToken<List<DiscountResp>>() {}.type
                 )
             }
             return field
@@ -258,12 +220,12 @@ object DataHelper {
             StorageHelper.setDataToEncryptedFile(PrefKey.Discount.DISCOUNT_RESP, value)
         }
 
-    var discountDetailResp: CouponResp? = null
+    var discountDetails: List<CouponResp>? = null
         get() {
             if (field == null) {
                 field = StorageHelper.getDataFromEncryptedFile(
                     PrefKey.Discount.DISCOUNT_DETAIL_RESP,
-                    CouponResp::class.java
+                    object : TypeToken<List<CouponResp>>() {}.type
                 )
             }
             return field
@@ -277,12 +239,12 @@ object DataHelper {
 
     //region Payment
 
-    var paymentsResp : PaymentsResp? = null
+    var paymentMethods : List<PaymentMethodResp>? = null
         get() {
             if (field == null) {
                 field = StorageHelper.getDataFromEncryptedFile(
                     PrefKey.Payment.PAYMENTS_RESP,
-                    PaymentsResp::class.java
+                    object : TypeToken<List<PaymentMethodResp>>() {}.type
                 )
             }
             return field
@@ -292,21 +254,20 @@ object DataHelper {
             StorageHelper.setDataToEncryptedFile(PrefKey.Payment.PAYMENTS_RESP, value)
         }
 
-    fun getPaymentMethodList()= this.paymentsResp?.Model
+    fun getPaymentMethodList()= this.paymentMethods
 
     //region Order Storage
 
     var numberIncreaseOrder : Long = 0
         get() {
-            if (field == null) {
-                field = AppPreferences.get().getLong(PrefKey.Order.FILE_NAME_NUMBER_INCREAMENT)
-            }
-            return field
+            return AppPreferences.get().getLong(PrefKey.Order.FILE_NAME_NUMBER_INCREASEMENT)
         }
         set(value) {
             field = value
-            AppPreferences.get().storeValue(PrefKey.Payment.PAYMENTS_RESP, value)
+            AppPreferences.get().storeValue(PrefKey.Order.FILE_NAME_NUMBER_INCREASEMENT, value)
         }
+
+
 
     //endregion
 }

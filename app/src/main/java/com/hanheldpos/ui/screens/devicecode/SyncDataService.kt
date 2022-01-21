@@ -2,14 +2,14 @@ package com.hanheldpos.ui.screens.devicecode
 
 import android.content.Context
 import com.hanheldpos.R
-import com.hanheldpos.data.api.pojo.device.DeviceCodeResp
 import com.hanheldpos.data.api.pojo.discount.CouponResp
 import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.data.api.pojo.fee.FeeResp
-import com.hanheldpos.data.api.pojo.order.menu.OrderMenuResp
+import com.hanheldpos.data.api.pojo.floor.FloorResp
+import com.hanheldpos.data.api.pojo.order.menu.MenuResp
 import com.hanheldpos.data.api.pojo.order.settings.OrderSettingResp
-import com.hanheldpos.data.api.pojo.payment.PaymentsResp
-import com.hanheldpos.data.api.pojo.table.TableResp
+import com.hanheldpos.data.api.pojo.payment.PaymentMethodResp
+import com.hanheldpos.data.repository.BaseResponse
 import com.hanheldpos.data.repository.base.BaseRepoCallback
 import com.hanheldpos.data.repository.discount.DiscountRepo
 import com.hanheldpos.data.repository.fee.FeeRepo
@@ -35,12 +35,12 @@ class SyncDataService : BaseViewModel() {
         menuRepo.getOrderMenu(
             userGuid = userGuid,
             locationGuid = location,
-            callback = object : BaseRepoCallback<OrderMenuResp?> {
-                override fun apiResponse(data: OrderMenuResp?) {
-                    if (data == null || data?.didError == true) {
+            callback = object : BaseRepoCallback<BaseResponse<MenuResp>> {
+                override fun apiResponse(data: BaseResponse<MenuResp>?) {
+                    if (data == null || data.DidError) {
                         onDataFailure(context?.getString(R.string.failed_to_load_data),listener);
                     } else {
-                        DataHelper.orderMenuResp = data;
+                        DataHelper.menu = data.Model;
 
                         startMappingData(listener);
                     }
@@ -54,12 +54,12 @@ class SyncDataService : BaseViewModel() {
         orderRepo.getOrderSetting(
             userGuid = userGuid,
             locationGuid = location,
-            callback = object : BaseRepoCallback<OrderSettingResp?> {
-                override fun apiResponse(data: OrderSettingResp?) {
-                    if (data == null || data.didError == true) {
+            callback = object : BaseRepoCallback<BaseResponse<List<OrderSettingResp>>?> {
+                override fun apiResponse(data: BaseResponse<List<OrderSettingResp>>?) {
+                    if (data == null || data.DidError) {
                         onDataFailure(context?.getString(R.string.failed_to_load_data),listener);
                     } else {
-                        DataHelper.orderSettingResp = data;
+                        DataHelper.orderSetting = data.Model.firstOrNull();
                         startMappingData(listener);
                     }
                 }
@@ -72,12 +72,12 @@ class SyncDataService : BaseViewModel() {
         floorRepo.getPosFloor(
             userGuid = userGuid,
             locationGuid = location,
-            callback = object : BaseRepoCallback<TableResp?> {
-                override fun apiResponse(data: TableResp?) {
-                    if (data == null || data.didError == true) {
+            callback = object : BaseRepoCallback<BaseResponse<List<FloorResp>>?> {
+                override fun apiResponse(data: BaseResponse<List<FloorResp>>?) {
+                    if (data == null || data.DidError) {
                         onDataFailure(context?.getString(R.string.failed_to_load_data),listener);
                     } else {
-                        DataHelper.tableResp = data;
+                        DataHelper.floor = data.Model.firstOrNull();
                         startMappingData(listener);
                     }
                 }
@@ -90,12 +90,12 @@ class SyncDataService : BaseViewModel() {
         feeRepo.getFees(
             userGuid = userGuid,
             locationGuid = location,
-            callback = object : BaseRepoCallback<FeeResp?> {
-                override fun apiResponse(data: FeeResp?) {
-                    if (data == null || data.didError) {
+            callback = object : BaseRepoCallback<BaseResponse<FeeResp>?> {
+                override fun apiResponse(data: BaseResponse<FeeResp>?) {
+                    if (data == null || data.DidError) {
                         onDataFailure(context?.getString(R.string.failed_to_load_data),listener);
                     } else {
-                        DataHelper.feeResp = data;
+                        DataHelper.fee = data.Model;
                         startMappingData(listener);
                     }
                 }
@@ -111,12 +111,12 @@ class SyncDataService : BaseViewModel() {
         discountRepo.getDiscountList(
             userGuid = userGuid,
             locationGuid = location,
-            callback = object : BaseRepoCallback<DiscountResp> {
-                override fun apiResponse(data: DiscountResp?) {
+            callback = object : BaseRepoCallback<BaseResponse<List<DiscountResp>>> {
+                override fun apiResponse(data: BaseResponse<List<DiscountResp>>?) {
                     if (data == null || data.DidError) {
                         onDataFailure(context?.getString(R.string.failed_to_load_data),listener);
                     } else {
-                        DataHelper.discountResp = data;
+                        DataHelper.discounts = data.Model;
                         startMappingData(listener);
                     }
                 }
@@ -130,12 +130,12 @@ class SyncDataService : BaseViewModel() {
         discountRepo.getDiscountDetailList(
             userGuid = userGuid,
             locationGuid = location,
-            callback = object : BaseRepoCallback<CouponResp> {
-                override fun apiResponse(data: CouponResp?) {
+            callback = object : BaseRepoCallback<BaseResponse<List<CouponResp>>> {
+                override fun apiResponse(data: BaseResponse<List<CouponResp>>?) {
                     if (data == null || data.DidError) {
                         onDataFailure(context?.getString(R.string.failed_to_load_data),listener);
                     } else {
-                        DataHelper.discountDetailResp = data;
+                        DataHelper.discountDetails = data.Model;
                         startMappingData(listener);
                     }
                 }
@@ -147,12 +147,12 @@ class SyncDataService : BaseViewModel() {
         );
 
         paymentRepo.getPaymentMethods(userGuid = userGuid, callback = object :
-            BaseRepoCallback<PaymentsResp> {
-            override fun apiResponse(data: PaymentsResp?) {
+            BaseRepoCallback<BaseResponse<List<PaymentMethodResp>>> {
+            override fun apiResponse(data: BaseResponse<List<PaymentMethodResp>>?) {
                 if (data == null || data.DidError) {
                     onDataFailure(context?.getString(R.string.failed_to_load_data),listener);
                 } else {
-                    DataHelper.paymentsResp = data;
+                    DataHelper.paymentMethods = data.Model;
                     startMappingData(listener);
                 }
             }
@@ -171,14 +171,14 @@ class SyncDataService : BaseViewModel() {
 
     private fun startMappingData(listener: SyncDataServiceListener) {
         DataHelper.let {
-            it.orderMenuResp ?: return;
-            it.tableResp ?: return;
-            it.feeResp ?: return;
-            it.discountResp ?: return;
-            it.discountDetailResp ?: return;
-            it.paymentsResp ?: return;
+            it.menu ?: return;
+            it.floor ?: return;
+            it.fee ?: return;
+            it.discounts ?: return;
+            it.discountDetails ?: return;
+            it.paymentMethods ?: return;
         }
-
+        DataHelper.numberIncreaseOrder = DataHelper.deviceCode?.SettingsId?.firstOrNull()?.NumberIncrement?.toLong() ?: 0;
         listener.onLoadedResources();
 
     }

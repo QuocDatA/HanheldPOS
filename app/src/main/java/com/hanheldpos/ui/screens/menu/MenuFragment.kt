@@ -14,6 +14,7 @@ import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.dialog.AppAlertDialog
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.menu.adapter.MenuAdapter
+import com.hanheldpos.ui.screens.menu.option.report.ReportFragment
 import com.hanheldpos.ui.screens.pincode.PinCodeActivity
 import com.hanheldpos.ui.screens.welcome.WelcomeActivity
 
@@ -83,20 +84,26 @@ class MenuFragment : BaseFragment<FragmentMenuBinding, MenuVM>(), MenuUV {
 
     fun onNavOptionClick(option: ItemMenuOptionNav) {
         when (option.type) {
-            NavBarOptionType.ORDERS -> TODO()
-            NavBarOptionType.TRANSACTIONS -> TODO()
-            NavBarOptionType.REPORTS -> TODO()
-            NavBarOptionType.CUSTOMER -> TODO()
-            NavBarOptionType.ORDER_HISTORY -> TODO()
-            NavBarOptionType.SETTINGS -> TODO()
-            NavBarOptionType.SUPPORT -> TODO()
+            NavBarOptionType.ORDERS -> {}
+            NavBarOptionType.TRANSACTIONS -> {}
+            NavBarOptionType.REPORTS -> navigateToReport();
+            NavBarOptionType.CUSTOMER -> {}
+            NavBarOptionType.ORDER_HISTORY -> {}
+            NavBarOptionType.SETTINGS -> {}
+            NavBarOptionType.SUPPORT -> {}
             NavBarOptionType.LOGOUT_USER -> onLogoutOption(
                 LogoutType.LOGOUT_DEVICE,
                 title = getString(R.string.logout),
                 message = getString(R.string.are_you_sure_you_want_to_exit_this_account)
             )
-            NavBarOptionType.RESET_SYSTEM -> TODO()
+            NavBarOptionType.RESET_SYSTEM -> {
+
+            }
         }
+    }
+
+    fun navigateToReport() {
+        navigator.goTo(ReportFragment())
     }
 
     private fun onLogoutOption(type: LogoutType, title: String?, message: String?) {

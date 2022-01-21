@@ -13,10 +13,10 @@ data class CompVoid(
     var CompVoidTotalPrice: Double?
 ) : Parcelable {
     constructor(src: Reason, parent_id: Int?, totalPrice: Double?) : this(
-        CompVoidGuid = src.compVoidGuid,
+        CompVoidGuid = src.CompVoidGuid,
         CompVoidGroupId = parent_id,
-        CompVoidTitle = src.title,
-        CompVoidValue = src.compVoidValue,
+        CompVoidTitle = src.Title,
+        CompVoidValue = src.CompVoidValue,
         CompVoidTotalPrice = totalPrice
     );
 }

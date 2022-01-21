@@ -14,7 +14,7 @@ class DiscountAutomaticVM : BaseUiViewModel<DiscountAutomaticUV>() {
 
     fun loadDiscountAutomatic(item: BaseProductInCart? = null, cart: CartModel? = null) {
         if (item != null) {
-            val listDiscountCode = DataHelper.discountResp?.Model?.filter {
+            val listDiscountCode = DataHelper.discounts?.filter {
                 !it.DiscountAutomatic && it.DiscountApplyTo == DiscountApplyToType.ITEM_DISCOUNT_APPLY_TO.value && cart?.customer?.let { it1 ->
                     it.isValid(
                         item,
@@ -28,7 +28,7 @@ class DiscountAutomaticVM : BaseUiViewModel<DiscountAutomaticUV>() {
             };
         }
         if (cart != null) {
-            val listDiscountCode = DataHelper.discountResp?.Model?.filter {
+            val listDiscountCode = DataHelper.discounts?.filter {
                 !it.DiscountAutomatic && it.DiscountApplyTo == DiscountApplyToType.ORDER_DISCOUNT_APPLY_TO.value && it.isValid(
                     cart,
                     Date()

@@ -12,8 +12,8 @@ plugins {
 
 // ----- Apk info
 String APK_NAME = "[DEV]HanheldPos"
-int VERSION_CODE = 32
-String VERSION_NAME = "0.3.2"
+int VERSION_CODE = 34
+String VERSION_NAME = "0.3.4"
 
 static def getDate() {
     return new Date().format("yyyyMMdd")
@@ -148,4 +148,6 @@ dependencies {
     // Module that adds support for serialization/deserialization of Kotlin
     implementation "com.fasterxml.jackson.module:jackson-module-kotlin:2.13.0"
 
+    // Calendar
+    implementation 'com.github.prolificinteractive:material-calendarview:2.0.0'
 }

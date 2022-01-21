@@ -17,7 +17,7 @@ class WelcomeVM : BaseUiViewModel<WelcomeUV>() {
     }
 
     fun checkDeviceCode(){
-        DataHelper.deviceCodeResp?.let {
+        DataHelper.deviceCode?.let {
             uiCallback?.openPinCode();
         }
     }

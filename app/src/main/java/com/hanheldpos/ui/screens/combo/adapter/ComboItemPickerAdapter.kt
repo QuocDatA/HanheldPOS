@@ -48,7 +48,7 @@ class ComboItemPickerAdapter(
 
     override fun onBindViewHolder(holder: BaseBindingViewHolder<Regular>, position: Int) {
         val item = getItem(position);
-        productChosen.find { it.proOriginal?.id == item.proOriginal?.id }?.let {
+        productChosen.find { it.proOriginal?._id == item.proOriginal?._id }?.let {
             (holder.binding as ItemComboRegularBinding).isChosen = true;
         }
         holder.bindItem(item);

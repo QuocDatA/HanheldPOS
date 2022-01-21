@@ -1,52 +1,50 @@
 package com.hanheldpos.ui.screens.product
 
-import android.app.AlertDialog
-import androidx.fragment.app.Fragment
+import android.os.Bundle
+import android.view.View
 import androidx.fragment.app.activityViewModels
-import com.google.android.material.tabs.TabLayoutMediator
 import com.hanheldpos.R
-import com.hanheldpos.data.api.pojo.product.ProductItem
-import com.hanheldpos.data.api.pojo.product.getModifierList
+import com.hanheldpos.data.api.pojo.order.settings.Reason
+import com.hanheldpos.data.api.pojo.product.Product
+import com.hanheldpos.data.api.pojo.product.VariantsGroup
 import com.hanheldpos.databinding.FragmentProductDetailBinding
+import com.hanheldpos.extension.notifyValueChange
 import com.hanheldpos.model.DataHelper
-import com.hanheldpos.model.cart.*
+import com.hanheldpos.model.UserHelper
+import com.hanheldpos.model.cart.GroupBundle
+import com.hanheldpos.model.cart.ModifierCart
+import com.hanheldpos.model.cart.Regular
+import com.hanheldpos.model.cart.VariantCart
 import com.hanheldpos.model.combo.ItemActionType
+import com.hanheldpos.model.discount.DiscountApplyToType
+import com.hanheldpos.model.discount.DiscountTypeFor
+import com.hanheldpos.model.discount.DiscountUser
 import com.hanheldpos.model.product.BaseProductInCart
+import com.hanheldpos.model.product.GroupExtra
+import com.hanheldpos.model.product.ItemExtra
+import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
+import com.hanheldpos.ui.screens.cart.CartDataVM
+import com.hanheldpos.ui.screens.discount.discount_type.DiscountTypeFragment
 import com.hanheldpos.ui.screens.home.order.OrderFragment
-import com.hanheldpos.ui.screens.product.adapter.OptionsPagerAdapter
-import com.hanheldpos.ui.screens.product.options.OptionVM
-import com.hanheldpos.ui.screens.product.options.modifier.ModifierFragment
-import com.hanheldpos.ui.screens.product.options.variant.VariantFragment
-import kotlinx.coroutines.*
-
+import com.hanheldpos.ui.screens.product.adapter.GroupModifierAdapter
+import com.hanheldpos.ui.screens.product.adapter.GroupVariantAdapter
 
 class ProductDetailFragment(
-    private val item: Regular,
-    private val groupBundle : GroupBundle? = null,
-    private val productBundle : ProductItem? = null,
+    private val regular: Regular,
+    private val groupBundle: GroupBundle? = null,
+    private val productBundle: Product? = null,
     private val quantityCanChoose: Int = -1,
     private val action: ItemActionType,
     private val listener: OrderFragment.OrderMenuListener? = null,
-) : BaseFragment<FragmentProductDetailBinding, ProductDetailVM>(), ProductDetailUV,
-    OptionVM.OptionListener {
-    enum class OptionPage(val pos: Int, val text: String) {
-        Variant(0, "Variant"),
-        Modifier(1, "Modifier");
-    }
+) : BaseFragment<FragmentProductDetailBinding, ProductDetailVM>(), ProductDetailUV {
 
-    private val fragmentMap: MutableMap<OptionPage, Fragment> = mutableMapOf()
+    private lateinit var groupVariantAdapter: GroupVariantAdapter;
+    private lateinit var groupModifierAdapter: GroupModifierAdapter;
 
-    // ViewModel
-    private val optionVM by activityViewModels<OptionVM>();
+    private val cartDataVM by activityViewModels<CartDataVM>();
 
-    // Adapter
-    private lateinit var optionsPagerAdapter: OptionsPagerAdapter;
-
-    // Dialog Note
-    private lateinit var dialogCategory: AlertDialog;
-
-    override fun layoutRes() = R.layout.fragment_product_detail;
+    override fun layoutRes(): Int = R.layout.fragment_product_detail;
 
     override fun viewModelClass(): Class<ProductDetailVM> {
         return ProductDetailVM::class.java;
@@ -56,88 +54,217 @@ class ProductDetailFragment(
         viewModel.run {
             init(this@ProductDetailFragment);
             initLifeCycle(this@ProductDetailFragment);
-            binding.viewModel = viewModel;
+            binding.viewModel = this;
         }
-        optionVM.init(this);
     }
 
-    override fun initView() {
-        // Init Options
-        optionsPagerAdapter = OptionsPagerAdapter(childFragmentManager, lifecycle);
-        binding.optionContainer.adapter = optionsPagerAdapter;
-        TabLayoutMediator(binding.tabOption, binding.optionContainer) { tab, position ->
-            run {
-                when (position) {
-                    0 -> {
-                        tab.text = "VARIANT"
-                    }
-                    1 -> {
-                        tab.text = "MODIFIER"
-                    }
-                }
-            }
-        }.attach()
 
+    override fun initView() {
+
+        groupVariantAdapter = GroupVariantAdapter(
+            listener = object :
+                BaseItemClickListener<VariantsGroup.OptionValueVariantsGroup> {
+                override fun onItemClick(
+                    adapterPosition: Int,
+                    item: VariantsGroup.OptionValueVariantsGroup
+                ) {
+                    onSelectedVariant(item);
+                }
+            },
+        ).also {
+            binding.groupVariants.adapter = it;
+            binding.groupVariants.itemAnimator = null
+        }
+
+        groupModifierAdapter = GroupModifierAdapter(
+            regular.modifierList,
+            listener = object : BaseItemClickListener<ItemExtra> {
+                override fun onItemClick(adapterPosition: Int, item: ItemExtra) {
+                    onSelectedModifier(item);
+                }
+
+            }
+        ).also {
+            binding.groupModifiers.adapter = it;
+            binding.groupVariants.itemAnimator = null
+        }
+
+        if (action == ItemActionType.Modify)
+            childFragmentManager.beginTransaction().replace(
+                R.id.fragment_container_discount,
+                DiscountTypeFragment(
+                    product = regular,
+                    applyToType = DiscountApplyToType.ITEM_DISCOUNT_APPLY_TO,
+                    cart = cartDataVM.cartModelLD.value!!,
+                    listener = object : DiscountTypeFragment.DiscountTypeListener {
+                        override fun discountUserChoose(discount: DiscountUser) {
+                            if (viewModel.isValidDiscount.value != true) return;
+                            viewModel.regularInCart.value?.discountUsersList =
+                                mutableListOf(discount);
+                            viewModel.regularInCart.notifyValueChange();
+                        }
+
+                        override fun compReasonChoose(item: Reason) {
+                            if (viewModel.isValidDiscount.value != true) return;
+                            viewModel.regularInCart.value?.compReason = item;
+                            viewModel.regularInCart.notifyValueChange();
+                        }
+
+                        override fun compRemoveAll() {
+                            viewModel.regularInCart.value?.compReason = null;
+                            viewModel.regularInCart.notifyValueChange();
+                        }
+
+                        override fun discountFocus(type: DiscountTypeFor) {
+                            viewModel.typeDiscountSelect = type;
+                        }
+
+                        override fun validDiscount(isValid: Boolean) {
+                            viewModel.isValidDiscount.postValue(isValid);
+                        }
+                    })
+            ).commit();
     }
 
     override fun initData() {
+        // init data
         viewModel.actionType.value = action;
-        viewModel.regularInCart.value = item;
+        viewModel.regularInCart.value = regular;
         viewModel.maxQuantity = quantityCanChoose;
 
-        viewModel.regularInCart.value.let {
+        groupVariantAdapter.submitList(viewModel.listVariantGroups);
+        groupModifierAdapter.submitList(viewModel.listModifierGroups);
 
-            fragmentMap[OptionPage.Variant] =
-                VariantFragment(it?.proOriginal?.variantsGroup, it?.variantList, it?.proOriginal!!);
-            fragmentMap[OptionPage.Modifier] = ModifierFragment(
-                it.modifierList,
-                it.proOriginal?.getModifierList(
-                    DataHelper.orderMenuResp!!
-                )
-            );
-            optionsPagerAdapter.submitList(fragmentMap.values);
+        regular.apply {
 
+            proOriginal?.VariantsGroup.let {
+                if (it == null) {
+                    binding.groupVariants.visibility = View.GONE;
+                } else
+                    viewModel.listVariantGroups.add(it)
+            }
+            variantList?.let {
+                groupVariantAdapter.itemSelected = it;
+            };
+            proOriginal?.ProductModifiersList.let { modifiers ->
+                if (modifiers == null) {
+                    binding.groupModifiers.visibility = View.GONE;
+                } else
+
+                    viewModel.listModifierGroups.addAll(modifiers.map {
+                        GroupExtra(
+                            modifierExtra = it,
+                            modifierList = it.ModifierItemList.map { modifierItem ->
+                                ItemExtra(
+                                    modifier = modifierItem,
+                                    productPricing = proOriginal!!,
+                                    //maxExtraQuantity = it.MaximumModifier,
+                                    // TODO : Temp replace max quantity
+                                    maxExtraQuantity = 100,
+                                )
+                            }
+                        )
+                    })
+            }
         }
+
     }
 
     override fun initAction() {
-        if (viewModel.regularInCart.value?.proOriginal?.variantsGroup == null) {
-            GlobalScope.launch(Dispatchers.IO) {
-                delay(300);
-                launch(Dispatchers.Main) {
-                    binding.tabOption.getTabAt(0)?.view?.isClickable = false;
-                    binding.tabOption.getTabAt(1)?.select();
-                    binding.optionContainer.currentItem = 1;
+
+    }
+
+    fun onSelectedVariant(item: VariantsGroup.OptionValueVariantsGroup) {
+
+        // Add variant selected
+        if (viewModel.regularInCart.value!!.variantList?.size ?: 0 >= item.Level) {
+            viewModel.regularInCart.value!!.variantList!![item.Level - 1] =
+                VariantCart(item.Id, item.Value);
+        } else {
+            if (viewModel.regularInCart.value!!.variantList == null) viewModel.regularInCart.value!!.variantList =
+                mutableListOf()
+            viewModel.regularInCart.value!!.variantList?.add(VariantCart(item.Id, item.Value))
+        }
+        groupVariantAdapter.itemSelected = viewModel.regularInCart.value!!.variantList
+
+        // Last level variant
+        if (item.Variant?.OptionValueList == null || !item.Variant.OptionValueList.any()) {
+            val priceOverride =
+                viewModel.regularInCart.value!!.proOriginal?.priceOverride(
+                    UserHelper.getLocationGui(),
+                    item.Sku,
+                    item.Price
+                )
+
+            viewModel.regularInCart.value!!.apply {
+                this.sku = item.Sku
+                if (productBundle != null)
+                    this.priceOverride =
+                        viewModel.regularInCart.value!!.groupPrice(groupBundle!!, productBundle)
+                else
+                    this.priceOverride = priceOverride
+            }
+            viewModel.regularInCart.notifyValueChange();
+            return;
+        }
+        item.Variant.let { group ->
+            if (viewModel.listVariantGroups.size > item.Level) {
+                viewModel.listVariantGroups[item.Level] = group
+                binding.groupVariants.post {
+                    groupVariantAdapter.notifyItemChanged(item.Level);
+                }
+            } else {
+                viewModel.listVariantGroups.add(group)
+                binding.groupVariants.post {
+                    groupVariantAdapter.notifyItemInserted(item.Level);
                 }
             }
         }
+        viewModel.regularInCart.notifyValueChange();
+
     }
 
-    override fun onBack() {
-        navigator.goOneBack();
+    fun onSelectedModifier(item: ItemExtra) {
+        val modifier = ModifierCart(
+            item.modifier._Id,
+            item.modifier.ModifierGuid,
+            item.modifier.Modifier,
+            item.extraQuantity,
+            item.modifier.Price
+        )
+        if (item.extraQuantity > 0) {
+            viewModel.regularInCart.value?.apply {
+                modifierList.find { m ->
+                    m.modifierId == modifier.modifierId
+                }.let {
+                    if (it != null) {
+                        val index = modifierList.indexOf(it);
+                        modifierList[index] = modifier;
+                    } else {
+                        modifierList.add(modifier)
+                    }
+                }
+            }
+
+        } else {
+            viewModel.regularInCart.value
+                ?.apply {
+                    modifierList.removeAll { it.modifierGuid == modifier.modifierGuid }
+                }
+        }
+        viewModel.regularInCart.notifyValueChange();
+    }
+
+    override fun getBack() {
+        onFragmentBackPressed();
     }
 
     override fun onAddCart(item: BaseProductInCart) {
-        onBack();
+        requireActivity().supportFragmentManager.setFragmentResult(
+            "saveDiscount",
+            Bundle().apply { putSerializable("DiscountTypeFor", viewModel.typeDiscountSelect) });
+        getBack();
         listener?.onCartAdded(item, viewModel.actionType.value!!);
     }
-
-    override fun onModifierAddItem(item: ModifierCart) {
-        viewModel.onModifierAddItem(item);
-    }
-
-    override fun onModifierRemoveItem(item: ModifierCart) {
-        viewModel.onModifierRemoveItem(item);
-    }
-
-    override fun onVariantItemChange(
-        item: List<VariantCart>,
-        groupValue: String,
-        priceOverride: Double,
-        sku: String
-    ) {
-        viewModel.onVariantItemChange(item, groupBundle, productBundle ,groupValue, priceOverride, sku);
-    }
-
 
 }

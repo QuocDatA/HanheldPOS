@@ -60,7 +60,7 @@ class ComboGroupAdapter(
         * */
 //        item.productsForChoose.forEach { it.isChosen = false }
         itemComboGroup.groupBundle.productList.forEach { regular ->
-            itemComboGroup.productsForChoose.find { pro-> regular.proOriginal?.id == pro.proOriginal?.id }.let {
+            itemComboGroup.productsForChoose.find { pro-> regular.proOriginal?._id == pro.proOriginal?._id }.let {
 //                it?.isChosen = true;
             }
         }
@@ -102,22 +102,6 @@ class ComboGroupAdapter(
         );
 
     }
-
-
-
-    /*private fun toggleItemSelected(
-        comboGroup: Any?,
-        currentItem: ComboPickedItemViewModel,
-        value: Boolean
-    ) {
-        (comboGroup as ComboItemAdapter).let {
-            val currentItem =
-                it.currentList.find { temp -> temp.selectedComboItem?.productOrderItem?.id == currentItem.selectedComboItem?.productOrderItem?.id };
-            val currentItemIndex = it.currentList.indexOf(currentItem);
-            currentItem?.isChosen = value;
-            it.notifyItemChanged(currentItemIndex);
-        };
-    }*/
 
     private class DiffCallback : DiffUtil.ItemCallback<ItemComboGroup>() {
         override fun areItemsTheSame(

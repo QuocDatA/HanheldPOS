@@ -79,9 +79,9 @@ object CartPresenter {
             setBackgroundDrawable(null)
 
             val circle: View = contentView.findViewById(R.id.circleCartAnimation);
-            setBackColor(circle, item.proOriginal?.color);
+            setBackColor(circle, item.proOriginal?.Color);
             val txt: PTextView = contentView.findViewById(R.id.txtProductAdded);
-            txt.text = item.proOriginal?.acronymn;
+            txt.text = item.proOriginal?.Acronymn;
 
         }.also { popupWindow ->
             val location = IntArray(2).apply {

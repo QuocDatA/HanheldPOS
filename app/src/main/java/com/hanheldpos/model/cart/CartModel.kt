@@ -2,7 +2,7 @@ package com.hanheldpos.model.cart
 
 import com.hanheldpos.data.api.pojo.customer.CustomerResp
 import com.hanheldpos.data.api.pojo.fee.Fee
-import com.hanheldpos.data.api.pojo.order.settings.DiningOptionItem
+import com.hanheldpos.data.api.pojo.order.settings.DiningOption
 import com.hanheldpos.data.api.pojo.order.settings.Reason
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.cart.fee.FeeApplyToType
@@ -20,7 +20,7 @@ data class CartModel(
     var table: TableSummary,
     var customer: CustomerResp? = null,
     var shipping: Shipping? = null,
-    var diningOption: DiningOptionItem,
+    var diningOption: DiningOption,
     var deliveryTime: DeliveryTime? = null,
     val fees: List<Fee>,
     var paymentsList : MutableList<PaymentOrder>,
@@ -59,7 +59,7 @@ data class CartModel(
     }
 
     fun totalFee(subTotal: Double, totalDiscount : Double) : Double {
-        return fees.filter { FeeApplyToType.fromInt(it.feeApplyToType) != FeeApplyToType.Included }.sumOf { fee->
+        return fees.filter { FeeApplyToType.fromInt(it.Id) != FeeApplyToType.Included }.sumOf { fee->
             fee.price(subTotal,totalDiscount)
         }
     }
@@ -96,13 +96,13 @@ data class CartModel(
     }
 
     fun addRegular(regular: Regular){
-        val listFee = DataHelper.findFeeProductList(regular.proOriginal!!.id);
+        val listFee = DataHelper.findFeeProductList(regular.proOriginal!!._id);
         regular.fees = listFee;
         productsList.add(regular);
     }
 
     fun addBundle(combo : Combo){
-        val listFee = DataHelper.findFeeProductList(combo.proOriginal!!.id);
+        val listFee = DataHelper.findFeeProductList(combo.proOriginal!!._id);
         combo.fees = listFee;
         productsList.add(combo);
     }

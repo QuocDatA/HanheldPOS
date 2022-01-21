@@ -1,14 +1,11 @@
 package com.hanheldpos.ui.screens.pincode
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.hanheldpos.R
-import com.hanheldpos.data.api.pojo.cashdrawer.CashDrawerStatus
 import com.hanheldpos.data.api.pojo.cashdrawer.CashDrawerStatusResp
 import com.hanheldpos.data.api.pojo.employee.EmployeeResp
-import com.hanheldpos.data.api.services.CashDrawerService
-import com.hanheldpos.data.repository.GDataResp
+import com.hanheldpos.data.repository.BaseResponse
 import com.hanheldpos.data.repository.base.BaseRepoCallback
 import com.hanheldpos.data.repository.cashdrawer.CashDrawerRepo
 import com.hanheldpos.data.repository.employee.EmployeeRepo
@@ -19,11 +16,8 @@ import com.hanheldpos.model.cashdrawer.CashDrawerStatusReq
 import com.hanheldpos.model.cashdrawer.DrawerStatus
 
 import com.hanheldpos.ui.base.viewmodel.BaseRepoViewModel
-import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
 import com.hanheldpos.utils.JsonHelper
-import okhttp3.internal.notify
 import java.util.*
-import kotlin.coroutines.coroutineContext
 
 class PinCodeVM : BaseRepoViewModel<EmployeeRepo, PinCodeUV>() {
 
@@ -109,14 +103,14 @@ class PinCodeVM : BaseRepoViewModel<EmployeeRepo, PinCodeUV>() {
                 userGuid,
                 passCode,
                 locationGuid,
-                object : BaseRepoCallback<GDataResp<EmployeeResp>> {
-                    override fun apiResponse(data: GDataResp<EmployeeResp>?) {
-                        if (data == null || data.didError == true || data.model.isNullOrEmpty()) {
+                object : BaseRepoCallback<BaseResponse<List<EmployeeResp>>> {
+                    override fun apiResponse(data: BaseResponse<List<EmployeeResp>>?) {
+                        if (data == null || data.DidError || data.Model.isNullOrEmpty()) {
                             showError("Passcode does not exist!. Please try again");
                             lstResultLD.value?.clear();
                             lstResultLD.notifyValueChange();
                         } else {
-                            onEmployeeSuccess(data.model.first())
+                            onEmployeeSuccess(data.Model.first())
                         }
                     }
 
@@ -130,14 +124,12 @@ class PinCodeVM : BaseRepoViewModel<EmployeeRepo, PinCodeUV>() {
     fun onEmployeeSuccess(result: EmployeeResp) {
         uiCallback?.showLoading(false)
 //        val model = result.model
-        if (result.token != null) {
-            UserHelper.curEmployee = result
+        UserHelper.curEmployee = result
 
-            if (displayClockState.value == true) {
-                /*checkClockInOut()*/
-            } else {
-                checkDrawerStatus();
-            }
+        if (displayClockState.value == true) {
+            /*checkClockInOut()*/
+        } else {
+            checkDrawerStatus();
         }
         /*changeClockState()*/
     }
@@ -177,7 +169,7 @@ class PinCodeVM : BaseRepoViewModel<EmployeeRepo, PinCodeUV>() {
                     when(DrawerStatus.fromInt(data.Model.first().StatusId)) {
                         DrawerStatus.NOT_FOUND -> uiCallback?.goStartDrawer();
                         else->{
-                            DataHelper.CurrentDrawer_id = data.Model.first().CashDrawerGuid;
+                            DataHelper.CurrentDrawerId = data.Model.first().CashDrawerGuid;
                             uiCallback?.goHome()
                         };
                     }

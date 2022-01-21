@@ -9,8 +9,8 @@ import com.hanheldpos.model.keyboard.KeyBoardType
 class KeyBoardVM : ViewModel() {
     val input = MutableLiveData<String>()
     var listener: KeyBoardCallBack? = null;
-    var keyBoardType = KeyBoardType.Number
-    var isCapLock = false
+    var keyBoardType = MutableLiveData<KeyBoardType>(KeyBoardType.Number);
+    var isCapLock = MutableLiveData<Boolean>(false);
     fun concatenateInputString(view: View) {
         val textView = view as TextView
         if (input.value.isNullOrEmpty()) {
@@ -26,7 +26,7 @@ class KeyBoardVM : ViewModel() {
             if(textView.text == "space") {
                 input.value = (input.value + " ")
             } else {
-                if(isCapLock){
+                if(isCapLock.value!!){
                     input.value = (input.value + (textView.text).toString().uppercase())
                 } else {
                     input.value = (input.value + textView.text)
@@ -36,7 +36,7 @@ class KeyBoardVM : ViewModel() {
             if(textView.text == "space") {
                 input.value = (input.value + " ")
             } else {
-                if(isCapLock){
+                if(isCapLock.value!!){
                     input.value = (input.value + (textView.text).toString().uppercase())
                 } else {
                     input.value = (input.value + textView.text)
@@ -60,23 +60,21 @@ class KeyBoardVM : ViewModel() {
     }
 
     fun onCapLock() {
-        when(isCapLock) {
-            true -> isCapLock = false
-            false -> isCapLock = true
-        }
-        listener?.onCapLock()
+        isCapLock.postValue(!isCapLock.value!!)
     }
 
     fun switchKeyBoardType() {
-        when(keyBoardType)  {
+        when(keyBoardType.value!!)  {
             KeyBoardType.Number -> {
-                keyBoardType = KeyBoardType.Text
+                keyBoardType.postValue(KeyBoardType.Text)
             }
             KeyBoardType.Text -> {
-                keyBoardType = KeyBoardType.Number
+                keyBoardType.postValue(KeyBoardType.Number)
             }
+            KeyBoardType.TextOnly -> {}
+            KeyBoardType.NumberOnly -> {}
         }
-        listener?.onSwitch()
+
     }
 
     fun onListener(listener: KeyBoardCallBack) {
@@ -86,7 +84,5 @@ class KeyBoardVM : ViewModel() {
     interface KeyBoardCallBack {
         fun onComplete();
         fun onCancel();
-        fun onSwitch();
-        fun onCapLock()
     }
 }

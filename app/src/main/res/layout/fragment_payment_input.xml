@@ -48,7 +48,7 @@
 
                 <com.diadiem.pos_components.PTextInputEditText
                     android:text="@{keyboardVM.input}"
-                    android:id="@+id/numberPayment"
+                    android:id="@+id/numberPaymentInput"
                     style="@style/BaseTextInput"
                     android:layout_marginHorizontal="@dimen/_17sdp"
                     android:layout_marginVertical="@dimen/_20sdp"
@@ -125,7 +125,8 @@
             layout="@layout/layout_keyboard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true" />
+            android:layout_alignParentBottom="true"
+            app:keyboardVM="@{keyboardVM}" />
 
     </RelativeLayout>
 </layout>

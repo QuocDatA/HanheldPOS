@@ -15,11 +15,11 @@ class DiscountReasonAdapter(
 
     data class SelectedItem(var value: Int = -1)
 
-    private var selectedItem: SelectedItem = SelectedItem(-1)
+    var selectedItem: SelectedItem = SelectedItem(-1)
 
     override fun submitList(list: MutableList<Reason>?) {
         if (comp != null)
-        list?.find { it.id == comp.id }.let{
+        list?.find { it.Id == comp.Id }.let{
             selectedItem.value =  list?.indexOf(it)?: -1;
         }
         super.submitList(list)
@@ -44,7 +44,7 @@ class DiscountReasonAdapter(
 
     private class DiffCallback : DiffUtil.ItemCallback<Reason>() {
         override fun areItemsTheSame(oldItem: Reason, newItem: Reason): Boolean {
-            return oldItem.id == newItem.id;
+            return oldItem.Id == newItem.Id;
         }
 
         override fun areContentsTheSame(

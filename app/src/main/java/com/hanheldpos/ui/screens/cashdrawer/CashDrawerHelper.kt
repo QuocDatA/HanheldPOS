@@ -12,7 +12,7 @@ import com.hanheldpos.R
 
 object CashDrawerHelper {
     var isStartDrawer : Boolean = false;
-
+    var isEndDrawer: Boolean = false
 
     fun showDrawerNotification(activity: Activity, isOnStarting: Boolean = true) {
         val builder = AlertDialog.Builder(activity)
