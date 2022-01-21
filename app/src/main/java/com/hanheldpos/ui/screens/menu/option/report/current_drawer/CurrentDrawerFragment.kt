@@ -21,6 +21,8 @@ class CurrentDrawerFragment : BaseFragment<FragmentCurrentDrawerBinding, Current
 
     private lateinit var reportDrawerInfoAdapter: ReportDrawerInfoAdapter;
 
+    private lateinit var report: ReportCashDrawerResp;
+
     override fun layoutRes() = R.layout.fragment_current_drawer
 
     override fun viewModelClass(): Class<CurrentDrawerVM> {
@@ -79,8 +81,13 @@ class CurrentDrawerFragment : BaseFragment<FragmentCurrentDrawerBinding, Current
                 getString(R.string.notification),
                 getString(R.string.please_sync_local_data_before_ending_this_cash_drawer)
             )
-        } else
-            navigator.goTo(EndDrawerFragment())
+        } else{
+            if (this::report.isInitialized) {
+                navigator.goTo(EndDrawerFragment(report = report));
+            }
+
+        }
+
 
 
     }
@@ -91,7 +98,9 @@ class CurrentDrawerFragment : BaseFragment<FragmentCurrentDrawerBinding, Current
 
     @SuppressLint("NotifyDataSetChanged")
     override fun showInfoCurrentDrawer(report: ReportCashDrawerResp?) {
+
         report?.let {
+            this.report = report;
             reportDrawerInfoAdapter.submitList(report.Reports);
             reportDrawerInfoAdapter.notifyDataSetChanged();
         }
