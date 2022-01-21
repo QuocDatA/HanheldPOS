@@ -124,6 +124,28 @@
     <string name="actual_amount">Actual Amount</string>
     <string name="enter_amount">Enter Amount</string>
     <string name="total_paid_in_out">Total Paid In/Out</string>
+
+    <string name="material_calendar_monday">Mo</string>
+    <string name="material_calendar_tuesday">Tu</string>
+    <string name="material_calendar_wednesday">We</string>
+    <string name="material_calendar_thursday">Th</string>
+    <string name="material_calendar_friday">Fr</string>
+    <string name="material_calendar_saturday">Sa</string>
+    <string name="material_calendar_sunday">Su</string>
+    <string name="drawer">Drawer</string>
+    <string name="all_device">All Device</string>
+    <string name="this_device_only">This Device only</string>
+    <string name="all_day">All Day</string>
+    <string name="start">Start</string>
+    <string-array name="weekDayLabels">
+        <item>@string/material_calendar_monday</item>
+        <item>@string/material_calendar_tuesday</item>
+        <item>@string/material_calendar_wednesday</item>
+        <item>@string/material_calendar_thursday</item>
+        <item>@string/material_calendar_friday</item>
+        <item>@string/material_calendar_saturday</item>
+        <item>@string/material_calendar_sunday</item>
+    </string-array>
     <string name="notification">Notification</string>
     <string name="please_choose_payment_method">Please choose payment method</string>
     <string name="order_not_completed">Order not completed!</string>

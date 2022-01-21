@@ -30,7 +30,7 @@
     <string name="verification_otp">Verification Code</string>
     <string name="notification_otp_success">Your phone number has been verified successfully!</string>
     <string name="verifi">VERIFY</string>
-    <string name="done">DONE</string>
+    <string name="done">Done</string>
     <string name="home">Home</string>
     <string name="order">Order</string>
     <string name="scan">Scan</string>
