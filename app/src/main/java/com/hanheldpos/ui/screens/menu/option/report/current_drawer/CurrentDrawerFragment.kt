@@ -1,14 +1,30 @@
 package com.hanheldpos.ui.screens.menu.option.report.current_drawer
 
 
+import android.annotation.SuppressLint
+import android.view.View
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.hanheldpos.R
+import com.hanheldpos.data.api.pojo.cashdrawer.report.ReportCashDrawerResp
 import com.hanheldpos.databinding.FragmentCurrentDrawerBinding
-import com.hanheldpos.ui.base.dialog.AppAlertDialog
+import com.hanheldpos.model.DataHelper
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.cashdrawer.enddrawer.EndDrawerFragment
+import com.hanheldpos.ui.screens.menu.option.report.current_drawer.adapter.ReportDrawerInfoAdapter
 import com.hanheldpos.ui.screens.menu.option.report.current_drawer.payin_payout.PayInPayOutFragment
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
+import kotlin.coroutines.coroutineContext
 
-class CurrentDrawerFragment : BaseFragment<FragmentCurrentDrawerBinding, CurrentDrawerVM>() , CurrentDrawerUV {
+class CurrentDrawerFragment : BaseFragment<FragmentCurrentDrawerBinding, CurrentDrawerVM>(),
+    CurrentDrawerUV {
+
+    private lateinit var reportDrawerInfoAdapter: ReportDrawerInfoAdapter;
+
     override fun layoutRes() = R.layout.fragment_current_drawer
 
     override fun viewModelClass(): Class<CurrentDrawerVM> {
@@ -23,6 +39,32 @@ class CurrentDrawerFragment : BaseFragment<FragmentCurrentDrawerBinding, Current
     }
 
     override fun initView() {
+
+        if (DataHelper.currentDrawerId != null) {
+            binding.currentDrawerText.text = DataHelper.currentDrawerId;
+        } else binding.currentDrawerText.visibility = View.GONE;
+
+        reportDrawerInfoAdapter = ReportDrawerInfoAdapter();
+
+        binding.currentDrawerRecycle.apply {
+            adapter = reportDrawerInfoAdapter;
+            addItemDecoration(DividerItemDecoration(
+                context,
+                LinearLayoutManager.VERTICAL
+            ).apply {
+                setDrawable(
+                    ContextCompat.getDrawable(
+                        context,
+                        R.drawable.divider_vertical
+                    )!!
+                )
+            });
+        }
+
+
+        viewModel.getCashDrawerDetail(requireContext());
+
+
     }
 
     override fun initData() {
@@ -37,14 +79,21 @@ class CurrentDrawerFragment : BaseFragment<FragmentCurrentDrawerBinding, Current
 
     override fun onOpenEndDrawer() {
         navigator.goTo(EndDrawerFragment())
-//        AppAlertDialog.get().show(
-//            title = "Notification", message = "Please sync local data before ending\n" +
-//                    "this cash drawer"
-//        )
     }
 
     override fun onOpenPayInPayOut() {
         navigator.goTo(PayInPayOutFragment())
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    override fun showInfoCurrentDrawer(report: ReportCashDrawerResp?) {
+        report?.let {
+
+            reportDrawerInfoAdapter.submitList(report.Reports);
+            reportDrawerInfoAdapter.notifyDataSetChanged();
+
+
+        }
     }
 
 

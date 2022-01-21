@@ -159,8 +159,8 @@ class PinCodeVM : BaseRepoViewModel<EmployeeRepo, PinCodeUV>() {
             )
         );
 
-        cashDrawerRepo.getStatusCashDrawer(body, callback = object  : BaseRepoCallback<CashDrawerStatusResp>{
-            override fun apiResponse(data: CashDrawerStatusResp?) {
+        cashDrawerRepo.getStatusCashDrawer(body, callback = object  : BaseRepoCallback<BaseResponse<List<CashDrawerStatusResp>>?>{
+            override fun apiResponse(data: BaseResponse<List<CashDrawerStatusResp>>?) {
                 if (data == null || data.DidError || data.Model.isNullOrEmpty()) {
                     showError(data?.ErrorMessage ?:  "Have some error.");
                     lstResultLD.value?.clear();
@@ -169,7 +169,7 @@ class PinCodeVM : BaseRepoViewModel<EmployeeRepo, PinCodeUV>() {
                     when(DrawerStatus.fromInt(data.Model.first().StatusId)) {
                         DrawerStatus.NOT_FOUND -> uiCallback?.goStartDrawer();
                         else->{
-                            DataHelper.CurrentDrawerId = data.Model.first().CashDrawerGuid;
+                            DataHelper.currentDrawerId = data.Model.first().CashDrawerGuid;
                             uiCallback?.goHome()
                         };
                     }

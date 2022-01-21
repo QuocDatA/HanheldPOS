@@ -51,7 +51,7 @@ object CartConverter {
                 Code = cart.orderCode,
                 MenuLocationGuid = cart.menuLocationGuid,
                 CurrencySymbol = DataHelper.getCurrencySymbol()!!,
-                CashDrawer_id = DataHelper.CurrentDrawerId,
+                CashDrawer_id = DataHelper.currentDrawerId,
             ),
             OrderDetail = OrderDetail(
                 DiningOption = OrderDiningOption(

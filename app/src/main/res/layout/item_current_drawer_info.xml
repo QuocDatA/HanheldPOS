@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <com.diadiem.pos_components.PTextView
+            android:id="@+id/titleReport"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_weight="1"
+            android:paddingVertical="@dimen/_11sdp"
+            app:useFontStyle="normal"
+            app:useTextColor="color4"
+            app:useTextHeader="h5"
+            tools:text="@string/started" />
+
+        <com.diadiem.pos_components.PTextView
+            android:id="@+id/valueReport"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:useFontStyle="normal"
+            app:useTextColor="color4"
+            app:useTextHeader="h5"
+            tools:text="23/12/2021" />
+    </LinearLayout>
+</layout>
