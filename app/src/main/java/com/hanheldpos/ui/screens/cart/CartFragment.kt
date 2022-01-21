@@ -23,6 +23,7 @@ import com.hanheldpos.model.discount.DiscountUser
 import com.hanheldpos.model.product.BaseProductInCart
 import com.hanheldpos.model.product.ProductType
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
+import com.hanheldpos.ui.base.adapter.GridSpacingItemDecoration
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.cart.adapter.CartDiningOptionAdapter
 import com.hanheldpos.ui.screens.cart.adapter.CartDiscountAdapter
@@ -35,7 +36,6 @@ import com.hanheldpos.ui.screens.discount.DiscountFragment
 import com.hanheldpos.ui.screens.home.ScreenViewModel
 import com.hanheldpos.ui.screens.home.order.OrderFragment
 import com.hanheldpos.ui.screens.product.ProductDetailFragment
-import com.hanheldpos.ui.screens.product.adapter.GridSpacingItemDecoration
 
 
 class CartFragment( private val listener : CartCallBack) : BaseFragment<FragmentCartBinding, CartVM>(), CartUV {
@@ -149,18 +149,22 @@ class CartFragment( private val listener : CartCallBack) : BaseFragment<Fragment
 
     override fun initData() {
         //region init dining option data
-        val diningOptions: MutableList<DiningOption> =
-            (DataHelper.getDiningOptionList() as List<DiningOption>).toMutableList();
-        val currentDiningOption: DiningOption? = cartDataVM.diningOptionLD.value;
-        var selectedIndex = 0;
+        cartDataVM.diningOptionLD.observe(this, {
+            var selectedIndex = 0;
 
-        if (currentDiningOption != null) {
-            diningOptions.forEachIndexed { index, diningOptionItem ->
-                if (diningOptionItem.Id == currentDiningOption.Id) selectedIndex = index
+            val diningOptions: MutableList<DiningOption> =
+                (DataHelper.getDiningOptionList() as List<DiningOption>).toMutableList();
+            cartDiningOptionAdapter.submitList(diningOptions);
+
+            if (cartDataVM.cartModelLD.value != null) {
+                diningOptions.forEachIndexed { index, diningOptionItem ->
+                    if (diningOptionItem.Id == cartDataVM.cartModelLD.value?.diningOption?.Id) selectedIndex = index
+                }
             }
-        }
-        cartDiningOptionAdapter.setSelectedIndex(selectedIndex);
-        cartDiningOptionAdapter.submitList(diningOptions);
+            cartDiningOptionAdapter.setSelectedIndex(selectedIndex);
+
+        })
+
         //endregion
 
         //region init tip option
@@ -171,7 +175,7 @@ class CartFragment( private val listener : CartCallBack) : BaseFragment<Fragment
             FeeTip("15K", 15000.0),
             FeeTip("Other", -1.0),
         )
-        cartTipAdapter.setSelectedIndex(selectedIndex)
+        cartTipAdapter.setSelectedIndex(0)
         cartTipAdapter.submitList(tipOptions)
         //endregion
 
