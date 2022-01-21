@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
         <variable
             name="viewModel"
             type="com.hanheldpos.ui.screens.cashdrawer.enddrawer.EndDrawerVM" />
     </data>
-
 
     <LinearLayout
         style="@style/RootLayout"
@@ -26,7 +24,7 @@
                 android:layout_gravity="center|start"
                 android:adjustViewBounds="true"
                 android:backgroundTint="@color/textPrimary"
-                android:onClick="@{v -> viewModel.backPress()}"
+                android:onClick="@{v-> viewModel.backPress()}"
                 android:scaleType="centerInside"
                 android:src="@drawable/ic_baseline_arrow_back_ios_13"
                 tools:ignore="ContentDescription" />
@@ -94,7 +92,7 @@
                             android:layout_gravity="start"
                             android:layout_marginEnd="@dimen/_8sdp"
                             android:paddingVertical="@dimen/_11sdp"
-                            android:text="@{0}"
+
                             app:useFontStyle="normal"
                             app:useTextColor="color4"
                             app:useTextHeader="h5" />
@@ -197,7 +195,7 @@
                             android:layout_gravity="start"
                             android:layout_marginEnd="@dimen/_8sdp"
                             android:paddingVertical="@dimen/_11sdp"
-                            android:text="@{0}"
+
                             app:useFontStyle="normal"
                             app:useTextColor="color4"
                             app:useTextHeader="h5" />
@@ -507,10 +505,10 @@
                         android:id="@+id/btnEndDrawer"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@{viewModel.isValid() ? @color/color_0 : @color/color_11}"
+                        android:background="@color/color_11"
                         android:clickable="true"
                         android:focusable="true"
-                        android:foreground="@{viewModel.isValid() ? android.R.attr.selectableItemBackground : @android:color/transparent}"
+                        android:foreground="?attr/selectableItemBackground"
                         android:gravity="center"
                         android:orientation="horizontal"
                         android:padding="@dimen/_10sdp">
@@ -522,7 +520,8 @@
                             android:gravity="center"
                             android:text="@string/end_drawer"
                             app:useFontStyle="bold"
-                            app:useTextHeader="h5" />
+                            app:useTextHeader="h5"
+                            app:useTextColor="color0"/>
                     </LinearLayout>
                 </FrameLayout>
 
@@ -531,5 +530,4 @@
 
 
     </LinearLayout>
-
 </layout>
