@@ -52,21 +52,22 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/cart" />
+
                 <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center|end"
                     android:clickable="true"
                     android:focusable="true"
                     android:onClick="@{v->viewModel.deleteCart()}"
-                    android:layout_gravity="center|end"
-                    android:paddingHorizontal="@dimen/_10sdp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent">
+                    android:paddingHorizontal="@dimen/_10sdp">
+
                     <com.diadiem.pos_components.PTextView
                         style="@style/CartDelete"
-                        android:layout_gravity="center"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/delete_cart"
-                          />
+                        android:layout_gravity="center"
+                        android:text="@string/delete_cart" />
                 </FrameLayout>
 
                 <include
@@ -168,8 +169,11 @@
                             visibleObject="@{cartDataVM.cartModelLD.customer != null}"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:onClick="@{v->viewModel.onShowCustomerDetail()}"
                             android:layout_marginHorizontal="@dimen/_9sdp"
                             android:layout_marginTop="@dimen/_7sdp"
+                            android:clickable="true"
+                            android:focusable="true"
                             app:customer="@{cartDataVM.cartModelLD.customer}" />
 
                     </LinearLayout>
@@ -348,13 +352,13 @@
                         android:orientation="vertical">
 
                         <androidx.recyclerview.widget.RecyclerView
-                            android:overScrollMode="never"
                             android:id="@+id/discountRecycleView"
                             visibleObject="@{isShowDiscount}"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@color/color_2"
                             android:orientation="vertical"
+                            android:overScrollMode="never"
                             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                             tools:itemCount="3"
                             tools:listitem="@layout/item_cart_discount" />
@@ -459,8 +463,8 @@
                             android:layout_gravity="center"
                             android:layout_marginHorizontal="@dimen/_9sdp"
                             android:orientation="horizontal"
-                            app:spanCount="5"
                             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                            app:spanCount="5"
                             tools:itemCount="5"
                             tools:listitem="@layout/item_cart_tip" />
 
@@ -594,113 +598,117 @@
 
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
             <include layout="@layout/divider_vertical" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-            <LinearLayout
-                android:id="@+id/btnPaymentMethod"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="?attr/selectableItemBackground"
-                android:onClick="@{v->viewModel.openSelectPayment(cartDataVM.cartModelLD.total)}"
-                android:padding="@dimen/_12sdp">
-
-                <ImageView
-                    android:id="@+id/imgPayment"
-                    android:layout_width="@dimen/_19sdp"
-                    android:layout_height="@dimen/_14sdp"
-                    android:src="@drawable/ic_payment" />
-
-                <com.diadiem.pos_components.PTextView
-                    android:id="@+id/tvPayment"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:id="@+id/btnPaymentMethod"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_9sdp"
-                    android:text="@{cartDataVM.cartModelLD.paymentsList.empty ? @string/payment_method: cartDataVM.cartModelLD.paymentsList.get(0).title}"
-                    app:useTextColor="color4"
-                    app:useTextHeader="h5" />
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:onClick="@{v->viewModel.openSelectPayment(cartDataVM.cartModelLD.total)}"
+                    android:padding="@dimen/_12sdp">
+
+                    <ImageView
+                        android:id="@+id/imgPayment"
+                        android:layout_width="@dimen/_19sdp"
+                        android:layout_height="@dimen/_14sdp"
+                        android:src="@drawable/ic_payment" />
+
+                    <com.diadiem.pos_components.PTextView
+                        android:id="@+id/tvPayment"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_9sdp"
+                        android:text="@{cartDataVM.cartModelLD.paymentsList.empty ? @string/payment_method: cartDataVM.cartModelLD.paymentsList.get(0).title}"
+                        app:useTextColor="color4"
+                        app:useTextHeader="h5" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="@dimen/_1sdp"
+                    android:layout_height="match_parent"
+                    android:layout_marginVertical="@dimen/_8sdp"
+                    android:background="@color/color_10" />
+
+                <LinearLayout
+                    android:id="@+id/btnAddDiscount"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:onClick="@{()->viewModel.openDiscount()}"
+                    android:padding="@dimen/_12sdp">
+
+                    <ImageView
+                        android:layout_width="@dimen/_14sdp"
+                        android:layout_height="@dimen/_14sdp"
+                        android:src="@drawable/ic_discount" />
+
+                    <com.diadiem.pos_components.PTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_9sdp"
+                        android:text="@string/add_discount"
+                        app:useTextColor="color4"
+                        app:useTextHeader="h5" />
+
+                </LinearLayout>
 
             </LinearLayout>
 
-            <View
-                android:layout_width="@dimen/_1sdp"
-                android:layout_height="match_parent"
-                android:layout_marginVertical="@dimen/_8sdp"
-                android:background="@color/color_10" />
-
             <LinearLayout
-                android:id="@+id/btnAddDiscount"
-                android:layout_width="0dp"
+                android:id="@+id/btnBill"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_margin="@dimen/_8sdp"
+                android:background="@color/color_0"
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?attr/selectableItemBackground"
-                android:onClick="@{()->viewModel.openDiscount()}"
-                android:padding="@dimen/_12sdp">
-
-                <ImageView
-                    android:layout_width="@dimen/_14sdp"
-                    android:layout_height="@dimen/_14sdp"
-                    android:src="@drawable/ic_discount" />
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="@dimen/_10sdp">
 
                 <com.diadiem.pos_components.PTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_9sdp"
-                    android:text="@string/add_discount"
-                    app:useTextColor="color4"
+
+                    android:gravity="center"
+                    android:text="@string/bill"
+                    android:textAllCaps="true"
+                    app:useFontStyle="bold"
+                    app:useTextColor="color2"
                     app:useTextHeader="h5" />
 
+                <androidx.legacy.widget.Space
+                    android:layout_width="@dimen/_3sdp"
+                    android:layout_height="wrap_content" />
+
+                <com.diadiem.pos_components.PTextView
+                    priceDisc="@{cartDataVM.cartModelLD.total()}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textAllCaps="true"
+                    app:useFontStyle="bold"
+                    app:useTextColor="color2"
+                    app:useTextHeader="h5" />
             </LinearLayout>
-
         </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/btnBill"
-            android:background="@color/color_0"
-            android:foreground="?attr/selectableItemBackground"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_margin="@dimen/_8sdp"
-            android:gravity="center"
-            android:clickable="true"
-            android:focusable="true"
-            android:padding="@dimen/_10sdp">
-
-            <com.diadiem.pos_components.PTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-
-                android:gravity="center"
-                android:text="@string/bill"
-                android:textAllCaps="true"
-                app:useFontStyle="bold"
-                app:useTextColor="color2"
-                app:useTextHeader="h5" />
-            <androidx.legacy.widget.Space
-                android:layout_width="@dimen/_3sdp"
-                android:layout_height="wrap_content"/>
-            <com.diadiem.pos_components.PTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                priceDisc="@{cartDataVM.cartModelLD.total()}"
-                android:textAllCaps="true"
-                app:useFontStyle="bold"
-                app:useTextColor="color2"
-                app:useTextHeader="h5" />
-        </LinearLayout>
-    </LinearLayout>
     </LinearLayout>
 </layout>

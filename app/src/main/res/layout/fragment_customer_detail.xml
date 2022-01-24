@@ -1,0 +1,697 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.hanheldpos.ui.screens.cart.customer.detail_customer.CustomerDetailVM" />
+        <import type="com.hanheldpos.utils.time.DateTimeHelper"/>
+
+    </data>
+
+    <LinearLayout
+        android:orientation="vertical"
+        style="@style/RootLayout">
+
+        <LinearLayout
+            android:id="@+id/toolbarContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/color_2"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:onClick="@{v->viewModel.backPress()}"
+                    android:padding="@dimen/_14sdp">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_close"
+                        android:contentDescription="TODO" />
+                </FrameLayout>
+
+
+                <com.diadiem.pos_components.PTextView
+                    android:id="@+id/header_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:text="@string/customer_info"
+                    app:layout_constrainedWidth="true"
+                    app:useFontStyle="bold"
+                    app:useTextColor="color4"
+                    app:useTextHeader="h4" />
+
+            </FrameLayout>
+
+            <include
+                layout="@layout/divider_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="1dp" />
+
+        </LinearLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@color/color_10">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <androidx.legacy.widget.Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_4sdp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/color_2"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="@dimen/_12sdp"
+                    android:paddingVertical="@dimen/_9sdp">
+
+                    <com.diadiem.pos_components.PTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/personal_info"
+                        android:textAllCaps="true"
+                        app:useFontStyle="bold"
+                        app:useTextColor="color4"
+                        app:useTextHeader="h6" />
+
+                    <include
+                        layout="@layout/divider_vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginVertical="@dimen/_6sdp" />
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="@dimen/_34sdp"
+                            android:layout_height="@dimen/_34sdp"
+                            android:elevation="0dp"
+                            app:cardElevation="0dp"
+
+                            app:cardCornerRadius="@dimen/_17sdp"
+                            app:cardBackgroundColor="@color/color_1"
+                            >
+                            <com.diadiem.pos_components.PTextView
+                                android:layout_gravity="center"
+                                app:useFontStyle="bold"
+                                app:useTextHeader="h6"
+                                app:useTextColor="color2"
+                                android:textAllCaps="true"
+                                android:text="@{viewModel.customer.nameAcronymn}"
+                                tools:text="QN"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                />
+                        </androidx.cardview.widget.CardView>
+                        <androidx.legacy.widget.Space
+                            android:layout_width="@dimen/_6sdp"
+                            android:layout_height="wrap_content"/>
+                        <LinearLayout
+                            android:orientation="vertical"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="start"
+                            >
+                            <com.diadiem.pos_components.PTextView
+                                app:useFontStyle="normal"
+                                app:useTextHeader="h5"
+                                app:useTextColor="color4"
+                                android:text="@{viewModel.customer.fullName}"
+                                tools:text="Quan Nguyen"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                />
+                            <com.diadiem.pos_components.PTextView
+                                app:useFontStyle="normal"
+                                app:useTextHeader="h5"
+                                app:useTextColor="color6"
+                                tools:text="Silver"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <include
+                        layout="@layout/divider_vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginVertical="@dimen/_6sdp" />
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:baselineAligned="false">
+                        <LinearLayout
+                            android:layout_weight="1"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            >
+                            <com.diadiem.pos_components.PTextView
+                                app:useFontStyle="normal"
+                                app:useTextHeader="h6"
+                                app:useTextColor="color6"
+                                android:text="@string/phone_number"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                />
+                            <androidx.legacy.widget.Space
+                                android:layout_width="0dp"
+                                android:layout_height="@dimen/_4sdp"/>
+                            <com.diadiem.pos_components.PTextView
+                                app:useFontStyle="normal"
+                                app:useTextHeader="h5"
+                                app:useTextColor="color4"
+                                android:text="@{viewModel.customer.phone.toString()}"
+                                tools:text="090 264 8048"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:orientation="vertical"
+                            android:layout_weight="1"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            >
+                            <com.diadiem.pos_components.PTextView
+                                app:useFontStyle="normal"
+                                app:useTextHeader="h6"
+                                app:useTextColor="color6"
+                                android:text="@string/customer_id"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                />
+                            <androidx.legacy.widget.Space
+                                android:layout_width="0dp"
+                                android:layout_height="@dimen/_4sdp"/>
+                            <com.diadiem.pos_components.PTextView
+                                app:useFontStyle="normal"
+                                app:useTextHeader="h5"
+                                app:useTextColor="color4"
+                                android:text="@{String.valueOf(viewModel.customer._key)}"
+                                tools:text="1777"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <include
+                        layout="@layout/divider_vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginVertical="@dimen/_6sdp" />
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:baselineAligned="false">
+                        <LinearLayout
+                            android:layout_weight="1"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            >
+                            <com.diadiem.pos_components.PTextView
+                                app:useFontStyle="normal"
+                                app:useTextHeader="h6"
+                                app:useTextColor="color6"
+                                android:text="@string/member_since"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                />
+                            <androidx.legacy.widget.Space
+                                android:layout_width="0dp"
+                                android:layout_height="@dimen/_4sdp"/>
+                            <com.diadiem.pos_components.PTextView
+                                app:useFontStyle="normal"
+                                app:useTextHeader="h5"
+                                app:useTextColor="color4"
+                                android:text="@{DateTimeHelper.INSTANCE.dateToString(DateTimeHelper.INSTANCE.strToDate(viewModel.customer.createDate,DateTimeHelper.Format.INSTANCE.YYYY_MM_DD_HH_MM_SS),DateTimeHelper.Format.INSTANCE.DD_MMM_YYYY)}"
+                                tools:text="31 Mar 2020"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:orientation="vertical"
+                            android:layout_weight="1"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            >
+                            <com.diadiem.pos_components.PTextView
+                                app:useFontStyle="normal"
+                                app:useTextHeader="h6"
+                                app:useTextColor="color6"
+                                android:text="@string/loyalty_points"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                />
+                            <androidx.legacy.widget.Space
+                                android:layout_width="0dp"
+                                android:layout_height="@dimen/_4sdp"/>
+                            <com.diadiem.pos_components.PTextView
+                                app:useFontStyle="normal"
+                                app:useTextHeader="h5"
+                                app:useTextColor="color4"
+                                tools:text="500"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <include
+                        layout="@layout/divider_vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginVertical="@dimen/_6sdp" />
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:baselineAligned="false">
+                        <LinearLayout
+                            android:layout_weight="1"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            >
+                            <com.diadiem.pos_components.PTextView
+                                app:useFontStyle="normal"
+                                app:useTextHeader="h6"
+                                app:useTextColor="color6"
+                                android:text="@string/wallet_balance"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                />
+                            <androidx.legacy.widget.Space
+                                android:layout_width="0dp"
+                                android:layout_height="@dimen/_4sdp"/>
+                            <com.diadiem.pos_components.PTextView
+                                app:useFontStyle="normal"
+                                app:useTextHeader="h5"
+                                app:useTextColor="color4"
+                                tools:text="0"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:orientation="vertical"
+                            android:layout_weight="1"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            >
+                            <com.diadiem.pos_components.PTextView
+                                app:useFontStyle="normal"
+                                app:useTextHeader="h6"
+                                app:useTextColor="color6"
+                                android:text="@string/gift_card_transactions"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                />
+                            <androidx.legacy.widget.Space
+                                android:layout_width="0dp"
+                                android:layout_height="@dimen/_4sdp"/>
+                            <com.diadiem.pos_components.PTextView
+                                app:useFontStyle="normal"
+                                app:useTextHeader="h5"
+                                app:useTextColor="color4"
+                                tools:text="0"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <androidx.legacy.widget.Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_4sdp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/color_2"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="@dimen/_12sdp"
+                    android:paddingVertical="@dimen/_9sdp">
+
+                    <com.diadiem.pos_components.PTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/address_info"
+                        android:textAllCaps="true"
+                        app:useFontStyle="bold"
+                        app:useTextColor="color4"
+                        app:useTextHeader="h6" />
+
+                    <include
+                        layout="@layout/divider_vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginVertical="@dimen/_6sdp" />
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:baselineAligned="false">
+                        <LinearLayout
+                            android:layout_weight="1"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            >
+                            <com.diadiem.pos_components.PTextView
+                                app:useFontStyle="normal"
+                                app:useTextHeader="h6"
+                                app:useTextColor="color6"
+                                android:text="@string/address_type"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                />
+                            <androidx.legacy.widget.Space
+                                android:layout_width="0dp"
+                                android:layout_height="@dimen/_4sdp"/>
+                            <com.diadiem.pos_components.PTextView
+                                app:useFontStyle="normal"
+                                app:useTextHeader="h5"
+                                app:useTextColor="color4"
+                                tools:text="Apartment"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:orientation="vertical"
+                            android:layout_weight="1"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            >
+                            <com.diadiem.pos_components.PTextView
+                                app:useFontStyle="normal"
+                                app:useTextHeader="h6"
+                                app:useTextColor="color6"
+                                android:text="@string/name"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                />
+                            <androidx.legacy.widget.Space
+                                android:layout_width="0dp"
+                                android:layout_height="@dimen/_4sdp"/>
+                            <com.diadiem.pos_components.PTextView
+                                app:useFontStyle="normal"
+                                app:useTextHeader="h5"
+                                app:useTextColor="color4"
+                                tools:text="Tropic Garden"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <include
+                        layout="@layout/divider_vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginVertical="@dimen/_6sdp" />
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:baselineAligned="false">
+                        <LinearLayout
+                            android:layout_weight="1"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            >
+                            <com.diadiem.pos_components.PTextView
+                                app:useFontStyle="normal"
+                                app:useTextHeader="h6"
+                                app:useTextColor="color6"
+                                android:text="@string/address_1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                />
+                            <androidx.legacy.widget.Space
+                                android:layout_width="0dp"
+                                android:layout_height="@dimen/_4sdp"/>
+                            <com.diadiem.pos_components.PTextView
+                                app:useFontStyle="normal"
+                                app:useTextHeader="h5"
+                                app:useTextColor="color4"
+                                android:text="@{viewModel.customer.address1.toString()}"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                />
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <include
+                        layout="@layout/divider_vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginVertical="@dimen/_6sdp" />
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:baselineAligned="false">
+                        <LinearLayout
+                            android:layout_weight="1"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            >
+                            <com.diadiem.pos_components.PTextView
+                                app:useFontStyle="normal"
+                                app:useTextHeader="h6"
+                                app:useTextColor="color6"
+                                android:text="@string/address_2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                />
+                            <androidx.legacy.widget.Space
+                                android:layout_width="0dp"
+                                android:layout_height="@dimen/_4sdp"/>
+                            <com.diadiem.pos_components.PTextView
+                                app:useFontStyle="normal"
+                                app:useTextHeader="h5"
+                                app:useTextColor="color4"
+                                android:text="@{viewModel.customer.address2.toString()}"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <include
+                        layout="@layout/divider_vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginVertical="@dimen/_6sdp" />
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:baselineAligned="false">
+                        <LinearLayout
+                            android:layout_weight="1"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            >
+                            <com.diadiem.pos_components.PTextView
+                                app:useFontStyle="normal"
+                                app:useTextHeader="h6"
+                                app:useTextColor="color6"
+                                android:text="@string/district"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                />
+                            <androidx.legacy.widget.Space
+                                android:layout_width="0dp"
+                                android:layout_height="@dimen/_4sdp"/>
+                            <com.diadiem.pos_components.PTextView
+                                app:useFontStyle="normal"
+                                app:useTextHeader="h5"
+                                app:useTextColor="color4"
+                                android:text="@{viewModel.customer.districtName.toString()}"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:orientation="vertical"
+                            android:layout_weight="1"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            >
+                            <com.diadiem.pos_components.PTextView
+                                app:useFontStyle="normal"
+                                app:useTextHeader="h6"
+                                app:useTextColor="color6"
+                                android:text="@string/ward"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                />
+                            <androidx.legacy.widget.Space
+                                android:layout_width="0dp"
+                                android:layout_height="@dimen/_4sdp"/>
+                            <com.diadiem.pos_components.PTextView
+                                app:useFontStyle="normal"
+                                app:useTextHeader="h5"
+                                app:useTextColor="color4"
+                                android:text="@{viewModel.customer.wardName.toString()}"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <include
+                        layout="@layout/divider_vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginVertical="@dimen/_6sdp" />
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:baselineAligned="false">
+                        <LinearLayout
+                            android:layout_weight="1"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            >
+                            <com.diadiem.pos_components.PTextView
+                                app:useFontStyle="normal"
+                                app:useTextHeader="h6"
+                                app:useTextColor="color6"
+                                android:text="@string/city"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                />
+                            <androidx.legacy.widget.Space
+                                android:layout_width="0dp"
+                                android:layout_height="@dimen/_4sdp"/>
+                            <com.diadiem.pos_components.PTextView
+                                app:useFontStyle="normal"
+                                app:useTextHeader="h5"
+                                app:useTextColor="color4"
+                                android:text="@{viewModel.customer.cityName.toString()}"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingHorizontal="@dimen/_8sdp"
+            android:paddingVertical="@dimen/_11sdp">
+
+            <LinearLayout
+                android:id="@+id/btnRemoveCustomer"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_3sdp"
+                android:layout_weight="1"
+                android:background="@color/color_11"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="@dimen/_10sdp">
+
+                <com.diadiem.pos_components.PTextView
+                    android:id="@+id/textBtnRemoveCustomer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/remove_customer"
+                    app:useFontStyle="bold"
+                    app:useTextColor="color0"
+                    app:useTextHeader="h5" />
+            </LinearLayout>
+
+            <androidx.legacy.widget.Space
+                android:layout_width="@dimen/_8sdp"
+                android:layout_height="wrap_content"/>
+
+            <LinearLayout
+                android:id="@+id/btnOk"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_3sdp"
+                android:layout_weight="1"
+                android:background="@color/color_0"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="@dimen/_10sdp">
+
+                <com.diadiem.pos_components.PTextView
+                    android:id="@+id/textBtnOk"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/ok"
+                    app:useFontStyle="bold"
+                    app:useTextColor="color2"
+                    app:useTextHeader="h5" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+
+</layout>

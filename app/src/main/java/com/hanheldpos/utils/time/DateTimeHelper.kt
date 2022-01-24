@@ -170,10 +170,12 @@ object DateTimeHelper {
         const val DD_MM_YYYY = "dd/MM/yyyy"
         const val DD_MM = "dd/MM"
         const val MM_DD_YYYY_HH_MM_SS_aa = "MM/dd/yyyy HH:mm:ss aa"
+        const val MM_DD_YYYY_HH_MM_SS = "MM/dd/yyyy HH:mm:ss"
         const val DD_MM_YYYY_HH_MM_AA = "dd/MM/yyyy hh:ss aa"
         const val DD_MM_YYYY_HH_MM = "dd/MM/yyyy HH:mm"
         const val MM_DD_YYYY_HH_MM = "MM/dd/yyyy HH:mm"
         const val YYYY_MM_DD_HH_MM = "yyyy/MM/dd HH:mm"
+        const val YYYY_MM_DD_HH_MM_SS = "yyyy-MM-dd HH:mm:ss"
         const val HH_mm = "HH:mm"
         const val hh_mm_aa = "hh:mm aa" // with AM/PM
         const val EEEE_MMMMM_d = "EEEE, MMMM dd"
@@ -186,5 +188,6 @@ object DateTimeHelper {
         const val YYYY_MM_DD = "yyyy-MM-dd"
         const val REPORT_TIME = "MMM dd, yyyy, hh:mm aa"
         const val HH_MM = "HH:mm"
+        const val DD_MMM_YYYY = "MMM dd YYYY"
     }
 }

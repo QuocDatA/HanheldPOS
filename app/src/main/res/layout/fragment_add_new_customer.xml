@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="com.hanheldpos.ui.screens.cart.customer.AddNewCustomerVM" />
+            type="com.hanheldpos.ui.screens.cart.customer.add_customer.AddNewCustomerVM" />
     </data>
 
     <LinearLayout

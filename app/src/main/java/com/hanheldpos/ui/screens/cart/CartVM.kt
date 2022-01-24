@@ -51,6 +51,10 @@ class CartVM : BaseUiViewModel<CartUV>() {
         uiCallback?.onOpenAddCustomer();
     }
 
+    fun onShowCustomerDetail() {
+        uiCallback?.onShowCustomerDetail();
+    }
+
     fun billCart(context: Context, cart: CartModel) {
 
         if (cart.productsList.isEmpty()) {
@@ -199,5 +203,6 @@ class CartVM : BaseUiViewModel<CartUV>() {
         }
         return list;
     }
+
 
 }

@@ -203,7 +203,7 @@
 
             <LinearLayout
                 android:id="@+id/btnPayIn"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/_3sdp"
                 android:layout_weight="1"
@@ -226,7 +226,7 @@
 
             <LinearLayout
                 android:id="@+id/btnPayOut"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_3sdp"
                 android:layout_weight="1"

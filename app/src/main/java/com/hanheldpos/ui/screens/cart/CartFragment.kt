@@ -10,7 +10,6 @@ import com.hanheldpos.data.api.pojo.customer.CustomerResp
 import com.hanheldpos.data.api.pojo.order.settings.DiningOption
 import com.hanheldpos.data.api.pojo.order.settings.Reason
 import com.hanheldpos.databinding.FragmentCartBinding
-import com.hanheldpos.databinding.ItemCartTipBinding
 import com.hanheldpos.extension.notifyValueChange
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.cart.Combo
@@ -29,7 +28,8 @@ import com.hanheldpos.ui.screens.cart.adapter.CartDiningOptionAdapter
 import com.hanheldpos.ui.screens.cart.adapter.CartDiscountAdapter
 import com.hanheldpos.ui.screens.cart.adapter.CartProductAdapter
 import com.hanheldpos.ui.screens.cart.adapter.CartTipAdapter
-import com.hanheldpos.ui.screens.cart.customer.AddCustomerFragment
+import com.hanheldpos.ui.screens.cart.customer.add_customer.AddCustomerFragment
+import com.hanheldpos.ui.screens.cart.customer.detail_customer.CustomerDetailFragment
 import com.hanheldpos.ui.screens.cart.payment.PaymentFragment
 import com.hanheldpos.ui.screens.combo.ComboFragment
 import com.hanheldpos.ui.screens.discount.DiscountFragment
@@ -255,6 +255,10 @@ class CartFragment( private val listener : CartCallBack) : BaseFragment<Fragment
         getBack();
         cartDataVM.removeCart();
         listener.onBillSuccess();
+    }
+
+    override fun onShowCustomerDetail() {
+        navigator.goToWithCustomAnimation(CustomerDetailFragment(cartDataVM.cartModelLD.value?.customer));
     }
 
     private fun onBillCart() {

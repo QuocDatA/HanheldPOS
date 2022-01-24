@@ -69,6 +69,7 @@ class CurrentDrawerFragment : BaseFragment<FragmentCurrentDrawerBinding, Current
     }
 
     override fun getBack() {
+        showLoading(false);
         onFragmentBackPressed()
     }
 

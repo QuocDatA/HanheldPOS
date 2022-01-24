@@ -151,4 +151,15 @@
     <string name="order_not_completed">Order not completed!</string>
     <string name="difference">Difference</string>
     <string name="please_sync_local_data_before_ending_this_cash_drawer">Please sync local data before ending this cash drawer</string>
+    <string name="remove_customer">Remove Customer</string>
+    <string name="personal_info">Personal Info</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="customer_id">Customer ID</string>
+    <string name="member_since">Member Since</string>
+    <string name="loyalty_points">Loyalty Points</string>
+    <string name="wallet_balance">Wallet Balance</string>
+    <string name="gift_card_transactions">Gift Card Transactions</string>
+    <string name="address_info">Address Info</string>
+    <string name="address_1">Address 1</string>
+    <string name="address_2">Address 2</string>
 </resources>

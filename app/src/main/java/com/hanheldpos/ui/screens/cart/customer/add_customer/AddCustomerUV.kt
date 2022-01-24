@@ -1,4 +1,4 @@
-package com.hanheldpos.ui.screens.cart.customer
+package com.hanheldpos.ui.screens.cart.customer.add_customer
 
 import com.hanheldpos.data.api.pojo.customer.CustomerResp
 import com.hanheldpos.ui.base.BaseUserView

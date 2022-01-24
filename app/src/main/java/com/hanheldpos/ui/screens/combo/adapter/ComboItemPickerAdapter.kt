@@ -15,7 +15,7 @@ import com.hanheldpos.model.home.order.menu.ProductMenuItem
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
-import com.hanheldpos.ui.screens.cart.customer.adapter.CustomerAdapter
+import com.hanheldpos.ui.screens.cart.customer.add_customer.adapter.CustomerAdapter
 
 class ComboItemPickerAdapter(
     private val productChosen : List<Regular> = mutableListOf(),

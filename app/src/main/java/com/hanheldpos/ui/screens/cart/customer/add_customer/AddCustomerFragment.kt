@@ -1,11 +1,5 @@
-package com.hanheldpos.ui.screens.cart.customer
+package com.hanheldpos.ui.screens.cart.customer.add_customer
 
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.AbsListView
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -16,12 +10,8 @@ import com.hanheldpos.data.api.pojo.customer.CustomerResp
 import com.hanheldpos.databinding.FragmentAddCustomerBinding
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
-import com.hanheldpos.ui.screens.cart.customer.adapter.CustomerAdapter
-import com.hanheldpos.ui.screens.cart.customer.adapter.CustomerAdapterHelper
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import com.hanheldpos.ui.screens.cart.customer.add_customer.adapter.CustomerAdapter
+import com.hanheldpos.ui.screens.cart.customer.add_customer.adapter.CustomerAdapterHelper
 
 
 class AddCustomerFragment(
