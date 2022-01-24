@@ -40,6 +40,9 @@ class EndDrawerFragment(private val report: ReportCashDrawerResp?) : BaseFragmen
     }
 
     override fun initView() {
+
+        binding.expectedAmount.text = PriceHelper.formatStringPrice(report?.Reports?.find { it.Id == 6 }?.Value.toString());
+
         reportDrawerInfoAdapter = ReportDrawerInfoAdapter();
 
         binding.currentDrawerRecycle.apply {

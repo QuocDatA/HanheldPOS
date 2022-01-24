@@ -1,14 +1,26 @@
 package com.hanheldpos.ui.screens.menu.option.report.current_drawer.payin_payout
 
+import android.annotation.SuppressLint
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.hanheldpos.R
+import com.hanheldpos.data.api.pojo.cashdrawer.pay_in_out.PaidInOutListResp
 import com.hanheldpos.databinding.FragmentPayInPayOutBinding
 import com.hanheldpos.ui.base.fragment.BaseFragment
+import com.hanheldpos.ui.screens.menu.option.report.current_drawer.payin_payout.adapter.PaidInOutAdapter
 import com.hanheldpos.utils.PriceHelper
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 
 class PayInPayOutFragment : BaseFragment<FragmentPayInPayOutBinding, PayInPayOutVM>(),
     PayInPayOutUV {
+
+    private lateinit var paidInOutAdapter: PaidInOutAdapter;
+
     override fun layoutRes() = R.layout.fragment_pay_in_pay_out
 
     override fun viewModelClass(): Class<PayInPayOutVM> {
@@ -18,7 +30,6 @@ class PayInPayOutFragment : BaseFragment<FragmentPayInPayOutBinding, PayInPayOut
     override fun initViewModel(viewModel: PayInPayOutVM) {
         viewModel.run {
             init(this@PayInPayOutFragment)
-            initLifeCycle(this@PayInPayOutFragment);
             binding.viewModel = this
         }
     }
@@ -40,21 +51,107 @@ class PayInPayOutFragment : BaseFragment<FragmentPayInPayOutBinding, PayInPayOut
 
         viewModel.isValid.observe(this, {
             if (it) {
-                binding.textBtnEndDrawer.setTextColor(ContextCompat.getColor(requireContext(),R.color.color_0));
-                binding.textBtnPayInOut.setTextColor(ContextCompat.getColor(requireContext(),R.color.color_0));
-                binding.btnPayInOut.background = ContextCompat.getDrawable(requireContext(),R.color.color_11);
-                binding.btnEndDrawer.background = ContextCompat.getDrawable(requireContext(),R.color.color_11);
+                binding.textBtnPayIn.setTextColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.color_0
+                    )
+                );
+                binding.textBtnPayOut.setTextColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.color_0
+                    )
+                );
+                binding.btnPayIn.background =
+                    ContextCompat.getDrawable(requireContext(), R.color.color_11);
+                binding.btnPayOut.background =
+                    ContextCompat.getDrawable(requireContext(), R.color.color_11);
+
             } else {
-                binding.textBtnEndDrawer.setTextColor(ContextCompat.getColor(requireContext(),R.color.color_8));
-                binding.textBtnPayInOut.setTextColor(ContextCompat.getColor(requireContext(),R.color.color_8));
-                binding.btnPayInOut.background = ContextCompat.getDrawable(requireContext(),R.drawable.bg_outline);
-                binding.btnEndDrawer.background = ContextCompat.getDrawable(requireContext(),R.drawable.bg_outline);
+                binding.textBtnPayIn.setTextColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.color_8
+                    )
+                );
+                binding.textBtnPayOut.setTextColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.color_8
+                    )
+                );
+                binding.btnPayIn.background =
+                    ContextCompat.getDrawable(requireContext(), R.drawable.bg_outline);
+                binding.btnPayOut.background =
+                    ContextCompat.getDrawable(requireContext(), R.drawable.bg_outline);
             }
         });
+
+        viewModel.isActiveButton.observe(this, {
+            when (it) {
+                PayInPayOutVM.ActiveButton.PayIn -> {
+                    binding.textBtnPayIn.setTextColor(
+                        ContextCompat.getColor(
+                            requireContext(),
+                            R.color.color_11
+                        )
+                    );
+                    binding.textBtnPayOut.setTextColor(
+                        ContextCompat.getColor(
+                            requireContext(),
+                            R.color.color_0
+                        )
+                    );
+                    binding.btnPayIn.background =
+                        ContextCompat.getDrawable(requireContext(), R.color.color_0);
+                    binding.btnPayOut.background =
+                        ContextCompat.getDrawable(requireContext(), R.color.color_11);
+                }
+                PayInPayOutVM.ActiveButton.PayOut -> {
+                    binding.textBtnPayIn.setTextColor(
+                        ContextCompat.getColor(
+                            requireContext(),
+                            R.color.color_0
+                        )
+                    );
+                    binding.textBtnPayOut.setTextColor(
+                        ContextCompat.getColor(
+                            requireContext(),
+                            R.color.color_11
+                        )
+                    );
+                    binding.btnPayIn.background =
+                        ContextCompat.getDrawable(requireContext(), R.color.color_11);
+                    binding.btnPayOut.background =
+                        ContextCompat.getDrawable(requireContext(), R.color.color_0);
+                }
+                else -> {
+                    viewModel.isValid.postValue(viewModel.isValid.value);
+                }
+            }
+        });
+
+        paidInOutAdapter = PaidInOutAdapter();
+        binding.paidInOutList.apply {
+            adapter = paidInOutAdapter;
+            addItemDecoration(
+                DividerItemDecoration(
+                context,
+                LinearLayoutManager.VERTICAL
+            ).apply {
+                setDrawable(
+                    ContextCompat.getDrawable(
+                        context,
+                        R.drawable.divider_vertical
+                    )!!
+                )
+            })
+        }
     }
 
     override fun initData() {
-
+        viewModel.loadPaidInOut(requireContext());
     }
 
     override fun initAction() {
@@ -64,5 +161,12 @@ class PayInPayOutFragment : BaseFragment<FragmentPayInPayOutBinding, PayInPayOut
     override fun getBack() {
         onFragmentBackPressed()
     }
+
+    @SuppressLint("NotifyDataSetChanged")
+    override fun onLoadPaidInOutListToUI(list: List<PaidInOutListResp>?) {
+        paidInOutAdapter.submitList(list);
+        paidInOutAdapter.notifyDataSetChanged();
+    }
+
 
 }

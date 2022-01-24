@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="item"
+            type="com.hanheldpos.data.api.pojo.cashdrawer.pay_in_out.PaidInOutListResp" />
+    </data>
+
+    <LinearLayout
+        android:paddingVertical="@dimen/_13sdp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.diadiem.pos_components.PTextView
+            android:id="@+id/timeApply"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:useTextColor="color4"
+            app:useFontStyle="normal"
+            app:useTextHeader="h5"
+            />
+        <androidx.legacy.widget.Space
+            android:layout_width="@dimen/_13sdp"
+            android:layout_height="wrap_content"
+            />
+        <com.diadiem.pos_components.PTextView
+            android:id="@+id/description"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:useTextColor="color6"
+            app:useFontStyle="normal"
+            app:useTextHeader="h5"
+            android:ellipsize="end"
+            />
+        <androidx.legacy.widget.Space
+            android:layout_width="@dimen/_13sdp"
+            android:layout_height="wrap_content"
+            />
+        <com.diadiem.pos_components.PTextView
+            android:id="@+id/amount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:useTextColor="color4"
+            app:useFontStyle="normal"
+            app:useTextHeader="h5"
+            />
+    </LinearLayout>
+</layout>

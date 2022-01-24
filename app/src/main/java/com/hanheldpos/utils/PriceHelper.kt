@@ -5,6 +5,7 @@ import java.text.DecimalFormatSymbols
 
 object PriceHelper {
     fun formatStringPrice(price : String) : String {
+        if (price.isEmpty() || price.isBlank()) return "";
         val dfSymbols = DecimalFormatSymbols()
         dfSymbols.decimalSeparator = '.'
         dfSymbols.groupingSeparator = ','

@@ -171,6 +171,7 @@ object DateTimeHelper {
         const val DD_MM = "dd/MM"
         const val MM_DD_YYYY_HH_MM_SS_aa = "MM/dd/yyyy HH:mm:ss aa"
         const val DD_MM_YYYY_HH_MM_AA = "dd/MM/yyyy hh:ss aa"
+        const val DD_MM_YYYY_HH_MM = "dd/MM/yyyy HH:mm"
         const val MM_DD_YYYY_HH_MM = "MM/dd/yyyy HH:mm"
         const val YYYY_MM_DD_HH_MM = "yyyy/MM/dd HH:mm"
         const val HH_mm = "HH:mm"

@@ -59,13 +59,10 @@ class CurrentDrawerFragment : BaseFragment<FragmentCurrentDrawerBinding, Current
             });
         }
 
-
-        viewModel.getCashDrawerDetail(requireContext());
-
-
     }
 
     override fun initData() {
+        viewModel.getCashDrawerDetail(requireContext());
     }
 
     override fun initAction() {

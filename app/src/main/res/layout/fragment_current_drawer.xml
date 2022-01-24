@@ -14,9 +14,9 @@
 
     <LinearLayout
         style="@style/RootLayout"
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -67,17 +67,18 @@
             android:background="@color/color_10" />
 
         <ScrollView
-            android:fillViewport="true"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:fillViewport="true">
+
             <LinearLayout
-                android:paddingVertical="@dimen/_17sdp"
-                android:paddingHorizontal="@dimen/_8sdp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/color_2"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingHorizontal="@dimen/_8sdp"
+                android:paddingVertical="@dimen/_17sdp">
 
                 <com.diadiem.pos_components.PTextView
                     style="@style/CartTitle"
@@ -128,6 +129,7 @@
                     android:layout_height="wrap_content"
                     android:nestedScrollingEnabled="false"
                     android:orientation="vertical"
+                    android:overScrollMode="never"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:itemCount="6"
                     tools:listitem="@layout/item_current_drawer_info" />
