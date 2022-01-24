@@ -44,7 +44,7 @@ data class CustomerResp(
     val NameAcronymn: String,
     val NickName: String,
     val Note: String?,
-    val Phone: String,
+    val Phone: String?,
 //    val PhoneVerified: Any,
     val ReferenceId: String,
     val ReferenceId2: String,

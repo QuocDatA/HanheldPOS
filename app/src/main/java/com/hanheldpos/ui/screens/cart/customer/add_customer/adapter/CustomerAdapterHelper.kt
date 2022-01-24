@@ -1,4 +1,4 @@
-package com.hanheldpos.ui.screens.cart.customer.adapter
+package com.hanheldpos.ui.screens.cart.customer.add_customer.adapter
 
 import android.os.Build
 import androidx.annotation.RequiresApi

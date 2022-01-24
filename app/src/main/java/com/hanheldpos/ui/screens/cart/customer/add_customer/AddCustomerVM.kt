@@ -1,4 +1,4 @@
-package com.hanheldpos.ui.screens.cart.customer
+package com.hanheldpos.ui.screens.cart.customer.add_customer
 
 import androidx.lifecycle.MutableLiveData
 import com.hanheldpos.data.api.pojo.customer.CustomerSearchResp
@@ -7,8 +7,6 @@ import com.hanheldpos.data.repository.base.BaseRepoCallback
 import com.hanheldpos.data.repository.customer.CustomerRepo
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.ui.base.viewmodel.BaseRepoViewModel
-import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
-import kotlinx.coroutines.delay
 
 class AddCustomerVM : BaseRepoViewModel<CustomerRepo, AddCustomerUV>() {
 

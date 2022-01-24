@@ -1,4 +1,4 @@
-package com.hanheldpos.ui.screens.cart.customer
+package com.hanheldpos.ui.screens.cart.customer.add_customer
 
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
@@ -7,7 +7,6 @@ import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentAddNewCustomerBinding
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import java.util.*
-import javax.xml.datatype.DatatypeConstants.MONTHS
 
 class AddNewCustomerFragment : BaseFragment<FragmentAddNewCustomerBinding, AddNewCustomerVM>(),
     AddNewCustomerUV {

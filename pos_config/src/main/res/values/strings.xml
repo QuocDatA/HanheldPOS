@@ -97,7 +97,7 @@
     <string name="delete_cart_warning">Would you like to delete all items in your cart?</string>
     <string name="confirm">Confirmation</string>
     <string name="delete_cart">Delete Cart</string>
-    <string name="ok">Ok</string>
+    <string name="ok">OK</string>
     <string name="out_of_stock">Out of stock</string>
     <string name="enter_coupon_code">Enter coupon code</string>
     <string name="apply">Apply</string>
