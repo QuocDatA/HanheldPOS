@@ -36,6 +36,9 @@ class CartDataVM : BaseViewModel() {
     }
 
     fun initCart(numberCustomer: Int, table: FloorTable) {
+
+        var diningOptionId = DataHelper.floor?.Floor?.firstOrNull { floorTable -> floorTable._Id == table.FloorGuid }?.DiningOptionId
+        var diningOption = DataHelper.getDiningOptionList()?.firstOrNull { diningOption -> diningOption.Id == diningOptionId }
         cartModelLD.value = CartModel(
             table = TableSummary(
                 _id = table._Id,
@@ -47,7 +50,7 @@ class CartDataVM : BaseViewModel() {
             paymentsList = mutableListOf(),
             discountUserList = mutableListOf(),
             discountServerList = mutableListOf(),
-            diningOption = DataHelper.getDefaultDiningOptionItem()!!,
+            diningOption = diningOption ?: DataHelper.getDefaultDiningOptionItem()!!,
             );
     }
 

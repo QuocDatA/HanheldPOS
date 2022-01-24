@@ -9,6 +9,7 @@
             type="Boolean" />
     </data>
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/background"
         android:backgroundTint="@{isSelected ? @color/color_0 : @color/color_10}"
         android:layout_width="@dimen/_130sdp"
         android:layout_height="wrap_content"

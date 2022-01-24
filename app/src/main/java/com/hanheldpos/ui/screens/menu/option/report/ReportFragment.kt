@@ -4,6 +4,7 @@ import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentReportBinding
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.menu.option.report.current_drawer.CurrentDrawerFragment
+import com.hanheldpos.ui.screens.menu.option.report.sale.customize_report.CustomizeReportFragment
 
 class ReportFragment : BaseFragment<FragmentReportBinding, ReportVM>(), ReportUV {
     override fun layoutRes() = R.layout.fragment_report
