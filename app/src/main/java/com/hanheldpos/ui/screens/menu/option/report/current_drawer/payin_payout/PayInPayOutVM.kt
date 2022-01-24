@@ -108,6 +108,7 @@ class PayInPayOutVM : BaseUiViewModel<PayInPayOutUV>() {
     }
 
     fun onPayInClick(view : View) {
+        if (isValid.value == true)
         when (isActiveButton.value) {
             ActiveButton.PayIn -> {
                 postPayInOut(ActiveButton.PayIn,view.context);
@@ -122,6 +123,7 @@ class PayInPayOutVM : BaseUiViewModel<PayInPayOutUV>() {
     }
 
     fun onPayoutClick(view : View) {
+        if (isValid.value == true)
         when (isActiveButton.value) {
             ActiveButton.PayIn -> {
                 isActiveButton.postValue(null);
