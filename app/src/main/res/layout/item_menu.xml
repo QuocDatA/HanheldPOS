@@ -19,15 +19,13 @@
         app:cardCornerRadius="@dimen/_2sdp">
 
         <com.diadiem.pos_components.PTextView
-            android:text="@{item.name}"
             android:id="@+id/textName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_14sdp"
-            android:clickable="true"
-            android:focusable="true"
             android:gravity="center"
-            android:paddingVertical="@dimen/_16sdp"
+            android:layout_marginVertical="@dimen/_16sdp"
+            android:text="@{item.name}"
             app:useTextColor="color4"
             app:useTextHeader="h5"
             tools:text="Order" />
