@@ -16,7 +16,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 
-class PayInPayOutFragment : BaseFragment<FragmentPayInPayOutBinding, PayInPayOutVM>(),
+class PayInPayOutFragment(private val listener : PayInOutCallback) : BaseFragment<FragmentPayInPayOutBinding, PayInPayOutVM>(),
     PayInPayOutUV {
 
     private lateinit var paidInOutAdapter: PaidInOutAdapter;
@@ -160,13 +160,18 @@ class PayInPayOutFragment : BaseFragment<FragmentPayInPayOutBinding, PayInPayOut
 
     override fun getBack() {
         onFragmentBackPressed()
+        listener.onLoadReport();
     }
 
     @SuppressLint("NotifyDataSetChanged")
     override fun onLoadPaidInOutListToUI(list: List<PaidInOutListResp>?) {
         paidInOutAdapter.submitList(list);
         paidInOutAdapter.notifyDataSetChanged();
+
+        binding.totalPaid.text = PriceHelper.formatStringPrice(list?.sumOf { it.Receivable?:0.0.plus(it.Payable?:0.0) }.toString());
     }
 
-
+    interface PayInOutCallback {
+        fun onLoadReport();
+    }
 }

@@ -163,30 +163,28 @@
                         tools:listitem="@layout/item_cash_drawer_paid_in_out" />
 
                     <LinearLayout
+                        android:paddingVertical="@dimen/_13sdp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
 
                         <com.diadiem.pos_components.PTextView
-                            style="@style/CartTitle"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="start"
                             android:layout_weight="1"
-                            android:paddingVertical="@dimen/_11sdp"
+
                             android:text="@string/total_paid_in_out"
                             app:useFontStyle="normal"
                             app:useTextColor="color4"
                             app:useTextHeader="h5" />
 
                         <com.diadiem.pos_components.PTextView
-                            style="@style/CartTitle"
+                            android:id="@+id/totalPaid"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="start"
-                            android:layout_marginEnd="@dimen/_8sdp"
-                            android:paddingVertical="@dimen/_11sdp"
-                            android:text="0"
+
                             app:useFontStyle="normal"
                             app:useTextColor="color4"
                             app:useTextHeader="h5" />
@@ -212,7 +210,7 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:gravity="center"
-                android:onClick="@{v->viewModel.onPayInClick()}"
+                android:onClick="@{v->viewModel.onPayInClick(v)}"
                 android:orientation="horizontal"
                 android:padding="@dimen/_10sdp">
 
@@ -235,7 +233,7 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:gravity="center"
-                android:onClick="@{v->viewModel.onPayoutClick()}"
+                android:onClick="@{v->viewModel.onPayoutClick(v)}"
                 android:orientation="horizontal"
                 android:padding="@dimen/_10sdp">
 
