@@ -90,7 +90,11 @@ class CurrentDrawerFragment : BaseFragment<FragmentCurrentDrawerBinding, Current
     }
 
     override fun onOpenPayInPayOut() {
-        navigator.goTo(PayInPayOutFragment())
+        navigator.goTo(PayInPayOutFragment(listener = object : PayInPayOutFragment.PayInOutCallback{
+            override fun onLoadReport() {
+                viewModel.getCashDrawerDetail(requireContext());
+            }
+        }))
     }
 
     @SuppressLint("NotifyDataSetChanged")
