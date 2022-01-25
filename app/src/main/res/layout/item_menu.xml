@@ -6,7 +6,7 @@
 
         <variable
             name="item"
-            type="com.hanheldpos.model.menu_nav_opt.ItemMenuOptionNav" />
+            type="com.hanheldpos.ui.screens.menu.adapter.ItemOptionNav" />
     </data>
 
     <RelativeLayout

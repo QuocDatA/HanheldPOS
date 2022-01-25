@@ -1,8 +1,6 @@
-package com.hanheldpos.ui.screens.menu.option.report.sale.customize_report
+package com.hanheldpos.ui.screens.menu.option.report.sale.customize
 
-import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
 
 class CustomizeReportVM : BaseUiViewModel<CustomizeReportUV>() {

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.hanheldpos.ui.screens.menu.option.report.sale.reports.SalesReportVM" />
+
+        <import type="com.hanheldpos.model.DataHelper"/>
+
+    </data>
+
+    <LinearLayout style="@style/RootLayout">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_42sdp"
+            android:orientation="horizontal">
+
+            <ImageButton
+                style="@style/MaterialButton.Icon"
+                android:layout_height="match_parent"
+                android:layout_gravity="center|start"
+                android:adjustViewBounds="true"
+                android:backgroundTint="@color/textPrimary"
+                android:onClick="@{v -> viewModel.backPress()}"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_baseline_arrow_back_ios_13"
+                tools:ignore="ContentDescription" />
+
+
+            <com.diadiem.pos_components.PTextView
+                android:id="@+id/header_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Sales Report"
+                app:useFontStyle="bold"
+                app:useTextColor="color4"
+                app:useTextHeader="h4" />
+
+            <include
+                layout="@layout/divider_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_gravity="bottom" />
+
+            <LinearLayout
+                android:layout_gravity="center|end"
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageButton
+                        style="@style/MaterialButton.Icon"
+                        android:layout_height="match_parent"
+                        android:padding="@dimen/_11sdp"
+                        android:adjustViewBounds="true"
+                        android:onClick="@{v->viewModel.onSyncOrders()}"
+                        android:focusable="true"
+                        android:clickable="true"
+                        android:backgroundTint="@color/textPrimary"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/ic_push_synce"
+                        tools:ignore="ContentDescription" />
+                    <com.diadiem.pos_components.PTextView
+                        android:gravity="center"
+                        visibleObject="@{DataHelper.INSTANCE.ordersCompleted != null &amp;&amp; DataHelper.INSTANCE.ordersCompleted.size() > 0}"
+                        android:text="@{String.valueOf(DataHelper.INSTANCE.ordersCompleted.size())}"
+                        app:useTextColor="color2"
+                        app:useTextHeader="h7"
+                        app:useFontStyle="normal"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:layout_marginBottom="@dimen/_7sdp"
+                        android:layout_width="@dimen/_13sdp"
+                        android:layout_height="@dimen/_13sdp"
+                        android:background="@drawable/bg_badge_counter"/>
+                </FrameLayout>
+
+
+                <ImageButton
+                    style="@style/MaterialButton.Icon"
+                    android:layout_height="match_parent"
+                    android:padding="@dimen/_12sdp"
+                    android:adjustViewBounds="true"
+                    android:focusable="true"
+                    android:clickable="true"
+                    android:backgroundTint="@color/textPrimary"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_print"
+                    tools:ignore="ContentDescription" />
+            </LinearLayout>
+
+        </FrameLayout>
+
+
+    </LinearLayout>
+</layout>
