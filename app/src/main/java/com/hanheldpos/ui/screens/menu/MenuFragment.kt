@@ -7,13 +7,13 @@ import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentMenuBinding
 import com.hanheldpos.extension.navigateTo
 import com.hanheldpos.model.DataHelper
-import com.hanheldpos.model.menu_nav_opt.ItemMenuOptionNav
+import com.hanheldpos.ui.screens.menu.adapter.ItemOptionNav
 import com.hanheldpos.model.menu_nav_opt.LogoutType
 import com.hanheldpos.model.menu_nav_opt.NavBarOptionType
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.dialog.AppAlertDialog
 import com.hanheldpos.ui.base.fragment.BaseFragment
-import com.hanheldpos.ui.screens.menu.adapter.MenuAdapter
+import com.hanheldpos.ui.screens.menu.adapter.OptionNavAdapter
 import com.hanheldpos.ui.screens.menu.option.report.ReportFragment
 import com.hanheldpos.ui.screens.pincode.PinCodeActivity
 import com.hanheldpos.ui.screens.welcome.WelcomeActivity
@@ -21,7 +21,7 @@ import com.hanheldpos.ui.screens.welcome.WelcomeActivity
 class MenuFragment : BaseFragment<FragmentMenuBinding, MenuVM>(), MenuUV {
     override fun layoutRes() = R.layout.fragment_menu
 
-    private lateinit var menuAdapter: MenuAdapter
+    private lateinit var menuAdapter: OptionNavAdapter
 
 
     override fun viewModelClass(): Class<MenuVM> {
@@ -38,9 +38,9 @@ class MenuFragment : BaseFragment<FragmentMenuBinding, MenuVM>(), MenuUV {
     override fun initView() {
 
         //region setup payment suggestion pay in cash recycler view
-        menuAdapter = MenuAdapter(
-            onMenuItemClickListener = object : BaseItemClickListener<ItemMenuOptionNav> {
-                override fun onItemClick(adapterPosition: Int, item: ItemMenuOptionNav) {
+        menuAdapter = OptionNavAdapter(
+            onMenuItemClickListener = object : BaseItemClickListener<ItemOptionNav> {
+                override fun onItemClick(adapterPosition: Int, item: ItemOptionNav) {
                     onNavOptionClick(item);
                 }
             },
@@ -82,8 +82,8 @@ class MenuFragment : BaseFragment<FragmentMenuBinding, MenuVM>(), MenuUV {
         onFragmentBackPressed()
     }
 
-    fun onNavOptionClick(option: ItemMenuOptionNav) {
-        when (option.type) {
+    fun onNavOptionClick(option: ItemOptionNav) {
+        when (option.type as NavBarOptionType) {
             NavBarOptionType.ORDERS -> {}
             NavBarOptionType.TRANSACTIONS -> {}
             NavBarOptionType.REPORTS -> navigateToReport();
@@ -102,7 +102,7 @@ class MenuFragment : BaseFragment<FragmentMenuBinding, MenuVM>(), MenuUV {
         }
     }
 
-    fun navigateToReport() {
+    private fun navigateToReport() {
         navigator.goTo(ReportFragment())
     }
 

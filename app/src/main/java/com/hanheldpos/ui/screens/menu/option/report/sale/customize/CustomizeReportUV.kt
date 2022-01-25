@@ -1,4 +1,4 @@
-package com.hanheldpos.ui.screens.menu.option.report.sale.customize_report
+package com.hanheldpos.ui.screens.menu.option.report.sale.customize
 
 import com.hanheldpos.ui.base.BaseUserView
 

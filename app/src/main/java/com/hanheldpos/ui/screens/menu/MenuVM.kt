@@ -2,7 +2,7 @@ package com.hanheldpos.ui.screens.menu
 
 import android.content.Context
 import com.hanheldpos.R
-import com.hanheldpos.model.menu_nav_opt.ItemMenuOptionNav
+import com.hanheldpos.ui.screens.menu.adapter.ItemOptionNav
 import com.hanheldpos.model.menu_nav_opt.NavBarOptionType
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
 
@@ -11,41 +11,41 @@ class MenuVM : BaseUiViewModel<MenuUV>() {
         uiCallback?.getBack()
     }
 
-    fun initMenuItemList(context: Context): List<ItemMenuOptionNav> {
+    fun initMenuItemList(context: Context): List<ItemOptionNav> {
         return mutableListOf(
-            ItemMenuOptionNav(
+            ItemOptionNav(
                 type = NavBarOptionType.ORDERS,
                 name = getNameMenu(NavBarOptionType.ORDERS, context)
             ),
-            ItemMenuOptionNav(
+            ItemOptionNav(
                 type = NavBarOptionType.TRANSACTIONS,
                 name = getNameMenu(NavBarOptionType.TRANSACTIONS, context)
             ),
-            ItemMenuOptionNav(
+            ItemOptionNav(
                 type = NavBarOptionType.REPORTS,
                 name = getNameMenu(NavBarOptionType.REPORTS, context)
             ),
-            ItemMenuOptionNav(
+            ItemOptionNav(
                 type = NavBarOptionType.CUSTOMER,
                 name = getNameMenu(NavBarOptionType.CUSTOMER, context)
             ),
-            ItemMenuOptionNav(
+            ItemOptionNav(
                 type = NavBarOptionType.ORDER_HISTORY,
                 name = getNameMenu(NavBarOptionType.ORDER_HISTORY, context)
             ),
-            ItemMenuOptionNav(
+            ItemOptionNav(
                 type = NavBarOptionType.SETTINGS,
                 name = getNameMenu(NavBarOptionType.SETTINGS, context)
             ),
-            ItemMenuOptionNav(
+            ItemOptionNav(
                 type = NavBarOptionType.SUPPORT,
                 name = getNameMenu(NavBarOptionType.SUPPORT, context)
             ),
-            ItemMenuOptionNav(
+            ItemOptionNav(
                 type = NavBarOptionType.LOGOUT_USER,
                 name = getNameMenu(NavBarOptionType.LOGOUT_USER, context)
             ),
-            ItemMenuOptionNav(
+            ItemOptionNav(
                 type = NavBarOptionType.RESET_SYSTEM,
                 name = getNameMenu(NavBarOptionType.RESET_SYSTEM, context)
             ),

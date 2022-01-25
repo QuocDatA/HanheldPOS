@@ -112,6 +112,28 @@ class FragmentNavigator(
         mFragmentManager.executePendingTransactions()
     }
 
+    fun goToWithAnimationEnterFromRight(fragment: Fragment) {
+        currentState = fragment.lifecycle.currentState
+        mFragmentManager.beginTransaction()
+            .apply {
+                setCustomAnimations(
+                    R.anim.slide_in_right,  // enter
+                    R.anim.slide_out_top,  // exit
+                    R.anim.slide_in_top,   // popEnter
+                    R.anim.slide_out_right,  // popExit
+                )
+                addToBackStack(getTag(fragment))
+                add(mDefaultContainer, fragment, getTag(fragment))
+            }
+            .also {
+                if (currentState!!.isAtLeast(Lifecycle.State.CREATED)) {
+                    it.setMaxLifecycle(fragment, currentState!!)
+                }
+                it.commit()
+            }
+        mFragmentManager.executePendingTransactions()
+    }
+
     /**
      * This is just a helper method which returns the simple name of the fragment.
      *

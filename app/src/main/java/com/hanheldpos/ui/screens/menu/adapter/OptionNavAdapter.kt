@@ -2,15 +2,12 @@ package com.hanheldpos.ui.screens.menu.adapter
 
 import androidx.recyclerview.widget.DiffUtil
 import com.hanheldpos.R
-import com.hanheldpos.model.menu_nav_opt.ItemMenuOptionNav
-import com.hanheldpos.model.menu_nav_opt.NavBarOptionType
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
-import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 
-class MenuAdapter(
-    private val onMenuItemClickListener: BaseItemClickListener<ItemMenuOptionNav>,
-) : BaseBindingListAdapter<ItemMenuOptionNav>(
+class OptionNavAdapter(
+    private val onMenuItemClickListener: BaseItemClickListener<ItemOptionNav>,
+) : BaseBindingListAdapter<ItemOptionNav>(
     DiffCallback(),
     itemClickListener = onMenuItemClickListener
 ) {
@@ -18,18 +15,17 @@ class MenuAdapter(
         return R.layout.item_menu
     }
 
-
-    private class DiffCallback : DiffUtil.ItemCallback<ItemMenuOptionNav>() {
+    private class DiffCallback : DiffUtil.ItemCallback<ItemOptionNav>() {
         override fun areItemsTheSame(
-            oldItem: ItemMenuOptionNav,
-            newItem: ItemMenuOptionNav,
+            oldItem: ItemOptionNav,
+            newItem: ItemOptionNav,
         ): Boolean {
             return oldItem == newItem;
         }
 
         override fun areContentsTheSame(
-            oldItem: ItemMenuOptionNav,
-            newItem: ItemMenuOptionNav
+            oldItem: ItemOptionNav,
+            newItem: ItemOptionNav
         ): Boolean {
             return false;
         }
