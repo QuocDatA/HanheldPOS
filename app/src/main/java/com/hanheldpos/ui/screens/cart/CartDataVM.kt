@@ -28,7 +28,7 @@ class CartDataVM : BaseViewModel() {
     }
     val linePerTotalQuantity: LiveData<String> = Transformations.map(cartModelLD) {
         it?: return@map null;
-        return@map   "${it.productsList.size}/${it.productsList.sumOf { it1 -> it1.quantity ?: 0 }}"
+        return@map   "${it.productsList.sumOf { it1 -> it1.quantity ?: 0 }}/${it.productsList.size}"
     }
 
     val numberOfCustomer: LiveData<Int> = Transformations.map(cartModelLD) {
