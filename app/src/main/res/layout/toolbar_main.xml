@@ -63,16 +63,13 @@
                     tools:listitem="@layout/item_dropdown_spinner" />
             </LinearLayout>
 
-            <ImageButton
+            <FrameLayout
                 android:id="@+id/homeCart"
-                style="@style/MaterialButton.Icon"
-                android:layout_width="@dimen/_47sdp"
-                android:layout_height="match_parent"
                 android:layout_alignParentEnd="true"
-                android:scaleType="centerInside"
-                android:src="@drawable/ic_search"
-                android:padding="@dimen/_13sdp"
-                tools:ignore="ContentDescription" />
+                android:layout_width="@dimen/_47sdp"
+                android:layout_height="match_parent">
+
+            </FrameLayout>
 
 
 

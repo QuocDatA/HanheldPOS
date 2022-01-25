@@ -59,6 +59,11 @@ class CartDataVM : BaseViewModel() {
         this.cartModelLD.notifyValueChange();
     }
 
+    fun removeCustomerFromCart() {
+        this.cartModelLD.value!!.customer = null;
+        this.cartModelLD.notifyValueChange();
+    }
+
     fun addItemToCart(item: BaseProductInCart) {
         this.cartModelLD.value?.run {
             if (item is Regular) {
@@ -153,7 +158,6 @@ class CartDataVM : BaseViewModel() {
         this.cartModelLD.value!!.addDiscountUser(discount);
         cartModelLD.notifyValueChange();
     }
-
 
 
 

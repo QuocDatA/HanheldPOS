@@ -626,6 +626,10 @@
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
+
+                <androidx.legacy.widget.Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_4sdp" />
             </LinearLayout>
         </ScrollView>
 
@@ -646,6 +650,7 @@
                 android:background="@color/color_11"
                 android:clickable="true"
                 android:focusable="true"
+                android:onClick="@{v->viewModel.removeCustomer()}"
                 android:foreground="?attr/selectableItemBackground"
                 android:gravity="center"
                 android:orientation="horizontal"

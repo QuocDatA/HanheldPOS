@@ -4,4 +4,5 @@ import com.hanheldpos.ui.base.BaseUserView
 
 interface CustomerDetailUV : BaseUserView {
     fun backPress();
+    fun removeCustomer();
 }
