@@ -36,9 +36,8 @@ class CartDataVM : BaseViewModel() {
     }
 
     fun initCart(numberCustomer: Int, table: FloorTable) {
-
-        var diningOptionId = DataHelper.floor?.Floor?.firstOrNull { floorTable -> floorTable._Id == table.FloorGuid }?.DiningOptionId
-        var diningOption = DataHelper.getDiningOptionList()?.firstOrNull { diningOption -> diningOption.Id == diningOptionId }
+        val diningOptionId = DataHelper.floor?.Floor?.firstOrNull { floorTable -> floorTable._Id == table.FloorGuid }?.DiningOptionId
+        val diningOption = DataHelper.getDiningOptionList()?.firstOrNull { diningOption -> diningOption.Id == diningOptionId }
         cartModelLD.value = CartModel(
             table = TableSummary(
                 _id = table._Id,

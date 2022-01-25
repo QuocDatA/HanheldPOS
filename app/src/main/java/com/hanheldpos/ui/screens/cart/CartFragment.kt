@@ -135,9 +135,6 @@ class CartFragment( private val listener : CartCallBack) : BaseFragment<Fragment
             },
         )
         binding.tipRecyclerView.apply {
-            addItemDecoration(
-                GridSpacingItemDecoration(spanCount = 5,includeEdge = false, spacing = resources.getDimensionPixelSize(R.dimen._20sdp))
-            )
             binding.tipRecyclerView.adapter = cartTipAdapter;
         };
         //endregion
