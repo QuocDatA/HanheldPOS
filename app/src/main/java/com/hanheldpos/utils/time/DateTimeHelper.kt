@@ -126,6 +126,7 @@ object DateTimeHelper {
      * @return
      */
     fun dateToString(date: Date?, dateFormat: String?): String {
+        date?:return "";
         val sdf = SimpleDateFormat(dateFormat, Locale.ENGLISH)
         return sdf.format(date)
     }

@@ -14,4 +14,7 @@ class CustomerDetailVM : BaseUiViewModel<CustomerDetailUV>() {
         uiCallback?.backPress()
     }
 
+    fun removeCustomer() {
+        uiCallback?.removeCustomer()
+    }
 }
