@@ -440,13 +440,13 @@
                     <LinearLayout
                         style="@style/SingleLineItemCart"
                         android:orientation="vertical"
-                        android:paddingBottom="@dimen/_14sdp">
+                        android:padding="@dimen/_9sdp"
+                        >
 
                         <com.diadiem.pos_components.PTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="start"
-                            android:layout_marginStart="@dimen/_9sdp"
                             android:text="@string/tip"
                             app:useFontStyle="bold"
                             app:useTextColor="color4"
@@ -458,12 +458,9 @@
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/tip_recycler_view"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginHorizontal="@dimen/_9sdp"
-                            android:orientation="horizontal"
-                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                             app:spanCount="5"
                             tools:itemCount="5"
                             tools:listitem="@layout/item_cart_tip" />
