@@ -162,14 +162,14 @@
 
                 <com.diadiem.pos_components.PTextView
                     android:id="@+id/infoCartNumber"
-                    android:layout_alignParentEnd="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
                     android:background="@drawable/bg_color5_2444dp"
                     android:paddingHorizontal="@dimen/_5sdp"
+                    android:text="@{cartDataVM.linePerTotalQuantity}"
                     app:useTextColor="color2"
                     app:useTextHeader="h6"
-                    android:text="@{cartDataVM.linePerTotalQuantity}"
                     tools:text="8/10" />
 
             </RelativeLayout>
