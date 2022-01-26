@@ -21,7 +21,7 @@ import com.hanheldpos.model.product.ProductType
 
 object OrderConverter {
 
-    public fun toCart(orderModel: OrderModel, orderGuid: String): CartModel {
+    public fun toCart(orderModel: OrderReq, orderGuid: String): CartModel {
         val orderPayment = orderModel.OrderDetail.PaymentList;
         val orderData = orderModel.OrderDetail;
         val order = orderModel.Order;
