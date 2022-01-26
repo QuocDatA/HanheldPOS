@@ -4,7 +4,7 @@ enum class FontStyleEnum(val value: Int) {
     NORMAL(value = 1),
     ITALIC(value = 2),
     BOLD(value = 3),
-    SEMIBOLD(value = 4);
+    SEMI_BOLD(value = 4);
 
 
     companion object{
