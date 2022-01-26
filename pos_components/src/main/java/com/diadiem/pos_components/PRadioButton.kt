@@ -5,7 +5,6 @@ import android.graphics.Color
 import android.util.AttributeSet
 import android.util.TypedValue
 import androidx.appcompat.widget.AppCompatRadioButton
-import androidx.appcompat.widget.AppCompatTextView
 import com.diadiem.pos_components.enumtypes.FontStyleEnum
 import com.diadiem.pos_components.enumtypes.TextColorEnum
 import com.diadiem.pos_components.enumtypes.TextHeaderEnum
@@ -157,7 +156,7 @@ class PRadioButton @JvmOverloads constructor(
                                 appConfig?.styles?.fonts?.families?.bold.plus(appConfig?.styles?.fonts?.families?.fileType)
                             )
                         }
-                        FontStyleEnum.SEMIBOLD->{
+                        FontStyleEnum.SEMI_BOLD->{
                             typeface = FontManagement.getFontFromAssets(
                                 context,
                                 appConfig?.styles?.fonts?.families?.semibold.plus(appConfig?.styles?.fonts?.families?.fileType)
