@@ -1,15 +1,16 @@
 package com.hanheldpos.ui.screens.cart.payment.input
 
 import android.annotation.SuppressLint
-import android.view.View
+import androidx.core.widget.doAfterTextChanged
 import com.hanheldpos.R
-import com.hanheldpos.binding.setPriceView
 import com.hanheldpos.data.api.pojo.payment.PaymentMethodResp
 import com.hanheldpos.databinding.FragmentPaymentInputBinding
 import com.hanheldpos.extension.toNiceString
+import com.hanheldpos.model.cart.payment.PaymentMethodType
 import com.hanheldpos.model.keyboard.KeyBoardType
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.input.KeyBoardVM
+import com.hanheldpos.utils.PriceHelper
 
 class PaymentInputFragment(
     private val payable: Double,
@@ -46,7 +47,11 @@ class PaymentInputFragment(
                 viewModel.onCancel();
             }
         });
-        binding.paymentInputTitle.setText(paymentMethod.Title + " (Amount Due " + payable.toNiceString() + ")")
+
+        binding.textInputLayout.setEndIconOnClickListener {
+            clearInput()
+            binding.textInputLayout.isEndIconVisible = false
+        }
     }
 
     override fun onCancel() {
@@ -60,8 +65,42 @@ class PaymentInputFragment(
     }
 
     override fun initData() {
-        keyBoardVM.input.value = payable.toNiceString();
-        keyBoardVM.keyBoardType.postValue(KeyBoardType.Number)
+        if (paymentMethod.PaymentMethodType == PaymentMethodType.CASH.value) {
+            clearInput()
+        } else {
+            keyBoardVM.input.value = payable.toNiceString();
+        }
+
+        keyBoardVM.keyBoardType.value= viewModel.setUpKeyboard(paymentMethod, payable)
+
+        binding.numberPaymentInput.let { input ->
+            var isEditing = false
+            input.doAfterTextChanged {
+                binding.textInputLayout.isEndIconVisible = true
+                if (it.toString().isEmpty()) {
+                    binding.textInputLayout.isEndIconVisible = false
+                } else {
+                    binding.textInputLayout.setEndIconDrawable(R.drawable.ic_clear_text)
+                }
+                if (isEditing) {
+                    return@doAfterTextChanged;
+                } else {
+                    isEditing = true;
+                    if (keyBoardVM.keyBoardType.value == (KeyBoardType.Text)) {
+                        input.setText(it.toString());
+                    } else {
+                        input.setText(PriceHelper.formatStringPrice(it.toString()));
+                    }
+                }
+                input.setSelection(input.length());
+                isEditing = false;
+            }
+        }
+
+    }
+
+    override fun clearInput() {
+        keyBoardVM.input.postValue("")
     }
 
     override fun initAction() {
