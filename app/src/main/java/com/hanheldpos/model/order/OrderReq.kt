@@ -4,7 +4,7 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class OrderModel(
+data class OrderReq(
     val Order : Order,
     val OrderDetail : OrderDetail,
     val OrderSummary: OrderSummaryPrimary,

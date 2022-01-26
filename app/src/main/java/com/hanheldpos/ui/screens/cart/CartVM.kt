@@ -3,29 +3,18 @@ package com.hanheldpos.ui.screens.cart
 import android.content.Context
 import androidx.lifecycle.LifecycleOwner
 import com.hanheldpos.R
-import com.hanheldpos.data.api.pojo.setting.SettingDeviceResp
-import com.hanheldpos.data.repository.base.BaseRepoCallback
-import com.hanheldpos.data.repository.order.OrderAsyncRepo
-import com.hanheldpos.data.repository.setting.SettingRepo
 import com.hanheldpos.model.DataHelper
-import com.hanheldpos.model.UserHelper
 import com.hanheldpos.model.cart.CartConverter
 import com.hanheldpos.model.cart.CartModel
 import com.hanheldpos.model.cart.DiscountCart
 import com.hanheldpos.model.cart.payment.PaymentStatus
-import com.hanheldpos.model.order.Order
-import com.hanheldpos.model.order.OrderModel
 import com.hanheldpos.model.order.OrderStatus
-import com.hanheldpos.model.order.OrderSubmitResp
-import com.hanheldpos.model.setting.SettingDevicePut
 import com.hanheldpos.ui.base.dialog.AppAlertDialog
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
-import com.hanheldpos.utils.GSonUtils
 
 class CartVM : BaseUiViewModel<CartUV>() {
 
-    private val settingResp = SettingRepo();
-    private val orderAlterRepo = OrderAsyncRepo();
+
 
     fun initLifeCycle(owner: LifecycleOwner) {
         owner.lifecycle.addObserver(this);
@@ -120,75 +109,7 @@ class CartVM : BaseUiViewModel<CartUV>() {
         }
 
 
-        // TODO : sync order
-//        val json = GSonUtils.toServerJson(
-//            SettingDevicePut(
-//                MaxChar = DataHelper.numberIncreaseOrder.toString().length.toLong(),
-//                NumberIncrement = DataHelper.numberIncreaseOrder.toString(),
-//                UserGuid = UserHelper.getUserGui(),
-//                LocationGuid = UserHelper.getLocationGui(),
-//                DeviceGuid = UserHelper.getDeviceGui(),
-//                Device_key = DataHelper.getDeviceByDeviceCode()?._key!!.toString()
-//            )
-//        );
-//        settingResp.putSettingDeviceIds(
-//            json,
-//            callback = object : BaseRepoCallback<SettingDeviceResp> {
-//                override fun apiResponse(data: SettingDeviceResp?) {
-//                    if (data == null || data.DidError) {
-//                        AppAlertDialog.get()
-//                            .show(
-//                                "Error",
-//                                data?.ErrorMessage,
-//                            )
-//                        showLoading(true)
-//                    } else {
-//                        val orderJson = GSonUtils.toServerJson(
-//                            CartConverter.toOrder(
-//                                cart,
-//                                OrderStatus.COMPLETED.value,
-//                                PaymentStatus.PAID.value
-//                            )
-//                        );
-//                        orderAlterRepo.postOrderSubmit(orderJson, callback = object :
-//                            BaseRepoCallback<OrderSubmitResp> {
-//                            override fun apiResponse(data: OrderSubmitResp?) {
-//                                showLoading(false);
-//                                if (data == null || data.Message?.contains("exist") == true) {
-//                                    AppAlertDialog.get()
-//                                        .show(
-//                                            "Notification",
-//                                            data?.Message ?: "Push order failed",
-//                                        );
-//                                } else {
-//                                    AppAlertDialog.get()
-//                                        .show(
-//                                            "Notification",
-//                                            "Push order succeeded",
-//                                        );
-//                                    uiCallback?.onBillSuccess();
-//                                }
-//                            }
-//
-//                            override fun showMessage(message: String?) {
-//                                showLoading(false);
-//                                AppAlertDialog.get()
-//                                    .show(
-//                                        "Error",
-//                                        message,
-//                                    )
-//                            }
-//                        })
-//
-//                        print(orderJson);
-//                    }
-//                }
-//
-//                override fun showMessage(message: String?) {
-//                    showLoading(false);
-//                    showError(message);
-//                }
-//            });
+
     }
 
 

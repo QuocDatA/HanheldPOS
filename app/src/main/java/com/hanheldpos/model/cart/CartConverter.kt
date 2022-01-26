@@ -16,7 +16,7 @@ import java.util.*
 
 object CartConverter {
 
-    fun toOrder(cart: CartModel, orderStatus: Int, paymentStatus: Int): OrderModel {
+    fun toOrder(cart: CartModel, orderStatus: Int, paymentStatus: Int): OrderReq {
         val subTotal = cart.getSubTotal();
         val total = cart.total();
         val totalCompVoid = cart.totalComp();
@@ -38,7 +38,7 @@ object CartConverter {
         cart.createDate =
             DateTimeHelper.dateToString(Date(), DateTimeHelper.Format.FULL_DATE_UTC_TIMEZONE);
 
-        return OrderModel(
+        return OrderReq(
             Order = Order(
                 OrderStatusId = orderStatus,
                 PaymentStatusId = paymentStatus,

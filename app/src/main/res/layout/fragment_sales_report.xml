@@ -63,7 +63,7 @@
                         android:layout_height="match_parent"
                         android:padding="@dimen/_11sdp"
                         android:adjustViewBounds="true"
-                        android:onClick="@{v->viewModel.onSyncOrders()}"
+                        android:onClick="@{v->viewModel.onSyncOrders(v)}"
                         android:focusable="true"
                         android:clickable="true"
                         android:backgroundTint="@color/textPrimary"
@@ -72,8 +72,8 @@
                         tools:ignore="ContentDescription" />
                     <com.diadiem.pos_components.PTextView
                         android:gravity="center"
-                        visibleObject="@{DataHelper.INSTANCE.ordersCompleted != null &amp;&amp; DataHelper.INSTANCE.ordersCompleted.size() > 0}"
-                        android:text="@{String.valueOf(DataHelper.INSTANCE.ordersCompleted.size())}"
+                        visibleObject="@{viewModel.numberOrder != null &amp;&amp; viewModel.numberOrder > 0}"
+                        android:text="@{String.valueOf(viewModel.numberOrder)}"
                         app:useTextColor="color2"
                         app:useTextHeader="h7"
                         app:useFontStyle="normal"
