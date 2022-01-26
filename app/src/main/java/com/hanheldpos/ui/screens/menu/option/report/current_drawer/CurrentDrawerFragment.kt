@@ -39,7 +39,7 @@ class CurrentDrawerFragment : BaseFragment<FragmentCurrentDrawerBinding, Current
     override fun initView() {
 
         if (DataHelper.currentDrawerId != null) {
-            binding.currentDrawerText.text = DataHelper.currentDrawerId;
+            binding.currentDrawerText.text = "(${DataHelper.currentDrawerId})";
         } else binding.currentDrawerText.visibility = View.GONE;
 
         reportDrawerInfoAdapter = ReportDrawerInfoAdapter();
@@ -74,7 +74,7 @@ class CurrentDrawerFragment : BaseFragment<FragmentCurrentDrawerBinding, Current
     }
 
     override fun onOpenEndDrawer() {
-        if (DataHelper.ordersCompleted != null || DataHelper.ordersCompleted?.isNotEmpty() == true) {
+        if (!DataHelper.ordersCompleted.isNullOrEmpty()) {
             AppAlertDialog.get().show(
                 getString(R.string.notification),
                 getString(R.string.please_sync_local_data_before_ending_this_cash_drawer)

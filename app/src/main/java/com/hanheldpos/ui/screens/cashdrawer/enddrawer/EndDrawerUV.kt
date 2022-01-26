@@ -5,4 +5,5 @@ import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
 
 interface EndDrawerUV : BaseUserView {
     fun backPress();
+    fun onEndDrawer();
 }
