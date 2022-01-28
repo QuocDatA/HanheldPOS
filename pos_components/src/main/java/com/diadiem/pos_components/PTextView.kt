@@ -4,7 +4,6 @@ package com.diadiem.pos_components
 import android.content.Context
 import android.graphics.Color
 import android.util.AttributeSet
-import android.util.Log
 import android.util.TypedValue
 import androidx.appcompat.widget.AppCompatTextView
 import com.diadiem.pos_components.enumtypes.FontStyleEnum
@@ -160,7 +159,7 @@ class PTextView @JvmOverloads constructor(
                                 appConfig?.styles?.fonts?.families?.bold.plus(appConfig?.styles?.fonts?.families?.fileType)
                             )
                         }
-                        FontStyleEnum.SEMIBOLD->{
+                        FontStyleEnum.SEMI_BOLD->{
                             typeface = FontManagement.getFontFromAssets(
                                 context,
                                 appConfig?.styles?.fonts?.families?.semibold.plus(appConfig?.styles?.fonts?.families?.fileType)

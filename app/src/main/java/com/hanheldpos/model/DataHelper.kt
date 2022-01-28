@@ -13,8 +13,7 @@ import com.hanheldpos.data.api.pojo.order.menu.MenuResp
 import com.hanheldpos.data.api.pojo.order.settings.OrderSettingResp
 import com.hanheldpos.data.api.pojo.payment.PaymentMethodResp
 import com.hanheldpos.model.cart.fee.FeeApplyToType
-import com.hanheldpos.model.order.Order
-import com.hanheldpos.model.order.OrderModel
+import com.hanheldpos.model.order.OrderReq
 import com.hanheldpos.prefs.PrefKey
 import com.utils.helper.AppPreferences
 
@@ -273,11 +272,11 @@ object DataHelper {
     //endregion
 
     //region Order Local
-    var ordersPending: List<OrderModel>? = null
+    var ordersPending: List<OrderReq>? = null
         get() {
             if (field == null) {
                 field = StorageHelper.getDataFromEncryptedFile(PrefKey.Order.ORDER_PENDING,
-                    object : TypeToken<List<OrderModel>>() {}.type);
+                    object : TypeToken<List<OrderReq>>() {}.type);
             }
             return field
         }
@@ -286,11 +285,11 @@ object DataHelper {
             StorageHelper.setDataToEncryptedFile(PrefKey.Order.ORDER_PENDING, value)
         }
 
-    var ordersCompleted: List<OrderModel>? = null
+    var ordersCompleted: List<OrderReq>? = null
         get() {
             if (field == null) {
                 field = StorageHelper.getDataFromEncryptedFile(PrefKey.Order.ORDER_COMPLETE,
-                    object : TypeToken<List<OrderModel>>() {}.type);
+                    object : TypeToken<List<OrderReq>>() {}.type);
             }
             return field
         }

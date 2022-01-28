@@ -19,8 +19,6 @@ import com.hanheldpos.ui.base.viewmodel.BaseViewModel
 
 class CartDataVM : BaseViewModel() {
 
-
-
     val cartModelLD: MutableLiveData<CartModel> = MutableLiveData();
 
     val diningOptionLD: LiveData<DiningOption> = Transformations.map(cartModelLD) {

@@ -10,6 +10,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.load.model.ByteArrayLoader
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.cashdrawer.report.ReportCashDrawerResp
 import com.hanheldpos.databinding.FragmentEndDrawerBinding
@@ -35,14 +36,24 @@ class EndDrawerFragment(private val report: ReportCashDrawerResp?) : BaseFragmen
     override fun initViewModel(viewModel: EndDrawerVM) {
         viewModel.run {
             init(this@EndDrawerFragment);
+            initLifeCycle(this@EndDrawerFragment);
             binding.viewModel = this;
         }
     }
 
     override fun initView() {
 
-        binding.expectedAmount.text = PriceHelper.formatStringPrice(report?.Reports?.find { it.Id == 6 }?.Value.toString());
+        // Init Amount
+        val price = report?.Reports?.find { it.Id == 6 }?.Value as Double?
+        viewModel.amountExpected.postValue(price?:0.0);
+        viewModel.amountString.postValue(PriceHelper.formatStringPrice((price?:0.0).toString()));
 
+        // Listener Click
+        binding.btnEndDrawer.setOnClickListener {
+            viewModel.endDrawer(requireContext());
+        }
+
+        // Init Adatper
         reportDrawerInfoAdapter = ReportDrawerInfoAdapter();
 
         binding.currentDrawerRecycle.apply {
@@ -64,14 +75,7 @@ class EndDrawerFragment(private val report: ReportCashDrawerResp?) : BaseFragmen
 
     @SuppressLint("NotifyDataSetChanged")
     override fun initData() {
-        binding.btnEndDrawer.setOnClickListener {
-            activity?.navigateTo(
-                PinCodeActivity::class.java,
-                alsoFinishCurrentActivity = true,
-                alsoClearActivity = true,
-            )
-            CashDrawerHelper.isEndDrawer = true
-        }
+
         binding.amountInput.let { input->
             var isEditing = false
             input.doAfterTextChanged {
@@ -99,6 +103,14 @@ class EndDrawerFragment(private val report: ReportCashDrawerResp?) : BaseFragmen
 
     override fun backPress() {
         onFragmentBackPressed();
+    }
+
+    override fun onEndDrawer() {
+        activity?.navigateTo(
+            PinCodeActivity::class.java,
+            alsoFinishCurrentActivity = true,
+            alsoClearActivity = true,
+        )
     }
 
 }

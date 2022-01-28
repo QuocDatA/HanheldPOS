@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentSalesReportBinding
 import com.hanheldpos.ui.base.fragment.BaseFragment
+import com.hanheldpos.ui.screens.menu.option.report.sale.customize.CustomizeReportFragment
 
 class SalesReportFragment : BaseFragment<FragmentSalesReportBinding,SalesReportVM>() , SalesReportUV {
     override fun layoutRes(): Int {
@@ -35,6 +36,10 @@ class SalesReportFragment : BaseFragment<FragmentSalesReportBinding,SalesReportV
 
     override fun initAction() {
 
+    }
+
+    override fun onOpenCustomizeReport() {
+        navigator.goToWithCustomAnimation(CustomizeReportFragment());
     }
 
     override fun backPress() {
