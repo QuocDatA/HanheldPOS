@@ -162,4 +162,8 @@
     <string name="address_info">Address Info</string>
     <string name="address_1">Address 1</string>
     <string name="address_2">Address 2</string>
+    <string name="overview">Overview</string>
+    <string name="payment_summary">Payment Summary</string>
+    <string name="dining_options">Dining Options</string>
+    <string name="section_sales">Section Sales</string>
 </resources>

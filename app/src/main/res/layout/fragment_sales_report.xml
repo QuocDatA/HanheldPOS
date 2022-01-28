@@ -163,5 +163,44 @@
             android:layout_width="match_parent"
             android:layout_height="0.5dp" />
 
+        <LinearLayout
+            android:background="@color/color_11"
+            android:paddingVertical="@dimen/_7sdp"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/dayNumberAdapter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                android:layoutDirection="ltr"
+                tools:itemCount="5"
+                app:spanCount="5"
+                tools:listitem="@layout/item_sales_report_day_number"
+                />
+        </LinearLayout>
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabReportOptions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:tabSelectedTextColor="@color/color_4"
+            app:tabTextAppearance="@style/TextAppearance"
+            android:layout_gravity="center_horizontal"
+            app:tabMode="scrollable"
+            />
+        <include
+            layout="@layout/divider_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp" />
+        <androidx.viewpager2.widget.ViewPager2
+            useInputEnable="@{false}"
+            android:id="@+id/layoutReportOptions"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+
+
     </LinearLayout>
 </layout>

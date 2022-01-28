@@ -21,6 +21,7 @@ import com.hanheldpos.model.order.OrderSubmitResp
 import com.hanheldpos.model.setting.SettingDevicePut
 import com.hanheldpos.ui.base.dialog.AppAlertDialog
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
+import com.hanheldpos.ui.screens.menu.option.report.sale.reports.adapter.NumberDayReportItem
 import com.hanheldpos.utils.GSonUtils
 import javax.xml.transform.Transformer
 
@@ -119,6 +120,16 @@ class SalesReportVM : BaseUiViewModel<SalesReportUV>() {
 
     fun onPrint() {
 
+    }
+
+    fun initNumberDaySelected() : MutableList<NumberDayReportItem> {
+        return mutableListOf(
+            NumberDayReportItem("1D",1),
+            NumberDayReportItem("2D",2),
+            NumberDayReportItem("3D",3),
+            NumberDayReportItem("5D",5),
+            NumberDayReportItem("1W",7),
+        )
     }
 
     fun onOpenCustomizeReport(){
