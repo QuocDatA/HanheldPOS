@@ -66,7 +66,8 @@
             android:layout_height="@dimen/_1sdp"
             android:background="@color/color_10" />
 
-        <androidx.core.widget.NestedScrollView
+        <ScrollView
+            android:fillViewport="true"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -83,6 +84,7 @@
                     android:layout_gravity="center"
                     android:layout_marginHorizontal="@dimen/_5sdp"
                     android:layout_marginTop="@dimen/_5sdp"
+                    app:mcv_tileHeight="@dimen/_30sdp"
                     app:mcv_arrowColor="@color/textPrimary"
                     app:mcv_dateTextAppearance="@style/TextAppearance.CalendarDates"
                     app:mcv_firstDayOfWeek="sunday"
@@ -339,7 +341,7 @@
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
-        </androidx.core.widget.NestedScrollView>
+        </ScrollView>
     </LinearLayout>
 
 </layout>
