@@ -86,7 +86,7 @@ class MenuFragment : BaseFragment<FragmentMenuBinding, MenuVM>(), MenuUV {
         when (option.type as NavBarOptionType) {
             NavBarOptionType.ORDERS -> {}
             NavBarOptionType.TRANSACTIONS -> {}
-            NavBarOptionType.REPORTS -> navigateToReport();
+            NavBarOptionType.REPORTS -> navigator.goToWithCustomAnimation(ReportFragment());
             NavBarOptionType.CUSTOMER -> {}
             NavBarOptionType.ORDER_HISTORY -> {}
             NavBarOptionType.SETTINGS -> {}
@@ -102,15 +102,9 @@ class MenuFragment : BaseFragment<FragmentMenuBinding, MenuVM>(), MenuUV {
         }
     }
 
-    private fun navigateToReport() {
-        navigator.goTo(ReportFragment())
-    }
-
     private fun onLogoutOption(type: LogoutType, title: String?, message: String?) {
 
         //TODO : syncing local data orders.
-
-
         showAlert(
             title = title,
             message = message,
