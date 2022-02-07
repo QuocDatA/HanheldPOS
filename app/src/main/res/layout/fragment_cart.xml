@@ -169,11 +169,11 @@
                             visibleObject="@{cartDataVM.cartModelLD.customer != null}"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:onClick="@{v->viewModel.onShowCustomerDetail()}"
                             android:layout_marginHorizontal="@dimen/_9sdp"
                             android:layout_marginTop="@dimen/_7sdp"
                             android:clickable="true"
                             android:focusable="true"
+                            android:onClick="@{v->viewModel.onShowCustomerDetail()}"
                             app:customer="@{cartDataVM.cartModelLD.customer}" />
 
                     </LinearLayout>
@@ -191,6 +191,7 @@
                         <LinearLayout
                             style="@style/SingleLineItemCart"
                             android:orientation="horizontal"
+                            android:gravity="center_vertical"
                             android:paddingVertical="@dimen/_11sdp">
 
                             <ImageView
@@ -440,8 +441,7 @@
                     <LinearLayout
                         style="@style/SingleLineItemCart"
                         android:orientation="vertical"
-                        android:padding="@dimen/_9sdp"
-                        >
+                        android:padding="@dimen/_9sdp">
 
                         <com.diadiem.pos_components.PTextView
                             android:layout_width="wrap_content"
@@ -457,6 +457,8 @@
                             android:layout_height="@dimen/_10sdp" />
 
                         <androidx.recyclerview.widget.RecyclerView
+                            android:useDefaultMargins="true"
+
                             android:id="@+id/tip_recycler_view"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -505,7 +507,9 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginEnd="@dimen/_9sdp"
                                 android:drawablePadding="0dp"
-                                android:theme="@style/SCBSwitch" />
+                                android:theme="@style/SCBSwitch"
+                                android:thumb="@drawable/switch_thumb"
+                                app:track="@drawable/switch_track" />
                         </LinearLayout>
 
                     </LinearLayout>
@@ -544,7 +548,9 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginEnd="@dimen/_9sdp"
                                 android:drawablePadding="0dp"
-                                android:theme="@style/SCBSwitch" />
+                                android:theme="@style/SCBSwitch"
+                                android:thumb="@drawable/switch_thumb"
+                                app:track="@drawable/switch_track" />
                         </LinearLayout>
                     </LinearLayout>
 
