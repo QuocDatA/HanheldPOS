@@ -1,14 +1,11 @@
 package com.hanheldpos.ui.screens.menu.option.report.sale.reports
 
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentSalesReportBinding
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.menu.option.report.sale.customize.CustomizeReportFragment
+import com.hanheldpos.utils.time.DateTimeHelper
+import java.util.*
 
 class SalesReportFragment : BaseFragment<FragmentSalesReportBinding,SalesReportVM>() , SalesReportUV {
     override fun layoutRes(): Int {
@@ -27,7 +24,9 @@ class SalesReportFragment : BaseFragment<FragmentSalesReportBinding,SalesReportV
     }
 
     override fun initView() {
-
+        binding.deviceApply.text = "This Device Only ,Current Drawer"
+        binding.dateFromTo.text =
+            DateTimeHelper.dateToString(DateTimeHelper.curDate, DateTimeHelper.Format.DD_MMM_YYYY)
     }
 
     override fun initData() {
@@ -39,7 +38,48 @@ class SalesReportFragment : BaseFragment<FragmentSalesReportBinding,SalesReportV
     }
 
     override fun onOpenCustomizeReport() {
-        navigator.goToWithCustomAnimation(CustomizeReportFragment());
+        navigator.goToWithCustomAnimation(CustomizeReportFragment(listener = object :
+            CustomizeReportFragment.CustomizeReportCallBack {
+            override fun onComplete(
+                startDay: Date?,
+                endDay: Date?,
+                isAllDay: Boolean,
+                startTime: String,
+                endTime: String,
+                isAllDevice: Boolean,
+                isCurrentDrawer: Boolean
+            ) {
+                if (startDay == endDay) {
+                    binding.dateFromTo.text =
+                        DateTimeHelper.dateToString(startDay, DateTimeHelper.Format.DD_MMM_YYYY)
+                } else {
+                    val dateStr = DateTimeHelper.dateToString(
+                        startDay,
+                        DateTimeHelper.Format.dd_MMM_YYYY
+                    ) + " - " + DateTimeHelper.dateToString(
+                        endDay,
+                        DateTimeHelper.Format.dd_MMM_YYYY
+                    )
+                    binding.dateFromTo.text = dateStr
+                }
+                if (isAllDevice) {
+                    if (isAllDay) {
+                        binding.deviceApply.text = "All Device"
+                    } else {
+                        // Show Time Selected
+                    }
+                } else {
+                    binding.deviceApply.text = "This Device Only"
+                }
+                if (isCurrentDrawer) {
+                    binding.deviceApply.text = "${binding.deviceApply.text} ,Current Drawer"
+                }
+            }
+
+            override fun onCancel() {
+
+            }
+        }));
     }
 
     override fun backPress() {
