@@ -5,7 +5,7 @@ import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
 
 class CustomizeReportVM : BaseUiViewModel<CustomizeReportUV>() {
     var isCurrentDrawer = MutableLiveData<Boolean>(true);
-    var isAllDay = MutableLiveData<Boolean>(true);
+    var isAllDay = MutableLiveData<Boolean>(false);
     var isAllDevice = MutableLiveData<Boolean>(false)
     var isThisDevice = MutableLiveData<Boolean>(true)
 
