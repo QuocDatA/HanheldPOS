@@ -22,15 +22,8 @@ import com.hanheldpos.utils.time.DateTimeHelper
 
 class SalesReportVM : BaseUiViewModel<SalesReportUV>() {
 
-    lateinit var saleReportCustomData: SaleReportCustomData
-
-    private val settingRepo = SettingRepo();
-    private val orderAlterRepo = OrderAsyncRepo();
-
-    val numberOrder = MutableLiveData<Int>(DataHelper.ordersCompleted?.size ?: 0);
-
-    fun initSaleReportCustomData() {
-        saleReportCustomData = SaleReportCustomData(
+    var saleReportCustomData = MutableLiveData<SaleReportCustomData>(
+        SaleReportCustomData(
             startDay = DateTimeHelper.curDate,
             endDay = DateTimeHelper.curDate,
             isCurrentDrawer = true,
@@ -39,7 +32,12 @@ class SalesReportVM : BaseUiViewModel<SalesReportUV>() {
             startTime = "",
             endTime = ""
         )
-    }
+    )
+
+    private val settingRepo = SettingRepo();
+    private val orderAlterRepo = OrderAsyncRepo();
+
+    val numberOrder = MutableLiveData<Int>(DataHelper.ordersCompleted?.size ?: 0);
 
     fun onSyncOrders(view: View) {
         if (DataHelper.ordersCompleted?.size ?: 0 <= 0) return
@@ -132,18 +130,17 @@ class SalesReportVM : BaseUiViewModel<SalesReportUV>() {
     }
 
 
-
-    fun initNumberDaySelected() : MutableList<NumberDayReportItem> {
+    fun initNumberDaySelected(): MutableList<NumberDayReportItem> {
         return mutableListOf(
-            NumberDayReportItem("1D",1),
-            NumberDayReportItem("2D",2),
-            NumberDayReportItem("3D",3),
-            NumberDayReportItem("5D",5),
-            NumberDayReportItem("1W",7),
+            NumberDayReportItem("1D", 1),
+            NumberDayReportItem("2D", 2),
+            NumberDayReportItem("3D", 3),
+            NumberDayReportItem("5D", 5),
+            NumberDayReportItem("1W", 7),
         )
     }
 
-    fun onOpenCustomizeReport(){
+    fun onOpenCustomizeReport() {
         uiCallback?.onOpenCustomizeReport();
     }
 
