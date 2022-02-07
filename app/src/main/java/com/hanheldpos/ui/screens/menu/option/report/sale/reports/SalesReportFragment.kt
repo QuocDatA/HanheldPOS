@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import com.google.android.material.tabs.TabLayoutMediator
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentSalesReportBinding
+import com.hanheldpos.model.report.SaleReportCustomData
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.menu.option.report.sale.customize.CustomizeReportFragment
@@ -69,11 +70,12 @@ class SalesReportFragment : BaseFragment<FragmentSalesReportBinding, SalesReport
             }
         }.attach()
 
-        numberDayReportAdapter = NumberDayReportAdapter(listener = object : BaseItemClickListener<NumberDayReportItem> {
-            override fun onItemClick(adapterPosition: Int, item: NumberDayReportItem) {
+        numberDayReportAdapter =
+            NumberDayReportAdapter(listener = object : BaseItemClickListener<NumberDayReportItem> {
+                override fun onItemClick(adapterPosition: Int, item: NumberDayReportItem) {
 
-            }
-        })
+                }
+            })
         binding.dayNumberAdapter.adapter = numberDayReportAdapter;
         binding.deviceApply.text = "This Device Only ,Current Drawer"
         binding.dateFromTo.text =
@@ -89,7 +91,11 @@ class SalesReportFragment : BaseFragment<FragmentSalesReportBinding, SalesReport
             )
         );
 
-        viewModel.initSaleReportCustomData()
+        viewModel.saleReportCustomData.observe(this,{
+            setUpDateTitle(it);
+        });
+
+
     }
 
     override fun initAction() {
@@ -102,10 +108,9 @@ class SalesReportFragment : BaseFragment<FragmentSalesReportBinding, SalesReport
             override fun onComplete(
                 saleReportCustomData: SaleReportCustomData
             ) {
-                setUpDateTitle(saleReportCustomData)
-                viewModel.saleReportCustomData = saleReportCustomData
+                viewModel.saleReportCustomData.postValue(saleReportCustomData);
             }
-        }, saleReportCustomData = viewModel.saleReportCustomData));
+        }, saleReportCustomData = viewModel.saleReportCustomData.value!!));
     }
 
     override fun backPress() {
@@ -115,7 +120,10 @@ class SalesReportFragment : BaseFragment<FragmentSalesReportBinding, SalesReport
     private fun setUpDateTitle(saleReportCustomData: SaleReportCustomData) {
         if (saleReportCustomData.startDay == saleReportCustomData.endDay) {
             binding.dateFromTo.text =
-                DateTimeHelper.dateToString(saleReportCustomData.startDay, DateTimeHelper.Format.DD_MMM_YYYY)
+                DateTimeHelper.dateToString(
+                    saleReportCustomData.startDay,
+                    DateTimeHelper.Format.DD_MMM_YYYY
+                )
         } else {
             val dateStr = DateTimeHelper.dateToString(
                 saleReportCustomData.startDay,
