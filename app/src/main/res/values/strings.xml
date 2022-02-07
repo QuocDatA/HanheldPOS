@@ -166,4 +166,17 @@
     <string name="payment_summary">Payment Summary</string>
     <string name="dining_options">Dining Options</string>
     <string name="section_sales">Section Sales</string>
+    <string name="qty">Qty</string>
+    <string name="cover">Cover</string>
+    <string name="service_charge">Service Charge</string>
+    <string name="discount_comp"><![CDATA[Discount & Comp]]></string>
+    <string name="refund">Refund</string>
+    <string name="taxes">Taxes</string>
+    <string name="service_fee">Service Fee</string>
+    <string name="surcharge">Surcharge</string>
+    <string name="total_sales">Total Sales</string>
+    <string name="bill_count">Bill Count</string>
+    <string name="bill_average">Bill Average</string>
+    <string name="gross">(Gross)</string>
+    <string name="net">(Net)</string>
 </resources>
