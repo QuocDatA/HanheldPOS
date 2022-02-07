@@ -2,12 +2,16 @@ package com.hanheldpos.ui.screens.menu.option.report.sale.customize
 
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentCustomizeReportBinding
+import com.hanheldpos.model.report.SaleReportCustomData
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.utils.time.DateTimeHelper
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import java.util.*
 
-class CustomizeReportFragment(private val listener: CustomizeReportCallBack) :
+class CustomizeReportFragment(
+    private val saleReportCustomData: SaleReportCustomData,
+    private val listener: CustomizeReportCallBack
+) :
     BaseFragment<FragmentCustomizeReportBinding, CustomizeReportVM>(), CustomizeReportUV {
     override fun layoutRes() = R.layout.fragment_customize_report
     override fun viewModelClass(): Class<CustomizeReportVM> {
@@ -22,9 +26,25 @@ class CustomizeReportFragment(private val listener: CustomizeReportCallBack) :
     }
 
     override fun initView() {
+        viewModel.initCustomReportData(
+            saleReportCustomData
+        )
+
         binding.btnDone.setOnClickListener {
             setUpReturn()
         }
+
+        binding.currentDrawerCheckbox.isChecked = saleReportCustomData.isCurrentDrawer
+        binding.btnIsAllDay.isChecked = saleReportCustomData.isAllDay
+
+        if (viewModel.startDay.isBefore(viewModel.endDay)) {
+            binding.calendarView.selectRange(
+                viewModel.startDay, viewModel.endDay
+            )
+        } else {
+            binding.calendarView.selectedDate = viewModel.startDay
+        }
+
 
         binding.calendarView.setOnDateChangedListener { _, _, _ ->
             binding.currentDrawerCheckbox.isChecked = false
@@ -38,34 +58,38 @@ class CustomizeReportFragment(private val listener: CustomizeReportCallBack) :
 
     private fun setUpReturn() {
         navigator.goOneBack()
-        var startDay = CalendarDay.today()
-        var endDay = startDay
 
         binding.calendarView.let {
             if (it.selectedDate != null) {
-                endDay = it.selectedDate!!
-                startDay = if (it.selectedDates.size > 1) it.selectedDates[0] else endDay
+                viewModel.endDay = it.selectedDate!!
+                viewModel.startDay =
+                    if (it.selectedDates.size > 1) it.selectedDates[0] else viewModel.endDay
             }
         }
         listener.onComplete(
-            startDay = (DateTimeHelper.strToDate(
-                "${startDay.year}-${startDay.month}-${startDay.day}T00:00:00",
-                DateTimeHelper.Format.FULL_DATE_UTC_NOT_MILI
-            )),
-            endDay = (DateTimeHelper.strToDate(
-                "${endDay.year}-${endDay.month}-${endDay.day}T00:00:00",
-                DateTimeHelper.Format.FULL_DATE_UTC_NOT_MILI
-            )),
-            isAllDay = viewModel.isAllDay.value!!,
-            isAllDevice = viewModel.isAllDevice.value!!,
-            isCurrentDrawer = viewModel.isCurrentDrawer.value!!,
-            startTime = "",
-            endTime = ""
+            saleReportCustomData = SaleReportCustomData(
+                startDay = (DateTimeHelper.strToDate(
+                    "${viewModel.startDay.year}-${viewModel.startDay.month}-${viewModel.startDay.day}T00:00:00",
+                    DateTimeHelper.Format.FULL_DATE_UTC_NOT_MILI
+                )),
+                endDay = (DateTimeHelper.strToDate(
+                    "${viewModel.endDay.year}-${viewModel.endDay.month}-${viewModel.endDay.day}T00:00:00",
+                    DateTimeHelper.Format.FULL_DATE_UTC_NOT_MILI
+                )),
+                isAllDay = viewModel.isAllDay.value!!,
+                isAllDevice = viewModel.isAllDevice.value!!,
+                isCurrentDrawer = viewModel.isCurrentDrawer.value!!,
+                startTime = "",
+                endTime = ""
+            )
         )
     }
 
+    private fun convertDateToLocalDate(dateStr: String) {
+
+    }
+
     override fun initData() {
-        binding.calendarView.selectedDate = CalendarDay.today()
     }
 
     override fun initAction() {
@@ -74,20 +98,11 @@ class CustomizeReportFragment(private val listener: CustomizeReportCallBack) :
 
     override fun getBack() {
         onFragmentBackPressed()
-        listener.onCancel()
     }
 
     interface CustomizeReportCallBack {
         fun onComplete(
-            startDay: Date?,
-            endDay: Date?,
-            isAllDay: Boolean,
-            startTime: String,
-            endTime: String,
-            isAllDevice: Boolean,
-            isCurrentDrawer: Boolean
+            saleReportCustomData: SaleReportCustomData
         )
-
-        fun onCancel()
     }
 }

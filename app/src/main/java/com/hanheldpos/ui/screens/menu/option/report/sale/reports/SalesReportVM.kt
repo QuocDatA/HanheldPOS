@@ -1,10 +1,8 @@
 package com.hanheldpos.ui.screens.menu.option.report.sale.reports
 
 import android.content.Context
-import android.service.autofill.Transformation
 import android.view.View
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.setting.SettingDeviceResp
 import com.hanheldpos.data.repository.base.BaseRepoCallback
@@ -12,27 +10,36 @@ import com.hanheldpos.data.repository.order.OrderAsyncRepo
 import com.hanheldpos.data.repository.setting.SettingRepo
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.UserHelper
-import com.hanheldpos.model.cart.CartConverter
-import com.hanheldpos.model.cart.CartModel
-import com.hanheldpos.model.cart.payment.PaymentStatus
 import com.hanheldpos.model.order.OrderReq
-import com.hanheldpos.model.order.OrderStatus
 import com.hanheldpos.model.order.OrderSubmitResp
+import com.hanheldpos.model.report.SaleReportCustomData
 import com.hanheldpos.model.setting.SettingDevicePut
 import com.hanheldpos.ui.base.dialog.AppAlertDialog
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
 import com.hanheldpos.ui.screens.menu.option.report.sale.reports.adapter.NumberDayReportItem
 import com.hanheldpos.utils.GSonUtils
-import javax.xml.transform.Transformer
+import com.hanheldpos.utils.time.DateTimeHelper
 
 class SalesReportVM : BaseUiViewModel<SalesReportUV>() {
 
-
+    lateinit var saleReportCustomData: SaleReportCustomData
 
     private val settingRepo = SettingRepo();
     private val orderAlterRepo = OrderAsyncRepo();
 
-    val numberOrder = MutableLiveData<Int>(DataHelper.ordersCompleted?.size?:0);
+    val numberOrder = MutableLiveData<Int>(DataHelper.ordersCompleted?.size ?: 0);
+
+    fun initSaleReportCustomData() {
+        saleReportCustomData = SaleReportCustomData(
+            startDay = DateTimeHelper.curDate,
+            endDay = DateTimeHelper.curDate,
+            isCurrentDrawer = true,
+            isAllDevice = false,
+            isAllDay = false,
+            startTime = "",
+            endTime = ""
+        )
+    }
 
     fun onSyncOrders(view: View) {
         if (DataHelper.ordersCompleted?.size ?: 0 <= 0) return
