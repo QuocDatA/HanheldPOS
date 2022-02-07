@@ -88,6 +88,8 @@ class SalesReportFragment : BaseFragment<FragmentSalesReportBinding, SalesReport
                 OverviewReportFragment()
             )
         );
+
+        viewModel.initSaleReportCustomData()
     }
 
     override fun initAction() {
@@ -98,52 +100,45 @@ class SalesReportFragment : BaseFragment<FragmentSalesReportBinding, SalesReport
         navigator.goToWithCustomAnimation(CustomizeReportFragment(listener = object :
             CustomizeReportFragment.CustomizeReportCallBack {
             override fun onComplete(
-                startDay: Date?,
-                endDay: Date?,
-                isAllDay: Boolean,
-                startTime: String,
-                endTime: String,
-                isAllDevice: Boolean,
-                isCurrentDrawer: Boolean
+                saleReportCustomData: SaleReportCustomData
             ) {
-                if (startDay == endDay) {
-                    binding.dateFromTo.text =
-                        DateTimeHelper.dateToString(startDay, DateTimeHelper.Format.DD_MMM_YYYY)
-                } else {
-                    val dateStr = DateTimeHelper.dateToString(
-                        startDay,
-                        DateTimeHelper.Format.dd_MMM_YYYY
-                    ) + " - " + DateTimeHelper.dateToString(
-                        endDay,
-                        DateTimeHelper.Format.dd_MMM_YYYY
-                    )
-                    binding.dateFromTo.text = dateStr
-                }
-                if (isAllDevice) {
-                    if (isAllDay) {
-                        binding.deviceApply.text = "All Device"
-                    } else {
-                        // Show Time Selected
-                    }
-                } else {
-                    binding.deviceApply.text = "This Device Only"
-                }
-                if (isCurrentDrawer) {
-                    binding.deviceApply.text = "${binding.deviceApply.text} ,Current Drawer"
-                }
+                setUpDateTitle(saleReportCustomData)
+                viewModel.saleReportCustomData = saleReportCustomData
             }
-
-            override fun onCancel() {
-
-            }
-        }));
+        }, saleReportCustomData = viewModel.saleReportCustomData));
     }
 
     override fun backPress() {
         onFragmentBackPressed()
     }
 
-
+    private fun setUpDateTitle(saleReportCustomData: SaleReportCustomData) {
+        if (saleReportCustomData.startDay == saleReportCustomData.endDay) {
+            binding.dateFromTo.text =
+                DateTimeHelper.dateToString(saleReportCustomData.startDay, DateTimeHelper.Format.DD_MMM_YYYY)
+        } else {
+            val dateStr = DateTimeHelper.dateToString(
+                saleReportCustomData.startDay,
+                DateTimeHelper.Format.dd_MMM_YYYY
+            ) + " - " + DateTimeHelper.dateToString(
+                saleReportCustomData.endDay,
+                DateTimeHelper.Format.dd_MMM_YYYY
+            )
+            binding.dateFromTo.text = dateStr
+        }
+        if (saleReportCustomData.isAllDevice) {
+            if (saleReportCustomData.isAllDay) {
+                binding.deviceApply.text = "All Device"
+            } else {
+                // Show Time Selected
+            }
+        } else {
+            binding.deviceApply.text = "This Device Only"
+        }
+        if (saleReportCustomData.isCurrentDrawer) {
+            binding.deviceApply.text = "${binding.deviceApply.text} ,Current Drawer"
+        }
+    }
 
     private enum class ReportOptionPage(val pos: Int) {
         Overview(0),
