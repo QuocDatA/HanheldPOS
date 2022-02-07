@@ -1,5 +1,6 @@
 package com.hanheldpos.ui.screens.menu.option.report.sale.reports.adapter
 
+import android.annotation.SuppressLint
 import androidx.recyclerview.widget.DiffUtil
 import com.hanheldpos.R
 import com.hanheldpos.databinding.ItemSalesReportDayNumberBinding
@@ -14,6 +15,12 @@ class NumberDayReportAdapter(private val listener : BaseItemClickListener<Number
     override fun submitList(list: MutableList<NumberDayReportItem>?) {
         this.selectedItem = -1;
         super.submitList(list)
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    public fun clearSelected() {
+        this.selectedItem = -1;
+        notifyDataSetChanged()
     }
 
     override fun getItemViewType(position: Int): Int {

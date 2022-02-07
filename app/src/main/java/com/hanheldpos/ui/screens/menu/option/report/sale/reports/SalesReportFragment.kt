@@ -1,10 +1,12 @@
 package com.hanheldpos.ui.screens.menu.option.report.sale.reports
 
+import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import com.google.android.material.tabs.TabLayoutMediator
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentSalesReportBinding
@@ -17,6 +19,9 @@ import com.hanheldpos.ui.screens.menu.option.report.sale.reports.adapter.NumberD
 import com.hanheldpos.ui.screens.menu.option.report.sale.reports.adapter.ReportOptionPageAdapter
 import com.hanheldpos.ui.screens.menu.option.report.sale.reports.overview.OverviewReportFragment
 import com.hanheldpos.utils.time.DateTimeHelper
+import java.sql.Timestamp
+import java.time.temporal.ChronoUnit
+import java.time.temporal.TemporalUnit
 import java.util.*
 
 class SalesReportFragment : BaseFragment<FragmentSalesReportBinding, SalesReportVM>(),
@@ -71,15 +76,17 @@ class SalesReportFragment : BaseFragment<FragmentSalesReportBinding, SalesReport
         }.attach()
 
         numberDayReportAdapter =
-            NumberDayReportAdapter(listener = object : BaseItemClickListener<NumberDayReportItem> {
-                override fun onItemClick(adapterPosition: Int, item: NumberDayReportItem) {
-
-                }
-            })
+            NumberDayReportAdapter(
+                listener = object : BaseItemClickListener<NumberDayReportItem> {
+                    override fun onItemClick(adapterPosition: Int, item: NumberDayReportItem) {
+                        viewModel.saleReportCustomData.postValue(viewModel.saleReportCustomData.value!!.apply {
+                            startDay = Date.from(endDay?.toInstant()?.minus(item.value.toLong(), ChronoUnit.DAYS));
+                        });
+                    }
+                },
+            );
         binding.dayNumberAdapter.adapter = numberDayReportAdapter;
-        binding.deviceApply.text = "This Device Only ,Current Drawer"
-        binding.dateFromTo.text =
-            DateTimeHelper.dateToString(DateTimeHelper.curDate, DateTimeHelper.Format.DD_MMM_YYYY)
+
     }
 
     override fun initData() {
@@ -91,7 +98,7 @@ class SalesReportFragment : BaseFragment<FragmentSalesReportBinding, SalesReport
             )
         );
 
-        viewModel.saleReportCustomData.observe(this,{
+        viewModel.saleReportCustomData.observe(this, {
             setUpDateTitle(it);
         });
 
@@ -108,8 +115,10 @@ class SalesReportFragment : BaseFragment<FragmentSalesReportBinding, SalesReport
             override fun onComplete(
                 saleReportCustomData: SaleReportCustomData
             ) {
+                numberDayReportAdapter.clearSelected();
                 viewModel.saleReportCustomData.postValue(saleReportCustomData);
             }
+
         }, saleReportCustomData = viewModel.saleReportCustomData.value!!));
     }
 
@@ -144,7 +153,7 @@ class SalesReportFragment : BaseFragment<FragmentSalesReportBinding, SalesReport
             binding.deviceApply.text = "This Device Only"
         }
         if (saleReportCustomData.isCurrentDrawer) {
-            binding.deviceApply.text = "${binding.deviceApply.text} ,Current Drawer"
+            binding.deviceApply.text = "${binding.deviceApply.text}, Current Drawer"
         }
     }
 

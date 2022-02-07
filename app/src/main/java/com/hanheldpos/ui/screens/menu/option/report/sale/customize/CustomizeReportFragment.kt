@@ -104,5 +104,6 @@ class CustomizeReportFragment(
         fun onComplete(
             saleReportCustomData: SaleReportCustomData
         )
+
     }
 }
