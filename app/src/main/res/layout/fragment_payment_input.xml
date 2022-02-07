@@ -41,27 +41,44 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_13sdp"
+                    android:text="@{viewModel.paymentMethodTitle}"
                     app:useFontStyle="bold"
                     app:useTextColor="color4"
                     app:useTextHeader="h4"
-                    tools:text = "TIEN MAT"/>
+                    tools:text="TIEN MAT" />
 
-                <com.diadiem.pos_components.PTextInputEditText
-                    android:text="@{keyboardVM.input}"
-                    android:id="@+id/numberPaymentInput"
-                    style="@style/BaseTextInput"
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/BaseTextInput.OutlineBox"
+                    android:id="@+id/textInputLayout"
                     android:layout_marginHorizontal="@dimen/_17sdp"
                     android:layout_marginVertical="@dimen/_20sdp"
                     android:background="@drawable/bg_outline"
-                    android:focusableInTouchMode="true"
-                    android:hint="Enter amount"
-                    android:focusable="false"
-                    android:paddingHorizontal="@dimen/_13sdp"
-                    android:paddingVertical="@dimen/_10sdp"
-                    app:ipt_useFontStyle="normal"
-                    app:ipt_useHintTextColor="color8"
-                    app:ipt_useTextColor="color4"
-                    app:ipt_useTextHeader="h5" />
+                    android:importantForAutofill="no"
+                    app:boxCornerRadiusBottomEnd="0dp"
+                    app:boxCornerRadiusBottomStart="0dp"
+                    app:boxCornerRadiusTopEnd="0dp"
+                    app:boxCornerRadiusTopStart="0dp"
+                    app:endIconDrawable="@drawable/ic_clear_text"
+                    app:endIconTint="@android:color/transparent"
+                    app:endIconMode="custom"
+                    app:hintEnabled="false"
+                    tools:ignore="LabelFor">
+
+                    <com.diadiem.pos_components.PTextInputEditText
+                        android:id="@+id/numberPaymentInput"
+                        style="@style/BaseTextInput"
+                        android:focusable="false"
+                        android:hint="Enter amount"
+                        android:focusableInTouchMode="true"
+                        android:paddingHorizontal="@dimen/_13sdp"
+                        android:paddingVertical="@dimen/_10sdp"
+                        android:text="@{keyboardVM.input}"
+                        app:ipt_useFontStyle="normal"
+                        app:ipt_useHintTextColor="color8"
+                        app:ipt_useTextColor="color4"
+                        app:ipt_useTextHeader="h5" />
+                </com.google.android.material.textfield.TextInputLayout>
+
 
                 <LinearLayout
                     android:layout_width="match_parent"
