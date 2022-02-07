@@ -143,6 +143,8 @@ class SalesReportFragment : BaseFragment<FragmentSalesReportBinding, SalesReport
         onFragmentBackPressed()
     }
 
+
+
     private enum class ReportOptionPage(val pos: Int) {
         Overview(0),
         PaymentSummary(1),

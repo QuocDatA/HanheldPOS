@@ -314,5 +314,6 @@
         <!-- inactive track color (30% transparency) -->
         <item name="android:colorForeground">@color/color_9
         </item>
+
     </style>
 </resources>
