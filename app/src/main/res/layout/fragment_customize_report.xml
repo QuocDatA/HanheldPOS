@@ -133,7 +133,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:checked="true"
                             android:onCheckedChanged="@{(view, checked) -> viewModel.onDrawerCheckChange()}"
                             android:layout_marginEnd="@dimen/_9sdp"
                             android:background="@drawable/bg_checkbox_selector"
