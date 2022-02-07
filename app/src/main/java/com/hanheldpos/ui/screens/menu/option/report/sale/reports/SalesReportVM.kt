@@ -27,6 +27,8 @@ import javax.xml.transform.Transformer
 
 class SalesReportVM : BaseUiViewModel<SalesReportUV>() {
 
+
+
     private val settingRepo = SettingRepo();
     private val orderAlterRepo = OrderAsyncRepo();
 
@@ -121,6 +123,8 @@ class SalesReportVM : BaseUiViewModel<SalesReportUV>() {
     fun onPrint() {
 
     }
+
+
 
     fun initNumberDaySelected() : MutableList<NumberDayReportItem> {
         return mutableListOf(

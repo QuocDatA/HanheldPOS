@@ -5,12 +5,25 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.google.android.material.tabs.TabLayoutMediator
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentSalesReportBinding
+import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.menu.option.report.sale.customize.CustomizeReportFragment
+import com.hanheldpos.ui.screens.menu.option.report.sale.reports.adapter.NumberDayReportAdapter
+import com.hanheldpos.ui.screens.menu.option.report.sale.reports.adapter.NumberDayReportItem
+import com.hanheldpos.ui.screens.menu.option.report.sale.reports.adapter.ReportOptionPageAdapter
+import com.hanheldpos.ui.screens.menu.option.report.sale.reports.overview.OverviewReportFragment
+import com.hanheldpos.utils.time.DateTimeHelper
+import java.util.*
 
-class SalesReportFragment : BaseFragment<FragmentSalesReportBinding,SalesReportVM>() , SalesReportUV {
+class SalesReportFragment : BaseFragment<FragmentSalesReportBinding, SalesReportVM>(),
+    SalesReportUV {
+
+    private lateinit var reportOptionPageAdapter: ReportOptionPageAdapter;
+    private lateinit var numberDayReportAdapter: NumberDayReportAdapter;
+
     override fun layoutRes(): Int {
         return R.layout.fragment_sales_report;
     }
@@ -56,7 +69,7 @@ class SalesReportFragment : BaseFragment<FragmentSalesReportBinding,SalesReportV
             }
         }.attach()
 
-        numberDayReportAdapter = NumberDayReportAdapter(listener = object : BaseItemClickListener<NumberDayReportItem>{
+        numberDayReportAdapter = NumberDayReportAdapter(listener = object : BaseItemClickListener<NumberDayReportItem> {
             override fun onItemClick(adapterPosition: Int, item: NumberDayReportItem) {
 
             }
@@ -70,9 +83,11 @@ class SalesReportFragment : BaseFragment<FragmentSalesReportBinding,SalesReportV
     override fun initData() {
         numberDayReportAdapter.submitList(viewModel.initNumberDaySelected());
 
-        reportOptionPageAdapter.submitList(mutableListOf(
-            OverviewReportFragment()
-        ));
+        reportOptionPageAdapter.submitList(
+            mutableListOf(
+                OverviewReportFragment()
+            )
+        );
     }
 
     override fun initAction() {
@@ -133,6 +148,7 @@ class SalesReportFragment : BaseFragment<FragmentSalesReportBinding,SalesReportV
         PaymentSummary(1),
         DiningOptions(2),
         SectionSales(3);
+
         companion object {
             fun fromInt(value: Int): ReportOptionPage? {
                 ReportOptionPage.values().forEach {
