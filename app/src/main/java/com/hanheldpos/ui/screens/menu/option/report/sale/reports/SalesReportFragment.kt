@@ -1,12 +1,5 @@
 package com.hanheldpos.ui.screens.menu.option.report.sale.reports
 
-import android.os.Build
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.annotation.RequiresApi
 import com.google.android.material.tabs.TabLayoutMediator
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentSalesReportBinding
@@ -19,9 +12,7 @@ import com.hanheldpos.ui.screens.menu.option.report.sale.reports.adapter.NumberD
 import com.hanheldpos.ui.screens.menu.option.report.sale.reports.adapter.ReportOptionPageAdapter
 import com.hanheldpos.ui.screens.menu.option.report.sale.reports.overview.OverviewReportFragment
 import com.hanheldpos.utils.time.DateTimeHelper
-import java.sql.Timestamp
 import java.time.temporal.ChronoUnit
-import java.time.temporal.TemporalUnit
 import java.util.*
 
 class SalesReportFragment : BaseFragment<FragmentSalesReportBinding, SalesReportVM>(),
@@ -128,11 +119,15 @@ class SalesReportFragment : BaseFragment<FragmentSalesReportBinding, SalesReport
 
     private fun setUpDateTitle(saleReportCustomData: SaleReportCustomData) {
         if (saleReportCustomData.startDay == saleReportCustomData.endDay) {
-            binding.dateFromTo.text =
-                DateTimeHelper.dateToString(
-                    saleReportCustomData.startDay,
-                    DateTimeHelper.Format.DD_MMM_YYYY
-                )
+            val dateStr = DateTimeHelper.dateToString(
+                saleReportCustomData.startDay,
+                DateTimeHelper.Format.DD_MMM_YYYY
+            ) + " - " + DateTimeHelper.dateToString(
+                saleReportCustomData.startDay,
+                DateTimeHelper.Format.dd_MMM_YYYY
+            )
+            binding.dateFromTo.text = dateStr
+
         } else {
             val dateStr = DateTimeHelper.dateToString(
                 saleReportCustomData.startDay,
