@@ -105,11 +105,8 @@
                     android:layout_marginTop="@dimen/_10sdp"
                     android:orientation="vertical">
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/_1sdp"
-                        android:layout_gravity="top"
-                        android:background="@color/color_10" />
+                    <include layout="@layout/divider_vertical" />
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -150,11 +147,8 @@
                             app:useTextColor="color4"
                             app:useTextHeader="h5" />
                     </LinearLayout>
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/_1sdp"
-                        android:layout_gravity="top"
-                        android:background="@color/color_10" />
+
+                    <include layout="@layout/divider_vertical" />
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -191,10 +185,8 @@
                                 android:onClick="@{(v) -> viewModel.onDeviceCheckChange()}" />
                         </LinearLayout>
 
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/_1sdp"
-                            android:layout_gravity="top"
+                        <include
+                            layout="@layout/divider_vertical"
                             android:background="@color/color_10" />
 
                         <LinearLayout
@@ -226,10 +218,8 @@
                                 android:onClick="@{(v) -> viewModel.onDeviceCheckChange()}" />
                         </LinearLayout>
 
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/_1sdp"
-                            android:layout_gravity="top"
+                        <include
+                            layout="@layout/divider_vertical"
                             android:background="@color/color_10" />
 
                         <LinearLayout
@@ -260,10 +250,8 @@
                                 app:track="@drawable/switch_track" />
                         </LinearLayout>
 
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/_1sdp"
-                            android:layout_gravity="top"
+                        <include
+                            layout="@layout/divider_vertical"
                             android:background="@color/color_10" />
 
                         <LinearLayout
@@ -296,10 +284,8 @@
                                 app:useTextHeader="h5" />
                         </LinearLayout>
 
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/_1sdp"
-                            android:layout_gravity="top"
+                        <include
+                            layout="@layout/divider_vertical"
                             android:background="@color/color_10"
                             android:visibility="@{viewModel.isAllDay ? View.GONE : View.VISIBLE}" />
 
@@ -333,10 +319,8 @@
                                 app:useTextHeader="h5" />
                         </LinearLayout>
 
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/_1sdp"
-                            android:layout_gravity="top"
+                        <include
+                            layout="@layout/divider_vertical"
                             android:background="@color/color_10"
                             android:visibility="@{viewModel.isAllDay ? View.GONE : View.VISIBLE}" />
                     </LinearLayout>
