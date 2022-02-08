@@ -198,6 +198,7 @@ class ProductDetailFragment(
 
             viewModel.regularInCart.value!!.apply {
                 this.sku = item.Sku
+                this.variants = item.GroupValue;
                 if (productBundle != null)
                     this.priceOverride =
                         viewModel.regularInCart.value!!.groupPrice(groupBundle!!, productBundle)

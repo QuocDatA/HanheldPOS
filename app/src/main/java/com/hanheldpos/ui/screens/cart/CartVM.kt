@@ -83,6 +83,7 @@ class CartVM : BaseUiViewModel<CartUV>() {
                 );
             } else {
                 DataHelper.ordersCompleted = DataHelper.ordersCompleted.apply {
+
                     (this as MutableList).add(
                         CartConverter.toOrder(
                             cart,
