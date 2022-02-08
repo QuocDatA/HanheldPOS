@@ -119,26 +119,27 @@ class SalesReportFragment : BaseFragment<FragmentSalesReportBinding, SalesReport
     }
 
     private fun setUpDateTitle(saleReportCustomData: SaleReportCustomData) {
+
+        val dateStr: String
         if (saleReportCustomData.startDay == saleReportCustomData.endDay) {
-            val dateStr = DateTimeHelper.dateToString(
+            dateStr = DateTimeHelper.dateToString(
                 saleReportCustomData.startDay,
-                DateTimeHelper.Format.DD_MMM_YYYY
+                DateTimeHelper.Format.dd_MMM_YYYY
             ) + " - " + DateTimeHelper.dateToString(
                 saleReportCustomData.startDay,
                 DateTimeHelper.Format.dd_MMM_YYYY
             )
-            binding.dateFromTo.text = dateStr
-
         } else {
-            val dateStr = DateTimeHelper.dateToString(
+            dateStr = DateTimeHelper.dateToString(
                 saleReportCustomData.startDay,
                 DateTimeHelper.Format.dd_MMM_YYYY
             ) + " - " + DateTimeHelper.dateToString(
                 saleReportCustomData.endDay,
                 DateTimeHelper.Format.dd_MMM_YYYY
             )
-            binding.dateFromTo.text = dateStr
         }
+        binding.dateFromTo.text = dateStr
+
         if (saleReportCustomData.isAllDevice) {
             if (saleReportCustomData.isAllDay) {
                 binding.deviceApply.text = "All Device"
