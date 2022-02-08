@@ -167,8 +167,8 @@ class PayInPayOutFragment(private val listener : PayInOutCallback) : BaseFragmen
     override fun onLoadPaidInOutListToUI(list: List<PaidInOutListResp>?) {
         paidInOutAdapter.submitList(list);
         paidInOutAdapter.notifyDataSetChanged();
-
-        binding.totalPaid.text = PriceHelper.formatStringPrice(list?.sumOf { it.Receivable?:0.0.plus(it.Payable?:0.0) }.toString());
+        val totalPrice = list?.sumOf { (it.Receivable?:0.0).minus(it.Payable?:0.0) };
+        binding.totalPaid.text =PriceHelper.formatStringPrice( totalPrice.toString() );
     }
 
     interface PayInOutCallback {
