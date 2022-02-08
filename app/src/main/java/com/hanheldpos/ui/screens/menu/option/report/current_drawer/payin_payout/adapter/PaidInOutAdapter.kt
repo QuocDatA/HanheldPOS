@@ -19,12 +19,17 @@ class PaidInOutAdapter : BaseBindingListAdapter<PaidInOutListResp>(DiffCallback(
         val binding = holder.binding as ItemCashDrawerPaidInOutBinding;
 
         binding.timeApply.text =
-            DateTimeHelper.dateToString(DateTimeHelper.strToDate(item.CreateDate, DateTimeHelper.Format.FULL_DATE_UTC_NOT_MILI),DateTimeHelper.Format.DD_MM_YYYY_HH_MM)
+            DateTimeHelper.dateToString(
+                DateTimeHelper.strToDate(
+                    item.CreateDate,
+                    DateTimeHelper.Format.FULL_DATE_UTC_NOT_MILI
+                ), DateTimeHelper.Format.DD_MM_YYYY_HH_MM
+            )
         binding.description.text = item.Description;
         binding.amount.text =
-            if (item.Payable ?: 0.0 > 0.0) PriceHelper.formatStringPrice(item.Payable?.toInt().toString()) else PriceHelper.formatStringPrice(
-                item.Receivable?.toInt().toString()
-            )
+            if (item.Payable ?: 0.0 > 0.0) "-${PriceHelper.formatStringPrice(item.Payable?.toInt().toString())}"
+            else
+                PriceHelper.formatStringPrice(item.Receivable?.toInt().toString())
     }
 
     private class DiffCallback : DiffUtil.ItemCallback<PaidInOutListResp>() {
