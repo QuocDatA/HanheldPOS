@@ -103,7 +103,13 @@ class MenuFragment : BaseFragment<FragmentMenuBinding, MenuVM>(), MenuUV {
     }
 
     private fun onLogoutOption(type: LogoutType, title: String?, message: String?) {
-
+        if (!DataHelper.ordersCompleted.isNullOrEmpty()) {
+            AppAlertDialog.get().show(
+                getString(R.string.notification),
+                getString(R.string.please_sync_local_data_before_logging_out_of_this_account)
+            )
+            return;
+        }
         //TODO : syncing local data orders.
         showAlert(
             title = title,
@@ -112,8 +118,8 @@ class MenuFragment : BaseFragment<FragmentMenuBinding, MenuVM>(), MenuUV {
             negativeText = getString(R.string.cancel),
             onClickListener = object : AppAlertDialog.AlertDialogOnClickListener {
                 override fun onPositiveClick() {
-                    DataHelper.clearData();
 
+                    DataHelper.clearData();
                     when (type) {
                         LogoutType.LOGOUT_DEVICE -> {
                             activity?.navigateTo(
@@ -124,6 +130,7 @@ class MenuFragment : BaseFragment<FragmentMenuBinding, MenuVM>(), MenuUV {
                         }
                         LogoutType.RESET -> TODO()
                     }
+
                 }
             })
     }
