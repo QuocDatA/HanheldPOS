@@ -120,34 +120,23 @@ class SalesReportFragment : BaseFragment<FragmentSalesReportBinding, SalesReport
 
     private fun setUpDateTitle(saleReportCustomData: SaleReportCustomData) {
 
-        val dateStr: String
-        if (saleReportCustomData.startDay == saleReportCustomData.endDay) {
-            dateStr = DateTimeHelper.dateToString(
-                saleReportCustomData.startDay,
-                DateTimeHelper.Format.dd_MMM_YYYY
-            ) + " - " + DateTimeHelper.dateToString(
-                saleReportCustomData.startDay,
-                DateTimeHelper.Format.dd_MMM_YYYY
-            )
-        } else {
-            dateStr = DateTimeHelper.dateToString(
-                saleReportCustomData.startDay,
-                DateTimeHelper.Format.dd_MMM_YYYY
-            ) + " - " + DateTimeHelper.dateToString(
-                saleReportCustomData.endDay,
-                DateTimeHelper.Format.dd_MMM_YYYY
-            )
-        }
+        val dateStr: String = DateTimeHelper.dateToString(
+            saleReportCustomData.startDay,
+            DateTimeHelper.Format.dd_MMM_YYYY
+        ) + " - " + DateTimeHelper.dateToString(
+            saleReportCustomData.endDay,
+            DateTimeHelper.Format.dd_MMM_YYYY
+        )
         binding.dateFromTo.text = dateStr
 
         if (saleReportCustomData.isAllDevice) {
             if (saleReportCustomData.isAllDay) {
-                binding.deviceApply.text = "All Device"
+                binding.deviceApply.text = getString(R.string.all_device);
             } else {
                 // Show Time Selected
             }
         } else {
-            binding.deviceApply.text = "This Device Only"
+            binding.deviceApply.text = getString(R.string.this_device_only);
         }
         if (saleReportCustomData.isCurrentDrawer) {
             binding.deviceApply.text = "${binding.deviceApply.text}, Current Drawer"
