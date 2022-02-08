@@ -75,6 +75,7 @@ class SalesReportFragment : BaseFragment<FragmentSalesReportBinding, SalesReport
             }
         }.attach()
 
+        // Number day select
         numberDayReportAdapter =
             NumberDayReportAdapter(
                 listener = object : BaseItemClickListener<NumberDayReportItem> {

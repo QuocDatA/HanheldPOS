@@ -293,9 +293,7 @@
                             app:useTextHeader="h5" />
                     </LinearLayout>
 
-                    <androidx.legacy.widget.Space
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/_1sdp" />
+                    <include layout="@layout/divider_vertical"/>
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/productRecyclerView"
