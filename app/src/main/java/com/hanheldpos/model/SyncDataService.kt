@@ -1,6 +1,7 @@
-package com.hanheldpos.ui.screens.devicecode
+package com.hanheldpos.model
 
 import android.content.Context
+import androidx.lifecycle.viewModelScope
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.discount.CouponResp
 import com.hanheldpos.data.api.pojo.discount.DiscountResp
@@ -17,8 +18,9 @@ import com.hanheldpos.data.repository.floor.FloorRepo
 import com.hanheldpos.data.repository.menu.MenuRepo
 import com.hanheldpos.data.repository.order.OrderRepo
 import com.hanheldpos.data.repository.payment.PaymentRepo
-import com.hanheldpos.model.DataHelper
 import com.hanheldpos.ui.base.viewmodel.BaseViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class SyncDataService : BaseViewModel() {
 
@@ -165,8 +167,14 @@ class SyncDataService : BaseViewModel() {
     }
 
     private fun onDataFailure(message: String?,listener: SyncDataServiceListener) {
-        DataHelper.clearData();
-        listener.onError(message);
+        viewModelScope.launch(Dispatchers.IO) {
+            DataHelper.clearData();
+            launch {
+                listener.onError(message);
+            }
+
+        }
+
     }
 
 

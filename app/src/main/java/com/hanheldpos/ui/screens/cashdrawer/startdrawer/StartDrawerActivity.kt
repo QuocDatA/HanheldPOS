@@ -11,7 +11,7 @@ import com.hanheldpos.extension.navigateTo
 import com.hanheldpos.model.keyboard.KeyBoardType
 import com.hanheldpos.ui.base.activity.BaseActivity
 import com.hanheldpos.ui.screens.cashdrawer.CashDrawerHelper
-import com.hanheldpos.ui.input.KeyBoardVM
+import com.hanheldpos.ui.screens.input.KeyBoardVM
 import com.hanheldpos.ui.screens.main.MainActivity
 import com.hanheldpos.utils.PriceHelper
 import com.utils.helper.SystemHelper

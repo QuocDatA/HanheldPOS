@@ -90,8 +90,6 @@ class SalesReportVM : BaseUiViewModel<SalesReportUV>() {
             orderAlterRepo.postOrderSubmit(orderJson, callback = object :
                 BaseRepoCallback<OrderSubmitResp> {
                 override fun apiResponse(data: OrderSubmitResp?) {
-
-
                     if (data == null || data.Message?.contains("exist") == true) {
 
                     } else {

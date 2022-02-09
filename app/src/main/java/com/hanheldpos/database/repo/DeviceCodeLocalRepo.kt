@@ -12,6 +12,6 @@ class DeviceCodeLocalRepo(private val deviceDao: DeviceCodeDao) {
 
     fun get(id : String) : DeviceCodeEntity = deviceDao.get(id);
 
-    fun getAll(): Flow<MutableList<DeviceCodeEntity>> = deviceDao.getAll();
+    fun getAll(): MutableList<DeviceCodeEntity> = deviceDao.getAll();
 
 }
