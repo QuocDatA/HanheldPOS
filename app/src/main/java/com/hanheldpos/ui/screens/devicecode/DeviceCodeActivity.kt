@@ -10,22 +10,23 @@ import com.hanheldpos.ui.base.activity.BaseActivity
 import com.hanheldpos.ui.screens.pincode.PinCodeActivity
 import com.utils.helper.SystemHelper
 
-class DeviceCodeActivity : BaseActivity<ActivityDeviceCodeBinding,DeviceCodeVM>(),DeviceCodeUV {
+class DeviceCodeActivity : BaseActivity<ActivityDeviceCodeBinding, DeviceCodeVM>(), DeviceCodeUV {
 
 
     override fun layoutRes() = R.layout.activity_device_code;
 
     override fun initView() {
-
-        binding.root.viewTreeObserver.addOnGlobalLayoutListener{
-            window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        binding.root.viewTreeObserver.addOnGlobalLayoutListener {
+            window.setFlags(
+                WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN
+            );
             SystemHelper.hideSystemUI(this.window);
         }
 
     }
 
     override fun initData() {
-
     }
 
     override fun initAction() {
@@ -48,7 +49,7 @@ class DeviceCodeActivity : BaseActivity<ActivityDeviceCodeBinding,DeviceCodeVM>(
     }
 
     override fun openPinCode() {
-        navigateTo(PinCodeActivity::class.java,false);
+        navigateTo(PinCodeActivity::class.java, false);
     }
 
 }

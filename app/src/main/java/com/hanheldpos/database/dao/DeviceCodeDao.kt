@@ -14,7 +14,7 @@ interface DeviceCodeDao {
     fun get(id: String): DeviceCodeEntity
 
     @Query("SELECT * FROM device_code")
-    fun getAll(): Flow<MutableList<DeviceCodeEntity>>
+    fun getAll(): MutableList<DeviceCodeEntity>
 
     @Query("DELETE FROM device_code")
     fun deleteAll()

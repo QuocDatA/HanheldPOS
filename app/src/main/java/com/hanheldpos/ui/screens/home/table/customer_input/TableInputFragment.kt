@@ -5,7 +5,7 @@ import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentTableInputBinding
 import com.hanheldpos.model.keyboard.KeyBoardType
 import com.hanheldpos.ui.base.fragment.BaseFragment
-import com.hanheldpos.ui.input.KeyBoardVM
+import com.hanheldpos.ui.screens.input.KeyBoardVM
 
 
 class TableInputFragment(

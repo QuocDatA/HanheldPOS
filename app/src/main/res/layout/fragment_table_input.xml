@@ -8,7 +8,7 @@
             type="com.hanheldpos.ui.screens.home.table.customer_input.TableInputVM" />
         <variable
             name="keyboardVM"
-            type="com.hanheldpos.ui.input.KeyBoardVM" />
+            type="com.hanheldpos.ui.screens.input.KeyBoardVM" />
     </data>
 
     <RelativeLayout

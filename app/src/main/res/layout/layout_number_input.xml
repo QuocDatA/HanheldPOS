@@ -5,7 +5,7 @@
 
         <variable
             name="viewModel"
-            type="com.hanheldpos.ui.input.KeyBoardVM" />
+            type="com.hanheldpos.ui.screens.input.KeyBoardVM" />
 
 
         <import type="com.hanheldpos.model.keyboard.KeyBoardType" />

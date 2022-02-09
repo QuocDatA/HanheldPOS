@@ -6,6 +6,7 @@ import com.diadiem.pos_components.PMaterialButton
 import com.diadiem.pos_components.PTextInputEditText
 import com.diadiem.pos_components.PTextView
 import com.diadiem.pos_config.AppConfig
+import com.hanheldpos.model.DatabaseHelper
 import com.orhanobut.logger.AndroidLogAdapter
 import com.orhanobut.logger.Logger
 import com.utils.helper.AppPreferences
@@ -40,12 +41,15 @@ class PosApp : Application() {
 
         // config
         AppConfig.initConfig(this, "app_config.json")?.run {
-//            Log.d("TEXTCOLOR", "onCreate: ${this.styles?.colors?.onPrimary}")
             PTextView.initConfig(this)
             PMaterialButton.initConfig(this)
             PTextInputEditText.initConfig(this)
             PAppCompatAutoCompleteTextView.initConfig(this)
         }
+
+        // database
+        DatabaseHelper.initDatabase(applicationContext);
+
     }
 
     companion object {
