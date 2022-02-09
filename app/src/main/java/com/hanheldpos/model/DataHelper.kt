@@ -12,6 +12,7 @@ import com.hanheldpos.data.api.pojo.floor.FloorResp
 import com.hanheldpos.data.api.pojo.order.menu.MenuResp
 import com.hanheldpos.data.api.pojo.order.settings.OrderSettingResp
 import com.hanheldpos.data.api.pojo.payment.PaymentMethodResp
+import com.hanheldpos.database.repo.DeviceCodeLocalRepo
 import com.hanheldpos.model.cart.fee.FeeApplyToType
 import com.hanheldpos.model.order.OrderReq
 import com.hanheldpos.prefs.PrefKey
