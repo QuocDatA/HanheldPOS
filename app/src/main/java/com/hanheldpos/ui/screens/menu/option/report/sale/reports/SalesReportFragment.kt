@@ -86,13 +86,14 @@ class SalesReportFragment : BaseFragment<FragmentSalesReportBinding, SalesReport
 
         reportOptionPageAdapter.submitList(
             mutableListOf(
-                OverviewReportFragment()
+                // TODO: Sale Report
+               /* OverviewReportFragment()*/
             )
         );
 
-        viewModel.saleReportCustomData.observe(this, {
+        viewModel.saleReportCustomData.observe(this) {
             setUpDateTitle(it);
-        });
+        };
 
 
     }

@@ -79,11 +79,11 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
     }
 
     override fun initAction() {
-        screenViewModel.screenEvent.observe(this, {
+        screenViewModel.screenEvent.observe(this) {
             // Check cart initialized
             if (it.screen == HomePage.Order && cartDataVM.cartModelLD.value == null) {
                 showAlert(
-                    message =  "Cart has not been initialized!",
+                    message = "Cart has not been initialized!",
                     onClickListener = object : AppAlertDialog.AlertDialogOnClickListener {
                         override fun onPositiveClick() {
                             screenViewModel.showTablePage();
@@ -91,7 +91,7 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
                     })
             }
             binding.toolbarLayout.spinnerMain.setSelection(it.screen.pos);
-        })
+        }
 
         binding.toolbarLayout.spnGroupBy.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
@@ -105,6 +105,7 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
                     when (screenViewModel.screenEvent.value?.screen) {
                         HomePage.Order -> OrderFragment.selectedSort = position;
                         HomePage.Table -> TableFragment.selectedSort = position;
+                        else -> {}
                     }
                     screenViewModel.onChangeDropdown(item);
                 }
@@ -169,6 +170,7 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
                 }
 
             }
+            else -> {}
         }
         subSpinnerAdapter.submitList(listDropdown);
         binding.toolbarLayout.spnGroupBy.setSelection(
