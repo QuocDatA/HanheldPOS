@@ -9,7 +9,7 @@
             type="com.hanheldpos.ui.screens.cart.payment.input.PaymentInputVM" />
         <variable
             name="keyboardVM"
-            type="com.hanheldpos.ui.input.KeyBoardVM" />
+            type="com.hanheldpos.ui.screens.input.KeyBoardVM" />
         <variable
             name="paymentMethod"
             type="com.hanheldpos.data.api.pojo.payment.PaymentMethodResp" />

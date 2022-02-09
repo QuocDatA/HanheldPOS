@@ -9,7 +9,7 @@ import com.hanheldpos.extension.toNiceString
 import com.hanheldpos.model.cart.payment.PaymentMethodType
 import com.hanheldpos.model.keyboard.KeyBoardType
 import com.hanheldpos.ui.base.fragment.BaseFragment
-import com.hanheldpos.ui.input.KeyBoardVM
+import com.hanheldpos.ui.screens.input.KeyBoardVM
 import com.hanheldpos.utils.PriceHelper
 
 class PaymentInputFragment(

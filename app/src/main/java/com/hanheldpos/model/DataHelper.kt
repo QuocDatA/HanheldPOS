@@ -22,6 +22,7 @@ object DataHelper {
     var currentDrawerId: String? = null;
 
     fun clearData() {
+        DatabaseHelper.deviceCodeLocalRepo?.deleteAll();
         deviceCode = null
         menu = null
         orderSetting = null
@@ -44,7 +45,6 @@ object DataHelper {
         val minimumNumber = getDeviceCodeModel()?.SettingsId?.firstOrNull()?.MinimumNumber ?: 0
         return "${prefix}${deviceAcronymn}${numberIncrement.toString().padEnd(minimumNumber, '0')}";
     }
-
     //region ## Order Menu
 
     var menu: MenuResp? = null

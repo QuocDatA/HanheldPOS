@@ -17,6 +17,9 @@ import com.hanheldpos.ui.screens.menu.adapter.OptionNavAdapter
 import com.hanheldpos.ui.screens.menu.option.report.ReportFragment
 import com.hanheldpos.ui.screens.pincode.PinCodeActivity
 import com.hanheldpos.ui.screens.welcome.WelcomeActivity
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class MenuFragment : BaseFragment<FragmentMenuBinding, MenuVM>(), MenuUV {
     override fun layoutRes() = R.layout.fragment_menu
@@ -118,18 +121,22 @@ class MenuFragment : BaseFragment<FragmentMenuBinding, MenuVM>(), MenuUV {
             negativeText = getString(R.string.cancel),
             onClickListener = object : AppAlertDialog.AlertDialogOnClickListener {
                 override fun onPositiveClick() {
-
-                    DataHelper.clearData();
-                    when (type) {
-                        LogoutType.LOGOUT_DEVICE -> {
-                            activity?.navigateTo(
-                                WelcomeActivity::class.java,
-                                alsoFinishCurrentActivity = true,
-                                alsoClearActivity = true,
-                            )
+                    CoroutineScope(Dispatchers.IO).launch {
+                        DataHelper.clearData();
+                        launch {
+                            when (type) {
+                                LogoutType.LOGOUT_DEVICE -> {
+                                    activity?.navigateTo(
+                                        WelcomeActivity::class.java,
+                                        alsoFinishCurrentActivity = true,
+                                        alsoClearActivity = true,
+                                    )
+                                }
+                                LogoutType.RESET -> TODO()
+                            }
                         }
-                        LogoutType.RESET -> TODO()
                     }
+
 
                 }
             })

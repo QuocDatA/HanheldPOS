@@ -1,4 +1,4 @@
-package com.hanheldpos.ui.input
+package com.hanheldpos.ui.screens.input
 
 import android.view.View
 import android.widget.TextView
