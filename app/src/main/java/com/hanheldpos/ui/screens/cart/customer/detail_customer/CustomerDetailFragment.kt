@@ -9,6 +9,7 @@ import androidx.fragment.app.activityViewModels
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.customer.CustomerResp
 import com.hanheldpos.databinding.FragmentCustomerDetailBinding
+import com.hanheldpos.model.DataHelper
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.cart.CartDataVM
 
@@ -32,7 +33,13 @@ class CustomerDetailFragment(private val customer : CustomerResp?) : BaseFragmen
     }
 
     override fun initView() {
-        viewModel.customer.value = customer;
+        customer?.let {
+            viewModel.customer.value = it;
+            DataHelper.addressTypes?.find { addressTypeResp -> addressTypeResp.AddressTypeId == it.AddressTypeId }?.let { address->
+                viewModel.addressType.postValue(address);
+            }
+        }
+
     }
 
     override fun initData() {
