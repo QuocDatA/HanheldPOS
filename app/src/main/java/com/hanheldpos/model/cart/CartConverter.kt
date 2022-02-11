@@ -161,7 +161,7 @@ object CartConverter {
         otherFee: Double,
         paymentList: List<PaymentOrder>
     ): OrderSummary {
-        val totalPaid = paymentList.sumOf { it.Payable }
+        val totalPaid = paymentList.sumOf { it.Payable!! }
         val totalGrand = total;
         val balance = totalGrand - totalPaid
         val received = totalPaid

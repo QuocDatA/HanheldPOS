@@ -4,6 +4,8 @@ import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.payment.PaymentMethodResp
 import com.hanheldpos.data.api.pojo.payment.PaymentSuggestionItem
 import com.hanheldpos.databinding.FragmentPaymentBinding
+import com.hanheldpos.model.UserHelper
+import com.hanheldpos.model.cart.payment.PaymentMethodType
 import com.hanheldpos.model.cart.payment.PaymentOrder
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.adapter.GridSpacingItemDecoration
@@ -66,6 +68,7 @@ class PaymentFragment(private val payable: Double, private var listener: Payment
             onPaymentSuggestionClickListener = object :
                 BaseItemClickListener<PaymentSuggestionItem> {
                 override fun onItemClick(adapterPosition: Int, item: PaymentSuggestionItem) {
+
                 }
             },
         );
@@ -106,20 +109,25 @@ class PaymentFragment(private val payable: Double, private var listener: Payment
     }
 
     override fun getPayment() {
-        listener.onPaymentComplete(
-            PaymentOrder(
-                "1",
-                1,
-                1,
-                "TIEN MAT",
-                payable,
-                0.0,
-                "Nhi Nguyen",
-                "001",
-                DateTimeHelper.dateToString(Date(), DateTimeHelper.Format.FULL_DATE_UTC_TIMEZONE)
+        //TODO : Fake payment cash for testing
+        val paymentCash = viewModel.getPaymentMethods().find { payment-> payment.PaymentMethodType == PaymentMethodType.CASH.value };
+        paymentCash?.let {
+            listener.onPaymentComplete(
+                PaymentOrder(
+                    paymentCash._id,
+                    paymentCash.ApplyToId,
+                    paymentCash.PaymentMethodType,
+                    paymentCash.Title,
+                    payable,
+                    payable,
+                    UserHelper.curEmployee?.FullName,
+                    null,
+                    DateTimeHelper.dateToString(Date(), DateTimeHelper.Format.FULL_DATE_UTC_TIMEZONE)
+                )
             )
-        )
-        onFragmentBackPressed()
+            onFragmentBackPressed()
+        }
+
     }
 
     interface PaymentCallback {
