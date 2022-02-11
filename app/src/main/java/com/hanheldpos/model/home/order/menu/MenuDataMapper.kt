@@ -58,9 +58,12 @@ object MenuDataMapper {
         val rs: MutableList<ProductMenuItem> = mutableListOf()
 
         menuResp.CategoryList?.filter { it._Id == categoryGuid }?.forEach {
-            val listProductInCategory = it.ProductList.map { product -> product._id };
-            menuResp.ProductList?.filter { product -> product._id in listProductInCategory }?.toMutableList()?.map { product -> ProductMenuItem(product) }
-                ?.let { it1 -> rs .addAll(it1) }
+            val listProductInCategory = it.ProductList.map { product ->
+                menuResp.ProductList?.find { p -> p._id  == product._id}.let {
+                    pFind -> ProductMenuItem(pFind)
+                }
+            };
+            rs.addAll(listProductInCategory)
         };
         return rs
     }
@@ -76,9 +79,12 @@ object MenuDataMapper {
 
         //todo(GroupItem): set Group type for product is here
         menuResp.GroupList?.filter { it._Id == groupGuid }?.forEach {
-            val listProductInGroup = it.ProductList.map { product -> product._id };
-            menuResp.ProductList?.filter { product -> product._id in listProductInGroup }?.toMutableList()?.map { product -> ProductMenuItem(product) }
-                ?.let { it1 -> rs .addAll(it1) }
+            val listProductInGroup = it.ProductList.map { product ->
+                menuResp.ProductList?.find { p -> p._id == product._id }.let {
+                    pFind -> ProductMenuItem(pFind)
+                }
+            };
+            rs.addAll(listProductInGroup.toMutableList())
         }
         return rs
     }
