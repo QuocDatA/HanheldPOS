@@ -9,6 +9,7 @@
             name="viewModel"
             type="com.hanheldpos.ui.screens.cart.customer.detail_customer.CustomerDetailVM" />
         <import type="com.hanheldpos.utils.time.DateTimeHelper"/>
+        <import type="com.hanheldpos.model.DataHelper"/>
 
     </data>
 
@@ -412,6 +413,7 @@
                                 app:useTextHeader="h5"
                                 app:useTextColor="color4"
                                 tools:text="Apartment"
+                                android:text="@{viewModel.addressType.addressTypeEn}"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 />
@@ -437,7 +439,7 @@
                                 app:useFontStyle="normal"
                                 app:useTextHeader="h5"
                                 app:useTextColor="color4"
-                                android:text="@{viewModel.customer.name.toString()}"
+                                android:text="@{viewModel.addressType.addressTypeId != 1 ? viewModel.customer.name.toString() : ``}"
                                 tools:text="Tropic Garden"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -479,6 +481,7 @@
                                 android:text="@{viewModel.customer.address1.toString()}"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                tools:text="74 Nguyen Co Thach"
                                 />
                         </LinearLayout>
 
@@ -516,9 +519,10 @@
                                 app:useFontStyle="normal"
                                 app:useTextHeader="h5"
                                 app:useTextColor="color4"
-                                android:text="@{viewModel.customer.address2.toString()}"
+                                android:text="@{viewModel.addressType.addressTypeId != 1 ? viewModel.customer.address2.toString() : ``}"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                tools:text="Block A2, Floor 5, Room 123"
                                 />
                         </LinearLayout>
                     </LinearLayout>
@@ -558,6 +562,7 @@
                                 android:text="@{viewModel.customer.districtName.toString()}"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                tools:text="2"
                                 />
                         </LinearLayout>
                         <LinearLayout
@@ -566,14 +571,14 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             >
+
                             <com.diadiem.pos_components.PTextView
-                                app:useFontStyle="normal"
-                                app:useTextHeader="h6"
-                                app:useTextColor="color6"
-                                android:text="@string/ward"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                />
+                                android:text="@string/ward"
+                                app:useFontStyle="normal"
+                                app:useTextColor="color6"
+                                app:useTextHeader="h6" />
                             <androidx.legacy.widget.Space
                                 android:layout_width="0dp"
                                 android:layout_height="@dimen/_4sdp"/>
@@ -584,6 +589,7 @@
                                 android:text="@{viewModel.customer.wardName.toString()}"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                tools:text="Thao Dien"
                                 />
                         </LinearLayout>
                     </LinearLayout>
@@ -623,6 +629,7 @@
                                 android:text="@{viewModel.customer.cityName.toString()}"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                tools:text="Ho Chi Minh"
                                 />
                         </LinearLayout>
                     </LinearLayout>
