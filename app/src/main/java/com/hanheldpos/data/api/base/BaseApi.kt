@@ -21,6 +21,7 @@ abstract class BaseApi : BaseApiError() {
     protected val paymentService : PaymentService = retrofit.createService(PaymentService::class.java);
     protected val settingService : SettingService = retrofit.createService(SettingService::class.java);
     protected val cashDrawerService : CashDrawerService = retrofit.createService(CashDrawerService::class.java);
+    protected val systemService : SystemService = retrofit.createService(SystemService::class.java);
 
     protected val orderAsyncService : OrdersAsyncService = retrofitAsync.createService(OrdersAsyncService::class.java);
 }

@@ -10,6 +10,7 @@ import com.hanheldpos.data.api.pojo.floor.FloorResp
 import com.hanheldpos.data.api.pojo.order.menu.MenuResp
 import com.hanheldpos.data.api.pojo.order.settings.OrderSettingResp
 import com.hanheldpos.data.api.pojo.payment.PaymentMethodResp
+import com.hanheldpos.data.api.pojo.system.AddressTypeResp
 import com.hanheldpos.data.repository.BaseResponse
 import com.hanheldpos.data.repository.base.BaseRepoCallback
 import com.hanheldpos.data.repository.discount.DiscountRepo
@@ -18,6 +19,7 @@ import com.hanheldpos.data.repository.floor.FloorRepo
 import com.hanheldpos.data.repository.menu.MenuRepo
 import com.hanheldpos.data.repository.order.OrderRepo
 import com.hanheldpos.data.repository.payment.PaymentRepo
+import com.hanheldpos.data.repository.system.SystemRepo
 import com.hanheldpos.ui.base.viewmodel.BaseViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -31,6 +33,7 @@ class SyncDataService : BaseViewModel() {
     private var feeRepo: FeeRepo = FeeRepo();
     private var discountRepo: DiscountRepo = DiscountRepo();
     private var paymentRepo: PaymentRepo = PaymentRepo();
+    private var systemRepo : SystemRepo = SystemRepo();
 
     fun fetchAllData(context: Context?, listener: SyncDataServiceListener) {
         val location = DataHelper.getLocationGuidByDeviceCode()
@@ -164,6 +167,22 @@ class SyncDataService : BaseViewModel() {
                 onDataFailure(message,listener);
             }
         })
+
+        systemRepo.getAddressTypes(callback = object  : BaseRepoCallback<BaseResponse<List<AddressTypeResp>>>{
+            override fun apiResponse(data: BaseResponse<List<AddressTypeResp>>?) {
+                if (data == null || data.DidError) {
+                    onDataFailure(context?.getString(R.string.failed_to_load_data),listener);
+                } else {
+                    DataHelper.addressTypes = data.Model;
+                    startMappingData(listener);
+                }
+            }
+
+            override fun showMessage(message: String?) {
+                onDataFailure(message,listener);
+            }
+
+        })
     }
 
     private fun onDataFailure(message: String?,listener: SyncDataServiceListener) {
@@ -186,6 +205,7 @@ class SyncDataService : BaseViewModel() {
             it.discounts ?: return;
             it.discountDetails ?: return;
             it.paymentMethods ?: return;
+            it.addressTypes ?: return;
         }
         DataHelper.numberIncreaseOrder = DataHelper.deviceCode?.SettingsId?.firstOrNull()?.NumberIncrement?.toLong() ?: 0;
         listener.onLoadedResources();

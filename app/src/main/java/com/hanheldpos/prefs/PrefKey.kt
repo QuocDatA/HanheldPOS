@@ -37,4 +37,8 @@ object  PrefKey {
     object Payment {
         const val PAYMENTS_RESP = "PAYMENTS_RESP"
     }
+
+    object System {
+        const val ADDRESS_TYPE = "ADDRESS_TYPE"
+    }
 }
