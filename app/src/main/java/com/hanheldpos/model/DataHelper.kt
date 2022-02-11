@@ -12,6 +12,7 @@ import com.hanheldpos.data.api.pojo.floor.FloorResp
 import com.hanheldpos.data.api.pojo.order.menu.MenuResp
 import com.hanheldpos.data.api.pojo.order.settings.OrderSettingResp
 import com.hanheldpos.data.api.pojo.payment.PaymentMethodResp
+import com.hanheldpos.data.api.pojo.system.AddressTypeResp
 import com.hanheldpos.database.repo.DeviceCodeLocalRepo
 import com.hanheldpos.model.cart.fee.FeeApplyToType
 import com.hanheldpos.model.order.OrderReq
@@ -297,6 +298,21 @@ object DataHelper {
         set(value) {
             field = value
             StorageHelper.setDataToEncryptedFile(PrefKey.Order.ORDER_COMPLETE, value)
+        }
+    //endregion
+
+    //region Address Location
+    var addressTypes : List<AddressTypeResp>? = null
+        get() {
+            if (field == null) {
+                field = StorageHelper.getDataFromEncryptedFile(PrefKey.System.ADDRESS_TYPE,
+                    object : TypeToken<List<AddressTypeResp>>() {}.type);
+            }
+            return field
+        }
+        set(value) {
+            field = value
+            StorageHelper.setDataToEncryptedFile(PrefKey.System.ADDRESS_TYPE, value)
         }
     //endregion
 }
