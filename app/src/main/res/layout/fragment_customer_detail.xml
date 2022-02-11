@@ -437,6 +437,7 @@
                                 app:useFontStyle="normal"
                                 app:useTextHeader="h5"
                                 app:useTextColor="color4"
+                                android:text="@{viewModel.customer.name.toString()}"
                                 tools:text="Tropic Garden"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
