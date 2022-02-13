@@ -235,7 +235,7 @@ class ProductDetailFragment(
             item.modifier.ModifierGuid,
             item.modifier.Modifier,
             item.extraQuantity,
-            item.modifier.Price
+            item.modifier.Price,
         )
         if (item.extraQuantity > 0) {
             viewModel.regularInCart.value?.apply {

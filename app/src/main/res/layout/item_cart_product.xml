@@ -103,7 +103,6 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/_2sdp"
-                                android:layout_toEndOf="@+id/priceTextView"
                                 android:textAlignment="textEnd"
                                 app:useTextColor="color8"
                                 app:useTextHeader="h6"

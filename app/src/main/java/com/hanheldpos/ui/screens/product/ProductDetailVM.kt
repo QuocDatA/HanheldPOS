@@ -36,7 +36,7 @@ class ProductDetailVM : BaseUiViewModel<ProductDetailUV>() {
     };
 
     val totalPriceLD = Transformations.map(regularInCart) {
-        return@map regularInCart.value?.total(productPricing = productBundle ?: it.proOriginal!!) ?: 0.0
+        return@map regularInCart.value?.total(productBundle ?: it.proOriginal!!) ?: 0.0
     }
 
     var maxQuantity = -1;

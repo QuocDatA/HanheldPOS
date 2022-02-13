@@ -50,7 +50,7 @@ class CartProductAdapter(
                 notifyItemChanged(position);
             }
 
-            val cartComboGroupAdapter = CartComboGroupAdapter();
+            val cartComboGroupAdapter = CartComboGroupAdapter(productOrigin = item.proOriginal!!);
             cartComboGroupAdapter.submitList(item.groupList)
             binding.productComboGroupRecyclerView.adapter = cartComboGroupAdapter;
         }
