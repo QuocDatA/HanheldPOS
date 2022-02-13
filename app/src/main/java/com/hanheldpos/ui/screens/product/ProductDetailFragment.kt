@@ -250,7 +250,7 @@ class ProductDetailFragment(
         } else {
             viewModel.regularInCart.value
                 ?.apply {
-                    modifierList.removeAll { it.modifierGuid == modifier.modifierGuid }
+                    modifierList.removeAll { it.modifierId == modifier.modifierId }
                 }
         }
         viewModel.regularInCart.notifyValueChange();
