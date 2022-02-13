@@ -8,6 +8,10 @@
         <variable
             name="item"
             type="com.hanheldpos.model.product.ItemExtra" />
+
+        <variable
+            name="parentItem"
+            type="com.hanheldpos.data.api.pojo.product.Product" />
     </data>
 
     <androidx.cardview.widget.CardView
@@ -18,13 +22,12 @@
         app:cardElevation="0dp">
 
         <LinearLayout
-
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@{item.extraQuantity > 0 ? @color/color_0 : @color/color_10}"
+            android:gravity="center"
             android:orientation="horizontal"
             android:paddingHorizontal="@dimen/_5sdp"
-            android:gravity="center"
             android:paddingVertical="@dimen/_3sdp">
 
             <FrameLayout
@@ -52,31 +55,30 @@
                 android:orientation="vertical">
 
                 <com.diadiem.pos_components.PTextView
-                    style="@style/OptionItemTitle"
-                    android:layout_width="wrap_content"
                     android:id="@+id/modifier_title"
+                    style="@style/OptionItemTitle"
+                    marquee="@{true}"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@{item.modifier.modifier}"
-                    tools:text="Test"
-                    marquee="@{true}"
-                    android:textColor="@{item.extraQuantity > 0 ? @color/color_2 :  @color/color_4 }" />
+                    android:textColor="@{item.extraQuantity > 0 ? @color/color_2 :  @color/color_4 }"
+                    tools:text="Test" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
                     android:layout_marginTop="@dimen/_2sdp"
-                    android:gravity="center">
+                    android:gravity="center"
+                    android:orientation="horizontal">
 
                     <com.diadiem.pos_components.PTextView
                         style="@style/OptionItemTitle"
-                        priceView="@{item.modifier.price}"
-                        visibleObject="@{item.modifier.price > 0}"
+                        priceView="@{item.modifier.pricing(parentItem)}"
+                        visibleObject="@{item.modifier.pricing(parentItem) > 0}"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        tools:text="Test"
-
-                        android:textColor="@{item.extraQuantity > 0 ? @color/color_2 :  @color/color_4 }" />
+                        android:textColor="@{item.extraQuantity > 0 ? @color/color_2 :  @color/color_4 }"
+                        tools:text="Test" />
 
                     <com.diadiem.pos_components.PTextView
                         style="@style/OptionItemTitle"

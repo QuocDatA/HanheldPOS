@@ -4,6 +4,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
+import com.hanheldpos.data.api.pojo.product.Product
 import com.hanheldpos.data.api.pojo.product.ProductModifiers
 import com.hanheldpos.data.api.pojo.product.VariantsGroup
 import com.hanheldpos.extension.notifyValueChange
@@ -22,15 +23,20 @@ class ProductDetailVM : BaseUiViewModel<ProductDetailUV>() {
     val listVariantGroups : MutableList<VariantsGroup> =mutableListOf();
     val listModifierGroups :  MutableList<GroupExtra> = mutableListOf();
 
+    // Product Detail
+    var productBundle : Product? = null;
     val regularInCart = MutableLiveData<Regular>();
+
+    // Action With Product
     val actionType = MutableLiveData<ItemActionType>();
 
 
     val numberQuantity = Transformations.map(regularInCart) {
         return@map it.quantity;
     };
+
     val totalPriceLD = Transformations.map(regularInCart) {
-        return@map regularInCart.value?.total() ?: 0.0
+        return@map regularInCart.value?.total(productPricing = productBundle ?: it.proOriginal!!) ?: 0.0
     }
 
     var maxQuantity = -1;

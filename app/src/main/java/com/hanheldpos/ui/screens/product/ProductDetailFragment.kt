@@ -60,7 +60,7 @@ class ProductDetailFragment(
 
 
     override fun initView() {
-
+        // Variant Group
         groupVariantAdapter = GroupVariantAdapter(
             listener = object :
                 BaseItemClickListener<VariantsGroup.OptionValueVariantsGroup> {
@@ -76,7 +76,9 @@ class ProductDetailFragment(
             binding.groupVariants.itemAnimator = null
         }
 
+        // Modifier Group
         groupModifierAdapter = GroupModifierAdapter(
+            productBundle ?: regular.proOriginal!!,
             regular.modifierList,
             listener = object : BaseItemClickListener<ItemExtra> {
                 override fun onItemClick(adapterPosition: Int, item: ItemExtra) {
@@ -129,8 +131,10 @@ class ProductDetailFragment(
     override fun initData() {
         // init data
         viewModel.actionType.value = action;
+        viewModel.productBundle = productBundle;
         viewModel.regularInCart.value = regular;
         viewModel.maxQuantity = quantityCanChoose;
+
 
         groupVariantAdapter.submitList(viewModel.listVariantGroups);
         groupModifierAdapter.submitList(viewModel.listModifierGroups);
