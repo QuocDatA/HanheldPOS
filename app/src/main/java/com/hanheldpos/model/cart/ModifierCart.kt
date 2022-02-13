@@ -26,9 +26,9 @@ data class ModifierCart(
         return subtotal;
     }
 
-    fun pricing(productPricing: Product): Double {
-        val pricingType = productPricing.ModifierPricingType ?: -1;
-        val pricingValue = productPricing.ModifierPricingValue ?: 0.0;
+    fun pricing(productPricing: Product?): Double {
+        val pricingType = productPricing?.ModifierPricingType ?: -1;
+        val pricingValue = productPricing?.ModifierPricingValue ?: 0.0;
         when (ModPricingType.fromInt(pricingType)) {
             ModPricingType.FIX_AMOUNT -> {
                 return pricingValue;

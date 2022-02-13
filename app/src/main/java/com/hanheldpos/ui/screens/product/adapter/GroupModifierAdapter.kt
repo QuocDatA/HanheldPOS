@@ -2,10 +2,12 @@ package com.hanheldpos.ui.screens.product.adapter
 
 import androidx.recyclerview.widget.DiffUtil
 import com.hanheldpos.R
+import com.hanheldpos.data.api.pojo.product.Product
 import com.hanheldpos.databinding.ItemProductGroupModifierBinding
 import com.hanheldpos.model.cart.ModifierCart
 import com.hanheldpos.model.product.GroupExtra
 import com.hanheldpos.model.product.ItemExtra
+import com.hanheldpos.model.product.ProductComboItem
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
@@ -13,6 +15,7 @@ import com.hanheldpos.ui.base.adapter.GridSpacingItemDecoration
 
 
 class GroupModifierAdapter(
+    private val productOrigin : Product,
     private val itemSelected: List<ModifierCart>? = null,
     private val listener: BaseItemClickListener<ItemExtra>
 ) : BaseBindingListAdapter<GroupExtra>(DiffCallBack()) {
@@ -25,7 +28,9 @@ class GroupModifierAdapter(
         val item = getItem(position);
         holder.bindItem(item);
         val binding = (holder.binding as ItemProductGroupModifierBinding);
-        ModifierAdapter(listener = object : BaseItemClickListener<ItemExtra> {
+        ModifierAdapter(
+            productOrigin = productOrigin,
+            listener = object : BaseItemClickListener<ItemExtra> {
             override fun onItemClick(adapterPosition: Int, item: ItemExtra) {
                 listener.onItemClick(adapterPosition, item);
             }
