@@ -85,7 +85,10 @@ data class Sizes(
 	val h6: Double? = null,
 
 	@field:SerializedName("h7")
-	val h7: Double? = null
+	val h7: Double? = null,
+
+	@field:SerializedName("h8")
+	val h8: Double? = null
 ) : Parcelable
 
 @Parcelize
