@@ -9,7 +9,10 @@
         <import type="android.text.TextUtils"/>
         <variable
             name="item"
-            type="com.hanheldpos.model.product.BaseProductInCart" />
+            type="com.hanheldpos.model.cart.Regular" />
+        <variable
+            name="parentItem"
+            type="com.hanheldpos.data.api.pojo.product.Product" />
     </data>
 
     <LinearLayout
@@ -62,8 +65,8 @@
 
                     <com.diadiem.pos_components.PTextView
                         android:id="@+id/priceTextView"
-                        addPriceView="@{item.total}"
-                        visibleObject="@{item.total!=0}"
+                        addPriceView="@{parentItem != null ? item.total(parentItem) : 0.0}"
+                        visibleObject="@{(parentItem != null ? item.total(parentItem) : 0.0) != 0}"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textAlignment="textEnd"
