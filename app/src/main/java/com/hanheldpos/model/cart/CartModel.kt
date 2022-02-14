@@ -16,23 +16,23 @@ import com.hanheldpos.model.order.Shipping
 import com.hanheldpos.model.product.BaseProductInCart
 
 data class CartModel(
-    var order : Order? = null,
+    var order: Order? = null,
     var table: TableSummary,
     var customer: CustomerResp? = null,
     var shipping: Shipping? = null,
     var diningOption: DiningOption,
     var deliveryTime: DeliveryTime? = null,
     val fees: List<Fee>,
-    var paymentsList : MutableList<PaymentOrder>,
+    var paymentsList: MutableList<PaymentOrder>,
     var productsList: MutableList<BaseProductInCart>,
     var discountUserList: MutableList<DiscountUser>,
-    var discountServerList : MutableList<DiscountServer>,
-    var compReason : Reason? = null,
-    var createDate : String? = null,
-    var orderCode : String? = null,
-    var orderGuid : String? = null,
-    var menuLocationGuid : String?=null,
-    var note : String? = null,
+    var discountServerList: MutableList<DiscountServer>,
+    var compReason: Reason? = null,
+    var createDate: String? = null,
+    var orderCode: String? = null,
+    var orderGuid: String? = null,
+    var menuLocationGuid: String? = null,
+    var note: String? = null,
 ) {
 
     fun getSubTotal() = productsList.sumOf {
@@ -47,47 +47,46 @@ data class CartModel(
 
     fun getTotalPrice() = total();
 
-    fun updatePriceList(menuLocation_id : String){
+    fun updatePriceList(menuLocation_id: String) {
         this.menuLocationGuid = menuLocation_id;
     }
 
     fun totalDiscount(subTotal: Double): Double {
         val totalDiscUser = discountUserList.sumOf { it.total(subTotal) };
-
         var total = totalDiscUser;
         return total;
     }
 
-    fun totalFee(subTotal: Double, totalDiscount : Double) : Double {
-        return fees.filter { FeeApplyToType.fromInt(it.Id) != FeeApplyToType.Included }.sumOf { fee->
-            fee.price(subTotal,totalDiscount)
+    fun totalFee(subTotal: Double, totalDiscount: Double): Double {
+        return fees.filter { FeeApplyToType.fromInt(it.Id) == FeeApplyToType.Order }.sumOf { fee ->
+            fee.price(subTotal, totalDiscount)
         }
     }
 
-    fun totalGross(subTotal: Double, totalDiscount : Double) : Double {
+    fun totalGross(subTotal: Double, totalDiscount: Double): Double {
         return subTotal + totalDiscount;
     }
 
-    fun totalTemp() : Double {
+    fun totalTemp(): Double {
         val totalDiscPrice = totalDiscount(getSubTotal());
-        val totalFeePrice = totalFee(getSubTotal(),totalDiscPrice);
+        val totalFeePrice = totalFee(getSubTotal(), totalDiscPrice);
         var total = getSubTotal() + totalFeePrice - totalDiscPrice;
         total = if (total < 0) 0.0 else total;
         return total;
     }
 
-    fun totalComp(totalTemp : Double) : Double {
+    fun totalComp(totalTemp: Double): Double {
         val comp = compReason?.total(totalTemp);
-        return comp?: 0.0;
+        return comp ?: 0.0;
     }
 
-    fun totalComp() : Double {
+    fun totalComp(): Double {
         val totalTemp = totalTemp();
         val comp = compReason?.total(totalTemp);
-        return comp?: 0.0;
+        return comp ?: 0.0;
     }
 
-    fun total() : Double {
+    fun total(): Double {
         val totalTemp = totalTemp();
         val totalComp = totalComp(totalTemp);
 
@@ -95,27 +94,27 @@ data class CartModel(
         return lineTotal
     }
 
-    fun addRegular(regular: Regular){
+    fun addRegular(regular: Regular) {
         val listFee = DataHelper.findFeeProductList(regular.proOriginal!!._id);
         regular.fees = listFee;
         productsList.add(regular);
     }
 
-    fun addBundle(combo : Combo){
+    fun addBundle(combo: Combo) {
         val listFee = DataHelper.findFeeProductList(combo.proOriginal!!._id);
         combo.fees = listFee;
         productsList.add(combo);
     }
 
-    fun addCompReason(reason : Reason) {
+    fun addCompReason(reason: Reason) {
         compReason = reason;
     }
 
-    fun addDiscountUser(discount : DiscountUser){
+    fun addDiscountUser(discount: DiscountUser) {
         discountUserList = mutableListOf(discount);
     }
 
-    fun addPayment(payment : PaymentOrder) {
+    fun addPayment(payment: PaymentOrder) {
         paymentsList = mutableListOf(payment);
     }
 

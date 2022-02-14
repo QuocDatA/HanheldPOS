@@ -32,19 +32,22 @@ data class Fee(
     ) : Parcelable {
 
     fun price(subtotal : Double, totalDisc : Double) : Double {
+
         var subIncDisc = totalDisc.let { subtotal.minus(it) };
+
         subIncDisc = if (subIncDisc < 0.0) 0.0 else subIncDisc;
-        when(FeeApplyToType.fromInt(Id)) {
+
+        return when(FeeApplyToType.fromInt(Id)) {
             FeeApplyToType.NotIncluded-> {
-                return subIncDisc * (Value / 100);
+                subIncDisc * (Value / 100);
             }
             FeeApplyToType.Included -> {
-                return subIncDisc - (subIncDisc/((Value + 100)/100))
+                subIncDisc - (subIncDisc/((Value + 100)/100))
             }
             FeeApplyToType.Order -> {
-                return subIncDisc * (Value / 100)
+                subIncDisc * (Value / 100)
             }
-            else-> return  0.0;
+            else-> 0.0;
         }
 
     }
