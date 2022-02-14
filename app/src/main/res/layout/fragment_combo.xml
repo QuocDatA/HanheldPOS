@@ -56,18 +56,45 @@
                     android:gravity="center"
                     tools:text="Combo" />
 
-                <com.diadiem.pos_components.PTextView
-                    android:layout_gravity="center_vertical|end"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical|end"
                     android:layout_marginHorizontal="@dimen/_9sdp"
-                    android:background="@drawable/bg_food_text"
-                    android:paddingHorizontal="@dimen/_6sdp"
-                    android:paddingVertical="@dimen/_3sdp"
-                    app:priceView="@{viewModel.bundleInCart.proModSubTotal()}"
-                    app:useTextColor="color2"
-                    app:useTextHeader="h6"
-                    />
+                    android:orientation="vertical">
+
+                    <com.diadiem.pos_components.PTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:visibility="invisible"
+                        app:priceView="@{viewModel.bundleInCart.proModSubTotal()}"
+                        app:useTextColor="color2"
+                        app:useTextHeader="h8"
+                        tools:text="Base Price" />
+
+                    <com.diadiem.pos_components.PTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@drawable/bg_food_text"
+                        android:paddingHorizontal="@dimen/_6sdp"
+                        android:paddingVertical="@dimen/_3sdp"
+                        app:priceView="@{viewModel.bundleInCart.proModSubTotal()}"
+                        app:useTextColor="color2"
+                        app:useTextHeader="h6" />
+
+                    <com.diadiem.pos_components.PTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        app:useTextColor="color4"
+                        app:useTextHeader="h8"
+                        android:text="@string/base_price"
+                        tools:text="Base Price" />
+                </LinearLayout>
+
+
             </LinearLayout>
 
             <include

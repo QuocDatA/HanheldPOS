@@ -130,6 +130,11 @@ class PRadioButton @JvmOverloads constructor(
                                 TypedValue.COMPLEX_UNIT_PX, resources.getDimension(getDimenSize(
                                     appConfig?.styles?.fonts?.sizes?.h7?.toInt() ?: 0)));
                         }
+                        TextHeaderEnum.H8 -> {
+                            setTextSize(
+                                TypedValue.COMPLEX_UNIT_PX, resources.getDimension(getDimenSize(
+                                    appConfig?.styles?.fonts?.sizes?.h8?.toInt() ?: 0)));
+                        }
                         else -> {
                         }
                     }
