@@ -9,6 +9,9 @@ import com.hanheldpos.extension.navigateTo
 import com.hanheldpos.ui.base.activity.BaseActivity
 import com.hanheldpos.ui.screens.pincode.PinCodeActivity
 import com.utils.helper.SystemHelper
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class DeviceCodeActivity : BaseActivity<ActivityDeviceCodeBinding, DeviceCodeVM>(), DeviceCodeUV {
 
@@ -30,7 +33,6 @@ class DeviceCodeActivity : BaseActivity<ActivityDeviceCodeBinding, DeviceCodeVM>
     }
 
     override fun initAction() {
-
     }
 
     override fun viewModelClass(): Class<DeviceCodeVM> {
