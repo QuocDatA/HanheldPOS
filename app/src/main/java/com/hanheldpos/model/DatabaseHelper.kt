@@ -15,4 +15,6 @@ object DatabaseHelper {
         get() {
             return field ?: DeviceCodeLocalRepo(posDatabase.deviceCode())
         }
+
+
 }
