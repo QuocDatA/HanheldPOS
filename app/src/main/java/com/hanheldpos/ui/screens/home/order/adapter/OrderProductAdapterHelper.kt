@@ -1,10 +1,7 @@
 package com.hanheldpos.ui.screens.home.order.adapter
 
-import androidx.lifecycle.MutableLiveData
-import com.hanheldpos.model.cart.CartModel
 import com.hanheldpos.model.home.order.ProductModeViewType
 import com.hanheldpos.model.home.order.menu.ProductMenuItem
-import com.hanheldpos.ui.screens.cart.CartDataVM
 
 class OrderProductAdapterHelper(
 

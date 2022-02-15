@@ -79,7 +79,7 @@
                         android:background="@drawable/bg_food_text"
                         android:paddingHorizontal="@dimen/_6sdp"
                         android:paddingVertical="@dimen/_3sdp"
-                        app:priceView="@{viewModel.bundleInCart.proOriginal.price}"
+                        app:priceView="@{viewModel.bundleInCart.priceOverride}"
                         app:useTextColor="color2"
                         app:useTextHeader="h6" />
 
@@ -172,7 +172,7 @@
                             android:id="@+id/noteInput"
                             android:focusable="true"
                             android:focusableInTouchMode="true"
-                            android:hint="Special Instructions"
+                            android:hint="@string/special_instructions"
                             android:inputType="text"
                             android:minHeight="@dimen/_40sdp"
                             android:paddingHorizontal="@dimen/_6sdp"

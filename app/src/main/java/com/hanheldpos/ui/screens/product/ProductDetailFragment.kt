@@ -23,7 +23,7 @@ import com.hanheldpos.model.product.GroupExtra
 import com.hanheldpos.model.product.ItemExtra
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
-import com.hanheldpos.ui.screens.cart.CartDataVM
+import com.hanheldpos.ui.screens.cart.CurCartData
 import com.hanheldpos.ui.screens.discount.discount_type.DiscountTypeFragment
 import com.hanheldpos.ui.screens.home.order.OrderFragment
 import com.hanheldpos.ui.screens.product.adapter.GroupModifierAdapter
@@ -41,7 +41,7 @@ class ProductDetailFragment(
     private lateinit var groupVariantAdapter: GroupVariantAdapter;
     private lateinit var groupModifierAdapter: GroupModifierAdapter;
 
-    private val cartDataVM by activityViewModels<CartDataVM>();
+    
 
     override fun layoutRes(): Int = R.layout.fragment_product_detail;
 
@@ -96,7 +96,7 @@ class ProductDetailFragment(
                 DiscountTypeFragment(
                     product = regular,
                     applyToType = DiscountApplyToType.ITEM_DISCOUNT_APPLY_TO,
-                    cart = cartDataVM.cartModelLD.value!!,
+                    cart = CurCartData.cartModelLD.value!!,
                     listener = object : DiscountTypeFragment.DiscountTypeListener {
                         override fun discountUserChoose(discount: DiscountUser) {
                             if (viewModel.isValidDiscount.value != true) return;

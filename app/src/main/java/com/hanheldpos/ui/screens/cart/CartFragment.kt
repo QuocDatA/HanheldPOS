@@ -10,9 +10,7 @@ import com.hanheldpos.data.api.pojo.customer.CustomerResp
 import com.hanheldpos.data.api.pojo.order.settings.DiningOption
 import com.hanheldpos.data.api.pojo.order.settings.Reason
 import com.hanheldpos.databinding.FragmentCartBinding
-import com.hanheldpos.extension.notifyValueChange
 import com.hanheldpos.model.DataHelper
-import com.hanheldpos.model.OrderHelper
 import com.hanheldpos.model.cart.Combo
 import com.hanheldpos.model.cart.DiscountCart
 import com.hanheldpos.model.cart.Regular
@@ -23,7 +21,6 @@ import com.hanheldpos.model.discount.DiscountUser
 import com.hanheldpos.model.product.BaseProductInCart
 import com.hanheldpos.model.product.ProductType
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
-import com.hanheldpos.ui.base.adapter.GridSpacingItemDecoration
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.cart.adapter.CartDiningOptionAdapter
 import com.hanheldpos.ui.screens.cart.adapter.CartDiscountAdapter
@@ -46,7 +43,6 @@ class CartFragment( private val listener : CartCallBack) : BaseFragment<Fragment
     private lateinit var cartProductAdapter: CartProductAdapter;
     private lateinit var cartDiscountAdapter: CartDiscountAdapter;
     private lateinit var cartTipAdapter: CartTipAdapter;
-    private val cartDataVM by activityViewModels<CartDataVM>();
     private val screenViewModel by activityViewModels<ScreenViewModel>();
 
 
@@ -60,8 +56,6 @@ class CartFragment( private val listener : CartCallBack) : BaseFragment<Fragment
             binding.viewModel = this;
             initLifeCycle(this@CartFragment);
         }
-        binding.cartDataVM = cartDataVM;
-
 
     }
 
@@ -72,7 +66,7 @@ class CartFragment( private val listener : CartCallBack) : BaseFragment<Fragment
             CartDiningOptionAdapter(
                 onItemClickListener = object : BaseItemClickListener<DiningOption> {
                     override fun onItemClick(adapterPosition: Int, item: DiningOption) {
-                        cartDataVM.diningOptionChange(item)
+                        CurCartData.diningOptionChange(item)
                     }
                 },
             );
@@ -88,7 +82,7 @@ class CartFragment( private val listener : CartCallBack) : BaseFragment<Fragment
                 }
 
                 override fun onDiscountDelete(adapterPosition: Int, discount : DiscountCart , item: BaseProductInCart) {
-                    cartDataVM.deleteDiscountCart(discount = discount, productInCart = item);
+                    CurCartData.deleteDiscountCart(discount = discount, productInCart = item);
                 }
 
 
@@ -115,7 +109,7 @@ class CartFragment( private val listener : CartCallBack) : BaseFragment<Fragment
         //region setup discount recycle view
         cartDiscountAdapter = CartDiscountAdapter(listener = object : BaseItemClickListener<DiscountCart>{
             override fun onItemClick(adapterPosition: Int, item: DiscountCart) {
-                    cartDataVM.deleteDiscountCart(item,null);
+                CurCartData.deleteDiscountCart(item,null);
             }
         })
 
@@ -145,16 +139,16 @@ class CartFragment( private val listener : CartCallBack) : BaseFragment<Fragment
 
     override fun initData() {
         //region init dining option data
-        cartDataVM.diningOptionLD.observe(this) {
+        CurCartData.diningOptionLD.observe(this) {
             var selectedIndex = 0;
 
             val diningOptions: MutableList<DiningOption> =
                 (DataHelper.orderSettingLocalStorage?.ListDiningOptions as List<DiningOption>).toMutableList();
             cartDiningOptionAdapter.submitList(diningOptions);
 
-            if (cartDataVM.cartModelLD.value != null) {
+            if (CurCartData.cartModelLD.value != null) {
                 diningOptions.forEachIndexed { index, diningOptionItem ->
-                    if (diningOptionItem.Id == cartDataVM.cartModelLD.value?.diningOption?.Id) selectedIndex =
+                    if (diningOptionItem.Id == CurCartData.cartModelLD.value?.diningOption?.Id) selectedIndex =
                         index
                 }
             }
@@ -177,7 +171,7 @@ class CartFragment( private val listener : CartCallBack) : BaseFragment<Fragment
         //endregion
 
         //init product data
-        cartProductAdapter.submitList(cartDataVM.cartModelLD.value?.productsList);
+        cartProductAdapter.submitList(CurCartData.cartModelLD.value?.productsList);
         //endregion
 
 
@@ -185,7 +179,7 @@ class CartFragment( private val listener : CartCallBack) : BaseFragment<Fragment
 
     @SuppressLint("NotifyDataSetChanged")
     override fun initAction() {
-        cartDataVM.cartModelLD.observe(this) {
+        CurCartData.cartModelLD.observe(this) {
             val list = viewModel.processDataDiscount(it);
             binding.isShowDiscount = list.isNotEmpty();
             cartDiscountAdapter.submitList(list);
@@ -199,7 +193,7 @@ class CartFragment( private val listener : CartCallBack) : BaseFragment<Fragment
     }
 
     override fun deleteCart() {
-        cartDataVM.deleteCart(
+        CurCartData.deleteCart(
             getString(R.string.confirmation),
             getString(R.string.delete_cart_warning),
             getString(R.string.delete),
@@ -218,15 +212,15 @@ class CartFragment( private val listener : CartCallBack) : BaseFragment<Fragment
             .goToWithCustomAnimation(DiscountFragment(listener = object :
                 DiscountFragment.DiscountCallback {
                 override fun onDiscountUserChoose(discount: DiscountUser) {
-                    cartDataVM.addDiscountUser(discount);
+                    CurCartData.addDiscountUser(discount);
                 }
 
                 override fun onCompReasonChoose(reason: Reason) {
-                    cartDataVM.addCompReason(reason);
+                    CurCartData.addCompReason(reason);
                 }
 
                 override fun onCompRemove() {
-                    cartDataVM.removeCompReason();
+                    CurCartData.removeCompReason();
                 }
             }));
     }
@@ -234,7 +228,7 @@ class CartFragment( private val listener : CartCallBack) : BaseFragment<Fragment
     override fun openSelectPayment(payable: Double) {
         navigator.goToWithCustomAnimation(PaymentFragment(payable,listener = object : PaymentFragment.PaymentCallback {
             override fun onPaymentComplete(paymentOrder: PaymentOrder) {
-                cartDataVM.addPaymentOrder(paymentOrder)
+                CurCartData.addPaymentOrder(paymentOrder)
             }
         }));
     }
@@ -243,23 +237,23 @@ class CartFragment( private val listener : CartCallBack) : BaseFragment<Fragment
         navigator.goToWithCustomAnimation(AddCustomerFragment(listener = object :
             AddCustomerFragment.CustomerEvent {
             override fun onSelectedCustomer(item: CustomerResp) {
-                cartDataVM.addCustomerToCart(item);
+                CurCartData.addCustomerToCart(item);
             }
         }));
     }
 
     override fun onBillSuccess() {
         getBack();
-        cartDataVM.removeCart();
+        CurCartData.removeCart();
         listener.onBillSuccess();
     }
 
     override fun onShowCustomerDetail() {
-        navigator.goToWithCustomAnimation(CustomerDetailFragment(cartDataVM.cartModelLD.value?.customer));
+        navigator.goToWithCustomAnimation(CustomerDetailFragment(CurCartData.cartModelLD.value?.customer));
     }
 
     private fun onBillCart() {
-        viewModel.billCart(requireContext(),cartDataVM.cartModelLD.value!!);
+        viewModel.billCart(requireContext(),CurCartData.cartModelLD.value!!);
     }
 
     fun onEditItemInCart(position: Int, item: BaseProductInCart) {
@@ -300,7 +294,7 @@ class CartFragment( private val listener : CartCallBack) : BaseFragment<Fragment
 
     @SuppressLint("NotifyDataSetChanged")
     fun onUpdateItemInCart(position: Int, item: BaseProductInCart) {
-        cartDataVM.updateItemInCart(position, item);
+        CurCartData.updateItemInCart(position, item);
         cartProductAdapter.notifyDataSetChanged();
     }
 

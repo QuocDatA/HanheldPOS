@@ -11,7 +11,7 @@ import com.hanheldpos.databinding.FragmentHomeBinding
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.ui.base.dialog.AppAlertDialog
 import com.hanheldpos.ui.base.pager.FragmentPagerAdapter
-import com.hanheldpos.ui.screens.cart.CartDataVM
+import com.hanheldpos.ui.screens.cart.CurCartData
 import com.hanheldpos.ui.screens.cashdrawer.CashDrawerHelper
 import com.hanheldpos.ui.screens.home.order.OrderFragment
 import com.hanheldpos.ui.screens.home.table.TableFragment
@@ -31,7 +31,6 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
     }
 
     private val screenViewModel by activityViewModels<ScreenViewModel>()
-    private val cartDataVM by activityViewModels<CartDataVM>()
 
     // Adapter
     private lateinit var paperAdapter: FragmentPagerAdapter
@@ -60,8 +59,6 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
                 binding.root.viewTreeObserver.removeOnGlobalLayoutListener(this);
             }
         })
-
-
         // init fragment page
         fragmentMap[HomePage.Table] = TableFragment();
         fragmentMap[HomePage.Order] = OrderFragment();
@@ -73,7 +70,6 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
         initSpinner();
     }
 
-
     override fun initData() {
 
     }
@@ -81,7 +77,7 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
     override fun initAction() {
         screenViewModel.screenEvent.observe(this) {
             // Check cart initialized
-            if (it.screen == HomePage.Order && cartDataVM.cartModelLD.value == null) {
+            if (it.screen == HomePage.Order && CurCartData.cartModelLD.value == null) {
                 showAlert(
                     message = "Cart has not been initialized!",
                     onClickListener = object : AppAlertDialog.AlertDialogOnClickListener {
@@ -127,9 +123,7 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
                         screenViewModel.screenEvent.value = ScreenViewModel.ScreenEvent(item, null)
                     }
                     switchToPage(item);
-
                 }
-
                 override fun onNothingSelected(parent: AdapterView<*>?) {}
             }
         // Init Page

@@ -46,8 +46,8 @@ class ProductDetailVM : BaseUiViewModel<ProductDetailUV>() {
             ItemActionType.Modify -> 0;
             ItemActionType.Add -> 1;
             else -> 1;
-        };
-    };
+        }
+    }
 
     fun initLifeCycle(owner: LifecycleOwner) {
         owner.lifecycle.addObserver(this);

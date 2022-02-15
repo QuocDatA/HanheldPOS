@@ -17,7 +17,7 @@ import com.hanheldpos.model.home.order.menu.ProductMenuItem
 import com.hanheldpos.model.product.BaseProductInCart
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
-import com.hanheldpos.ui.screens.cart.CartDataVM
+import com.hanheldpos.ui.screens.cart.CurCartData
 import com.hanheldpos.ui.screens.cart.CartFragment
 import com.hanheldpos.ui.screens.combo.ComboFragment
 import com.hanheldpos.ui.screens.home.HomeFragment
@@ -33,7 +33,6 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
 
     // ViewModel
     private val dataVM by activityViewModels<OrderDataVM>()
-    private val cartDataVM by activityViewModels<CartDataVM>()
     private val screenViewModel by activityViewModels<ScreenViewModel>()
 
     //Adapter
@@ -51,7 +50,6 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
             binding.viewModel = this
         }
         binding.dataVM = this.dataVM
-        binding.cartDataVM = this.cartDataVM
     }
 
     override fun initView() {
@@ -71,7 +69,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
         );
 
         productAdapter = OrderProductAdapter(
-            cartModel = cartDataVM.cartModelLD,
+            cartModel = CurCartData.cartModelLD,
             listener = object : BaseItemClickListener<ProductMenuItem> {
                 override fun onItemClick(adapterPosition: Int, item: ProductMenuItem) {
                     Log.d("OrderFragment", "Product Selected");
@@ -132,11 +130,11 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
                             ProductDetailFragment(
                                 regular = Regular(
                                     it,
-                                    cartDataVM.diningOptionLD.value!!,
+                                    CurCartData.diningOptionLD.value!!,
                                     1,
                                     it.skuDefault,
                                     it.variantDefault,
-                                    it.Price,
+                                    it.priceOverride(CurCartData.cartModelLD.value?.menuLocationGuid,it.skuDefault,it.Price),
                                     null
                                 ),
                                 quantityCanChoose = 100,
@@ -154,11 +152,11 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
                                         mutableListOf()
                                     )
                                 },
-                                cartDataVM.diningOptionLD.value!!,
+                                CurCartData.diningOptionLD.value!!,
                                 1,
                                 it.skuDefault,
                                 it.Variants,
-                                it.Price,
+                                it.priceOverride(CurCartData.cartModelLD.value?.menuLocationGuid,it.skuDefault,it.Price),
                                 null
                             ),
                             action = ItemActionType.Add,
@@ -189,7 +187,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
             item.name
         )
         CartPresenter.showCartAnimation(item, binding.rootPopup, binding.imgCart) {
-            cartDataVM.addItemToCart(item);
+            CurCartData.addItemToCart(item);
         };
     }
 

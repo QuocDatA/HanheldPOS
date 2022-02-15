@@ -18,7 +18,7 @@ import com.hanheldpos.model.product.BaseProductInCart
 import com.hanheldpos.ui.base.dialog.AppAlertDialog
 import com.hanheldpos.ui.base.viewmodel.BaseViewModel
 
-class CartDataVM : BaseViewModel() {
+object CurCartData  {
 
     val cartModelLD: MutableLiveData<CartModel> = MutableLiveData();
 
@@ -115,8 +115,8 @@ class CartDataVM : BaseViewModel() {
                 negativeText = negativeText,
                 onClickListener = object : AppAlertDialog.AlertDialogOnClickListener {
                     override fun onPositiveClick() {
-                        this@CartDataVM.cartModelLD.value!!.clearCart();
-                        this@CartDataVM.cartModelLD.notifyValueChange()
+                        this@CurCartData.cartModelLD.value!!.clearCart();
+                        this@CurCartData.cartModelLD.notifyValueChange()
                         callback()
                     }
                 }
@@ -124,8 +124,8 @@ class CartDataVM : BaseViewModel() {
     }
 
     fun removeCart() {
-        this@CartDataVM.cartModelLD.value = null;
-        this@CartDataVM.cartModelLD.notifyValueChange();
+        this@CurCartData.cartModelLD.value = null;
+        this@CurCartData.cartModelLD.notifyValueChange();
     }
 
     fun deleteDiscountCart(discount: DiscountCart, productInCart: BaseProductInCart?) {

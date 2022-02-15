@@ -6,11 +6,9 @@ import com.hanheldpos.data.api.pojo.customer.CustomerResp
 import com.hanheldpos.databinding.FragmentCustomerDetailBinding
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.ui.base.fragment.BaseFragment
-import com.hanheldpos.ui.screens.cart.CartDataVM
+import com.hanheldpos.ui.screens.cart.CurCartData
 
 class CustomerDetailFragment(private val customer : CustomerResp?) : BaseFragment<FragmentCustomerDetailBinding,CustomerDetailVM>(), CustomerDetailUV {
-
-    private val cartDataVM by activityViewModels<CartDataVM>();
 
     override fun layoutRes(): Int {
         return R.layout.fragment_customer_detail;
@@ -49,7 +47,7 @@ class CustomerDetailFragment(private val customer : CustomerResp?) : BaseFragmen
     }
 
     override fun removeCustomer() {
-        cartDataVM.removeCustomerFromCart();
+        CurCartData.removeCustomerFromCart();
         backPress();
     }
 

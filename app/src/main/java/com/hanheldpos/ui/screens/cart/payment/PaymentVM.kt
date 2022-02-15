@@ -1,14 +1,9 @@
 package com.hanheldpos.ui.screens.cart.payment
 
-import androidx.fragment.app.activityViewModels
 import com.hanheldpos.data.api.pojo.payment.PaymentMethodResp
 import com.hanheldpos.data.api.pojo.payment.PaymentSuggestionItem
 import com.hanheldpos.model.DataHelper
-import com.hanheldpos.model.cart.payment.PaymentAppyTo
-import com.hanheldpos.model.cart.payment.PaymentMethodType
-import com.hanheldpos.model.keyboard.KeyBoardType
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
-import com.hanheldpos.ui.screens.cart.CartDataVM
 
 class PaymentVM : BaseUiViewModel<PaymentUV>() {
 
