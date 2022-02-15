@@ -1,9 +1,13 @@
 package com.hanheldpos.ui.screens.home.order.adapter
 
+import androidx.lifecycle.MutableLiveData
+import com.hanheldpos.model.cart.CartModel
 import com.hanheldpos.model.home.order.ProductModeViewType
 import com.hanheldpos.model.home.order.menu.ProductMenuItem
+import com.hanheldpos.ui.screens.cart.CartDataVM
 
 class OrderProductAdapterHelper(
+
     private val callBack: AdapterCallBack
 ) {
 
@@ -13,10 +17,11 @@ class OrderProductAdapterHelper(
 
     private var currentIndex: Int = 1;
 
-    private var list: MutableList<ProductMenuItem?> = mutableListOf();
+    private var list: MutableList<ProductMenuItem> = mutableListOf();
     private var listOfProductPage: MutableList<List<ProductMenuItem>> = mutableListOf()
 
-    fun submitList(list: MutableList<ProductMenuItem?>) {
+    fun submitList(list: MutableList<ProductMenuItem>) {
+
         this.list = list;
         currentIndex = 1;
         listOfProductPage.clear()
@@ -25,13 +30,13 @@ class OrderProductAdapterHelper(
 
         if (sizeOfMainList > 0) {
             while (sizeOfMainList > 0) {
-                var tablePage = split(currentListIndex)
+                val tablePage = split(currentListIndex)
                 listOfProductPage.add(tablePage)
                 sizeOfMainList -= (tablePage.size - 2) // reduce list size except for 2 dirButton
                 currentListIndex++
             }
         } else if (sizeOfMainList == 0) {
-            var tempList = split(currentListIndex)
+            val tempList = split(currentListIndex)
             listOfProductPage.add(tempList)
         }
 
@@ -61,7 +66,7 @@ class OrderProductAdapterHelper(
                 val start: Int = (pagePosition - 1) * maxItemViewProduct;
                 val end: Int =
                     if (it.size > maxItemViewProduct * pagePosition) maxItemViewProduct * pagePosition else it.size;
-                rs.addAll(it.toList().subList(start, end) as List<ProductMenuItem>);
+                rs.addAll(it.toList().subList(start, end));
             }
         }
 

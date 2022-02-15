@@ -6,10 +6,15 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.findViewTreeLifecycleOwner
 import androidx.recyclerview.widget.DiffUtil
 import com.hanheldpos.R
+import com.hanheldpos.binding.setPriceView
 import com.hanheldpos.databinding.ItemOrderProductBinding
 import com.hanheldpos.databinding.ItemOrderProductDirectionButtonBinding
+import com.hanheldpos.model.cart.CartModel
 import com.hanheldpos.model.home.order.ProductModeViewType
 import com.hanheldpos.model.home.order.menu.MenuModeViewType
 import com.hanheldpos.model.home.order.menu.ProductMenuItem
@@ -19,6 +24,7 @@ import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 
 class OrderProductAdapter(
+    private val cartModel: MutableLiveData<CartModel>,
     private val listener: BaseItemClickListener<ProductMenuItem>
 ) : BaseBindingListAdapter<ProductMenuItem>(DiffCallback()) {
 
@@ -51,6 +57,22 @@ class OrderProductAdapter(
     override fun onBindViewHolder(holder: BaseBindingViewHolder<ProductMenuItem>, position: Int) {
         val item = getItem(position);
         holder.bindItem(item);
+
+        cartModel.observe(holder.itemView.context as LifecycleOwner) {
+            if (holder.binding is ItemOrderProductBinding){
+
+                setPriceView(
+                    (holder.binding as ItemOrderProductBinding).priceProduct,
+                    price = item.proOriginal?.priceOverride(
+                        it.menuLocationGuid,
+                        item.proOriginal.skuDefault,
+                        item.proOriginal.Price
+                    )
+                )
+            }
+
+        }
+
         if (item.uiType != ProductModeViewType.Empty) {
 
             holder.binding.root.setOnClickListener { listener.onItemClick(position, item); }

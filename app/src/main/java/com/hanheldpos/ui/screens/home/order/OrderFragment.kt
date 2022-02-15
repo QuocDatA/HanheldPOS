@@ -71,6 +71,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
         );
 
         productAdapter = OrderProductAdapter(
+            cartModel = cartDataVM.cartModelLD,
             listener = object : BaseItemClickListener<ProductMenuItem> {
                 override fun onItemClick(adapterPosition: Int, item: ProductMenuItem) {
                     Log.d("OrderFragment", "Product Selected");
