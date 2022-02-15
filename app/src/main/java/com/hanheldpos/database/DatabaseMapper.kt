@@ -1,7 +1,7 @@
 package com.hanheldpos.database
 
-import android.os.Parcelable
 import com.hanheldpos.data.api.pojo.device.DeviceCodeResp
+import com.hanheldpos.data.api.pojo.discount.CouponResp
 import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.data.api.pojo.fee.FeeResp
 import com.hanheldpos.data.api.pojo.floor.FloorResp
@@ -24,101 +24,127 @@ object DatabaseMapper {
         return GSonUtils.toObject<DeviceCodeResp>(deviceCodeEntity.deviceCodeJson)!!;
     }
 
-    fun <T : Parcelable> mappingClassToEntity(classOff: Class<T>?): Any {
+    fun mappingDiscountToEntity(discount: DiscountResp): DiscountEntity {
+        return DiscountEntity(id = discount._id, discountJson = GSonUtils.toJson(discount))
+    }
+
+    fun mappingDiscountFromEntity(discountEntity: DiscountEntity): DiscountResp {
+        return GSonUtils.toObject<DiscountResp>(discountEntity.discountJson)!!
+    }
+
+    fun mappingDiscountDetailToEntity(discountDetail: CouponResp): DiscountDetailEntity {
+        return DiscountDetailEntity(
+            id = discountDetail._id,
+            discountDetailJson = GSonUtils.toJson(discountDetail)
+        )
+    }
+
+    fun mappingPaymentToEntity(paymentMethodResp: PaymentMethodResp): PaymentMethodEntity {
+        return PaymentMethodEntity(
+            id = paymentMethodResp._id,
+            paymentMethodJson = GSonUtils.toJson(paymentMethodResp)
+        )
+    }
+
+    fun mappingPaymentFromEntity(paymentMethodEntity: PaymentMethodEntity): PaymentMethodResp {
+        return GSonUtils.toObject<PaymentMethodResp>(paymentMethodEntity.paymentMethodJson)!!
+    }
+
+//    fun mappingAddressTypeToEntity(addressTypeResp: AddressTypeResp): AddressTypeEntity {
+//        return AddressTypeEntity(
+//            id = addressTypeResp.AddressTypeId.toString(),
+//            addressTypeJson = GSonUtils.toJson(addressTypeResp)
+//        )
+//    }
+//
+//    fun mappingAddressTypeFromEntity(addressTypeEntity: AddressTypeEntity): AddressTypeResp{
+//        return GSonUtils.toObject<AddressTypeResp>(addressTypeEntity.addressTypeJson)!!
+//    }
+
+    fun mappingDiscountDetailFromEntity(discountDetailEntity: DiscountDetailEntity): CouponResp {
+        return GSonUtils.toObject<CouponResp>(discountDetailEntity.discountDetailJson)!!
+    }
+
+    fun <T> mappingClassToEntity(classOff: T): Any {
         when (classOff) {
-            MenuResp::class.java -> {
+            is MenuResp -> {
                 return MenuEntity(
-                    id = "",
+                    id = "menu",
                     menu_Json = GSonUtils.toJson(classOff)
                 )
             }
-            DeviceCodeResp::class.java -> {
+            is DeviceCodeResp -> {
                 return DeviceCodeEntity(
-                    id = "",
+                    id = "device_code",
                     deviceCodeJson = GSonUtils.toJson(classOff)
                 )
             }
-            PaymentMethodResp::class.java -> {
+            is PaymentMethodResp -> {
                 return PaymentMethodEntity(
-                    id = "",
+                    id = "payment_method",
                     paymentMethodJson = GSonUtils.toJson(classOff)
                 )
             }
-            OrderSettingResp::class.java -> {
+            is OrderSettingResp -> {
                 return OrderSettingEntity(
-                    id = "",
+                    id = "order_setting",
                     orderSettingJson = GSonUtils.toJson(classOff)
                 )
             }
-            FeeResp::class.java -> {
+            is FeeResp -> {
                 return FeeEntity(
-                    id = "",
+                    id = "fee",
                     feeJson = GSonUtils.toJson(classOff)
                 )
             }
-            FloorResp::class.java -> {
-                return FloorEntity(id = "", floorJson = GSonUtils.toJson(classOff))
+            is FloorResp -> {
+                return FloorEntity(id = "floor", floorJson = GSonUtils.toJson(classOff))
             }
-            DiscountResp::class.java -> {
-                return DiscountEntity(
-                    id = "",
-                    discountJson = GSonUtils.toJson(classOff)
-                )
-            }
-            OrderReq::class.java -> {
+            is OrderReq -> {
                 return OrderCompletedEntity(
-                    id = "",
+                    id = "order",
                     orderCompletedJson = GSonUtils.toJson(classOff)
                 )
             }
             else -> {
-                return DiscountDetailEntity(
-                    id = "",
-                    discountDetailJson = GSonUtils.toJson(classOff)
-                )
+                throw Exception("No Entity Found!")
             }
         }
     }
 
     fun  mappingClassFromEntity(classOff: Any): Any {
         when (classOff) {
-            MenuEntity::class.java -> {
+            is MenuEntity -> {
                 val menuEntity = classOff as MenuEntity
                 return GSonUtils.toObject<MenuResp>(menuEntity.menu_Json)!!;
             }
-            DeviceCodeEntity::class.java -> {
+            is DeviceCodeEntity -> {
                 val deviceCodeEntity = classOff as DeviceCodeEntity
                 return GSonUtils.toObject<DeviceCodeResp>(deviceCodeEntity.deviceCodeJson)!!;
             }
-            PaymentMethodEntity::class.java -> {
+            is PaymentMethodEntity -> {
                 val paymentMethodEntity = classOff as PaymentMethodEntity
                 return GSonUtils.toObject<MenuResp>(paymentMethodEntity.paymentMethodJson)!!;
             }
-            OrderSettingEntity::class.java -> {
+            is OrderSettingEntity -> {
                 val orderSettingEntity = classOff as OrderSettingEntity
                 return GSonUtils.toObject<MenuResp>(orderSettingEntity.orderSettingJson)!!;
             }
-            FeeEntity::class.java -> {
+            is FeeEntity -> {
                 val feeEntity = classOff as FeeEntity
                 return GSonUtils.toObject<MenuResp>(feeEntity.feeJson)!!;
             }
-            FloorEntity::class.java -> {
+            is FloorEntity -> {
                 val floorEntity = classOff as FloorEntity
                 return GSonUtils.toObject<MenuResp>(floorEntity.floorJson)!!;
             }
-            DiscountEntity::class.java -> {
-                val discountEntity = classOff as DiscountEntity
-                return GSonUtils.toObject<MenuResp>(discountEntity.discountJson)!!;
-            }
-            OrderCompletedEntity::class.java -> {
+            is OrderCompletedEntity -> {
                 val orderCompletedEntity = classOff as OrderCompletedEntity
                 return GSonUtils.toObject<MenuResp>(orderCompletedEntity.orderCompletedJson)!!;
             }
             else -> {
-                val discountDetailEntity = classOff as DiscountDetailEntity
-                return GSonUtils.toObject<MenuResp>(discountDetailEntity.discountDetailJson)!!;
+                throw Exception("No Entity Found!")
             }
-
         }
     }
 }
