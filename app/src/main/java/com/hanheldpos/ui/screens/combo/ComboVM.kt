@@ -59,7 +59,7 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
 
         bundleInCart.value!!.let { combo ->
             listGroup.map { group ->
-                val listRegular: List<Regular> = group.productsForChoose(menuResp = DataHelper.menu!!,menuOrderId,diningOption,combo.proOriginal!!);
+                val listRegular: List<Regular> = group.productsForChoose(menuResp = DataHelper.menuLocalStorage!!,menuOrderId,diningOption,combo.proOriginal!!);
                 ItemComboGroup(
                     groupBundle = group,
                     productsForChoose = listRegular

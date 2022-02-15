@@ -1,10 +1,5 @@
 package com.hanheldpos.ui.screens.cart.customer.detail_customer
 
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.customer.CustomerResp
@@ -35,7 +30,7 @@ class CustomerDetailFragment(private val customer : CustomerResp?) : BaseFragmen
     override fun initView() {
         customer?.let {
             viewModel.customer.value = it;
-            DataHelper.addressTypes?.find { addressTypeResp -> addressTypeResp.AddressTypeId == it.AddressTypeId }?.let { address->
+            DataHelper.addressTypesLocalStorage?.find { addressTypeResp -> addressTypeResp.AddressTypeId == it.AddressTypeId }?.let { address->
                 viewModel.addressType.postValue(address);
             }
         }

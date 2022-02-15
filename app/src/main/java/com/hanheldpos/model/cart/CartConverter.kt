@@ -3,6 +3,7 @@ package com.hanheldpos.model.cart
 import com.hanheldpos.data.api.pojo.fee.Fee
 import com.hanheldpos.data.api.pojo.order.settings.Reason
 import com.hanheldpos.model.DataHelper
+import com.hanheldpos.model.OrderHelper
 import com.hanheldpos.model.UserHelper
 import com.hanheldpos.model.cart.fee.FeeType
 import com.hanheldpos.model.cart.payment.PaymentOrder
@@ -42,15 +43,15 @@ object CartConverter {
             Order = Order(
                 OrderStatusId = orderStatus,
                 PaymentStatusId = paymentStatus,
-                UserGuid = UserHelper.getUserGui(),
+                UserGuid = UserHelper.getUserGuid(),
                 EmployeeGuid = UserHelper.getEmployeeGuid(),
-                LocationGuid = UserHelper.getLocationGui(),
-                DeviceGuid = UserHelper.getDeviceGui(),
+                LocationGuid = UserHelper.getLocationGuid(),
+                DeviceGuid = UserHelper.getDeviceGuid(),
                 DiningOptionId = cart.diningOption.Id,
                 CreateDate = cart.createDate,
                 Code = cart.orderCode,
                 MenuLocationGuid = cart.menuLocationGuid,
-                CurrencySymbol = DataHelper.getCurrencySymbol()!!,
+                CurrencySymbol = OrderHelper.getCurrencySymbol()!!,
                 CashDrawer_id = DataHelper.currentDrawerId,
             ),
             OrderDetail = OrderDetail(
@@ -223,7 +224,7 @@ object CartConverter {
     private fun toOrderCompVoidList(reason: Reason?, totalPrice: Double?): List<CompVoid> {
         val compVoids = mutableListOf<CompVoid>();
         reason ?: return compVoids;
-        val parentId = DataHelper.getVoidInfo()?.Id;
+        val parentId = DataHelper.orderSettingLocalStorage?.ListVoid?.firstOrNull()?.Id;
         val compVoid = CompVoid(reason, parentId, totalPrice);
         compVoids.add(compVoid);
         return compVoids;

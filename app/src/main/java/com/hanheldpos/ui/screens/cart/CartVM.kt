@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.lifecycle.LifecycleOwner
 import com.hanheldpos.R
 import com.hanheldpos.model.DataHelper
+import com.hanheldpos.model.OrderHelper
 import com.hanheldpos.model.cart.CartConverter
 import com.hanheldpos.model.cart.CartModel
 import com.hanheldpos.model.cart.DiscountCart
@@ -71,10 +72,10 @@ class CartVM : BaseUiViewModel<CartUV>() {
     private fun onOrderProcessing(cart: CartModel) {
         showLoading(true)
         try {
-            cart.orderCode = DataHelper.generateOrderIdByFormat();
+            cart.orderCode = OrderHelper.generateOrderIdByFormat();
 
-            if (DataHelper.ordersCompleted == null) {
-                DataHelper.ordersCompleted = mutableListOf(
+            if (DataHelper.ordersCompletedLocalStorage == null) {
+                DataHelper.ordersCompletedLocalStorage = mutableListOf(
                     CartConverter.toOrder(
                         cart,
                         OrderStatus.COMPLETED.value,
@@ -82,7 +83,7 @@ class CartVM : BaseUiViewModel<CartUV>() {
                     )
                 );
             } else {
-                DataHelper.ordersCompleted = DataHelper.ordersCompleted.apply {
+                DataHelper.ordersCompletedLocalStorage = DataHelper.ordersCompletedLocalStorage.apply {
 
                     (this as MutableList).add(
                         CartConverter.toOrder(

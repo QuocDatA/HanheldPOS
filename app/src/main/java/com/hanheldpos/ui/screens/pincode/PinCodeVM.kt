@@ -96,29 +96,27 @@ class PinCodeVM : BaseRepoViewModel<EmployeeRepo, PinCodeUV>() {
     }
 
     private fun fetchDataEmployee(passCode: String) {
-        val userGuid = DataHelper.getUserGuidByDeviceCode();
-        val locationGuid = DataHelper.getLocationGuidByDeviceCode();
-        if (userGuid != null && locationGuid != null) {
-            repo?.getDataEmployee(
-                userGuid,
-                passCode,
-                locationGuid,
-                object : BaseRepoCallback<BaseResponse<List<EmployeeResp>>> {
-                    override fun apiResponse(data: BaseResponse<List<EmployeeResp>>?) {
-                        if (data == null || data.DidError || data.Model.isNullOrEmpty()) {
-                            showError("Passcode does not exist!. Please try again");
-                            lstResultLD.value?.clear();
-                            lstResultLD.notifyValueChange();
-                        } else {
-                            onEmployeeSuccess(data.Model.first())
-                        }
+        val userGuid = UserHelper.getUserGuid();
+        val locationGuid = UserHelper.getLocationGuid();
+        repo?.getDataEmployee(
+            userGuid,
+            passCode,
+            locationGuid,
+            object : BaseRepoCallback<BaseResponse<List<EmployeeResp>>> {
+                override fun apiResponse(data: BaseResponse<List<EmployeeResp>>?) {
+                    if (data == null || data.DidError || data.Model.isNullOrEmpty()) {
+                        showError("Passcode does not exist!. Please try again");
+                        lstResultLD.value?.clear();
+                        lstResultLD.notifyValueChange();
+                    } else {
+                        onEmployeeSuccess(data.Model.first())
                     }
+                }
 
-                    override fun showMessage(message: String?) {
+                override fun showMessage(message: String?) {
 
-                    }
-                })
-        }
+                }
+            })
     }
 
     fun onEmployeeSuccess(result: EmployeeResp) {
@@ -152,9 +150,9 @@ class PinCodeVM : BaseRepoViewModel<EmployeeRepo, PinCodeUV>() {
     private fun checkDrawerStatus() {
         val body = GSonUtils.toServerJson(
             CashDrawerStatusReq(
-                UserGuid = UserHelper.getUserGui(),
-                DeviceGuid = UserHelper.getDeviceGui(),
-                LocationGuid = UserHelper.getLocationGui(),
+                UserGuid = UserHelper.getUserGuid(),
+                DeviceGuid = UserHelper.getDeviceGuid(),
+                LocationGuid = UserHelper.getLocationGuid(),
                 EmployeeGuid = UserHelper.getEmployeeGuid()
             )
         );

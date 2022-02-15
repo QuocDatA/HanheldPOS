@@ -1,7 +1,6 @@
 package com.hanheldpos.model
 
 
-import com.google.gson.reflect.TypeToken
 import com.hanheldpos.data.api.ApiConst
 import com.hanheldpos.data.api.pojo.device.DeviceCodeResp
 import com.hanheldpos.data.api.pojo.discount.CouponResp
@@ -13,10 +12,10 @@ import com.hanheldpos.data.api.pojo.order.menu.MenuResp
 import com.hanheldpos.data.api.pojo.order.settings.OrderSettingResp
 import com.hanheldpos.data.api.pojo.payment.PaymentMethodResp
 import com.hanheldpos.data.api.pojo.system.AddressTypeResp
-import com.hanheldpos.database.repo.DeviceCodeLocalRepo
 import com.hanheldpos.model.cart.fee.FeeApplyToType
 import com.hanheldpos.model.order.OrderReq
 import com.hanheldpos.prefs.PrefKey
+import com.hanheldpos.utils.GSonUtils
 import com.utils.helper.AppPreferences
 
 object DataHelper {
@@ -24,244 +23,17 @@ object DataHelper {
     var currentDrawerId: String? = null;
 
     fun clearData() {
-        DatabaseHelper.deviceCodeLocalRepo?.deleteAll();
-        deviceCode = null
-        menu = null
-        orderSetting = null
-        floor = null
-        fee = null
-        discounts = null
-        discountDetails = null
-        paymentMethods = null
         currentDrawerId = null
         numberIncreaseOrder = 0;
-        AppPreferences.get().storeValue(PrefKey.Setting.DEVICE_CODE, null)
+        deviceCodeLocalStorage = null
+        menuLocalStorage = null
+        orderSettingLocalStorage = null
+        floorLocalStorage = null
+        feeLocalStorage = null
+        discountsLocalStorage = null
+        discountDetailsLocalStorage = null
+        paymentMethodsLocalStorage = null
     }
-
-    fun generateOrderIdByFormat(): String {
-        var numberIncrement: Long = numberIncreaseOrder;
-        numberIncrement = numberIncrement.plus(1);
-        numberIncreaseOrder = numberIncrement;
-        val prefix = getDeviceCodeModel()?.SettingsId?.firstOrNull()?.Prefix ?: ""
-        val deviceAcronymn = getDeviceCodeModel()?.Device?.firstOrNull()?.Acronymn ?: ""
-        val minimumNumber = getDeviceCodeModel()?.SettingsId?.firstOrNull()?.MinimumNumber ?: 0
-        return "${prefix}${deviceAcronymn}${numberIncrement.toString().padEnd(minimumNumber, '0')}";
-    }
-    //region ## Order Menu
-
-    var menu: MenuResp? = null
-        get() {
-            if (field == null) {
-                field = StorageHelper.getDataFromEncryptedFile(
-                    PrefKey.Order.MENU_RESP,
-                    classOff = MenuResp::class.java
-                )
-            }
-            return field
-        }
-        set(value) {
-            field = value
-            StorageHelper.setDataToEncryptedFile(PrefKey.Order.MENU_RESP, value)
-        }
-
-    private fun getGroupsOrderMenu() = menu?.GroupList;
-
-    fun findGroupNameOrderMenu(group_id: String): String {
-        return getGroupsOrderMenu()?.firstOrNull { groupsItem -> groupsItem._Id == group_id }?.GroupName
-            ?: ""
-    }
-
-    //endregion
-    //region ### Order Settings
-    var orderSetting: OrderSettingResp? = null
-        get() {
-            if (field == null) {
-                field = StorageHelper.getDataFromEncryptedFile(
-                    PrefKey.Order.MENU_SETTING_RESP,
-                    classOff = OrderSettingResp::class.java
-                )
-            }
-            return field
-        }
-        set(value) {
-            field = value
-            StorageHelper.setDataToEncryptedFile(PrefKey.Order.MENU_SETTING_RESP, value)
-        }
-
-    fun getVoidInfo() = orderSetting?.ListVoid?.firstOrNull()
-
-    fun getVoidList() = getVoidInfo()?.ListReasons
-
-    fun getVoidItemById(voidId: Int) = getVoidList()?.find { it.Id == voidId }
-
-    private fun getCompInfo() = orderSetting?.ListComp?.firstOrNull()
-
-    fun getCompList() = getCompInfo()?.ListReasons
-
-    fun getCompItemById(voidId: Int) = getCompList()?.find { it.Id == voidId }
-
-    fun getDiningOptionList() = orderSetting?.ListDiningOptions
-
-    fun getDiningOptionItem(diningOptionId: Int) =
-        getDiningOptionList()?.find { it.Id == diningOptionId }
-
-
-    fun getDefaultDiningOptionItem() = getDiningOptionList()?.firstOrNull()
-
-    //endregion
-    //region ## Device Code
-    var deviceCode: DeviceCodeResp? = null
-        get() {
-            if (field == null) {
-                field = StorageHelper.getDataFromEncryptedFile(
-                    PrefKey.Setting.DEVICE_CODE,
-                    classOff = DeviceCodeResp::class.java
-                )
-            }
-            return field
-        }
-        set(value) {
-            field = value
-            StorageHelper.setDataToEncryptedFile(PrefKey.Setting.DEVICE_CODE, value)
-        }
-
-    private fun getDeviceCodeModel() = deviceCode;
-
-    fun getDeviceCodeEmployee() = getDeviceCodeModel()?.EmployeeList;
-
-    fun getDeviceByDeviceCode() = getDeviceCodeModel()?.Device?.firstOrNull()
-
-    fun getCurrencySymbol() = getDeviceCodeModel()?.Users?.CurrencySymbol
-
-    fun getDeviceGuidByDeviceCode() = getDeviceByDeviceCode()?._Id
-
-    fun getLocationGuidByDeviceCode() = getDeviceByDeviceCode()?.Location
-
-    fun getUserGuidByDeviceCode() = getDeviceByDeviceCode()?.UserGuid
-
-    //endregion
-
-    //region ## TableStatus
-
-    var floor: FloorResp? = null
-        get() {
-            if (field == null) {
-                field = StorageHelper.getDataFromEncryptedFile(
-                    PrefKey.Floor.FLOOR_RESP,
-                    classOff = FloorResp::class.java
-                )
-            }
-            return field
-        }
-        set(value) {
-            // TODO reInit floor table status - this should be done by the server
-            value?.FloorTable?.forEach {
-                it.Visible = ApiConst.VISIBLE
-            }
-
-            field = value
-
-            StorageHelper.setDataToEncryptedFile(PrefKey.Floor.FLOOR_RESP, value)
-        }
-
-    //endregion
-
-
-    //region ## Fee
-    var fee: FeeResp? = null
-        get() {
-            if (field == null) {
-                field = StorageHelper.getDataFromEncryptedFile(
-                    PrefKey.Fee.FEE_RESP,
-                    classOff = FeeResp::class.java
-                )
-            }
-            return field
-        }
-        set(value) {
-            field = value
-            StorageHelper.setDataToEncryptedFile(PrefKey.Fee.FEE_RESP, value)
-        }
-
-    private fun getListFee(): List<Fee>? = fee?.Fees
-
-    /**
-     * Get Fee type [FeeApplyToType] with product id
-     */
-    fun findFeeProductList(productId: String): List<Fee>? {
-        return getListFee()?.filter { fee ->
-            FeeApplyToType.fromInt(fee.Id) != FeeApplyToType.Order && fee.AssignToProductList.firstOrNull { assign_p ->
-                assign_p.ProductGuid == productId
-            } != null
-        }?.toList()
-    }
-
-    /**
-     * Get Fee type [FeeApplyToType] for order
-     */
-    fun findFeeOrderList(): List<Fee>? {
-        return getListFee()?.filter { fee ->
-            FeeApplyToType.fromInt(fee.Id) != FeeApplyToType.Order
-        }?.toList()
-    }
-
-
-    //endregion
-
-    //region Discount
-
-    var discounts: List<DiscountResp>? = null
-        get() {
-            if (field == null) {
-                field = StorageHelper.getDataFromEncryptedFile(
-                    PrefKey.Discount.DISCOUNT_RESP,
-                    object : TypeToken<List<DiscountResp>>() {}.type
-                )
-            }
-            return field
-        }
-        set(value) {
-            field = value
-            StorageHelper.setDataToEncryptedFile(PrefKey.Discount.DISCOUNT_RESP, value)
-        }
-
-    var discountDetails: List<CouponResp>? = null
-        get() {
-            if (field == null) {
-                field = StorageHelper.getDataFromEncryptedFile(
-                    PrefKey.Discount.DISCOUNT_DETAIL_RESP,
-                    object : TypeToken<List<CouponResp>>() {}.type
-                )
-            }
-            return field
-        }
-        set(value) {
-            field = value
-            StorageHelper.setDataToEncryptedFile(PrefKey.Discount.DISCOUNT_DETAIL_RESP, value)
-        }
-
-    //endregion
-
-    //region Payment
-
-    var paymentMethods: List<PaymentMethodResp>? = null
-        get() {
-            if (field == null) {
-                field = StorageHelper.getDataFromEncryptedFile(
-                    PrefKey.Payment.PAYMENTS_RESP,
-                    object : TypeToken<List<PaymentMethodResp>>() {}.type
-                )
-            }
-            return field
-        }
-        set(value) {
-            field = value
-            StorageHelper.setDataToEncryptedFile(PrefKey.Payment.PAYMENTS_RESP, value)
-        }
-
-    fun getPaymentMethodList() = this.paymentMethods
-
-    //region Order Storage
 
     var numberIncreaseOrder: Long = 0
         get() {
@@ -271,48 +43,164 @@ object DataHelper {
             field = value
             AppPreferences.get().storeValue(PrefKey.Order.FILE_NAME_NUMBER_INCREASEMENT, value)
         }
-    //endregion
 
-    //region Order Local
-    var ordersPending: List<OrderReq>? = null
+    var menuLocalStorage: MenuResp? = null
         get() {
             if (field == null) {
-                field = StorageHelper.getDataFromEncryptedFile(PrefKey.Order.ORDER_PENDING,
-                    object : TypeToken<List<OrderReq>>() {}.type);
+                field = AppPreferences.get().getParcelableObject(
+                    PrefKey.Order.MENU_RESP,
+                    MenuResp::class.java
+                )
             }
             return field
         }
         set(value) {
             field = value
-            StorageHelper.setDataToEncryptedFile(PrefKey.Order.ORDER_PENDING, value)
+            AppPreferences.get().storeValue(PrefKey.Order.MENU_RESP, value)
         }
 
-    var ordersCompleted: List<OrderReq>? = null
+    var orderSettingLocalStorage: OrderSettingResp? = null
         get() {
             if (field == null) {
-                field = StorageHelper.getDataFromEncryptedFile(PrefKey.Order.ORDER_COMPLETE,
-                    object : TypeToken<List<OrderReq>>() {}.type);
+                field = AppPreferences.get().getParcelableObject(
+                    PrefKey.Order.MENU_SETTING_RESP,
+                    OrderSettingResp::class.java
+                )
             }
             return field
         }
         set(value) {
             field = value
-            StorageHelper.setDataToEncryptedFile(PrefKey.Order.ORDER_COMPLETE, value)
+            AppPreferences.get().storeValue(PrefKey.Order.MENU_SETTING_RESP, value)
         }
-    //endregion
 
-    //region Address Location
-    var addressTypes : List<AddressTypeResp>? = null
+    var deviceCodeLocalStorage: DeviceCodeResp? = null
         get() {
             if (field == null) {
-                field = StorageHelper.getDataFromEncryptedFile(PrefKey.System.ADDRESS_TYPE,
-                    object : TypeToken<List<AddressTypeResp>>() {}.type);
+                field = AppPreferences.get().getParcelableObject(
+                    PrefKey.Setting.DEVICE_CODE,
+                    DeviceCodeResp::class.java
+                )
             }
             return field
         }
         set(value) {
             field = value
-            StorageHelper.setDataToEncryptedFile(PrefKey.System.ADDRESS_TYPE, value)
+            AppPreferences.get().storeValue(PrefKey.Setting.DEVICE_CODE, value)
         }
-    //endregion
+
+    var floorLocalStorage: FloorResp? = null
+        get() {
+            if (field == null) {
+                field = AppPreferences.get().getParcelableObject(
+                    PrefKey.Floor.FLOOR_RESP,
+                    FloorResp::class.java
+                )
+            }
+            return field
+        }
+        set(value) {
+            value?.FloorTable?.forEach {
+                it.Visible = ApiConst.VISIBLE
+            }
+            field = value
+            AppPreferences.get().storeValue(PrefKey.Floor.FLOOR_RESP, value)
+        }
+
+    var feeLocalStorage: FeeResp? = null
+        get() {
+            if (field == null) {
+                field = AppPreferences.get().getParcelableObject(
+                    PrefKey.Fee.FEE_RESP,
+                    FeeResp::class.java
+                )
+            }
+            return field
+        }
+        set(value) {
+            field = value
+            AppPreferences.get().storeValue(PrefKey.Fee.FEE_RESP, value)
+        }
+
+    var discountsLocalStorage: List<DiscountResp>? = null
+        get() {
+            if (field == null) {
+                field = GSonUtils.toList(
+                    AppPreferences.get().getString(PrefKey.Discount.DISCOUNT_RESP)
+                );
+            }
+            return field
+        }
+        set(value) {
+            field = value
+            AppPreferences.get().storeValue(PrefKey.Discount.DISCOUNT_RESP, GSonUtils.toJson(value))
+        }
+
+    var discountDetailsLocalStorage: List<CouponResp>? = null
+        get() {
+            if (field == null) {
+                field = GSonUtils.toList(
+                    AppPreferences.get().getString(PrefKey.Discount.DISCOUNT_DETAIL_RESP)
+                )
+            }
+            return field
+        }
+        set(value) {
+            field = value
+            AppPreferences.get()
+                .storeValue(PrefKey.Discount.DISCOUNT_DETAIL_RESP, GSonUtils.toJson(value))
+        }
+
+    var paymentMethodsLocalStorage: List<PaymentMethodResp>? = null
+        get() {
+            if (field == null) {
+                field =
+                    GSonUtils.toList(AppPreferences.get().getString(PrefKey.Payment.PAYMENTS_RESP))
+            }
+            return field
+        }
+        set(value) {
+            field = value
+            AppPreferences.get().storeValue(PrefKey.Payment.PAYMENTS_RESP, GSonUtils.toJson(value))
+        }
+
+    var ordersPendingLocalStorage: List<OrderReq>? = null
+        get() {
+            if (field == null) {
+                field =
+                    GSonUtils.toList(AppPreferences.get().getString(PrefKey.Order.ORDER_PENDING))
+            }
+            return field
+        }
+        set(value) {
+            field = value
+            AppPreferences.get().storeValue(PrefKey.Order.ORDER_PENDING, GSonUtils.toJson(value))
+        }
+
+    var ordersCompletedLocalStorage: List<OrderReq>? = null
+        get() {
+            if (field == null) {
+                field =
+                    GSonUtils.toList(AppPreferences.get().getString(PrefKey.Order.ORDER_COMPLETE))
+            }
+            return field
+        }
+        set(value) {
+            field = value
+            AppPreferences.get().storeValue(PrefKey.Order.ORDER_COMPLETE, GSonUtils.toJson(value))
+        }
+
+    var addressTypesLocalStorage: List<AddressTypeResp>? = null
+        get() {
+            if (field == null) {
+                field =
+                    GSonUtils.toList(AppPreferences.get().getString(PrefKey.System.ADDRESS_TYPE))
+            }
+            return field
+        }
+        set(value) {
+            field = value
+            AppPreferences.get().storeValue(PrefKey.System.ADDRESS_TYPE, GSonUtils.toJson(value))
+        }
+
 }

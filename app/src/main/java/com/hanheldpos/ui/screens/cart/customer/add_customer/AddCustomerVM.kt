@@ -6,6 +6,7 @@ import com.hanheldpos.data.repository.BaseResponse
 import com.hanheldpos.data.repository.base.BaseRepoCallback
 import com.hanheldpos.data.repository.customer.CustomerRepo
 import com.hanheldpos.model.DataHelper
+import com.hanheldpos.model.UserHelper
 import com.hanheldpos.ui.base.viewmodel.BaseRepoViewModel
 
 class AddCustomerVM : BaseRepoViewModel<CustomerRepo, AddCustomerUV>() {
@@ -17,7 +18,7 @@ class AddCustomerVM : BaseRepoViewModel<CustomerRepo, AddCustomerUV>() {
     }
 
     fun searchCustomer(keyword: String?, pageNo: Int? = 1) {
-        val userGuid = DataHelper.getUserGuidByDeviceCode()
+        val userGuid = UserHelper.getUserGuid()
         repo?.getCustomersFromSearch(
             userGuid = userGuid,
             keyword = keyword,

@@ -2,32 +2,17 @@ package com.hanheldpos.ui.screens.devicecode
 
 import android.content.Context
 import android.os.SystemClock
-import android.util.Log
 import android.view.View
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.device.DeviceCodeResp
 import com.hanheldpos.data.repository.BaseResponse
 import com.hanheldpos.data.repository.base.BaseRepoCallback
 import com.hanheldpos.data.repository.device.DeviceRepo
-import com.hanheldpos.database.DatabaseMapper
-import com.hanheldpos.database.PosDatabase
-import com.hanheldpos.database.repo.DeviceCodeLocalRepo
 import com.hanheldpos.model.DataHelper
-import com.hanheldpos.model.DatabaseHelper
 import com.hanheldpos.model.SyncDataService
-import com.hanheldpos.ui.base.viewmodel.BaseRepoViewModel
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
-import com.hanheldpos.ui.base.viewmodel.BaseViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.onCompletion
-import kotlinx.coroutines.launch
 import java.util.*
-import kotlin.coroutines.coroutineContext
 
 class DeviceCodeVM : BaseUiViewModel<DeviceCodeUV>() {
     val pinGroupSize = 4;
@@ -54,22 +39,8 @@ class DeviceCodeVM : BaseUiViewModel<DeviceCodeUV>() {
                 if (data == null || data.DidError) {
                     showError(view.context?.getString(R.string.failed_to_load_data));
                 } else {
-                    viewModelScope.launch(Dispatchers.IO) {
-                        if (data.Model != null)
-                            DatabaseHelper.deviceCodeLocalRepo?.insert(
-                                DatabaseMapper.mappingDeviceCodeToEntity(
-                                    data.Model
-                                )
-                            )
-                        DatabaseHelper.deviceCodeLocalRepo?.getAll()?.let {
-                            Log.d("Test Storage", it.toString())
-                        }
-                        launch (Dispatchers.Default){
-                            DataHelper.deviceCode = data.Model;
-                            loadResource(view.context);
-                        }
-                    }
-
+                    DataHelper.deviceCodeLocalStorage = data.Model;
+                    loadResource(view.context);
                 }
             }
 

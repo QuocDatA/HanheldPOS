@@ -50,12 +50,11 @@ class DiscountCompFragment(
             })
         binding.reasonContainer.adapter = adapter;
 
-        viewModel.reasonChosen.observe(this, { reason ->
+        viewModel.reasonChosen.observe(this) { reason ->
             binding.removeComp.apply {
-                if(reason != null) {
+                if (reason != null) {
                     setTextColor(resources.getColor(R.color.color_0));
-                }
-                else {
+                } else {
                     setTextColor(resources.getColor(R.color.color_6));
                 }
 
@@ -68,21 +67,20 @@ class DiscountCompFragment(
                     }
                 }
             }
-        });
+        };
 
     }
 
     override fun initData() {
         viewModel.reasonChosen.postValue(comp);
-
-        val list = DataHelper.getCompList();
+        val list = DataHelper.orderSettingLocalStorage?.ListComp?.firstOrNull()?.ListReasons
         if (list != null) adapter.submitList(list as MutableList<Reason>);
     }
 
     override fun initAction() {
-        viewModel.reasonChosen.observe(this, {
+        viewModel.reasonChosen.observe(this) {
             listener.validDiscount(it != comp);
-        });
+        };
     }
 
     override fun onResume() {

@@ -74,7 +74,7 @@ class CurrentDrawerFragment : BaseFragment<FragmentCurrentDrawerBinding, Current
     }
 
     override fun onOpenEndDrawer() {
-        if (!DataHelper.ordersCompleted.isNullOrEmpty()) {
+        if (!DataHelper.ordersCompletedLocalStorage.isNullOrEmpty()) {
             AppAlertDialog.get().show(
                 getString(R.string.notification),
                 getString(R.string.please_sync_local_data_before_ending_this_cash_drawer)
