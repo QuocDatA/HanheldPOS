@@ -42,8 +42,8 @@ class MenuVM : BaseUiViewModel<MenuUV>() {
                 name = getNameMenu(NavBarOptionType.SUPPORT, context)
             ),
             ItemOptionNav(
-                type = NavBarOptionType.LOGOUT_USER,
-                name = getNameMenu(NavBarOptionType.LOGOUT_USER, context)
+                type = NavBarOptionType.LOGOUT_DEVICE,
+                name = getNameMenu(NavBarOptionType.LOGOUT_DEVICE, context)
             ),
             ItemOptionNav(
                 type = NavBarOptionType.RESET_SYSTEM,
@@ -61,7 +61,7 @@ class MenuVM : BaseUiViewModel<MenuUV>() {
             NavBarOptionType.ORDER_HISTORY -> context.getString(R.string.order_history)
             NavBarOptionType.SETTINGS -> context.getString(R.string.settings)
             NavBarOptionType.SUPPORT -> context.getString(R.string.support)
-            NavBarOptionType.LOGOUT_USER -> context.getString(R.string.logout_user)
+            NavBarOptionType.LOGOUT_DEVICE -> context.getString(R.string.logout_device)
             NavBarOptionType.RESET_SYSTEM -> context.getString(R.string.reset_system)
         }
     }
