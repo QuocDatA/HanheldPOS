@@ -4,14 +4,14 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.hanheldpos.database.dao.DeviceCodeDao
-import com.hanheldpos.database.entities.DeviceCodeEntity
+import com.hanheldpos.database.dao.OrderCompletedDao
+import com.hanheldpos.database.entities.OrderCompletedEntity
 
 
-@Database(entities = [ DeviceCodeEntity::class, ], version = 1, exportSchema = false)
+@Database(entities = [ OrderCompletedEntity::class, ], version = 1, exportSchema = false)
 public abstract class PosDatabase : RoomDatabase() {
 
-    abstract fun deviceCode() : DeviceCodeDao
+    abstract fun orderCompleted() : OrderCompletedDao
 
     companion object {
         @Volatile
