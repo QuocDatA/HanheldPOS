@@ -88,7 +88,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
     }
 
     override fun initAction() {
-        screenViewModel.dropDownSelected.observe(this, {
+        screenViewModel.dropDownSelected.observe(this) {
             val screen = screenViewModel.screenEvent.value?.screen;
             if (screen == HomeFragment.HomePage.Order) {
                 if (it.realItem is Menu) {
@@ -96,9 +96,9 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
                 } else if (it.realItem == null)
                     dataVM.onMenuChange(0)
             }
-        })
+        }
 
-        dataVM.selectedMenu.observe(this, { orderMenuItemModel ->
+        dataVM.selectedMenu.observe(this) { orderMenuItemModel ->
             val list = dataVM.getProductByMenu(orderMenuItemModel);
             if (list == null) productAdapHelper.submitList(mutableListOf());
             else {
@@ -112,7 +112,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
                 cartDataVM.updatePriceList(orderMenuItemModel?.id!!);
             }
 
-        });
+        };
     }
 
     fun onProductMenuSelected(item: ProductMenuItem) {
