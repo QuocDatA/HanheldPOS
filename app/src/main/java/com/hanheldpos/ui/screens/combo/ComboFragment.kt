@@ -21,7 +21,7 @@ import com.hanheldpos.model.discount.DiscountTypeFor
 import com.hanheldpos.model.discount.DiscountUser
 import com.hanheldpos.model.product.BaseProductInCart
 import com.hanheldpos.ui.base.fragment.BaseFragment
-import com.hanheldpos.ui.screens.cart.CartDataVM
+import com.hanheldpos.ui.screens.cart.CurCartData
 import com.hanheldpos.ui.screens.combo.adapter.ComboGroupAdapter
 import com.hanheldpos.ui.screens.discount.discount_type.DiscountTypeFragment
 import com.hanheldpos.ui.screens.home.order.OrderFragment
@@ -36,8 +36,6 @@ class ComboFragment(
     private val action: ItemActionType,
     private val listener: OrderFragment.OrderMenuListener
 ) : BaseFragment<FragmentComboBinding, ComboVM>(), ComboUV {
-
-    private val cartDataVM by activityViewModels<CartDataVM>()
 
     override fun layoutRes() = R.layout.fragment_combo;
 
@@ -90,7 +88,7 @@ class ComboFragment(
                 DiscountTypeFragment(
                     product = combo,
                     applyToType = DiscountApplyToType.ITEM_DISCOUNT_APPLY_TO,
-                    cart = cartDataVM.cartModelLD.value!!,
+                    cart = CurCartData.cartModelLD.value!!,
                     listener = object : DiscountTypeFragment.DiscountTypeListener {
                         override fun discountUserChoose(discount: DiscountUser) {
                             if (viewModel.isValidDiscount.value != true) return;
@@ -129,7 +127,7 @@ class ComboFragment(
             viewModel.getCombo()?.let {
                 viewModel.initDefaultComboList(
                     it,
-                    cartDataVM.diningOptionLD.value!!,
+                    CurCartData.diningOptionLD.value!!,
                     UserHelper.getLocationGuid()
                 )
             };

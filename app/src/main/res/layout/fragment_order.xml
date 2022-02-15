@@ -13,9 +13,8 @@
             type="com.hanheldpos.ui.screens.home.order.OrderVM" />
 
 
-        <variable
-            name="cartDataVM"
-            type="com.hanheldpos.ui.screens.cart.CartDataVM" />
+        <import
+            type="com.hanheldpos.ui.screens.cart.CurCartData" />
 
     </data>
 
@@ -153,7 +152,7 @@
                     android:layout_marginEnd="@dimen/_7sdp"
                     android:layout_alignParentStart="true"
                     app:useTextColor="color4"
-                    android:text="@{cartDataVM.cartModelLD.table.tableName + `-` + cartDataVM.diningOptionLD.title + ` (` + cartDataVM.numberOfCustomer + `)`}"
+                    android:text="@{CurCartData.INSTANCE.cartModelLD.table.tableName + `-` + CurCartData.INSTANCE.diningOptionLD.title + ` (` + CurCartData.INSTANCE.numberOfCustomer + `)`}"
                     android:ellipsize="end"
                     android:maxEms="15"
                     android:maxLines="1"
@@ -167,7 +166,7 @@
                     android:layout_alignParentEnd="true"
                     android:background="@drawable/bg_color5_2444dp"
                     android:paddingHorizontal="@dimen/_5sdp"
-                    android:text="@{cartDataVM.linePerTotalQuantity}"
+                    android:text="@{CurCartData.INSTANCE.linePerTotalQuantity}"
                     app:useTextColor="color2"
                     app:useTextHeader="h6"
                     tools:text="8/10" />
@@ -195,7 +194,7 @@
                     app:useFontStyle="bold"
                     app:useTextColor="color4"
                     app:useTextHeader="h5"
-                    priceView="@{cartDataVM.cartModelLD.total()}"
+                    priceView="@{CurCartData.INSTANCE.cartModelLD.total()}"
 
                     tools:text="1.000.000" />
 
@@ -226,7 +225,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginTop="@dimen/_2sdp"
-                        android:text="@{String.valueOf(cartDataVM.cartModelLD.totalQuantity)}"
+                        android:text="@{String.valueOf(CurCartData.INSTANCE.cartModelLD.totalQuantity)}"
                         app:useFontStyle="bold"
                         app:useTextColor="color0"
                         app:useTextHeader="h6"

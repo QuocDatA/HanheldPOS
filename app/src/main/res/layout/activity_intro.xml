@@ -3,7 +3,6 @@
 
     <LinearLayout
         style="@style/RootLayout"
-        android:background="@color/secondary"
         android:gravity="center">
 
         <ImageView

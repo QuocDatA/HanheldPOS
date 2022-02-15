@@ -9,9 +9,8 @@
             name="viewModel"
             type="com.hanheldpos.ui.screens.cart.CartVM" />
 
-        <variable
-            name="cartDataVM"
-            type="com.hanheldpos.ui.screens.cart.CartDataVM" />
+        <import
+            type="com.hanheldpos.ui.screens.cart.CurCartData" />
 
         <import type="com.hanheldpos.model.cart.DeliveryType" />
 
@@ -151,7 +150,7 @@
                                 android:layout_weight="1" />
 
                             <com.diadiem.pos_components.PTextView
-                                visibleObject="@{cartDataVM.cartModelLD.customer == null}"
+                                visibleObject="@{CurCartData.INSTANCE.cartModelLD.customer == null}"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
@@ -166,7 +165,7 @@
 
                         <include
                             layout="@layout/item_cart_customer"
-                            visibleObject="@{cartDataVM.cartModelLD.customer != null}"
+                            visibleObject="@{CurCartData.INSTANCE.cartModelLD.customer != null}"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginHorizontal="@dimen/_9sdp"
@@ -174,12 +173,12 @@
                             android:clickable="true"
                             android:focusable="true"
                             android:onClick="@{v->viewModel.onShowCustomerDetail()}"
-                            app:customer="@{cartDataVM.cartModelLD.customer}" />
+                            app:customer="@{CurCartData.INSTANCE.cartModelLD.customer}" />
 
                     </LinearLayout>
 
                     <LinearLayout
-                        visibleObject="@{cartDataVM.diningOptionLD.orderNo == DeliveryType.DiGiao.value}"
+                        visibleObject="@{CurCartData.INSTANCE.diningOptionLD.orderNo == DeliveryType.DiGiao.value}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
@@ -252,7 +251,7 @@
                             android:focusableInTouchMode="true"
                             android:hint="@string/special_instruction_for_order"
                             android:paddingVertical="@dimen/_11sdp"
-                            android:text="@={cartDataVM.cartModelLD.note}"
+                            android:text="@={CurCartData.INSTANCE.cartModelLD.note}"
                             android:textColorHint="@color/color_9"
                             app:ipt_useTextColor="color4"
                             app:ipt_useTextHeader="h5" />
@@ -331,7 +330,7 @@
                             android:layout_weight="1" />
 
                         <com.diadiem.pos_components.PTextView
-                            priceView="@{cartDataVM.cartModelLD.subTotal}"
+                            priceView="@{CurCartData.INSTANCE.cartModelLD.subTotal}"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -424,7 +423,7 @@
                             android:layout_weight="1" />
 
                         <com.diadiem.pos_components.PTextView
-                            priceView="@{cartDataVM.cartModelLD.totalFee(cartDataVM.cartModelLD.subTotal,cartDataVM.cartModelLD.discountPrice)}"
+                            priceView="@{CurCartData.INSTANCE.cartModelLD.totalFee(CurCartData.INSTANCE.cartModelLD.subTotal,CurCartData.INSTANCE.cartModelLD.discountPrice)}"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -474,7 +473,7 @@
                         android:layout_height="@dimen/_1sdp" />
 
                     <LinearLayout
-                        visibleObject="@{cartDataVM.diningOptionLD.orderNo == DeliveryType.DiGiao.value}"
+                        visibleObject="@{CurCartData.INSTANCE.diningOptionLD.orderNo == DeliveryType.DiGiao.value}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
@@ -515,7 +514,7 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        visibleObject="@{cartDataVM.diningOptionLD.orderNo != DeliveryType.TaiBan.value}"
+                        visibleObject="@{CurCartData.INSTANCE.diningOptionLD.orderNo != DeliveryType.TaiBan.value}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
@@ -579,7 +578,7 @@
                             android:layout_weight="1" />
 
                         <com.diadiem.pos_components.PTextView
-                            priceView="@{cartDataVM.cartModelLD.total()}"
+                            priceView="@{CurCartData.INSTANCE.cartModelLD.total()}"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -620,7 +619,7 @@
                     android:clickable="true"
                     android:focusable="true"
                     android:foreground="?attr/selectableItemBackground"
-                    android:onClick="@{v->viewModel.openSelectPayment(cartDataVM.cartModelLD.total)}"
+                    android:onClick="@{v->viewModel.openSelectPayment(CurCartData.INSTANCE.cartModelLD.total)}"
                     android:padding="@dimen/_12sdp">
 
                     <ImageView
@@ -634,7 +633,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_9sdp"
-                        android:text="@{cartDataVM.cartModelLD.paymentsList.empty ? @string/payment_method: cartDataVM.cartModelLD.paymentsList.get(0).title}"
+                        android:text="@{CurCartData.INSTANCE.cartModelLD.paymentsList.empty ? @string/payment_method: CurCartData.INSTANCE.cartModelLD.paymentsList.get(0).title}"
                         app:useTextColor="color4"
                         app:useTextHeader="h5" />
 
@@ -703,11 +702,12 @@
                     android:layout_height="wrap_content" />
 
                 <com.diadiem.pos_components.PTextView
-                    priceDisc="@{cartDataVM.cartModelLD.total()}"
+                    priceDisc="@{CurCartData.INSTANCE.cartModelLD.total()}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:textAllCaps="true"
+                    tools:text="(10,000)"
                     app:useFontStyle="bold"
                     app:useTextColor="color2"
                     app:useTextHeader="h5" />

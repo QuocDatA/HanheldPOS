@@ -12,7 +12,6 @@
             type="com.hanheldpos.ui.screens.product.ProductDetailVM" />
     </data>
 
-
     <androidx.constraintlayout.widget.ConstraintLayout style="@style/RootLayout">
 
         <LinearLayout
