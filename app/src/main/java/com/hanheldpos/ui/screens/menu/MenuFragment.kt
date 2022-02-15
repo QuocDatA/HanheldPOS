@@ -7,12 +7,12 @@ import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentMenuBinding
 import com.hanheldpos.extension.navigateTo
 import com.hanheldpos.model.DataHelper
-import com.hanheldpos.ui.screens.menu.adapter.ItemOptionNav
 import com.hanheldpos.model.menu_nav_opt.LogoutType
 import com.hanheldpos.model.menu_nav_opt.NavBarOptionType
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.dialog.AppAlertDialog
 import com.hanheldpos.ui.base.fragment.BaseFragment
+import com.hanheldpos.ui.screens.menu.adapter.ItemOptionNav
 import com.hanheldpos.ui.screens.menu.adapter.OptionNavAdapter
 import com.hanheldpos.ui.screens.menu.option.report.ReportFragment
 import com.hanheldpos.ui.screens.pincode.PinCodeActivity
@@ -94,7 +94,7 @@ class MenuFragment : BaseFragment<FragmentMenuBinding, MenuVM>(), MenuUV {
             NavBarOptionType.ORDER_HISTORY -> {}
             NavBarOptionType.SETTINGS -> {}
             NavBarOptionType.SUPPORT -> {}
-            NavBarOptionType.LOGOUT_USER -> onLogoutOption(
+            NavBarOptionType.LOGOUT_DEVICE -> onLogoutOption(
                 LogoutType.LOGOUT_DEVICE,
                 title = getString(R.string.logout),
                 message = getString(R.string.are_you_sure_you_want_to_exit_this_account)
