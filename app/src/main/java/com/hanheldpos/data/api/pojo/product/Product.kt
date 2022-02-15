@@ -5,6 +5,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.hanheldpos.data.api.pojo.order.menu.DateRange
 import com.hanheldpos.data.api.pojo.order.menu.Schedules
+import com.hanheldpos.model.UserHelper
 import com.hanheldpos.model.product.ProductComboItem
 import kotlinx.parcelize.Parcelize
 
@@ -108,7 +109,7 @@ data class Product(
     val variantDefault get() = if (VariantsGroup == null) "" else VariantsGroupNameDefault
 
     fun priceOverride(locationId: String?, sku: String?, priceDefault: Double): Double {
-        if (locationId.isNullOrEmpty()) return Price ?: 0.0
+        val locationIdLast = locationId ?: UserHelper.getLocationGuid()
         if (VariantsGroup != null) {
             val priceOverride =
                 VariantPriceOverrideList?.firstOrNull { it.VariationSku.equals(sku) }
@@ -117,11 +118,11 @@ data class Product(
                 object : TypeToken<List<VariantsPriceOverrideLocation>>() {}.type
             )
             val priceOverrideOfLocation: VariantsPriceOverrideLocation? =
-                listPriceOverride?.firstOrNull { it.LocationGuid.equals(locationId) }
+                listPriceOverride?.firstOrNull { it.LocationGuid.equals(locationIdLast) }
             return if (priceOverrideOfLocation != null) priceOverrideOfLocation.Price
                 ?: 0.0 else priceDefault
         }
-        return ProductPriceOverrideList?.firstOrNull { it.LocationGuid == locationId }?.Price
+        return ProductPriceOverrideList?.firstOrNull { it.LocationGuid == locationIdLast }?.Price
             ?: Price
     }
 }

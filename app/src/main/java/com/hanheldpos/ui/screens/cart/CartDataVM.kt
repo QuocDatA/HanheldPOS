@@ -36,23 +36,28 @@ class CartDataVM : BaseViewModel() {
     }
 
     fun initCart(numberCustomer: Int, table: FloorTable) {
+        cartModelLD.value =
+            CartModel(
+                table = TableSummary(
+                    _id = table._Id,
+                    TableName = table.TableName,
+                    PeopleQuantity = numberCustomer
+                ),
+                fees = OrderHelper.findFeeOrderList() ?: mutableListOf(),
+                productsList = mutableListOf(),
+                paymentsList = mutableListOf(),
+                discountUserList = mutableListOf(),
+                discountServerList = mutableListOf(),
+                diningOption = DataHelper.orderSettingLocalStorage?.ListDiningOptions?.firstOrNull()!!,
+            )
+
         val diningOptionId =
             DataHelper.floorLocalStorage?.Floor?.firstOrNull { floorTable -> floorTable._Id == table.FloorGuid }?.DiningOptionId
         val diningOption = OrderHelper.getDiningOptionItem(diningOptionId)
-        cartModelLD.value = CartModel(
-            table = TableSummary(
-                _id = table._Id,
-                TableName = table.TableName,
-                PeopleQuantity = numberCustomer
-            ),
-            fees = OrderHelper.findFeeOrderList() ?: mutableListOf(),
-            productsList = mutableListOf(),
-            paymentsList = mutableListOf(),
-            discountUserList = mutableListOf(),
-            discountServerList = mutableListOf(),
-            diningOption = diningOption
-                ?: DataHelper.orderSettingLocalStorage?.ListDiningOptions?.firstOrNull()!!,
-        );
+        diningOption?.let {
+            diningOptionChange(it);
+        }
+
     }
 
     fun addCustomerToCart(customer: CustomerResp) {
@@ -157,6 +162,11 @@ class CartDataVM : BaseViewModel() {
     fun addDiscountUser(discount: DiscountUser) {
         this.cartModelLD.value!!.addDiscountUser(discount);
         cartModelLD.notifyValueChange();
+    }
+
+    fun diningOptionChange(diningOption: DiningOption) {
+        cartModelLD.value?.diningOption = diningOption;
+        updatePriceList(diningOption.SubDiningOption?.firstOrNull()?.LocationGuid!!);
     }
 
 

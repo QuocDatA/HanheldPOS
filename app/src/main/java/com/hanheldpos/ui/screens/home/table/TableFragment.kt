@@ -94,7 +94,7 @@ class TableFragment : BaseFragment<FragmentTableBinding, TableVM>(), TableUV {
     }
 
     override fun initAction() {
-        screenViewModel.dropDownSelected.observe(this, {
+        screenViewModel.dropDownSelected.observe(this) {
             val screen = screenViewModel.screenEvent.value?.screen;
             if (screen == HomeFragment.HomePage.Table) {
                 if (it.realItem is Floor) {
@@ -103,12 +103,12 @@ class TableFragment : BaseFragment<FragmentTableBinding, TableVM>(), TableUV {
                     viewModel.getTableList()?.toMutableList()
                         ?.let { it1 -> tableAdapterHelper.submitList(it1); };
             }
-        })
+        }
 
-        viewModel.floorItemSelected.observe(this, {
+        viewModel.floorItemSelected.observe(this) {
             viewModel.floorTableList.value = viewModel.getTableListByFloor(it)?.toMutableList();
             viewModel.floorTableList.value?.let { it1 -> tableAdapterHelper.submitList(it1) };
-        });
+        };
 
         binding.root.viewTreeObserver.addOnGlobalLayoutListener(object :
             OnGlobalLayoutListener {
@@ -121,6 +121,7 @@ class TableFragment : BaseFragment<FragmentTableBinding, TableVM>(), TableUV {
         })
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun onTableChosen(adapterPosition: Int, item: FloorTable) {
         when (item.tableStatus) {
             TableStatusType.Available -> {
@@ -135,14 +136,12 @@ class TableFragment : BaseFragment<FragmentTableBinding, TableVM>(), TableUV {
 
                 viewModel.mLastTimeClick = SystemClock.elapsedRealtime();
 
-                // Show Table intput number customer
+                // Show Table input number customer
                 navigator.goTo(TableInputFragment.getInstance(listener = object :
                     TableInputFragment.TableInputListener {
                     override fun onCompleteTable(numberCustomer: Int) {
-//                        item.tableStatus = TableStatusType.Pending;
                         tableAdapter.notifyItemChanged(adapterPosition);
-
-                        // Init cart fisrt time
+                        // Init cart first time
                         cartDataVM.initCart(numberCustomer, item);
                         screenViewModel.showOrderPage();
                     }

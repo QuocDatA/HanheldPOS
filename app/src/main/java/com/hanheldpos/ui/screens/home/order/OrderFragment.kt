@@ -61,7 +61,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
             callBack = object : OrderProductAdapterHelper.AdapterCallBack {
                 @SuppressLint("NotifyDataSetChanged")
                 override fun onListSplitCallBack(list: List<ProductMenuItem>) {
-                    GlobalScope.launch(Dispatchers.Main) {
+                    CoroutineScope(Dispatchers.Main).launch {
                         productAdapter.submitList(list);
                         productAdapter.notifyDataSetChanged();
                     }
@@ -88,6 +88,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
     }
 
     override fun initAction() {
+
         screenViewModel.dropDownSelected.observe(this) {
             val screen = screenViewModel.screenEvent.value?.screen;
             if (screen == HomeFragment.HomePage.Order) {
@@ -102,17 +103,15 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
             val list = dataVM.getProductByMenu(orderMenuItemModel);
             if (list == null) productAdapHelper.submitList(mutableListOf());
             else {
-                list.let { it1 ->
-                    val rs: MutableList<ProductMenuItem> = mutableListOf();
-                    it1.forEach {
-                        it.let { it2 -> rs.add(it2) }
-                    }
-                    productAdapHelper.submitList(rs.toMutableList());
+                val rs: MutableList<ProductMenuItem> = mutableListOf();
+                list.forEach {
+                    rs.add(it)
                 }
-                cartDataVM.updatePriceList(orderMenuItemModel?.id!!);
+                productAdapHelper.submitList(rs.toMutableList());
             }
-
         };
+
+
     }
 
     fun onProductMenuSelected(item: ProductMenuItem) {
@@ -130,7 +129,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
                     if (!it.isBundle())
                         navigator.goToWithCustomAnimation(
                             ProductDetailFragment(
-                                 regular = Regular(
+                                regular = Regular(
                                     it,
                                     cartDataVM.diningOptionLD.value!!,
                                     1,
@@ -169,15 +168,16 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
                 }
             }
             ProductModeViewType.PrevButtonEnable -> {
-                GlobalScope.launch(Dispatchers.IO) {
+                CoroutineScope(Dispatchers.IO).launch {
                     productAdapHelper.previous();
                 }
             }
             ProductModeViewType.NextButtonEnable -> {
-                GlobalScope.launch(Dispatchers.IO) {
+                CoroutineScope(Dispatchers.IO).launch {
                     productAdapHelper.next();
                 }
             }
+            else -> {}
         }
     }
 
@@ -204,7 +204,8 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
     }
 
     override fun showCart() {
-        navigator.goToWithCustomAnimation(CartFragment(listener = object : CartFragment.CartCallBack {
+        navigator.goToWithCustomAnimation(CartFragment(listener = object :
+            CartFragment.CartCallBack {
             override fun onCartDelete() {
                 dataVM.onMenuChange(0);
                 showCategoryDialog(true);

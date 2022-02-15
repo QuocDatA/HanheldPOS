@@ -72,10 +72,8 @@ class CartFragment( private val listener : CartCallBack) : BaseFragment<Fragment
             CartDiningOptionAdapter(
                 onItemClickListener = object : BaseItemClickListener<DiningOption> {
                     override fun onItemClick(adapterPosition: Int, item: DiningOption) {
-                        cartDataVM.cartModelLD.value!!.diningOption = item;
-                        cartDataVM.cartModelLD.notifyValueChange();
+                        cartDataVM.diningOptionChange(item)
                     }
-
                 },
             );
         binding.diningOptionRecyclerView.adapter = cartDiningOptionAdapter;
@@ -187,13 +185,13 @@ class CartFragment( private val listener : CartCallBack) : BaseFragment<Fragment
 
     @SuppressLint("NotifyDataSetChanged")
     override fun initAction() {
-        cartDataVM.cartModelLD.observe(this,{
+        cartDataVM.cartModelLD.observe(this) {
             val list = viewModel.processDataDiscount(it);
             binding.isShowDiscount = list.isNotEmpty();
             cartDiscountAdapter.submitList(list);
             cartDiscountAdapter.notifyDataSetChanged();
             cartProductAdapter.notifyDataSetChanged();
-        })
+        }
     }
 
     override fun getBack() {
