@@ -10,9 +10,9 @@ data class SubDiningOptionItem(
     @field:SerializedName("SubId")
     val SubId: Int? = null,
 
-    @field:SerializedName("SubTitle")
-    val SubTitle: String? = null,
+    @field:SerializedName("NickName")
+    val NickName: String? = null,
 
-    @field:SerializedName("Location")
-    val Location: String? = null,
+    @field:SerializedName("LocationGuid")
+    val LocationGuid: String? = null,
 ) : Parcelable

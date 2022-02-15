@@ -29,7 +29,7 @@ data class GroupBundle(
         }
     }
 
-    public fun productsForChoose(menuResp : MenuResp, locationGuid : String, diningOption : DiningOption, product : Product) : List<Regular> {
+    fun productsForChoose(menuResp : MenuResp, locationGuid : String, diningOption : DiningOption, product : Product) : List<Regular> {
         val listRegular: List<Regular> =
             MenuDataMapper.getProductListByGroupGuid(comboInfo.ComboGuid,menuResp).map { it.proOriginal }
                 .map {

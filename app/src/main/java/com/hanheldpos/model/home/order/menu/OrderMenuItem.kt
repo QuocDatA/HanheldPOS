@@ -3,6 +3,7 @@ package com.hanheldpos.model.home.order.menu
 import android.os.Parcelable
 import com.hanheldpos.data.api.pojo.product.Product
 import com.hanheldpos.model.home.order.ProductModeViewType
+import com.hanheldpos.model.product.BaseProductInCart
 
 data class OrderMenuItem(
     var id: String? = null,
@@ -16,11 +17,4 @@ data class OrderMenuItem(
     var childList: MutableList<ProductMenuItem>? = null,
     ) {
     var uiType: MenuModeViewType? = MenuModeViewType.Menu;
-}
-
-data class ProductMenuItem(
-    val proOriginal : Product? =null,
-) {
-    var isChosen : Boolean = false;
-    var uiType = ProductModeViewType.Product;
 }
