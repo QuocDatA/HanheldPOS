@@ -404,16 +404,18 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
+                            android:gravity="center"
                             android:layout_marginStart="@dimen/_9sdp"
                             android:text="@string/other_fees"
                             app:useTextColor="color4"
                             app:useTextHeader="h5" />
 
                         <ImageView
-                            android:layout_width="@dimen/_10sdp"
-                            android:layout_height="@dimen/_10sdp"
+                            android:layout_width="@dimen/_14sdp"
+                            android:layout_height="@dimen/_14sdp"
                             android:layout_gravity="center"
-                            android:layout_marginStart="@dimen/_4sdp"
+                            android:scaleType="fitXY"
+                            android:layout_marginStart="@dimen/_7sdp"
                             android:src="@drawable/ic_info" />
 
                         <androidx.legacy.widget.Space
