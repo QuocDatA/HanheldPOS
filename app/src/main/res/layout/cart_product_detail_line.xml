@@ -109,7 +109,7 @@
                 android:layout_width="@dimen/_14sdp"
                 android:layout_height="@dimen/_14sdp"
                 android:layout_gravity="center"
-                android:layout_marginStart="@dimen/_4sdp"
+                android:layout_marginStart="@dimen/_7sdp"
                 android:scaleType="fitXY"
                 android:src="@{isDiscount?@drawable/ic_delete: @drawable/ic_info,default=@drawable/ic_info}" />
 
