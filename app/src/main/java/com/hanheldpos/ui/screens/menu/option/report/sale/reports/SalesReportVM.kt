@@ -37,10 +37,10 @@ class SalesReportVM : BaseUiViewModel<SalesReportUV>() {
     private val settingRepo = SettingRepo();
     private val orderAlterRepo = OrderAsyncRepo();
 
-    val numberOrder = MutableLiveData<Int>(DataHelper.ordersCompleted?.size ?: 0);
+    val numberOrder = MutableLiveData<Int>(DataHelper.ordersCompletedLocalStorage?.size ?: 0);
 
     fun onSyncOrders(view: View) {
-        if (DataHelper.ordersCompleted?.size ?: 0 <= 0) return
+        if (DataHelper.ordersCompletedLocalStorage?.size ?: 0 <= 0) return
 
         //TODO : sync order
         showLoading(true);
@@ -48,10 +48,10 @@ class SalesReportVM : BaseUiViewModel<SalesReportUV>() {
             SettingDevicePut(
                 MaxChar = DataHelper.numberIncreaseOrder.toString().length.toLong(),
                 NumberIncrement = DataHelper.numberIncreaseOrder.toString(),
-                UserGuid = UserHelper.getUserGui(),
-                LocationGuid = UserHelper.getLocationGui(),
-                DeviceGuid = UserHelper.getDeviceGui(),
-                Device_key = DataHelper.getDeviceByDeviceCode()?._key!!.toString()
+                UserGuid = UserHelper.getUserGuid(),
+                LocationGuid = UserHelper.getLocationGuid(),
+                DeviceGuid = UserHelper.getDeviceGuid(),
+                Device_key = DataHelper.deviceCodeLocalStorage?.Device?.firstOrNull()?._key!!.toString()
             )
         );
         settingRepo.putSettingDeviceIds(
@@ -81,7 +81,7 @@ class SalesReportVM : BaseUiViewModel<SalesReportUV>() {
 
     private fun pushOrder(context: Context) {
 
-        val listOrders = DataHelper.ordersCompleted;
+        val listOrders = DataHelper.ordersCompletedLocalStorage;
         var countOrderPush = 0;
         val listPushSucceeded = mutableListOf<OrderReq>();
         listOrders?.forEach { orderReq ->
@@ -101,7 +101,7 @@ class SalesReportVM : BaseUiViewModel<SalesReportUV>() {
                         showLoading(false);
                         val list = listOrders.toMutableList().filter { it !in listPushSucceeded };
                         numberOrder.postValue(list.size);
-                        DataHelper.ordersCompleted = list;
+                        DataHelper.ordersCompletedLocalStorage = list;
                     }
                 }
 
@@ -111,7 +111,7 @@ class SalesReportVM : BaseUiViewModel<SalesReportUV>() {
                         showLoading(false);
                         val list = listOrders.toMutableList().filter { it !in listPushSucceeded };
                         numberOrder.postValue(list.size);
-                        DataHelper.ordersCompleted = list;
+                        DataHelper.ordersCompletedLocalStorage = list;
                     }
                     AppAlertDialog.get()
                         .show(

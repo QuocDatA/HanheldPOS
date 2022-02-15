@@ -12,6 +12,7 @@ import com.hanheldpos.data.api.pojo.order.settings.Reason
 import com.hanheldpos.databinding.FragmentCartBinding
 import com.hanheldpos.extension.notifyValueChange
 import com.hanheldpos.model.DataHelper
+import com.hanheldpos.model.OrderHelper
 import com.hanheldpos.model.cart.Combo
 import com.hanheldpos.model.cart.DiscountCart
 import com.hanheldpos.model.cart.Regular
@@ -146,21 +147,22 @@ class CartFragment( private val listener : CartCallBack) : BaseFragment<Fragment
 
     override fun initData() {
         //region init dining option data
-        cartDataVM.diningOptionLD.observe(this, {
+        cartDataVM.diningOptionLD.observe(this) {
             var selectedIndex = 0;
 
             val diningOptions: MutableList<DiningOption> =
-                (DataHelper.getDiningOptionList() as List<DiningOption>).toMutableList();
+                (DataHelper.orderSettingLocalStorage?.ListDiningOptions as List<DiningOption>).toMutableList();
             cartDiningOptionAdapter.submitList(diningOptions);
 
             if (cartDataVM.cartModelLD.value != null) {
                 diningOptions.forEachIndexed { index, diningOptionItem ->
-                    if (diningOptionItem.Id == cartDataVM.cartModelLD.value?.diningOption?.Id) selectedIndex = index
+                    if (diningOptionItem.Id == cartDataVM.cartModelLD.value?.diningOption?.Id) selectedIndex =
+                        index
                 }
             }
             cartDiningOptionAdapter.setSelectedIndex(selectedIndex);
 
-        })
+        }
 
         //endregion
 

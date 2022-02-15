@@ -9,6 +9,7 @@ import com.hanheldpos.data.api.pojo.order.settings.DiningOption
 import com.hanheldpos.data.api.pojo.order.settings.Reason
 import com.hanheldpos.extension.notifyValueChange
 import com.hanheldpos.model.DataHelper
+import com.hanheldpos.model.OrderHelper
 import com.hanheldpos.model.cart.*
 import com.hanheldpos.model.cart.payment.PaymentOrder
 import com.hanheldpos.model.discount.DiscountUser
@@ -22,11 +23,12 @@ class CartDataVM : BaseViewModel() {
     val cartModelLD: MutableLiveData<CartModel> = MutableLiveData();
 
     val diningOptionLD: LiveData<DiningOption> = Transformations.map(cartModelLD) {
-        return@map it?.diningOption ?: DataHelper.getDefaultDiningOptionItem()
+        return@map it?.diningOption
+            ?: DataHelper.orderSettingLocalStorage?.ListDiningOptions?.firstOrNull()
     }
     val linePerTotalQuantity: LiveData<String> = Transformations.map(cartModelLD) {
-        it?: return@map null;
-        return@map   "${it.productsList.sumOf { it1 -> it1.quantity ?: 0 }}/${it.productsList.size}"
+        it ?: return@map null;
+        return@map "${it.productsList.sumOf { it1 -> it1.quantity ?: 0 }}/${it.productsList.size}"
     }
 
     val numberOfCustomer: LiveData<Int> = Transformations.map(cartModelLD) {
@@ -34,21 +36,23 @@ class CartDataVM : BaseViewModel() {
     }
 
     fun initCart(numberCustomer: Int, table: FloorTable) {
-        val diningOptionId = DataHelper.floor?.Floor?.firstOrNull { floorTable -> floorTable._Id == table.FloorGuid }?.DiningOptionId
-        val diningOption = DataHelper.getDiningOptionList()?.firstOrNull { diningOption -> diningOption.Id == diningOptionId }
+        val diningOptionId =
+            DataHelper.floorLocalStorage?.Floor?.firstOrNull { floorTable -> floorTable._Id == table.FloorGuid }?.DiningOptionId
+        val diningOption = OrderHelper.getDiningOptionItem(diningOptionId)
         cartModelLD.value = CartModel(
             table = TableSummary(
                 _id = table._Id,
                 TableName = table.TableName,
                 PeopleQuantity = numberCustomer
             ),
-            fees = DataHelper.findFeeOrderList() ?: mutableListOf(),
+            fees = OrderHelper.findFeeOrderList() ?: mutableListOf(),
             productsList = mutableListOf(),
             paymentsList = mutableListOf(),
             discountUserList = mutableListOf(),
             discountServerList = mutableListOf(),
-            diningOption = diningOption ?: DataHelper.getDefaultDiningOptionItem()!!,
-            );
+            diningOption = diningOption
+                ?: DataHelper.orderSettingLocalStorage?.ListDiningOptions?.firstOrNull()!!,
+        );
     }
 
     fun addCustomerToCart(customer: CustomerResp) {
@@ -120,7 +124,7 @@ class CartDataVM : BaseViewModel() {
     }
 
     fun deleteDiscountCart(discount: DiscountCart, productInCart: BaseProductInCart?) {
-        if(productInCart != null) {
+        if (productInCart != null) {
             discount.disOriginal.let {
                 if (it is Reason) {
                     productInCart.compReason = null;
@@ -128,15 +132,14 @@ class CartDataVM : BaseViewModel() {
                     productInCart.discountUsersList?.remove(it);
                 }
             }
-        }
-        else
-        discount.disOriginal.let {
-            if (it is Reason) {
-                cartModelLD.value!!.compReason = null;
-            } else if (it is DiscountUser) {
-                cartModelLD.value!!.discountUserList.remove(it);
+        } else
+            discount.disOriginal.let {
+                if (it is Reason) {
+                    cartModelLD.value!!.compReason = null;
+                } else if (it is DiscountUser) {
+                    cartModelLD.value!!.discountUserList.remove(it);
+                }
             }
-        }
         cartModelLD.notifyValueChange();
     }
 
@@ -155,7 +158,6 @@ class CartDataVM : BaseViewModel() {
         this.cartModelLD.value!!.addDiscountUser(discount);
         cartModelLD.notifyValueChange();
     }
-
 
 
 }

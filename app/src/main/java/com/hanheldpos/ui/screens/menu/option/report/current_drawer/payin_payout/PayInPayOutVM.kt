@@ -14,6 +14,7 @@ import com.hanheldpos.data.repository.BaseResponse
 import com.hanheldpos.data.repository.base.BaseRepoCallback
 import com.hanheldpos.data.repository.cashdrawer.CashDrawerRepo
 import com.hanheldpos.model.DataHelper
+import com.hanheldpos.model.OrderHelper
 import com.hanheldpos.model.UserHelper
 import com.hanheldpos.model.payinout.PaidInOutListCashDrawerReq
 import com.hanheldpos.model.payinout.PayInOutCashDrawerReq
@@ -68,9 +69,9 @@ class PayInPayOutVM : BaseUiViewModel<PayInPayOutUV>() {
         showLoading(true);
         val bodyJson = GSonUtils.toServerJson(
             PaidInOutListCashDrawerReq(
-                UserGuid = DataHelper.getUserGuidByDeviceCode(),
-                LocationGuid = DataHelper.getLocationGuidByDeviceCode(),
-                DeviceGuid = DataHelper.getDeviceGuidByDeviceCode(),
+                UserGuid = OrderHelper.getUserGuidByDeviceCode(),
+                LocationGuid = OrderHelper.getLocationGuidByDeviceCode(),
+                DeviceGuid = OrderHelper.getDeviceGuidByDeviceCode(),
                 EmployeeGuid = UserHelper.getEmployeeGuid(),
                 CashDrawerGuid = DataHelper.currentDrawerId,
             )
@@ -140,9 +141,9 @@ class PayInPayOutVM : BaseUiViewModel<PayInPayOutUV>() {
     private fun postPayInOut(button : ActiveButton,context: Context){
         showLoading(true);
         val bodyJson = GSonUtils.toServerJson(PayInOutCashDrawerReq(
-            UserGuid = DataHelper.getUserGuidByDeviceCode(),
-            LocationGuid = DataHelper.getLocationGuidByDeviceCode(),
-            DeviceGuid = DataHelper.getDeviceGuidByDeviceCode(),
+            UserGuid = OrderHelper.getUserGuidByDeviceCode(),
+            LocationGuid = OrderHelper.getLocationGuidByDeviceCode(),
+            DeviceGuid = OrderHelper.getDeviceGuidByDeviceCode(),
             EmployeeGuid = UserHelper.getEmployeeGuid(),
             CashDrawerGuid = DataHelper.currentDrawerId,
             Source = null,

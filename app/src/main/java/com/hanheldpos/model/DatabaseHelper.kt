@@ -11,10 +11,5 @@ object DatabaseHelper {
         posDatabase = PosDatabase.getDatabase(context);
     }
 
-    val deviceCodeLocalRepo: DeviceCodeLocalRepo? = null
-        get() {
-            return field ?: DeviceCodeLocalRepo(posDatabase.deviceCode())
-        }
-
 
 }

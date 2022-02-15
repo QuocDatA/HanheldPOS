@@ -9,7 +9,6 @@ import com.hanheldpos.data.api.pojo.product.Product
 import com.hanheldpos.data.api.pojo.product.VariantsGroup
 import com.hanheldpos.databinding.FragmentProductDetailBinding
 import com.hanheldpos.extension.notifyValueChange
-import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.UserHelper
 import com.hanheldpos.model.cart.GroupBundle
 import com.hanheldpos.model.cart.ModifierCart
@@ -195,7 +194,7 @@ class ProductDetailFragment(
         if (item.Variant?.OptionValueList == null || !item.Variant.OptionValueList.any()) {
             val priceOverride =
                 viewModel.regularInCart.value!!.proOriginal?.priceOverride(
-                    UserHelper.getLocationGui(),
+                    UserHelper.getLocationGuid(),
                     item.Sku,
                     item.Price
                 )

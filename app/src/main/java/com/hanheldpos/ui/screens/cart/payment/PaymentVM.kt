@@ -18,7 +18,7 @@ class PaymentVM : BaseUiViewModel<PaymentUV>() {
 
     fun getPaymentMethods(): MutableList<PaymentMethodResp> {
         val paymentMethods: MutableList<PaymentMethodResp> =
-            DataHelper.getPaymentMethodList()!!.toMutableList();
+            DataHelper.paymentMethodsLocalStorage!!.toMutableList();
         return paymentMethods;
     }
 

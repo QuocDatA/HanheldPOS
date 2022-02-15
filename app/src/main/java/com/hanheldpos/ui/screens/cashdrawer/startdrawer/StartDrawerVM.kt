@@ -28,9 +28,9 @@ class StartDrawerVM : BaseRepoViewModel<CashDrawerRepo, StartDrawerUV>() {
         showLoading(true);
         val startingCash = amountString.value!!.replace(",","").toDouble();
         val startDrawerReq = CreateCashDrawerReq(
-            UserGuid = UserHelper.getUserGui(),
-            LocationGuid = UserHelper.getLocationGui(),
-            DeviceGuid = UserHelper.getDeviceGui(),
+            UserGuid = UserHelper.getUserGuid(),
+            LocationGuid = UserHelper.getLocationGuid(),
+            DeviceGuid = UserHelper.getDeviceGuid(),
             EmployeeGuid = UserHelper.getEmployeeGuid(),
             CashDrawerType = CashDrawerType.START.value,
             StartingCash = startingCash,

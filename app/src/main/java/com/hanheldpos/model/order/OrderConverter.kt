@@ -8,6 +8,7 @@ import com.hanheldpos.data.api.pojo.order.settings.DiningOption
 import com.hanheldpos.data.api.pojo.order.settings.Reason
 import com.hanheldpos.data.api.pojo.product.Product
 import com.hanheldpos.model.DataHelper
+import com.hanheldpos.model.OrderHelper
 import com.hanheldpos.model.cart.CartModel
 import com.hanheldpos.model.cart.Combo
 import com.hanheldpos.model.cart.GroupBundle
@@ -34,7 +35,7 @@ object OrderConverter {
             shipping = orderData.Shipping,
             table = orderData.TableList.firstOrNull()!!,
             deliveryTime = orderData.DeliveryTime,
-            diningOption = DataHelper.getDiningOptionItem(order.DiningOptionId ?: 0)!!,
+            diningOption = OrderHelper.getDiningOptionItem(order.DiningOptionId ?: 0)!!,
             orderGuid = orderGuid,
             createDate = order.CreateDate,
             orderCode = order.Code,
@@ -81,8 +82,8 @@ object OrderConverter {
         menuLocation_id: String
     ): MutableList<BaseProductInCart> {
         val productList: MutableList<BaseProductInCart> = mutableListOf()
-        orderProducts.forEachIndexed { index, productOrder ->
-            val diningOption = DataHelper.getDiningOptionItem(productOrder.DiningOption?.Id ?: 0)!!
+        orderProducts.forEachIndexed { _, productOrder ->
+            val diningOption = OrderHelper.getDiningOptionItem(productOrder.DiningOption?.Id ?: 0)!!
 
             val compReason = toReasonComp(productOrder.CompVoidList!!)
             val discountServerList = toDiscountsServer(productOrder.DiscountList!!)
@@ -159,6 +160,7 @@ object OrderConverter {
                     )
                 }
 
+                else -> {}
             }
         }
         return productList
@@ -166,7 +168,7 @@ object OrderConverter {
 
 
     private fun findProduct(productGuid: String): Product? {
-        return DataHelper.menu?.ProductList?.firstOrNull {
+        return DataHelper.menuLocalStorage?.ProductList?.firstOrNull {
             it._id == productGuid
         }
     }

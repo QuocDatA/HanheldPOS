@@ -4,6 +4,7 @@ import com.hanheldpos.data.api.pojo.fee.Fee
 import com.hanheldpos.data.api.pojo.order.settings.Reason
 import com.hanheldpos.data.api.pojo.product.Product
 import com.hanheldpos.model.DataHelper
+import com.hanheldpos.model.OrderHelper
 import com.hanheldpos.model.cart.Combo
 import com.hanheldpos.model.cart.GroupBundle
 import com.hanheldpos.model.cart.ModifierCart
@@ -54,7 +55,7 @@ object OrderMapper : OrderMapping() {
     fun mappingCompVoidList(reason: Reason?, totalPrice: Double?): List<CompVoid> {
         val compVoids = mutableListOf<CompVoid>();
         reason ?: return compVoids;
-        val parentId = DataHelper.getVoidInfo()?.Id;
+        val parentId = DataHelper.orderSettingLocalStorage?.ListVoid?.firstOrNull()?.Id;
         val compVoid = iMapperCompVoid(reason, parentId, totalPrice);
         compVoids.add(compVoid);
         return compVoids;
@@ -177,7 +178,7 @@ object OrderMapper : OrderMapping() {
         index: Int,
         orderDetailId: Int
     ): ProductBuy {
-        val parentName = DataHelper.findGroupNameOrderMenu(group.comboInfo.ComboGuid!!);
+        val parentName = OrderHelper.findGroupNameOrderMenu(group.comboInfo.ComboGuid!!);
         val url = null;
         val modSubtotal = regular.modSubTotal(proOriginalCombo);
         val groupPrice = regular.groupPrice(group, proOriginalCombo);

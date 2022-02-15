@@ -1,8 +1,6 @@
 package com.hanheldpos.ui.screens.menu.option.report.current_drawer
 
 import android.content.Context
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.cashdrawer.report.ReportCashDrawerResp
 import com.hanheldpos.data.repository.BaseResponse
@@ -13,10 +11,6 @@ import com.hanheldpos.model.cashdrawer.CashDrawerStatusReq
 import com.hanheldpos.ui.base.dialog.AppAlertDialog
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
 import com.hanheldpos.utils.GSonUtils
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
 
 class CurrentDrawerVM : BaseUiViewModel<CurrentDrawerUV>() {
 
@@ -39,9 +33,9 @@ class CurrentDrawerVM : BaseUiViewModel<CurrentDrawerUV>() {
         showLoading(true);
         val bodyJson = GSonUtils.toServerJson(
             CashDrawerStatusReq(
-                UserGuid = UserHelper.getUserGui(),
-                DeviceGuid = UserHelper.getDeviceGui(),
-                LocationGuid = UserHelper.getLocationGui(),
+                UserGuid = UserHelper.getUserGuid(),
+                DeviceGuid = UserHelper.getDeviceGuid(),
+                LocationGuid = UserHelper.getLocationGuid(),
                 EmployeeGuid = UserHelper.getEmployeeGuid()
             )
         )

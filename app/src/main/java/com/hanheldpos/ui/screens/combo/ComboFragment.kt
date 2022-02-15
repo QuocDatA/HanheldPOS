@@ -130,7 +130,7 @@ class ComboFragment(
                 viewModel.initDefaultComboList(
                     it,
                     cartDataVM.diningOptionLD.value!!,
-                    UserHelper.getLocationGui()
+                    UserHelper.getLocationGuid()
                 )
             };
         }

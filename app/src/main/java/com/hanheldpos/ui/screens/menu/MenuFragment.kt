@@ -106,7 +106,7 @@ class MenuFragment : BaseFragment<FragmentMenuBinding, MenuVM>(), MenuUV {
     }
 
     private fun onLogoutOption(type: LogoutType, title: String?, message: String?) {
-        if (!DataHelper.ordersCompleted.isNullOrEmpty()) {
+        if (!DataHelper.ordersCompletedLocalStorage.isNullOrEmpty()) {
             AppAlertDialog.get().show(
                 getString(R.string.notification),
                 getString(R.string.please_sync_local_data_before_logging_out_of_this_account)

@@ -7,11 +7,11 @@ object UserHelper {
         curEmployee = null
     }
 
-    fun getLocationGui() = DataHelper.getLocationGuidByDeviceCode() ?: ""
+    fun getLocationGuid() = OrderHelper.getLocationGuidByDeviceCode() ?: ""
 
-    fun getDeviceGui() = DataHelper.getDeviceGuidByDeviceCode() ?: ""
+    fun getDeviceGuid() = OrderHelper.getDeviceGuidByDeviceCode() ?: ""
 
-    fun getUserGui() = DataHelper.getUserGuidByDeviceCode() ?: ""
+    fun getUserGuid() = OrderHelper.getUserGuidByDeviceCode() ?: ""
 
 
     //Employee

@@ -2,8 +2,6 @@ package com.hanheldpos.ui.screens.cashdrawer.enddrawer
 
 import android.content.Context
 import android.util.Log
-import android.view.ContentInfo
-import android.view.View
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import com.hanheldpos.R
@@ -16,7 +14,6 @@ import com.hanheldpos.model.UserHelper
 import com.hanheldpos.model.cashdrawer.CashDrawerType
 import com.hanheldpos.model.cashdrawer.CreateCashDrawerReq
 import com.hanheldpos.ui.base.viewmodel.BaseRepoViewModel
-import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
 import com.hanheldpos.ui.screens.cashdrawer.CashDrawerHelper
 import com.hanheldpos.utils.GSonUtils
 
@@ -44,9 +41,9 @@ class EndDrawerVM : BaseRepoViewModel<CashDrawerRepo,EndDrawerUV>() {
     fun endDrawer(context : Context) {
         showLoading(true);
         val endDrawerReq = CreateCashDrawerReq(
-            UserGuid = UserHelper.getUserGui(),
-            LocationGuid = UserHelper.getLocationGui(),
-            DeviceGuid = UserHelper.getDeviceGui(),
+            UserGuid = UserHelper.getUserGuid(),
+            LocationGuid = UserHelper.getLocationGuid(),
+            DeviceGuid = UserHelper.getDeviceGuid(),
             EmployeeGuid = UserHelper.getEmployeeGuid(),
             CashDrawerType = CashDrawerType.END.value,
             StartingCash = 0.0,
