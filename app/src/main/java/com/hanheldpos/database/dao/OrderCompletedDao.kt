@@ -17,7 +17,7 @@ interface OrderCompletedDao {
     fun get(id: String): OrderCompletedEntity
 
     @Query("SELECT * FROM order_completed")
-    fun getAll(): Flow<MutableList<OrderCompletedEntity>>
+    fun getAll(): MutableList<OrderCompletedEntity>
 
     @Query("DELETE FROM order_completed")
     fun deleteAll()

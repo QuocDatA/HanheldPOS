@@ -2,7 +2,6 @@ package com.hanheldpos.model
 
 import android.content.Context
 import com.hanheldpos.database.PosDatabase
-import com.hanheldpos.database.repo.DeviceCodeLocalRepo
 
 object DatabaseHelper {
     private lateinit var posDatabase: PosDatabase;
