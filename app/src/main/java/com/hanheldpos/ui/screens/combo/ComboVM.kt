@@ -76,10 +76,16 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
         when(action){
             ItemActionType.Add -> group.addRegular(itemAfter);
             ItemActionType.Modify -> {
-                group.productList.find { it == itemPrev }.let { regular ->
-                    val index = group.productList.indexOf(regular)
-                    group.productList[index] = itemAfter;
+                if(itemAfter.quantity ?: 0 <= 0){
+                    group.productList.remove(itemPrev);
                 }
+                else{
+                    group.productList.find { it == itemPrev }.let { regular ->
+                        val index = group.productList.indexOf(regular)
+                        group.productList[index] = itemAfter;
+                    }
+                }
+
             }
             ItemActionType.Remove ->{
                 group.productList.remove(itemPrev);
