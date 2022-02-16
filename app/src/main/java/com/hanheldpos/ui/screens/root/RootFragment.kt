@@ -1,6 +1,5 @@
 package com.hanheldpos.ui.screens.root
 
-import androidx.fragment.app.activityViewModels
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentRootBinding
 import com.hanheldpos.ui.base.fragment.BaseFragment

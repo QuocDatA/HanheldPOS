@@ -2,6 +2,7 @@ package com.hanheldpos.data.api.base
 
 import com.hanheldpos.data.api.RetrofitService
 import com.hanheldpos.data.api.RetrofitServiceAsync
+import com.hanheldpos.data.api.pojo.welcome.Welcome
 import com.hanheldpos.data.api.services.*
 
 abstract class BaseApi : BaseApiError() {
@@ -22,6 +23,6 @@ abstract class BaseApi : BaseApiError() {
     protected val settingService : SettingService = retrofit.createService(SettingService::class.java);
     protected val cashDrawerService : CashDrawerService = retrofit.createService(CashDrawerService::class.java);
     protected val systemService : SystemService = retrofit.createService(SystemService::class.java);
-
+    protected val welcomeService: WelcomeService = retrofit.createService(WelcomeService::class.java)
     protected val orderAsyncService : OrdersAsyncService = retrofitAsync.createService(OrdersAsyncService::class.java);
 }

@@ -1,5 +1,8 @@
 package com.hanheldpos.ui.screens.welcome
 
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.hanheldpos.R
@@ -35,7 +38,7 @@ class WelcomeActivity : BaseActivity<ActivityWelcomeBinding,WelcomeVM>(), Welcom
     }
 
     override fun initData() {
-
+        viewModel.initUI()
     }
 
     override fun initAction() {

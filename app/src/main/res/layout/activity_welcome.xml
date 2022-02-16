@@ -21,6 +21,14 @@
                 android:src="@drawable/bg_welcome"
                 tools:ignore="ContentDescription" />
 
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                android:src="@drawable/bg_welcome"
+                tools:ignore="ContentDescription" />
+
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -32,27 +40,46 @@
             android:layout_gravity="center"
             android:gravity="center_horizontal">
 
-            <ImageView
-                android:layout_width="@dimen/_55sdp"
-                android:layout_height="@dimen/_55sdp"
-                android:src="@drawable/ic_app"
-                tools:ignore="ContentDescription" />
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
 
-            <com.diadiem.pos_components.PTextView
-                style="@style/Base.TextAppearance"
-                android:layout_marginTop="@dimen/_27sdp"
-                android:text="@string/diadiem_point_of_sale"
-                app:useTextColor="color2"
-                app:useFontStyle="bold"
-                app:useTextHeader="h1" />
+                <ProgressBar
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:indeterminateTint="@color/color_0"
+                    />
 
-            <com.diadiem.pos_components.PTextView
-                style="@style/Base.TextAppearance"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:text="@string/run_and_grow_your_business"
-                app:useTextColor="color2"
-                app:useTextHeader="h2"
-                app:useFontStyle="normal"/>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="@dimen/_55sdp"
+                        android:layout_height="@dimen/_55sdp"
+                        android:src="@drawable/ic_app"
+                        tools:ignore="ContentDescription" />
+
+                    <com.diadiem.pos_components.PTextView
+                        style="@style/Base.TextAppearance"
+                        android:layout_marginTop="@dimen/_27sdp"
+                        android:text="@string/diadiem_point_of_sale"
+                        app:useFontStyle="bold"
+                        app:useTextColor="color2"
+                        app:useTextHeader="h1" />
+
+                    <com.diadiem.pos_components.PTextView
+                        style="@style/Base.TextAppearance"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:text="@string/run_and_grow_your_business"
+                        app:useFontStyle="normal"
+                        app:useTextColor="color2"
+                        app:useTextHeader="h2" />
+                </LinearLayout>
+            </FrameLayout>
 
             <com.diadiem.pos_components.PMaterialButton
                 style="@style/Base.MaterialButton"
