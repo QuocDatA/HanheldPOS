@@ -9,7 +9,7 @@ import com.hanheldpos.data.api.pojo.product.Product
 import com.hanheldpos.model.cart.CartModel
 import com.hanheldpos.model.discount.CtmEligibilityType
 import com.hanheldpos.model.discount.DiscMinRequiredType
-import com.hanheldpos.model.product.BaseProductInCart
+import com.hanheldpos.model.cart.BaseProductInCart
 import com.hanheldpos.utils.time.DateTimeHelper
 import kotlinx.parcelize.Parcelize
 import java.util.*

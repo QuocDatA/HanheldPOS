@@ -14,7 +14,7 @@ import com.hanheldpos.model.cart.Regular
 import com.hanheldpos.model.home.order.ProductModeViewType
 import com.hanheldpos.model.combo.ItemActionType
 import com.hanheldpos.model.home.order.menu.ProductMenuItem
-import com.hanheldpos.model.product.BaseProductInCart
+import com.hanheldpos.model.cart.BaseProductInCart
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.cart.CurCartData
@@ -134,7 +134,6 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
                                     1,
                                     it.skuDefault,
                                     it.variantDefault,
-                                    it.priceOverride(CurCartData.cartModelLD.value?.menuLocationGuid,it.skuDefault,it.Price),
                                     null
                                 ),
                                 quantityCanChoose = 100,
@@ -156,7 +155,6 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
                                 1,
                                 it.skuDefault,
                                 it.Variants,
-                                it.priceOverride(CurCartData.cartModelLD.value?.menuLocationGuid,it.skuDefault,it.Price),
                                 null
                             ),
                             action = ItemActionType.Add,

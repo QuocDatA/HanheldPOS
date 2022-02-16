@@ -7,7 +7,7 @@ import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.databinding.FragmentDiscountAutomaticBinding
 import com.hanheldpos.model.cart.CartModel
 import com.hanheldpos.model.discount.DiscountTypeFor
-import com.hanheldpos.model.product.BaseProductInCart
+import com.hanheldpos.model.cart.BaseProductInCart
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.discount.discount_type.discount_code.adapter.DiscountCodeAdapter

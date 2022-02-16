@@ -18,7 +18,7 @@ import com.hanheldpos.model.cart.fee.FeeTip
 import com.hanheldpos.model.cart.payment.PaymentOrder
 import com.hanheldpos.model.combo.ItemActionType
 import com.hanheldpos.model.discount.DiscountUser
-import com.hanheldpos.model.product.BaseProductInCart
+import com.hanheldpos.model.cart.BaseProductInCart
 import com.hanheldpos.model.product.ProductType
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment

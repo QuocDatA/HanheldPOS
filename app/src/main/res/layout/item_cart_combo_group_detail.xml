@@ -11,8 +11,11 @@
             name="item"
             type="com.hanheldpos.model.cart.Regular" />
         <variable
-            name="parentItem"
+            name="productBundle"
             type="com.hanheldpos.data.api.pojo.product.Product" />
+        <variable
+            name="groupBundle"
+            type="com.hanheldpos.model.cart.GroupBundle" />
     </data>
 
     <LinearLayout
@@ -65,8 +68,8 @@
 
                     <com.diadiem.pos_components.PTextView
                         android:id="@+id/priceTextView"
-                        addPriceView="@{parentItem != null ? item.total(parentItem) : 0.0}"
-                        visibleObject="@{(parentItem != null ? item.total(parentItem) : 0.0) != 0}"
+                        addPriceView="@{productBundle != null ? item.total(groupBundle,productBundle) : 0.0}"
+                        visibleObject="@{(productBundle != null ? item.total(groupBundle,productBundle) : 0.0) != 0}"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textAlignment="textEnd"

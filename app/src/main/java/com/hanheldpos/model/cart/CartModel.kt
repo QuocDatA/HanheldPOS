@@ -4,7 +4,6 @@ import com.hanheldpos.data.api.pojo.customer.CustomerResp
 import com.hanheldpos.data.api.pojo.fee.Fee
 import com.hanheldpos.data.api.pojo.order.settings.DiningOption
 import com.hanheldpos.data.api.pojo.order.settings.Reason
-import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.OrderHelper
 import com.hanheldpos.model.cart.fee.FeeApplyToType
 import com.hanheldpos.model.cart.payment.PaymentOrder
@@ -14,7 +13,6 @@ import com.hanheldpos.model.home.table.TableSummary
 import com.hanheldpos.model.order.DeliveryTime
 import com.hanheldpos.model.order.Order
 import com.hanheldpos.model.order.Shipping
-import com.hanheldpos.model.product.BaseProductInCart
 
 data class CartModel(
     var order: Order? = null,

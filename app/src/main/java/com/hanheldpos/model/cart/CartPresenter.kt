@@ -12,7 +12,6 @@ import android.widget.PopupWindow
 import com.diadiem.pos_components.PTextView
 import com.hanheldpos.R
 import com.hanheldpos.binding.setBackColor
-import com.hanheldpos.model.product.BaseProductInCart
 
 object CartPresenter {
     fun showCartAnimation(item: BaseProductInCart, slideView: View, popupView: View, slideInListener: Runnable) {

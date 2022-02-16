@@ -1,13 +1,13 @@
-package com.hanheldpos.model.product
+package com.hanheldpos.model.cart
 
 import com.hanheldpos.data.api.pojo.fee.Fee
 import com.hanheldpos.data.api.pojo.order.settings.DiningOption
 import com.hanheldpos.data.api.pojo.order.settings.Reason
 import com.hanheldpos.data.api.pojo.product.Product
-import com.hanheldpos.model.cart.ModifierCart
-import com.hanheldpos.model.cart.VariantCart
 import com.hanheldpos.model.discount.DiscountServer
 import com.hanheldpos.model.discount.DiscountUser
+import com.hanheldpos.model.product.ProductType
+import com.hanheldpos.ui.screens.cart.CurCartData
 
 
 abstract class BaseProductInCart  {
@@ -16,7 +16,6 @@ abstract class BaseProductInCart  {
     open var sku: String? = null
     open var note: String? = null
     open var quantity: Int? = null
-    open var priceOverride : Double? = null
     open var proOriginal: Product? = null
     open var compReason: Reason? = null
     open var diningOption: DiningOption? = null
@@ -31,7 +30,7 @@ abstract class BaseProductInCart  {
     val totalDiscountValue get() = totalDiscount();
     val lineTotalValue get() = total();
     val totalCompValue get() = totalComp();
-
+    val priceOverride get() = proOriginal?.priceOverride(CurCartData.cartModelLD.value?.menuLocationGuid,sku,0.0) ?: 0.0
     abstract fun getProductName(): String?
     abstract fun getFeeString(): String
     abstract fun totalFee() : Double;

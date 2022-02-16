@@ -1,14 +1,12 @@
 package com.hanheldpos.ui.screens.discount.discount_type
 
-import android.view.View
 import androidx.fragment.app.Fragment
-import androidx.viewpager2.widget.ViewPager2
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.order.settings.Reason
 import com.hanheldpos.databinding.FragmentDiscountTypeBinding
 import com.hanheldpos.model.cart.CartModel
 import com.hanheldpos.model.discount.*
-import com.hanheldpos.model.product.BaseProductInCart
+import com.hanheldpos.model.cart.BaseProductInCart
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.discount.adapter.OptionsPagerAdapter

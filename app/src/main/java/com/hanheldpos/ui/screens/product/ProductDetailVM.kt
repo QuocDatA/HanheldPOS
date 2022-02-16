@@ -8,6 +8,7 @@ import com.hanheldpos.data.api.pojo.product.Product
 import com.hanheldpos.data.api.pojo.product.ProductModifiers
 import com.hanheldpos.data.api.pojo.product.VariantsGroup
 import com.hanheldpos.extension.notifyValueChange
+import com.hanheldpos.model.cart.GroupBundle
 import com.hanheldpos.model.cart.ModifierCart
 import com.hanheldpos.model.cart.Regular
 import com.hanheldpos.model.combo.ItemActionType
@@ -18,13 +19,14 @@ import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
 class ProductDetailVM : BaseUiViewModel<ProductDetailUV>() {
 
     val isValidDiscount = MutableLiveData<Boolean>(false);
-    var typeDiscountSelect : DiscountTypeFor?= null;
+    var typeDiscountSelect: DiscountTypeFor? = null;
 
-    val listVariantGroups : MutableList<VariantsGroup> =mutableListOf();
-    val listModifierGroups :  MutableList<GroupExtra> = mutableListOf();
+    val listVariantGroups: MutableList<VariantsGroup> = mutableListOf();
+    val listModifierGroups: MutableList<GroupExtra> = mutableListOf();
 
     // Product Detail
-    var productBundle : Product? = null;
+    var productBundle: Product? = null;
+    var groupBundle: GroupBundle? = null;
     val regularInCart = MutableLiveData<Regular>();
 
     // Action With Product
@@ -36,7 +38,10 @@ class ProductDetailVM : BaseUiViewModel<ProductDetailUV>() {
     };
 
     val totalPriceLD = Transformations.map(regularInCart) {
-        return@map regularInCart.value?.total(productBundle ?: it.proOriginal!!) ?: 0.0
+        return@map if (productBundle == null)
+            regularInCart.value?.total(it.proOriginal!!) ?: 0.0
+        else
+            regularInCart.value?.total(groupBundle!!, productBundle!!) ?: 0.0
     }
 
     var maxQuantity = -1;
@@ -69,7 +74,7 @@ class ProductDetailVM : BaseUiViewModel<ProductDetailUV>() {
         uiCallback?.onAddCart(regularInCart.value!!);
     }
 
-    fun onGetBack(){
+    fun onGetBack() {
         uiCallback?.getBack();
     }
 

@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.os.SystemClock
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hanheldpos.R
@@ -19,7 +18,7 @@ import com.hanheldpos.model.combo.ItemComboGroup
 import com.hanheldpos.model.discount.DiscountApplyToType
 import com.hanheldpos.model.discount.DiscountTypeFor
 import com.hanheldpos.model.discount.DiscountUser
-import com.hanheldpos.model.product.BaseProductInCart
+import com.hanheldpos.model.cart.BaseProductInCart
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.cart.CurCartData
 import com.hanheldpos.ui.screens.combo.adapter.ComboGroupAdapter
@@ -54,7 +53,8 @@ class ComboFragment(
     }
 
     override fun initView() {
-        comboGroupAdapter = ComboGroupAdapter(listener = object : ComboGroupAdapter.ItemListener {
+        comboGroupAdapter = ComboGroupAdapter(
+            proOriginal = combo.proOriginal!!, listener = object : ComboGroupAdapter.ItemListener {
             override fun onProductSelect(
                 maxQuantity: Int,
                 group: ItemComboGroup,

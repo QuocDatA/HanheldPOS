@@ -1,9 +1,6 @@
 package com.hanheldpos.model.home.order.menu
 
 import android.os.Parcelable
-import com.hanheldpos.data.api.pojo.product.Product
-import com.hanheldpos.model.home.order.ProductModeViewType
-import com.hanheldpos.model.product.BaseProductInCart
 
 data class OrderMenuItem(
     var id: String? = null,

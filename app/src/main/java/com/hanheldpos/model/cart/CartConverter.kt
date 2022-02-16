@@ -10,7 +10,6 @@ import com.hanheldpos.model.cart.payment.PaymentOrder
 import com.hanheldpos.model.discount.DiscountServer
 import com.hanheldpos.model.discount.DiscountUser
 import com.hanheldpos.model.order.*
-import com.hanheldpos.model.product.BaseProductInCart
 import com.hanheldpos.model.product.ProductType
 import com.hanheldpos.utils.time.DateTimeHelper
 import java.util.*

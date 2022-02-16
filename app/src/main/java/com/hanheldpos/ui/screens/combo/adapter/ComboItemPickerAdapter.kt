@@ -2,22 +2,31 @@ package com.hanheldpos.ui.screens.combo.adapter
 
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.DiffUtil
 import com.hanheldpos.R
+import com.hanheldpos.binding.setPricePlusView
+import com.hanheldpos.data.api.pojo.product.Product
 import com.hanheldpos.databinding.ItemComboRegularBinding
 import com.hanheldpos.databinding.ItemOrderProductBinding
+import com.hanheldpos.model.cart.Combo
+import com.hanheldpos.model.cart.GroupBundle
 import com.hanheldpos.model.cart.Regular
 import com.hanheldpos.model.home.order.menu.ProductMenuItem
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
+import com.hanheldpos.ui.screens.cart.CurCartData
 import com.hanheldpos.ui.screens.cart.customer.add_customer.adapter.CustomerAdapter
 
 class ComboItemPickerAdapter(
+    private val proOriginal : Product,
+    private val groupBundle: GroupBundle,
     private val productChosen : List<Regular> = mutableListOf(),
     private val listener : BaseItemClickListener<Regular>
 ) : BaseBindingListAdapter<Regular>(DiffCallBack()) {
@@ -52,6 +61,15 @@ class ComboItemPickerAdapter(
             (holder.binding as ItemComboRegularBinding).isChosen = true;
         }
         holder.bindItem(item);
+        val binding = holder.binding as ItemComboRegularBinding;
+        CurCartData.cartModelLD.observe(holder.itemView.context as LifecycleOwner) {
+            val price = item.groupPrice(groupBundle,proOriginal);
+            if(price > 0){
+                setPricePlusView(binding.priceProduct,price)
+            }
+            else binding.priceProduct.visibility = View.GONE
+
+        }
         (holder.binding as ItemComboRegularBinding).root.setOnClickListener {
             listener.onItemClick(position,item);
         }
