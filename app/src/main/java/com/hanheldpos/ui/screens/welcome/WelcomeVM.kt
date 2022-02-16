@@ -25,13 +25,13 @@ class WelcomeVM : BaseUiViewModel<WelcomeUV>() {
     }
 
     fun initUI() {
+        isLoading.postValue(true);
         welcomeRepo.getWelcomeModel(callback = object :
             BaseRepoCallback<BaseResponse<List<WelcomeRespModel>>> {
             override fun apiResponse(data: BaseResponse<List<WelcomeRespModel>>?) {
-                if (data == null || data.DidError) {
-
-                } else {
-                    welcomeRespModel = data.Model!!
+                isLoading.postValue(false);
+                if (data != null && !data.DidError) {
+                    uiCallback?.updateUI(data.Model?.firstOrNull())
                 }
             }
 
