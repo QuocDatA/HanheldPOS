@@ -10,6 +10,7 @@ import com.hanheldpos.data.api.pojo.order.settings.Reason
 import com.hanheldpos.extension.notifyValueChange
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.OrderHelper
+import com.hanheldpos.model.UserHelper
 import com.hanheldpos.model.cart.*
 import com.hanheldpos.model.cart.payment.PaymentOrder
 import com.hanheldpos.model.discount.DiscountUser
@@ -17,7 +18,7 @@ import com.hanheldpos.model.home.table.TableSummary
 import com.hanheldpos.model.cart.BaseProductInCart
 import com.hanheldpos.ui.base.dialog.AppAlertDialog
 
-object CurCartData  {
+object CurCartData {
 
     val cartModelLD: MutableLiveData<CartModel> = MutableLiveData();
 
@@ -53,9 +54,10 @@ object CurCartData  {
         val diningOptionId =
             DataHelper.floorLocalStorage?.Floor?.firstOrNull { floorTable -> floorTable._Id == table.FloorGuid }?.DiningOptionId
         val diningOption = OrderHelper.getDiningOptionItem(diningOptionId)
-        diningOption?.let {
-            diningOptionChange(it);
-        }
+        if (diningOption != null)
+            diningOptionChange(diningOption);
+        else
+            updatePriceList(UserHelper.getLocationGuid());
 
     }
 
@@ -80,7 +82,7 @@ object CurCartData  {
         this.cartModelLD.notifyValueChange();
     }
 
-    fun updatePriceList(menuLocation_id: String) {
+    private fun updatePriceList(menuLocation_id: String) {
         this.cartModelLD.value?.updatePriceList(menuLocation_id);
         this.cartModelLD.notifyValueChange();
     }
