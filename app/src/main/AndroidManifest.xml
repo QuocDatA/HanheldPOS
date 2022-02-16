@@ -4,6 +4,7 @@
     package="com.hanheldpos">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:name=".PosApp"
@@ -15,9 +16,6 @@
         android:theme="@style/Theme.HanheldPOS"
         android:windowSoftInputMode="adjustResize"
         tools:ignore="AllowBackup">
-        <activity
-            android:name=".ui.screens.product.temporary_style.TemporaryStyle"
-            android:exported="false" />
         <activity
             android:name=".ui.screens.cashdrawer.startdrawer.StartDrawerActivity"
             android:exported="false" />
