@@ -14,9 +14,8 @@ import com.hanheldpos.model.cart.*
 import com.hanheldpos.model.cart.payment.PaymentOrder
 import com.hanheldpos.model.discount.DiscountUser
 import com.hanheldpos.model.home.table.TableSummary
-import com.hanheldpos.model.product.BaseProductInCart
+import com.hanheldpos.model.cart.BaseProductInCart
 import com.hanheldpos.ui.base.dialog.AppAlertDialog
-import com.hanheldpos.ui.base.viewmodel.BaseViewModel
 
 object CurCartData  {
 

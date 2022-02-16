@@ -4,7 +4,6 @@ import com.hanheldpos.data.api.pojo.fee.Fee
 import com.hanheldpos.data.api.pojo.order.settings.DiningOption
 import com.hanheldpos.data.api.pojo.product.Product
 import com.hanheldpos.model.cart.fee.FeeApplyToType
-import com.hanheldpos.model.product.BaseProductInCart
 import com.hanheldpos.model.product.PricingMethodType
 import com.hanheldpos.model.product.ProductType
 
@@ -20,7 +19,6 @@ class Combo() : BaseProductInCart() {
         quantity: Int?,
         sku: String?,
         variants: String?,
-        priceOverride: Double?,
         fees: List<Fee>?
     ) : this() {
         this.proOriginal = productItem
@@ -29,7 +27,6 @@ class Combo() : BaseProductInCart() {
         this.quantity = quantity
         this.sku = sku
         this.variants = variants
-        this.priceOverride = priceOverride;
         this.fees = fees;
     }
 
@@ -105,7 +102,6 @@ class Combo() : BaseProductInCart() {
             quantity,
             sku,
             variants,
-            priceOverride,
             fees
         );
 

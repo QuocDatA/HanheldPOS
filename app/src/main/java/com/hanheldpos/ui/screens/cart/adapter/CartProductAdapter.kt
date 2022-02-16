@@ -5,7 +5,7 @@ import com.hanheldpos.R
 import com.hanheldpos.databinding.ItemCartProductBinding
 import com.hanheldpos.model.cart.Combo
 import com.hanheldpos.model.cart.DiscountCart
-import com.hanheldpos.model.product.BaseProductInCart
+import com.hanheldpos.model.cart.BaseProductInCart
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
 

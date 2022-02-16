@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.cart.CartModel
 import com.hanheldpos.model.discount.DiscountApplyToType
-import com.hanheldpos.model.product.BaseProductInCart
+import com.hanheldpos.model.cart.BaseProductInCart
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
 import java.util.*
 

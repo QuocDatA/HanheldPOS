@@ -9,7 +9,7 @@
         <import type="com.hanheldpos.model.product.ExtraConverter"/>
         <variable
             name="item"
-            type="com.hanheldpos.model.product.BaseProductInCart" />
+            type="com.hanheldpos.model.cart.BaseProductInCart" />
 
         <variable
             name="isShownDetail"

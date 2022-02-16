@@ -5,7 +5,6 @@ import com.hanheldpos.data.api.pojo.fee.Fee
 import com.hanheldpos.data.api.pojo.order.settings.DiningOption
 import com.hanheldpos.data.api.pojo.product.Product
 import com.hanheldpos.model.cart.fee.FeeApplyToType
-import com.hanheldpos.model.product.BaseProductInCart
 import com.hanheldpos.model.product.ProductType
 import kotlinx.parcelize.Parcelize
 
@@ -18,7 +17,6 @@ class Regular() : BaseProductInCart(), Parcelable, Cloneable {
         quantity: Int?,
         sku: String?,
         variants: String?,
-        priceOverride: Double?,
         fees: List<Fee>?
     ) : this() {
         this.proOriginal = productItem
@@ -26,7 +24,6 @@ class Regular() : BaseProductInCart(), Parcelable, Cloneable {
         this.quantity = quantity
         this.sku = sku
         this.variants = variants
-        this.priceOverride = priceOverride;
         this.fees = fees;
     }
 
@@ -76,7 +73,6 @@ class Regular() : BaseProductInCart(), Parcelable, Cloneable {
             this.quantity,
             this.sku,
             this.variants,
-            this.priceOverride,
             this.fees,
         )
         cloneValue.variantList = this.variantList?.map { it.copy() }?.toMutableList()
@@ -135,12 +131,12 @@ class Regular() : BaseProductInCart(), Parcelable, Cloneable {
 
     fun proModSubTotal(productPricing: Product): Double {
         val modSubtotal = modSubTotal(productPricing);
-        val proModsubtotal = modSubtotal + (priceOverride ?: 0.0);
-        return proModsubtotal;
+        val proModSubtotal = modSubtotal + (priceOverride ?: 0.0);
+        return proModSubtotal;
     }
 
     fun totalPrice() :Double {
-        return priceOverride?.times(quantity!!)?: 0.0
+        return priceOverride.times(quantity!!) ?: 0.0
     }
 
     fun subTotal(productPricing: Product): Double {
@@ -151,8 +147,8 @@ class Regular() : BaseProductInCart(), Parcelable, Cloneable {
     fun total(productPricing: Product): Double {
         val totalTemp = totalTemp(productPricing);
         val totalComp = totalComp(totalTemp);
-        val linetotal = totalTemp - totalComp;
-        return linetotal;
+        val lineTotal = totalTemp - totalComp;
+        return lineTotal;
     }
 
     fun totalFee(subtotal: Double, totalDisc: Double): Double {
@@ -175,6 +171,14 @@ class Regular() : BaseProductInCart(), Parcelable, Cloneable {
     fun totalGroupPrice(group: GroupBundle, productBundle: Product): Double {
         val totalGroupPrice = groupPrice(group, productBundle) * (quantity ?: 0);
         return totalGroupPrice;
+    }
+
+
+    fun total(group: GroupBundle, productBundle: Product): Double {
+        val totalGroupPrice = totalGroupPrice(group, productBundle);
+        val totalModifier = totalModifier(productBundle);
+        val total = totalGroupPrice + totalModifier;
+        return total;
     }
 
     fun plusOrderQuantity(num: Int) {

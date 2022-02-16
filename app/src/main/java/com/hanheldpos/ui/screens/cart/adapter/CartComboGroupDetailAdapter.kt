@@ -4,13 +4,15 @@ import androidx.recyclerview.widget.DiffUtil
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.product.Product
 import com.hanheldpos.databinding.ItemCartComboGroupDetailBinding
-import com.hanheldpos.model.product.BaseProductInCart
+import com.hanheldpos.model.cart.BaseProductInCart
+import com.hanheldpos.model.cart.GroupBundle
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
 
 
 class CartComboGroupDetailAdapter(
-    private val productOrigin : Product
+    private val groupBundle : GroupBundle,
+    private val productBundle : Product
 ) : BaseBindingListAdapter<BaseProductInCart>(
     DiffCallback(),
 ) {
@@ -24,7 +26,8 @@ class CartComboGroupDetailAdapter(
         val item = getItem(position);
         holder.bindItem(item);
         val binding  = (holder.binding as ItemCartComboGroupDetailBinding);
-        binding.parentItem = productOrigin
+        binding.productBundle = productBundle
+        binding.groupBundle = groupBundle;
     }
     private class DiffCallback : DiffUtil.ItemCallback<BaseProductInCart>() {
         override fun areItemsTheSame(

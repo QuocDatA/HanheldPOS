@@ -31,14 +31,9 @@ data class GroupBundle(
 
     fun productsForChoose(menuResp : MenuResp, locationGuid : String, diningOption : DiningOption, product : Product) : List<Regular> {
         val listRegular: List<Regular> =
-            MenuDataMapper.getProductListByGroupGuid(comboInfo.ComboGuid,menuResp).map { it.proOriginal }
+            MenuDataMapper.getProductListByGroupGuid(comboInfo.ComboGuid,menuResp).map { it.proOriginal!! }
                 .map {
-
-                    val priceOverride =
-                        it!!.priceOverride(locationGuid, it.skuDefault, it.Price?: 0.0);
-                    val regular = Regular(it, diningOption, 1, it.skuDefault, it.Variants,priceOverride,null)
-                    regular.priceOverride = regular.groupPrice(this,product);
-                    return@map regular
+                    return@map Regular(it, diningOption, 1, it.skuDefault, it.Variants, null)
                 }
         return listRegular;
     }

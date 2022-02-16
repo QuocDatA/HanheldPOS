@@ -16,7 +16,7 @@ import com.hanheldpos.model.cart.Regular
 import com.hanheldpos.model.cart.fee.FeeType
 import com.hanheldpos.model.discount.DiscountServer
 import com.hanheldpos.model.discount.DiscountUser
-import com.hanheldpos.model.product.BaseProductInCart
+import com.hanheldpos.model.cart.BaseProductInCart
 import com.hanheldpos.model.product.ProductComboItem
 import com.hanheldpos.model.product.ProductType
 
@@ -138,11 +138,6 @@ object OrderConverter {
                                 )
                             }
                     }
-                    val priceOverride = productBundleOriginal?.priceOverride(
-                        menuLocation_id,
-                        productOrder.Sku,
-                        productBundleOriginal.Price
-                    )
                     productList.add(
                         Combo(
                             productBundleOriginal!!,
@@ -151,7 +146,6 @@ object OrderConverter {
                             productOrder.Quantity,
                             productOrder.Sku,
                             productOrder.Variant,
-                            priceOverride,
                             feeList
                         ).apply {
                             this.compReason = compReason
@@ -188,7 +182,6 @@ object OrderConverter {
             productBuy.Quantity,
             productBuy.Sku,
             productBuy.Variant,
-            productBuy.Price,
             feeList
         ).apply {
             this.compReason = compReason

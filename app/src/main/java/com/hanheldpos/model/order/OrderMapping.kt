@@ -4,7 +4,7 @@ import com.hanheldpos.data.api.pojo.fee.Fee
 import com.hanheldpos.data.api.pojo.order.settings.Reason
 import com.hanheldpos.model.cart.ModifierCart
 import com.hanheldpos.model.discount.DiscountUser
-import com.hanheldpos.model.product.BaseProductInCart
+import com.hanheldpos.model.cart.BaseProductInCart
 import com.hanheldpos.model.product.ProductType
 
 abstract class OrderMapping {

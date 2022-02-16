@@ -2,7 +2,6 @@ package com.hanheldpos.ui.screens.product
 
 import android.os.Bundle
 import android.view.View
-import androidx.fragment.app.activityViewModels
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.order.settings.Reason
 import com.hanheldpos.data.api.pojo.product.Product
@@ -18,7 +17,7 @@ import com.hanheldpos.model.combo.ItemActionType
 import com.hanheldpos.model.discount.DiscountApplyToType
 import com.hanheldpos.model.discount.DiscountTypeFor
 import com.hanheldpos.model.discount.DiscountUser
-import com.hanheldpos.model.product.BaseProductInCart
+import com.hanheldpos.model.cart.BaseProductInCart
 import com.hanheldpos.model.product.GroupExtra
 import com.hanheldpos.model.product.ItemExtra
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
@@ -131,6 +130,7 @@ class ProductDetailFragment(
         // init data
         viewModel.actionType.value = action;
         viewModel.productBundle = productBundle;
+        viewModel.groupBundle = groupBundle;
         viewModel.regularInCart.value = regular;
         viewModel.maxQuantity = quantityCanChoose;
 
@@ -202,11 +202,11 @@ class ProductDetailFragment(
             viewModel.regularInCart.value!!.apply {
                 this.sku = item.Sku
                 this.variants = item.GroupValue;
-                if (productBundle != null)
+               /* if (productBundle != null)
                     this.priceOverride =
                         viewModel.regularInCart.value!!.groupPrice(groupBundle!!, productBundle)
                 else
-                    this.priceOverride = priceOverride
+                    this.priceOverride = priceOverride*/
             }
             viewModel.regularInCart.notifyValueChange();
             return;

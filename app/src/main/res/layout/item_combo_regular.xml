@@ -66,8 +66,7 @@
                         app:useTextHeader="h6" />
 
                     <com.diadiem.pos_components.PTextView
-                        pricePlusView="@{item.total()}"
-                        visibleObject="@{item.total() != 0}"
+                        android:id="@+id/priceProduct"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"

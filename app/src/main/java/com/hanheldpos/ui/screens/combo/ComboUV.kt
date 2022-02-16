@@ -2,7 +2,7 @@ package com.hanheldpos.ui.screens.combo
 
 import com.hanheldpos.model.combo.ItemActionType
 import com.hanheldpos.model.combo.ItemComboGroup
-import com.hanheldpos.model.product.BaseProductInCart
+import com.hanheldpos.model.cart.BaseProductInCart
 import com.hanheldpos.ui.base.BaseUserView
 
 interface ComboUV : BaseUserView {

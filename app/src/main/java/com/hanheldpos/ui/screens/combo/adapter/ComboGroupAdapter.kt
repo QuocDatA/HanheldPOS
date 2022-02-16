@@ -1,7 +1,9 @@
 package com.hanheldpos.ui.screens.combo.adapter
 
+import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.DiffUtil
 import com.hanheldpos.R
+import com.hanheldpos.data.api.pojo.product.Product
 import com.hanheldpos.databinding.ItemComboGroupBinding
 import com.hanheldpos.model.cart.Regular
 import com.hanheldpos.model.combo.ItemActionType
@@ -11,6 +13,7 @@ import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 
 class ComboGroupAdapter(
+    private val proOriginal : Product,
     private val listener: ItemListener,
 ) : BaseBindingListAdapter<ItemComboGroup>(DiffCallback()) {
 
@@ -55,17 +58,10 @@ class ComboGroupAdapter(
         binding.name = itemComboGroup.getGroupName();
         binding.item = itemComboGroup;
 
-        /*
-        * Green tick item has chosen in list
-        * */
-//        item.productsForChoose.forEach { it.isChosen = false }
-        itemComboGroup.groupBundle.productList.forEach { regular ->
-            itemComboGroup.productsForChoose.find { pro-> regular.proOriginal?._id == pro.proOriginal?._id }.let {
-//                it?.isChosen = true;
-            }
-        }
         binding.itemForSelectAdapter.apply {
             adapter = ComboItemPickerAdapter(
+                proOriginal = proOriginal,
+                groupBundle = itemComboGroup.groupBundle,
                 productChosen = itemComboGroup.groupBundle.productList,
                 listener = object : BaseItemClickListener<Regular> {
                     override fun onItemClick(adapterPosition: Int, item: Regular) {
