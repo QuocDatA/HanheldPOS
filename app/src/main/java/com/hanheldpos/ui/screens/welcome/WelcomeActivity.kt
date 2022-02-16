@@ -5,7 +5,9 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.bumptech.glide.Glide
 import com.hanheldpos.R
+import com.hanheldpos.data.api.pojo.welcome.WelcomeRespModel
 import com.hanheldpos.databinding.ActivityWelcomeBinding
 import com.hanheldpos.extension.navigateTo
 import com.hanheldpos.ui.base.activity.BaseActivity
@@ -16,7 +18,7 @@ import com.hanheldpos.ui.screens.main.MainActivity
 import com.hanheldpos.ui.screens.pincode.PinCodeActivity
 import com.utils.helper.SystemHelper
 
-class WelcomeActivity : BaseActivity<ActivityWelcomeBinding,WelcomeVM>(), WelcomeUV {
+class WelcomeActivity : BaseActivity<ActivityWelcomeBinding, WelcomeVM>(), WelcomeUV {
 
     override fun layoutRes() = R.layout.activity_welcome
 
@@ -46,11 +48,25 @@ class WelcomeActivity : BaseActivity<ActivityWelcomeBinding,WelcomeVM>(), Welcom
     }
 
     override fun openDeviceCode() {
-        navigateTo(DeviceCodeActivity::class.java,false);
+        navigateTo(DeviceCodeActivity::class.java, false);
     }
 
     override fun openPinCode() {
-        navigateTo(PinCodeActivity::class.java,true);
+        navigateTo(PinCodeActivity::class.java, true);
+    }
+
+    override fun updateUI(welcomeResp: WelcomeRespModel?) {
+        welcomeResp ?: return;
+        welcomeResp.Welcome.firstOrNull()?.Pages_Welcome?.firstOrNull()?.let {
+            Glide.with(this).load(it.Logo).into(binding.iconApp);
+            Glide.with(this).load(it.Background).into(binding.bgWelcome);
+        }
+        welcomeResp.Welcome.firstOrNull()?.Pages_Welcome_Text?.firstOrNull()?.let {
+            binding.titleWelcome.text = it.Title;
+            binding.descriptionWelcome.text = it.Description;
+            binding.btnWelcome.text = it.Button;
+        }
+
     }
 
 }

@@ -7,6 +7,7 @@
         <variable
             name="viewModel"
             type="com.hanheldpos.ui.screens.welcome.WelcomeVM" />
+        <import type="android.view.View"/>
     </data>
 
     <FrameLayout style="@style/RootLayout">
@@ -22,12 +23,12 @@
                 tools:ignore="ContentDescription" />
 
             <ImageView
+                android:id="@+id/bgWelcome"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="fitXY"
                 android:src="@drawable/bg_welcome"
                 tools:ignore="ContentDescription" />
-
 
             <View
                 android:layout_width="match_parent"
@@ -45,6 +46,8 @@
                 android:layout_height="wrap_content">
 
                 <ProgressBar
+                    android:visibility="@{viewModel.isLoading() ? View.VISIBLE : View.INVISIBLE}"
+
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -52,18 +55,21 @@
                     />
 
                 <LinearLayout
+                    android:visibility="@{!viewModel.isLoading() ? View.VISIBLE : View.INVISIBLE}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:orientation="vertical">
 
                     <ImageView
+                        android:id="@+id/iconApp"
                         android:layout_width="@dimen/_55sdp"
                         android:layout_height="@dimen/_55sdp"
                         android:src="@drawable/ic_app"
                         tools:ignore="ContentDescription" />
 
                     <com.diadiem.pos_components.PTextView
+                        android:id="@+id/titleWelcome"
                         style="@style/Base.TextAppearance"
                         android:layout_marginTop="@dimen/_27sdp"
                         android:text="@string/diadiem_point_of_sale"
@@ -72,6 +78,7 @@
                         app:useTextHeader="h1" />
 
                     <com.diadiem.pos_components.PTextView
+                        android:id="@+id/descriptionWelcome"
                         style="@style/Base.TextAppearance"
                         android:layout_marginTop="@dimen/_5sdp"
                         android:text="@string/run_and_grow_your_business"
@@ -82,6 +89,7 @@
             </FrameLayout>
 
             <com.diadiem.pos_components.PMaterialButton
+                android:id="@+id/btnWelcome"
                 style="@style/Base.MaterialButton"
                 android:background="@drawable/bg_primary_button"
                 android:layout_marginStart="@dimen/_14sdp"
