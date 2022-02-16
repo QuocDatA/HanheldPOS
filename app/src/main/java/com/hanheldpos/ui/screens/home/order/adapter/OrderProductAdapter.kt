@@ -64,7 +64,7 @@ class OrderProductAdapter(
                 setPriceView(
                     (holder.binding as ItemOrderProductBinding).priceProduct,
                     price = item.proOriginal?.priceOverride(
-                        it.menuLocationGuid,
+                        it?.menuLocationGuid,
                         item.proOriginal.skuDefault,
                         item.proOriginal.Price
                     )

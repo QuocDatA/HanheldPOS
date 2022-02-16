@@ -16,7 +16,6 @@ import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
 class CartVM : BaseUiViewModel<CartUV>() {
 
 
-
     fun initLifeCycle(owner: LifecycleOwner) {
         owner.lifecycle.addObserver(this);
     }
@@ -56,7 +55,7 @@ class CartVM : BaseUiViewModel<CartUV>() {
             return;
         }
 
-        if (cart.paymentsList.isEmpty()) {
+        if (cart.paymentsList.isEmpty() && cart.compReason == null) {
             AppAlertDialog.get()
                 .show(
                     context.getString(R.string.notification),
@@ -64,7 +63,6 @@ class CartVM : BaseUiViewModel<CartUV>() {
                 )
             return;
         }
-
         onOrderProcessing(cart);
 
     }
@@ -83,24 +81,25 @@ class CartVM : BaseUiViewModel<CartUV>() {
                     )
                 );
             } else {
-                DataHelper.ordersCompletedLocalStorage = DataHelper.ordersCompletedLocalStorage.apply {
-
-                    (this as MutableList).add(
-                        CartConverter.toOrder(
-                            cart,
-                            OrderStatus.COMPLETED.value,
-                            PaymentStatus.PAID.value
-                        )
-                    );
-                }
+                DataHelper.ordersCompletedLocalStorage =
+                    DataHelper.ordersCompletedLocalStorage.apply {
+                        (this as MutableList).add(
+                            CartConverter.toOrder(
+                                cart,
+                                OrderStatus.COMPLETED.value,
+                                PaymentStatus.PAID.value
+                            )
+                        );
+                    }
             }
             showLoading(false);
+            uiCallback?.onBillSuccess();
             AppAlertDialog.get()
                 .show(
                     "Notification",
                     "Successful bill payment",
                 );
-            uiCallback?.onBillSuccess();
+
         } catch (ex: Exception) {
             showLoading(false)
             AppAlertDialog.get()
