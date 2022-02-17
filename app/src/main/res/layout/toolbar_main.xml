@@ -35,7 +35,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginStart="@dimen/_3sdp"
                 android:layout_marginEnd="@dimen/_3sdp"
-                android:layout_toStartOf="@+id/homeCart"
+                android:layout_toStartOf="@+id/toolbarDiningOption"
                 android:layout_toEndOf="@+id/homeMenu"
                 android:gravity="center"
                 android:orientation="horizontal">
@@ -64,11 +64,10 @@
             </LinearLayout>
 
             <FrameLayout
-                android:id="@+id/homeCart"
-                android:layout_alignParentEnd="true"
+                android:id="@+id/toolbarDiningOption"
                 android:layout_width="@dimen/_47sdp"
-                android:layout_height="match_parent">
-
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true">
             </FrameLayout>
 
 
