@@ -20,7 +20,7 @@ object DatabaseMapper {
         )
     }
 
-    fun mappingDeviceCodeFromEntity(orderCompletedEntity: OrderCompletedEntity): OrderReq {
+    fun mappingOrderReqFromEntity(orderCompletedEntity: OrderCompletedEntity): OrderReq {
         return GSonUtils.toObject<OrderReq>(orderCompletedEntity.orderCompletedJson)!!;
     }
 

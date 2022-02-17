@@ -6,12 +6,16 @@ import kotlinx.coroutines.flow.Flow
 
 class OrderCompletedLocalRepo(private val orderCompletedDao: OrderCompletedDao) {
 
-    fun insert(orderCompletedEntity: OrderCompletedEntity) = orderCompletedDao.insert(orderCompletedEntity);
+    fun insert(orderCompletedEntity: OrderCompletedEntity) =
+        orderCompletedDao.insert(orderCompletedEntity);
+
+    fun insertAll(ordersCompleted: List<OrderCompletedEntity>) =
+        orderCompletedDao.insertAll(ordersCompleted);
 
     fun deleteAll() = orderCompletedDao.deleteAll();
 
-    fun get(id : String) : OrderCompletedEntity = orderCompletedDao.get(id);
+    fun get(id: String): OrderCompletedEntity = orderCompletedDao.get(id);
 
-    fun getAll(): MutableList<OrderCompletedEntity> = orderCompletedDao.getAll();
+    fun getAll(): Flow<MutableList<OrderCompletedEntity>> = orderCompletedDao.getAll();
 
 }

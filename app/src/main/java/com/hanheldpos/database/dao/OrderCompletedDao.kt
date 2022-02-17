@@ -13,11 +13,14 @@ interface OrderCompletedDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(orderCompleted: OrderCompletedEntity)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertAll(objects: List<OrderCompletedEntity>)
+
     @Query("SELECT * FROM order_completed WHERE id = :id")
     fun get(id: String): OrderCompletedEntity
 
     @Query("SELECT * FROM order_completed")
-    fun getAll(): MutableList<OrderCompletedEntity>
+    fun getAll(): Flow<MutableList<OrderCompletedEntity>>
 
     @Query("DELETE FROM order_completed")
     fun deleteAll()
