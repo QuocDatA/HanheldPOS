@@ -68,6 +68,19 @@
                 android:layout_width="@dimen/_47sdp"
                 android:layout_height="match_parent"
                 android:layout_alignParentEnd="true">
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/spnDiningOption"
+                    style="@style/SpinnerWithNoArrow"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/_6sdp"
+                    android:layout_marginBottom="@dimen/_5sdp"
+                    android:layout_marginHorizontal="@dimen/_5sdp"
+                    android:layout_gravity="center"
+                    android:gravity="left"
+                    android:minWidth="@dimen/_100sdp"
+                    tools:listitem="@layout/item_dropdown_spinner_align_left"/>
             </FrameLayout>
 
 

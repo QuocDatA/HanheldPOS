@@ -13,11 +13,12 @@ import com.hanheldpos.ui.base.dialog.AppAlertDialog
 import com.hanheldpos.ui.base.pager.FragmentPagerAdapter
 import com.hanheldpos.ui.screens.cart.CurCartData
 import com.hanheldpos.ui.screens.cashdrawer.CashDrawerHelper
+import com.hanheldpos.ui.screens.home.adapter.DiningOptionSpinnerAdapter
 import com.hanheldpos.ui.screens.home.order.OrderFragment
 import com.hanheldpos.ui.screens.home.table.TableFragment
 import com.hanheldpos.ui.screens.main.BaseMainFragment
-import com.hanheldpos.ui.screens.main.adapter.TabSpinnerAdapter
 import com.hanheldpos.ui.screens.main.adapter.SubSpinnerAdapter
+import com.hanheldpos.ui.screens.main.adapter.TabSpinnerAdapter
 import com.hanheldpos.ui.screens.menu.MenuFragment
 
 
@@ -30,11 +31,18 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
         Order(1, R.string.order);
     }
 
+    enum class DiningOptionSpnItem(val pos: Int, val title: String) {
+        Delivery(0, "Di giao"),
+        TakeAway(1, "Mang di"),
+        AtTable(2, "Tai ban")
+    }
+
     private val screenViewModel by activityViewModels<ScreenViewModel>()
 
     // Adapter
     private lateinit var paperAdapter: FragmentPagerAdapter
     private lateinit var subSpinnerAdapter: SubSpinnerAdapter
+    private lateinit var diningOptionSpinnerAdapter: DiningOptionSpinnerAdapter
 
     override fun layoutRes() = R.layout.fragment_home;
 
@@ -137,6 +145,16 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
         binding.toolbarLayout.spinnerMain.adapter = tabSpinnerAdapter
         subSpinnerAdapter = SubSpinnerAdapter(requireContext());
         binding.toolbarLayout.spnGroupBy.adapter = subSpinnerAdapter;
+        val diningOptionSpinnerAdapter = DiningOptionSpinnerAdapter(fragmentContext)
+        val listDiningOption: MutableList<DropDownItem> = mutableListOf()
+        var i = 0
+        DiningOptionSpnItem.values().toMutableList().map {
+            DropDownItem(name = it.title, realItem = null, position = i++)
+        }.let {
+            listDiningOption.addAll(it)
+        }
+        diningOptionSpinnerAdapter.submitList(listDiningOption)
+        binding.toolbarLayout.spnDiningOption.adapter = diningOptionSpinnerAdapter
     }
 
     private fun switchToPage(page: HomePage?) {

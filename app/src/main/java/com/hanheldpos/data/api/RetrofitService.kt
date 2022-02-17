@@ -98,6 +98,6 @@ class RetrofitService private constructor() {
                 newInstance
             }
 
-        private const val REQ_TIME_OUT: Long = 60
+        private const val REQ_TIME_OUT: Long = 30
     }
 }
