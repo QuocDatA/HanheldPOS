@@ -5,7 +5,9 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.welcome.WelcomeRespModel
 import com.hanheldpos.databinding.ActivityWelcomeBinding
@@ -58,8 +60,11 @@ class WelcomeActivity : BaseActivity<ActivityWelcomeBinding, WelcomeVM>(), Welco
     override fun updateUI(welcomeResp: WelcomeRespModel?) {
         welcomeResp ?: return;
         welcomeResp.Welcome.firstOrNull()?.Pages_Welcome?.firstOrNull()?.let {
-            Glide.with(this).load(it.Logo).into(binding.iconApp);
-            Glide.with(this).load(it.Background).into(binding.bgWelcome);
+            Glide.with(this).applyDefaultRequestOptions(RequestOptions()).load(it.Logo)
+                .error(ContextCompat.getDrawable(context, R.drawable.ic_app)).into(binding.iconApp)
+            Glide.with(this).applyDefaultRequestOptions(RequestOptions()).load(it.Background)
+                .error(ContextCompat.getDrawable(context, R.drawable.bg_welcome))
+                .into(binding.bgWelcome)
         }
         welcomeResp.Welcome.firstOrNull()?.Pages_Welcome_Text?.firstOrNull()?.let {
             binding.titleWelcome.text = it.Title;

@@ -21,7 +21,6 @@ class OrderVM : BaseUiViewModel<OrderUV>() {
             mLastTimeClick = SystemClock.elapsedRealtime();
 
         }
-
     }
 
     fun showCategoryDialog(){

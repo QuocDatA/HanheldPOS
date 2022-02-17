@@ -115,15 +115,9 @@ dependencies {
     implementation 'com.intuit.ssp:ssp-android:1.0.6'
 
     // Image
-    implementation 'com.github.bumptech.glide:glide:4.12.0'
-    implementation project(path: ':utils')
-    implementation project(path: ':utils')
-    implementation project(path: ':utils')
-    implementation project(path: ':utils')
-    implementation project(path: ':utils')
-    implementation project(path: ':pos_config')
-    implementation project(path: ':utils')
-    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.3.1'
+    implementation 'com.github.bumptech.glide:glide:4.13.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.13.0'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.4.1'
     kapt 'com.github.bumptech.glide:compiler:4.12.0'
     implementation 'de.hdodenhof:circleimageview:3.1.0'
 

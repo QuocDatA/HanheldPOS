@@ -54,10 +54,7 @@ object CurCartData {
         val diningOptionId =
             DataHelper.floorLocalStorage?.Floor?.firstOrNull { floorTable -> floorTable._Id == table.FloorGuid }?.DiningOptionId
         val diningOption = OrderHelper.getDiningOptionItem(diningOptionId)
-        if (diningOption != null)
-            diningOptionChange(diningOption);
-        else
-            updatePriceList(UserHelper.getLocationGuid());
+        diningOptionChange(diningOption);
 
     }
 
@@ -165,9 +162,15 @@ object CurCartData {
         cartModelLD.notifyValueChange();
     }
 
-    fun diningOptionChange(diningOption: DiningOption) {
-        cartModelLD.value?.diningOption = diningOption;
-        updatePriceList(diningOption.SubDiningOption?.firstOrNull()?.LocationGuid ?: UserHelper.getLocationGuid());
+    fun diningOptionChange(diningOption: DiningOption?) {
+        updatePriceList(
+            diningOption?.SubDiningOption?.firstOrNull()?.LocationGuid
+                ?: UserHelper.getLocationGuid()
+        );
+        diningOption?.let {
+            cartModelLD.value?.diningOption = diningOption;
+        }
+
     }
 
 
