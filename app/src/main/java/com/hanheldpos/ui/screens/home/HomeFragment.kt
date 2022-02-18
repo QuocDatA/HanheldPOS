@@ -7,6 +7,7 @@ import android.widget.AdapterView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.hanheldpos.R
+import com.hanheldpos.data.api.pojo.order.settings.SubDiningOptionItem
 import com.hanheldpos.databinding.FragmentHomeBinding
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.ui.base.dialog.AppAlertDialog
@@ -29,12 +30,6 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
     enum class HomePage(val pos: Int, val textId: Int) {
         Table(0, R.string.table),
         Order(1, R.string.order);
-    }
-
-    enum class DiningOptionSpnItem(val pos: Int, val title: String) {
-        Delivery(0, "Di giao"),
-        TakeAway(1, "Mang di"),
-        AtTable(2, "Tai ban")
     }
 
     private val screenViewModel by activityViewModels<ScreenViewModel>()
@@ -75,6 +70,10 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
             adapter = paperAdapter;
             paperAdapter.submitList(fragmentMap.values)
         }
+        binding.toolbarLayout.spnDiningOption.isEnabled = false
+        binding.toolbarLayout.spnDiningOptionBox.setOnClickListener {
+            binding.toolbarLayout.spnDiningOption.performClick()
+        }
         initSpinner();
     }
 
@@ -85,14 +84,38 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
     override fun initAction() {
         screenViewModel.screenEvent.observe(this) {
             // Check cart initialized
-            if (it.screen == HomePage.Order && CurCartData.cartModelLD.value == null) {
-                showAlert(
-                    message = "Cart has not been initialized!",
-                    onClickListener = object : AppAlertDialog.AlertDialogOnClickListener {
-                        override fun onPositiveClick() {
-                            screenViewModel.showTablePage();
-                        }
-                    })
+            when (it.screen) {
+                HomePage.Order -> {
+                    if (CurCartData.cartModelLD.value == null) {
+                        showAlert(
+                            message = "Cart has not been initialized!",
+                            onClickListener = object : AppAlertDialog.AlertDialogOnClickListener {
+                                override fun onPositiveClick() {
+                                    screenViewModel.showTablePage();
+                                }
+                            })
+                    } else {
+                        //init subDiningOption
+                            val subDiningOptionList =  CurCartData.cartModelLD.value!!.diningOption.SubDiningOption
+                            if( subDiningOptionList.isNullOrEmpty()) {
+                                diningOptionSpinnerAdapter.submitList(mutableListOf())
+                            } else {
+                               subDiningOptionList.mapIndexed { index, subDiningOptionItem ->
+                                    DropDownItem(
+                                        name = subDiningOptionItem.NickName!!,
+                                        realItem = subDiningOptionItem,
+                                        position = index
+                                    )
+                                }.let { listSubDiningOption ->
+                                    diningOptionSpinnerAdapter.submitList(listSubDiningOption)
+                                }
+                            }
+                        binding.toolbarLayout.spnDiningOptionBox.visibility = View.VISIBLE
+                    }
+                }
+                HomePage.Table -> {
+                    binding.toolbarLayout.spnDiningOptionBox.visibility = View.INVISIBLE
+                }
             }
             binding.toolbarLayout.spinnerMain.setSelection(it.screen.pos);
         }
@@ -132,8 +155,24 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
                     }
                     switchToPage(item);
                 }
+
                 override fun onNothingSelected(parent: AdapterView<*>?) {}
             }
+        binding.toolbarLayout.spnDiningOption.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    val item = parent?.getItemAtPosition(position) as DropDownItem
+                    CurCartData.updatePriceList((item.realItem as SubDiningOptionItem).LocationGuid)
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>?) {}
+            }
+
         // Init Page
         screenViewModel.showTablePage();
 
@@ -145,15 +184,9 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
         binding.toolbarLayout.spinnerMain.adapter = tabSpinnerAdapter
         subSpinnerAdapter = SubSpinnerAdapter(requireContext());
         binding.toolbarLayout.spnGroupBy.adapter = subSpinnerAdapter;
-        val diningOptionSpinnerAdapter = DiningOptionSpinnerAdapter(fragmentContext)
-        val listDiningOption: MutableList<DropDownItem> = mutableListOf()
-        var i = 0
-        DiningOptionSpnItem.values().toMutableList().map {
-            DropDownItem(name = it.title, realItem = null, position = i++)
-        }.let {
-            listDiningOption.addAll(it)
-        }
-        diningOptionSpinnerAdapter.submitList(listDiningOption)
+
+        //init SubDiningOption
+        diningOptionSpinnerAdapter = DiningOptionSpinnerAdapter(fragmentContext)
         binding.toolbarLayout.spnDiningOption.adapter = diningOptionSpinnerAdapter
     }
 

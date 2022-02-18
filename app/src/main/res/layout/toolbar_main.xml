@@ -5,7 +5,7 @@
     <data>
 
         <import type="com.hanheldpos.ui.screens.home.HomeFragment" />
-
+        <import type="com.hanheldpos.ui.screens.cart.CurCartData"/>
         <variable
             name="viewModelHome"
             type="com.hanheldpos.ui.screens.home.HomeVM" />
@@ -29,6 +29,50 @@
                 android:scaleType="centerInside"
                 android:src="@drawable/ic_toolbar_menu"
                 tools:ignore="ContentDescription" />
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/spnDiningOption"
+                style="@style/SpinnerWithNoArrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/toolbarDiningOption"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="center"
+                android:layout_marginHorizontal="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_7sdp"
+                android:layout_marginBottom="@dimen/_4sdp"
+                android:background="@android:color/transparent"
+                android:clickable="false"
+                android:dropDownWidth="wrap_content"
+                android:focusable="false"
+                android:gravity="start"
+                android:minWidth="@dimen/_100sdp"
+                tools:listitem="@layout/item_dropdown_spinner_align_left" />
+
+            <FrameLayout
+                android:id="@+id/toolbarDiningOption"
+                android:layout_width="@dimen/_47sdp"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_alignParentEnd="true">
+
+                <com.diadiem.pos_components.PTextView
+                    android:id="@+id/spnDiningOptionBox"
+                    style="@style/SpinnerWithNoArrow"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:popupBackground="@drawable/bg_spinner_item_border"
+                    android:layout_marginHorizontal="@dimen/_5sdp"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    android:clickable="true"
+                    android:dropDownWidth="wrap_content"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:minWidth="@dimen/_100sdp"
+                    android:text="@{CurCartData.INSTANCE.cartModelLD.diningOption.acronymn}" />
+            </FrameLayout>
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -62,28 +106,6 @@
                     android:minWidth="@dimen/_100sdp"
                     tools:listitem="@layout/item_dropdown_spinner" />
             </LinearLayout>
-
-            <FrameLayout
-                android:id="@+id/toolbarDiningOption"
-                android:layout_width="@dimen/_47sdp"
-                android:layout_height="match_parent"
-                android:layout_alignParentEnd="true">
-
-                <androidx.appcompat.widget.AppCompatSpinner
-                    android:id="@+id/spnDiningOption"
-                    style="@style/SpinnerWithNoArrow"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="@dimen/_6sdp"
-                    android:layout_marginBottom="@dimen/_5sdp"
-                    android:layout_marginHorizontal="@dimen/_5sdp"
-                    android:layout_gravity="center"
-                    android:gravity="left"
-                    android:minWidth="@dimen/_100sdp"
-                    tools:listitem="@layout/item_dropdown_spinner_align_left"/>
-            </FrameLayout>
-
-
 
         </RelativeLayout>
         <include

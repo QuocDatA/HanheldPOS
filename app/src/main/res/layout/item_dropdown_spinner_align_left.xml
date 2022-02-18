@@ -15,7 +15,6 @@
             type="String" />
     </data>
 
-
     <CheckedTextView
         android:paddingBottom="@dimen/_9sdp"
         android:paddingTop="@dimen/_9sdp"
