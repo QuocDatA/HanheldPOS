@@ -52,20 +52,20 @@
             <FrameLayout
                 android:id="@+id/toolbarDiningOption"
                 android:layout_width="@dimen/_47sdp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_centerVertical="true"
                 android:layout_alignParentEnd="true">
 
                 <com.diadiem.pos_components.PTextView
                     android:id="@+id/spnDiningOptionBox"
-                    style="@style/SpinnerWithNoArrow"
+                    style="@style/Spinner.dropdown.notOverLap"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
-                    android:popupBackground="@drawable/bg_spinner_item_border"
+                    android:background="@drawable/bg_spinner_item_border"
                     android:layout_marginHorizontal="@dimen/_5sdp"
-                    android:layout_marginTop="@dimen/_2sdp"
-                    android:clickable="true"
+                    android:layout_marginVertical="@dimen/_8sdp"
+                    android:clickable="@{CurCartData.INSTANCE.cartModelLD.diningOption.subDiningOption.size() > 1 ? true : false}"
                     android:dropDownWidth="wrap_content"
                     android:focusable="true"
                     android:gravity="center"

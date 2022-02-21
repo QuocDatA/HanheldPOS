@@ -82,6 +82,21 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
     }
 
     override fun initAction() {
+        CurCartData.cartModelLD.observe(this) { cart ->
+            if(cart?.diningOption?.SubDiningOption.isNullOrEmpty()) {
+                diningOptionSpinnerAdapter.submitList(mutableListOf())
+            } else {
+                cart?.diningOption?.SubDiningOption!!.mapIndexed { index, subDiningOptionItem ->
+                    DropDownItem(
+                        name = subDiningOptionItem.NickName!!,
+                        realItem = subDiningOptionItem,
+                        position = index
+                    )
+                }.let { listSubDiningOption ->
+                    diningOptionSpinnerAdapter.submitList(listSubDiningOption)
+                }
+            }
+        }
         screenViewModel.screenEvent.observe(this) {
             // Check cart initialized
             when (it.screen) {
@@ -95,21 +110,6 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
                                 }
                             })
                     } else {
-                        //init subDiningOption
-                            val subDiningOptionList =  CurCartData.cartModelLD.value!!.diningOption.SubDiningOption
-                            if( subDiningOptionList.isNullOrEmpty()) {
-                                diningOptionSpinnerAdapter.submitList(mutableListOf())
-                            } else {
-                               subDiningOptionList.mapIndexed { index, subDiningOptionItem ->
-                                    DropDownItem(
-                                        name = subDiningOptionItem.NickName!!,
-                                        realItem = subDiningOptionItem,
-                                        position = index
-                                    )
-                                }.let { listSubDiningOption ->
-                                    diningOptionSpinnerAdapter.submitList(listSubDiningOption)
-                                }
-                            }
                         binding.toolbarLayout.spnDiningOptionBox.visibility = View.VISIBLE
                     }
                 }
