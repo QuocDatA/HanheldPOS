@@ -9,6 +9,7 @@ import androidx.fragment.app.activityViewModels
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.order.settings.SubDiningOptionItem
 import com.hanheldpos.databinding.FragmentHomeBinding
+import com.hanheldpos.extension.mergeList
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.ui.base.dialog.AppAlertDialog
 import com.hanheldpos.ui.base.pager.FragmentPagerAdapter
@@ -94,6 +95,9 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
                     )
                 }?.let { listSubDiningOption ->
                     diningOptionSpinnerAdapter.submitList(listSubDiningOption)
+                    binding.toolbarLayout.spnDiningOptionBox.let {
+                        it.isClickable = listSubDiningOption.size > 1
+                    }
                 }
             }
         }
