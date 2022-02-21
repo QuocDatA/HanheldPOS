@@ -162,13 +162,12 @@ object CurCartData {
     }
 
     fun diningOptionChange(diningOption: DiningOption?) {
-        updatePriceList(
-            diningOption?.SubDiningOption?.firstOrNull()?.LocationGuid
-        );
         diningOption?.let {
             cartModelLD.value?.diningOption = diningOption;
         }
-
+        updatePriceList(
+            diningOption?.SubDiningOption?.firstOrNull()?.LocationGuid
+        );
     }
 
 

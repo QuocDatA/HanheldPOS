@@ -82,17 +82,17 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
     }
 
     override fun initAction() {
-        CurCartData.cartModelLD.observe(this) { cart ->
-            if(cart?.diningOption?.SubDiningOption.isNullOrEmpty()) {
+        CurCartData.diningOptionLD.observe(this) { diningOption ->
+            if (diningOption?.SubDiningOption.isNullOrEmpty()) {
                 diningOptionSpinnerAdapter.submitList(mutableListOf())
             } else {
-                cart?.diningOption?.SubDiningOption!!.mapIndexed { index, subDiningOptionItem ->
+                diningOption?.SubDiningOption?.mapIndexed { index, subDiningOptionItem ->
                     DropDownItem(
                         name = subDiningOptionItem.NickName!!,
                         realItem = subDiningOptionItem,
                         position = index
                     )
-                }.let { listSubDiningOption ->
+                }?.let { listSubDiningOption ->
                     diningOptionSpinnerAdapter.submitList(listSubDiningOption)
                 }
             }
