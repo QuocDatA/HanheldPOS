@@ -81,12 +81,12 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
 
             diningOptions.forEachIndexed { index, diningOption ->
                 if (CurCartData.diningOptionLD.value?.Id == diningOption.Id) {
-                    if (diningOptions.size - 1 >= index) {
+                    if (diningOptions.size - 1 <= index) {
                         CurCartData.diningOptionChange(diningOptions[0])
                     } else {
                         CurCartData.diningOptionChange(diningOptions[index + 1])
                     }
-                    return@forEachIndexed;
+                    return@setOnClickListener
                 }
             }
 
@@ -112,9 +112,6 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
                     )
                 }?.let { listSubDiningOption ->
                     diningOptionSpinnerAdapter.submitList(listSubDiningOption)
-                    binding.toolbarLayout.spnDiningOptionBox.let {
-                        it.isClickable = listSubDiningOption.size > 1
-                    }
                 }
             }
         }
