@@ -1,11 +1,14 @@
 package com.hanheldpos.ui.screens.intro
 
+import android.app.Application
 import android.view.WindowManager
+import androidx.appcompat.app.AppCompatActivity
 import com.hanheldpos.R
 import com.hanheldpos.databinding.ActivityIntroBinding
 import com.hanheldpos.extension.navigateTo
 import com.hanheldpos.ui.base.activity.BaseActivity
 import com.hanheldpos.ui.screens.welcome.WelcomeActivity
+import com.hanheldpos.utils.NetworkUtils
 import com.utils.helper.SystemHelper
 
 class IntroActivity : BaseActivity<ActivityIntroBinding, IntroVM>(), IntroUV {
@@ -30,6 +33,15 @@ class IntroActivity : BaseActivity<ActivityIntroBinding, IntroVM>(), IntroUV {
     }
 
     override fun initAction() {
+        NetworkUtils.registerNetworkCallback(context.applicationContext, listener = object : NetworkUtils.NetworkConnectionCallBack {
+            override fun onAvailable() {
+
+            }
+
+            override fun onLost() {
+            }
+
+        })
 
     }
 

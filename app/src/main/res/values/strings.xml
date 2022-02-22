@@ -182,4 +182,5 @@
     <string name="please_sync_local_data_before_logging_out_of_this_account">Please sync local data before logging out of this account!</string>
     <string name="base_price">Base Price</string>
     <string name="special_instructions">Special Instructions</string>
+    <string name="no_network_connection">No Network Connection!</string>
 </resources>
