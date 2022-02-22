@@ -115,7 +115,7 @@ class PinCodeVM : BaseRepoViewModel<EmployeeRepo, PinCodeUV>() {
 
                 override fun showMessage(message: String?) {
                     showLoading(false)
-                    showError("Failed to load data!")
+                    showError(R.string.failed_to_load_data.toString())
                 }
             })
     }
