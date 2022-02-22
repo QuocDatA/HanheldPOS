@@ -55,11 +55,11 @@ class DiscountAutomaticFragment(private val cart: CartModel?) :
     }
 
     override fun initData() {
-        itemSelected.observe(this, {
+        itemSelected.observe(this) {
             GlobalScope.launch(Dispatchers.IO) {
                 viewModel.loadDiscountAutomatic(itemSelected.value, cart);
             }
-        });
+        };
 
     }
 

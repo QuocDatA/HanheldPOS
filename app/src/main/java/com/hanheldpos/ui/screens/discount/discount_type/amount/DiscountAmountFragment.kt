@@ -31,7 +31,17 @@ class DiscountAmountFragment(private val listener: DiscountTypeFragment.Discount
     }
 
     override fun initView() {
-
+        requireActivity().supportFragmentManager.setFragmentResultListener("saveDiscount",this) { _, bundle ->
+            if (bundle.getSerializable("DiscountTypeFor") == DiscountTypeFor.AMOUNT) {
+                listener.discountUserChoose(
+                    DiscountUser(
+                        DiscountName = viewModel.title.value!!,
+                        DiscountValue = viewModel.amountValue,
+                        DiscountType = DiscountTypeEnum.AMOUNT.value
+                    )
+                )
+            }
+        }
 
         binding.amountDiscount.let { input ->
             var isEditing = false
@@ -65,27 +75,16 @@ class DiscountAmountFragment(private val listener: DiscountTypeFragment.Discount
     }
 
     override fun initAction() {
-        viewModel.amount.observe(this,{
+        viewModel.amount.observe(this) {
             listener.validDiscount(viewModel.amountValue > 0.0 && !viewModel.title.value.isNullOrEmpty());
-        });
-        viewModel.title.observe(this,{
+        };
+        viewModel.title.observe(this) {
             listener.validDiscount(viewModel.amountValue > 0.0 && !viewModel.title.value.isNullOrEmpty());
-        })
+        }
     }
 
     override fun onResume() {
         super.onResume()
-        requireActivity().supportFragmentManager.setFragmentResultListener("saveDiscount",this) { _, bundle ->
-            if (bundle.getSerializable("DiscountTypeFor") == DiscountTypeFor.AMOUNT) {
-                listener.discountUserChoose(
-                    DiscountUser(
-                        DiscountName = viewModel.title.value!!,
-                        DiscountValue = viewModel.amountValue,
-                        DiscountType = DiscountTypeEnum.AMOUNT.value
-                    )
-                )
-            }
-        }
         listener.validDiscount(viewModel.amountValue > 0.0 && !viewModel.title.value.isNullOrEmpty());
     }
 }

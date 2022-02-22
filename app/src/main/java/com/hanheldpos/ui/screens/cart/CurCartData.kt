@@ -15,7 +15,6 @@ import com.hanheldpos.model.cart.*
 import com.hanheldpos.model.cart.payment.PaymentOrder
 import com.hanheldpos.model.discount.DiscountUser
 import com.hanheldpos.model.home.table.TableSummary
-import com.hanheldpos.model.cart.BaseProductInCart
 import com.hanheldpos.ui.base.dialog.AppAlertDialog
 
 object CurCartData {
@@ -79,8 +78,8 @@ object CurCartData {
         this.cartModelLD.notifyValueChange();
     }
 
-    private fun updatePriceList(menuLocation_id: String) {
-        this.cartModelLD.value?.updatePriceList(menuLocation_id);
+    fun updatePriceList(menuLocation_id: String?) {
+        this.cartModelLD.value?.updatePriceList(menuLocation_id ?: UserHelper.getLocationGuid())
         this.cartModelLD.notifyValueChange();
     }
 
@@ -163,14 +162,12 @@ object CurCartData {
     }
 
     fun diningOptionChange(diningOption: DiningOption?) {
-        updatePriceList(
-            diningOption?.SubDiningOption?.firstOrNull()?.LocationGuid
-                ?: UserHelper.getLocationGuid()
-        );
         diningOption?.let {
             cartModelLD.value?.diningOption = diningOption;
         }
-
+        updatePriceList(
+            diningOption?.SubDiningOption?.firstOrNull()?.LocationGuid
+        );
     }
 
 

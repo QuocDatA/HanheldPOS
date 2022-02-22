@@ -114,7 +114,8 @@ class PinCodeVM : BaseRepoViewModel<EmployeeRepo, PinCodeUV>() {
                 }
 
                 override fun showMessage(message: String?) {
-
+                    showLoading(false)
+                    showError(R.string.failed_to_load_data.toString())
                 }
             })
     }
@@ -175,6 +176,7 @@ class PinCodeVM : BaseRepoViewModel<EmployeeRepo, PinCodeUV>() {
             }
 
             override fun showMessage(message: String?) {
+                showLoading(false)
                 showError(message);
             }
         });

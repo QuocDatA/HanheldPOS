@@ -264,6 +264,7 @@ class ProductDetailFragment(
     }
 
     override fun onAddCart(item: BaseProductInCart) {
+        if(viewModel.isValidDiscount.value != true && action == ItemActionType.Modify) return;
         requireActivity().supportFragmentManager.setFragmentResult(
             "saveDiscount",
             Bundle().apply { putSerializable("DiscountTypeFor", viewModel.typeDiscountSelect) });

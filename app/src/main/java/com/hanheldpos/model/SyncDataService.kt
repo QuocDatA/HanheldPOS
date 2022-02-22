@@ -187,7 +187,7 @@ class SyncDataService : BaseViewModel() {
     private fun onDataFailure(message: String?,listener: SyncDataServiceListener) {
         viewModelScope.launch(Dispatchers.IO) {
             DataHelper.clearData();
-            launch {
+            launch(Dispatchers.Main) {
                 listener.onError(message);
             }
 

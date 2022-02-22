@@ -11,6 +11,7 @@ import com.hanheldpos.data.api.pojo.order.settings.DiningOption
 import com.hanheldpos.data.api.pojo.order.settings.Reason
 import com.hanheldpos.databinding.FragmentCartBinding
 import com.hanheldpos.model.DataHelper
+import com.hanheldpos.model.cart.BaseProductInCart
 import com.hanheldpos.model.cart.Combo
 import com.hanheldpos.model.cart.DiscountCart
 import com.hanheldpos.model.cart.Regular
@@ -18,7 +19,6 @@ import com.hanheldpos.model.cart.fee.FeeTip
 import com.hanheldpos.model.cart.payment.PaymentOrder
 import com.hanheldpos.model.combo.ItemActionType
 import com.hanheldpos.model.discount.DiscountUser
-import com.hanheldpos.model.cart.BaseProductInCart
 import com.hanheldpos.model.product.ProductType
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
@@ -139,22 +139,20 @@ class CartFragment( private val listener : CartCallBack) : BaseFragment<Fragment
 
     override fun initData() {
         //region init dining option data
-        CurCartData.diningOptionLD.observe(this) {
-            var selectedIndex = 0;
+        val diningOptions: MutableList<DiningOption> =
+            (DataHelper.orderSettingLocalStorage?.ListDiningOptions as List<DiningOption>).toMutableList();
+        cartDiningOptionAdapter.submitList(diningOptions);
 
-            val diningOptions: MutableList<DiningOption> =
-                (DataHelper.orderSettingLocalStorage?.ListDiningOptions as List<DiningOption>).toMutableList();
-            cartDiningOptionAdapter.submitList(diningOptions);
-
-            if (CurCartData.cartModelLD.value != null) {
-                diningOptions.forEachIndexed { index, diningOptionItem ->
-                    if (diningOptionItem.Id == CurCartData.cartModelLD.value?.diningOption?.Id) selectedIndex =
-                        index
+        if (CurCartData.diningOptionLD.value != null) {
+            diningOptions.forEachIndexed { index, diningOptionItem ->
+                if (diningOptionItem.Id == CurCartData.diningOptionLD.value?.Id){
+                    cartDiningOptionAdapter.setSelectedIndex(index);
+                    return@forEachIndexed
                 }
             }
-            cartDiningOptionAdapter.setSelectedIndex(selectedIndex);
-
         }
+
+
 
         //endregion
 
