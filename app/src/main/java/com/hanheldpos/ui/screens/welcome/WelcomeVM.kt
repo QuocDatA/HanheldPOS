@@ -36,7 +36,7 @@ class WelcomeVM : BaseUiViewModel<WelcomeUV>() {
             }
 
             override fun showMessage(message: String?) {
-
+                isLoading.postValue(false);
             }
 
         })
