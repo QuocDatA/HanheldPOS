@@ -457,7 +457,7 @@
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:useDefaultMargins="true"
-
+                            android:overScrollMode="never"
                             android:id="@+id/tip_recycler_view"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
