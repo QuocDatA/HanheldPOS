@@ -7,6 +7,7 @@ import android.widget.AdapterView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.hanheldpos.R
+import com.hanheldpos.data.api.pojo.order.settings.DiningOption
 import com.hanheldpos.data.api.pojo.order.settings.SubDiningOptionItem
 import com.hanheldpos.databinding.FragmentHomeBinding
 import com.hanheldpos.extension.mergeList
@@ -56,7 +57,8 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
     }
 
     override fun initView() {
-        binding.root.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener{
+        binding.root.viewTreeObserver.addOnGlobalLayoutListener(object :
+            ViewTreeObserver.OnGlobalLayoutListener {
             override fun onGlobalLayout() {
                 if (CashDrawerHelper.isStartDrawer)
                     CashDrawerHelper.showDrawerNotification(this@HomeFragment.requireActivity());
@@ -73,7 +75,22 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
         }
         binding.toolbarLayout.spnDiningOption.isEnabled = false
         binding.toolbarLayout.spnDiningOptionBox.setOnClickListener {
-            binding.toolbarLayout.spnDiningOption.performClick()
+
+            val diningOptions: MutableList<DiningOption> =
+                (DataHelper.orderSettingLocalStorage?.ListDiningOptions as List<DiningOption>).toMutableList();
+
+            diningOptions.forEachIndexed { index, diningOption ->
+                if (CurCartData.diningOptionLD.value?.Id == diningOption.Id) {
+                    if (diningOptions.size - 1 >= index) {
+                        CurCartData.diningOptionChange(diningOptions[0])
+                    } else {
+                        CurCartData.diningOptionChange(diningOptions[index + 1])
+                    }
+                    return@forEachIndexed;
+                }
+            }
+
+            //binding.toolbarLayout.spnDiningOption.performClick()
         }
         initSpinner();
     }
