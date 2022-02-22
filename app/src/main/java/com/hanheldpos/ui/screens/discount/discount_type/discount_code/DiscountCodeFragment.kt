@@ -39,7 +39,6 @@ class DiscountCodeFragment(private val applyToType: DiscountApplyToType) :
             if (bundle.getSerializable("DiscountTypeFor") == DiscountTypeFor.DISCOUNT_CODE) {
 
             }
-
         }
         discountCodeAdapter =
             DiscountCodeAdapter(listener = object : BaseItemClickListener<DiscountResp> {
