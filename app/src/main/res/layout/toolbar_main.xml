@@ -67,6 +67,7 @@
                     android:layout_marginVertical="@dimen/_8sdp"
                     android:dropDownWidth="wrap_content"
                     android:focusable="true"
+                    android:clickable="true"
                     android:gravity="center"
                     android:minWidth="@dimen/_100sdp"
                     android:text="@{CurCartData.INSTANCE.cartModelLD.diningOption.acronymn}" />
