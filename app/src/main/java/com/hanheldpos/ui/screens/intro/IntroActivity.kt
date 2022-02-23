@@ -33,15 +33,6 @@ class IntroActivity : BaseActivity<ActivityIntroBinding, IntroVM>(), IntroUV {
     }
 
     override fun initAction() {
-        NetworkUtils.registerNetworkCallback(context.applicationContext, listener = object : NetworkUtils.NetworkConnectionCallBack {
-            override fun onAvailable() {
-
-            }
-
-            override fun onLost() {
-            }
-
-        })
 
     }
 

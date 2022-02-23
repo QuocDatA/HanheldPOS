@@ -12,6 +12,7 @@ import com.hanheldpos.data.repository.device.DeviceRepo
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.SyncDataService
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
+import com.hanheldpos.utils.NetworkUtils
 import java.util.*
 
 class DeviceCodeVM : BaseUiViewModel<DeviceCodeUV>() {
@@ -28,28 +29,30 @@ class DeviceCodeVM : BaseUiViewModel<DeviceCodeUV>() {
 
     fun signIn(view: View) {
         // Limit click button
-        if (SystemClock.elapsedRealtime() - mLastTimeClick < 1000) return;
-        mLastTimeClick = SystemClock.elapsedRealtime();
+        if (NetworkUtils.onlineStatus) {
+            if (SystemClock.elapsedRealtime() - mLastTimeClick < 1000) return;
+            mLastTimeClick = SystemClock.elapsedRealtime();
 
-        // Fetch data
-        uiCallback?.showLoading(true);
-        val result = getPinWithSymbol(pinTextLD.value.toString());
-        repo.getDataByAppCode(result, object : BaseRepoCallback<BaseResponse<DeviceCodeResp>> {
-            override fun apiResponse(data: BaseResponse<DeviceCodeResp>?) {
-                if (data == null || data.DidError) {
-                    showError(view.context?.getString(R.string.failed_to_load_data));
-                } else {
-                    DataHelper.deviceCodeLocalStorage = data.Model;
-                    loadResource(view.context);
+            // Fetch data
+            uiCallback?.showLoading(true);
+            val result = getPinWithSymbol(pinTextLD.value.toString());
+            repo.getDataByAppCode(result, object : BaseRepoCallback<BaseResponse<DeviceCodeResp>> {
+                override fun apiResponse(data: BaseResponse<DeviceCodeResp>?) {
+                    if (data == null || data.DidError) {
+                        showError(view.context?.getString(R.string.failed_to_load_data));
+                    } else {
+                        DataHelper.deviceCodeLocalStorage = data.Model;
+                        loadResource(view.context);
+                    }
                 }
-            }
 
-            override fun showMessage(message: String?) {
-                showLoading(false);
-                showError(message);
-                uiCallback?.showMessage(message)
-            }
-        })
+                override fun showMessage(message: String?) {
+                    showLoading(false);
+                    showError(view.context?.getString(R.string.failed_to_load_data));
+                    uiCallback?.showMessage(view.context?.getString(R.string.failed_to_load_data))
+                }
+            })
+        }
     }
 
     private fun loadResource(context: Context) {
@@ -62,7 +65,7 @@ class DeviceCodeVM : BaseUiViewModel<DeviceCodeUV>() {
 
                 override fun onError(message: String?) {
                     showLoading(false);
-                    showError(message);
+                    showError(R.string.failed_to_load_data.toString());
                 }
             });
     }

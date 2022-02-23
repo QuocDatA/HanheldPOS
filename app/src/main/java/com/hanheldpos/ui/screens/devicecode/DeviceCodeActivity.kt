@@ -8,6 +8,7 @@ import com.hanheldpos.databinding.ActivityDeviceCodeBinding
 import com.hanheldpos.extension.navigateTo
 import com.hanheldpos.ui.base.activity.BaseActivity
 import com.hanheldpos.ui.screens.pincode.PinCodeActivity
+import com.hanheldpos.utils.NetworkUtils
 import com.utils.helper.SystemHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -33,6 +34,17 @@ class DeviceCodeActivity : BaseActivity<ActivityDeviceCodeBinding, DeviceCodeVM>
     }
 
     override fun initAction() {
+        NetworkUtils.hasActiveInternetConnection(context.applicationContext, listener = object : NetworkUtils.NetworkConnectionCallBack {
+            override fun onAvailable() {
+
+            }
+
+            override fun onLost() {
+                CoroutineScope(Dispatchers.Main).launch {
+                    viewModel.showError(getString(R.string.no_network_connection))
+                }
+            }
+        })
     }
 
     override fun viewModelClass(): Class<DeviceCodeVM> {

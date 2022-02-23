@@ -10,7 +10,11 @@ import com.hanheldpos.ui.screens.cashdrawer.CashDrawerHelper
 import com.hanheldpos.ui.screens.cashdrawer.startdrawer.StartDrawerActivity
 import com.hanheldpos.ui.screens.main.MainActivity
 import com.hanheldpos.ui.screens.pincode.adapter.PinCodeAdapter
+import com.hanheldpos.utils.NetworkUtils
 import com.utils.helper.SystemHelper
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class PinCodeActivity : BaseActivity<ActivityPinCodeBinding, PinCodeVM>(), PinCodeUV {
     override fun layoutRes() = R.layout.activity_pin_code;
@@ -43,6 +47,18 @@ class PinCodeActivity : BaseActivity<ActivityPinCodeBinding, PinCodeVM>(), PinCo
                 }
             }
         )
+
+        NetworkUtils.hasActiveInternetConnection(context.applicationContext, listener = object : NetworkUtils.NetworkConnectionCallBack {
+            override fun onAvailable() {
+
+            }
+
+            override fun onLost() {
+                CoroutineScope(Dispatchers.Main).launch {
+                    viewModel.showError(getString(R.string.no_network_connection))
+                }
+            }
+        })
     }
 
     override fun viewModelClass(): Class<PinCodeVM> {

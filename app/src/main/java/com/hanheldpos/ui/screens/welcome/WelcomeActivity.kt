@@ -21,6 +21,9 @@ import com.hanheldpos.ui.screens.main.MainActivity
 import com.hanheldpos.ui.screens.pincode.PinCodeActivity
 import com.hanheldpos.utils.NetworkUtils
 import com.utils.helper.SystemHelper
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class WelcomeActivity : BaseActivity<ActivityWelcomeBinding, WelcomeVM>(), WelcomeUV {
 
@@ -49,15 +52,16 @@ class WelcomeActivity : BaseActivity<ActivityWelcomeBinding, WelcomeVM>(), Welco
 
     override fun initAction() {
         viewModel.checkDeviceCode();
-        NetworkUtils.registerNetworkCallback(context.applicationContext, listener = object : NetworkUtils.NetworkConnectionCallBack {
+        NetworkUtils.hasActiveInternetConnection(context.applicationContext, listener = object : NetworkUtils.NetworkConnectionCallBack {
             override fun onAvailable() {
-                print("")
+
             }
 
             override fun onLost() {
-                viewModel.showError(getString(R.string.no_network_connection))
+                CoroutineScope(Dispatchers.Main).launch {
+                    viewModel.showError(getString(R.string.no_network_connection))
+                }
             }
-
         })
     }
 

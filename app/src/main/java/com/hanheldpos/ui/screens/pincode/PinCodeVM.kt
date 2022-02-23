@@ -17,6 +17,7 @@ import com.hanheldpos.model.cashdrawer.DrawerStatus
 
 import com.hanheldpos.ui.base.viewmodel.BaseRepoViewModel
 import com.hanheldpos.utils.GSonUtils
+import com.hanheldpos.utils.NetworkUtils
 import java.util.*
 
 class PinCodeVM : BaseRepoViewModel<EmployeeRepo, PinCodeUV>() {
@@ -68,7 +69,11 @@ class PinCodeVM : BaseRepoViewModel<EmployeeRepo, PinCodeUV>() {
             lstResultLD.notifyValueChange();
         }
         if (listSize.value != null && listSize.value == PIN_MAX_LENGTH) {
-            checkPinInput()
+            if(NetworkUtils.onlineStatus) {
+                checkPinInput()
+            } else {
+
+            }
         }
     }
 
