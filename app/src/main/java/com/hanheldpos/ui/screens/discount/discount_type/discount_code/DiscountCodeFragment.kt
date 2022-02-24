@@ -36,12 +36,7 @@ class DiscountCodeFragment(private val applyToType: DiscountApplyToType) :
     }
 
     override fun initView() {
-        requireActivity().supportFragmentManager.setFragmentResultListener("saveDiscount",this) { _, bundle ->
-            if (bundle.getSerializable("DiscountTypeFor") == DiscountTypeFor.DISCOUNT_CODE) {
 
-            }
-
-        }
 
         discountCodeAdapter =
             DiscountCodeAdapter(listener = object : BaseItemClickListener<DiscountResp> {
@@ -77,6 +72,12 @@ class DiscountCodeFragment(private val applyToType: DiscountApplyToType) :
 
     override fun onResume() {
         super.onResume()
+        requireActivity().supportFragmentManager.setFragmentResultListener("saveDiscount",this) { _, bundle ->
+            if (bundle.getSerializable("DiscountTypeFor") == DiscountTypeFor.DISCOUNT_CODE) {
+
+            }
+
+        }
     }
 
 }

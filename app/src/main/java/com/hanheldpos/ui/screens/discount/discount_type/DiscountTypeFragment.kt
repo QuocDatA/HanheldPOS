@@ -96,9 +96,9 @@ class DiscountTypeFragment(
                 override fun validDiscount(isValid: Boolean) {
                     listener.validDiscount(isValid);
                 }
-            });
+            }, applyToType = applyToType);
         fragmentMap[DiscountTypeFor.PERCENTAGE] =
-            DiscountPercentageFragment(listener = object : DiscountTypeListener {
+            DiscountPercentageFragment( applyToType ,listener = object : DiscountTypeListener {
                 override fun discountUserChoose(discount: DiscountUser) {
                     listener.discountUserChoose(discount);
                 }
@@ -108,7 +108,7 @@ class DiscountTypeFragment(
                 }
             });
         fragmentMap[DiscountTypeFor.DISCOUNT_CODE] = DiscountCodeFragment(applyToType);
-        fragmentMap[DiscountTypeFor.AUTOMATIC] = DiscountAutomaticFragment(cart);
+        fragmentMap[DiscountTypeFor.AUTOMATIC] = DiscountAutomaticFragment(applyToType,cart);
         fragmentMap[DiscountTypeFor.COMP] =
             DiscountCompFragment(
                 comp = when(applyToType){
@@ -128,7 +128,7 @@ class DiscountTypeFragment(
                     override fun validDiscount(isValid: Boolean) {
                         listener.validDiscount(isValid);
                     }
-                })
+                }, applyToType = applyToType)
 
         optionsPagerAdapter.submitList(fragmentMap.values);
 

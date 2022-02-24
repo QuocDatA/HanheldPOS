@@ -74,7 +74,9 @@ class DiscountFragment(private val listener: DiscountCallback) :
 
     override fun initAction() {
         binding.btnSave.setOnClickListener {
-            requireActivity().supportFragmentManager.setFragmentResult("saveDiscount",Bundle().apply { putSerializable("DiscountTypeFor",viewModel.typeDiscountSelect) } );
+            requireActivity().supportFragmentManager.setFragmentResult(
+                "saveDiscount",
+                Bundle().apply { putSerializable("DiscountTypeFor", viewModel.typeDiscountSelect) });
         }
     }
 

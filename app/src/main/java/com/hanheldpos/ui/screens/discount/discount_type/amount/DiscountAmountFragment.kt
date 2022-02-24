@@ -3,6 +3,7 @@ package com.hanheldpos.ui.screens.discount.discount_type.amount
 import androidx.core.widget.doAfterTextChanged
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentDiscountAmountBinding
+import com.hanheldpos.model.discount.DiscountApplyToType
 import com.hanheldpos.model.discount.DiscountTypeEnum
 import com.hanheldpos.model.discount.DiscountTypeFor
 import com.hanheldpos.model.discount.DiscountUser
@@ -11,7 +12,7 @@ import com.hanheldpos.ui.screens.discount.discount_type.DiscountTypeFragment
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 
-class DiscountAmountFragment(private val listener: DiscountTypeFragment.DiscountTypeListener) :
+class DiscountAmountFragment(private val applyToType: DiscountApplyToType, private val listener: DiscountTypeFragment.DiscountTypeListener) :
     BaseFragment<FragmentDiscountAmountBinding, DiscountAmountVM>(),
     DiscountAmountUV {
     override fun layoutRes(): Int = R.layout.fragment_discount_amount
@@ -30,17 +31,7 @@ class DiscountAmountFragment(private val listener: DiscountTypeFragment.Discount
     }
 
     override fun initView() {
-        requireActivity().supportFragmentManager.setFragmentResultListener("saveDiscount",this) { _, bundle ->
-            if (bundle.getSerializable("DiscountTypeFor") == DiscountTypeFor.AMOUNT && validChooseDiscount()) {
-                listener.discountUserChoose(
-                    DiscountUser(
-                        DiscountName = viewModel.title.value!!,
-                        DiscountValue = viewModel.amountValue,
-                        DiscountType = DiscountTypeEnum.AMOUNT.value
-                    )
-                )
-            }
-        }
+
 
         binding.amountDiscount.let { input ->
             var isEditing = false
@@ -84,6 +75,17 @@ class DiscountAmountFragment(private val listener: DiscountTypeFragment.Discount
 
     override fun onResume() {
         super.onResume()
+        requireActivity().supportFragmentManager.setFragmentResultListener("saveDiscount",this) { _, bundle ->
+            if (bundle.getSerializable("DiscountTypeFor") == DiscountTypeFor.AMOUNT && validChooseDiscount()) {
+                listener.discountUserChoose(
+                    DiscountUser(
+                        DiscountName = viewModel.title.value!!,
+                        DiscountValue = viewModel.amountValue,
+                        DiscountType = DiscountTypeEnum.AMOUNT.value
+                    )
+                )
+            }
+        }
         listener.validDiscount(validDiscount());
     }
 
@@ -92,6 +94,13 @@ class DiscountAmountFragment(private val listener: DiscountTypeFragment.Discount
     }
 
     private fun validDiscount(): Boolean {
-        return validChooseDiscount() || (viewModel.amountValue == 0.0 && viewModel.title.value.isNullOrEmpty())
+        return when (applyToType) {
+            DiscountApplyToType.ITEM_DISCOUNT_APPLY_TO -> {
+                (viewModel.amountValue == 0.0 && viewModel.title.value.isNullOrEmpty()) || validChooseDiscount()
+            }
+            DiscountApplyToType.ORDER_DISCOUNT_APPLY_TO -> {
+                validChooseDiscount()
+            }
+        }
     }
 }

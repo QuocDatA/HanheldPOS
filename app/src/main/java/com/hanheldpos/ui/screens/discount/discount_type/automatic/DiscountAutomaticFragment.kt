@@ -9,6 +9,9 @@ import com.hanheldpos.databinding.FragmentDiscountAutomaticBinding
 import com.hanheldpos.model.cart.CartModel
 import com.hanheldpos.model.discount.DiscountTypeFor
 import com.hanheldpos.model.cart.BaseProductInCart
+import com.hanheldpos.model.discount.DiscountApplyToType
+import com.hanheldpos.model.discount.DiscountTypeEnum
+import com.hanheldpos.model.discount.DiscountUser
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.discount.discount_type.discount_code.adapter.DiscountCodeAdapter
@@ -18,7 +21,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 
-class DiscountAutomaticFragment(private val cart: CartModel?) :
+class DiscountAutomaticFragment(private val applyToType: DiscountApplyToType ,private val cart: CartModel?) :
     BaseFragment<FragmentDiscountAutomaticBinding, DiscountAutomaticVM>(), DiscountAutomaticUV {
 
     private var itemSelected = MutableLiveData<BaseProductInCart?>();
@@ -41,12 +44,7 @@ class DiscountAutomaticFragment(private val cart: CartModel?) :
     }
 
     override fun initView() {
-        setFragmentResultListener("saveDiscount") { _, bundle ->
-            if (bundle.getSerializable("DiscountTypeFor") == DiscountTypeFor.AUTOMATIC) {
 
-            }
-
-        }
         discountCodeAdapter =
             DiscountCodeAdapter(listener = object : BaseItemClickListener<DiscountResp> {
                 override fun onItemClick(adapterPosition: Int, item: DiscountResp) {
@@ -81,6 +79,11 @@ class DiscountAutomaticFragment(private val cart: CartModel?) :
 
     override fun onResume() {
         super.onResume()
+        requireActivity().supportFragmentManager.setFragmentResultListener("saveDiscount",this) { _, bundle ->
+            if (bundle.getSerializable("DiscountTypeFor") == DiscountTypeFor.AUTOMATIC) {
+
+            }
+        }
     }
 
 }

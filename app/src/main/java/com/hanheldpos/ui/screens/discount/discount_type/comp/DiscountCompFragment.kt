@@ -7,6 +7,7 @@ import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.order.settings.Reason
 import com.hanheldpos.databinding.FragmentDiscountCompBinding
 import com.hanheldpos.model.DataHelper
+import com.hanheldpos.model.discount.DiscountApplyToType
 import com.hanheldpos.model.discount.DiscountTypeFor
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
@@ -15,6 +16,7 @@ import com.hanheldpos.ui.screens.discount.discount_type.comp.adapter.DiscountRea
 
 
 class DiscountCompFragment(
+    private val applyToType: DiscountApplyToType,
     private val comp: Reason?,
     private val listener: DiscountTypeFragment.DiscountTypeListener,
 ) : BaseFragment<FragmentDiscountCompBinding, DiscountCompVM>(), DiscountCompUV {
@@ -36,14 +38,7 @@ class DiscountCompFragment(
 
     @SuppressLint("NotifyDataSetChanged")
     override fun initView() {
-        requireActivity().supportFragmentManager.setFragmentResultListener("saveDiscount",this) { _, bundle ->
-            if (bundle.getSerializable("DiscountTypeFor") == DiscountTypeFor.COMP) {
-                viewModel.reasonChosen.value?.run {
-                    listener.compReasonChoose(viewModel.reasonChosen.value!!);
-                }
-            }
 
-        }
 
         adapter = DiscountReasonAdapter(
             comp,
@@ -84,15 +79,34 @@ class DiscountCompFragment(
 
     override fun initAction() {
         viewModel.reasonChosen.observe(this) {
-            listener.validDiscount(it != comp);
+            listener.validDiscount(validDiscount());
         };
     }
 
     override fun onResume() {
         super.onResume()
+        requireActivity().supportFragmentManager.setFragmentResultListener("saveDiscount",this) { _, bundle ->
+            if (bundle.getSerializable("DiscountTypeFor") == DiscountTypeFor.COMP && validChooseDiscount()) {
+                viewModel.reasonChosen.value?.run {
+                    listener.compReasonChoose(viewModel.reasonChosen.value!!);
+                }
+            }
 
-
-        listener.validDiscount(viewModel.reasonChosen.value != comp);
+        }
+        listener.validDiscount(validDiscount());
     }
 
+    private fun validChooseDiscount() : Boolean {
+        return viewModel.reasonChosen.value != comp;
+    }
+    private fun validDiscount() : Boolean {
+        return when (applyToType) {
+            DiscountApplyToType.ITEM_DISCOUNT_APPLY_TO -> {
+                return true;
+            }
+            DiscountApplyToType.ORDER_DISCOUNT_APPLY_TO -> {
+                validChooseDiscount()
+            }
+        }
+    }
 }
