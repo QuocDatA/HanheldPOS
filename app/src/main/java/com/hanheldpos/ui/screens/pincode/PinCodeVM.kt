@@ -2,6 +2,7 @@ package com.hanheldpos.ui.screens.pincode
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
+import com.hanheldpos.PosApp
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.cashdrawer.CashDrawerStatusResp
 import com.hanheldpos.data.api.pojo.employee.EmployeeResp
@@ -19,6 +20,7 @@ import com.hanheldpos.ui.base.viewmodel.BaseRepoViewModel
 import com.hanheldpos.utils.GSonUtils
 import com.hanheldpos.utils.NetworkUtils
 import java.util.*
+import kotlin.coroutines.coroutineContext
 
 class PinCodeVM : BaseRepoViewModel<EmployeeRepo, PinCodeUV>() {
 
@@ -69,11 +71,7 @@ class PinCodeVM : BaseRepoViewModel<EmployeeRepo, PinCodeUV>() {
             lstResultLD.notifyValueChange();
         }
         if (listSize.value != null && listSize.value == PIN_MAX_LENGTH) {
-            if(NetworkUtils.onlineStatus) {
-                checkPinInput()
-            } else {
-
-            }
+            checkPinInput()
         }
     }
 
@@ -110,9 +108,8 @@ class PinCodeVM : BaseRepoViewModel<EmployeeRepo, PinCodeUV>() {
             object : BaseRepoCallback<BaseResponse<List<EmployeeResp>>> {
                 override fun apiResponse(data: BaseResponse<List<EmployeeResp>>?) {
                     if (data == null || data.DidError || data.Model.isNullOrEmpty()) {
-                        showError("Passcode does not exist!. Please try again");
-                        lstResultLD.value?.clear();
-                        lstResultLD.notifyValueChange();
+                        showError(PosApp.instance.getString(R.string.passcode_does_not_exist_please_try_again));
+                        onEmployeeError()
                     } else {
                         onEmployeeSuccess(data.Model.first())
                     }
@@ -120,14 +117,13 @@ class PinCodeVM : BaseRepoViewModel<EmployeeRepo, PinCodeUV>() {
 
                 override fun showMessage(message: String?) {
                     showLoading(false)
-                    showError(R.string.failed_to_load_data.toString())
+                    showError(PosApp.instance.getString(R.string.failed_to_load_data))
+                    onEmployeeError()
                 }
             })
     }
 
     fun onEmployeeSuccess(result: EmployeeResp) {
-        uiCallback?.showLoading(false)
-//        val model = result.model
         UserHelper.curEmployee = result
 
         if (displayClockState.value == true) {
@@ -136,6 +132,11 @@ class PinCodeVM : BaseRepoViewModel<EmployeeRepo, PinCodeUV>() {
             checkDrawerStatus();
         }
         /*changeClockState()*/
+    }
+
+    fun onEmployeeError() {
+        lstResultLD.value?.clear();
+        lstResultLD.notifyValueChange();
     }
 
     fun onClick(item: PinCodeRecyclerElement?) {

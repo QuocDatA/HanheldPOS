@@ -34,17 +34,6 @@ class DeviceCodeActivity : BaseActivity<ActivityDeviceCodeBinding, DeviceCodeVM>
     }
 
     override fun initAction() {
-        NetworkUtils.hasActiveInternetConnection(context.applicationContext, listener = object : NetworkUtils.NetworkConnectionCallBack {
-            override fun onAvailable() {
-
-            }
-
-            override fun onLost() {
-                CoroutineScope(Dispatchers.Main).launch {
-                    viewModel.showError(getString(R.string.no_network_connection))
-                }
-            }
-        })
     }
 
     override fun viewModelClass(): Class<DeviceCodeVM> {

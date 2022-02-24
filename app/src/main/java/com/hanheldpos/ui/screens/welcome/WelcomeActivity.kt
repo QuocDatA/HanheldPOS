@@ -52,17 +52,6 @@ class WelcomeActivity : BaseActivity<ActivityWelcomeBinding, WelcomeVM>(), Welco
 
     override fun initAction() {
         viewModel.checkDeviceCode();
-        NetworkUtils.hasActiveInternetConnection(context.applicationContext, listener = object : NetworkUtils.NetworkConnectionCallBack {
-            override fun onAvailable() {
-
-            }
-
-            override fun onLost() {
-                CoroutineScope(Dispatchers.Main).launch {
-                    viewModel.showError(getString(R.string.no_network_connection))
-                }
-            }
-        })
     }
 
     override fun openDeviceCode() {

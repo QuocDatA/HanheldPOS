@@ -16,6 +16,7 @@ import com.hanheldpos.ui.base.fragment.FragmentNavigator
 import com.hanheldpos.ui.screens.home.HomeFragment
 import com.hanheldpos.ui.screens.home.ScreenViewModel
 import com.hanheldpos.ui.screens.root.RootFragment
+import com.hanheldpos.utils.NetworkUtils
 import com.utils.helper.SystemHelper
 
 class MainActivity : BaseFragmentBindingActivity<ActivityMainBinding, MainVM>(), MainUV {
@@ -53,7 +54,7 @@ class MainActivity : BaseFragmentBindingActivity<ActivityMainBinding, MainVM>(),
     }
 
     override fun initAction() {
-
+        NetworkUtils.cancelNetworkCheck()
     }
 
 

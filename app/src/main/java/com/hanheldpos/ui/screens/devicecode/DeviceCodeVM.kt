@@ -29,7 +29,6 @@ class DeviceCodeVM : BaseUiViewModel<DeviceCodeUV>() {
 
     fun signIn(view: View) {
         // Limit click button
-        if (NetworkUtils.onlineStatus) {
             if (SystemClock.elapsedRealtime() - mLastTimeClick < 1000) return;
             mLastTimeClick = SystemClock.elapsedRealtime();
 
@@ -52,7 +51,7 @@ class DeviceCodeVM : BaseUiViewModel<DeviceCodeUV>() {
                     uiCallback?.showMessage(view.context?.getString(R.string.failed_to_load_data))
                 }
             })
-        }
+
     }
 
     private fun loadResource(context: Context) {

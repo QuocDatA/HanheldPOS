@@ -183,4 +183,5 @@
     <string name="base_price">Base Price</string>
     <string name="special_instructions">Special Instructions</string>
     <string name="no_network_connection">No Network Connection</string>
+    <string name="passcode_does_not_exist_please_try_again">Passcode does not exist!. Please try again</string>
 </resources>

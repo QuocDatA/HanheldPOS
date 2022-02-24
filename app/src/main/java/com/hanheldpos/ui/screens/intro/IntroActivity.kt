@@ -3,6 +3,7 @@ package com.hanheldpos.ui.screens.intro
 import android.app.Application
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
+import com.hanheldpos.PosApp
 import com.hanheldpos.R
 import com.hanheldpos.databinding.ActivityIntroBinding
 import com.hanheldpos.extension.navigateTo
@@ -10,6 +11,9 @@ import com.hanheldpos.ui.base.activity.BaseActivity
 import com.hanheldpos.ui.screens.welcome.WelcomeActivity
 import com.hanheldpos.utils.NetworkUtils
 import com.utils.helper.SystemHelper
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class IntroActivity : BaseActivity<ActivityIntroBinding, IntroVM>(), IntroUV {
 
@@ -33,7 +37,17 @@ class IntroActivity : BaseActivity<ActivityIntroBinding, IntroVM>(), IntroUV {
     }
 
     override fun initAction() {
+        NetworkUtils.checkActiveInternetConnection(listener = object : NetworkUtils.NetworkConnectionCallBack {
+            override fun onAvailable() {
 
+            }
+
+            override fun onLost() {
+                CoroutineScope(Dispatchers.Main).launch {
+                    showAlert(title =  getString(R.string.notification), message =  getString(R.string.no_network_connection))
+                }
+            }
+        })
     }
 
     override fun finishIntro() {

@@ -3,7 +3,7 @@ package com.hanheldpos.utils
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
-import androidx.lifecycle.MutableLiveData
+import com.hanheldpos.PosApp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -13,20 +13,22 @@ import java.net.HttpURLConnection
 import java.net.URL
 
 object NetworkUtils {
-    var onlineStatus = false
+    private var isCheckOnlineStatus: Boolean = false
 
-    fun isOnline(context: Context): Boolean {
+    private fun isActiveInternet(context: Context): Boolean {
         val connectivityManager =
             context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        if (connectivityManager != null) {
-            val capabilities =
-                connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
-            if (capabilities != null) {
-                if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) {
+        val capabilities =
+            connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
+        if (capabilities != null) {
+            when {
+                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> {
                     return true
-                } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
+                }
+                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> {
                     return true
-                } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)) {
+                }
+                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> {
                     return true
                 }
             }
@@ -34,30 +36,43 @@ object NetworkUtils {
         return false
     }
 
-    fun hasActiveInternetConnection(context: Context, listener: NetworkConnectionCallBack) {
+    private fun hasActiveInternet(): Boolean {
+        return try {
+            val urlConnection: HttpURLConnection =
+                URL("http://www.google.com").openConnection() as HttpURLConnection
+            urlConnection.setRequestProperty("User-Agent", "Test")
+            urlConnection.setRequestProperty("Connection", "close")
+            urlConnection.connectTimeout = 1500
+            urlConnection.connect()
+            true
+        } catch (e: IOException) {
+            false
+        }
+    }
+
+    private fun isOnline(): Boolean {
+        return if (isActiveInternet(PosApp.instance.applicationContext)) {
+            hasActiveInternet();
+        } else {
+            false
+        }
+    }
+
+    fun checkActiveInternetConnection(listener: NetworkConnectionCallBack) {
+        isCheckOnlineStatus = true
         CoroutineScope(Dispatchers.IO).launch {
-            while (!onlineStatus) {
-                if (isOnline(context)) {
-                    try {
-                        val urlConnection: HttpURLConnection =
-                            URL("http://www.google.com").openConnection() as HttpURLConnection
-                        urlConnection.setRequestProperty("User-Agent", "Test")
-                        urlConnection.setRequestProperty("Connection", "close")
-                        urlConnection.setConnectTimeout(1500)
-                        urlConnection.connect()
-                        if (urlConnection.getResponseCode() == 200) {
-                            listener.onAvailable()
-                            onlineStatus = true
-                        }
-                    } catch (e: IOException) {
-                        listener.onLost()
-                    }
-                } else {
+            while (isCheckOnlineStatus) {
+                if (isOnline())
+                    listener.onAvailable()
+                else
                     listener.onLost()
-                }
                 delay(30000)
             }
         }
+    }
+
+    fun cancelNetworkCheck() {
+        isCheckOnlineStatus = false
     }
 
     interface NetworkConnectionCallBack {
