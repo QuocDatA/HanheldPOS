@@ -39,9 +39,6 @@ class TableInputFragment(
             override fun onCancel() {
                 viewModel.onCancel();
             }
-
-
-
         });
     }
 
@@ -58,18 +55,6 @@ class TableInputFragment(
         fun onCompleteTable(numberCustomer : Int)
     }
 
-    companion object{
-        fun getInstance(
-            listener: TableInputListener? = null
-        ): TableInputFragment {
-            return TableInputFragment(
-                listener = listener
-            ).apply {
-
-            };
-        }
-    }
-
     override fun onCancel() {
         navigator.goOneBack();
     }
@@ -77,7 +62,7 @@ class TableInputFragment(
     override fun onComplete() {
         navigator.goOneBack();
         if (!keyBoardVM.input.value?.trim().equals(""))
-        listener?.onCompleteTable(Integer.valueOf(keyBoardVM.input.value));
+        listener?.onCompleteTable(Integer.valueOf(keyBoardVM.input.value.toString()));
     }
 
 }

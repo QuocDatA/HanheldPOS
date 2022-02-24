@@ -136,7 +136,7 @@ class TableFragment : BaseFragment<FragmentTableBinding, TableVM>(), TableUV {
                 viewModel.mLastTimeClick = SystemClock.elapsedRealtime();
 
                 // Show Table input number customer
-                navigator.goTo(TableInputFragment.getInstance(listener = object :
+                navigator.goTo(TableInputFragment(listener = object :
                     TableInputFragment.TableInputListener {
                     override fun onCompleteTable(numberCustomer: Int) {
                         tableAdapter.notifyItemChanged(adapterPosition);

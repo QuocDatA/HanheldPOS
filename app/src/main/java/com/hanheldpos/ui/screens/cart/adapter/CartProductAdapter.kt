@@ -24,7 +24,7 @@ class CartProductAdapter(
         val item = getItem(position);
         holder.bindItem(item);
         val binding = (holder.binding as ItemCartProductBinding);
-        binding.layoutTitle.setOnClickListener { listener.onItemClick(position, item); }
+        binding.layoutRoot.setOnClickListener { listener.onItemClick(position, item); }
         binding.discountDetail.setClickListener {
              if (item.discountUsersList != null)  listener.onDiscountDelete(
                 position,
