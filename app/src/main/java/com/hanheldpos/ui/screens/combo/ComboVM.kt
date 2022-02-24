@@ -46,20 +46,25 @@ class ComboVM : BaseUiViewModel<ComboUV>() {
     fun initLifeCycle(owner: LifecycleOwner) {
         owner.lifecycle.addObserver(this);
 
-        bundleInCart.observe(owner, {
+        bundleInCart.observe(owner) {
             updateTotalPrice();
-        });
+        };
     }
 
     fun initDefaultComboList(
         listGroup: MutableList<GroupBundle>,
         diningOption: DiningOption,
-        menuOrderId : String
+        menuOrderId: String
     ) {
 
         bundleInCart.value!!.let { combo ->
             listGroup.map { group ->
-                val listRegular: List<Regular> = group.productsForChoose(menuResp = DataHelper.menuLocalStorage!!,menuOrderId,diningOption,combo.proOriginal!!);
+                val listRegular: List<Regular> = group.productsForChoose(
+                    menuResp = DataHelper.menuLocalStorage!!,
+                    menuOrderId,
+                    diningOption,
+                    combo.proOriginal!!
+                );
                 ItemComboGroup(
                     groupBundle = group,
                     productsForChoose = listRegular

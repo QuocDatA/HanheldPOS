@@ -1,7 +1,6 @@
 package com.hanheldpos.ui.screens.discount.discount_type.percentage
 
 import androidx.core.widget.doAfterTextChanged
-import androidx.fragment.app.setFragmentResultListener
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentDiscountPercentageBinding
 import com.hanheldpos.model.discount.DiscountTypeEnum
@@ -28,7 +27,17 @@ class DiscountPercentageFragment(private val listener : DiscountTypeFragment.Dis
     }
 
     override fun initView() {
-
+        requireActivity().supportFragmentManager.setFragmentResultListener("saveDiscount",this) { _, bundle ->
+            if (bundle.getSerializable("DiscountTypeFor") == DiscountTypeFor.PERCENTAGE && validChooseDiscount()) {
+                listener.discountUserChoose(
+                    DiscountUser(
+                        DiscountName = viewModel.title.value!!,
+                        DiscountValue = viewModel.percentValue,
+                        DiscountType = DiscountTypeEnum.PERCENT.value
+                    )
+                )
+            }
+        }
         binding.percentDiscount.let { input ->
             var isEditing = false
             input.doAfterTextChanged {
@@ -50,28 +59,25 @@ class DiscountPercentageFragment(private val listener : DiscountTypeFragment.Dis
     }
 
     override fun initAction() {
-        viewModel.percent.observe(this,{
-            listener.validDiscount(viewModel.percentValue > 0.0 && !viewModel.title.value.isNullOrEmpty());
-        });
-        viewModel.title.observe(this,{
-            listener.validDiscount(viewModel.percentValue > 0.0 && !viewModel.title.value.isNullOrEmpty());
-        })
+        viewModel.percent.observe(this) {
+            listener.validDiscount(validDiscount());
+        };
+        viewModel.title.observe(this) {
+            listener.validDiscount(validDiscount());
+        }
     }
 
     override fun onResume() {
         super.onResume()
-        requireActivity().supportFragmentManager.setFragmentResultListener("saveDiscount",this) { _, bundle ->
-            if (bundle.getSerializable("DiscountTypeFor") == DiscountTypeFor.PERCENTAGE) {
-                listener.discountUserChoose(
-                    DiscountUser(
-                        DiscountName = viewModel.title.value!!,
-                        DiscountValue = viewModel.percentValue,
-                        DiscountType = DiscountTypeEnum.PERCENT.value
-                    )
-                )
-            }
-        }
 
-        listener.validDiscount(viewModel.percentValue > 0.0 && !viewModel.title.value.isNullOrEmpty());
+        listener.validDiscount(validDiscount());
+    }
+
+    private fun validChooseDiscount() : Boolean {
+        return (viewModel.percentValue > 0.0 && !viewModel.title.value.isNullOrEmpty())
+    }
+
+    private fun validDiscount() : Boolean {
+        return validChooseDiscount() || (viewModel.percentValue == 0.0 && viewModel.title.value.isNullOrEmpty())
     }
 }

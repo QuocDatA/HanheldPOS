@@ -36,9 +36,14 @@ class DiscountCompFragment(
 
     @SuppressLint("NotifyDataSetChanged")
     override fun initView() {
+        requireActivity().supportFragmentManager.setFragmentResultListener("saveDiscount",this) { _, bundle ->
+            if (bundle.getSerializable("DiscountTypeFor") == DiscountTypeFor.COMP) {
+                viewModel.reasonChosen.value?.run {
+                    listener.compReasonChoose(viewModel.reasonChosen.value!!);
+                }
+            }
 
-
-
+        }
 
         adapter = DiscountReasonAdapter(
             comp,
@@ -85,14 +90,7 @@ class DiscountCompFragment(
 
     override fun onResume() {
         super.onResume()
-        requireActivity().supportFragmentManager.setFragmentResultListener("saveDiscount",this) { _, bundle ->
-            if (bundle.getSerializable("DiscountTypeFor") == DiscountTypeFor.COMP) {
-                viewModel.reasonChosen.value?.run {
-                    listener.compReasonChoose(viewModel.reasonChosen.value!!);
-                }
-            }
 
-        }
 
         listener.validDiscount(viewModel.reasonChosen.value != comp);
     }

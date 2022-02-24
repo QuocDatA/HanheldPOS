@@ -9,15 +9,11 @@ import com.hanheldpos.data.api.pojo.product.VariantsGroup
 import com.hanheldpos.databinding.FragmentProductDetailBinding
 import com.hanheldpos.extension.notifyValueChange
 import com.hanheldpos.model.UserHelper
-import com.hanheldpos.model.cart.GroupBundle
-import com.hanheldpos.model.cart.ModifierCart
-import com.hanheldpos.model.cart.Regular
-import com.hanheldpos.model.cart.VariantCart
+import com.hanheldpos.model.cart.*
 import com.hanheldpos.model.combo.ItemActionType
 import com.hanheldpos.model.discount.DiscountApplyToType
 import com.hanheldpos.model.discount.DiscountTypeFor
 import com.hanheldpos.model.discount.DiscountUser
-import com.hanheldpos.model.cart.BaseProductInCart
 import com.hanheldpos.model.product.GroupExtra
 import com.hanheldpos.model.product.ItemExtra
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
@@ -27,6 +23,9 @@ import com.hanheldpos.ui.screens.discount.discount_type.DiscountTypeFragment
 import com.hanheldpos.ui.screens.home.order.OrderFragment
 import com.hanheldpos.ui.screens.product.adapter.GroupModifierAdapter
 import com.hanheldpos.ui.screens.product.adapter.GroupVariantAdapter
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class ProductDetailFragment(
     private val regular: Regular,
@@ -134,12 +133,7 @@ class ProductDetailFragment(
         viewModel.regularInCart.value = regular;
         viewModel.maxQuantity = quantityCanChoose;
 
-
-        groupVariantAdapter.submitList(viewModel.listVariantGroups);
-        groupModifierAdapter.submitList(viewModel.listModifierGroups);
-
         regular.apply {
-
             proOriginal?.VariantsGroup.let {
                 if (it == null) {
                     binding.groupVariants.visibility = View.GONE;
@@ -153,7 +147,6 @@ class ProductDetailFragment(
                 if (modifiers == null) {
                     binding.groupModifiers.visibility = View.GONE;
                 } else
-
                     viewModel.listModifierGroups.addAll(modifiers.map {
                         GroupExtra(
                             modifierExtra = it,
@@ -170,6 +163,16 @@ class ProductDetailFragment(
                     })
             }
         }
+        CoroutineScope(Dispatchers.IO).launch {
+            while (!isVisible) {
+            }
+            launch(Dispatchers.Main) {
+                groupVariantAdapter.submitList(viewModel.listVariantGroups);
+                groupModifierAdapter.submitList(viewModel.listModifierGroups);
+            }
+
+        }
+
 
     }
 
@@ -202,11 +205,6 @@ class ProductDetailFragment(
             viewModel.regularInCart.value!!.apply {
                 this.sku = item.Sku
                 this.variants = item.GroupValue;
-               /* if (productBundle != null)
-                    this.priceOverride =
-                        viewModel.regularInCart.value!!.groupPrice(groupBundle!!, productBundle)
-                else
-                    this.priceOverride = priceOverride*/
             }
             viewModel.regularInCart.notifyValueChange();
             return;
@@ -264,11 +262,11 @@ class ProductDetailFragment(
     }
 
     override fun onAddCart(item: BaseProductInCart) {
-        if(viewModel.isValidDiscount.value != true && action == ItemActionType.Modify) return;
+        if (viewModel.numberQuantity.value ?: 0 > 0 && (viewModel.isValidDiscount.value == false && action == ItemActionType.Modify)) return;
         requireActivity().supportFragmentManager.setFragmentResult(
             "saveDiscount",
             Bundle().apply { putSerializable("DiscountTypeFor", viewModel.typeDiscountSelect) });
-        getBack();
+        getBack()
         listener?.onCartAdded(item, viewModel.actionType.value!!);
     }
 

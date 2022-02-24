@@ -7,12 +7,10 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.IdRes
 import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
 import com.hanheldpos.ui.base.activity.BaseActivity
@@ -83,7 +81,7 @@ abstract class BaseFragment<T : ViewDataBinding, VM : BaseViewModel> : Fragment(
         initData()
         initAction()
 
-        viewModel.viewState.observe(viewLifecycleOwner, { viewState ->
+        viewModel.viewState.observe(viewLifecycleOwner) { viewState ->
             viewState?.run {
                 when (viewState) {
                     ViewState.SHOW_LOADING -> showLoading(true)
@@ -93,7 +91,9 @@ abstract class BaseFragment<T : ViewDataBinding, VM : BaseViewModel> : Fragment(
                     }
                 }
             }
-        })
+        }
+
+
     }
 
     val navigator: FragmentNavigator

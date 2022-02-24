@@ -25,9 +25,7 @@ import com.hanheldpos.ui.screens.combo.adapter.ComboGroupAdapter
 import com.hanheldpos.ui.screens.discount.discount_type.DiscountTypeFragment
 import com.hanheldpos.ui.screens.home.order.OrderFragment
 import com.hanheldpos.ui.screens.product.ProductDetailFragment
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 class ComboFragment(
     private val combo: Combo,
@@ -123,7 +121,8 @@ class ComboFragment(
         viewModel.bundleInCart.value = combo;
         viewModel.actionType.value = action;
         viewModel.maxQuantity = quantityCanChoose;
-        GlobalScope.launch(Dispatchers.IO) {
+        CoroutineScope(Dispatchers.IO).launch {
+            while(!isVisible){}
             viewModel.getCombo()?.let {
                 viewModel.initDefaultComboList(
                     it,
@@ -132,13 +131,10 @@ class ComboFragment(
                 )
             };
         }
-
-
     }
 
     override fun initAction() {
     }
-
 
     override fun onBack() {
         navigator.goOneBack();
@@ -159,7 +155,7 @@ class ComboFragment(
                 comboGroupAdapter.notifyDataSetChanged()
             }
             else->{
-                navigator.goToWithCustomAnimation(ProductDetailFragment(
+                navigator.goTo(ProductDetailFragment(
                     regular = item.clone(),
                     groupBundle = group.groupBundle,
                     productBundle = this.combo.proOriginal,
@@ -180,6 +176,7 @@ class ComboFragment(
 
 
     override fun cartAdded(item: BaseProductInCart, action: ItemActionType) {
+        if (viewModel.numberQuantity.value ?: 0 > 0 && (viewModel.isValidDiscount.value == false && action == ItemActionType.Modify)) return;
         requireActivity().supportFragmentManager.setFragmentResult("saveDiscount", Bundle().apply { putSerializable("DiscountTypeFor", viewModel.typeDiscountSelect) });
         onBack();
         listener.onCartAdded(item, action);
@@ -187,7 +184,7 @@ class ComboFragment(
 
     @SuppressLint("NotifyDataSetChanged")
     override fun onLoadComboSuccess(list: List<ItemComboGroup>) {
-        GlobalScope.launch(Dispatchers.Main) {
+        CoroutineScope(Dispatchers.Main).launch {
             comboGroupAdapter.submitList(list.toMutableList());
             comboGroupAdapter.notifyDataSetChanged();
         }

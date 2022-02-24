@@ -1,5 +1,6 @@
 package com.hanheldpos.ui.screens.discount.discount_type.automatic
 
+import android.annotation.SuppressLint
 import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.MutableLiveData
 import com.hanheldpos.R
@@ -11,6 +12,7 @@ import com.hanheldpos.model.cart.BaseProductInCart
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.discount.discount_type.discount_code.adapter.DiscountCodeAdapter
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -56,7 +58,7 @@ class DiscountAutomaticFragment(private val cart: CartModel?) :
 
     override fun initData() {
         itemSelected.observe(this) {
-            GlobalScope.launch(Dispatchers.IO) {
+            CoroutineScope(Dispatchers.IO).launch() {
                 viewModel.loadDiscountAutomatic(itemSelected.value, cart);
             }
         };
@@ -67,6 +69,7 @@ class DiscountAutomaticFragment(private val cart: CartModel?) :
 
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun loadDataDiscountCode(list: List<DiscountResp>) {
         discountCodeAdapter.submitList(list);
         discountCodeAdapter.notifyDataSetChanged();

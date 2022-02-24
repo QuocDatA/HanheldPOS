@@ -11,6 +11,7 @@ import com.hanheldpos.model.discount.DiscountTypeFor
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.discount.discount_type.discount_code.adapter.DiscountCodeAdapter
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -35,11 +36,13 @@ class DiscountCodeFragment(private val applyToType: DiscountApplyToType) :
     }
 
     override fun initView() {
-        setFragmentResultListener("saveDiscount") { _, bundle ->
+        requireActivity().supportFragmentManager.setFragmentResultListener("saveDiscount",this) { _, bundle ->
             if (bundle.getSerializable("DiscountTypeFor") == DiscountTypeFor.DISCOUNT_CODE) {
 
             }
+
         }
+
         discountCodeAdapter =
             DiscountCodeAdapter(listener = object : BaseItemClickListener<DiscountResp> {
                 override fun onItemClick(adapterPosition: Int, item: DiscountResp) {
@@ -54,7 +57,7 @@ class DiscountCodeFragment(private val applyToType: DiscountApplyToType) :
 
     override fun initData() {
         if (applyToType == DiscountApplyToType.ORDER_DISCOUNT_APPLY_TO)
-            GlobalScope.launch(Dispatchers.IO) {
+            CoroutineScope(Dispatchers.IO).launch {
                 viewModel.initData();
             }
 
@@ -66,7 +69,7 @@ class DiscountCodeFragment(private val applyToType: DiscountApplyToType) :
 
     @SuppressLint("NotifyDataSetChanged")
     override fun loadDataDiscountCode(list: List<DiscountResp>) {
-            GlobalScope.launch (Dispatchers.Main) {
+            CoroutineScope(Dispatchers.Main).launch {
                 discountCodeAdapter.submitList(list);
                 discountCodeAdapter.notifyDataSetChanged();
             }

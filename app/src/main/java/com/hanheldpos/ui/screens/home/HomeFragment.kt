@@ -73,7 +73,7 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
             adapter = paperAdapter;
             paperAdapter.submitList(fragmentMap.values)
         }
-        binding.toolbarLayout.spnDiningOption.isEnabled = false
+
         binding.toolbarLayout.spnDiningOptionBox.setOnClickListener {
 
             val diningOptions: MutableList<DiningOption> =
@@ -89,8 +89,6 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
                     return@setOnClickListener
                 }
             }
-
-            //binding.toolbarLayout.spnDiningOption.performClick()
         }
         initSpinner();
     }
@@ -176,20 +174,6 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
 
                 override fun onNothingSelected(parent: AdapterView<*>?) {}
             }
-        binding.toolbarLayout.spnDiningOption.onItemSelectedListener =
-            object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(
-                    parent: AdapterView<*>?,
-                    view: View?,
-                    position: Int,
-                    id: Long
-                ) {
-                    val item = parent?.getItemAtPosition(position) as DropDownItem
-                    CurCartData.updatePriceList((item.realItem as SubDiningOptionItem).LocationGuid)
-                }
-
-                override fun onNothingSelected(parent: AdapterView<*>?) {}
-            }
 
         // Init Page
         screenViewModel.showTablePage();
@@ -205,7 +189,6 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
 
         //init SubDiningOption
         diningOptionSpinnerAdapter = DiningOptionSpinnerAdapter(fragmentContext)
-        binding.toolbarLayout.spnDiningOption.adapter = diningOptionSpinnerAdapter
     }
 
     private fun switchToPage(page: HomePage?) {

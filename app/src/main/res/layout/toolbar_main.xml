@@ -30,7 +30,7 @@
                 android:src="@drawable/ic_toolbar_menu"
                 tools:ignore="ContentDescription" />
 
-            <androidx.appcompat.widget.AppCompatSpinner
+            <!--<androidx.appcompat.widget.AppCompatSpinner
                 android:id="@+id/spnDiningOption"
                 style="@style/SpinnerWithNoArrow"
                 android:layout_width="wrap_content"
@@ -47,7 +47,7 @@
                 android:focusable="false"
                 android:gravity="start"
                 android:minWidth="@dimen/_100sdp"
-                tools:listitem="@layout/item_dropdown_spinner_align_left" />
+                tools:listitem="@layout/item_dropdown_spinner_align_left" />-->
 
             <FrameLayout
                 android:id="@+id/toolbarDiningOption"

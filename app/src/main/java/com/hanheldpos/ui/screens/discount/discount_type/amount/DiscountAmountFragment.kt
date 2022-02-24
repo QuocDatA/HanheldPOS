@@ -1,7 +1,6 @@
 package com.hanheldpos.ui.screens.discount.discount_type.amount
 
 import androidx.core.widget.doAfterTextChanged
-import androidx.fragment.app.setFragmentResultListener
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentDiscountAmountBinding
 import com.hanheldpos.model.discount.DiscountTypeEnum
@@ -32,7 +31,7 @@ class DiscountAmountFragment(private val listener: DiscountTypeFragment.Discount
 
     override fun initView() {
         requireActivity().supportFragmentManager.setFragmentResultListener("saveDiscount",this) { _, bundle ->
-            if (bundle.getSerializable("DiscountTypeFor") == DiscountTypeFor.AMOUNT) {
+            if (bundle.getSerializable("DiscountTypeFor") == DiscountTypeFor.AMOUNT && validChooseDiscount()) {
                 listener.discountUserChoose(
                     DiscountUser(
                         DiscountName = viewModel.title.value!!,
@@ -76,15 +75,23 @@ class DiscountAmountFragment(private val listener: DiscountTypeFragment.Discount
 
     override fun initAction() {
         viewModel.amount.observe(this) {
-            listener.validDiscount(viewModel.amountValue > 0.0 && !viewModel.title.value.isNullOrEmpty());
+            listener.validDiscount(validDiscount());
         };
         viewModel.title.observe(this) {
-            listener.validDiscount(viewModel.amountValue > 0.0 && !viewModel.title.value.isNullOrEmpty());
+            listener.validDiscount(validDiscount());
         }
     }
 
     override fun onResume() {
         super.onResume()
-        listener.validDiscount(viewModel.amountValue > 0.0 && !viewModel.title.value.isNullOrEmpty());
+        listener.validDiscount(validDiscount());
+    }
+
+    private fun validChooseDiscount() : Boolean {
+        return (viewModel.amountValue > 0.0 && !viewModel.title.value.isNullOrEmpty())
+    }
+
+    private fun validDiscount(): Boolean {
+        return validChooseDiscount() || (viewModel.amountValue == 0.0 && viewModel.title.value.isNullOrEmpty())
     }
 }
