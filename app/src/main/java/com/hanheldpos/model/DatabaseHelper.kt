@@ -17,4 +17,5 @@ object DatabaseHelper {
             return OrderCompletedLocalRepo(posDatabase.orderCompleted());
         }
 
+
 }
