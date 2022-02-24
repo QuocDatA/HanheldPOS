@@ -2,8 +2,11 @@ package com.hanheldpos.ui.screens.cart
 
 import android.content.Context
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.viewModelScope
 import com.hanheldpos.R
+import com.hanheldpos.database.DatabaseMapper
 import com.hanheldpos.model.DataHelper
+import com.hanheldpos.model.DatabaseHelper
 import com.hanheldpos.model.OrderHelper
 import com.hanheldpos.model.cart.CartConverter
 import com.hanheldpos.model.cart.CartModel
@@ -12,6 +15,8 @@ import com.hanheldpos.model.cart.payment.PaymentStatus
 import com.hanheldpos.model.order.OrderStatus
 import com.hanheldpos.ui.base.dialog.AppAlertDialog
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class CartVM : BaseUiViewModel<CartUV>() {
 
@@ -71,34 +76,27 @@ class CartVM : BaseUiViewModel<CartUV>() {
         showLoading(true)
         try {
             cart.orderCode = OrderHelper.generateOrderIdByFormat();
-
-            if (DataHelper.ordersCompletedLocalStorage == null) {
-                DataHelper.ordersCompletedLocalStorage = mutableListOf(
-                    CartConverter.toOrder(
-                        cart,
-                        OrderStatus.COMPLETED.value,
-                        PaymentStatus.PAID.value
+            viewModelScope.launch(Dispatchers.IO) {
+                DatabaseHelper.ordersCompleted.insert(
+                    DatabaseMapper.mappingOrderCompletedReqToEntity(
+                        CartConverter.toOrder(
+                            cart,
+                            OrderStatus.COMPLETED.value,
+                            PaymentStatus.PAID.value
+                        )
                     )
-                );
-            } else {
-                DataHelper.ordersCompletedLocalStorage =
-                    DataHelper.ordersCompletedLocalStorage.apply {
-                        (this as MutableList).add(
-                            CartConverter.toOrder(
-                                cart,
-                                OrderStatus.COMPLETED.value,
-                                PaymentStatus.PAID.value
-                            )
+                )
+                launch(Dispatchers.Main) {
+                    showLoading(false);
+                    uiCallback?.onBillSuccess();
+                    AppAlertDialog.get()
+                        .show(
+                            "Notification",
+                            "Successful bill payment",
                         );
-                    }
+                }
             }
-            showLoading(false);
-            uiCallback?.onBillSuccess();
-            AppAlertDialog.get()
-                .show(
-                    "Notification",
-                    "Successful bill payment",
-                );
+
 
         } catch (ex: Exception) {
             showLoading(false)

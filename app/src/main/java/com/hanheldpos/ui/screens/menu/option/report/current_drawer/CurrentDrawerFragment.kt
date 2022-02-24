@@ -10,11 +10,16 @@ import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.cashdrawer.report.ReportCashDrawerResp
 import com.hanheldpos.databinding.FragmentCurrentDrawerBinding
 import com.hanheldpos.model.DataHelper
+import com.hanheldpos.model.DatabaseHelper
 import com.hanheldpos.ui.base.dialog.AppAlertDialog
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.cashdrawer.enddrawer.EndDrawerFragment
 import com.hanheldpos.ui.screens.menu.option.report.current_drawer.adapter.ReportDrawerInfoAdapter
 import com.hanheldpos.ui.screens.menu.option.report.current_drawer.payin_payout.PayInPayOutFragment
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 class CurrentDrawerFragment : BaseFragment<FragmentCurrentDrawerBinding, CurrentDrawerVM>(),
     CurrentDrawerUV {
@@ -74,24 +79,37 @@ class CurrentDrawerFragment : BaseFragment<FragmentCurrentDrawerBinding, Current
     }
 
     override fun onOpenEndDrawer() {
-        if (!DataHelper.ordersCompletedLocalStorage.isNullOrEmpty()) {
-            AppAlertDialog.get().show(
-                getString(R.string.notification),
-                getString(R.string.please_sync_local_data_before_ending_this_cash_drawer)
-            )
-        } else{
-            if (this::report.isInitialized) {
-                navigator.goTo(EndDrawerFragment(report = report));
+        CoroutineScope(Dispatchers.IO).launch {
+            val ordersCompletedFlow = DatabaseHelper.ordersCompleted.getAll();
+            ordersCompletedFlow.collectLatest { ordersCompleted ->
+                if (!ordersCompleted.isNullOrEmpty()) {
+                    launch(Dispatchers.Main) {
+                        AppAlertDialog.get().show(
+                            getString(R.string.notification),
+                            getString(R.string.please_sync_local_data_before_ending_this_cash_drawer)
+                        )
+                    }
+
+                } else {
+
+                    if (this@CurrentDrawerFragment::report.isInitialized) {
+                        launch(Dispatchers.Main) {
+                            navigator.goTo(EndDrawerFragment(report = report));
+                        }
+
+                    }
+
+                }
             }
 
         }
 
 
-
     }
 
     override fun onOpenPayInPayOut() {
-        navigator.goTo(PayInPayOutFragment(listener = object : PayInPayOutFragment.PayInOutCallback{
+        navigator.goTo(PayInPayOutFragment(listener = object :
+            PayInPayOutFragment.PayInOutCallback {
             override fun onLoadReport() {
                 viewModel.getCashDrawerDetail(requireContext());
             }
