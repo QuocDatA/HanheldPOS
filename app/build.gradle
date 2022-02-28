@@ -12,8 +12,8 @@ plugins {
 
 // ----- Apk info
 String APK_NAME = "[DEV]HanheldPos"
-int VERSION_CODE = 42
-String VERSION_NAME = "0.4.2"
+int VERSION_CODE = 43
+String VERSION_NAME = "0.4.3"
 
 static def getDate() {
     return new Date().format("yyyyMMdd")
@@ -155,4 +155,7 @@ dependencies {
 
     // optional - Kotlin Extensions and Coroutines support for Room
     implementation("androidx.room:room-ktx:$room_version")
+
+    // download file lib
+    implementation 'com.mindorks.android:prdownloader:0.6.0'
 }

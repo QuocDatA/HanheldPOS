@@ -64,7 +64,11 @@ class DeviceCodeVM : BaseUiViewModel<DeviceCodeUV>() {
 
                 override fun onError(message: String?) {
                     showLoading(false);
-                    showError(R.string.failed_to_load_data.toString());
+                    showError(context.getString(R.string.failed_to_load_data));
+                }
+
+                override fun onDownloadResource() {
+                    showLoading(false)
                 }
             });
     }

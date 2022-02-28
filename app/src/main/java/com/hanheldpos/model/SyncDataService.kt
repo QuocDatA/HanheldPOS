@@ -10,6 +10,7 @@ import com.hanheldpos.data.api.pojo.floor.FloorResp
 import com.hanheldpos.data.api.pojo.order.menu.MenuResp
 import com.hanheldpos.data.api.pojo.order.settings.OrderSettingResp
 import com.hanheldpos.data.api.pojo.payment.PaymentMethodResp
+import com.hanheldpos.data.api.pojo.resource.ResourceResp
 import com.hanheldpos.data.api.pojo.system.AddressTypeResp
 import com.hanheldpos.data.repository.BaseResponse
 import com.hanheldpos.data.repository.base.BaseRepoCallback
@@ -19,12 +20,15 @@ import com.hanheldpos.data.repository.floor.FloorRepo
 import com.hanheldpos.data.repository.menu.MenuRepo
 import com.hanheldpos.data.repository.order.OrderRepo
 import com.hanheldpos.data.repository.payment.PaymentRepo
+import com.hanheldpos.data.repository.resource.ResourceRepo
 import com.hanheldpos.data.repository.system.SystemRepo
 import com.hanheldpos.ui.base.viewmodel.BaseViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class SyncDataService : BaseViewModel() {
+
+    private var isDownloading = true
 
     //var context : Context? = null;
     private var menuRepo: MenuRepo = MenuRepo();
@@ -33,7 +37,8 @@ class SyncDataService : BaseViewModel() {
     private var feeRepo: FeeRepo = FeeRepo();
     private var discountRepo: DiscountRepo = DiscountRepo();
     private var paymentRepo: PaymentRepo = PaymentRepo();
-    private var systemRepo : SystemRepo = SystemRepo();
+    private var systemRepo: SystemRepo = SystemRepo();
+    private var resourceRepo: ResourceRepo = ResourceRepo()
 
     fun fetchAllData(context: Context?, listener: SyncDataServiceListener) {
         val location = UserHelper.getLocationGuid()
@@ -178,10 +183,61 @@ class SyncDataService : BaseViewModel() {
             }
 
             override fun showMessage(message: String?) {
-                onDataFailure(message,listener);
+                onDataFailure(message, listener);
             }
 
         })
+
+        resourceRepo.getResource(
+            userGuid = userGuid,
+            locationGuid = location,
+            callback = object : BaseRepoCallback<BaseResponse<List<ResourceResp>>?> {
+                override fun apiResponse(data: BaseResponse<List<ResourceResp>>?) {
+                    if (data == null || data.DidError) {
+                        onDataFailure(context?.getString(R.string.failed_to_load_data), listener)
+                    } else {
+                        data.Model?.forEach { resourceResp ->
+                            isDownloading = !DownloadService.checkFileExist(resourceResp.Name)
+                        }
+                        if (isDownloading) {
+                            listener.onDownloadResource()
+                            DownloadService.initDownloadService(context!!)
+
+                            DownloadService.downloadFile(
+                                data.Model!!,
+                                listener = object : DownloadService.DownloadFileCallback {
+                                    override fun onDownloadStartOrResume() {
+
+                                    }
+
+                                    override fun onPause() {
+                                        isDownloading = false
+                                    }
+
+                                    override fun onCancel() {
+                                        isDownloading = false
+                                    }
+
+                                    override fun onFail() {
+                                        isDownloading = false
+                                        showMessage(context.getString(R.string.failed_to_load_data))
+                                    }
+
+                                    override fun onComplete() {
+                                        isDownloading = false
+                                        startMappingData(listener)
+                                    }
+                                })
+                        }
+                    }
+                }
+
+                override fun showMessage(message: String?) {
+
+                }
+
+            }
+        );
     }
 
     private fun onDataFailure(message: String?,listener: SyncDataServiceListener) {
@@ -206,7 +262,10 @@ class SyncDataService : BaseViewModel() {
             it.paymentMethodsLocalStorage ?: return;
             it.addressTypesLocalStorage ?: return;
         }
-        DataHelper.numberIncreaseOrder = DataHelper.deviceCodeLocalStorage?.SettingsId?.firstOrNull()?.NumberIncrement?.toLong() ?: 0;
+        DataHelper.numberIncreaseOrder =
+            DataHelper.deviceCodeLocalStorage?.SettingsId?.firstOrNull()?.NumberIncrement?.toLong()
+                ?: 0;
+        if (isDownloading) return
         listener.onLoadedResources();
 
     }
@@ -214,5 +273,6 @@ class SyncDataService : BaseViewModel() {
     interface SyncDataServiceListener {
         fun onLoadedResources();
         fun onError(message: String?);
+        fun onDownloadResource()
     }
 }
