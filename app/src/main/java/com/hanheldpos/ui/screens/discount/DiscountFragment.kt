@@ -1,6 +1,7 @@
 package com.hanheldpos.ui.screens.discount
 
 import android.os.Bundle
+import android.view.View
 import androidx.fragment.app.activityViewModels
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.order.settings.Reason
@@ -33,7 +34,14 @@ class DiscountFragment(private val listener: DiscountCallback) :
     }
 
     override fun initView() {
+        viewModel.typeDiscountSelect.observe(this) {
+            if (it in mutableListOf(DiscountTypeFor.DISCOUNT_CODE,DiscountTypeFor.AUTOMATIC)){
+                binding.btnSave.visibility = View.GONE
+            }else {
+                binding.btnSave.visibility = View.VISIBLE
+            }
 
+        }
     }
 
     override fun initData() {
@@ -60,7 +68,7 @@ class DiscountFragment(private val listener: DiscountCallback) :
                     }
 
                     override fun discountFocus(type: DiscountTypeFor) {
-                        viewModel.typeDiscountSelect = type;
+                        viewModel.typeDiscountSelect.postValue(type) ;
                     }
 
                     override fun validDiscount(isValid: Boolean) {
@@ -76,7 +84,7 @@ class DiscountFragment(private val listener: DiscountCallback) :
         binding.btnSave.setOnClickListener {
             requireActivity().supportFragmentManager.setFragmentResult(
                 "saveDiscount",
-                Bundle().apply { putSerializable("DiscountTypeFor", viewModel.typeDiscountSelect) });
+                Bundle().apply { putSerializable("DiscountTypeFor", viewModel.typeDiscountSelect.value) });
         }
     }
 

@@ -44,6 +44,7 @@
     <string name="customer_info">Customer Info</string>
     <string name="special_instruction_for_order">Special Instruction for Order</string>
     <string name="items">Item(s)</string>
+    <string name="item">Item</string>
     <string name="payment_method">Payment Method</string>
     <string name="view_details">View Details</string>
     <string name="asap_20_mins">ASAP (20 mins)</string>

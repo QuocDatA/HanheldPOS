@@ -2,6 +2,7 @@ package com.hanheldpos.data.api.pojo.discount
 
 import android.os.Parcelable
 import com.google.gson.Gson
+import com.google.gson.annotations.SerializedName
 import com.google.gson.reflect.TypeToken
 import com.hanheldpos.data.api.pojo.customer.CustomerGroup
 import com.hanheldpos.data.api.pojo.customer.CustomerResp
@@ -30,6 +31,7 @@ data class DiscountResp(
     val DateRange: Int,
     val Description: String,
     val DiningOption: List<DiningOptionDiscount>,
+    @SerializedName("DiscountApplyTo ")
     val DiscountApplyTo: Int,
     val DiscountAutomatic: Boolean,
     val DiscountAutomaticText: String,
