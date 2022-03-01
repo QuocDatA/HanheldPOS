@@ -22,7 +22,7 @@ object OrderMapper : OrderMapping() {
         subtotal: Double?,
         totalDiscounts: Double?
     ): List<OrderFee> {
-        return fees.filter { f -> f.FeeTypeId == feeType }
+        return fees.filter { f -> FeeType.fromInt(f.FeeTypeId) == feeType }
             .map { fee -> iMapperFee(fee, subtotal ?: 0.0, totalDiscounts ?: 0.0) }
     }
 
@@ -97,12 +97,12 @@ object OrderMapper : OrderMapping() {
 
         val totalDiscount = regular.totalDiscount(regular.proOriginal!!);
         val totalCompVoid = regular.totalComp(regular.proOriginal!!);
-        val totalService = regular.fees?.firstOrNull { fee -> fee.FeeTypeId == FeeType.ServiceFee }
+        val totalService = regular.fees?.firstOrNull { fee ->FeeType.fromInt(fee.FeeTypeId)  == FeeType.ServiceFee }
             ?.price(subtotal, totalDiscount);
         val totalSurcharge =
-            regular.fees?.firstOrNull { fee -> fee.FeeTypeId == FeeType.SurchargeFee }
+            regular.fees?.firstOrNull { fee -> FeeType.fromInt(fee.FeeTypeId) == FeeType.SurchargeFee }
                 ?.price(subtotal, totalDiscount);
-        val totalTax = regular.fees?.firstOrNull { fee -> fee.FeeTypeId == FeeType.TaxFee }
+        val totalTax = regular.fees?.firstOrNull { fee -> FeeType.fromInt(fee.FeeTypeId) == FeeType.TaxFee }
             ?.price(subtotal, totalDiscount);
 
         val totalFee = regular.totalFee(subtotal, totalDiscount);
@@ -254,12 +254,12 @@ object OrderMapper : OrderMapping() {
         val totalPrice = proModSubtotal * bundle.quantity!!;
 
         val totalDiscount = bundle.totalDiscount();
-        val totalService = bundle.fees?.firstOrNull { fee -> fee.FeeTypeId == FeeType.ServiceFee }
+        val totalService = bundle.fees?.firstOrNull { fee -> FeeType.fromInt(fee.FeeTypeId) == FeeType.ServiceFee }
             ?.price(subtotal, totalDiscount);
         val totalSurcharge =
-            bundle.fees?.firstOrNull { fee -> fee.FeeTypeId == FeeType.SurchargeFee }
+            bundle.fees?.firstOrNull { fee -> FeeType.fromInt(fee.FeeTypeId) == FeeType.SurchargeFee }
                 ?.price(subtotal, totalDiscount);
-        val totalTax = bundle.fees?.firstOrNull { fee -> fee.FeeTypeId == FeeType.TaxFee }
+        val totalTax = bundle.fees?.firstOrNull { fee -> FeeType.fromInt(fee.FeeTypeId) == FeeType.TaxFee }
             ?.price(subtotal, totalDiscount);
         val totalFee = bundle.totalFee(subtotal, totalDiscount);
         val grossPrice = bundle.grossPrice(subtotal, totalFee);

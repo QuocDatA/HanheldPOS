@@ -209,7 +209,7 @@ object OrderConverter {
             Fee(
                 _id = fee._id,
                 Id = fee.FeeType,
-                FeeTypeId = FeeType.ServiceFee,
+                FeeTypeId = FeeType.ServiceFee.value,
                 Value = fee.FeeValue,
                 Name = fee.FeeName,
                 Total = fee.TotalPrice,
@@ -221,7 +221,7 @@ object OrderConverter {
             Fee(
                 _id = fee._id,
                 Id = fee.FeeType,
-                FeeTypeId = FeeType.SurchargeFee,
+                FeeTypeId = FeeType.SurchargeFee.value,
                 Value = fee.FeeValue,
                 Name = fee.FeeName,
                 Total = fee.TotalPrice,
@@ -233,7 +233,7 @@ object OrderConverter {
             Fee(
                 _id = fee._id,
                 Id = fee.FeeType,
-                FeeTypeId = FeeType.TaxFee,
+                FeeTypeId = FeeType.TaxFee.value,
                 Value = fee.FeeValue,
                 Name = fee.FeeName,
                 Total = fee.TotalPrice,
@@ -245,7 +245,7 @@ object OrderConverter {
             Fee(
                 _id = fee._id,
                 Id = fee.FeeType,
-                FeeTypeId = FeeType.ShippingFee,
+                FeeTypeId = FeeType.ShippingFee.value,
                 Value = fee.FeeValue,
                 Name = fee.FeeName,
                 Total = fee.TotalPrice,

@@ -21,11 +21,11 @@ object CartConverter {
         val total = cart.total();
         val totalCompVoid = cart.totalComp();
         val totalDisc = cart.totalDiscount(subTotal);
-        val totalService = cart.fees.firstOrNull { fee -> fee.FeeTypeId == FeeType.ServiceFee }
+        val totalService = cart.fees.firstOrNull { fee -> FeeType.fromInt(fee.FeeTypeId)  == FeeType.ServiceFee }
             ?.price(subTotal, totalDisc);
-        val totalSurcharge = cart.fees.firstOrNull { fee -> fee.FeeTypeId == FeeType.SurchargeFee }
+        val totalSurcharge = cart.fees.firstOrNull { fee -> FeeType.fromInt(fee.FeeTypeId) == FeeType.SurchargeFee }
             ?.price(subTotal, totalDisc);
-        val totalTaxes = cart.fees.firstOrNull { fee -> fee.FeeTypeId == FeeType.TaxFee }
+        val totalTaxes = cart.fees.firstOrNull { fee -> FeeType.fromInt(fee.FeeTypeId) == FeeType.TaxFee }
             ?.price(subTotal, totalDisc);
 
         val totalFees = cart.totalFee(subTotal, totalDisc);
@@ -216,7 +216,7 @@ object CartConverter {
         subtotal: Double?,
         totalDiscounts: Double?
     ): List<OrderFee> {
-        return fees.filter { f -> f.FeeTypeId == feeType }
+        return fees.filter { f -> FeeType.fromInt(f.FeeTypeId) == feeType }
             .map { fee -> OrderFee(fee, subtotal ?: 0.0, totalDiscounts ?: 0.0) }
     }
 

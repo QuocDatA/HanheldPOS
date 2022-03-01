@@ -156,7 +156,7 @@ class ProductDetailFragment(
                                     productPricing = proOriginal!!,
                                     //maxExtraQuantity = it.MaximumModifier,
                                     // TODO : Temp replace max quantity
-                                    maxExtraQuantity = 100,
+                                    maxExtraQuantity = 1000,
                                 )
                             }
                         )
@@ -181,7 +181,6 @@ class ProductDetailFragment(
     }
 
     fun onSelectedVariant(item: VariantsGroup.OptionValueVariantsGroup) {
-
         // Add variant selected
         if (viewModel.regularInCart.value!!.variantList?.size ?: 0 >= item.Level) {
             viewModel.regularInCart.value!!.variantList!![item.Level - 1] =
@@ -195,12 +194,6 @@ class ProductDetailFragment(
 
         // Last level variant
         if (item.Variant?.OptionValueList == null || !item.Variant.OptionValueList.any()) {
-            val priceOverride =
-                viewModel.regularInCart.value!!.proOriginal?.priceOverride(
-                    UserHelper.getLocationGuid(),
-                    item.Sku,
-                    item.Price
-                )
 
             viewModel.regularInCart.value!!.apply {
                 this.sku = item.Sku
@@ -265,7 +258,8 @@ class ProductDetailFragment(
         if (viewModel.numberQuantity.value ?: 0 > 0 && (viewModel.isValidDiscount.value == false && action == ItemActionType.Modify)) return;
         requireActivity().supportFragmentManager.setFragmentResult(
             "saveDiscount",
-            Bundle().apply { putSerializable("DiscountTypeFor", viewModel.typeDiscountSelect) });
+            Bundle().apply { putSerializable("DiscountTypeFor", viewModel.typeDiscountSelect)
+            });
         getBack()
         listener?.onCartAdded(item, viewModel.actionType.value!!);
     }

@@ -81,7 +81,7 @@ class CartVM : BaseUiViewModel<CartUV>() {
                     DatabaseMapper.mappingOrderCompletedReqToEntity(
                         CartConverter.toOrder(
                             cart,
-                            OrderStatus.COMPLETED.value,
+                            OrderStatus.COMFIRMED.value,
                             PaymentStatus.PAID.value
                         )
                     )

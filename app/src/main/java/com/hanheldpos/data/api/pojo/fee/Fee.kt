@@ -22,7 +22,7 @@ data class Fee(
     val Value: Double = 0.0,
 
     @field:SerializedName("FeeTypeId")
-    val FeeTypeId: FeeType,
+    val FeeTypeId: Int,
 
     @field:SerializedName("AssignToProductList")
     val AssignToProductList: List<FeeAssignToProductItem>,
