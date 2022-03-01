@@ -43,7 +43,7 @@ object OrderHelper {
 
     fun findFeeOrderList(): List<Fee>? {
         return DataHelper.feeLocalStorage?.Fees?.filter { fee ->
-            FeeApplyToType.fromInt(fee.Id) != FeeApplyToType.Order
+            FeeApplyToType.fromInt(fee.Id) == FeeApplyToType.Order
         }?.toList()
     }
 
