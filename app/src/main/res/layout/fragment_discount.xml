@@ -17,6 +17,7 @@
         android:background="@color/color_10">
 
         <FrameLayout
+            android:id="@+id/toolbarLayout"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_42sdp"
             android:background="@color/color_2">
@@ -41,35 +42,47 @@
                 android:layout_height="wrap_content"
                 android:text="@string/add_discount" />
         </FrameLayout>
-        <include layout="@layout/divider_vertical"/>
-        <LinearLayout
+
+        <include layout="@layout/divider_vertical" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:background="@color/color_2"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
 
             <androidx.fragment.app.FragmentContainerView
                 android:id="@+id/fragment_container"
-                android:layout_width="match_parent"
-                android:layout_weight="1"
+                android:layout_width="0dp"
                 android:layout_height="0dp"
-                />
-            <com.diadiem.pos_components.PMaterialButton
-                android:layout_margin="@dimen/_9sdp"
-                android:id="@+id/btnSave"
-                android:layout_width="match_parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/layoutBtnSave"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <FrameLayout
+                android:id="@+id/layoutBtnSave"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_9sdp"
-                android:background="@color/color_0"
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="?attr/selectableItemBackground"
-                android:gravity="center"
-                android:padding="@dimen/_5sdp"
-                android:text="@string/save"
-                app:pbtn_useFontStyle="bold"
-                app:pbtn_useTextColor="color2"
-                app:pbtn_useTextHeader="h5" />
-        </LinearLayout>
+                android:layout_width="match_parent"
+                app:layout_constraintBottom_toBottomOf="parent">
+
+                <com.diadiem.pos_components.PMaterialButton
+                    android:id="@+id/btnSave"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_9sdp"
+                    android:layout_marginHorizontal="@dimen/_9sdp"
+                    android:background="@color/color_0"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:gravity="center"
+                    android:padding="@dimen/_5sdp"
+                    android:text="@string/save"
+                    app:pbtn_useFontStyle="bold"
+                    app:pbtn_useTextColor="color2"
+                    app:pbtn_useTextHeader="h5" />
+            </FrameLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
 </layout>

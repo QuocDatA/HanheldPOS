@@ -58,6 +58,9 @@
                     android:layout_marginEnd="@dimen/_9sdp"
                     android:text="@{item.discountName, default=`50% Off for Total Order`}"
                     app:useFontStyle="normal"
+                    android:ellipsize="end"
+                    android:maxEms="10"
+                    android:maxLines="1"
                     app:useTextColor="color4"
                     app:useTextHeader="h5" />
 

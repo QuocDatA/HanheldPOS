@@ -24,14 +24,14 @@
             app:ipt_useHintTextColor="color8"
             app:ipt_useTextColor="color4"
             app:ipt_useTextHeader="h5" />
-        <RelativeLayout
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             >
             <ProgressBar
                 visibleObject="@{viewModel.isLoading()}"
                 android:indeterminateTint="@color/color_0"
-                android:layout_centerInParent="true"
+                android:layout_gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 />
@@ -40,12 +40,11 @@
                 android:id="@+id/listDiscountCode"
                 visibleObject="@{!viewModel.isLoading()}"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
+                android:layout_height="match_parent"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:itemCount="3"
                 tools:listitem="@layout/item_discount_code" />
-        </RelativeLayout>
+        </FrameLayout>
     </LinearLayout>
 
 </layout>
