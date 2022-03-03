@@ -11,6 +11,7 @@ import com.hanheldpos.data.api.pojo.floor.FloorResp
 import com.hanheldpos.data.api.pojo.order.menu.MenuResp
 import com.hanheldpos.data.api.pojo.order.settings.OrderSettingResp
 import com.hanheldpos.data.api.pojo.payment.PaymentMethodResp
+import com.hanheldpos.data.api.pojo.resource.ResourceResp
 import com.hanheldpos.data.api.pojo.system.AddressTypeResp
 import com.hanheldpos.model.cart.fee.FeeApplyToType
 import com.hanheldpos.model.order.OrderReq
@@ -24,7 +25,8 @@ object DataHelper {
 
     fun clearData() {
         currentDrawerId = null
-        numberIncreaseOrder = 0;
+        numberIncreaseOrder = 0
+        // Local
         deviceCodeLocalStorage = null
         menuLocalStorage = null
         orderSettingLocalStorage = null
@@ -202,5 +204,16 @@ object DataHelper {
             field = value
             AppPreferences.get().storeValue(PrefKey.System.ADDRESS_TYPE, GSonUtils.toJson(value))
         }
-
+    var resourceLocalStorage : List<ResourceResp>? = null
+        get() {
+            if (field == null) {
+                field =
+                    GSonUtils.toList(AppPreferences.get().getString(PrefKey.Resource.RESOURCE_RESP))
+            }
+            return field
+        }
+        set(value) {
+            field = value
+            AppPreferences.get().storeValue(PrefKey.Resource.RESOURCE_RESP, GSonUtils.toJson(value))
+        }
 }

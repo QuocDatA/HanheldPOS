@@ -41,4 +41,8 @@ object  PrefKey {
     object System {
         const val ADDRESS_TYPE = "ADDRESS_TYPE"
     }
+
+    object Resource {
+        const val RESOURCE_RESP = "RESOURCE_RESP"
+    }
 }
