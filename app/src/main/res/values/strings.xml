@@ -195,4 +195,6 @@
     <string name="valid_date">Valid date</string>
     <string name="schedule">Schedule</string>
     <string name="see_schedule">See Schedule</string>
+    <string name="enter_number_of_customer">Enter number of customer</string>
+    <string name="number_of_customer">Number of Customer</string>
 </resources>

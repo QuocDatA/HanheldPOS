@@ -62,7 +62,7 @@ class TableInputFragment(
     override fun onComplete() {
         navigator.goOneBack();
         if (!keyBoardVM.input.value?.trim().equals(""))
-        listener?.onCompleteTable(Integer.valueOf(keyBoardVM.input.value.toString()));
+        listener?.onCompleteTable(Integer.valueOf(keyBoardVM.input.value.toString()))
     }
 
 }

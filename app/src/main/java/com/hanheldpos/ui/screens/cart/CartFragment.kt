@@ -151,9 +151,6 @@ class CartFragment( private val listener : CartCallBack) : BaseFragment<Fragment
                 }
             }
         }
-
-
-
         //endregion
 
         //region init tip option
@@ -287,6 +284,7 @@ class CartFragment( private val listener : CartCallBack) : BaseFragment<Fragment
                     )
                 );
             }
+            else -> {}
         }
     }
 
