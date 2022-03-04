@@ -48,3 +48,5 @@ captures/
 # Keystore files
 *.jks
 
+
+app/release/
