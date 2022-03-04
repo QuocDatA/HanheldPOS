@@ -182,7 +182,7 @@ class SyncDataService : BaseViewModel() {
             }
 
             override fun showMessage(message: String?) {
-                onDataFailure(message, listener);
+                onDataFailure(message, listener)
             }
 
         })
@@ -201,7 +201,7 @@ class SyncDataService : BaseViewModel() {
                 }
 
                 override fun showMessage(message: String?) {
-
+                    onDataFailure(message, listener)
                 }
 
             }
@@ -227,9 +227,11 @@ class SyncDataService : BaseViewModel() {
         }
         DataHelper.numberIncreaseOrder =
             DataHelper.deviceCodeLocalStorage?.SettingsId?.firstOrNull()?.NumberIncrement?.toLong()
-                ?: 0;
+                ?: 0
+        var isNeedToDownload = false
         DataHelper.resourceLocalStorage?.forEach { resourceResp ->
             if (!DownloadService.checkFileExist(resourceResp.Name)) {
+                isNeedToDownload = true
                 DownloadService.initDownloadService(context!!)
                 DownloadService.downloadFile(
                     DataHelper.resourceLocalStorage!!,
@@ -243,27 +245,29 @@ class SyncDataService : BaseViewModel() {
                         }
 
                         override fun onCancel() {
-
+                            onDataFailure(context.getString(R.string.failed_to_load_data),listener)
                         }
 
 
                         override fun onFail() {
-                            showError(context.getString(R.string.failed_to_load_data))
+                            onDataFailure(context.getString(R.string.failed_to_load_data),listener)
                         }
 
                         override fun onComplete() {
                             listener.onLoadedResources();
                         }
                     })
-                return;
+                return
             }
         }
 
+        if(!isNeedToDownload){
+            listener.onLoadedResources()
+        }
     }
 
     interface SyncDataServiceListener {
         fun onLoadedResources();
         fun onError(message: String?);
-        fun onDownloadResource()
     }
 }

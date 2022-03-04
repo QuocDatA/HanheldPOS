@@ -64,22 +64,17 @@ class DeviceCodeVM : BaseUiViewModel<DeviceCodeUV>() {
             context,
             listener = object : SyncDataService.SyncDataServiceListener {
                 override fun onLoadedResources() {
-                    isDownloading = false;
+                    isDownloading = false
                     showLoading(false)
-                    uiCallback?.openPinCode();
+                    uiCallback?.openPinCode()
                 }
 
                 override fun onError(message: String?) {
-                    isDownloading = false;
-                    showLoading(false);
-                    showError(context.getString(R.string.failed_to_load_data));
-                }
-
-                override fun onDownloadResource() {
-                    isDownloading = false;
+                    isDownloading = false
                     showLoading(false)
+                    showError(context.getString(R.string.failed_to_load_data))
                 }
-            });
+            })
     }
 
     private fun getPinWithSymbol(pinTextStr: String): String {

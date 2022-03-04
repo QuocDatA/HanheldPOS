@@ -131,23 +131,14 @@ class MenuFragment : BaseFragment<FragmentMenuBinding, MenuVM>(), MenuUV {
                         negativeText = getString(R.string.cancel),
                         onClickListener = object : AppAlertDialog.AlertDialogOnClickListener {
                             override fun onPositiveClick() {
-                                CoroutineScope(Dispatchers.IO).launch {
-                                    DataHelper.clearData();
-                                    launch {
-                                        when (typeLogout) {
-                                            LogoutType.LOGOUT_DEVICE -> {
-                                                activity?.navigateTo(
-                                                    WelcomeFragment::class.java,
-                                                    alsoFinishCurrentActivity = true,
-                                                    alsoClearActivity = true,
-                                                )
-                                            }
-                                            LogoutType.RESET -> TODO()
-                                        }
+                                DataHelper.clearData()
+                                when (typeLogout) {
+                                    LogoutType.LOGOUT_DEVICE -> {
+                                        navigator.clearHistory()
+                                        navigator.goTo(WelcomeFragment())
                                     }
+                                    LogoutType.RESET -> TODO()
                                 }
-
-
                             }
                         })
                 }
@@ -164,11 +155,8 @@ class MenuFragment : BaseFragment<FragmentMenuBinding, MenuVM>(), MenuUV {
             negativeText = getString(R.string.cancel),
             onClickListener = object : AppAlertDialog.AlertDialogOnClickListener {
                 override fun onPositiveClick() {
-                    activity?.navigateTo(
-                        PinCodeFragment::class.java,
-                        alsoFinishCurrentActivity = true,
-                        alsoClearActivity = true,
-                    )
+                    navigator.clearHistory()
+                    navigator.goTo(PinCodeFragment())
                 }
             })
     }
