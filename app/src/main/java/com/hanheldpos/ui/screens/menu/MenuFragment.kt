@@ -16,8 +16,8 @@ import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.menu.adapter.ItemOptionNav
 import com.hanheldpos.ui.screens.menu.adapter.OptionNavAdapter
 import com.hanheldpos.ui.screens.menu.option.report.ReportFragment
-import com.hanheldpos.ui.screens.pincode.PinCodeActivity
-import com.hanheldpos.ui.screens.welcome.WelcomeActivity
+import com.hanheldpos.ui.screens.pincode.PinCodeFragment
+import com.hanheldpos.ui.screens.welcome.WelcomeFragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
@@ -137,7 +137,7 @@ class MenuFragment : BaseFragment<FragmentMenuBinding, MenuVM>(), MenuUV {
                                         when (typeLogout) {
                                             LogoutType.LOGOUT_DEVICE -> {
                                                 activity?.navigateTo(
-                                                    WelcomeActivity::class.java,
+                                                    WelcomeFragment::class.java,
                                                     alsoFinishCurrentActivity = true,
                                                     alsoClearActivity = true,
                                                 )
@@ -165,7 +165,7 @@ class MenuFragment : BaseFragment<FragmentMenuBinding, MenuVM>(), MenuUV {
             onClickListener = object : AppAlertDialog.AlertDialogOnClickListener {
                 override fun onPositiveClick() {
                     activity?.navigateTo(
-                        PinCodeActivity::class.java,
+                        PinCodeFragment::class.java,
                         alsoFinishCurrentActivity = true,
                         alsoClearActivity = true,
                     )

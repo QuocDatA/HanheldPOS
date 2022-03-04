@@ -50,7 +50,7 @@ class SyncDataService : BaseViewModel() {
                         onDataFailure(context?.getString(R.string.failed_to_load_data), listener);
                     } else {
                         DataHelper.menuLocalStorage = data.Model;
-                        startMappingData(context,listener);
+                        startMappingData(context, listener);
                     }
                 }
 
@@ -68,7 +68,7 @@ class SyncDataService : BaseViewModel() {
                         onDataFailure(context?.getString(R.string.failed_to_load_data), listener);
                     } else {
                         DataHelper.orderSettingLocalStorage = data.Model?.firstOrNull();
-                        startMappingData(context,listener);
+                        startMappingData(context, listener);
                     }
                 }
 
@@ -86,7 +86,7 @@ class SyncDataService : BaseViewModel() {
                         onDataFailure(context?.getString(R.string.failed_to_load_data), listener);
                     } else {
                         DataHelper.floorLocalStorage = data.Model?.firstOrNull();
-                        startMappingData(context,listener);
+                        startMappingData(context, listener);
                     }
                 }
 
@@ -104,7 +104,7 @@ class SyncDataService : BaseViewModel() {
                         onDataFailure(context?.getString(R.string.failed_to_load_data), listener);
                     } else {
                         DataHelper.feeLocalStorage = data.Model;
-                        startMappingData(context,listener);
+                        startMappingData(context, listener);
                     }
                 }
 
@@ -125,7 +125,7 @@ class SyncDataService : BaseViewModel() {
                         onDataFailure(context?.getString(R.string.failed_to_load_data), listener);
                     } else {
                         DataHelper.discountsLocalStorage = data.Model;
-                        startMappingData(context,listener);
+                        startMappingData(context, listener);
                     }
                 }
 
@@ -144,7 +144,7 @@ class SyncDataService : BaseViewModel() {
                         onDataFailure(context?.getString(R.string.failed_to_load_data), listener);
                     } else {
                         DataHelper.discountDetailsLocalStorage = data.Model;
-                        startMappingData(context,listener);
+                        startMappingData(context, listener);
                     }
                 }
 
@@ -161,7 +161,7 @@ class SyncDataService : BaseViewModel() {
                     onDataFailure(context?.getString(R.string.failed_to_load_data), listener);
                 } else {
                     DataHelper.paymentMethodsLocalStorage = data.Model;
-                    startMappingData(context,listener);
+                    startMappingData(context, listener);
                 }
             }
 
@@ -177,7 +177,7 @@ class SyncDataService : BaseViewModel() {
                     onDataFailure(context?.getString(R.string.failed_to_load_data), listener);
                 } else {
                     DataHelper.addressTypesLocalStorage = data.Model;
-                    startMappingData(context,listener);
+                    startMappingData(context, listener);
                 }
             }
 
@@ -196,7 +196,7 @@ class SyncDataService : BaseViewModel() {
                         onDataFailure(context?.getString(R.string.failed_to_load_data), listener)
                     } else {
                         DataHelper.resourceLocalStorage = data.Model;
-                        startMappingData(context,listener);
+                        startMappingData(context, listener);
                     }
                 }
 
@@ -209,18 +209,12 @@ class SyncDataService : BaseViewModel() {
     }
 
     private fun onDataFailure(message: String?, listener: SyncDataServiceListener) {
-        viewModelScope.launch(Dispatchers.IO) {
-            DataHelper.clearData();
-            launch(Dispatchers.Main) {
-                listener.onError(message);
-            }
-
-        }
-
+        DataHelper.clearData()
+        listener.onError(message)
     }
 
 
-    private fun startMappingData(context: Context?,listener: SyncDataServiceListener) {
+    private fun startMappingData(context: Context?, listener: SyncDataServiceListener) {
         DataHelper.let {
             it.menuLocalStorage ?: return;
             it.floorLocalStorage ?: return;
@@ -234,9 +228,8 @@ class SyncDataService : BaseViewModel() {
         DataHelper.numberIncreaseOrder =
             DataHelper.deviceCodeLocalStorage?.SettingsId?.firstOrNull()?.NumberIncrement?.toLong()
                 ?: 0;
-        DataHelper.resourceLocalStorage?.forEach {
-                resourceResp ->
-            if (!DownloadService.checkFileExist(resourceResp.Name)){
+        DataHelper.resourceLocalStorage?.forEach { resourceResp ->
+            if (!DownloadService.checkFileExist(resourceResp.Name)) {
                 DownloadService.initDownloadService(context!!)
                 DownloadService.downloadFile(
                     DataHelper.resourceLocalStorage!!,

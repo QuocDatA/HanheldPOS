@@ -16,9 +16,9 @@ import com.hanheldpos.model.UserHelper
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
 
 class WelcomeVM : BaseUiViewModel<WelcomeUV>() {
-    var welcomeRepo: WelcomeRepo = WelcomeRepo()
+    private var welcomeRepo: WelcomeRepo = WelcomeRepo()
 
-    var isLoading = MutableLiveData<Boolean>(false)
+    var isLoading = MutableLiveData(false)
 
     fun initLifeCycle(owner: LifecycleOwner) {
         owner.lifecycle.addObserver(this)
@@ -46,10 +46,6 @@ class WelcomeVM : BaseUiViewModel<WelcomeUV>() {
         })
     }
 
-    fun checkDeviceCode() {
-        DataHelper.deviceCodeLocalStorage?.let {
-            uiCallback?.openPinCode();
-        }
-    }
+
 
 }
