@@ -57,15 +57,20 @@ class PinCodeFragment : BaseFragment<FragmentPinCodeBinding, PinCodeVM>(), PinCo
     }
 
     override fun goBack() {
-        requireActivity().finish()
+        onFragmentBackPressed()
     }
 
     override fun goHome() {
+        navigator.clearHistory()
         navigator.goTo(HomeFragment())
     }
 
     override fun goStartDrawer() {
+        navigator.clearHistory()
         navigator.goTo(StartDrawerFragment())
     }
 
+    override fun onFragmentBackPressed() {
+        requireActivity().finish()
+    }
 }

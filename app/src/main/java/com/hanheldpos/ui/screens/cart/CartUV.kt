@@ -6,7 +6,7 @@ interface CartUV : BaseUserView {
     fun getBack();
     fun deleteCart();
     fun onOpenDiscount();
-    fun openSelectPayment(payable : Double);
+    fun openSelectPayment(alreadyBill : Boolean,payable : Double);
     fun onOpenAddCustomer();
     fun onBillSuccess();
     fun onPayment(isSuccess : Boolean)

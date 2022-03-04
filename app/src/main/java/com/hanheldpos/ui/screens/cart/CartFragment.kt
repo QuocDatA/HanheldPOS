@@ -221,8 +221,8 @@ class CartFragment( private val listener : CartCallBack) : BaseFragment<Fragment
             }));
     }
 
-    override fun openSelectPayment(payable: Double) {
-        navigator.goToWithCustomAnimation(PaymentFragment(payable,listener = object : PaymentFragment.PaymentCallback {
+    override fun openSelectPayment(alreadyBill : Boolean,payable: Double) {
+        navigator.goToWithCustomAnimation(PaymentFragment(alreadyBill,payable,listener = object : PaymentFragment.PaymentCallback {
             override fun onPaymentComplete(paymentOrder: PaymentOrder) {
                 CurCartData.addPaymentOrder(paymentOrder)
             }
@@ -245,7 +245,7 @@ class CartFragment( private val listener : CartCallBack) : BaseFragment<Fragment
     override fun onBillSuccess() {
         listener.onBillSuccess()
         val totalNeedPay = CurCartData.cartModelLD.value!!.getTotalPrice()
-        openSelectPayment(totalNeedPay)
+        openSelectPayment(true,totalNeedPay)
     }
 
     override fun onPayment(isSuccess : Boolean) {

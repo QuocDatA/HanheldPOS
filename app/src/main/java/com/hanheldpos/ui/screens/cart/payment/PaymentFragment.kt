@@ -17,7 +17,7 @@ import com.hanheldpos.utils.time.DateTimeHelper
 import java.util.*
 
 
-class PaymentFragment(private val payable: Double, private var listener: PaymentCallback) :
+class PaymentFragment(private val alreadyBill : Boolean, private val payable: Double, private var listener: PaymentCallback) :
     BaseFragment<FragmentPaymentBinding, PaymentVM>(), PaymentUV {
     override fun layoutRes(): Int = R.layout.fragment_payment;
 
@@ -127,7 +127,7 @@ class PaymentFragment(private val payable: Double, private var listener: Payment
                     DateTimeHelper.dateToString(Date(), DateTimeHelper.Format.FULL_DATE_UTC_TIMEZONE)
                 )
             )
-            listener.onPayment(true)
+            if(alreadyBill) listener.onPayment(true)
 
         }
 
