@@ -225,7 +225,11 @@ class CartFragment( private val listener : CartCallBack) : BaseFragment<Fragment
             override fun onPaymentComplete(paymentOrder: PaymentOrder) {
                 CurCartData.addPaymentOrder(paymentOrder)
             }
-        }));
+
+            override fun onPayment(isSuccess: Boolean) {
+                this@CartFragment.onPayment(isSuccess)
+            }
+        }))
     }
 
     override fun onOpenAddCustomer() {
@@ -234,13 +238,26 @@ class CartFragment( private val listener : CartCallBack) : BaseFragment<Fragment
             override fun onSelectedCustomer(item: CustomerResp) {
                 CurCartData.addCustomerToCart(item);
             }
-        }));
+        }))
     }
 
     override fun onBillSuccess() {
-        getBack();
-        CurCartData.removeCart();
-        listener.onBillSuccess();
+        listener.onBillSuccess()
+        val totalNeedPay = CurCartData.cartModelLD.value!!.getTotalPrice()
+        openSelectPayment(totalNeedPay)
+    }
+
+    override fun onPayment(isSuccess : Boolean) {
+        if (isSuccess){
+            removeCart()
+            listener.onPaymentSuccess()
+        }
+        onFragmentBackPressed();
+    }
+
+    private fun removeCart() {
+        getBack()
+        CurCartData.removeCart()
     }
 
     override fun onShowCustomerDetail() {
@@ -248,7 +265,7 @@ class CartFragment( private val listener : CartCallBack) : BaseFragment<Fragment
     }
 
     private fun onBillCart() {
-        viewModel.billCart(requireContext(),CurCartData.cartModelLD.value!!);
+        viewModel.billCart(requireContext(),CurCartData.cartModelLD.value!!)
     }
 
     fun onEditItemInCart(position: Int, item: BaseProductInCart) {
@@ -295,7 +312,8 @@ class CartFragment( private val listener : CartCallBack) : BaseFragment<Fragment
     }
 
     interface CartCallBack {
-        fun onCartDelete();
-        fun onBillSuccess();
+        fun onCartDelete()
+        fun onBillSuccess()
+        fun onPaymentSuccess()
     }
 }

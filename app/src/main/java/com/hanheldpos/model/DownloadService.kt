@@ -11,6 +11,7 @@ import com.downloader.PRDownloader
 import com.downloader.PRDownloaderConfig
 import com.downloader.Status
 import com.downloader.request.DownloadRequest
+import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.resource.ResourceResp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -25,7 +26,7 @@ object DownloadService {
     private var downloadId: Int = 0
     lateinit var processDialog: ProgressDialog
 
-    fun initDownloadService(context: Context) {
+    private fun initDownloadService(context: Context) {
         val config = PRDownloaderConfig.newBuilder()
             .setDatabaseEnabled(true)
             .setReadTimeout(30000)
@@ -37,33 +38,39 @@ object DownloadService {
 
     private fun initDialog(context: Context) {
         processDialog = ProgressDialog(context)
-        processDialog.setTitle("Downloading...")
-        processDialog.setCancelable(false)
-        processDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL)
-        processDialog.setButton(
-            DialogInterface.BUTTON_NEGATIVE,
-            "Cancel",
-            DialogInterface.OnClickListener { dialog, _ ->
-                dialog.dismiss()
+        with(processDialog) {
+            setTitle("Downloading...")
+            setCancelable(false)
+            setProgressStyle(ProgressDialog.STYLE_HORIZONTAL)
+            setButton(
+                DialogInterface.BUTTON_NEGATIVE,
+                context.getString(R.string.cancel)
+            ) { dialog, _ ->
                 PRDownloader.cancel(downloadId)
-            })
-        processDialog.show()
+                dialog.dismiss()
+            }
+            show()
+        }
     }
 
-    fun downloadFile(listResources: List<ResourceResp>, listener: DownloadFileCallback) {
+    fun downloadFile(context: Context,listResources: List<ResourceResp>, listener: DownloadFileCallback) {
+        var isDownloading = true
         val downloadRequestList: MutableList<DownloadRequest> = mutableListOf()
         var currentDownloadPos = 0
+        initDownloadService(context)
         listResources.forEach { item ->
             val downloadRequest = PRDownloader.download(item.Url, INTERNAL_PATH, item.Name)
                 .build()
                 .setOnStartOrResumeListener {
-                    processDialog.setTitle("Downloaing ${item.Name}")
+                    processDialog.setTitle("Downloading \n${item.Name}")
                 }
                 .setOnPauseListener {
-
+                    isDownloading = false
+                    listener.onPause()
                 }
                 .setOnCancelListener {
-
+                    isDownloading = false
+                    listener.onCancel()
                 }
                 .setOnProgressListener { progress ->
                     val progressPercent: Long = progress.currentBytes * 100 / progress.totalBytes
@@ -77,8 +84,6 @@ object DownloadService {
             downloadRequestList.add(downloadRequest)
         }
         CoroutineScope(Dispatchers.IO).launch {
-            var isDownloading = true
-            var downloadId = 0
             while (isDownloading) {
                 downloadId =
                     downloadRequestList[currentDownloadPos].start(object : OnDownloadListener {

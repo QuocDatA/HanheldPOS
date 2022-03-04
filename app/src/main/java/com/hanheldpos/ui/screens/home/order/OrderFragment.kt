@@ -209,8 +209,12 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
             }
 
             override fun onBillSuccess() {
-                dataVM.onMenuChange(0);
-                screenViewModel.showTablePage();
+
+            }
+
+            override fun onPaymentSuccess() {
+                dataVM.onMenuChange(0)
+                screenViewModel.showTablePage()
             }
         }));
     }

@@ -1,11 +1,14 @@
 package com.hanheldpos.model
 
 import com.hanheldpos.data.api.pojo.fee.Fee
+import com.hanheldpos.model.cart.CartModel
 import com.hanheldpos.model.cart.fee.FeeApplyToType
+import com.hanheldpos.model.cart.payment.PaymentOrder
 
 object OrderHelper {
     fun findGroupNameOrderMenu(group_id: String): String {
-        return DataHelper.menuLocalStorage?.GroupList?.firstOrNull { groupsItem -> groupsItem._Id == group_id }?.GroupName ?: ""
+        return DataHelper.menuLocalStorage?.GroupList?.firstOrNull { groupsItem -> groupsItem._Id == group_id }?.GroupName
+            ?: ""
     }
 
     fun generateOrderIdByFormat(): String {
@@ -13,8 +16,10 @@ object OrderHelper {
         numberIncrement = numberIncrement.plus(1);
         DataHelper.numberIncreaseOrder = numberIncrement;
         val prefix = DataHelper.deviceCodeLocalStorage?.SettingsId?.firstOrNull()?.Prefix ?: ""
-        val deviceAcronymn = DataHelper.deviceCodeLocalStorage?.Device?.firstOrNull()?.Acronymn ?: ""
-        val minimumNumber = DataHelper.deviceCodeLocalStorage?.SettingsId?.firstOrNull()?.MinimumNumber ?: 0
+        val deviceAcronymn =
+            DataHelper.deviceCodeLocalStorage?.Device?.firstOrNull()?.Acronymn ?: ""
+        val minimumNumber =
+            DataHelper.deviceCodeLocalStorage?.SettingsId?.firstOrNull()?.MinimumNumber ?: 0
         return "${prefix}${deviceAcronymn}${numberIncrement.toString().padEnd(minimumNumber, '0')}";
     }
 
@@ -45,6 +50,14 @@ object OrderHelper {
         return DataHelper.feeLocalStorage?.Fees?.filter { fee ->
             FeeApplyToType.fromInt(fee.Id) == FeeApplyToType.Order
         }?.toList()
+    }
+
+    fun isPaymentSuccess(cart: CartModel): Boolean {
+        val total = cart.getTotalPrice()
+        val totalPay = cart.paymentsList.sumOf {
+            it.Payable ?: 0.0
+        }
+        return totalPay >= total
     }
 
 }

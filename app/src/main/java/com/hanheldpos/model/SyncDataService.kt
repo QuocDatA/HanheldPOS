@@ -38,7 +38,7 @@ class SyncDataService : BaseViewModel() {
     private var systemRepo: SystemRepo = SystemRepo();
     private var resourceRepo: ResourceRepo = ResourceRepo()
 
-    fun fetchAllData(context: Context?, listener: SyncDataServiceListener) {
+    fun fetchAllData(context: Context, listener: SyncDataServiceListener) {
         val location = UserHelper.getLocationGuid()
         val userGuid = UserHelper.getUserGuid()
         menuRepo.getOrderMenu(
@@ -47,7 +47,7 @@ class SyncDataService : BaseViewModel() {
             callback = object : BaseRepoCallback<BaseResponse<MenuResp>> {
                 override fun apiResponse(data: BaseResponse<MenuResp>?) {
                     if (data == null || data.DidError) {
-                        onDataFailure(context?.getString(R.string.failed_to_load_data), listener);
+                        onDataFailure(context.getString(R.string.failed_to_load_data), listener);
                     } else {
                         DataHelper.menuLocalStorage = data.Model;
                         startMappingData(context, listener);
@@ -65,7 +65,7 @@ class SyncDataService : BaseViewModel() {
             callback = object : BaseRepoCallback<BaseResponse<List<OrderSettingResp>>?> {
                 override fun apiResponse(data: BaseResponse<List<OrderSettingResp>>?) {
                     if (data == null || data.DidError) {
-                        onDataFailure(context?.getString(R.string.failed_to_load_data), listener);
+                        onDataFailure(context.getString(R.string.failed_to_load_data), listener);
                     } else {
                         DataHelper.orderSettingLocalStorage = data.Model?.firstOrNull();
                         startMappingData(context, listener);
@@ -83,7 +83,7 @@ class SyncDataService : BaseViewModel() {
             callback = object : BaseRepoCallback<BaseResponse<List<FloorResp>>?> {
                 override fun apiResponse(data: BaseResponse<List<FloorResp>>?) {
                     if (data == null || data.DidError) {
-                        onDataFailure(context?.getString(R.string.failed_to_load_data), listener);
+                        onDataFailure(context.getString(R.string.failed_to_load_data), listener);
                     } else {
                         DataHelper.floorLocalStorage = data.Model?.firstOrNull();
                         startMappingData(context, listener);
@@ -101,7 +101,7 @@ class SyncDataService : BaseViewModel() {
             callback = object : BaseRepoCallback<BaseResponse<FeeResp>?> {
                 override fun apiResponse(data: BaseResponse<FeeResp>?) {
                     if (data == null || data.DidError) {
-                        onDataFailure(context?.getString(R.string.failed_to_load_data), listener);
+                        onDataFailure(context.getString(R.string.failed_to_load_data), listener);
                     } else {
                         DataHelper.feeLocalStorage = data.Model;
                         startMappingData(context, listener);
@@ -122,7 +122,7 @@ class SyncDataService : BaseViewModel() {
             callback = object : BaseRepoCallback<BaseResponse<List<DiscountResp>>> {
                 override fun apiResponse(data: BaseResponse<List<DiscountResp>>?) {
                     if (data == null || data.DidError) {
-                        onDataFailure(context?.getString(R.string.failed_to_load_data), listener);
+                        onDataFailure(context.getString(R.string.failed_to_load_data), listener);
                     } else {
                         DataHelper.discountsLocalStorage = data.Model;
                         startMappingData(context, listener);
@@ -141,7 +141,7 @@ class SyncDataService : BaseViewModel() {
             callback = object : BaseRepoCallback<BaseResponse<List<CouponResp>>> {
                 override fun apiResponse(data: BaseResponse<List<CouponResp>>?) {
                     if (data == null || data.DidError) {
-                        onDataFailure(context?.getString(R.string.failed_to_load_data), listener);
+                        onDataFailure(context.getString(R.string.failed_to_load_data), listener);
                     } else {
                         DataHelper.discountDetailsLocalStorage = data.Model;
                         startMappingData(context, listener);
@@ -158,7 +158,7 @@ class SyncDataService : BaseViewModel() {
             BaseRepoCallback<BaseResponse<List<PaymentMethodResp>>> {
             override fun apiResponse(data: BaseResponse<List<PaymentMethodResp>>?) {
                 if (data == null || data.DidError) {
-                    onDataFailure(context?.getString(R.string.failed_to_load_data), listener);
+                    onDataFailure(context.getString(R.string.failed_to_load_data), listener);
                 } else {
                     DataHelper.paymentMethodsLocalStorage = data.Model;
                     startMappingData(context, listener);
@@ -174,7 +174,7 @@ class SyncDataService : BaseViewModel() {
             BaseRepoCallback<BaseResponse<List<AddressTypeResp>>> {
             override fun apiResponse(data: BaseResponse<List<AddressTypeResp>>?) {
                 if (data == null || data.DidError) {
-                    onDataFailure(context?.getString(R.string.failed_to_load_data), listener);
+                    onDataFailure(context.getString(R.string.failed_to_load_data), listener);
                 } else {
                     DataHelper.addressTypesLocalStorage = data.Model;
                     startMappingData(context, listener);
@@ -214,7 +214,7 @@ class SyncDataService : BaseViewModel() {
     }
 
 
-    private fun startMappingData(context: Context?, listener: SyncDataServiceListener) {
+    private fun startMappingData(context: Context, listener: SyncDataServiceListener) {
         DataHelper.let {
             it.menuLocalStorage ?: return;
             it.floorLocalStorage ?: return;
@@ -232,8 +232,7 @@ class SyncDataService : BaseViewModel() {
         DataHelper.resourceLocalStorage?.forEach { resourceResp ->
             if (!DownloadService.checkFileExist(resourceResp.Name)) {
                 isNeedToDownload = true
-                DownloadService.initDownloadService(context!!)
-                DownloadService.downloadFile(
+                DownloadService.downloadFile(context,
                     DataHelper.resourceLocalStorage!!,
                     listener = object : DownloadService.DownloadFileCallback {
                         override fun onDownloadStartOrResume() {

@@ -18,13 +18,12 @@ class PaymentVM : BaseUiViewModel<PaymentUV>() {
     }
 
     fun initPaymentSuggestion(): List<PaymentSuggestionItem> {
-        val paymentSuggestionList = mutableListOf<PaymentSuggestionItem>(
+        return mutableListOf(
             PaymentSuggestionItem(50000.0),
             PaymentSuggestionItem(100000.0),
             PaymentSuggestionItem(250000.0),
             PaymentSuggestionItem(500000.0),
         )
-        return paymentSuggestionList
     }
 
     fun getPayment() {

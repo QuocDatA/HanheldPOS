@@ -105,6 +105,7 @@ class PaymentFragment(private val payable: Double, private var listener: Payment
     }
 
     override fun getBack() {
+        listener.onPayment(false)
         onFragmentBackPressed()
     }
 
@@ -125,6 +126,7 @@ class PaymentFragment(private val payable: Double, private var listener: Payment
                     DateTimeHelper.dateToString(Date(), DateTimeHelper.Format.FULL_DATE_UTC_TIMEZONE)
                 )
             )
+            listener.onPayment(true)
             onFragmentBackPressed()
         }
 
@@ -132,6 +134,7 @@ class PaymentFragment(private val payable: Double, private var listener: Payment
 
     interface PaymentCallback {
         fun onPaymentComplete(paymentOrder: PaymentOrder)
+        fun onPayment(isSuccess : Boolean)
     }
 }
 

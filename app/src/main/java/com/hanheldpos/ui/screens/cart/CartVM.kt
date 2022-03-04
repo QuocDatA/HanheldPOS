@@ -59,41 +59,31 @@ class CartVM : BaseUiViewModel<CartUV>() {
                 )
             return;
         }
-
-        if (cart.paymentsList.isEmpty() && cart.compReason == null) {
-            AppAlertDialog.get()
-                .show(
-                    context.getString(R.string.notification),
-                    context.getString(R.string.please_choose_payment_method),
-                )
-            return;
-        }
-        onOrderProcessing(cart);
-
+        onOrderProcessing(context, cart)
     }
 
-    private fun onOrderProcessing(cart: CartModel) {
+    private fun onOrderProcessing(context: Context, cart: CartModel) {
         showLoading(true)
         try {
-            cart.orderCode = OrderHelper.generateOrderIdByFormat();
+            if (cart.orderCode == null)
+                cart.orderCode = OrderHelper.generateOrderIdByFormat()
+            val orderStatus =
+                if (OrderHelper.isPaymentSuccess(cart)) OrderStatus.COMPLETED.value else OrderStatus.COMFIRMED.value
+            val paymentStatus =
+                if (OrderHelper.isPaymentSuccess(cart)) PaymentStatus.PAID.value else PaymentStatus.UNPAID.value
+            val orderReq = CartConverter.toOrder(
+                cart,
+                orderStatus,
+                paymentStatus,
+            )
+
             viewModelScope.launch(Dispatchers.IO) {
                 DatabaseHelper.ordersCompleted.insert(
-                    DatabaseMapper.mappingOrderCompletedReqToEntity(
-                        CartConverter.toOrder(
-                            cart,
-                            OrderStatus.COMFIRMED.value,
-                            PaymentStatus.PAID.value
-                        )
-                    )
+                    DatabaseMapper.mappingOrderCompletedReqToEntity(orderReq)
                 )
                 launch(Dispatchers.Main) {
-                    showLoading(false);
-                    uiCallback?.onBillSuccess();
-                    AppAlertDialog.get()
-                        .show(
-                            "Notification",
-                            "Successful bill payment",
-                        );
+                    showLoading(false)
+                    uiCallback?.onBillSuccess()
                 }
             }
 
@@ -102,9 +92,9 @@ class CartVM : BaseUiViewModel<CartUV>() {
             showLoading(false)
             AppAlertDialog.get()
                 .show(
-                    "Notification",
-                    "Bill payment failed!",
-                );
+                    context.getString(R.string.notification),
+                    context.getString(R.string.bill_payment_failed),
+                )
         }
 
     }
@@ -119,7 +109,7 @@ class CartVM : BaseUiViewModel<CartUV>() {
         cart.compReason?.let {
             list.add(DiscountCart(it, it.Title!!, cart.totalComp(cart.totalTemp())));
         }
-        return list;
+        return list
     }
 
 
