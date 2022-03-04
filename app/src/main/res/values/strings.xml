@@ -195,4 +195,7 @@
     <string name="valid_date">Valid date</string>
     <string name="schedule">Schedule</string>
     <string name="see_schedule">See Schedule</string>
+    <string name="applies_to">Applies to</string>
+    <string name="discount_value">Discount value</string>
+    <string name="discount_option">Discount option</string>
 </resources>

@@ -1,13 +1,7 @@
 package com.hanheldpos.ui.screens.discount.discount_detail
 
-import androidx.lifecycle.ViewModelProvider
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.text.Html
 import com.hanheldpos.R
-import com.hanheldpos.data.api.pojo.discount.CouponResp
 import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.databinding.FragmentDiscountDetailBinding
 import com.hanheldpos.model.DataHelper
@@ -28,15 +22,29 @@ class DiscountDetailFragment(private val discountResp: DiscountResp) : BaseFragm
     }
 
     override fun initView() {
-
+        binding.discountName.text = discountResp.DiscountName
     }
 
     override fun initData() {
-        val discountDetailResp = DataHelper.discountDetailsLocalStorage?.find {
-            discountDetailResp ->
-            discountDetailResp._id == discountResp._id
+        val discountDetailResp =
+            DataHelper.discountDetailsLocalStorage?.find { discountDetailResp ->
+                discountDetailResp._id == discountResp._id
+            }
+        discountDetailResp?.let {
+            binding.discountDetail = it
+            binding.discountDescription.text = removeHtml(it.Description)
+            binding.discountTermCondition.text = removeHtml(it.TermsCondition)
         }
-        discountDetailResp?.let { binding.discountDetail = it }
+    }
+
+    private fun removeHtml(html: String): String {
+        var result = html
+        result = result.replace("<(.*?)>".toRegex(), " ")
+        result = result.replace("<(.*?)\n".toRegex(), " ")
+        result = result.replaceFirst("(.*?)>".toRegex(), " ")
+        result = result.replace("&nbsp;".toRegex(), " ")
+        result = result.replace("&amp;".toRegex(), " ")
+        return result
     }
 
     override fun initAction() {
