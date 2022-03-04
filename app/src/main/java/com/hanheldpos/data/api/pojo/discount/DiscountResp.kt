@@ -31,7 +31,6 @@ data class DiscountResp(
     val DateRange: Int,
     val Description: String,
     val DiningOption: List<DiningOptionDiscount>,
-    @SerializedName("DiscountApplyTo ")
     val DiscountApplyTo: Int,
     val DiscountAutomatic: Boolean,
     val DiscountAutomaticText: String,
