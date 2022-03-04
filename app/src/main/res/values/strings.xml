@@ -185,4 +185,14 @@
     <string name="special_instructions">Special Instructions</string>
     <string name="no_network_connection">No Network Connection</string>
     <string name="passcode_does_not_exist_please_try_again">Passcode does not exist!. Please try again</string>
+    <string name="customize_report">Customize Report</string>
+    <string name="discount_type">Discount type</string>
+    <string name="minimum_requirements">Minimum requirements</string>
+    <string name="discount_limit">Discount limit</string>
+    <string name="eligible_customers">Eligible customers</string>
+    <string name="usage_limits">Usage limits</string>
+    <string name="apply_to_other_discounts">Apply to other discounts</string>
+    <string name="valid_date">Valid date</string>
+    <string name="schedule">Schedule</string>
+    <string name="see_schedule">See Schedule</string>
 </resources>

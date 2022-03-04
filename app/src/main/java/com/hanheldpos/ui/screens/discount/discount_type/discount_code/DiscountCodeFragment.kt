@@ -10,6 +10,7 @@ import com.hanheldpos.model.discount.DiscountApplyToType
 import com.hanheldpos.model.discount.DiscountTypeFor
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
+import com.hanheldpos.ui.screens.discount.discount_detail.DiscountDetailFragment
 import com.hanheldpos.ui.screens.discount.discount_type.discount_code.adapter.DiscountCodeAdapter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -41,7 +42,7 @@ class DiscountCodeFragment(private val applyToType: DiscountApplyToType) :
         discountCodeAdapter =
             DiscountCodeAdapter(listener = object : BaseItemClickListener<DiscountResp> {
                 override fun onItemClick(adapterPosition: Int, item: DiscountResp) {
-
+                    navigator.goTo(DiscountDetailFragment(item))
                 }
             });
         binding.listDiscountCode.adapter = discountCodeAdapter;

@@ -16,7 +16,7 @@ interface DiscountService {
         @Query("language") language: String? = "en",
     ): Call<BaseResponse<List<DiscountResp>>>
 
-    @GET("coupon/list")
+    @GET("coupon/list/detail")
     fun getDiscountDetails(
         @Query("userGuid") userGuid: String?,
         @Query("locationGuid") location: String?,
