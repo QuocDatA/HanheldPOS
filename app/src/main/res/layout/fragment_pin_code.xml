@@ -10,7 +10,8 @@
             type="com.hanheldpos.ui.screens.pincode.PinCodeVM" />
     </data>
 
-    <LinearLayout style="@style/RootLayout">
+    <LinearLayout style="@style/RootLayout"
+        android:baselineAligned="false">
 
         <FrameLayout
             android:layout_width="match_parent"

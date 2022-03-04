@@ -2,6 +2,7 @@ package com.hanheldpos.ui.screens.cashdrawer
 
 import android.app.Activity
 import android.app.AlertDialog
+import android.content.Context
 import android.os.CountDownTimer
 import android.view.LayoutInflater
 import android.view.View

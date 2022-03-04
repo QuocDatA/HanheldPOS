@@ -1,7 +1,6 @@
 package com.hanheldpos.ui.screens.discount
 
 import android.os.Bundle
-import android.view.View
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.order.settings.Reason
 import com.hanheldpos.databinding.FragmentDiscountBinding
@@ -10,7 +9,8 @@ import com.hanheldpos.model.discount.DiscountTypeFor
 import com.hanheldpos.model.discount.DiscountUser
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.cart.CurCartData
-import com.hanheldpos.ui.screens.discount.discount_type.DiscountTypeFragment
+import com.hanheldpos.ui.screens.discount.discount_type.DiscountTypeItemFragment
+import com.hanheldpos.ui.screens.discount.discount_type.DiscountTypeOrderFragment
 
 
 class DiscountFragment(private val listener: DiscountCallback) :
@@ -48,10 +48,10 @@ class DiscountFragment(private val listener: DiscountCallback) :
 
         childFragmentManager.beginTransaction().replace(
             R.id.fragment_container,
-            DiscountTypeFragment(
+            DiscountTypeOrderFragment(
                 applyToType = DiscountApplyToType.ORDER_DISCOUNT_APPLY_TO,
                 cart = CurCartData.cartModelLD.value!!,
-                listener = object : DiscountTypeFragment.DiscountTypeListener {
+                listener = object : DiscountTypeListener {
                     override fun discountUserChoose(discount: DiscountUser) {
                         listener.onDiscountUserChoose(discount);
                         backPress();
@@ -93,6 +93,14 @@ class DiscountFragment(private val listener: DiscountCallback) :
         fun onDiscountUserChoose(discount: DiscountUser);
         fun onCompReasonChoose(reason: Reason);
         fun onCompRemove();
+    }
+
+    interface DiscountTypeListener {
+        fun discountUserChoose(discount: DiscountUser): Unit {};
+        fun compReasonChoose(item: Reason): Unit {};
+        fun compRemoveAll(): Unit {};
+        fun discountFocus(type : DiscountTypeFor) : Unit{}
+        fun validDiscount(isValid : Boolean);
     }
 
     override fun backPress() {

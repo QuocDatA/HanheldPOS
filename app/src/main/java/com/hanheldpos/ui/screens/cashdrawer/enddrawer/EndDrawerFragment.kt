@@ -1,24 +1,17 @@
 package com.hanheldpos.ui.screens.cashdrawer.enddrawer
 
 import android.annotation.SuppressLint
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.load.model.ByteArrayLoader
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.cashdrawer.report.ReportCashDrawerResp
 import com.hanheldpos.databinding.FragmentEndDrawerBinding
 import com.hanheldpos.extension.navigateTo
 import com.hanheldpos.ui.base.fragment.BaseFragment
-import com.hanheldpos.ui.screens.cashdrawer.CashDrawerHelper
 import com.hanheldpos.ui.screens.menu.option.report.current_drawer.adapter.ReportDrawerInfoAdapter
-import com.hanheldpos.ui.screens.pincode.PinCodeActivity
+import com.hanheldpos.ui.screens.pincode.PinCodeFragment
 import com.hanheldpos.utils.PriceHelper
 
 class EndDrawerFragment(private val report: ReportCashDrawerResp?) : BaseFragment<FragmentEndDrawerBinding,EndDrawerVM>() , EndDrawerUV {
@@ -107,7 +100,7 @@ class EndDrawerFragment(private val report: ReportCashDrawerResp?) : BaseFragmen
 
     override fun onEndDrawer() {
         activity?.navigateTo(
-            PinCodeActivity::class.java,
+            PinCodeFragment::class.java,
             alsoFinishCurrentActivity = true,
             alsoClearActivity = true,
         )

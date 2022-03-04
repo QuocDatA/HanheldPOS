@@ -8,7 +8,6 @@ import com.hanheldpos.data.api.pojo.product.Product
 import com.hanheldpos.data.api.pojo.product.VariantsGroup
 import com.hanheldpos.databinding.FragmentProductDetailBinding
 import com.hanheldpos.extension.notifyValueChange
-import com.hanheldpos.model.UserHelper
 import com.hanheldpos.model.cart.*
 import com.hanheldpos.model.combo.ItemActionType
 import com.hanheldpos.model.discount.DiscountApplyToType
@@ -19,7 +18,8 @@ import com.hanheldpos.model.product.ItemExtra
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.cart.CurCartData
-import com.hanheldpos.ui.screens.discount.discount_type.DiscountTypeFragment
+import com.hanheldpos.ui.screens.discount.DiscountFragment
+import com.hanheldpos.ui.screens.discount.discount_type.DiscountTypeItemFragment
 import com.hanheldpos.ui.screens.home.order.OrderFragment
 import com.hanheldpos.ui.screens.product.adapter.GroupModifierAdapter
 import com.hanheldpos.ui.screens.product.adapter.GroupVariantAdapter
@@ -91,11 +91,11 @@ class ProductDetailFragment(
         if (action == ItemActionType.Modify)
             childFragmentManager.beginTransaction().replace(
                 R.id.fragment_container_discount,
-                DiscountTypeFragment(
+                DiscountTypeItemFragment(
                     product = regular,
                     applyToType = DiscountApplyToType.ITEM_DISCOUNT_APPLY_TO,
                     cart = CurCartData.cartModelLD.value!!,
-                    listener = object : DiscountTypeFragment.DiscountTypeListener {
+                    listener = object : DiscountFragment.DiscountTypeListener {
                         override fun discountUserChoose(discount: DiscountUser) {
                             if (viewModel.isValidDiscount.value != true) return;
                             viewModel.regularInCart.value?.discountUsersList =

@@ -3,12 +3,13 @@ package com.hanheldpos.ui.screens.discount.discount_type
 import androidx.fragment.app.Fragment
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.order.settings.Reason
-import com.hanheldpos.databinding.FragmentDiscountTypeBinding
+import com.hanheldpos.databinding.FragmentDiscountTypeItemBinding
 import com.hanheldpos.model.cart.CartModel
 import com.hanheldpos.model.discount.*
 import com.hanheldpos.model.cart.BaseProductInCart
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
+import com.hanheldpos.ui.screens.discount.DiscountFragment
 import com.hanheldpos.ui.screens.discount.adapter.OptionsPagerAdapter
 import com.hanheldpos.ui.screens.discount.discount_type.adapter.DiscountTabAdapter
 import com.hanheldpos.ui.screens.discount.discount_type.amount.DiscountAmountFragment
@@ -18,13 +19,13 @@ import com.hanheldpos.ui.screens.discount.discount_type.discount_code.DiscountCo
 import com.hanheldpos.ui.screens.discount.discount_type.percentage.DiscountPercentageFragment
 
 
-class DiscountTypeFragment(
+class DiscountTypeItemFragment(
     private val applyToType: DiscountApplyToType,
     private val cart: CartModel,
     private val product: BaseProductInCart? = null,
-    private val listener: DiscountTypeListener
+    private val listener: DiscountFragment.DiscountTypeListener
 ) :
-    BaseFragment<FragmentDiscountTypeBinding, DiscountTypeVM>(),
+    BaseFragment<FragmentDiscountTypeItemBinding, DiscountTypeVM>(),
     DiscountTypeUV {
     // Adapter
     private lateinit var adapter: DiscountTabAdapter;
@@ -33,7 +34,7 @@ class DiscountTypeFragment(
     // Frament child
     private val fragmentMap: MutableMap<DiscountTypeFor, Fragment> = mutableMapOf()
 
-    override fun layoutRes(): Int = R.layout.fragment_discount_type;
+    override fun layoutRes(): Int = R.layout.fragment_discount_type_item;
 
     override fun viewModelClass(): Class<DiscountTypeVM> {
         return DiscountTypeVM::class.java;
@@ -41,7 +42,7 @@ class DiscountTypeFragment(
 
     override fun initViewModel(viewModel: DiscountTypeVM) {
         viewModel.run {
-            init(this@DiscountTypeFragment);
+            init(this@DiscountTypeItemFragment);
             binding.viewModel = this;
             binding.discountType = applyToType;
         }
@@ -58,7 +59,7 @@ class DiscountTypeFragment(
             }
         })
         binding.tabDiscountType.apply {
-            adapter = this@DiscountTypeFragment.adapter;
+            adapter = this@DiscountTypeItemFragment.adapter;
             setHasFixedSize(true);
         }
 
@@ -88,7 +89,7 @@ class DiscountTypeFragment(
 
         // Data Container Fragment Type
         fragmentMap[DiscountTypeFor.AMOUNT] =
-            DiscountAmountFragment(listener = object : DiscountTypeListener {
+            DiscountAmountFragment(listener = object : DiscountFragment.DiscountTypeListener {
                 override fun discountUserChoose(discount: DiscountUser) {
                     listener.discountUserChoose(discount);
                 }
@@ -98,7 +99,8 @@ class DiscountTypeFragment(
                 }
             }, applyToType = applyToType);
         fragmentMap[DiscountTypeFor.PERCENTAGE] =
-            DiscountPercentageFragment( applyToType ,listener = object : DiscountTypeListener {
+            DiscountPercentageFragment( applyToType ,listener = object :
+                DiscountFragment.DiscountTypeListener {
                 override fun discountUserChoose(discount: DiscountUser) {
                     listener.discountUserChoose(discount);
                 }
@@ -116,7 +118,7 @@ class DiscountTypeFragment(
                     DiscountApplyToType.ORDER_DISCOUNT_APPLY_TO-> cart.compReason;
                     else -> null
                 } ,
-                listener = object : DiscountTypeListener {
+                listener = object : DiscountFragment.DiscountTypeListener {
                     override fun compReasonChoose(item: Reason) {
                         listener.compReasonChoose(item);
                     }
@@ -135,13 +137,5 @@ class DiscountTypeFragment(
     }
 
     override fun initAction() {
-    }
-
-    interface DiscountTypeListener {
-        fun discountUserChoose(discount: DiscountUser): Unit {};
-        fun compReasonChoose(item: Reason): Unit {};
-        fun compRemoveAll(): Unit {};
-        fun discountFocus(type : DiscountTypeFor) : Unit{}
-        fun validDiscount(isValid : Boolean);
     }
 }

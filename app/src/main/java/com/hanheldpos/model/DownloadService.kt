@@ -87,7 +87,10 @@ object DownloadService {
                         }
 
                         override fun onError(error: com.downloader.Error?) {
-                            listener.onFail()
+                            CoroutineScope(Dispatchers.Main).launch{
+                                listener.onFail()
+                            }
+
                         }
                     })
                 if (currentDownloadPos == 0) {
@@ -99,7 +102,10 @@ object DownloadService {
                     if (currentDownloadPos == listResources.size - 1) {
                         isDownloading = false
                         processDialog.dismiss()
-                        listener.onComplete()
+                        CoroutineScope(Dispatchers.Main).launch{
+                            listener.onComplete()
+                        }
+
                     }
                 }
             }

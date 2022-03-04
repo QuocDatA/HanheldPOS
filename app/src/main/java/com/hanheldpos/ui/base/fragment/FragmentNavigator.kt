@@ -32,7 +32,6 @@ class FragmentNavigator(
             }
             return mFragmentManager.findFragmentByTag(tag)
         }
-
     /**
      * Pushes the fragment, and add it to the history (BackStack) if you have set a default animation
      * it will be added to the transaction.

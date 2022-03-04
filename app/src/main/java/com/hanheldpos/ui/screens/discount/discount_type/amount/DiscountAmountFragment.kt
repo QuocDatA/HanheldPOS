@@ -8,11 +8,12 @@ import com.hanheldpos.model.discount.DiscountTypeEnum
 import com.hanheldpos.model.discount.DiscountTypeFor
 import com.hanheldpos.model.discount.DiscountUser
 import com.hanheldpos.ui.base.fragment.BaseFragment
-import com.hanheldpos.ui.screens.discount.discount_type.DiscountTypeFragment
+import com.hanheldpos.ui.screens.discount.DiscountFragment
+import com.hanheldpos.ui.screens.discount.discount_type.DiscountTypeItemFragment
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 
-class DiscountAmountFragment(private val applyToType: DiscountApplyToType, private val listener: DiscountTypeFragment.DiscountTypeListener) :
+class DiscountAmountFragment(private val applyToType: DiscountApplyToType, private val listener: DiscountFragment.DiscountTypeListener) :
     BaseFragment<FragmentDiscountAmountBinding, DiscountAmountVM>(),
     DiscountAmountUV {
     override fun layoutRes(): Int = R.layout.fragment_discount_amount
