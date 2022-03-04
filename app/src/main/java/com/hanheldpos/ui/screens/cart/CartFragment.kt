@@ -175,11 +175,12 @@ class CartFragment( private val listener : CartCallBack) : BaseFragment<Fragment
     @SuppressLint("NotifyDataSetChanged")
     override fun initAction() {
         CurCartData.cartModelLD.observe(this) {
-            val list = viewModel.processDataDiscount(it);
-            binding.isShowDiscount = list.isNotEmpty();
-            cartDiscountAdapter.submitList(list);
-            cartDiscountAdapter.notifyDataSetChanged();
-            cartProductAdapter.notifyDataSetChanged();
+            it?:return@observe
+            val list = viewModel.processDataDiscount(it)
+            binding.isShowDiscount = list.isNotEmpty()
+            cartDiscountAdapter.submitList(list)
+            cartDiscountAdapter.notifyDataSetChanged()
+            cartProductAdapter.notifyDataSetChanged()
         }
     }
 
@@ -248,16 +249,12 @@ class CartFragment( private val listener : CartCallBack) : BaseFragment<Fragment
     }
 
     override fun onPayment(isSuccess : Boolean) {
+        onFragmentBackPressed()
         if (isSuccess){
-            removeCart()
+            CurCartData.removeCart()
             listener.onPaymentSuccess()
         }
-        onFragmentBackPressed();
-    }
 
-    private fun removeCart() {
-        getBack()
-        CurCartData.removeCart()
     }
 
     override fun onShowCustomerDetail() {

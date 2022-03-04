@@ -113,6 +113,7 @@ class PaymentFragment(private val payable: Double, private var listener: Payment
         //TODO : Fake payment cash for testing
         val paymentCash = viewModel.getPaymentMethods().find { payment-> payment.PaymentMethodType == PaymentMethodType.CASH.value };
         paymentCash?.let {
+            onFragmentBackPressed()
             listener.onPaymentComplete(
                 PaymentOrder(
                     paymentCash._id,
@@ -127,7 +128,7 @@ class PaymentFragment(private val payable: Double, private var listener: Payment
                 )
             )
             listener.onPayment(true)
-            onFragmentBackPressed()
+
         }
 
     }

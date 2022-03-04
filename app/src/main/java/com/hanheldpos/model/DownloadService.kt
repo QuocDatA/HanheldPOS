@@ -53,7 +53,11 @@ object DownloadService {
         }
     }
 
-    fun downloadFile(context: Context,listResources: List<ResourceResp>, listener: DownloadFileCallback) {
+    fun downloadFile(
+        context: Context,
+        listResources: List<ResourceResp>,
+        listener: DownloadFileCallback
+    ) {
         var isDownloading = true
         val downloadRequestList: MutableList<DownloadRequest> = mutableListOf()
         var currentDownloadPos = 0
@@ -92,29 +96,24 @@ object DownloadService {
                         }
 
                         override fun onError(error: com.downloader.Error?) {
-                            CoroutineScope(Dispatchers.Main).launch{
+                            CoroutineScope(Dispatchers.Main).launch {
                                 listener.onFail()
                             }
 
                         }
                     })
-                if (currentDownloadPos == 0) {
-                    while (currentDownloadPos == 0) {
+                while (PRDownloader.getStatus(downloadId) in mutableListOf(Status.QUEUED,Status.RUNNING)) { }
+                if (isDownloading && currentDownloadPos == listResources.size) {
+                    isDownloading = false
+                    processDialog.dismiss()
+                    CoroutineScope(Dispatchers.Main).launch {
+                        listener.onComplete()
                     }
-                } else {
-                    while (PRDownloader.getStatus(downloadId) == Status.RUNNING) {
-                    }
-                    if (currentDownloadPos == listResources.size - 1) {
-                        isDownloading = false
-                        processDialog.dismiss()
-                        CoroutineScope(Dispatchers.Main).launch{
-                            listener.onComplete()
-                        }
-
-                    }
+                    return@launch
                 }
             }
         }
+
     }
 
     private fun checkForPermission(context: Context): Boolean {

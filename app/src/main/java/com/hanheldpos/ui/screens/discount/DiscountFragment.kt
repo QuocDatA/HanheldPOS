@@ -1,6 +1,7 @@
 package com.hanheldpos.ui.screens.discount
 
 import android.os.Bundle
+import android.view.View
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.order.settings.Reason
 import com.hanheldpos.databinding.FragmentDiscountBinding
@@ -33,14 +34,14 @@ class DiscountFragment(private val listener: DiscountCallback) :
     }
 
     override fun initView() {
-//        viewModel.typeDiscountSelect.observe(this) {
-//            if (it in mutableListOf(DiscountTypeFor.DISCOUNT_CODE,DiscountTypeFor.AUTOMATIC)){
-//                binding.btnSave.visibility = View.GONE
-//            }else {
-//                binding.btnSave.visibility = View.VISIBLE
-//            }
-//
-//        }
+        viewModel.typeDiscountSelect.observe(this) {
+            if (it in mutableListOf(DiscountTypeFor.DISCOUNT_CODE,DiscountTypeFor.AUTOMATIC)){
+                binding.btnSave.visibility = View.GONE
+            }else {
+                binding.btnSave.visibility = View.VISIBLE
+            }
+
+        }
     }
 
     override fun initData() {

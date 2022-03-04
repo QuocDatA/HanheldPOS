@@ -230,4 +230,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
         navigator.goToWithAnimationEnterFromLeft(MenuFragment());
     }
 
+    override fun onFragmentBackPressed() {
+        requireActivity().finish()
+    }
 }
