@@ -76,13 +76,16 @@
         <com.diadiem.pos_components.PMaterialButton
             android:id="@+id/btnStartDrawer"
             style="@style/Base.MaterialButton"
+            android:stateListAnimator="@null"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_primary_button"
-            android:gravity="center"
             android:layout_marginHorizontal="@dimen/_9sdp"
             android:layout_marginVertical="@dimen/_16sdp"
+            android:background="@drawable/bg_primary_button"
+            android:gravity="center"
             android:text="@string/start_drawer"
+            android:elevation="0dp"
+            app:elevation="0dp"
             app:pbtn_useFontStyle="bold"
             app:pbtn_useTextColor="color2"
             app:pbtn_useTextHeader="h4" />

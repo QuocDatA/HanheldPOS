@@ -99,11 +99,7 @@ class EndDrawerFragment(private val report: ReportCashDrawerResp?) : BaseFragmen
     }
 
     override fun onEndDrawer() {
-        activity?.navigateTo(
-            PinCodeFragment::class.java,
-            alsoFinishCurrentActivity = true,
-            alsoClearActivity = true,
-        )
+        navigator.goTo(PinCodeFragment());
     }
 
 }

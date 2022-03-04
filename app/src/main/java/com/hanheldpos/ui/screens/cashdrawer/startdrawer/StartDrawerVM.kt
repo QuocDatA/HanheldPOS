@@ -20,10 +20,6 @@ class StartDrawerVM : BaseRepoViewModel<CashDrawerRepo, StartDrawerUV>() {
 
     val amountString = MutableLiveData(0.toString())
 
-    fun backPress(){
-        uiCallback?.backPress();
-    }
-
     fun startDrawer(context: Context) {
         showLoading(true);
         val startingCash = amountString.value!!.replace(",","").toDouble();

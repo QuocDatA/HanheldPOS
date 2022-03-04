@@ -73,8 +73,8 @@ class StartDrawerFragment : BaseFragment<FragmentStartDrawerBinding, StartDrawer
         return StartDrawerVM::class.java;
     }
 
-    override fun backPress() {
-        backPress();
+    override fun onFragmentBackPressed() {
+        requireActivity().finish()
     }
 
     override fun goHome() {
