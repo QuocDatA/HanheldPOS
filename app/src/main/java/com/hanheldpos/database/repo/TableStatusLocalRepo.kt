@@ -14,7 +14,7 @@ class TableStatusLocalRepo(private val tableStatusDao: TableStatusDao) {
     fun insertAll(tableStatuses: List<TableStatusEntity>) =
         tableStatusDao.insertAll(tableStatuses);
 
-    fun delete(id: String) = tableStatusDao.delete(id);
+    fun delete(id: String) = tableStatusDao.delete(id)
 
     fun deleteAll() = tableStatusDao.deleteAll();
 

@@ -101,7 +101,7 @@ object DownloadService {
                             }
 
                         }
-                        
+
                     })
                 while (PRDownloader.getStatus(downloadId) in mutableListOf(Status.QUEUED,Status.RUNNING)) { }
                 currentDownloadPos++

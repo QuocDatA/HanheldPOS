@@ -46,8 +46,8 @@ object OrderConverter {
                 surchargeFeeList = orderData.SurchargeFeeList,
                 taxesFeeList = orderData.TaxFeeList,
             ),
-            discountServerList = toDiscountsServer(orderData.DiscountList) as MutableList<DiscountServer>,
-            discountUserList = toDiscountsUser(orderData.DiscountList) as MutableList<DiscountUser>,
+            discountServerList = toDiscountsServer(orderData.DiscountList).toMutableList(),
+            discountUserList = toDiscountsUser(orderData.DiscountList).toMutableList(),
             productsList = toProductList(orderData.OrderProducts, order.MenuLocationGuid!!),
         )
         return model
@@ -78,32 +78,33 @@ object OrderConverter {
     }
 
     private fun toProductList(
-        orderProducts: List<ProductBuy>,
-        menuLocation_id: String
+        productList: List<ProductBuy>,
+        menuLocationId: String
     ): MutableList<BaseProductInCart> {
-        val productList: MutableList<BaseProductInCart> = mutableListOf()
-        orderProducts.forEachIndexed { _, productOrder ->
-            val diningOption = OrderHelper.getDiningOptionItem(productOrder.DiningOption?.Id ?: 0)!!
+        val baseProductList: MutableList<BaseProductInCart> = mutableListOf()
+        productList.forEachIndexed { _, productBuy ->
+            val diningOption = OrderHelper.getDiningOptionItem(productBuy.DiningOption?.Id ?: 0)!!
 
-            val compReason = toReasonComp(productOrder.CompVoidList!!)
-            val discountServerList = toDiscountsServer(productOrder.DiscountList!!)
-            val discountUserList = toDiscountsUser(productOrder.DiscountList)
+            val compReason = toReasonComp(productBuy.CompVoidList!!)
+            val discountServerList = toDiscountsServer(productBuy.DiscountList!!)
+            val discountUserList = toDiscountsUser(productBuy.DiscountList)
             val feeList = toFeeList(
-                serviceFeeList = productOrder.ServiceFeeList,
-                surchargeFeeList = productOrder.SurchargeFeeList,
-                shippingFeeList = productOrder.ShippingFeeList,
-                taxesFeeList = productOrder.TaxFeeList
+                serviceFeeList = productBuy.ServiceFeeList,
+                surchargeFeeList = productBuy.SurchargeFeeList,
+                shippingFeeList = productBuy.ShippingFeeList,
+                taxesFeeList = productBuy.TaxFeeList
             )
 
-            when (ProductType.values()[productOrder.ProductTypeId]) {
+            when (ProductType.values()[productBuy.ProductTypeId]) {
                 ProductType.REGULAR -> run {
-                    val proOriginal = findProduct(productOrder._id) ?: return@run
-                    productList.add(
+                    val proOriginal = findProduct(productBuy._id) ?: return@run
+                    proOriginal.AsignTo = OrderType.REGULAR.value
+                    baseProductList.add(
                         toRegular(
-                            productBuy = productOrder,
+                            productBuy = productBuy,
                             proOriginal = proOriginal,
                             diningOption = diningOption,
-                            compReason = compReason!!,
+                            compReason = compReason,
                             discountUserList = discountUserList,
                             discountServerList = discountServerList,
                             feeList = feeList
@@ -111,24 +112,23 @@ object OrderConverter {
                     )
                 }
                 ProductType.BUNDLE -> run {
-                    val productBundleOriginal = findProduct(productOrder._id)
+                    val productBundleOriginal = findProduct(productBuy._id)
                     val comboList: List<ProductComboItem> = Gson().fromJson(
                         productBundleOriginal?.Combo,
                         object : TypeToken<List<ProductComboItem>>() {}.type
                     )
-                    if (!comboList.any())
+                    if (comboList.isNullOrEmpty())
                         return@run
-                    val groupBundleList: List<GroupBundle> = listOf()
+                    val groupBundleList = mutableListOf<GroupBundle>()
                     comboList.forEachIndexed { index, comboInfo ->
-
                         val listProduct: MutableList<Regular> = mutableListOf()
-                        productOrder.ProductChoosedList?.filter { it.Parent_id.equals(comboInfo.ComboGuid) }
-                            ?.toList()?.forEach { productChoosed ->
-                                val productChoosedOriginal = findProduct(productChoosed._id)
+                        productBuy.ProductChoosedList?.filter { it.Parent_id.equals(comboInfo.ComboGuid) }
+                            ?.toList()?.forEach { productChosen ->
+                                val productChosenOriginal = findProduct(productChosen._id)
                                 listProduct.add(
                                     toRegular(
-                                        productBuy = productChoosed,
-                                        proOriginal = productChoosedOriginal!!,
+                                        productBuy = productChosen,
+                                        proOriginal = productChosenOriginal!!,
                                         diningOption = diningOption,
                                         compReason = null,
                                         discountUserList = emptyList(),
@@ -137,27 +137,28 @@ object OrderConverter {
                                     )
                                 )
                             }
+                        groupBundleList.add(GroupBundle(comboInfo = comboInfo, productList = listProduct))
                     }
-                    productList.add(
+                    baseProductList.add(
                         Combo(
                             productBundleOriginal!!,
                             groupBundleList,
                             diningOption,
-                            productOrder.Quantity,
-                            productOrder.Sku,
-                            productOrder.Variant,
+                            productBuy.Quantity,
+                            productBuy.Sku,
+                            productBuy.Variant,
                             feeList
                         ).apply {
                             this.compReason = compReason
-                            this.discountServersList = discountServerList as MutableList<DiscountServer>
-                            this.discountUsersList = discountUserList as MutableList<DiscountUser>; }
+                            this.discountServersList = discountServerList.toMutableList()
+                            this.discountUsersList = discountUserList.toMutableList() }
                     )
                 }
 
                 else -> {}
             }
         }
-        return productList
+        return baseProductList
     }
 
 
@@ -185,8 +186,8 @@ object OrderConverter {
             feeList
         ).apply {
             this.compReason = compReason
-            this.discountServersList = discountServerList as MutableList<DiscountServer>
-            this.discountUsersList = discountUserList as MutableList<DiscountUser>
+            this.discountServersList = discountServerList.toMutableList()
+            this.discountUsersList = discountUserList.toMutableList()
         }
 
 

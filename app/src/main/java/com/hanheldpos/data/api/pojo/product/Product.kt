@@ -12,7 +12,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class Product(
     val Acronymn: String,
-    val AsignTo: Int,
+    var AsignTo: Int,
     val Barcode: String,
     val BrandGuid: String,
     val CategoryGuid: String,

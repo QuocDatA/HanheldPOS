@@ -21,7 +21,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 
-class DiscountAutomaticFragment(private val applyToType: DiscountApplyToType ,private val cart: CartModel?) :
+class DiscountAutomaticFragment(private val applyToType: DiscountApplyToType ,private val cart: CartModel? ) :
     BaseFragment<FragmentDiscountAutomaticBinding, DiscountAutomaticVM>(), DiscountAutomaticUV {
 
     private var itemSelected = MutableLiveData<BaseProductInCart?>();

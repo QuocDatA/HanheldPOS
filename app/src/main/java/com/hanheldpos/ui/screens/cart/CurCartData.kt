@@ -61,6 +61,11 @@ object CurCartData {
 
     }
 
+    fun initCart(cart : CartModel , table: FloorTable) {
+        cartModelLD.value = cart
+        currentTableFocus.value = table
+    }
+
     fun addCustomerToCart(customer: CustomerResp) {
         this.cartModelLD.value!!.customer = customer;
         this.cartModelLD.notifyValueChange();
@@ -125,8 +130,8 @@ object CurCartData {
     }
 
     fun removeCart() {
-        this@CurCartData.cartModelLD.value = null;
-        this@CurCartData.cartModelLD.notifyValueChange();
+        this@CurCartData.cartModelLD.postValue(null)
+        this.currentTableFocus.postValue(null)
     }
 
     fun deleteDiscountCart(discount: DiscountCart, productInCart: BaseProductInCart?) {

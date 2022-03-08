@@ -72,7 +72,7 @@ class CartVM : BaseUiViewModel<CartUV>() {
             if (cart.orderCode == null)
                 cart.orderCode = OrderHelper.generateOrderIdByFormat()
             val orderStatus =
-                if (OrderHelper.isPaymentSuccess(cart)) OrderStatus.COMPLETED.value else OrderStatus.COMFIRMED.value
+                if (OrderHelper.isPaymentSuccess(cart)) OrderStatus.COMPLETED.value else OrderStatus.ORDER.value
             val paymentStatus =
                 if (OrderHelper.isPaymentSuccess(cart)) PaymentStatus.PAID.value else PaymentStatus.UNPAID.value
             val orderReq = CartConverter.toOrder(
@@ -83,16 +83,22 @@ class CartVM : BaseUiViewModel<CartUV>() {
 
             // Table
             val table = CurCartData.currentTableFocus.value!!
-            if (orderStatus == OrderStatus.COMFIRMED.value && paymentStatus == PaymentStatus.UNPAID.value)
+            if (orderStatus == OrderStatus.ORDER.value && paymentStatus == PaymentStatus.UNPAID.value)
                 table.updateTableStatus(TableStatusType.Unavailable, orderReq.OrderSummary)
             else
                 table.updateTableStatus(TableStatusType.Available)
 
             viewModelScope.launch(Dispatchers.IO) {
-                DatabaseHelper.ordersCompleted.insert(
-                    DatabaseMapper.mappingOrderCompletedReqToEntity(orderReq)
-                )
-                if (orderStatus == OrderStatus.COMFIRMED.value && paymentStatus == PaymentStatus.UNPAID.value) {
+                val orderEntity = DatabaseHelper.ordersCompleted.get(orderReq.Order.Code!!)
+                if (orderEntity == null)
+                    DatabaseHelper.ordersCompleted.insert(
+                        DatabaseMapper.mappingOrderCompletedReqToEntity(orderReq)
+                    ) else {
+                    DatabaseHelper.ordersCompleted.update(
+                        DatabaseMapper.mappingOrderCompletedReqToEntity(orderReq)
+                    )
+                }
+                if (orderStatus != OrderStatus.COMPLETED.value && paymentStatus != PaymentStatus.PAID.value) {
                     DatabaseHelper.tableStatuses.insert(DatabaseMapper.mappingTableToEntity(table))
                     launch(Dispatchers.Main) { CurCartData.currentTableFocus.notifyValueChange() }
                 }
