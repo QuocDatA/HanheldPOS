@@ -6,13 +6,17 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.databinding.FragmentDiscountCodeBinding
 import com.hanheldpos.databinding.FragmentDiscountCompBinding
 import com.hanheldpos.model.discount.DiscountApplyToType
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
+import com.hanheldpos.ui.base.adapter.GridSpacingItemDecoration
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.discount.discount_detail.DiscountDetailFragment
 import com.hanheldpos.ui.screens.discount.discount_type.discount_code.adapter.DiscountCodeAdapter
@@ -46,6 +50,21 @@ class DiscountCodeFragment(private val applyToType : DiscountApplyToType) : Base
                     navigator.goTo(DiscountDetailFragment(item))
                 }
             });
+        binding.listDiscountCode.apply {
+            addItemDecoration(
+                DividerItemDecoration(
+                    context,
+                    LinearLayoutManager.VERTICAL
+                ).apply {
+                    setDrawable(
+                        ContextCompat.getDrawable(
+                            context,
+                            R.drawable.divider_vertical
+                        )!!
+                    )
+                }
+            )
+        };
         binding.listDiscountCode.adapter = discountCodeAdapter;
         binding.firstNameInput.doAfterTextChanged {
             viewModel.searchDiscountCode(it.toString())

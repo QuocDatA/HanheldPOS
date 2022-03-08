@@ -103,25 +103,25 @@
 
         </LinearLayout>
 
-        <androidx.core.widget.NestedScrollView
-            android:overScrollMode="always"
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fadeScrollbars="false"
+            android:scrollbarSize="@dimen/_4sdp"
             android:layout_above="@+id/actionBar"
             android:layout_below="@+id/toolbarContainer">
-            <ScrollView
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <LinearLayout
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/comboGroupAdapter"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/comboGroupAdapter"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:overScrollMode="never"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    android:overScrollMode="never"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         tools:itemCount="1"
                         tools:listitem="@layout/item_combo_group" />
                     <LinearLayout
@@ -190,10 +190,6 @@
                         />
                 </LinearLayout>
             </ScrollView>
-
-
-
-        </androidx.core.widget.NestedScrollView>
 
         <include
             android:id="@+id/dividerActin"
