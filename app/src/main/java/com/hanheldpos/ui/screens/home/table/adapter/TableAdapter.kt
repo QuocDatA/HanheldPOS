@@ -5,7 +5,6 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.Color.TRANSPARENT
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.databinding.DataBindingUtil
@@ -21,10 +20,13 @@ import com.hanheldpos.model.home.table.TableStatusType
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
+import com.hanheldpos.utils.time.DateTimeHelper
+import java.util.*
+import java.util.concurrent.TimeUnit
 
 class TableAdapter(
     private val listener: BaseItemClickListener<FloorTable>
-) : BaseBindingListAdapter<FloorTable>(DiffCallBack(),listener) {
+) : BaseBindingListAdapter<FloorTable>(DiffCallBack(), listener) {
 
     lateinit var context: Context
 
@@ -71,7 +73,7 @@ class TableAdapter(
         //Color for the Relative Layout Background
         val availableColor = Color.parseColor("#EEEEEE")
         val unavailableColor = Color.parseColor("#007EFF")
-        val pendingColor  = Color.parseColor("#FBD536")
+        val pendingColor = Color.parseColor("#FBD536")
         if (item.uiType != TableModeViewType.Empty) {
             when (item.tableStatus) {
                 TableStatusType.Available -> {
@@ -111,8 +113,21 @@ class TableAdapter(
                         TableModeViewType.Table -> {
                             val view = holder.binding as ItemTableBinding
                             view.tableItemBackground.setBackgroundColor(
-                               unavailableColor
+                                unavailableColor
                             )
+                            DateTimeHelper.strToDate(
+                                item.orderSummary!!.CreateDate,
+                                DateTimeHelper.Format.FULL_DATE_UTC_TIMEZONE
+                            )?.let {
+                                val time = Date().time  - it.time
+                                view.timeCount.text = String.format("%02d:%02d",
+                                    TimeUnit.MILLISECONDS.toHours(time),
+                                    TimeUnit.MILLISECONDS.toMinutes(time) -
+                                            TimeUnit.MINUTES.toMinutes(TimeUnit.MILLISECONDS.toHours(time))
+                                );
+
+                            }
+
                         }
                         else -> {
                             val dirButtonView = holder.binding as ItemTableDirectionButtonBinding

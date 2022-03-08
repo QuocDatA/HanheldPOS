@@ -37,15 +37,16 @@
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:text="@{item.TableName,default=`Table`}"
-                    app:useFontStyle="normal"
+                    app:useFontStyle="semi_bold"
                     app:useTextColor="color3"
                     app:useTextHeader="h4" />
                 <com.diadiem.pos_components.PTextView
+                    android:id="@+id/timeCount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:useFontStyle="normal"
                     app:useTextColor="color2"
-                    app:useTextHeader="h4"
+                    app:useTextHeader="h5"
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentTop="true"
                     />

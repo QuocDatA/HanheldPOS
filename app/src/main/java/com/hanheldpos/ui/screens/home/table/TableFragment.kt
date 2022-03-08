@@ -67,8 +67,9 @@ class TableFragment : BaseFragment<FragmentTableBinding, TableVM>(), TableUV {
         tableAdapter = TableAdapter(
             listener = object : BaseItemClickListener<FloorTable> {
                 override fun onItemClick(adapterPosition: Int, item: FloorTable) {
-                    Log.d("OrderFragment", "Product Selected");
-
+                    Log.d("TableFragment", "Table Selected");
+                    if (SystemClock.elapsedRealtime() - viewModel.mLastTimeClick  < 500) return
+                    viewModel.mLastTimeClick = SystemClock.elapsedRealtime()
                     when (item.uiType) {
                         TableModeViewType.Table -> {
                             onTableChosen(adapterPosition, item);
@@ -134,6 +135,8 @@ class TableFragment : BaseFragment<FragmentTableBinding, TableVM>(), TableUV {
 
     @SuppressLint("NotifyDataSetChanged")
     private fun onTableChosen(adapterPosition: Int, item: FloorTable) {
+
+
         when (item.tableStatus) {
             TableStatusType.Available -> {
                 // Check list has any pending table, if has change to available
@@ -145,8 +148,6 @@ class TableFragment : BaseFragment<FragmentTableBinding, TableVM>(), TableUV {
                         return
                     }
                 }
-
-                viewModel.mLastTimeClick = SystemClock.elapsedRealtime()
 
                 // Show Table input number customer
                 navigator.goTo(TableInputFragment(listener = object :
@@ -166,6 +167,13 @@ class TableFragment : BaseFragment<FragmentTableBinding, TableVM>(), TableUV {
                 tableAdapter.notifyItemChanged(adapterPosition);
             }
             TableStatusType.Unavailable -> {
+                tableAdapter.currentList.filter { it.tableStatus == TableStatusType.Pending }.let {
+                    if (it.isNotEmpty()) {
+                        it.forEach { table -> table.tableStatus = TableStatusType.Available }
+                        CurCartData.removeCart()
+                        tableAdapter.notifyDataSetChanged()
+                    }
+                }
                 checkExistOrderOnTable(item)
             }
         }
