@@ -5,6 +5,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.viewModelScope
 import com.hanheldpos.R
 import com.hanheldpos.database.DatabaseMapper
+import com.hanheldpos.extension.notifyValueChange
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.DatabaseHelper
 import com.hanheldpos.model.OrderHelper
@@ -12,6 +13,7 @@ import com.hanheldpos.model.cart.CartConverter
 import com.hanheldpos.model.cart.CartModel
 import com.hanheldpos.model.cart.DiscountCart
 import com.hanheldpos.model.cart.payment.PaymentStatus
+import com.hanheldpos.model.home.table.TableStatusType
 import com.hanheldpos.model.order.OrderStatus
 import com.hanheldpos.ui.base.dialog.AppAlertDialog
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
@@ -38,7 +40,7 @@ class CartVM : BaseUiViewModel<CartUV>() {
     }
 
     fun openSelectPayment(payable: Double) {
-        uiCallback?.openSelectPayment(false,payable)
+        uiCallback?.openSelectPayment(false, payable)
     }
 
     fun onOpenAddCustomer() {
@@ -65,10 +67,12 @@ class CartVM : BaseUiViewModel<CartUV>() {
     private fun onOrderProcessing(context: Context, cart: CartModel) {
         showLoading(true)
         try {
+
+            // Order
             if (cart.orderCode == null)
                 cart.orderCode = OrderHelper.generateOrderIdByFormat()
             val orderStatus =
-                if (OrderHelper.isPaymentSuccess(cart)) OrderStatus.COMPLETED.value else OrderStatus.COMFIRMED.value
+                if (OrderHelper.isPaymentSuccess(cart)) OrderStatus.COMPLETED.value else OrderStatus.ORDER.value
             val paymentStatus =
                 if (OrderHelper.isPaymentSuccess(cart)) PaymentStatus.PAID.value else PaymentStatus.UNPAID.value
             val orderReq = CartConverter.toOrder(
@@ -77,10 +81,29 @@ class CartVM : BaseUiViewModel<CartUV>() {
                 paymentStatus,
             )
 
+            // Table
+            val table = CurCartData.currentTableFocus.value!!
+            if (orderStatus == OrderStatus.ORDER.value && paymentStatus == PaymentStatus.UNPAID.value)
+                table.updateTableStatus(TableStatusType.Unavailable, orderReq.OrderSummary)
+            else
+                table.updateTableStatus(TableStatusType.Available)
+
             viewModelScope.launch(Dispatchers.IO) {
-                DatabaseHelper.ordersCompleted.insert(
-                    DatabaseMapper.mappingOrderCompletedReqToEntity(orderReq)
-                )
+                val orderEntity = DatabaseHelper.ordersCompleted.get(orderReq.Order.Code!!)
+                if (orderEntity == null)
+                    DatabaseHelper.ordersCompleted.insert(
+                        DatabaseMapper.mappingOrderCompletedReqToEntity(orderReq)
+                    ) else {
+                    DatabaseHelper.ordersCompleted.update(
+                        DatabaseMapper.mappingOrderCompletedReqToEntity(orderReq)
+                    )
+                }
+                if (orderStatus != OrderStatus.COMPLETED.value && paymentStatus != PaymentStatus.PAID.value) {
+                    DatabaseHelper.tableStatuses.insert(DatabaseMapper.mappingTableToEntity(table))
+                    launch(Dispatchers.Main) { CurCartData.currentTableFocus.notifyValueChange() }
+                }
+
+
                 launch(Dispatchers.Main) {
                     showLoading(false)
                     uiCallback?.onBillSuccess()

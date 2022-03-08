@@ -1,9 +1,12 @@
 package com.hanheldpos.model
 
+import androidx.room.Index
 import com.hanheldpos.data.api.pojo.fee.Fee
 import com.hanheldpos.model.cart.CartModel
 import com.hanheldpos.model.cart.fee.FeeApplyToType
 import com.hanheldpos.model.cart.payment.PaymentOrder
+import com.hanheldpos.model.order.Order
+import com.hanheldpos.model.order.OrderReq
 
 object OrderHelper {
     fun findGroupNameOrderMenu(group_id: String): String {
@@ -55,6 +58,13 @@ object OrderHelper {
     fun isPaymentSuccess(cart: CartModel): Boolean {
         val total = cart.getTotalPrice()
         val totalPay = cart.paymentsList.sumOf {
+            it.Payable ?: 0.0
+        }
+        return totalPay >= total
+    }
+    fun isPaymentSuccess(orderReq : OrderReq) : Boolean {
+        val total = orderReq.OrderSummary.GrandTotal?:0.0
+        val totalPay = orderReq.OrderDetail.PaymentList.sumOf {
             it.Payable ?: 0.0
         }
         return totalPay >= total

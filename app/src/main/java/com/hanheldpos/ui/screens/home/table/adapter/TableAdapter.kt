@@ -70,8 +70,8 @@ class TableAdapter(
 
         //Color for the Relative Layout Background
         val availableColor = Color.parseColor("#EEEEEE")
-        val pendingColor = Color.parseColor("#007EFF")
-        val unavailableColor = Color.parseColor("#FBD536")
+        val unavailableColor = Color.parseColor("#007EFF")
+        val pendingColor  = Color.parseColor("#FBD536")
         if (item.uiType != TableModeViewType.Empty) {
             when (item.tableStatus) {
                 TableStatusType.Available -> {

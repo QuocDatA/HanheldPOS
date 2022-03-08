@@ -73,7 +73,7 @@ class DiscountCompFragment(
     override fun initData() {
         viewModel.reasonChosen.postValue(comp);
         val list = DataHelper.orderSettingLocalStorage?.ListComp?.firstOrNull()?.ListReasons
-        if (list != null) adapter.submitList(list as MutableList<Reason>);
+        if (list != null) adapter.submitList(list.toMutableList());
     }
 
     override fun initAction() {

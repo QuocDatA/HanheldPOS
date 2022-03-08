@@ -27,6 +27,7 @@
             android:layout_height="@dimen/_100sdp">
 
             <RelativeLayout
+                android:padding="@dimen/_10sdp"
                 android:id="@+id/tableItemBackground"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -39,7 +40,15 @@
                     app:useFontStyle="normal"
                     app:useTextColor="color3"
                     app:useTextHeader="h4" />
-
+                <com.diadiem.pos_components.PTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:useFontStyle="normal"
+                    app:useTextColor="color2"
+                    app:useTextHeader="h4"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentTop="true"
+                    />
             </RelativeLayout>
         </RelativeLayout>
     </com.google.android.material.card.MaterialCardView>

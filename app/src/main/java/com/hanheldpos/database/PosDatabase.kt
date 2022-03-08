@@ -5,13 +5,17 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.hanheldpos.database.dao.OrderCompletedDao
+import com.hanheldpos.database.dao.TableStatusDao
 import com.hanheldpos.database.entities.OrderCompletedEntity
+import com.hanheldpos.database.entities.TableStatusEntity
 
 
-@Database(entities = [ OrderCompletedEntity::class, ], version = 1, exportSchema = false)
+@Database(entities = [ OrderCompletedEntity::class,TableStatusEntity::class ], version = 1, exportSchema = false)
 public abstract class PosDatabase : RoomDatabase() {
 
     abstract fun orderCompleted() : OrderCompletedDao
+
+    abstract fun tableStatus() : TableStatusDao
 
     companion object {
         @Volatile

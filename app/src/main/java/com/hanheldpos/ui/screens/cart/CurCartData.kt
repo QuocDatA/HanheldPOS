@@ -21,6 +21,8 @@ object CurCartData {
 
     val cartModelLD: MutableLiveData<CartModel> = MutableLiveData();
 
+    val currentTableFocus : MutableLiveData<FloorTable> = MutableLiveData();
+
     val diningOptionLD: LiveData<DiningOption> = Transformations.map(cartModelLD) {
         return@map it?.diningOption
             ?: DataHelper.orderSettingLocalStorage?.ListDiningOptions?.firstOrNull()
@@ -50,11 +52,18 @@ object CurCartData {
                 diningOption = DataHelper.orderSettingLocalStorage?.ListDiningOptions?.firstOrNull()!!,
             )
 
+        currentTableFocus.value = table;
+
         val diningOptionId =
             DataHelper.floorLocalStorage?.Floor?.firstOrNull { floorTable -> floorTable._Id == table.FloorGuid }?.DiningOptionId
         val diningOption = OrderHelper.getDiningOptionItem(diningOptionId)
         diningOptionChange(diningOption);
 
+    }
+
+    fun initCart(cart : CartModel , table: FloorTable) {
+        cartModelLD.value = cart
+        currentTableFocus.value = table
     }
 
     fun addCustomerToCart(customer: CustomerResp) {
@@ -121,8 +130,8 @@ object CurCartData {
     }
 
     fun removeCart() {
-        this@CurCartData.cartModelLD.value = null;
-        this@CurCartData.cartModelLD.notifyValueChange();
+        this@CurCartData.cartModelLD.postValue(null)
+        this.currentTableFocus.postValue(null)
     }
 
     fun deleteDiscountCart(discount: DiscountCart, productInCart: BaseProductInCart?) {
