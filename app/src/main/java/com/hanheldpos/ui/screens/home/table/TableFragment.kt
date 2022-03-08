@@ -92,12 +92,16 @@ class TableFragment : BaseFragment<FragmentTableBinding, TableVM>(), TableUV {
 
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun initAction() {
+        CurCartData.currentTableFocus.observe(this) {
+            tableAdapter.notifyDataSetChanged()
+        }
         screenViewModel.dropDownSelected.observe(this) {
             val screen = screenViewModel.screenEvent.value?.screen;
             if (screen == HomeFragment.HomePage.Table) {
                 if (it.realItem is Floor) {
-                    viewModel.floorItemSelected.value = it.realItem as Floor;
+                    viewModel.floorItemSelected.value = it.realItem;
                 } else if (it.realItem == null)
                     viewModel.getTableList()?.toMutableList()
                         ?.let { it1 -> tableAdapterHelper.submitList(it1); };
@@ -120,6 +124,7 @@ class TableFragment : BaseFragment<FragmentTableBinding, TableVM>(), TableUV {
         })
     }
 
+
     @SuppressLint("NotifyDataSetChanged")
     private fun onTableChosen(adapterPosition: Int, item: FloorTable) {
         when (item.tableStatus) {
@@ -128,23 +133,23 @@ class TableFragment : BaseFragment<FragmentTableBinding, TableVM>(), TableUV {
                 tableAdapter.currentList.filter { it.tableStatus == TableStatusType.Pending }.let {
                     if (it.isNotEmpty()) {
                         it.forEach { table -> table.tableStatus = TableStatusType.Available };
-                        tableAdapter.notifyDataSetChanged();
-                        return;
+                        tableAdapter.notifyDataSetChanged()
+                        return
                     }
-                };
+                }
 
-                viewModel.mLastTimeClick = SystemClock.elapsedRealtime();
+                viewModel.mLastTimeClick = SystemClock.elapsedRealtime()
 
                 // Show Table input number customer
                 navigator.goTo(TableInputFragment(listener = object :
                     TableInputFragment.TableInputListener {
                     override fun onCompleteTable(numberCustomer: Int) {
-                        tableAdapter.notifyItemChanged(adapterPosition);
                         // Init cart first time
+                        item.updateTableStatus(TableStatusType.Pending);
                         CurCartData.initCart(numberCustomer, item);
                         screenViewModel.showOrderPage();
                     }
-                }));
+                }))
 
             }
             TableStatusType.Pending -> {
@@ -158,9 +163,10 @@ class TableFragment : BaseFragment<FragmentTableBinding, TableVM>(), TableUV {
 
     }
 
+
+
     companion object {
         var selectedSort: Int = 0;
-
     }
 
 }

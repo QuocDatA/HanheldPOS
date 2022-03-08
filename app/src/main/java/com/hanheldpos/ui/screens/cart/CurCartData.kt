@@ -21,6 +21,8 @@ object CurCartData {
 
     val cartModelLD: MutableLiveData<CartModel> = MutableLiveData();
 
+    val currentTableFocus : MutableLiveData<FloorTable> = MutableLiveData();
+
     val diningOptionLD: LiveData<DiningOption> = Transformations.map(cartModelLD) {
         return@map it?.diningOption
             ?: DataHelper.orderSettingLocalStorage?.ListDiningOptions?.firstOrNull()
@@ -49,6 +51,8 @@ object CurCartData {
                 discountServerList = mutableListOf(),
                 diningOption = DataHelper.orderSettingLocalStorage?.ListDiningOptions?.firstOrNull()!!,
             )
+
+        currentTableFocus.value = table;
 
         val diningOptionId =
             DataHelper.floorLocalStorage?.Floor?.firstOrNull { floorTable -> floorTable._Id == table.FloorGuid }?.DiningOptionId
