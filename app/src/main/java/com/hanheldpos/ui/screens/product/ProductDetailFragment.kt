@@ -127,11 +127,11 @@ class ProductDetailFragment(
 
     override fun initData() {
         // init data
-        viewModel.actionType.value = action;
-        viewModel.productBundle = productBundle;
-        viewModel.groupBundle = groupBundle;
-        viewModel.regularInCart.value = regular;
-        viewModel.maxQuantity = quantityCanChoose;
+        viewModel.actionType.value = action
+        viewModel.productBundle = productBundle
+        viewModel.groupBundle = groupBundle
+        viewModel.regularInCart.value = regular
+        viewModel.maxQuantity = quantityCanChoose
 
         regular.apply {
             proOriginal?.VariantsGroup.let {
@@ -222,7 +222,6 @@ class ProductDetailFragment(
     fun onSelectedModifier(item: ItemExtra) {
         val modifier = ModifierCart(
             item.modifier._Id,
-            item.modifier.ModifierGuid,
             item.modifier.Modifier,
             item.extraQuantity,
             item.modifier.Price,

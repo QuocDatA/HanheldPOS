@@ -8,8 +8,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class ModifierCart(
-    var modifierId : String,
-    var modifierGuid: String,
+    var modifierId: String,
     var name: String,
     var quantity: Int,
     var price: Double?

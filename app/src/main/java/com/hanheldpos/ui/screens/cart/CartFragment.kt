@@ -238,7 +238,6 @@ class CartFragment(private val listener: CartCallBack) :
                         CurCartData.addPaymentOrder(paymentOrder)
 
                     }
-
                     override fun onPayment(isSuccess: Boolean) {
                         if (isSuccess) {
                             viewModel.billCart(requireContext(), CurCartData.cartModelLD.value!!)
@@ -294,7 +293,6 @@ class CartFragment(private val listener: CartCallBack) :
                 action: ItemActionType
             ) {
                 onUpdateItemInCart(position, item);
-
             }
         }
 

@@ -62,7 +62,7 @@ abstract class OrderMapping {
     ): OrderModifier {
 
         return OrderModifier(
-            ModifierItemGuid = src.modifierGuid,
+            ModifierItemGuid = src.modifierId,
             Name = src.name,
             ModifierQuantity = src.quantity,
             PricingMethodId = pricingMethodId,

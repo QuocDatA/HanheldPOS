@@ -9,14 +9,10 @@ import com.hanheldpos.data.api.pojo.order.settings.Reason
 import com.hanheldpos.data.api.pojo.product.Product
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.OrderHelper
-import com.hanheldpos.model.cart.CartModel
-import com.hanheldpos.model.cart.Combo
-import com.hanheldpos.model.cart.GroupBundle
-import com.hanheldpos.model.cart.Regular
+import com.hanheldpos.model.cart.*
 import com.hanheldpos.model.cart.fee.FeeType
 import com.hanheldpos.model.discount.DiscountServer
 import com.hanheldpos.model.discount.DiscountUser
-import com.hanheldpos.model.cart.BaseProductInCart
 import com.hanheldpos.model.product.ProductComboItem
 import com.hanheldpos.model.product.ProductType
 
@@ -188,6 +184,9 @@ object OrderConverter {
             this.compReason = compReason
             this.discountServersList = discountServerList.toMutableList()
             this.discountUsersList = discountUserList.toMutableList()
+            this.productType = ProductType.REGULAR
+            this.modifierList = toModifierCartList(productBuy.ModifierList,proOriginal.Modifier)
+            this.note = productBuy.Note
         }
 
 
@@ -256,4 +255,15 @@ object OrderConverter {
 
         return fees
     }
+
+    private fun toModifierCartList( listLineExtra : List<OrderModifier>?, modifierString : String) : MutableList<ModifierCart> {
+        if (listLineExtra == null) { return mutableListOf() }
+
+        return listLineExtra.map { extra -> ModifierCart(
+            modifierId = extra.ModifierItemGuid,
+            name = extra.Name,
+            price = extra.Price,
+            quantity = extra.ModifierQuantity ?: 1
+            )}.toMutableList()
+        }
 }
