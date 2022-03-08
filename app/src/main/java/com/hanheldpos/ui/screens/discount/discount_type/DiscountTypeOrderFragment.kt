@@ -112,7 +112,7 @@ class DiscountTypeOrderFragment(
                 }
             });
         fragmentMap[DiscountTypeFor.DISCOUNT_CODE] = DiscountCodeFragment(applyToType);
-        fragmentMap[DiscountTypeFor.AUTOMATIC] = DiscountAutomaticFragment(applyToType,cart);
+        fragmentMap[DiscountTypeFor.AUTOMATIC] = DiscountAutomaticFragment(applyToType,cart,product);
         fragmentMap[DiscountTypeFor.COMP] =
             DiscountCompFragment(
                 comp = when(applyToType){
