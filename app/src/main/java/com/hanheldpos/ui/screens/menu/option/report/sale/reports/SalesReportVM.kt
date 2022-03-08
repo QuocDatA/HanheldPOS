@@ -16,9 +16,7 @@ import com.hanheldpos.database.DatabaseMapper
 import com.hanheldpos.database.entities.OrderCompletedEntity
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.DatabaseHelper
-import com.hanheldpos.model.OrderHelper
 import com.hanheldpos.model.UserHelper
-import com.hanheldpos.model.order.OrderReq
 import com.hanheldpos.model.order.OrderStatus
 import com.hanheldpos.model.order.OrderSubmitResp
 import com.hanheldpos.model.report.SaleReportCustomData
@@ -30,14 +28,12 @@ import com.hanheldpos.utils.GSonUtils
 import com.hanheldpos.utils.time.DateTimeHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.count
-import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-import okhttp3.internal.wait
 
 class SalesReportVM : BaseUiViewModel<SalesReportUV>() {
+
+    var isSyncOrderToServer: Boolean = false
 
     var saleReportCustomData = MutableLiveData<SaleReportCustomData>(
         SaleReportCustomData(
@@ -55,12 +51,13 @@ class SalesReportVM : BaseUiViewModel<SalesReportUV>() {
     private val orderAlterRepo = OrderAsyncRepo();
 
     val numberOrder = Transformations.map(DatabaseHelper.ordersCompleted.getAll().asLiveData()) {
-        return@map it.filter { order-> isValidOrderPush(order) }.size
+        return@map it.filter { order -> isValidOrderPush(order) }.size
     }
 
     fun onSyncOrders(view: View) {
         if (numberOrder.value ?: 0 <= 0) return
-
+        if (isSyncOrderToServer) return
+        isSyncOrderToServer = true
         //TODO : sync order
         showLoading(true);
         val json = GSonUtils.toServerJson(
@@ -101,13 +98,14 @@ class SalesReportVM : BaseUiViewModel<SalesReportUV>() {
     }
 
     private fun pushOrder(context: Context) {
+
         viewModelScope.launch(Dispatchers.IO) {
             val listOrdersFlow = DatabaseHelper.ordersCompleted.getAll()
             var countOrderPush = 0
             listOrdersFlow.take(1).collectLatest { listOrders ->
-                listOrders.filter { isValidOrderPush(it) }
-                    .forEach { orderEntity ->
-                        val orderReq =DatabaseMapper.mappingOrderReqFromEntity(orderEntity)
+                listOrders.filter { isValidOrderPush(it) }.let { listNeedPush ->
+                    listNeedPush.forEach { orderEntity ->
+                        val orderReq = DatabaseMapper.mappingOrderReqFromEntity(orderEntity)
                         // TODO : check if cart is pay or not
                         val orderJson = GSonUtils.toServerJson(orderReq);
                         orderAlterRepo.postOrderSubmit(orderJson, callback = object :
@@ -119,12 +117,13 @@ class SalesReportVM : BaseUiViewModel<SalesReportUV>() {
                                     countOrderPush += 1;
                                     viewModelScope.launch(Dispatchers.IO) {
                                         DatabaseHelper.ordersCompleted.update(
-                                           orderEntity.apply { isSync = true })
+                                            orderEntity.apply { isSync = true })
                                     }
                                 }
-                                if (countOrderPush >= listOrders.size) {
+                                if (countOrderPush >= listNeedPush.size) {
                                     viewModelScope.launch(Dispatchers.IO) {
                                         launch(Dispatchers.Main) {
+                                            isSyncOrderToServer = false
                                             showLoading(false);
                                         }
                                     }
@@ -134,7 +133,8 @@ class SalesReportVM : BaseUiViewModel<SalesReportUV>() {
 
                             override fun showMessage(message: String?) {
                                 countOrderPush += 1;
-                                if (countOrderPush >= listOrders.size) {
+                                if (countOrderPush >= listNeedPush.size) {
+                                    isSyncOrderToServer = false
                                     showLoading(false)
                                 }
                                 viewModelScope.launch(Dispatchers.Main) {
@@ -149,14 +149,16 @@ class SalesReportVM : BaseUiViewModel<SalesReportUV>() {
                             }
                         })
                     }
+                }
+
             }
 
         }
 
     }
 
-    private fun isValidOrderPush(orderEntity : OrderCompletedEntity) : Boolean {
-        return !orderEntity.isSync && orderEntity.statusId == OrderStatus.ORDER
+    private fun isValidOrderPush(orderEntity: OrderCompletedEntity): Boolean {
+        return !orderEntity.isSync && orderEntity.statusId == OrderStatus.COMPLETED
     }
 
     fun initNumberDaySelected(): MutableList<NumberDayReportItem> {

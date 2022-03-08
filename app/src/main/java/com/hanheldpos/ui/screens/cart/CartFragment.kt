@@ -11,6 +11,7 @@ import com.hanheldpos.data.api.pojo.order.settings.DiningOption
 import com.hanheldpos.data.api.pojo.order.settings.Reason
 import com.hanheldpos.databinding.FragmentCartBinding
 import com.hanheldpos.model.DataHelper
+import com.hanheldpos.model.OrderHelper
 import com.hanheldpos.model.cart.BaseProductInCart
 import com.hanheldpos.model.cart.Combo
 import com.hanheldpos.model.cart.DiscountCart
@@ -36,7 +37,8 @@ import com.hanheldpos.ui.screens.home.order.OrderFragment
 import com.hanheldpos.ui.screens.product.ProductDetailFragment
 
 
-class CartFragment( private val listener : CartCallBack) : BaseFragment<FragmentCartBinding, CartVM>(), CartUV {
+class CartFragment(private val listener: CartCallBack) :
+    BaseFragment<FragmentCartBinding, CartVM>(), CartUV {
     override fun layoutRes() = R.layout.fragment_cart;
 
     private lateinit var cartDiningOptionAdapter: CartDiningOptionAdapter;
@@ -81,7 +83,11 @@ class CartFragment( private val listener : CartCallBack) : BaseFragment<Fragment
                     onEditItemInCart(adapterPosition, item);
                 }
 
-                override fun onDiscountDelete(adapterPosition: Int, discount : DiscountCart , item: BaseProductInCart) {
+                override fun onDiscountDelete(
+                    adapterPosition: Int,
+                    discount: DiscountCart,
+                    item: BaseProductInCart
+                ) {
                     CurCartData.deleteDiscountCart(discount = discount, productInCart = item);
                 }
 
@@ -107,11 +113,12 @@ class CartFragment( private val listener : CartCallBack) : BaseFragment<Fragment
         //endregion
 
         //region setup discount recycle view
-        cartDiscountAdapter = CartDiscountAdapter(listener = object : BaseItemClickListener<DiscountCart>{
-            override fun onItemClick(adapterPosition: Int, item: DiscountCart) {
-                CurCartData.deleteDiscountCart(item,null);
-            }
-        })
+        cartDiscountAdapter =
+            CartDiscountAdapter(listener = object : BaseItemClickListener<DiscountCart> {
+                override fun onItemClick(adapterPosition: Int, item: DiscountCart) {
+                    CurCartData.deleteDiscountCart(item, null);
+                }
+            })
 
         binding.discountRecycleView.apply {
             adapter = cartDiscountAdapter
@@ -145,7 +152,7 @@ class CartFragment( private val listener : CartCallBack) : BaseFragment<Fragment
 
         if (CurCartData.diningOptionLD.value != null) {
             diningOptions.forEachIndexed { index, diningOptionItem ->
-                if (diningOptionItem.Id == CurCartData.diningOptionLD.value?.Id){
+                if (diningOptionItem.Id == CurCartData.diningOptionLD.value?.Id) {
                     cartDiningOptionAdapter.setSelectedIndex(index);
                     return@forEachIndexed
                 }
@@ -175,7 +182,7 @@ class CartFragment( private val listener : CartCallBack) : BaseFragment<Fragment
     @SuppressLint("NotifyDataSetChanged")
     override fun initAction() {
         CurCartData.cartModelLD.observe(this) {
-            it?:return@observe
+            it ?: return@observe
             val list = viewModel.processDataDiscount(it)
             binding.isShowDiscount = list.isNotEmpty()
             cartDiscountAdapter.submitList(list)
@@ -221,16 +228,25 @@ class CartFragment( private val listener : CartCallBack) : BaseFragment<Fragment
             }));
     }
 
-    override fun openSelectPayment(alreadyBill : Boolean,payable: Double) {
-        navigator.goToWithCustomAnimation(PaymentFragment(alreadyBill,payable,listener = object : PaymentFragment.PaymentCallback {
-            override fun onPaymentComplete(paymentOrder: PaymentOrder) {
-                CurCartData.addPaymentOrder(paymentOrder)
-            }
+    override fun openSelectPayment(alreadyBill: Boolean, payable: Double) {
+        navigator.goToWithCustomAnimation(
+            PaymentFragment(
+                alreadyBill,
+                payable,
+                listener = object : PaymentFragment.PaymentCallback {
+                    override fun onPaymentComplete(paymentOrder: PaymentOrder) {
+                        CurCartData.addPaymentOrder(paymentOrder)
 
-            override fun onPayment(isSuccess: Boolean) {
-                this@CartFragment.onPayment(isSuccess)
-            }
-        }))
+                    }
+
+                    override fun onPayment(isSuccess: Boolean) {
+                        if (isSuccess) {
+                            viewModel.billCart(requireContext(), CurCartData.cartModelLD.value!!)
+                        } else
+                            this@CartFragment.onFinishOrder(false)
+                    }
+                })
+        )
     }
 
     override fun onOpenAddCustomer() {
@@ -244,15 +260,20 @@ class CartFragment( private val listener : CartCallBack) : BaseFragment<Fragment
 
     override fun onBillSuccess() {
         listener.onBillSuccess()
-        val totalNeedPay = CurCartData.cartModelLD.value!!.getTotalPrice()
-        openSelectPayment(true,totalNeedPay)
+        if (!OrderHelper.isPaymentSuccess(CurCartData.cartModelLD.value!!)) {
+            val totalNeedPay = CurCartData.cartModelLD.value!!.getTotalPrice()
+            openSelectPayment(true, totalNeedPay)
+        } else {
+            this.onFinishOrder(true)
+        }
+
     }
 
-    override fun onPayment(isSuccess : Boolean) {
+    override fun onFinishOrder(isSuccess: Boolean) {
         onFragmentBackPressed()
-        if (isSuccess){
+        if (isSuccess) {
             CurCartData.removeCart()
-            listener.onPaymentSuccess()
+            listener.onOrderSuccess()
         }
 
     }
@@ -262,7 +283,7 @@ class CartFragment( private val listener : CartCallBack) : BaseFragment<Fragment
     }
 
     private fun onBillCart() {
-        viewModel.billCart(requireContext(),CurCartData.cartModelLD.value!!)
+        viewModel.billCart(requireContext(), CurCartData.cartModelLD.value!!)
     }
 
     fun onEditItemInCart(position: Int, item: BaseProductInCart) {
@@ -311,6 +332,6 @@ class CartFragment( private val listener : CartCallBack) : BaseFragment<Fragment
     interface CartCallBack {
         fun onCartDelete()
         fun onBillSuccess()
-        fun onPaymentSuccess()
+        fun onOrderSuccess()
     }
 }

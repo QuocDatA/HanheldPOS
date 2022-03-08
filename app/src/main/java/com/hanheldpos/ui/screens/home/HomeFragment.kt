@@ -120,7 +120,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
                             message = "Cart has not been initialized!",
                             onClickListener = object : AppAlertDialog.AlertDialogOnClickListener {
                                 override fun onPositiveClick() {
-                                    screenViewModel.showTablePage();
+                                    screenViewModel.showTablePage()
                                 }
                             })
                     } else {

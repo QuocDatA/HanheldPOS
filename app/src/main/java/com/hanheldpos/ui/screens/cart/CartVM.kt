@@ -17,8 +17,10 @@ import com.hanheldpos.model.home.table.TableStatusType
 import com.hanheldpos.model.order.OrderStatus
 import com.hanheldpos.ui.base.dialog.AppAlertDialog
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
+import com.hanheldpos.utils.time.DateTimeHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.*
 
 class CartVM : BaseUiViewModel<CartUV>() {
 
@@ -71,6 +73,12 @@ class CartVM : BaseUiViewModel<CartUV>() {
             // Order
             if (cart.orderCode == null)
                 cart.orderCode = OrderHelper.generateOrderIdByFormat()
+            if (cart.createDate == null)
+                cart.createDate =
+                    DateTimeHelper.dateToString(
+                        Date(),
+                        DateTimeHelper.Format.FULL_DATE_UTC_TIMEZONE
+                    );
             val orderStatus =
                 if (OrderHelper.isPaymentSuccess(cart)) OrderStatus.COMPLETED.value else OrderStatus.ORDER.value
             val paymentStatus =
@@ -100,6 +108,10 @@ class CartVM : BaseUiViewModel<CartUV>() {
                 }
                 if (orderStatus != OrderStatus.COMPLETED.value && paymentStatus != PaymentStatus.PAID.value) {
                     DatabaseHelper.tableStatuses.insert(DatabaseMapper.mappingTableToEntity(table))
+                    launch(Dispatchers.Main) { CurCartData.currentTableFocus.notifyValueChange() }
+                }
+                else {
+                    DatabaseHelper.tableStatuses.delete(table._Id)
                     launch(Dispatchers.Main) { CurCartData.currentTableFocus.notifyValueChange() }
                 }
 

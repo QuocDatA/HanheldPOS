@@ -24,7 +24,7 @@ object DatabaseMapper {
             orderCompletedJson = GSonUtils.toJson(orderReq),
             false,
             orderReq.Order.CashDrawer_id!!,
-            statusId = OrderStatus.values()[orderReq.Order.OrderStatusId!!],
+            statusId = OrderStatus.fromInt(orderReq.Order.OrderStatusId!!)!!,
             createAt = orderReq.Order.CreateDate!!,
             modifierAt = DateTimeHelper.dateToString(Date(),DateTimeHelper.Format.FULL_DATE_UTC_TIMEZONE),
         )
