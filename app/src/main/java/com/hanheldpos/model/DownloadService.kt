@@ -92,7 +92,7 @@ object DownloadService {
                 downloadId =
                     downloadRequestList[currentDownloadPos].start(object : OnDownloadListener {
                         override fun onDownloadComplete() {
-                            currentDownloadPos++
+
                         }
 
                         override fun onError(error: com.downloader.Error?) {
@@ -101,9 +101,12 @@ object DownloadService {
                             }
 
                         }
+                        
                     })
                 while (PRDownloader.getStatus(downloadId) in mutableListOf(Status.QUEUED,Status.RUNNING)) { }
-                if (isDownloading && currentDownloadPos == listResources.size) {
+                currentDownloadPos++
+                if (PRDownloader.getStatus(downloadId) in mutableListOf(Status.CANCELLED,Status.FAILED,Status.PAUSED)) return@launch
+                if (isDownloading && currentDownloadPos >= listResources.size) {
                     isDownloading = false
                     processDialog.dismiss()
                     CoroutineScope(Dispatchers.Main).launch {

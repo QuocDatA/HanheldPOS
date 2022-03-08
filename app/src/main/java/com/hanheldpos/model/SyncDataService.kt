@@ -229,38 +229,40 @@ class SyncDataService : BaseViewModel() {
             DataHelper.deviceCodeLocalStorage?.SettingsId?.firstOrNull()?.NumberIncrement?.toLong()
                 ?: 0
         var isNeedToDownload = false
-        DataHelper.resourceLocalStorage?.forEach { resourceResp ->
-            if (!DownloadService.checkFileExist(resourceResp.Name)) {
-                isNeedToDownload = true
-                DownloadService.downloadFile(context,
-                    DataHelper.resourceLocalStorage!!,
-                    listener = object : DownloadService.DownloadFileCallback {
-                        override fun onDownloadStartOrResume() {
+        DataHelper.resourceLocalStorage?.filter { resourceResp ->
+            !DownloadService.checkFileExist(
+                resourceResp.Name
+            )
+        }?.let {
+            isNeedToDownload = true
+            DownloadService.downloadFile(context,
+                it,
+                listener = object : DownloadService.DownloadFileCallback {
+                    override fun onDownloadStartOrResume() {
 
-                        }
+                    }
 
-                        override fun onPause() {
+                    override fun onPause() {
 
-                        }
+                    }
 
-                        override fun onCancel() {
-                            onDataFailure(context.getString(R.string.failed_to_load_data),listener)
-                        }
+                    override fun onCancel() {
+                        onDataFailure(context.getString(R.string.failed_to_load_data), listener)
+                    }
 
 
-                        override fun onFail() {
-                            onDataFailure(context.getString(R.string.failed_to_load_data),listener)
-                        }
+                    override fun onFail() {
+                        onDataFailure(context.getString(R.string.failed_to_load_data), listener)
+                    }
 
-                        override fun onComplete() {
-                            listener.onLoadedResources();
-                        }
-                    })
-                return
-            }
+                    override fun onComplete() {
+                        listener.onLoadedResources();
+                    }
+                })
+            return
         }
 
-        if(!isNeedToDownload){
+        if (!isNeedToDownload) {
             listener.onLoadedResources()
         }
     }
