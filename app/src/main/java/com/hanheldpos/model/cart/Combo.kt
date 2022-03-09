@@ -110,7 +110,7 @@ class Combo() : BaseProductInCart() {
         cloneValue.discountServersList = this.discountServersList?.map { it.copy() }?.toMutableList()
         cloneValue.note = this.note
 
-        return cloneValue;
+        return cloneValue
     }
 
     fun modSubTotal() : Double {

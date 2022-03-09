@@ -128,10 +128,7 @@ object DownloadService {
 
     fun checkFileExist(filePath: String): Boolean {
         val file = File(INTERNAL_PATH + filePath)
-        if (file.exists()) {
-            return true
-        }
-        return false
+        return file.exists()
     }
 
     private fun toMegaByte(bytes: Long): String {

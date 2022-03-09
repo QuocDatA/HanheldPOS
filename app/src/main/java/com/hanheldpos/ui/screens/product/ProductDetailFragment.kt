@@ -39,7 +39,6 @@ class ProductDetailFragment(
     private lateinit var groupVariantAdapter: GroupVariantAdapter;
     private lateinit var groupModifierAdapter: GroupModifierAdapter;
 
-    
 
     override fun layoutRes(): Int = R.layout.fragment_product_detail;
 
@@ -88,7 +87,7 @@ class ProductDetailFragment(
             binding.groupVariants.itemAnimator = null
         }
 
-        if (action == ItemActionType.Modify)
+        if (action == ItemActionType.Modify && productBundle == null)
             childFragmentManager.beginTransaction().replace(
                 R.id.fragment_container_discount,
                 DiscountTypeItemFragment(
@@ -254,10 +253,11 @@ class ProductDetailFragment(
     }
 
     override fun onAddCart(item: BaseProductInCart) {
-        if (viewModel.numberQuantity.value ?: 0 > 0 && (viewModel.isValidDiscount.value == false && action == ItemActionType.Modify)) return;
+            if (productBundle == null && viewModel.numberQuantity.value ?: 0 > 0 && (viewModel.isValidDiscount.value == false && action == ItemActionType.Modify)) return;
         requireActivity().supportFragmentManager.setFragmentResult(
             "saveDiscount",
-            Bundle().apply { putSerializable("DiscountTypeFor", viewModel.typeDiscountSelect)
+            Bundle().apply {
+                putSerializable("DiscountTypeFor", viewModel.typeDiscountSelect)
             });
         getBack()
         listener?.onCartAdded(item, viewModel.actionType.value!!);

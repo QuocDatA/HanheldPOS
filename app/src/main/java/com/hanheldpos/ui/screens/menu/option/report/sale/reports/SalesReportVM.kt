@@ -16,6 +16,7 @@ import com.hanheldpos.database.DatabaseMapper
 import com.hanheldpos.database.entities.OrderCompletedEntity
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.DatabaseHelper
+import com.hanheldpos.model.OrderHelper
 import com.hanheldpos.model.UserHelper
 import com.hanheldpos.model.order.OrderStatus
 import com.hanheldpos.model.order.OrderSubmitResp
@@ -51,7 +52,7 @@ class SalesReportVM : BaseUiViewModel<SalesReportUV>() {
     private val orderAlterRepo = OrderAsyncRepo();
 
     val numberOrder = Transformations.map(DatabaseHelper.ordersCompleted.getAll().asLiveData()) {
-        return@map it.filter { order -> isValidOrderPush(order) }.size
+        return@map it.filter { order -> OrderHelper.isValidOrderPush(order) }.size
     }
 
     fun onSyncOrders(view: View) {
@@ -103,7 +104,7 @@ class SalesReportVM : BaseUiViewModel<SalesReportUV>() {
             val listOrdersFlow = DatabaseHelper.ordersCompleted.getAll()
             var countOrderPush = 0
             listOrdersFlow.take(1).collectLatest { listOrders ->
-                listOrders.filter { isValidOrderPush(it) }.let { listNeedPush ->
+                listOrders.filter { OrderHelper.isValidOrderPush(it) }.let { listNeedPush ->
                     listNeedPush.forEach { orderEntity ->
                         val orderReq = DatabaseMapper.mappingOrderReqFromEntity(orderEntity)
                         // TODO : check if cart is pay or not
@@ -155,10 +156,6 @@ class SalesReportVM : BaseUiViewModel<SalesReportUV>() {
 
         }
 
-    }
-
-    private fun isValidOrderPush(orderEntity: OrderCompletedEntity): Boolean {
-        return !orderEntity.isSync && orderEntity.statusId == OrderStatus.COMPLETED
     }
 
     fun initNumberDaySelected(): MutableList<NumberDayReportItem> {

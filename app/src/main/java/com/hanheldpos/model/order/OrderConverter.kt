@@ -18,12 +18,12 @@ import com.hanheldpos.model.product.ProductType
 
 object OrderConverter {
 
-    public fun toCart(orderModel: OrderReq, orderGuid: String): CartModel {
+    fun toCart(orderModel: OrderReq, orderGuid: String): CartModel {
         val orderPayment = orderModel.OrderDetail.PaymentList;
         val orderData = orderModel.OrderDetail;
         val order = orderModel.Order;
 
-        val model = CartModel(
+        return CartModel(
             order = orderModel.Order,
             compReason = toReasonComp(orderData.CompVoidList),
             paymentsList = orderPayment.toMutableList(),
@@ -46,7 +46,6 @@ object OrderConverter {
             discountUserList = toDiscountsUser(orderData.DiscountList).toMutableList(),
             productsList = toProductList(orderData.OrderProducts, order.MenuLocationGuid!!),
         )
-        return model
     }
 
     private fun toReasonComp(compVoids: List<CompVoid>): Reason? {
@@ -108,9 +107,9 @@ object OrderConverter {
                     )
                 }
                 ProductType.BUNDLE -> run {
-                    val productBundleOriginal = findProduct(productBuy._id)
+                    val proOriginal = findProduct(productBuy._id)
                     val comboList: List<ProductComboItem> = Gson().fromJson(
-                        productBundleOriginal?.Combo,
+                        proOriginal?.Combo,
                         object : TypeToken<List<ProductComboItem>>() {}.type
                     )
                     if (comboList.isNullOrEmpty())
@@ -133,21 +132,24 @@ object OrderConverter {
                                     )
                                 )
                             }
-                        groupBundleList.add(GroupBundle(comboInfo = comboInfo, productList = listProduct))
+                        groupBundleList.add(
+                            GroupBundle(
+                                comboInfo = comboInfo,
+                                productList = listProduct
+                            )
+                        )
                     }
                     baseProductList.add(
-                        Combo(
-                            productBundleOriginal!!,
-                            groupBundleList,
-                            diningOption,
-                            productBuy.Quantity,
-                            productBuy.Sku,
-                            productBuy.Variant,
-                            feeList
-                        ).apply {
-                            this.compReason = compReason
-                            this.discountServersList = discountServerList.toMutableList()
-                            this.discountUsersList = discountUserList.toMutableList() }
+                        toBundle(
+                            productBuy = productBuy,
+                            proOriginal = proOriginal!!,
+                            groupBundleList = groupBundleList,
+                            diningOption = diningOption,
+                            compReason = compReason,
+                            discountUserList = discountUserList,
+                            discountServerList = discountServerList,
+                            feeList = feeList
+                        )
                     )
                 }
 
@@ -185,11 +187,36 @@ object OrderConverter {
             this.discountServersList = discountServerList.toMutableList()
             this.discountUsersList = discountUserList.toMutableList()
             this.productType = ProductType.REGULAR
-            this.modifierList = toModifierCartList(productBuy.ModifierList,proOriginal.Modifier)
+            this.modifierList = toModifierCartList(productBuy.ModifierList, proOriginal.Modifier)
             this.note = productBuy.Note
         }
+    }
 
-
+    private fun toBundle(
+        productBuy: ProductBuy,
+        proOriginal: Product,
+        groupBundleList: List<GroupBundle>,
+        diningOption: DiningOption,
+        compReason: Reason?,
+        discountUserList: List<DiscountUser>,
+        discountServerList: List<DiscountServer>,
+        feeList: List<Fee>,
+    ): Combo {
+        return Combo(
+            proOriginal,
+            groupBundleList,
+            diningOption,
+            productBuy.Quantity,
+            productBuy.Sku,
+            productBuy.Variant,
+            feeList
+        ).apply {
+            this.compReason = compReason
+            this.productType = ProductType.BUNDLE
+            this.discountServersList = discountServerList.toMutableList()
+            this.discountUsersList = discountUserList.toMutableList()
+            this.note = productBuy.Note
+        }
     }
 
     private fun toDiscountsServer(orderDiscounts: List<DiscountOrder>): List<DiscountServer> {
@@ -256,14 +283,21 @@ object OrderConverter {
         return fees
     }
 
-    private fun toModifierCartList( listLineExtra : List<OrderModifier>?, modifierString : String) : MutableList<ModifierCart> {
-        if (listLineExtra == null) { return mutableListOf() }
-
-        return listLineExtra.map { extra -> ModifierCart(
-            modifierId = extra.ModifierItemGuid,
-            name = extra.Name,
-            price = extra.Price,
-            quantity = extra.ModifierQuantity ?: 1
-            )}.toMutableList()
+    private fun toModifierCartList(
+        listLineExtra: List<OrderModifier>?,
+        modifierString: String
+    ): MutableList<ModifierCart> {
+        if (listLineExtra == null) {
+            return mutableListOf()
         }
+
+        return listLineExtra.map { extra ->
+            ModifierCart(
+                modifierId = extra.ModifierItemGuid,
+                name = extra.Name,
+                price = extra.Price,
+                quantity = extra.ModifierQuantity ?: 1
+            )
+        }.toMutableList()
+    }
 }
