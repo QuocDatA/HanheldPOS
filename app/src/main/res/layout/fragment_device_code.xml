@@ -43,7 +43,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="end"
                 android:gravity="center"
-                android:onClick="@{v -> viewModel.signIn(v)}"
+                android:onClick="@{v -> viewModel.signIn(v, false)}"
                 android:paddingTop="0dp"
                 android:paddingBottom="0dp"
                 android:paddingStart="@dimen/_18sdp"
@@ -101,6 +101,35 @@
                 android:text="@string/description_device_code"
                 android:textColor="@color/textSecondary"
                 app:useTextHeader="h7" />
+
+
+            <LinearLayout
+                android:id="@+id/recentAccount"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <com.diadiem.pos_components.PTextView
+                    style="@style/Base.TextAppearance"
+                    android:layout_marginStart="@dimen/_13sdp"
+                    android:layout_marginEnd="@dimen/_13sdp"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:text="@string/recent_account"
+                    android:textColor="@color/textPrimary"
+                    app:useTextHeader="h4"
+                    app:useFontStyle="bold"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:id="@+id/recentAccountRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    tools:itemCount="3"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/item_recent_account"/>
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 </layout>

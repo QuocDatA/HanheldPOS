@@ -203,4 +203,5 @@
     <string name="successful_bill_payment">Successful bill payment</string>
     <string name="bill_payment_failed">Bill payment failed!</string>
     <string name="optional">Optional</string>
+    <string name="recent_account">Recent Account</string>
 </resources>

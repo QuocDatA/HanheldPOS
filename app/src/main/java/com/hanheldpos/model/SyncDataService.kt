@@ -234,6 +234,7 @@ class SyncDataService : BaseViewModel() {
                 resourceResp.Name
             )
         }?.let {
+            if(it.isEmpty()) return@let
             isNeedToDownload = true
             DownloadService.downloadFile(context,
                 it,
