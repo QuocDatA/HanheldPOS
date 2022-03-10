@@ -29,6 +29,7 @@ import com.hanheldpos.ui.screens.cart.adapter.CartTipAdapter
 import com.hanheldpos.ui.screens.cart.customer.add_customer.AddCustomerFragment
 import com.hanheldpos.ui.screens.cart.customer.detail_customer.CustomerDetailFragment
 import com.hanheldpos.ui.screens.cart.payment.PaymentFragment
+import com.hanheldpos.ui.screens.cart.payment.completed.PaymentCompletedFragment
 import com.hanheldpos.ui.screens.combo.ComboFragment
 import com.hanheldpos.ui.screens.discount.DiscountFragment
 import com.hanheldpos.ui.screens.home.order.OrderFragment
@@ -225,6 +226,7 @@ class CartFragment(private val listener: CartCallBack) :
                     override fun onPaymentComplete(paymentOrder: PaymentOrder) {
                         CurCartData.addPaymentOrder(paymentOrder)
                     }
+
                     override fun onPayment(isSuccess: Boolean) {
                         if (isSuccess) {
                             viewModel.billCart(requireContext(), CurCartData.cartModelLD.value!!)
@@ -259,7 +261,29 @@ class CartFragment(private val listener: CartCallBack) :
         onFragmentBackPressed()
         if (isSuccess) {
             CurCartData.removeCart()
+            CurCartData.cartModelLD.value?.let {
+                navigator.goTo(
+                    PaymentCompletedFragment(
+                        it.customer != null,
+                        it.paymentsList.sumOf { payment ->
+                            payment.Payable ?: 0.0
+                        },
+                        it.paymentsList.sumOf { payment ->
+                            payment.OverPay ?: 0.0
+                        },
+                        listener = object : PaymentCompletedFragment.PaymentCompletedCallBack {
+                            override fun becomeAMember() {
+
+                            }
+
+                            override fun newSale() {
+                            }
+                        },
+                    ),
+                )
+            }
             listener.onOrderSuccess()
+
         }
 
     }

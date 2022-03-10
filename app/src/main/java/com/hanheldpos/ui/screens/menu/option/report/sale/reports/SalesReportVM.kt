@@ -112,10 +112,10 @@ class SalesReportVM : BaseUiViewModel<SalesReportUV>() {
                         orderAlterRepo.postOrderSubmit(orderJson, callback = object :
                             BaseRepoCallback<OrderSubmitResp> {
                             override fun apiResponse(data: OrderSubmitResp?) {
+                                countOrderPush += 1
                                 if (data == null || data.Message?.contains("exist") == true) {
                                     Log.d("Sync Order", "Post order failed!")
                                 } else {
-                                    countOrderPush += 1;
                                     viewModelScope.launch(Dispatchers.IO) {
                                         DatabaseHelper.ordersCompleted.update(
                                             orderEntity.apply { isSync = true })
@@ -125,7 +125,7 @@ class SalesReportVM : BaseUiViewModel<SalesReportUV>() {
                                     viewModelScope.launch(Dispatchers.IO) {
                                         launch(Dispatchers.Main) {
                                             isSyncOrderToServer = false
-                                            showLoading(false);
+                                            showLoading(false)
                                         }
                                     }
 
@@ -133,7 +133,7 @@ class SalesReportVM : BaseUiViewModel<SalesReportUV>() {
                             }
 
                             override fun showMessage(message: String?) {
-                                countOrderPush += 1;
+                                countOrderPush += 1
                                 if (countOrderPush >= listNeedPush.size) {
                                     isSyncOrderToServer = false
                                     showLoading(false)
@@ -144,9 +144,7 @@ class SalesReportVM : BaseUiViewModel<SalesReportUV>() {
                                             context.getString(R.string.notification),
                                             message,
                                         )
-
                                 }
-
                             }
                         })
                     }

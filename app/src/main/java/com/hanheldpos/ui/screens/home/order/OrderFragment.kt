@@ -206,8 +206,8 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
         navigator.goToWithCustomAnimation(CartFragment(listener = object :
             CartFragment.CartCallBack {
             override fun onCartDelete() {
-                dataVM.onMenuChange(0)
                 showCategoryDialog(true)
+                dataVM.onMenuChange(0)
             }
 
             override fun onBillSuccess() {
@@ -215,8 +215,8 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
             }
 
             override fun onOrderSuccess() {
-                dataVM.onMenuChange(0)
                 screenViewModel.showTablePage()
+                dataVM.onMenuChange(0)
             }
         }))
     }
