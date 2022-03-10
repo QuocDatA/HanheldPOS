@@ -21,22 +21,21 @@ object CartConverter {
         val total = cart.total();
         val totalCompVoid = cart.totalComp();
         val totalDisc = cart.totalDiscount(subTotal);
-        val totalService = cart.fees.firstOrNull { fee -> FeeType.fromInt(fee.FeeTypeId)  == FeeType.ServiceFee }
-            ?.price(subTotal, totalDisc);
-        val totalSurcharge = cart.fees.firstOrNull { fee -> FeeType.fromInt(fee.FeeTypeId) == FeeType.SurchargeFee }
-            ?.price(subTotal, totalDisc);
-        val totalTaxes = cart.fees.firstOrNull { fee -> FeeType.fromInt(fee.FeeTypeId) == FeeType.TaxFee }
-            ?.price(subTotal, totalDisc);
+        val totalService =
+            cart.fees.firstOrNull { fee -> FeeType.fromInt(fee.FeeTypeId) == FeeType.ServiceFee }
+                ?.price(subTotal, totalDisc);
+        val totalSurcharge =
+            cart.fees.firstOrNull { fee -> FeeType.fromInt(fee.FeeTypeId) == FeeType.SurchargeFee }
+                ?.price(subTotal, totalDisc);
+        val totalTaxes =
+            cart.fees.firstOrNull { fee -> FeeType.fromInt(fee.FeeTypeId) == FeeType.TaxFee }
+                ?.price(subTotal, totalDisc);
 
         val totalFees = cart.totalFee(subTotal, totalDisc);
         val grossPrice = cart.totalGross(subTotal, totalDisc);
 
         val description =
             cart.productsList.map { baseProductInCart -> baseProductInCart.name }.joinToString(",");
-
-        // TODO : save temp order to local
-        cart.createDate =
-            DateTimeHelper.dateToString(Date(), DateTimeHelper.Format.FULL_DATE_UTC_TIMEZONE);
 
         return OrderReq(
             Order = Order(

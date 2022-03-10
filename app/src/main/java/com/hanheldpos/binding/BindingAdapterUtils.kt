@@ -9,10 +9,13 @@ import android.text.*
 import android.text.style.ReplacementSpan
 import android.view.View
 import android.widget.TextView
+import androidx.core.text.set
 import androidx.databinding.BindingAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.textfield.TextInputEditText
 import java.lang.Exception
+import java.util.*
+import java.util.Locale.filter
 import java.util.regex.Pattern
 
 
@@ -45,13 +48,13 @@ fun setVisibleObject(view: View, `object`: Any?) {
 
 @BindingAdapter("marquee")
 fun setTextViewMarquee(textView: TextView, isMarquee: Boolean) {
-    if(isMarquee) {
+    if (isMarquee) {
         textView.isSingleLine = true;
         textView.ellipsize = TextUtils.TruncateAt.MARQUEE;
         textView.isHorizontalFadingEdgeEnabled = true;
         textView.marqueeRepeatLimit = -1;
         textView.canScrollHorizontally(1);
-        textView.isSelected=true;
+        textView.isSelected = true;
     }
 }
 
@@ -78,26 +81,29 @@ fun visibleObject(`object`: Any?): Boolean {
 @BindingAdapter("groupSize")
 fun setGroupSize(inputEditText: TextInputEditText?, groupSize: Int) {
     if (inputEditText == null) return
+    inputEditText.filters = arrayOf(object : InputFilter {
+        override fun filter(
+            source: CharSequence?,
+            start: Int,
+            end: Int,
+            dest: Spanned?,
+            dstart: Int,
+            dend: Int
+        ): CharSequence {
+            return source?.subSequence(start, end).toString().uppercase()
+                .replace(Regex("[^A-Z0-9]"), "")
+        }
+
+    })
     inputEditText.addTextChangedListener(object : TextWatcher {
         override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
         override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
         override fun afterTextChanged(editable: Editable) {
-            val regex = "[^A-Z0-9]".toRegex();
-            /*val special = Pattern.compile("[^A-Z0-9]", Pattern.CASE_INSENSITIVE)
-            val lastInput = editable.toString()[editable.toString().length-1].toString();*/
-            val check = regex.containsMatchIn(editable.toString());
-            if (check) {
-                val remain = editable.toString().replace("[^A-Z0-9]".toRegex(), "")
-                inputEditText.setText(remain)
-                inputEditText.setSelection(remain.length)
-                return
-            }
             val paddingSpans: Array<SpaceSpan> =
                 editable.getSpans(0, editable.length, SpaceSpan::class.java)
             for (span in paddingSpans) {
                 editable.removeSpan(span)
             }
-
             addSpans(editable)
         }
 

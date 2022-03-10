@@ -16,7 +16,7 @@ class PaymentSuggestionAdapter(
 ) {
 
     override fun getItemViewType(position: Int): Int {
-        return R.layout.item_payment_suggestion;
+        return R.layout.item_payment_suggestion
     }
 
     private class DiffCallback : DiffUtil.ItemCallback<PaymentSuggestionItem>() {
@@ -24,14 +24,14 @@ class PaymentSuggestionAdapter(
             oldItem: PaymentSuggestionItem,
             newItem: PaymentSuggestionItem,
         ): Boolean {
-            return oldItem == newItem;
+            return oldItem == newItem
         }
 
         override fun areContentsTheSame(
             oldItem: PaymentSuggestionItem,
             newItem: PaymentSuggestionItem
         ): Boolean {
-            return false;
+            return false
         }
     }
 }

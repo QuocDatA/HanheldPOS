@@ -26,7 +26,7 @@ class PinCodeVM : BaseRepoViewModel<EmployeeRepo, PinCodeUV>() {
 
     // Data
     private val lstResultLD = MutableLiveData<MutableList<String>?>(mutableListOf())
-    var displayClockState = MutableLiveData(false)
+    private var displayClockState = MutableLiveData(false)
 
     private val cashDrawerRepo = CashDrawerRepo();
 

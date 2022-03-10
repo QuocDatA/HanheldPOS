@@ -19,19 +19,21 @@ import com.hanheldpos.ui.base.dialog.AppAlertDialog
 
 object CurCartData {
 
-    val cartModelLD: MutableLiveData<CartModel> = MutableLiveData();
+    val cartModelLD: MutableLiveData<CartModel> = MutableLiveData()
+
+    val currentTableFocus : MutableLiveData<FloorTable> = MutableLiveData()
 
     val diningOptionLD: LiveData<DiningOption> = Transformations.map(cartModelLD) {
         return@map it?.diningOption
             ?: DataHelper.orderSettingLocalStorage?.ListDiningOptions?.firstOrNull()
     }
     val linePerTotalQuantity: LiveData<String> = Transformations.map(cartModelLD) {
-        it ?: return@map null;
+        it ?: return@map null
         return@map "${it.productsList.sumOf { it1 -> it1.quantity ?: 0 }}/${it.productsList.size}"
     }
 
     val numberOfCustomer: LiveData<Int> = Transformations.map(cartModelLD) {
-        return@map it?.table?.PeopleQuantity;
+        return@map it?.table?.PeopleQuantity
     }
 
     fun initCart(numberCustomer: Int, table: FloorTable) {
@@ -50,50 +52,57 @@ object CurCartData {
                 diningOption = DataHelper.orderSettingLocalStorage?.ListDiningOptions?.firstOrNull()!!,
             )
 
+        currentTableFocus.value = table
+
         val diningOptionId =
             DataHelper.floorLocalStorage?.Floor?.firstOrNull { floorTable -> floorTable._Id == table.FloorGuid }?.DiningOptionId
         val diningOption = OrderHelper.getDiningOptionItem(diningOptionId)
-        diningOptionChange(diningOption);
+        diningOptionChange(diningOption)
 
+    }
+
+    fun initCart(cart : CartModel , table: FloorTable) {
+        cartModelLD.value = cart
+        currentTableFocus.value = table
     }
 
     fun addCustomerToCart(customer: CustomerResp) {
-        this.cartModelLD.value!!.customer = customer;
-        this.cartModelLD.notifyValueChange();
+        this.cartModelLD.value!!.customer = customer
+        this.cartModelLD.notifyValueChange()
     }
 
     fun removeCustomerFromCart() {
-        this.cartModelLD.value!!.customer = null;
-        this.cartModelLD.notifyValueChange();
+        this.cartModelLD.value!!.customer = null
+        this.cartModelLD.notifyValueChange()
     }
 
     fun addItemToCart(item: BaseProductInCart) {
         this.cartModelLD.value?.run {
             if (item is Regular) {
-                addRegular(item);
+                addRegular(item)
             } else if (item is Combo) {
-                addBundle(item);
+                addBundle(item)
             }
         }
-        this.cartModelLD.notifyValueChange();
+        this.cartModelLD.notifyValueChange()
     }
 
     fun updatePriceList(menuLocation_id: String?) {
         this.cartModelLD.value?.updatePriceList(menuLocation_id ?: UserHelper.getLocationGuid())
-        this.cartModelLD.notifyValueChange();
+        this.cartModelLD.notifyValueChange()
     }
 
     fun updateItemInCart(index: Int, item: BaseProductInCart) {
         if (item.quantity!! > 0) {
-            cartModelLD.value!!.productsList[index] = item;
+            cartModelLD.value!!.productsList[index] = item
         } else {
-            cartModelLD.value!!.productsList.removeAt(index);
+            cartModelLD.value!!.productsList.removeAt(index)
         }
-        cartModelLD.notifyValueChange();
+        cartModelLD.notifyValueChange()
     }
 
     fun addPaymentOrder(payment: PaymentOrder) {
-        cartModelLD.value!!.addPayment(payment);
+        cartModelLD.value!!.addPayment(payment)
         cartModelLD.notifyValueChange()
     }
 
@@ -112,7 +121,7 @@ object CurCartData {
                 negativeText = negativeText,
                 onClickListener = object : AppAlertDialog.AlertDialogOnClickListener {
                     override fun onPositiveClick() {
-                        this@CurCartData.cartModelLD.value!!.clearCart();
+                        this@CurCartData.cartModelLD.value!!.clearCart()
                         this@CurCartData.cartModelLD.notifyValueChange()
                         callback()
                     }
@@ -121,53 +130,53 @@ object CurCartData {
     }
 
     fun removeCart() {
-        this@CurCartData.cartModelLD.value = null;
-        this@CurCartData.cartModelLD.notifyValueChange();
+        this@CurCartData.cartModelLD.postValue(null)
+        this.currentTableFocus.postValue(null)
     }
 
     fun deleteDiscountCart(discount: DiscountCart, productInCart: BaseProductInCart?) {
         if (productInCart != null) {
             discount.disOriginal.let {
                 if (it is Reason) {
-                    productInCart.compReason = null;
+                    productInCart.compReason = null
                 } else if (it is DiscountUser) {
-                    productInCart.discountUsersList?.remove(it);
+                    productInCart.discountUsersList?.remove(it)
                 }
             }
         } else
             discount.disOriginal.let {
                 if (it is Reason) {
-                    cartModelLD.value!!.compReason = null;
+                    cartModelLD.value!!.compReason = null
                 } else if (it is DiscountUser) {
-                    cartModelLD.value!!.discountUserList.remove(it);
+                    cartModelLD.value!!.discountUserList.remove(it)
                 }
             }
-        cartModelLD.notifyValueChange();
+        cartModelLD.notifyValueChange()
     }
 
     fun removeCompReason() {
-        cartModelLD.value!!.compReason = null;
-        cartModelLD.notifyValueChange();
+        cartModelLD.value!!.compReason = null
+        cartModelLD.notifyValueChange()
     }
 
     fun addCompReason(reason: Reason) {
 
-        this.cartModelLD.value!!.addCompReason(reason);
-        cartModelLD.notifyValueChange();
+        this.cartModelLD.value!!.addCompReason(reason)
+        cartModelLD.notifyValueChange()
     }
 
     fun addDiscountUser(discount: DiscountUser) {
-        this.cartModelLD.value!!.addDiscountUser(discount);
-        cartModelLD.notifyValueChange();
+        this.cartModelLD.value!!.addDiscountUser(discount)
+        cartModelLD.notifyValueChange()
     }
 
     fun diningOptionChange(diningOption: DiningOption?) {
         diningOption?.let {
-            cartModelLD.value?.diningOption = diningOption;
+            cartModelLD.value?.diningOption = diningOption
         }
         updatePriceList(
             diningOption?.SubDiningOption?.firstOrNull()?.LocationGuid
-        );
+        )
     }
 
 

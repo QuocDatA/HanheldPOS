@@ -22,7 +22,8 @@ import com.hanheldpos.model.cart.BaseProductInCart
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.cart.CurCartData
 import com.hanheldpos.ui.screens.combo.adapter.ComboGroupAdapter
-import com.hanheldpos.ui.screens.discount.discount_type.DiscountTypeFragment
+import com.hanheldpos.ui.screens.discount.DiscountFragment
+import com.hanheldpos.ui.screens.discount.discount_type.DiscountTypeItemFragment
 import com.hanheldpos.ui.screens.home.order.OrderFragment
 import com.hanheldpos.ui.screens.product.ProductDetailFragment
 import kotlinx.coroutines.*
@@ -83,11 +84,11 @@ class ComboFragment(
         if (action == ItemActionType.Modify)
             childFragmentManager.beginTransaction().replace(
                 R.id.fragment_container_discount,
-                DiscountTypeFragment(
+                DiscountTypeItemFragment(
                     product = combo,
                     applyToType = DiscountApplyToType.ITEM_DISCOUNT_APPLY_TO,
                     cart = CurCartData.cartModelLD.value!!,
-                    listener = object : DiscountTypeFragment.DiscountTypeListener {
+                    listener = object : DiscountFragment.DiscountTypeListener {
                         override fun discountUserChoose(discount: DiscountUser) {
                             if (viewModel.isValidDiscount.value != true) return;
                             viewModel.bundleInCart.value?.discountUsersList =

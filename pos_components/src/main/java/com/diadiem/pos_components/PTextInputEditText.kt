@@ -266,7 +266,7 @@ class PTextInputEditText @JvmOverloads constructor(
 
             }
 
-//            textSize = appConfig?.styles?.fonts?.sizes?.h3?.toFloat() ?: 0.0F
+
 
         } catch (e: Exception) {
             e.printStackTrace()

@@ -19,11 +19,11 @@ class OrderProductAdapterHelper(
 
     fun submitList(list: MutableList<ProductMenuItem>) {
 
-        this.list = list;
-        currentIndex = 1;
+        this.list = list
+        currentIndex = 1
         listOfProductPage.clear()
         var sizeOfMainList: Int = this.list.size
-        var currentListIndex: Int = 1
+        var currentListIndex = 1
 
         if (sizeOfMainList > 0) {
             while (sizeOfMainList > 0) {

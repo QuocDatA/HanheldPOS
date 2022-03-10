@@ -13,10 +13,12 @@ import com.hanheldpos.data.repository.base.BaseRepoCallback
 import com.hanheldpos.data.repository.order.OrderAsyncRepo
 import com.hanheldpos.data.repository.setting.SettingRepo
 import com.hanheldpos.database.DatabaseMapper
+import com.hanheldpos.database.entities.OrderCompletedEntity
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.DatabaseHelper
+import com.hanheldpos.model.OrderHelper
 import com.hanheldpos.model.UserHelper
-import com.hanheldpos.model.order.OrderReq
+import com.hanheldpos.model.order.OrderStatus
 import com.hanheldpos.model.order.OrderSubmitResp
 import com.hanheldpos.model.report.SaleReportCustomData
 import com.hanheldpos.model.setting.SettingDevicePut
@@ -27,14 +29,12 @@ import com.hanheldpos.utils.GSonUtils
 import com.hanheldpos.utils.time.DateTimeHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.count
-import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-import okhttp3.internal.wait
 
 class SalesReportVM : BaseUiViewModel<SalesReportUV>() {
+
+    var isSyncOrderToServer: Boolean = false
 
     var saleReportCustomData = MutableLiveData<SaleReportCustomData>(
         SaleReportCustomData(
@@ -52,15 +52,13 @@ class SalesReportVM : BaseUiViewModel<SalesReportUV>() {
     private val orderAlterRepo = OrderAsyncRepo();
 
     val numberOrder = Transformations.map(DatabaseHelper.ordersCompleted.getAll().asLiveData()) {
-        return@map it.size
+        return@map it.filter { order -> OrderHelper.isValidOrderPush(order) }.size
     }
 
     fun onSyncOrders(view: View) {
-
-
-        if (numberOrder.value ?: 0 <= 0) return;
-
-
+        if (numberOrder.value ?: 0 <= 0) return
+        if (isSyncOrderToServer) return
+        isSyncOrderToServer = true
         //TODO : sync order
         showLoading(true);
         val json = GSonUtils.toServerJson(
@@ -101,38 +99,33 @@ class SalesReportVM : BaseUiViewModel<SalesReportUV>() {
     }
 
     private fun pushOrder(context: Context) {
+
         viewModelScope.launch(Dispatchers.IO) {
             val listOrdersFlow = DatabaseHelper.ordersCompleted.getAll()
-            var countOrderPush = 0;
-            val listPushSucceeded = mutableListOf<OrderReq>();
+            var countOrderPush = 0
             listOrdersFlow.take(1).collectLatest { listOrders ->
-                listOrders.map { DatabaseMapper.mappingOrderReqFromEntity(it) }
-                    .forEach { orderReq ->
+                listOrders.filter { OrderHelper.isValidOrderPush(it) }.let { listNeedPush ->
+                    listNeedPush.forEach { orderEntity ->
+                        val orderReq = DatabaseMapper.mappingOrderReqFromEntity(orderEntity)
                         // TODO : check if cart is pay or not
                         val orderJson = GSonUtils.toServerJson(orderReq);
                         orderAlterRepo.postOrderSubmit(orderJson, callback = object :
                             BaseRepoCallback<OrderSubmitResp> {
                             override fun apiResponse(data: OrderSubmitResp?) {
+                                countOrderPush += 1
                                 if (data == null || data.Message?.contains("exist") == true) {
                                     Log.d("Sync Order", "Post order failed!")
                                 } else {
-                                    listPushSucceeded.add(orderReq);
-                                }
-                                countOrderPush += 1;
-                                if (countOrderPush >= listOrders.size) {
-                                    val list =
-                                        listOrders.toMutableList().filter {
-                                            it !in listPushSucceeded.map { order ->
-                                                DatabaseMapper.mappingOrderCompletedReqToEntity(
-                                                    order
-                                                )
-                                            }
-                                        };
                                     viewModelScope.launch(Dispatchers.IO) {
-                                        DatabaseHelper.ordersCompleted.deleteAll();
-                                        DatabaseHelper.ordersCompleted.insertAll(list)
+                                        DatabaseHelper.ordersCompleted.update(
+                                            orderEntity.apply { isSync = true })
+                                    }
+                                }
+                                if (countOrderPush >= listNeedPush.size) {
+                                    viewModelScope.launch(Dispatchers.IO) {
                                         launch(Dispatchers.Main) {
-                                            showLoading(false);
+                                            isSyncOrderToServer = false
+                                            showLoading(false)
                                         }
                                     }
 
@@ -140,24 +133,10 @@ class SalesReportVM : BaseUiViewModel<SalesReportUV>() {
                             }
 
                             override fun showMessage(message: String?) {
-                                countOrderPush += 1;
-                                if (countOrderPush >= listOrders.size) {
-                                    val list =
-                                        listOrders.toMutableList().filter {
-                                            it !in listPushSucceeded.map { order ->
-                                                DatabaseMapper.mappingOrderCompletedReqToEntity(
-                                                    order
-                                                )
-                                            }
-                                        };
-                                    viewModelScope.launch(Dispatchers.IO) {
-                                        DatabaseHelper.ordersCompleted.deleteAll();
-                                        DatabaseHelper.ordersCompleted.insertAll(list)
-                                        launch(Dispatchers.Main) {
-                                            showLoading(false);
-                                        }
-                                    }
-
+                                countOrderPush += 1
+                                if (countOrderPush >= listNeedPush.size) {
+                                    isSyncOrderToServer = false
+                                    showLoading(false)
                                 }
                                 viewModelScope.launch(Dispatchers.Main) {
                                     AppAlertDialog.get()
@@ -165,22 +144,17 @@ class SalesReportVM : BaseUiViewModel<SalesReportUV>() {
                                             context.getString(R.string.notification),
                                             message,
                                         )
-
                                 }
-
                             }
                         })
                     }
+                }
+
             }
 
         }
 
     }
-
-    fun onPrint() {
-
-    }
-
 
     fun initNumberDaySelected(): MutableList<NumberDayReportItem> {
         return mutableListOf(

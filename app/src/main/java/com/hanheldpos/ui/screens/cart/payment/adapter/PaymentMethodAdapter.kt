@@ -14,7 +14,7 @@ class PaymentMethodAdapter(
 ) {
 
     override fun getItemViewType(position: Int): Int {
-        return R.layout.item_payment_method;
+        return R.layout.item_payment_method
     }
 
     private class DiffCallback : DiffUtil.ItemCallback<PaymentMethodResp>() {
@@ -23,14 +23,14 @@ class PaymentMethodAdapter(
             oldItem: PaymentMethodResp,
             newItem: PaymentMethodResp,
         ): Boolean {
-            return oldItem == newItem;
+            return oldItem == newItem
         }
 
         override fun areContentsTheSame(
             oldItem: PaymentMethodResp,
             newItem: PaymentMethodResp
         ): Boolean {
-            return false;
+            return false
         }
 
     }

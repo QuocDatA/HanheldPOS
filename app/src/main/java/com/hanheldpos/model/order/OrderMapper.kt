@@ -89,7 +89,7 @@ object OrderMapper : OrderMapping() {
     ): ProductBuy {
         val modSubtotal = regular.modSubTotal(regular.proOriginal!!);
         val totalModifier = modSubtotal * regular.quantity!!;
-        val proModSubtotal = regular.priceOverride!! + modSubtotal;
+        val proModSubtotal = regular.priceOverride + modSubtotal;
         val subtotal = regular.subTotal(regular.proOriginal!!);
         val lineTotal = regular.total(regular.proOriginal!!);
         val totalPrice = regular.totalPrice();
@@ -130,7 +130,7 @@ object OrderMapper : OrderMapping() {
             subtotal,
             totalDiscount
         );
-        var taxesFeeList = mappingFeeList(
+        val taxesFeeList = mappingFeeList(
             regular.fees ?: mutableListOf(),
             FeeType.TaxFee,
             subtotal,

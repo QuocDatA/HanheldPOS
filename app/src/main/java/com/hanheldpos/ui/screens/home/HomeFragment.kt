@@ -8,24 +8,22 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.order.settings.DiningOption
-import com.hanheldpos.data.api.pojo.order.settings.SubDiningOptionItem
 import com.hanheldpos.databinding.FragmentHomeBinding
-import com.hanheldpos.extension.mergeList
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.ui.base.dialog.AppAlertDialog
+import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.base.pager.FragmentPagerAdapter
 import com.hanheldpos.ui.screens.cart.CurCartData
 import com.hanheldpos.ui.screens.cashdrawer.CashDrawerHelper
 import com.hanheldpos.ui.screens.home.adapter.DiningOptionSpinnerAdapter
 import com.hanheldpos.ui.screens.home.order.OrderFragment
 import com.hanheldpos.ui.screens.home.table.TableFragment
-import com.hanheldpos.ui.screens.main.BaseMainFragment
 import com.hanheldpos.ui.screens.main.adapter.SubSpinnerAdapter
 import com.hanheldpos.ui.screens.main.adapter.TabSpinnerAdapter
 import com.hanheldpos.ui.screens.menu.MenuFragment
 
 
-class HomeFragment : BaseMainFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
+class HomeFragment : BaseFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
 
     private val fragmentMap: MutableMap<HomePage, Fragment> = mutableMapOf()
 
@@ -122,7 +120,7 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
                             message = "Cart has not been initialized!",
                             onClickListener = object : AppAlertDialog.AlertDialogOnClickListener {
                                 override fun onPositiveClick() {
-                                    screenViewModel.showTablePage();
+                                    screenViewModel.showTablePage()
                                 }
                             })
                     } else {
@@ -212,7 +210,7 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
                 DataHelper.menuLocalStorage?.MenuList?.map {
                     DropDownItem(name = it.Name, realItem = it, position = i++)
                 }?.let {
-                    listDropdown.addAll(it);
+                    listDropdown.addAll(it)
                 }
 
             }
@@ -221,8 +219,8 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
         subSpinnerAdapter.submitList(listDropdown);
         binding.toolbarLayout.spnGroupBy.setSelection(
             when (page) {
-                HomePage.Order -> OrderFragment.selectedSort;
-                HomePage.Table -> TableFragment.selectedSort;
+                HomePage.Order -> OrderFragment.selectedSort
+                HomePage.Table -> TableFragment.selectedSort
                 else -> 0
             }
         )
@@ -232,4 +230,7 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
         navigator.goToWithAnimationEnterFromLeft(MenuFragment());
     }
 
+    override fun onFragmentBackPressed() {
+        requireActivity().finish()
+    }
 }

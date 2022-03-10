@@ -9,8 +9,8 @@ import com.hanheldpos.utils.time.DateTimeHelper
 
 class CustomerDetailVM : BaseUiViewModel<CustomerDetailUV>() {
 
-    val customer = MutableLiveData<CustomerResp?>();
-    val addressType = MutableLiveData<AddressTypeResp?>();
+    val customer = MutableLiveData<CustomerResp?>()
+    val addressType = MutableLiveData<AddressTypeResp?>()
 
     fun backPress(){
         uiCallback?.backPress()

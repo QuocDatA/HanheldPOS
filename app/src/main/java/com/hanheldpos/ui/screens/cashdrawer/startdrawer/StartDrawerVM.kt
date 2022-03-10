@@ -18,11 +18,7 @@ import com.hanheldpos.utils.GSonUtils
 
 class StartDrawerVM : BaseRepoViewModel<CashDrawerRepo, StartDrawerUV>() {
 
-    val amountString = MutableLiveData<String>(0.toString());
-
-    fun backPress(){
-        uiCallback?.backPress();
-    }
+    val amountString = MutableLiveData(0.toString())
 
     fun startDrawer(context: Context) {
         showLoading(true);
@@ -48,7 +44,7 @@ class StartDrawerVM : BaseRepoViewModel<CashDrawerRepo, StartDrawerUV>() {
                     } else {
                         DataHelper.currentDrawerId = data.Model?.first()?.CashDrawerGuid;
                         CashDrawerHelper.isStartDrawer = true;
-                        uiCallback?.goMain();
+                        uiCallback?.goHome();
                     }
                 }
 

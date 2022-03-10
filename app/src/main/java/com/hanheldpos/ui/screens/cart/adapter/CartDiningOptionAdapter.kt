@@ -15,11 +15,11 @@ class CartDiningOptionAdapter(private val onItemClickListener: BaseItemClickList
 
 
     fun setSelectedIndex(index:Int){
-        selectedIndex=index;
-        notifyItemChanged(selectedIndex);
+        selectedIndex=index
+        notifyItemChanged(selectedIndex)
     }
     override fun getItemViewType(position: Int): Int {
-        return R.layout.item_dining_option;
+        return R.layout.item_dining_option
     }
 
     override fun submitList(list: MutableList<DiningOption>?) {
@@ -30,13 +30,13 @@ class CartDiningOptionAdapter(private val onItemClickListener: BaseItemClickList
         holder: BaseBindingViewHolder<DiningOption>,
         position: Int
     ) {
-        val item: DiningOption = getItem(position);
-        holder.bindItem(item);
-        val binding = (holder.binding as ItemDiningOptionBinding);
+        val item: DiningOption = getItem(position)
+        holder.bindItem(item)
+        val binding = (holder.binding as ItemDiningOptionBinding)
 
         binding.diningOptionButton.apply {
             if (selectedIndex == position) {
-                isChecked=true;
+                isChecked=true
                 setTextColor(
                     ContextCompat.getColor(
                         context,
@@ -44,7 +44,7 @@ class CartDiningOptionAdapter(private val onItemClickListener: BaseItemClickList
                     )
                 )
             } else {
-                isChecked=false;
+                isChecked=false
 
                 setTextColor(
                     ContextCompat.getColor(
@@ -54,12 +54,12 @@ class CartDiningOptionAdapter(private val onItemClickListener: BaseItemClickList
                 )
             }
             setOnClickListener {
-                notifyItemChanged(selectedIndex);
-                selectedIndex = position;
-                notifyItemChanged(position);
-                onItemClickListener.onItemClick(position,item);
+                notifyItemChanged(selectedIndex)
+                selectedIndex = position
+                notifyItemChanged(position)
+                onItemClickListener.onItemClick(position,item)
             }
-        };
+        }
 
 
     }
@@ -69,7 +69,7 @@ class CartDiningOptionAdapter(private val onItemClickListener: BaseItemClickList
             oldItem: DiningOption,
             newItem: DiningOption
         ): Boolean {
-            return oldItem == newItem;
+            return oldItem == newItem
         }
 
         override fun areContentsTheSame(

@@ -20,7 +20,7 @@ abstract class BaseProductInCart  {
     open var compReason: Reason? = null
     open var diningOption: DiningOption? = null
     open var fees : List<Fee>? = null
-    val modifierList : MutableList<ModifierCart> = mutableListOf();
+    var modifierList : MutableList<ModifierCart> = mutableListOf();
     var variantList : MutableList<VariantCart>? = null
     var discountUsersList : MutableList<DiscountUser>? = null
     var discountServersList : MutableList<DiscountServer>? = null

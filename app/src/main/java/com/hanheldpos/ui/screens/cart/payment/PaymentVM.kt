@@ -13,18 +13,17 @@ class PaymentVM : BaseUiViewModel<PaymentUV>() {
 
     fun getPaymentMethods(): MutableList<PaymentMethodResp> {
         val paymentMethods: MutableList<PaymentMethodResp> =
-            DataHelper.paymentMethodsLocalStorage!!.toMutableList();
-        return paymentMethods;
+            DataHelper.paymentMethodsLocalStorage!!.toMutableList()
+        return paymentMethods
     }
 
     fun initPaymentSuggestion(): List<PaymentSuggestionItem> {
-        val paymentSuggestionList = mutableListOf<PaymentSuggestionItem>(
+        return mutableListOf(
             PaymentSuggestionItem(50000.0),
             PaymentSuggestionItem(100000.0),
             PaymentSuggestionItem(250000.0),
             PaymentSuggestionItem(500000.0),
         )
-        return paymentSuggestionList
     }
 
     fun getPayment() {

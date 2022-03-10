@@ -8,9 +8,12 @@ import androidx.fragment.app.activityViewModels
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.floor.Floor
 import com.hanheldpos.data.api.pojo.floor.FloorTable
+import com.hanheldpos.database.DatabaseMapper
 import com.hanheldpos.databinding.FragmentTableBinding
+import com.hanheldpos.model.DatabaseHelper
 import com.hanheldpos.model.home.table.TableModeViewType
 import com.hanheldpos.model.home.table.TableStatusType
+import com.hanheldpos.model.order.OrderConverter
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.cart.CurCartData
@@ -19,6 +22,10 @@ import com.hanheldpos.ui.screens.home.ScreenViewModel
 import com.hanheldpos.ui.screens.home.table.adapter.TableAdapter
 import com.hanheldpos.ui.screens.home.table.adapter.TableAdapterHelper
 import com.hanheldpos.ui.screens.home.table.customer_input.TableInputFragment
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import java.lang.Exception
 
 
 class TableFragment : BaseFragment<FragmentTableBinding, TableVM>(), TableUV {
@@ -60,8 +67,9 @@ class TableFragment : BaseFragment<FragmentTableBinding, TableVM>(), TableUV {
         tableAdapter = TableAdapter(
             listener = object : BaseItemClickListener<FloorTable> {
                 override fun onItemClick(adapterPosition: Int, item: FloorTable) {
-                    Log.d("OrderFragment", "Product Selected");
-
+                    Log.d("TableFragment", "Table Selected");
+                    if (SystemClock.elapsedRealtime() - viewModel.mLastTimeClick  < 500) return
+                    viewModel.mLastTimeClick = SystemClock.elapsedRealtime()
                     when (item.uiType) {
                         TableModeViewType.Table -> {
                             onTableChosen(adapterPosition, item);
@@ -92,12 +100,16 @@ class TableFragment : BaseFragment<FragmentTableBinding, TableVM>(), TableUV {
 
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun initAction() {
+        CurCartData.currentTableFocus.observe(this) {
+            tableAdapter.notifyDataSetChanged()
+        }
         screenViewModel.dropDownSelected.observe(this) {
             val screen = screenViewModel.screenEvent.value?.screen;
             if (screen == HomeFragment.HomePage.Table) {
                 if (it.realItem is Floor) {
-                    viewModel.floorItemSelected.value = it.realItem as Floor;
+                    viewModel.floorItemSelected.value = it.realItem;
                 } else if (it.realItem == null)
                     viewModel.getTableList()?.toMutableList()
                         ?.let { it1 -> tableAdapterHelper.submitList(it1); };
@@ -120,47 +132,77 @@ class TableFragment : BaseFragment<FragmentTableBinding, TableVM>(), TableUV {
         })
     }
 
+
     @SuppressLint("NotifyDataSetChanged")
     private fun onTableChosen(adapterPosition: Int, item: FloorTable) {
+
+
         when (item.tableStatus) {
             TableStatusType.Available -> {
                 // Check list has any pending table, if has change to available
                 tableAdapter.currentList.filter { it.tableStatus == TableStatusType.Pending }.let {
                     if (it.isNotEmpty()) {
                         it.forEach { table -> table.tableStatus = TableStatusType.Available };
-                        tableAdapter.notifyDataSetChanged();
-                        return;
+                        CurCartData.removeCart()
+                        tableAdapter.notifyDataSetChanged()
+                        return
                     }
-                };
-
-                viewModel.mLastTimeClick = SystemClock.elapsedRealtime();
+                }
 
                 // Show Table input number customer
                 navigator.goTo(TableInputFragment(listener = object :
                     TableInputFragment.TableInputListener {
                     override fun onCompleteTable(numberCustomer: Int) {
-                        tableAdapter.notifyItemChanged(adapterPosition);
                         // Init cart first time
+                        item.updateTableStatus(TableStatusType.Pending);
                         CurCartData.initCart(numberCustomer, item);
                         screenViewModel.showOrderPage();
                     }
-                }));
+                }))
 
             }
             TableStatusType.Pending -> {
                 item.tableStatus = TableStatusType.Available;
+                CurCartData.removeCart()
                 tableAdapter.notifyItemChanged(adapterPosition);
             }
             TableStatusType.Unavailable -> {
-
+                tableAdapter.currentList.filter { it.tableStatus == TableStatusType.Pending }.let {
+                    if (it.isNotEmpty()) {
+                        it.forEach { table -> table.tableStatus = TableStatusType.Available }
+                        CurCartData.removeCart()
+                        tableAdapter.notifyDataSetChanged()
+                    }
+                }
+                checkExistOrderOnTable(item)
             }
+        }
+
+    }
+
+    private fun checkExistOrderOnTable(table: FloorTable) {
+        CoroutineScope(Dispatchers.IO).launch {
+            table.orderSummary?.let {
+                try {
+                    val orderReq = DatabaseMapper.mappingOrderReqFromEntity(
+                        DatabaseHelper.ordersCompleted.get(it.OrderCode)!!
+                    )
+                    launch(Dispatchers.Main) {
+                        CurCartData.initCart(OrderConverter.toCart(orderReq,it.OrderCode),table)
+                        screenViewModel.showOrderPage()
+                    }
+
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+
         }
 
     }
 
     companion object {
         var selectedSort: Int = 0;
-
     }
 
 }

@@ -13,5 +13,15 @@ enum class OrderStatus(val value : Int) {
     COMPLETED (10),
     CANCEL (11),
     PICKING (12),
-    REJECT (13)
+    REJECT (13);
+    companion object {
+        fun fromInt(value: Int): OrderStatus? {
+            values().forEach {
+                if (it.value == value) {
+                    return it
+                }
+            }
+            return null
+        }
+    }
 }

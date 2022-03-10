@@ -1,8 +1,6 @@
 package com.hanheldpos.ui.screens.discount.discount_type.comp
 
 import android.annotation.SuppressLint
-import androidx.fragment.app.setFragmentResultListener
-import androidx.lifecycle.MutableLiveData
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.order.settings.Reason
 import com.hanheldpos.databinding.FragmentDiscountCompBinding
@@ -11,14 +9,15 @@ import com.hanheldpos.model.discount.DiscountApplyToType
 import com.hanheldpos.model.discount.DiscountTypeFor
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
-import com.hanheldpos.ui.screens.discount.discount_type.DiscountTypeFragment
+import com.hanheldpos.ui.screens.discount.DiscountFragment
+import com.hanheldpos.ui.screens.discount.discount_type.DiscountTypeItemFragment
 import com.hanheldpos.ui.screens.discount.discount_type.comp.adapter.DiscountReasonAdapter
 
 
 class DiscountCompFragment(
     private val applyToType: DiscountApplyToType,
     private val comp: Reason?,
-    private val listener: DiscountTypeFragment.DiscountTypeListener,
+    private val listener: DiscountFragment.DiscountTypeListener,
 ) : BaseFragment<FragmentDiscountCompBinding, DiscountCompVM>(), DiscountCompUV {
 
     private lateinit var adapter: DiscountReasonAdapter;
@@ -74,7 +73,7 @@ class DiscountCompFragment(
     override fun initData() {
         viewModel.reasonChosen.postValue(comp);
         val list = DataHelper.orderSettingLocalStorage?.ListComp?.firstOrNull()?.ListReasons
-        if (list != null) adapter.submitList(list as MutableList<Reason>);
+        if (list != null) adapter.submitList(list.toMutableList());
     }
 
     override fun initAction() {

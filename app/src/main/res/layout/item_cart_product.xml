@@ -111,9 +111,8 @@
                                 tools:text="60.000" />
                         </LinearLayout>
 
-
                         <com.diadiem.pos_components.PTextView
-                            basePriceView="@{item.proOriginal.price}"
+                            basePriceView="@{item.priceOverride}"
                             visibleObject="@{item.proOriginal.bundle}"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"

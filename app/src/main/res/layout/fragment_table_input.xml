@@ -36,7 +36,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_13sdp"
-                    android:text="Number of Customer"
+                    android:layout_marginBottom="@dimen/_3sdp"
+                    android:text="@string/number_of_customer"
                     app:useFontStyle="bold"
                     app:useTextColor="color4"
                     app:useTextHeader="h4" />
@@ -46,10 +47,11 @@
                     android:id="@+id/numberCustomer"
                     style="@style/BaseTextInput"
                     android:layout_marginHorizontal="@dimen/_17sdp"
-                    android:layout_marginVertical="@dimen/_20sdp"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:layout_marginBottom="@dimen/_23sdp"
                     android:background="@drawable/bg_outline"
                     android:focusableInTouchMode="true"
-                    android:hint="Enter number of customer"
+                    android:hint="@string/enter_number_of_customer"
                     android:focusable="false"
                     android:paddingHorizontal="@dimen/_13sdp"
                     android:paddingVertical="@dimen/_10sdp"
@@ -58,60 +60,6 @@
                     app:ipt_useTextColor="color4"
                     app:ipt_useTextHeader="h5" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_32sdp"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:gravity="center"
-                    android:orientation="horizontal">
-
-                    <LinearLayout
-                        android:onClick="@{v->viewModel.onCancel()}"
-                        android:id="@+id/cancelBtn"
-                        android:focusable="true"
-                        android:clickable="true"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:background="@drawable/bg_outline"
-                        android:foreground="?attr/selectableItemBackground"
-                        android:gravity="center">
-
-                        <com.diadiem.pos_components.PTextView
-
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Cancel"
-                            android:textAlignment="center"
-                            android:textAllCaps="true"
-                            app:useFontStyle="normal"
-                            app:useTextColor="color4"
-                            app:useTextHeader="h5" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:onClick="@{v->viewModel.onComplete()}"
-                        android:id="@+id/acceptBtn"
-                        android:focusable="true"
-                        android:clickable="true"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:background="@drawable/bg_outline"
-                        android:foreground="?attr/selectableItemBackground"
-                        android:gravity="center">
-
-                        <com.diadiem.pos_components.PTextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Ok"
-                            android:textAlignment="center"
-                            android:textAllCaps="true"
-                            app:useFontStyle="bold"
-                            app:useTextColor="color0"
-                            app:useTextHeader="h5" />
-                    </LinearLayout>
-                </LinearLayout>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 

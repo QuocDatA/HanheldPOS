@@ -35,7 +35,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
 
     //Adapter
     private lateinit var productAdapter: OrderProductAdapter;
-    private lateinit var productAdapHelper: OrderProductAdapterHelper;
+    private lateinit var productAdapterHelper: OrderProductAdapterHelper;
 
     override fun viewModelClass(): Class<OrderVM> {
         return OrderVM::class.java
@@ -53,13 +53,13 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
     override fun initView() {
 
         // product adapter vs listener
-        productAdapHelper = OrderProductAdapterHelper(
+        productAdapterHelper = OrderProductAdapterHelper(
             callBack = object : OrderProductAdapterHelper.AdapterCallBack {
                 @SuppressLint("NotifyDataSetChanged")
                 override fun onListSplitCallBack(list: List<ProductMenuItem>) {
                     CoroutineScope(Dispatchers.Main).launch {
-                        productAdapter.submitList(list);
-                        productAdapter.notifyDataSetChanged();
+                        productAdapter.submitList(list)
+                        productAdapter.notifyDataSetChanged()
                     }
 
                 }
@@ -67,16 +67,15 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
         );
 
         productAdapter = OrderProductAdapter(
-            cartModel = CurCartData.cartModelLD,
             listener = object : BaseItemClickListener<ProductMenuItem> {
                 override fun onItemClick(adapterPosition: Int, item: ProductMenuItem) {
                     Log.d("OrderFragment", "Product Selected");
-                    onProductMenuSelected(item);
+                    onProductMenuSelected(item)
                 }
             }
         ).also {
             binding.productList.adapter = it;
-        };
+        }
 
     }
 
@@ -84,6 +83,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
         dataVM.initData()
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun initAction() {
 
         screenViewModel.dropDownSelected.observe(this) {
@@ -98,15 +98,19 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
 
         dataVM.selectedMenu.observe(this) { orderMenuItemModel ->
             val list = dataVM.getProductByMenu(orderMenuItemModel);
-            if (list == null) productAdapHelper.submitList(mutableListOf());
+            if (list == null) productAdapterHelper.submitList(mutableListOf());
             else {
                 val rs: MutableList<ProductMenuItem> = mutableListOf();
                 list.forEach {
                     rs.add(it)
                 }
-                productAdapHelper.submitList(rs.toMutableList());
+                productAdapterHelper.submitList(rs.toMutableList());
             }
-        };
+        }
+
+        CurCartData.cartModelLD.observe(this) {
+            productAdapter.notifyDataSetChanged()
+        }
 
 
     }
@@ -114,15 +118,14 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
     fun onProductMenuSelected(item: ProductMenuItem) {
         when (item.uiType) {
             ProductModeViewType.Product -> {
-                if (SystemClock.elapsedRealtime() - viewModel.mLastTimeClick <= 500) return;
-                viewModel.mLastTimeClick = SystemClock.elapsedRealtime();
+                if (SystemClock.elapsedRealtime() - viewModel.mLastTimeClick <= 500) return
+                viewModel.mLastTimeClick = SystemClock.elapsedRealtime()
                 val onCartAdded = object : OrderMenuListener {
                     override fun onCartAdded(item: BaseProductInCart, action: ItemActionType) {
-                        showCartAnimation(item);
+                        showCartAnimation(item)
                     }
                 }
-                item.proOriginal!!.let {
-                    /*navigator.goToWithCustomAnimation(TemporaryStyleFragment());*/
+                item.proOriginal?.let {
                     if (!it.isBundle()) {
                         val product = ProductDetailFragment(
                             regular = Regular(
@@ -158,7 +161,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
                             quantityCanChoose = 1000,
                             listener = onCartAdded
                         )
-                        navigator.goTo(combo);
+                        navigator.goTo(combo)
                     }
 
 
@@ -166,12 +169,12 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
             }
             ProductModeViewType.PrevButtonEnable -> {
                 CoroutineScope(Dispatchers.IO).launch {
-                    productAdapHelper.previous();
+                    productAdapterHelper.previous()
                 }
             }
             ProductModeViewType.NextButtonEnable -> {
                 CoroutineScope(Dispatchers.IO).launch {
-                    productAdapHelper.next();
+                    productAdapterHelper.next()
                 }
             }
             else -> {}
@@ -179,14 +182,13 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
     }
 
     fun showCartAnimation(item: BaseProductInCart) {
-
         binding.txtProduct.text = String.format(
             getString(R.string.added),
             item.name
         )
         CartPresenter.showCartAnimation(item, binding.rootPopup, binding.imgCart) {
             CurCartData.addItemToCart(item);
-        };
+        }
     }
 
     override fun showCategoryDialog(isGoBackTable: Boolean) {
@@ -204,15 +206,19 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
         navigator.goToWithCustomAnimation(CartFragment(listener = object :
             CartFragment.CartCallBack {
             override fun onCartDelete() {
-                dataVM.onMenuChange(0);
-                showCategoryDialog(true);
+                showCategoryDialog(true)
+                dataVM.onMenuChange(0)
             }
 
             override fun onBillSuccess() {
-                dataVM.onMenuChange(0);
-                screenViewModel.showTablePage();
+
             }
-        }));
+
+            override fun onOrderSuccess() {
+                screenViewModel.showTablePage()
+                dataVM.onMenuChange(0)
+            }
+        }))
     }
 
     interface OrderMenuListener {
@@ -221,7 +227,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
 
     companion object {
         // Position previous dropdown item
-        var selectedSort: Int = 0;
+        var selectedSort: Int = 0
     }
 
 }

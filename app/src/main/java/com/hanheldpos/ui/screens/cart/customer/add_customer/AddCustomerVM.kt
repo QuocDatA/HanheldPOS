@@ -11,10 +11,10 @@ import com.hanheldpos.ui.base.viewmodel.BaseRepoViewModel
 
 class AddCustomerVM : BaseRepoViewModel<CustomerRepo, AddCustomerUV>() {
 
-    val isLoading = MutableLiveData<Boolean>(false);
+    val isLoading = MutableLiveData<Boolean>(false)
 
     override fun createRepo(): CustomerRepo {
-        return CustomerRepo();
+        return CustomerRepo()
     }
 
     fun searchCustomer(keyword: String?, pageNo: Int? = 1) {
@@ -31,20 +31,20 @@ class AddCustomerVM : BaseRepoViewModel<CustomerRepo, AddCustomerUV>() {
 
                 override fun apiResponse(data: BaseResponse<List<CustomerSearchResp>>?) {
                     if (data == null || data.DidError) {
-                        uiCallback?.loadCustomer(mutableListOf(),false);
+                        uiCallback?.loadCustomer(mutableListOf(),false)
                     } else {
                         data.Model?.firstOrNull()?.List?.let { uiCallback?.loadCustomer(it,true) }
                     }
                 }
 
                 override fun showMessage(message: String?) {
-                    uiCallback?.loadCustomer(mutableListOf(),false);
+                    uiCallback?.loadCustomer(mutableListOf(),false)
                 }
             })
     }
 
     fun backPress() {
-        uiCallback?.getBack();
+        uiCallback?.getBack()
     }
 
     fun onAddNewCustomer() {

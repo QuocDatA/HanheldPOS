@@ -8,7 +8,6 @@ import com.hanheldpos.data.api.pojo.product.Product
 import com.hanheldpos.data.api.pojo.product.VariantsGroup
 import com.hanheldpos.databinding.FragmentProductDetailBinding
 import com.hanheldpos.extension.notifyValueChange
-import com.hanheldpos.model.UserHelper
 import com.hanheldpos.model.cart.*
 import com.hanheldpos.model.combo.ItemActionType
 import com.hanheldpos.model.discount.DiscountApplyToType
@@ -19,7 +18,8 @@ import com.hanheldpos.model.product.ItemExtra
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.cart.CurCartData
-import com.hanheldpos.ui.screens.discount.discount_type.DiscountTypeFragment
+import com.hanheldpos.ui.screens.discount.DiscountFragment
+import com.hanheldpos.ui.screens.discount.discount_type.DiscountTypeItemFragment
 import com.hanheldpos.ui.screens.home.order.OrderFragment
 import com.hanheldpos.ui.screens.product.adapter.GroupModifierAdapter
 import com.hanheldpos.ui.screens.product.adapter.GroupVariantAdapter
@@ -39,7 +39,6 @@ class ProductDetailFragment(
     private lateinit var groupVariantAdapter: GroupVariantAdapter;
     private lateinit var groupModifierAdapter: GroupModifierAdapter;
 
-    
 
     override fun layoutRes(): Int = R.layout.fragment_product_detail;
 
@@ -88,14 +87,14 @@ class ProductDetailFragment(
             binding.groupVariants.itemAnimator = null
         }
 
-        if (action == ItemActionType.Modify)
+        if (action == ItemActionType.Modify && productBundle == null)
             childFragmentManager.beginTransaction().replace(
                 R.id.fragment_container_discount,
-                DiscountTypeFragment(
+                DiscountTypeItemFragment(
                     product = regular,
                     applyToType = DiscountApplyToType.ITEM_DISCOUNT_APPLY_TO,
                     cart = CurCartData.cartModelLD.value!!,
-                    listener = object : DiscountTypeFragment.DiscountTypeListener {
+                    listener = object : DiscountFragment.DiscountTypeListener {
                         override fun discountUserChoose(discount: DiscountUser) {
                             if (viewModel.isValidDiscount.value != true) return;
                             viewModel.regularInCart.value?.discountUsersList =
@@ -127,11 +126,11 @@ class ProductDetailFragment(
 
     override fun initData() {
         // init data
-        viewModel.actionType.value = action;
-        viewModel.productBundle = productBundle;
-        viewModel.groupBundle = groupBundle;
-        viewModel.regularInCart.value = regular;
-        viewModel.maxQuantity = quantityCanChoose;
+        viewModel.actionType.value = action
+        viewModel.productBundle = productBundle
+        viewModel.groupBundle = groupBundle
+        viewModel.regularInCart.value = regular
+        viewModel.maxQuantity = quantityCanChoose
 
         regular.apply {
             proOriginal?.VariantsGroup.let {
@@ -222,7 +221,6 @@ class ProductDetailFragment(
     fun onSelectedModifier(item: ItemExtra) {
         val modifier = ModifierCart(
             item.modifier._Id,
-            item.modifier.ModifierGuid,
             item.modifier.Modifier,
             item.extraQuantity,
             item.modifier.Price,
@@ -255,13 +253,17 @@ class ProductDetailFragment(
     }
 
     override fun onAddCart(item: BaseProductInCart) {
-        if (viewModel.numberQuantity.value ?: 0 > 0 && (viewModel.isValidDiscount.value == false && action == ItemActionType.Modify)) return;
+        // Check if product is combo or regular to check discount
+        if (productBundle == null && viewModel.numberQuantity.value ?: 0 > 0 && (viewModel.isValidDiscount.value == false && action == ItemActionType.Modify))
+            return
+
         requireActivity().supportFragmentManager.setFragmentResult(
             "saveDiscount",
-            Bundle().apply { putSerializable("DiscountTypeFor", viewModel.typeDiscountSelect)
-            });
+            Bundle().apply {
+                putSerializable("DiscountTypeFor", viewModel.typeDiscountSelect)
+            })
         getBack()
-        listener?.onCartAdded(item, viewModel.actionType.value!!);
+        listener?.onCartAdded(item, viewModel.actionType.value!!)
     }
 
 }

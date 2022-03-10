@@ -63,6 +63,8 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:fadeScrollbars="false"
+            android:scrollbarSize="@dimen/_4sdp"
             app:layout_constraintBottom_toTopOf="@+id/bottomAction"
             app:layout_constraintTop_toBottomOf="@id/appBar"
             >
@@ -98,7 +100,7 @@
                     android:background="@color/color_2"
                     android:orientation="vertical"
                     android:paddingHorizontal="@dimen/_10sdp"
-                    app:layout_constraintBottom_toTopOf="@+id/dividerActin"
+                    app:layout_constraintBottom_toTopOf="@+id/dividerAction"
                     app:layout_constraintTop_toBottomOf="@+id/tabLayout">
 
                     <LinearLayout
@@ -117,7 +119,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginHorizontal="@dimen/_4sdp"
-                            android:text="Special Instructions"
+                            android:text="@string/special_instructions"
                             app:useFontStyle="bold"
                             app:useTextColor="color4"
                             app:useTextHeader="h5" />
@@ -125,7 +127,7 @@
                         <com.diadiem.pos_components.PTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Optional"
+                            android:text="@string/optional"
                             app:useFontStyle="normal"
                             app:useTextColor="color8"
                             app:useTextHeader="h7" />
@@ -168,7 +170,7 @@
             app:layout_constraintBottom_toBottomOf="parent">
 
             <include
-                android:id="@+id/dividerActin"
+                android:id="@+id/dividerAction"
                 layout="@layout/divider_vertical"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_1sdp"
