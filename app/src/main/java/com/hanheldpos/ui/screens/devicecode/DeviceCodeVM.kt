@@ -32,11 +32,11 @@ class DeviceCodeVM : BaseUiViewModel<DeviceCodeUV>() {
 
     fun signIn(view: View, isRecentAccount: Boolean) {
         // Limit click button
-        if ((SystemClock.elapsedRealtime() - mLastTimeClick) < 1000) return;
-        mLastTimeClick = SystemClock.elapsedRealtime();
+        if ((SystemClock.elapsedRealtime() - mLastTimeClick) < 1000) return
+        mLastTimeClick = SystemClock.elapsedRealtime()
 
         // Fetch data
-        uiCallback?.showLoading(true);
+        uiCallback?.showLoading(true)
         val result: String = if (isRecentAccount) {
             DataHelper.recentDeviceCodeLocalStorage?.first()!!.AppCode
         } else {
@@ -54,8 +54,8 @@ class DeviceCodeVM : BaseUiViewModel<DeviceCodeUV>() {
             }
 
             override fun showMessage(message: String?) {
-                showLoading(false);
-                showError(view.context?.getString(R.string.failed_to_load_data));
+                showLoading(false)
+                showError(view.context?.getString(R.string.failed_to_load_data))
                 uiCallback?.showMessage(view.context?.getString(R.string.failed_to_load_data))
             }
         })

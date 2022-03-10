@@ -61,8 +61,8 @@ class DeviceCodeFragment : BaseFragment<FragmentDeviceCodeBinding, DeviceCodeVM>
                     )
                 }
             )
-            adapter = recentDeviceAdapter;
-        };
+            adapter = recentDeviceAdapter
+        }
     }
 
     override fun initData() {
@@ -70,7 +70,7 @@ class DeviceCodeFragment : BaseFragment<FragmentDeviceCodeBinding, DeviceCodeVM>
             binding.recentAccount.visibility = View.GONE
         } else {
             val recentDeviceList: MutableList<Device> =
-                (DataHelper.recentDeviceCodeLocalStorage as List<Device>).toMutableList();
+                (DataHelper.recentDeviceCodeLocalStorage as List<Device>).toMutableList()
             recentDeviceAdapter.submitList(recentDeviceList)
         }
     }

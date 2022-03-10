@@ -37,7 +37,7 @@ object CartPresenter {
             0f,
             0f
         ).apply {
-            duration = 1000
+            duration = 400
         }
 
         val animSlideOut = ObjectAnimator.ofFloat(

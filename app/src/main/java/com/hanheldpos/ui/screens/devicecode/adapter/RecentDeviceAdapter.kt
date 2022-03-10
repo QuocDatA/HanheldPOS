@@ -11,14 +11,14 @@ import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
 class RecentDeviceAdapter(private val listener : RecentAccountClickListener<Device>): BaseBindingListAdapter<Device>(DiffCallBack()) {
 
     override fun getItemViewType(position: Int): Int {
-        return R.layout.item_recent_account;
+        return R.layout.item_recent_account
     }
 
     override fun onBindViewHolder(holder: BaseBindingViewHolder<Device>, position: Int) {
         val device = getItem(position)
         holder.bindItem(device)
         holder.binding.root.setOnClickListener {
-            listener.onItemClick(position,device,holder.itemView);
+            listener.onItemClick(position,device,holder.itemView)
         }
         (holder.binding as ItemRecentAccountBinding).btnDeleteAccount.setOnClickListener {
             listener.onDeleteClick(device)
@@ -27,11 +27,11 @@ class RecentDeviceAdapter(private val listener : RecentAccountClickListener<Devi
 
     private class DiffCallBack : DiffUtil.ItemCallback<Device>() {
         override fun areItemsTheSame(oldItem: Device, newItem: Device): Boolean {
-            return oldItem.AppCode == newItem.AppCode;
+            return oldItem.AppCode == newItem.AppCode
         }
 
         override fun areContentsTheSame(oldItem: Device, newItem: Device): Boolean {
-            return oldItem == newItem;
+            return oldItem == newItem
         }
 
     }
