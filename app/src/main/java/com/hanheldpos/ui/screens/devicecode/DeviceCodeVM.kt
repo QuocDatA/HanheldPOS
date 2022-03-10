@@ -17,11 +17,11 @@ import java.util.*
 
 class DeviceCodeVM : BaseUiViewModel<DeviceCodeUV>() {
 
-    private var isDownloading = false;
+    private var isDownloading = false
 
-    val pinGroupSize = 4;
-    val pinTextLD = MutableLiveData<String>();
-    private var mLastTimeClick: Long = 0;
+    val pinGroupSize = 4
+    val pinTextLD = MutableLiveData<String>()
+    private var mLastTimeClick: Long = 0
 
     // Fetch all data for storage local
     private val syncDataService by lazy { SyncDataService() }
@@ -32,12 +32,12 @@ class DeviceCodeVM : BaseUiViewModel<DeviceCodeUV>() {
 
     fun signIn(view: View) {
         // Limit click button
-            if ((SystemClock.elapsedRealtime() - mLastTimeClick) < 1000) return;
-            mLastTimeClick = SystemClock.elapsedRealtime();
+            if ((SystemClock.elapsedRealtime() - mLastTimeClick) < 1000) return
+            mLastTimeClick = SystemClock.elapsedRealtime()
 
             // Fetch data
-            uiCallback?.showLoading(true);
-            val result = getPinWithSymbol(pinTextLD.value.toString());
+            uiCallback?.showLoading(true)
+            val result = getPinWithSymbol(pinTextLD.value.toString())
             repo.getDataByAppCode(result, object : BaseRepoCallback<BaseResponse<DeviceCodeResp>> {
                 override fun apiResponse(data: BaseResponse<DeviceCodeResp>?) {
                     if (data == null || data.DidError) {
@@ -49,8 +49,8 @@ class DeviceCodeVM : BaseUiViewModel<DeviceCodeUV>() {
                 }
 
                 override fun showMessage(message: String?) {
-                    showLoading(false);
-                    showError(view.context?.getString(R.string.failed_to_load_data));
+                    showLoading(false)
+                    showError(view.context?.getString(R.string.failed_to_load_data))
                     uiCallback?.showMessage(view.context?.getString(R.string.failed_to_load_data))
                 }
             })
@@ -58,8 +58,8 @@ class DeviceCodeVM : BaseUiViewModel<DeviceCodeUV>() {
     }
 
     private fun loadResource(context: Context) {
-        if (isDownloading) return;
-        isDownloading = true;
+        if (isDownloading) return
+        isDownloading = true
         syncDataService.fetchAllData(
             context,
             listener = object : SyncDataService.SyncDataServiceListener {
@@ -89,6 +89,6 @@ class DeviceCodeVM : BaseUiViewModel<DeviceCodeUV>() {
 
 
     fun backPress() {
-        uiCallback?.goBack();
+        uiCallback?.goBack()
     }
 }

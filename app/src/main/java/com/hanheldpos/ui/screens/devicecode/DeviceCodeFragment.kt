@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 class DeviceCodeFragment : BaseFragment<FragmentDeviceCodeBinding, DeviceCodeVM>(), DeviceCodeUV {
 
 
-    override fun layoutRes() = R.layout.fragment_device_code;
+    override fun layoutRes() = R.layout.fragment_device_code
 
     override fun initView() {
 
@@ -26,13 +26,13 @@ class DeviceCodeFragment : BaseFragment<FragmentDeviceCodeBinding, DeviceCodeVM>
     }
 
     override fun viewModelClass(): Class<DeviceCodeVM> {
-        return DeviceCodeVM::class.java;
+        return DeviceCodeVM::class.java
     }
 
     override fun initViewModel(viewModel: DeviceCodeVM) {
         viewModel.run {
-            init(this@DeviceCodeFragment);
-            binding.viewModel = this;
+            init(this@DeviceCodeFragment)
+            binding.viewModel = this
         }
     }
 
