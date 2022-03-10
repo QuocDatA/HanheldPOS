@@ -210,7 +210,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
                 DataHelper.menuLocalStorage?.MenuList?.map {
                     DropDownItem(name = it.Name, realItem = it, position = i++)
                 }?.let {
-                    listDropdown.addAll(it);
+                    listDropdown.addAll(it)
                 }
 
             }
@@ -219,8 +219,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
         subSpinnerAdapter.submitList(listDropdown);
         binding.toolbarLayout.spnGroupBy.setSelection(
             when (page) {
-                HomePage.Order -> OrderFragment.selectedSort;
-                HomePage.Table -> TableFragment.selectedSort;
+                HomePage.Order -> OrderFragment.selectedSort
+                HomePage.Table -> TableFragment.selectedSort
                 else -> 0
             }
         )

@@ -100,7 +100,7 @@
                     android:background="@color/color_2"
                     android:orientation="vertical"
                     android:paddingHorizontal="@dimen/_10sdp"
-                    app:layout_constraintBottom_toTopOf="@+id/dividerActin"
+                    app:layout_constraintBottom_toTopOf="@+id/dividerAction"
                     app:layout_constraintTop_toBottomOf="@+id/tabLayout">
 
                     <LinearLayout
@@ -170,7 +170,7 @@
             app:layout_constraintBottom_toBottomOf="parent">
 
             <include
-                android:id="@+id/dividerActin"
+                android:id="@+id/dividerAction"
                 layout="@layout/divider_vertical"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_1sdp"

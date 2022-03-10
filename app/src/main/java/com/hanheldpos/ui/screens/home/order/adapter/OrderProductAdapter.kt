@@ -1,14 +1,11 @@
 package com.hanheldpos.ui.screens.home.order.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.FrameLayout
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.findViewTreeLifecycleOwner
 import androidx.recyclerview.widget.DiffUtil
 import com.hanheldpos.R
 import com.hanheldpos.binding.setPriceView
@@ -16,15 +13,13 @@ import com.hanheldpos.databinding.ItemOrderProductBinding
 import com.hanheldpos.databinding.ItemOrderProductDirectionButtonBinding
 import com.hanheldpos.model.cart.CartModel
 import com.hanheldpos.model.home.order.ProductModeViewType
-import com.hanheldpos.model.home.order.menu.MenuModeViewType
 import com.hanheldpos.model.home.order.menu.ProductMenuItem
-
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
+import com.hanheldpos.ui.screens.cart.CurCartData
 
 class OrderProductAdapter(
-    private val cartModel: MutableLiveData<CartModel>,
     private val listener: BaseItemClickListener<ProductMenuItem>
 ) : BaseBindingListAdapter<ProductMenuItem>(DiffCallback()) {
 
@@ -44,34 +39,34 @@ class OrderProductAdapter(
             viewType,
             parent, false
         ).also {
-            val height = ((parent.height) / 6) - parent.resources.getDimension(R.dimen._2sdp);
-//            val params : FrameLayout.LayoutParams = FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,height.toInt());
+            val height = ((parent.height) / 6) - parent.resources.getDimension(R.dimen._2sdp)
             if (it is ItemOrderProductBinding)
-                (it as ItemOrderProductBinding).layoutMain.layoutParams.height = height.toInt();
+                it.layoutMain.layoutParams.height = height.toInt()
             else (it as ItemOrderProductDirectionButtonBinding).layoutMain.layoutParams.height =
-                height.toInt();
-            return BaseBindingViewHolder(it, listener);
+                height.toInt()
+            return BaseBindingViewHolder(it, listener)
         }
     }
 
     override fun onBindViewHolder(holder: BaseBindingViewHolder<ProductMenuItem>, position: Int) {
-        val item = getItem(position);
-        holder.bindItem(item);
+        val item = getItem(position)
+        holder.bindItem(item)
 
-        cartModel.observe(holder.itemView.context as LifecycleOwner) {
-            if (holder.binding is ItemOrderProductBinding){
-
+        if (holder.binding is ItemOrderProductBinding) {
+            item.proOriginal?.let {
                 setPriceView(
-                    (holder.binding as ItemOrderProductBinding).priceProduct,
-                    price = item.proOriginal?.priceOverride(
-                        it?.menuLocationGuid,
-                        item.proOriginal.skuDefault,
-                        item.proOriginal.Price
+                    holder.binding.priceProduct,
+                    price = it.priceOverride(
+                        CurCartData.cartModelLD.value?.menuLocationGuid,
+                        it.skuDefault,
+                        it.Price
                     )
                 )
             }
 
         }
+
+
 
         if (item.uiType != ProductModeViewType.Empty) {
 

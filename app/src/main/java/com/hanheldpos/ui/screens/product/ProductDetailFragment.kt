@@ -253,14 +253,17 @@ class ProductDetailFragment(
     }
 
     override fun onAddCart(item: BaseProductInCart) {
-            if (productBundle == null && viewModel.numberQuantity.value ?: 0 > 0 && (viewModel.isValidDiscount.value == false && action == ItemActionType.Modify)) return;
+        // Check if product is combo or regular to check discount
+        if (productBundle == null && viewModel.numberQuantity.value ?: 0 > 0 && (viewModel.isValidDiscount.value == false && action == ItemActionType.Modify))
+            return
+
         requireActivity().supportFragmentManager.setFragmentResult(
             "saveDiscount",
             Bundle().apply {
                 putSerializable("DiscountTypeFor", viewModel.typeDiscountSelect)
-            });
+            })
         getBack()
-        listener?.onCartAdded(item, viewModel.actionType.value!!);
+        listener?.onCartAdded(item, viewModel.actionType.value!!)
     }
 
 }

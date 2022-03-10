@@ -37,7 +37,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:text="@{item.TableName,default=`Table`}"
-                    app:useFontStyle="semi_bold"
+                    app:useFontStyle="normal"
                     app:useTextColor="color3"
                     app:useTextHeader="h4" />
                 <com.diadiem.pos_components.PTextView

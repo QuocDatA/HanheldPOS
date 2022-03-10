@@ -19,22 +19,22 @@ class CartComboGroupDetailAdapter(
 
 
     override fun getItemViewType(position: Int): Int {
-        return R.layout.item_cart_combo_group_detail;
+        return R.layout.item_cart_combo_group_detail
     }
 
     override fun onBindViewHolder(holder: BaseBindingViewHolder<BaseProductInCart>, position: Int) {
-        val item = getItem(position);
-        holder.bindItem(item);
-        val binding  = (holder.binding as ItemCartComboGroupDetailBinding);
+        val item = getItem(position)
+        holder.bindItem(item)
+        val binding  = (holder.binding as ItemCartComboGroupDetailBinding)
         binding.productBundle = productBundle
-        binding.groupBundle = groupBundle;
+        binding.groupBundle = groupBundle
     }
     private class DiffCallback : DiffUtil.ItemCallback<BaseProductInCart>() {
         override fun areItemsTheSame(
             oldItem: BaseProductInCart,
             newItem: BaseProductInCart
         ): Boolean {
-            return oldItem == newItem;
+            return oldItem == newItem
         }
 
         override fun areContentsTheSame(

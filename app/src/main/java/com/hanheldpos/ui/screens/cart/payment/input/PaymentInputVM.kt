@@ -12,11 +12,11 @@ class PaymentInputVM : BaseUiViewModel<PaymentInputUV>() {
     val paymentMethodTitle = MutableLiveData<String>()
 
     fun onComplete() {
-        uiCallback?.onComplete();
+        uiCallback?.onComplete()
     }
 
     fun onCancel() {
-        uiCallback?.onCancel();
+        uiCallback?.onCancel()
     }
 
     fun clearInput() {

@@ -13,12 +13,12 @@ class AddNewCustomerFragment : BaseFragment<FragmentAddNewCustomerBinding, AddNe
     override fun layoutRes(): Int = R.layout.fragment_add_new_customer
 
     override fun viewModelClass(): Class<AddNewCustomerVM> {
-        return AddNewCustomerVM::class.java;
+        return AddNewCustomerVM::class.java
     }
 
     override fun initViewModel(viewModel: AddNewCustomerVM) {
         viewModel.run {
-            init(this@AddNewCustomerFragment);
+            init(this@AddNewCustomerFragment)
             binding.viewModel = this
         }
         binding.birthDayTextInputLayout.setEndIconOnClickListener(View.OnClickListener {

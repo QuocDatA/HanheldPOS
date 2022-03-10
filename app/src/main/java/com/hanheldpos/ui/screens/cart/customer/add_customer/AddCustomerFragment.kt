@@ -18,18 +18,18 @@ class AddCustomerFragment(
     private val listener: CustomerEvent
 ) : BaseFragment<FragmentAddCustomerBinding, AddCustomerVM>(), AddCustomerUV {
     //Adapter
-    private lateinit var adapterCustomer: CustomerAdapter;
-    private lateinit var adapterCustomerHelper: CustomerAdapterHelper;
+    private lateinit var adapterCustomer: CustomerAdapter
+    private lateinit var adapterCustomerHelper: CustomerAdapterHelper
 
-    override fun layoutRes(): Int = R.layout.fragment_add_customer;
+    override fun layoutRes(): Int = R.layout.fragment_add_customer
 
     override fun viewModelClass(): Class<AddCustomerVM> {
-        return AddCustomerVM::class.java;
+        return AddCustomerVM::class.java
     }
 
     override fun initViewModel(viewModel: AddCustomerVM) {
         viewModel.run {
-            init(this@AddCustomerFragment);
+            init(this@AddCustomerFragment)
             binding.viewModel = this
         }
     }
@@ -38,12 +38,12 @@ class AddCustomerFragment(
         adapterCustomer = CustomerAdapter(listener = object : BaseItemClickListener<CustomerResp?> {
             override fun onItemClick(adapterPosition: Int, item: CustomerResp?) {
                 // Dealing with select customer
-                listener.onSelectedCustomer(item!!);
-                getBack();
+                listener.onSelectedCustomer(item!!)
+                getBack()
             }
         })
         binding.customerContainer.apply {
-            adapter = adapterCustomer;
+            adapter = adapterCustomer
             addItemDecoration(
                 DividerItemDecoration(
                     context,
@@ -67,11 +67,11 @@ class AddCustomerFragment(
                         adapterCustomerHelper.nextPage()
                     }
                 }
-            });
+            })
         }
 
         binding.searchInput.doAfterTextChanged {
-            adapterCustomerHelper.search(it.toString());
+            adapterCustomerHelper.search(it.toString())
         }
 
         adapterCustomerHelper = CustomerAdapterHelper(listener = object :
@@ -79,29 +79,29 @@ class AddCustomerFragment(
             override fun onSearch(keyword: String, pageNo: Int?) {
 
                 if (pageNo == 1) {
-                    binding.customerContainer.smoothScrollToPosition(0);
+                    binding.customerContainer.smoothScrollToPosition(0)
                     adapterCustomer.apply {
-                        submitList(listOf());
+                        submitList(listOf())
                         notifyDataSetChanged()
                     }
-                    if (keyword.trim().isBlank()) return;
+                    if (keyword.trim().isBlank()) return
                 }
-                viewModel.searchCustomer(keyword, pageNo);
+                viewModel.searchCustomer(keyword, pageNo)
             }
 
             override fun onLoadingNextPage(customers: List<CustomerResp?>) {
                 adapterCustomer.apply {
-                    submitList(customers);
+                    submitList(customers)
                     notifyItemRangeInserted(customers.size - 1, 1)
                     if (customers.isNotEmpty())
-                        binding.customerContainer.smoothScrollToPosition(customers.size - 1);
+                        binding.customerContainer.smoothScrollToPosition(customers.size - 1)
                 }
             }
 
             override fun onLoadedNextPage(startIndex: Int, customers: List<CustomerResp?>) {
                 adapterCustomer.apply {
                     submitList(customers)
-                    notifyDataSetChanged();
+                    notifyDataSetChanged()
                 }
 
             }
@@ -118,11 +118,11 @@ class AddCustomerFragment(
     }
 
     override fun getBack() {
-        navigator.goOneBack();
+        navigator.goOneBack()
     }
 
     override fun loadCustomer(list: List<CustomerResp>, isSuccess: Boolean) {
-        adapterCustomerHelper.loaded(list.toMutableList(), isSuccess);
+        adapterCustomerHelper.loaded(list.toMutableList(), isSuccess)
     }
 
     override fun onAddNewCustomer() {

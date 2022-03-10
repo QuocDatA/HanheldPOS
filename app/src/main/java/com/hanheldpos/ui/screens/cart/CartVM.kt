@@ -24,21 +24,20 @@ import java.util.*
 
 class CartVM : BaseUiViewModel<CartUV>() {
 
-
     fun initLifeCycle(owner: LifecycleOwner) {
-        owner.lifecycle.addObserver(this);
+        owner.lifecycle.addObserver(this)
     }
 
     fun backPress() {
-        uiCallback?.getBack();
+        uiCallback?.getBack()
     }
 
     fun deleteCart() {
-        uiCallback?.deleteCart();
+        uiCallback?.deleteCart()
     }
 
     fun openDiscount() {
-        uiCallback?.onOpenDiscount();
+        uiCallback?.onOpenDiscount()
     }
 
     fun openSelectPayment(payable: Double) {
@@ -46,22 +45,21 @@ class CartVM : BaseUiViewModel<CartUV>() {
     }
 
     fun onOpenAddCustomer() {
-        uiCallback?.onOpenAddCustomer();
+        uiCallback?.onOpenAddCustomer()
     }
 
     fun onShowCustomerDetail() {
-        uiCallback?.onShowCustomerDetail();
+        uiCallback?.onShowCustomerDetail()
     }
 
     fun billCart(context: Context, cart: CartModel) {
-
         if (cart.productsList.isEmpty()) {
             AppAlertDialog.get()
                 .show(
                     context.getString(R.string.notification),
                     context.getString(R.string.order_not_completed),
                 )
-            return;
+            return
         }
         onOrderProcessing(context, cart)
     }
@@ -69,7 +67,6 @@ class CartVM : BaseUiViewModel<CartUV>() {
     private fun onOrderProcessing(context: Context, cart: CartModel) {
         showLoading(true)
         try {
-
             // Order
             if (cart.orderCode == null)
                 cart.orderCode = OrderHelper.generateOrderIdByFormat()
@@ -78,7 +75,7 @@ class CartVM : BaseUiViewModel<CartUV>() {
                     DateTimeHelper.dateToString(
                         Date(),
                         DateTimeHelper.Format.FULL_DATE_UTC_TIMEZONE
-                    );
+                    )
             val orderStatus =
                 if (OrderHelper.isPaymentSuccess(cart)) OrderStatus.COMPLETED.value else OrderStatus.ORDER.value
             val paymentStatus =
@@ -115,7 +112,6 @@ class CartVM : BaseUiViewModel<CartUV>() {
                     launch(Dispatchers.Main) { CurCartData.currentTableFocus.notifyValueChange() }
                 }
 
-
                 launch(Dispatchers.Main) {
                     showLoading(false)
                     uiCallback?.onBillSuccess()
@@ -136,13 +132,13 @@ class CartVM : BaseUiViewModel<CartUV>() {
 
 
     fun processDataDiscount(cart: CartModel): List<DiscountCart> {
-        val list = mutableListOf<DiscountCart>();
+        val list = mutableListOf<DiscountCart>()
 
         cart.discountUserList.forEach {
-            list.add(DiscountCart(it, it.DiscountName, it.total(cart.getSubTotal())));
+            list.add(DiscountCart(it, it.DiscountName, it.total(cart.getSubTotal())))
         }
         cart.compReason?.let {
-            list.add(DiscountCart(it, it.Title!!, cart.totalComp(cart.totalTemp())));
+            list.add(DiscountCart(it, it.Title!!, cart.totalComp(cart.totalTemp())))
         }
         return list
     }

@@ -20,7 +20,7 @@ class PaymentInputFragment(
     BaseFragment<FragmentPaymentInputBinding, PaymentInputVM>(), PaymentInputUV {
 
     //ViewModel
-    private val keyBoardVM = KeyBoardVM();
+    private val keyBoardVM = KeyBoardVM()
 
     override fun layoutRes() = R.layout.fragment_payment_input
 
@@ -30,9 +30,9 @@ class PaymentInputFragment(
 
     override fun initViewModel(viewModel: PaymentInputVM) {
         viewModel.run {
-            init(this@PaymentInputFragment);
-            binding.viewModel = this;
-            binding.keyboardVM = keyBoardVM;
+            init(this@PaymentInputFragment)
+            binding.viewModel = this
+            binding.keyboardVM = keyBoardVM
         }
     }
 
@@ -40,13 +40,13 @@ class PaymentInputFragment(
     override fun initView() {
         keyBoardVM.onListener(listener = object : KeyBoardVM.KeyBoardCallBack {
             override fun onComplete() {
-                viewModel.onComplete();
+                viewModel.onComplete()
             }
 
             override fun onCancel() {
-                viewModel.onCancel();
+                viewModel.onCancel()
             }
-        });
+        })
 
         binding.textInputLayout.setEndIconOnClickListener {
             clearInput()
@@ -55,20 +55,20 @@ class PaymentInputFragment(
     }
 
     override fun onCancel() {
-        navigator.goOneBack();
+        navigator.goOneBack()
     }
 
     override fun onComplete() {
-        navigator.goOneBack();
+        navigator.goOneBack()
         if (!keyBoardVM.input.value?.trim().equals(""))
-            listener?.onCompleteTable(Integer.valueOf(keyBoardVM.input.value));
+            listener?.onCompleteTable(Integer.valueOf(keyBoardVM.input.value))
     }
 
     override fun initData() {
         if (paymentMethod.PaymentMethodType == PaymentMethodType.CASH.value) {
             clearInput()
         } else {
-            keyBoardVM.input.value = payable.toNiceString();
+            keyBoardVM.input.value = payable.toNiceString()
         }
 
         keyBoardVM.keyBoardType.value= viewModel.setUpKeyboard(paymentMethod, payable)
@@ -83,17 +83,17 @@ class PaymentInputFragment(
                     binding.textInputLayout.setEndIconDrawable(R.drawable.ic_clear_text)
                 }
                 if (isEditing) {
-                    return@doAfterTextChanged;
+                    return@doAfterTextChanged
                 } else {
-                    isEditing = true;
+                    isEditing = true
                     if (keyBoardVM.keyBoardType.value == (KeyBoardType.Text)) {
-                        input.setText(it.toString());
+                        input.setText(it.toString())
                     } else {
-                        input.setText(PriceHelper.formatStringPrice(it.toString()));
+                        input.setText(PriceHelper.formatStringPrice(it.toString()))
                     }
                 }
-                input.setSelection(input.length());
-                isEditing = false;
+                input.setSelection(input.length())
+                isEditing = false
             }
         }
 

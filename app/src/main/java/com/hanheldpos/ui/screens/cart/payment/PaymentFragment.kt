@@ -19,20 +19,20 @@ import java.util.*
 
 class PaymentFragment(private val alreadyBill : Boolean, private val payable: Double, private var listener: PaymentCallback) :
     BaseFragment<FragmentPaymentBinding, PaymentVM>(), PaymentUV {
-    override fun layoutRes(): Int = R.layout.fragment_payment;
+    override fun layoutRes(): Int = R.layout.fragment_payment
 
     private lateinit var paymentMethodAdapter: PaymentMethodAdapter
     private lateinit var paymentSuggestionAdapter: PaymentSuggestionAdapter
 
 
     override fun viewModelClass(): Class<PaymentVM> {
-        return PaymentVM::class.java;
+        return PaymentVM::class.java
     }
 
     override fun initViewModel(viewModel: PaymentVM) {
         viewModel.run {
-            init(this@PaymentFragment);
-            binding.viewModel = this;
+            init(this@PaymentFragment)
+            binding.viewModel = this
         }
 
     }
@@ -47,10 +47,10 @@ class PaymentFragment(private val alreadyBill : Boolean, private val payable: Do
                         override fun onCompleteTable(numberCustomer: Int) {
 
                         }
-                    }, paymentMethod = item, payable = payable));
+                    }, paymentMethod = item, payable = payable))
                 }
             },
-        );
+        )
         binding.paymentMethodContainer.apply {
             addItemDecoration(
                 GridSpacingItemDecoration(
@@ -59,8 +59,8 @@ class PaymentFragment(private val alreadyBill : Boolean, private val payable: Do
                     spacing = resources.getDimensionPixelSize(R.dimen._10sdp)
                 )
             )
-            binding.paymentMethodContainer.adapter = paymentMethodAdapter;
-        };
+            binding.paymentMethodContainer.adapter = paymentMethodAdapter
+        }
         //endregion
 
         //region setup payment suggestion pay in cash recycler view
@@ -71,7 +71,7 @@ class PaymentFragment(private val alreadyBill : Boolean, private val payable: Do
 
                 }
             },
-        );
+        )
         binding.paymentSuggestionContainer.apply {
             addItemDecoration(
                 GridSpacingItemDecoration(
@@ -80,23 +80,23 @@ class PaymentFragment(private val alreadyBill : Boolean, private val payable: Do
                     spacing = resources.getDimensionPixelSize(R.dimen._7sdp)
                 )
             )
-            binding.paymentSuggestionContainer.adapter = paymentSuggestionAdapter;
-        };
+            binding.paymentSuggestionContainer.adapter = paymentSuggestionAdapter
+        }
         //endregion
 
     }
 
     override fun initData() {
-        binding.payable = this.payable;
+        binding.payable = this.payable
         //region init payment method data
-        val paymentMethods = viewModel.getPaymentMethods();
+        val paymentMethods = viewModel.getPaymentMethods()
         paymentMethodAdapter.submitList(paymentMethods)
         //endregion
 
         //region init payment suggestion data
         val paymentSuggestion: MutableList<PaymentSuggestionItem> =
-            (viewModel.initPaymentSuggestion() as List<PaymentSuggestionItem>).toMutableList();
-        paymentSuggestionAdapter.submitList(paymentSuggestion);
+            (viewModel.initPaymentSuggestion() as List<PaymentSuggestionItem>).toMutableList()
+        paymentSuggestionAdapter.submitList(paymentSuggestion)
         //endregion
     }
 
@@ -111,7 +111,7 @@ class PaymentFragment(private val alreadyBill : Boolean, private val payable: Do
 
     override fun getPayment() {
         //TODO : Fake payment cash for testing
-        val paymentCash = viewModel.getPaymentMethods().find { payment-> payment.PaymentMethodType == PaymentMethodType.CASH.value };
+        val paymentCash = viewModel.getPaymentMethods().find { payment-> payment.PaymentMethodType == PaymentMethodType.CASH.value }
         paymentCash?.let {
             onFragmentBackPressed()
             listener.onPaymentComplete(
