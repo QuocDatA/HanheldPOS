@@ -2,10 +2,10 @@ package com.hanheldpos.model
 
 
 import com.hanheldpos.data.api.ApiConst
+import com.hanheldpos.data.api.pojo.device.Device
 import com.hanheldpos.data.api.pojo.device.DeviceCodeResp
 import com.hanheldpos.data.api.pojo.discount.CouponResp
 import com.hanheldpos.data.api.pojo.discount.DiscountResp
-import com.hanheldpos.data.api.pojo.fee.Fee
 import com.hanheldpos.data.api.pojo.fee.FeeResp
 import com.hanheldpos.data.api.pojo.floor.FloorResp
 import com.hanheldpos.data.api.pojo.order.menu.MenuResp
@@ -13,7 +13,6 @@ import com.hanheldpos.data.api.pojo.order.settings.OrderSettingResp
 import com.hanheldpos.data.api.pojo.payment.PaymentMethodResp
 import com.hanheldpos.data.api.pojo.resource.ResourceResp
 import com.hanheldpos.data.api.pojo.system.AddressTypeResp
-import com.hanheldpos.model.cart.fee.FeeApplyToType
 import com.hanheldpos.model.order.OrderReq
 import com.hanheldpos.prefs.PrefKey
 import com.hanheldpos.utils.GSonUtils
@@ -215,5 +214,20 @@ object DataHelper {
         set(value) {
             field = value
             AppPreferences.get().storeValue(PrefKey.Resource.RESOURCE_RESP, GSonUtils.toJson(value))
+        }
+    var recentDeviceCodeLocalStorage: List<Device>? = null
+        get() {
+            if (field == null) {
+                field = GSonUtils.toList(
+                    AppPreferences.get().getString(
+                            PrefKey.Setting.RECENT_DEVICE_LIST,
+                    )
+                )
+            }
+            return field
+        }
+        set(value) {
+            field = value
+            AppPreferences.get().storeValue(PrefKey.Setting.RECENT_DEVICE_LIST, GSonUtils.toJson(value))
         }
 }
