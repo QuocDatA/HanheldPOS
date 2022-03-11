@@ -16,28 +16,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.HanheldPOS"
-        android:windowSoftInputMode="adjustResize"
+        android:windowSoftInputMode="adjustPan"
         android:usesCleartextTraffic="true"
         android:requestLegacyExternalStorage="true"
         tools:ignore="AllowBackup">
-        <activity
-            android:name=".ui.screens.cashdrawer.startdrawer.StartDrawerFragment"
-            android:exported="false" />
-        <activity
-            android:name=".ui.screens.pincode.PinCodeFragment"
-            android:exported="true"
-            android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity" />
-        <activity
-            android:name=".ui.screens.devicecode.DeviceCodeFragment"
-            android:exported="true"
-            android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity" />
-        <activity
-            android:name=".ui.screens.welcome.WelcomeFragment"
-            android:exported="true"
-            android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".ui.screens.intro.IntroActivity"
             android:exported="true"

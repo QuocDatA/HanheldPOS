@@ -22,6 +22,8 @@ import com.hanheldpos.ui.screens.welcome.WelcomeFragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.count
+import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
 

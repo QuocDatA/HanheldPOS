@@ -42,13 +42,13 @@ class DeviceCodeVM : BaseUiViewModel<DeviceCodeUV>() {
         } else {
             getPinWithSymbol(pinTextLD.value.toString())
         }
-        repo.getDataByAppCode(result, object : BaseRepoCallback<BaseResponse<DeviceCodeResp>> {
-            override fun apiResponse(data: BaseResponse<DeviceCodeResp>?) {
+        repo.getDataByAppCode(result, object : BaseRepoCallback<BaseResponse<List<DeviceCodeResp>>> {
+            override fun apiResponse(data: BaseResponse<List<DeviceCodeResp>>?) {
                 if (data == null || data.DidError) {
                     showError(view.context?.getString(R.string.failed_to_load_data))
                 } else {
-                    DataHelper.deviceCodeLocalStorage = data.Model
-                    addRecentDeviceKey(data.Model!!.Device)
+                    DataHelper.deviceCodeLocalStorage = data.Model?.first()
+                    addRecentDeviceKey(data.Model?.first()!!.Device)
                     loadResource(view.context)
                 }
             }

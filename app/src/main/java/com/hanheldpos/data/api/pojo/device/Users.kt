@@ -10,10 +10,6 @@ data class Users(
     val CurrencyNativeName: String,
     val CurrencySymbol: String,
     val CustomerCode: String,
-    val PassCode: String?,
-    val TimeZoneDisplayName: String,
-    val TimeZoneId: String,
-    val _id: String,
-    val _key: Int,
-    val _rev: String
+    val Language: String,
+    val TimeZoneDisplayName: String
 ) : Parcelable
