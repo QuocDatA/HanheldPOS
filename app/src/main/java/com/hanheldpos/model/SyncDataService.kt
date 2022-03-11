@@ -226,7 +226,7 @@ class SyncDataService : BaseViewModel() {
             it.resourceLocalStorage ?: return;
         }
         DataHelper.numberIncreaseOrder =
-            DataHelper.deviceCodeLocalStorage?.SettingsId?.firstOrNull()?.NumberIncrement?.toLong()
+            DataHelper.deviceCodeLocalStorage?.ListSettingsId?.firstOrNull()?.NumberIncrement?.toLong()
                 ?: 0
         var isNeedToDownload = false
         DataHelper.resourceLocalStorage?.filter { resourceResp ->

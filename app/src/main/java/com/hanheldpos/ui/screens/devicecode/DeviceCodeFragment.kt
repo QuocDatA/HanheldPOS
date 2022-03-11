@@ -6,14 +6,10 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.device.Device
-import com.hanheldpos.data.api.pojo.order.settings.DiningOption
 import com.hanheldpos.databinding.FragmentDeviceCodeBinding
-import com.hanheldpos.extension.navigateTo
 import com.hanheldpos.model.DataHelper
-import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.devicecode.adapter.RecentDeviceAdapter
-import com.hanheldpos.ui.screens.main.MainActivity
 import com.hanheldpos.ui.screens.pincode.PinCodeFragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

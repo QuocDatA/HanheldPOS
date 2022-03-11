@@ -1,7 +1,6 @@
 package com.hanheldpos.data.repository.customer
 
 import com.hanheldpos.data.api.pojo.customer.CustomerSearchResp
-import com.hanheldpos.data.api.pojo.device.DeviceCodeResp
 import com.hanheldpos.data.repository.BaseResponse
 import com.hanheldpos.data.repository.base.BaseRepo
 import com.hanheldpos.data.repository.base.BaseRepoCallback
