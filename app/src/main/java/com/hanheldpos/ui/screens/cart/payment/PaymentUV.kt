@@ -6,4 +6,5 @@ interface PaymentUV : BaseUserView {
     fun getBack()
     fun getPayment()
     fun openPaymentDetail()
+    fun onFragmentBackPressed()
 }

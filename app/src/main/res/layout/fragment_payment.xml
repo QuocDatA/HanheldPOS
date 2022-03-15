@@ -49,10 +49,10 @@
                     style="@style/CartTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="@string/payment_method"
                     app:useFontStyle="bold"
-                    app:useTextHeader="h4"
                     app:useTextColor="color4"
-                    android:text="@string/payment_method" />
+                    app:useTextHeader="h4" />
 
             </FrameLayout>
 
@@ -85,45 +85,45 @@
                         android:layout_height="wrap_content"
                         android:layout_marginVertical="@dimen/_4sdp"
                         android:background="@color/color_2"
-                        android:paddingVertical="@dimen/_9sdp"
+                        android:orientation="horizontal"
                         android:paddingHorizontal="@dimen/_10sdp"
-                        android:orientation="horizontal">
+                        android:paddingVertical="@dimen/_9sdp">
 
                         <com.diadiem.pos_components.PTextView
                             style="@style/CartTitle"
-                            android:layout_gravity="start"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="start"
+                            android:text="@string/total_paid"
                             app:useFontStyle="bold"
-                            app:useTextHeader="h4"
                             app:useTextColor="color4"
-                            android:text="@string/total_paid" />
+                            app:useTextHeader="h4" />
 
                         <ImageView
                             android:id="@+id/paymentDetail"
-                            android:visibility="gone"
                             android:layout_width="@dimen/_14sdp"
                             android:layout_height="@dimen/_14sdp"
                             android:layout_gravity="center"
                             android:layout_marginStart="@dimen/_7sdp"
-                            android:onClick="@{v -> viewModel.openPaymentDetail()}"
                             android:clickable="true"
                             android:focusable="true"
+                            android:onClick="@{v -> viewModel.openPaymentDetail()}"
                             android:scaleType="fitXY"
-                            android:src="@drawable/ic_info" />
+                            android:src="@drawable/ic_info"
+                            android:visibility="gone" />
 
                         <com.diadiem.pos_components.PTextView
                             android:id="@+id/totalPaid"
                             style="@style/CartTitle"
+                            priceView="0"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
                             android:layout_gravity="start"
                             android:layout_weight="1"
-                            android:layout_width="0dp"
                             android:gravity="end"
-                            android:layout_height="wrap_content"
                             app:useFontStyle="bold"
-                            app:useTextHeader="h4"
                             app:useTextColor="color4"
-                            priceView="0"
+                            app:useTextHeader="h4"
                             tools:text="30,000" />
                     </LinearLayout>
                 </LinearLayout>
@@ -131,7 +131,6 @@
             </androidx.core.widget.NestedScrollView>
 
         </LinearLayout>
-
 
 
         <LinearLayout
@@ -142,7 +141,7 @@
             <androidx.legacy.widget.Space
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_4sdp"
-                android:background="@color/color_10"/>
+                android:background="@color/color_10" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -162,11 +161,12 @@
                     app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                     app:spanCount="4"
                     tools:itemCount="4"
-                    tools:listitem="@layout/item_payment_suggestion"/>
+                    tools:listitem="@layout/item_payment_suggestion" />
 
 
                 <com.diadiem.pos_components.PMaterialButton
                     android:id="@+id/totalPriceButton"
+                    priceView="@{viewModel.balance}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/_14sdp"
@@ -175,9 +175,8 @@
                     android:focusable="true"
                     android:foreground="?attr/selectableItemBackground"
                     android:gravity="center"
-                    android:paddingVertical="@dimen/_6sdp"
-                    priceView="@{payable}"
                     android:onClick="@{v->viewModel.getPayment()}"
+                    android:paddingVertical="@dimen/_6sdp"
                     app:pbtn_useBackgroundColor="true"
                     app:pbtn_useFontStyle="bold"
                     app:pbtn_useTextColor="color2"
@@ -186,7 +185,6 @@
             </LinearLayout>
 
         </LinearLayout>
-
 
 
     </LinearLayout>

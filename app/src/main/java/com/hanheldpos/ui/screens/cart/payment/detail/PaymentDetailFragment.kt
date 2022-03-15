@@ -12,7 +12,8 @@ import com.hanheldpos.model.cart.payment.PaymentOrder
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.cart.payment.detail.adapter.PaymentDetailAdapter
 
-class PaymentDetailFragment(private val paymentOrderList: List<PaymentOrder>) : BaseFragment<FragmentPaymentDetailBinding, PaymentDetailVM>(), PaymentDetailUV {
+class PaymentDetailFragment(private val paymentOrderList: List<PaymentOrder>?) :
+    BaseFragment<FragmentPaymentDetailBinding, PaymentDetailVM>(), PaymentDetailUV {
     private lateinit var paymentDetailAdapter: PaymentDetailAdapter
 
     override fun layoutRes(): Int = R.layout.fragment_payment_detail
@@ -34,7 +35,7 @@ class PaymentDetailFragment(private val paymentOrderList: List<PaymentOrder>) : 
     }
 
     override fun initData() {
-        paymentDetailAdapter.submitList(paymentOrderList.toMutableList())
+        paymentDetailAdapter.submitList(paymentOrderList?.toMutableList())
     }
 
     override fun initAction() {

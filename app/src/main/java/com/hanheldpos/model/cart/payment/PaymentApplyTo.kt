@@ -9,5 +9,15 @@ enum class PaymentApplyTo(val value: Int) {
     SODEXO (8),
     GRAB (30),
     ZALO_PAY (30),
-    GIFT_CARD (10)
+    GIFT_CARD (10);
+    companion object {
+        fun fromInt(value: Int): PaymentApplyTo? {
+            PaymentApplyTo.values().forEach {
+                if (it.value == value) {
+                    return it
+                }
+            }
+            return null
+        }
+    }
 }
