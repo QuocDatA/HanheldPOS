@@ -14,7 +14,7 @@ import com.hanheldpos.model.home.order.menu.ProductMenuItem
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.cart.CartFragment
-import com.hanheldpos.ui.screens.cart.CurCartData
+import com.hanheldpos.ui.screens.cart.CartDataVM
 import com.hanheldpos.ui.screens.combo.ComboFragment
 import com.hanheldpos.ui.screens.home.HomeFragment
 import com.hanheldpos.ui.screens.home.ScreenViewModel
@@ -32,7 +32,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
     // ViewModel
     private val dataVM by activityViewModels<OrderDataVM>()
     private val screenViewModel by activityViewModels<ScreenViewModel>()
-
+    private val cartDataVM by activityViewModels<CartDataVM>()
     //Adapter
     private lateinit var productAdapter: OrderProductAdapter;
     private lateinit var productAdapterHelper: OrderProductAdapterHelper;
@@ -44,8 +44,8 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
     override fun initViewModel(viewModel: OrderVM) {
         viewModel.run {
             init(this@OrderFragment)
-            initLifeCycle(this@OrderFragment)
             binding.viewModel = this
+            binding.cartDataVM = cartDataVM
         }
         binding.dataVM = this.dataVM
     }
@@ -108,7 +108,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
             }
         }
 
-        CurCartData.cartModelLD.observe(this) {
+        cartDataVM.cartModelLD.observe(this) {
             productAdapter.notifyDataSetChanged()
         }
 
@@ -130,7 +130,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
                         val product = ProductDetailFragment(
                             regular = Regular(
                                 it,
-                                CurCartData.diningOptionLD.value!!,
+                                cartDataVM.diningOptionLD.value!!,
                                 1,
                                 it.skuDefault,
                                 it.variantDefault,
@@ -151,7 +151,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
                                         mutableListOf()
                                     )
                                 },
-                                CurCartData.diningOptionLD.value!!,
+                                cartDataVM.diningOptionLD.value!!,
                                 1,
                                 it.skuDefault,
                                 it.Variants,
@@ -187,7 +187,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
             item.name
         )
         CartPresenter.showCartAnimation(item, binding.rootPopup, binding.imgCart) {
-            CurCartData.addItemToCart(item);
+            cartDataVM.addItemToCart(item);
         }
     }
 

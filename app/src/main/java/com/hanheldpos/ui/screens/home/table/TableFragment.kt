@@ -16,7 +16,7 @@ import com.hanheldpos.model.home.table.TableStatusType
 import com.hanheldpos.model.order.OrderConverter
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
-import com.hanheldpos.ui.screens.cart.CurCartData
+import com.hanheldpos.ui.screens.cart.CartDataVM
 import com.hanheldpos.ui.screens.home.HomeFragment
 import com.hanheldpos.ui.screens.home.ScreenViewModel
 import com.hanheldpos.ui.screens.home.table.adapter.TableAdapter
@@ -37,7 +37,7 @@ class TableFragment : BaseFragment<FragmentTableBinding, TableVM>(), TableUV {
 
     // ViewModel
     private val screenViewModel by activityViewModels<ScreenViewModel>()
-
+    private val cartDataVM by activityViewModels<CartDataVM>()
 
     override fun viewModelClass(): Class<TableVM> {
         return TableVM::class.java;
@@ -102,7 +102,7 @@ class TableFragment : BaseFragment<FragmentTableBinding, TableVM>(), TableUV {
 
     @SuppressLint("NotifyDataSetChanged")
     override fun initAction() {
-        CurCartData.currentTableFocus.observe(this) {
+        cartDataVM.currentTableFocus.observe(this) {
             tableAdapter.notifyDataSetChanged()
         }
         screenViewModel.dropDownSelected.observe(this) {
@@ -143,7 +143,7 @@ class TableFragment : BaseFragment<FragmentTableBinding, TableVM>(), TableUV {
                 tableAdapter.currentList.filter { it.tableStatus == TableStatusType.Pending }.let {
                     if (it.isNotEmpty()) {
                         it.forEach { table -> table.tableStatus = TableStatusType.Available };
-                        CurCartData.removeCart()
+                        cartDataVM.removeCart()
                         tableAdapter.notifyDataSetChanged()
                         return
                     }
@@ -155,7 +155,7 @@ class TableFragment : BaseFragment<FragmentTableBinding, TableVM>(), TableUV {
                     override fun onCompleteTable(numberCustomer: Int) {
                         // Init cart first time
                         item.updateTableStatus(TableStatusType.Pending);
-                        CurCartData.initCart(numberCustomer, item);
+                        cartDataVM.initCart(numberCustomer, item);
                         screenViewModel.showOrderPage();
                     }
                 }))
@@ -163,14 +163,14 @@ class TableFragment : BaseFragment<FragmentTableBinding, TableVM>(), TableUV {
             }
             TableStatusType.Pending -> {
                 item.tableStatus = TableStatusType.Available;
-                CurCartData.removeCart()
+                cartDataVM.removeCart()
                 tableAdapter.notifyItemChanged(adapterPosition);
             }
             TableStatusType.Unavailable -> {
                 tableAdapter.currentList.filter { it.tableStatus == TableStatusType.Pending }.let {
                     if (it.isNotEmpty()) {
                         it.forEach { table -> table.tableStatus = TableStatusType.Available }
-                        CurCartData.removeCart()
+                        cartDataVM.removeCart()
                         tableAdapter.notifyDataSetChanged()
                     }
                 }
@@ -188,7 +188,7 @@ class TableFragment : BaseFragment<FragmentTableBinding, TableVM>(), TableUV {
                         DatabaseHelper.ordersCompleted.get(it.OrderCode)!!
                     )
                     launch(Dispatchers.Main) {
-                        CurCartData.initCart(OrderConverter.toCart(orderReq,it.OrderCode),table)
+                        cartDataVM.initCart(OrderConverter.toCart(orderReq,it.OrderCode),table)
                         screenViewModel.showOrderPage()
                     }
 

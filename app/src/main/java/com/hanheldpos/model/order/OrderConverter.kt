@@ -2,6 +2,7 @@ package com.hanheldpos.model.order
 
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.data.api.pojo.fee.Fee
 import com.hanheldpos.data.api.pojo.fee.FeeAssignToProductItem
 import com.hanheldpos.data.api.pojo.order.settings.DiningOption
@@ -11,7 +12,6 @@ import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.OrderHelper
 import com.hanheldpos.model.cart.*
 import com.hanheldpos.model.cart.fee.FeeType
-import com.hanheldpos.model.discount.DiscountServer
 import com.hanheldpos.model.discount.DiscountUser
 import com.hanheldpos.model.product.ProductComboItem
 import com.hanheldpos.model.product.ProductType
@@ -73,7 +73,7 @@ object OrderConverter {
     }
 
     private fun toProductList(
-        productList: List<ProductBuy>,
+        productList: List<ProductChosen>,
         menuLocationId: String
     ): MutableList<BaseProductInCart> {
         val baseProductList: MutableList<BaseProductInCart> = mutableListOf()
@@ -167,12 +167,12 @@ object OrderConverter {
     }
 
     private fun toRegular(
-        productBuy: ProductBuy,
+        productBuy: ProductChosen,
         proOriginal: Product,
         diningOption: DiningOption,
         compReason: Reason?,
         discountUserList: List<DiscountUser>,
-        discountServerList: List<DiscountServer>,
+        discountServerList: List<DiscountResp>,
         feeList: List<Fee>,
     ): Regular {
         return Regular(
@@ -193,13 +193,13 @@ object OrderConverter {
     }
 
     private fun toBundle(
-        productBuy: ProductBuy,
+        productBuy: ProductChosen,
         proOriginal: Product,
         groupBundleList: List<GroupBundle>,
         diningOption: DiningOption,
         compReason: Reason?,
         discountUserList: List<DiscountUser>,
-        discountServerList: List<DiscountServer>,
+        discountServerList: List<DiscountResp>,
         feeList: List<Fee>,
     ): Combo {
         return Combo(
@@ -219,7 +219,7 @@ object OrderConverter {
         }
     }
 
-    private fun toDiscountsServer(orderDiscounts: List<DiscountOrder>): List<DiscountServer> {
+    private fun toDiscountsServer(orderDiscounts: List<DiscountOrder>): List<DiscountResp> {
         return listOf()
     }
 

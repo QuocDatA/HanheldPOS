@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.os.SystemClock
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hanheldpos.R
@@ -20,7 +21,7 @@ import com.hanheldpos.model.discount.DiscountTypeFor
 import com.hanheldpos.model.discount.DiscountUser
 import com.hanheldpos.model.cart.BaseProductInCart
 import com.hanheldpos.ui.base.fragment.BaseFragment
-import com.hanheldpos.ui.screens.cart.CurCartData
+import com.hanheldpos.ui.screens.cart.CartDataVM
 import com.hanheldpos.ui.screens.combo.adapter.ComboGroupAdapter
 import com.hanheldpos.ui.screens.discount.DiscountFragment
 import com.hanheldpos.ui.screens.discount.discount_type.DiscountTypeItemFragment
@@ -35,6 +36,8 @@ class ComboFragment(
     private val listener: OrderFragment.OrderMenuListener
 ) : BaseFragment<FragmentComboBinding, ComboVM>(), ComboUV {
 
+    private val cartDataVM by activityViewModels<CartDataVM>()
+    
     override fun layoutRes() = R.layout.fragment_combo;
 
     override fun viewModelClass(): Class<ComboVM> {
@@ -48,6 +51,7 @@ class ComboFragment(
             init(this@ComboFragment);
             initLifeCycle(this@ComboFragment);
             binding.viewModel = viewModel
+            binding
         }
     }
 
@@ -87,7 +91,7 @@ class ComboFragment(
                 DiscountTypeItemFragment(
                     product = combo,
                     applyToType = DiscountApplyToType.ITEM_DISCOUNT_APPLY_TO,
-                    cart = CurCartData.cartModelLD.value!!,
+                    cart = cartDataVM.cartModelLD.value!!,
                     listener = object : DiscountFragment.DiscountTypeListener {
                         override fun discountUserChoose(discount: DiscountUser) {
                             if (viewModel.isValidDiscount.value != true) return;
@@ -127,7 +131,7 @@ class ComboFragment(
             viewModel.getCombo()?.let {
                 viewModel.initDefaultComboList(
                     it,
-                    CurCartData.diningOptionLD.value!!,
+                    cartDataVM.diningOptionLD.value!!,
                     UserHelper.getLocationGuid()
                 )
             };

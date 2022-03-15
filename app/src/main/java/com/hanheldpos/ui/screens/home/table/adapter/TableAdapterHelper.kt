@@ -1,22 +1,14 @@
 package com.hanheldpos.ui.screens.home.table.adapter
 
 
-import android.util.Log
 import com.hanheldpos.data.api.pojo.floor.FloorTable
 import com.hanheldpos.database.DatabaseMapper
 import com.hanheldpos.model.DatabaseHelper
 import com.hanheldpos.model.home.table.TableModeViewType
 import com.hanheldpos.model.home.table.TableStatusType
-import com.hanheldpos.ui.screens.cart.CurCartData
-import com.hanheldpos.ui.screens.home.order.adapter.OrderProductAdapterHelper
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.take
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import okhttp3.internal.wait
 
 
 class TableAdapterHelper(private val callback: AdapterCallBack) {

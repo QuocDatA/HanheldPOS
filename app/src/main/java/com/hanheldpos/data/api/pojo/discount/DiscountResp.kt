@@ -6,11 +6,14 @@ import com.google.gson.annotations.SerializedName
 import com.google.gson.reflect.TypeToken
 import com.hanheldpos.data.api.pojo.customer.CustomerGroup
 import com.hanheldpos.data.api.pojo.customer.CustomerResp
+import com.hanheldpos.data.api.pojo.fee.CustomerGets
 import com.hanheldpos.data.api.pojo.product.Product
 import com.hanheldpos.model.cart.CartModel
 import com.hanheldpos.model.discount.CtmEligibilityType
 import com.hanheldpos.model.discount.DiscMinRequiredType
 import com.hanheldpos.model.cart.BaseProductInCart
+import com.hanheldpos.model.discount.DiscountEntireType
+import com.hanheldpos.model.discount.DiscountTypeEnum
 import com.hanheldpos.utils.time.DateTimeHelper
 import kotlinx.parcelize.Parcelize
 import java.util.*
@@ -66,6 +69,17 @@ data class DiscountResp(
     val _id: String,
     val jsaction: String
 ) : Parcelable {
+
+    var quantityUsed: Int? = null
+    var maxAmountUsed: Double? = null
+
+    val getQuantityUsed: Int
+        get() = if (Condition.CustomerBuys.IsMaxQuantity == 1) quantityUsed ?: 0 else 1
+
+    fun getAmountUsed(productId: String?): Double? {
+        return if (Condition?.CustomerBuys?.IsMaxAmount == 1) Condition?.CustomerBuys?.ListApplyTo?.firstOrNull { p -> p._id == productId }?.MaxAmount
+            ?: 0.0 else 0.0
+    }
 
     fun isValid(cart: CartModel, curDateTime: Date): Boolean {
         val subTotal = cart.getSubTotal();
@@ -222,11 +236,84 @@ data class DiscountResp(
 
         }
     }
+
+    fun total(
+        totalPrice: Double?,
+        totalModifier: Double?,
+        productOriginal_id: String? = null,
+        quantity: Int? = 1
+    ): Double? {
+        val subtotal =
+            if (Condition?.CustomerBuys.IsApplyModifier(productOriginal_id ?: "")) totalPrice?.plus(
+                totalModifier ?: 0.0
+            ) else totalPrice
+
+        val discountValue = Condition.DiscountValue ?: 0.0
+        val discountType = DiscountTypeEnum.fromInt(DiscountType)
+
+        when (discountType) {
+            DiscountTypeEnum.PERCENT -> return total(
+                subtotal,
+                quantity,
+                discountType,
+                discountValue,
+                productOriginal_id
+            )
+            DiscountTypeEnum.AMOUNT
+            -> return total(subtotal, quantity, discountType, discountValue, productOriginal_id)
+            DiscountTypeEnum.BUYX_GETY -> {
+                val discValue = Condition?.CustomerGets?.DiscountValue ?: 0.0
+                return when (DiscountEntireType.fromInt(Condition?.CustomerGets?.DiscountValueType)) {
+                    DiscountEntireType.FREE -> subtotal
+                    DiscountEntireType.SPECIFIC -> subtotal?.minus(
+                        quantity?.times(discValue) ?: 0.0
+                    )
+                    DiscountEntireType.AMOUNT -> discValue
+                    DiscountEntireType.PERCENT -> subtotal?.times(discValue.div(100))
+                    else -> {
+                        0.0
+                    }
+                }
+            }
+            else -> return 0.0
+        }
+    }
+
+    private fun total(
+        subtotal: Double?,
+        quantity: Int?,
+        discountType: DiscountTypeEnum,
+        discountValue: Double?,
+        productOriginal_id: String?
+    ): Double? {
+        var quantity = quantity ?: 1
+        val proModSubtotal = subtotal?.div(quantity)
+        var discPrice = if (discountType == DiscountTypeEnum.PERCENT) proModSubtotal?.times(
+            discountValue?.div(100) ?: 1.0
+        ) else
+            (if (proModSubtotal ?: 0.0 > discountValue ?: 0.0) discountValue else proModSubtotal)
+
+        // Quantity applied on the product must be smaller or equals to "MaxQuantity"
+        if (Condition?.CustomerBuys?.IsMaxQuantity == 1) quantity = quantityUsed ?: 1
+        // Amount reduced on the product must be smaller or equals to "MaxAmount"
+        if (Condition?.CustomerBuys?.IsMaxAmount == 1) {
+            discPrice = Condition?.CustomerBuys?.getMaxAmount(discPrice ?: 0.0, productOriginal_id);
+        }
+        // OnlyApplyDiscountApplyTo is 1: Discount is only allowed to apply the maximum for a product.
+        discPrice =
+            if (OnlyApplyDiscountProductOncePerOrder == 0) (discPrice?.times(quantity)) else discPrice;
+
+        if (Condition?.CustomerBuys?.IsDiscountLimit == 1) {
+            return if (maxAmountUsed ?: 0.0 > discPrice ?: 0.0) discPrice else maxAmountUsed ?: 0.0;
+        }
+        return discPrice;
+    }
 }
 
 @Parcelize
 data class Condition(
     val CustomerBuys: CustomerBuys,
+    val CustomerGets: CustomerGets,
     val DiscountValue: Double
 ) : Parcelable
 
@@ -248,7 +335,19 @@ data class CustomerBuys(
     val IsMaxQuantity: Int,
     val ListApplyTo: List<Product>,
     val MaximumDiscount: Double
-) : Parcelable
+) : Parcelable {
+    fun getMaxAmount(amountUsed: Double, productId: String?): Double {
+        val productApply = ListApplyTo.firstOrNull { p -> p._id == productId }
+        if (productApply != null) {
+            return if (amountUsed <= productApply.MaxAmount) amountUsed else productApply.MaxAmount
+        }
+        return amountUsed
+    }
+
+    fun IsApplyModifier(productId: String?): Boolean {
+        return ListApplyTo?.firstOrNull { p -> p._id == productId }?.ApplyToModifier == 1;
+    }
+}
 
 @Parcelize
 data class DiscountsApplyToItem(

@@ -2,6 +2,7 @@ package com.hanheldpos.ui.screens.discount
 
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.activityViewModels
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.order.settings.Reason
 import com.hanheldpos.databinding.FragmentDiscountBinding
@@ -9,15 +10,14 @@ import com.hanheldpos.model.discount.DiscountApplyToType
 import com.hanheldpos.model.discount.DiscountTypeFor
 import com.hanheldpos.model.discount.DiscountUser
 import com.hanheldpos.ui.base.fragment.BaseFragment
-import com.hanheldpos.ui.screens.cart.CurCartData
-import com.hanheldpos.ui.screens.discount.discount_type.DiscountTypeItemFragment
+import com.hanheldpos.ui.screens.cart.CartDataVM
 import com.hanheldpos.ui.screens.discount.discount_type.DiscountTypeOrderFragment
 
 
 class DiscountFragment(private val listener: DiscountCallback) :
     BaseFragment<FragmentDiscountBinding, DiscountVM>(), DiscountUV {
 
-    
+    private val cartDataVM by activityViewModels<CartDataVM>()
 
     override fun layoutRes(): Int = R.layout.fragment_discount
 
@@ -51,7 +51,7 @@ class DiscountFragment(private val listener: DiscountCallback) :
             R.id.fragment_container,
             DiscountTypeOrderFragment(
                 applyToType = DiscountApplyToType.ORDER_DISCOUNT_APPLY_TO,
-                cart = CurCartData.cartModelLD.value!!,
+                cart = cartDataVM.cartModelLD.value!!,
                 listener = object : DiscountTypeListener {
                     override fun discountUserChoose(discount: DiscountUser) {
                         listener.onDiscountUserChoose(discount);

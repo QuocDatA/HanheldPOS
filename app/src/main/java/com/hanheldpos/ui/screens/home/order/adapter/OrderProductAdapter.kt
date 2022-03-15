@@ -4,19 +4,17 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.DiffUtil
 import com.hanheldpos.R
 import com.hanheldpos.binding.setPriceView
 import com.hanheldpos.databinding.ItemOrderProductBinding
 import com.hanheldpos.databinding.ItemOrderProductDirectionButtonBinding
-import com.hanheldpos.model.cart.CartModel
 import com.hanheldpos.model.home.order.ProductModeViewType
 import com.hanheldpos.model.home.order.menu.ProductMenuItem
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
+import com.hanheldpos.ui.screens.cart.CartDataVM
 import com.hanheldpos.ui.screens.cart.CurCartData
 
 class OrderProductAdapter(
@@ -57,7 +55,7 @@ class OrderProductAdapter(
                 setPriceView(
                     holder.binding.priceProduct,
                     price = it.priceOverride(
-                        CurCartData.cartModelLD.value?.menuLocationGuid,
+                        CurCartData.cartModel?.menuLocationGuid,
                         it.skuDefault,
                         it.Price
                     )

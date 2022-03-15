@@ -5,7 +5,9 @@
     <data>
 
         <import type="com.hanheldpos.ui.screens.home.HomeFragment" />
-        <import type="com.hanheldpos.ui.screens.cart.CurCartData"/>
+        <variable
+            name="cartDataVM"
+            type="com.hanheldpos.ui.screens.cart.CartDataVM" />
         <variable
             name="viewModelHome"
             type="com.hanheldpos.ui.screens.home.HomeVM" />
@@ -70,7 +72,7 @@
                     android:clickable="true"
                     android:gravity="center"
                     android:minWidth="@dimen/_100sdp"
-                    android:text="@{CurCartData.INSTANCE.cartModelLD.diningOption.acronymn}" />
+                    android:text="@{cartDataVM.cartModelLD.diningOption.acronymn}" />
             </FrameLayout>
 
 

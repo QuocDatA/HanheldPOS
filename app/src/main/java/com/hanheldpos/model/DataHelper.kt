@@ -165,32 +165,6 @@ object DataHelper {
             AppPreferences.get().storeValue(PrefKey.Payment.PAYMENTS_RESP, GSonUtils.toJson(value))
         }
 
-    var ordersPendingLocalStorage: List<OrderReq>? = null
-        get() {
-            if (field == null) {
-                field =
-                    GSonUtils.toList(AppPreferences.get().getString(PrefKey.Order.ORDER_PENDING))
-            }
-            return field
-        }
-        set(value) {
-            field = value
-            AppPreferences.get().storeValue(PrefKey.Order.ORDER_PENDING, GSonUtils.toJson(value))
-        }
-
-    var ordersCompletedLocalStorage: List<OrderReq>? = null
-        get() {
-            if (field == null) {
-                field =
-                    GSonUtils.toList(AppPreferences.get().getString(PrefKey.Order.ORDER_COMPLETE))
-            }
-            return field
-        }
-        set(value) {
-            field = value
-            AppPreferences.get().storeValue(PrefKey.Order.ORDER_COMPLETE, GSonUtils.toJson(value))
-        }
-
     var addressTypesLocalStorage: List<AddressTypeResp>? = null
         get() {
             if (field == null) {

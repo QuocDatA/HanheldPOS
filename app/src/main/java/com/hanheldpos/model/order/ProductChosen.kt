@@ -5,7 +5,7 @@ import com.hanheldpos.model.cart.VariantCart
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class ProductBuy(
+data class ProductChosen(
     val _id: String,
     val Name1: String,
     val Name2: String,
@@ -28,7 +28,7 @@ data class ProductBuy(
     val GrossPrice: Double?,
     val DiningOption : OrderDiningOption?,
     val VariantList : List<VariantCart>?,
-    var ProductChoosedList : List<ProductBuy>? = null,
+    var ProductChoosedList : List<ProductChosen>? = null,
     val BuyXGetY : BuyXGetYEntire? = null,
     val ModifierList : List<OrderModifier>?,
     val DiscountList : List<DiscountOrder>?,
@@ -44,6 +44,7 @@ data class ProductBuy(
     val Group_id : String? = null,
     val Parent_id : String?,
     val ParentName : String?,
+    val ParentIndex : Int,
     val ProductApplyTo : Int = ChooseProductApplyTo.DEFAULT.value
     ) : Parcelable {
 }

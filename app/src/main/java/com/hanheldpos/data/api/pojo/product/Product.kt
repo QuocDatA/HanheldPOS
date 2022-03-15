@@ -82,7 +82,10 @@ data class Product(
     val strDiscount: String,
     val strName3: String,
     val strSku: String,
-    val strUnit: String
+    val strUnit: String,
+    val MaxQuantity : Int,
+    val MaxAmount : Double,
+    val ApplyToModifier : Int?
 ) : Parcelable, Cloneable {
 
     @Parcelize
