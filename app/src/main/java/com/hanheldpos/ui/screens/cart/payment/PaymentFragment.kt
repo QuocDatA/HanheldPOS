@@ -14,7 +14,6 @@ import com.hanheldpos.ui.base.adapter.GridSpacingItemDecoration
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.cart.payment.adapter.PaymentMethodAdapter
 import com.hanheldpos.ui.screens.cart.payment.adapter.PaymentSuggestionAdapter
-import com.hanheldpos.ui.screens.cart.payment.cash_voucher.CashVoucherFragment
 import com.hanheldpos.ui.screens.cart.payment.detail.PaymentDetailFragment
 import com.hanheldpos.ui.screens.cart.payment.input.PaymentInputFragment
 import com.hanheldpos.utils.PriceHelper
@@ -53,26 +52,13 @@ class PaymentFragment(
         paymentMethodAdapter = PaymentMethodAdapter(
             onPaymentMethodClickListener = object : BaseItemClickListener<PaymentMethodResp> {
                 override fun onItemClick(adapterPosition: Int, item: PaymentMethodResp) {
-                    when (item.ApplyToId) {
-                        PaymentApplyTo.CASH_VOUCHER.value -> {
-                            navigator.goTo(CashVoucherFragment(item))
-                        }
-                        PaymentApplyTo.SODEXO.value -> {
+                    when (PaymentMethodType.fromInt(item.PaymentMethodType)) {
+                        PaymentMethodType.CASH -> {}
+                        PaymentMethodType.WALLET -> {}
+                        PaymentMethodType.OTHER_PAYMENT -> {}
+                        PaymentMethodType.GIFT_CARD -> {}
+                        null -> {
 
-                        }
-                        PaymentApplyTo.API.value -> {
-
-                        }
-                        else -> {
-                            navigator.goTo(PaymentInputFragment(listener = object :
-                                PaymentInputFragment.PaymentInputListener {
-                                override fun onCompleteTable(paymentOrder: PaymentOrder) {
-                                    setUpView(paymentOrder)
-                                    if(paymentList.size > 0){
-                                        binding.paymentDetail.visibility = View.VISIBLE
-                                    }
-                                }
-                            }, paymentMethod = item, payable = payable))
                         }
                     }
                 }
@@ -180,9 +166,6 @@ class PaymentFragment(
         binding.payable = payable
         if (payable <= 0) {
             getPayment()
-        } else {
-            binding.btnClose.isClickable = false
-            binding.btnClose.isFocusable = false
         }
     }
 
