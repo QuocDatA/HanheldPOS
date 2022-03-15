@@ -5,6 +5,7 @@ import com.hanheldpos.data.api.pojo.order.settings.DiningOption
 import com.hanheldpos.data.api.pojo.product.Product
 import com.hanheldpos.model.cart.fee.FeeApplyToType
 import com.hanheldpos.model.cart.fee.FeeType
+import com.hanheldpos.model.order.OrderDiningOption
 import com.hanheldpos.model.order.ProductChosen
 import com.hanheldpos.model.product.PricingMethodType
 import com.hanheldpos.model.product.ProductType
@@ -187,6 +188,7 @@ class Combo() : BaseProductInCart() {
         val totalCompVoid = totalComp()
 
         var orderDetailId = 0
+
         groupList.forEachIndexed { index, groupBundle ->
             groupBundle.productList.forEachIndexed { _, regular ->
                 val proChoose = regular.toProductChosen(
@@ -252,7 +254,12 @@ class Combo() : BaseProductInCart() {
             Price = priceOverride,
             Quantity = quantity!!,
             Note = note,
-            DiningOption = null,
+            DiningOption = if (diningOption == null) null else OrderDiningOption(
+                Id = diningOption?.Id ?: 0,
+                TypeId = diningOption?.TypeId ?: 0,
+                Title = diningOption?.Title,
+                Acronymn = diningOption?.Acronymn
+            ),
             VariantList = variantList,
             DiscountTotalPrice = totalDiscount,
             ServiceTotalPrice = totalService,

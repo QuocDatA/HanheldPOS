@@ -94,7 +94,7 @@ class MenuFragment : BaseFragment<FragmentMenuBinding, MenuVM>(), MenuUV {
     fun onNavOptionClick(option: ItemOptionNav) {
         when (option.type as NavBarOptionType) {
             NavBarOptionType.ORDERS -> {
-                getBack()
+
             }
             NavBarOptionType.TRANSACTIONS -> {}
             NavBarOptionType.REPORTS -> navigator.goToWithCustomAnimation(ReportFragment());

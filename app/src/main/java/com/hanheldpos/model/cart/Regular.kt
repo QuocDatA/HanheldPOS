@@ -381,7 +381,7 @@ class Regular() : BaseProductInCart(), Parcelable, Cloneable {
             TaxFeeList = null,
             OtherFee = 0.0,
             Category_id = proOriginal!!.CategoryGuid,
-            Parent_id = null,
+            Parent_id = group.comboInfo.ComboGuid,
             ParentName = parentName,
             ParentIndex = index + 1
         )
