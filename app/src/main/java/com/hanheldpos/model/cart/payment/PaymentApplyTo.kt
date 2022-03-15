@@ -1,6 +1,6 @@
 package com.hanheldpos.model.cart.payment
 
-enum class PaymentAppyTo(val value: Int) {
+enum class PaymentApplyTo(val value: Int) {
     CASH(1),
     INPUT_CARD_NUMBER (3),
     JCB_CARD (30),

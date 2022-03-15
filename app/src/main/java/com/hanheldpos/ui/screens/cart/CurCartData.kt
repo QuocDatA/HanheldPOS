@@ -101,8 +101,8 @@ object CurCartData {
         cartModelLD.notifyValueChange()
     }
 
-    fun addPaymentOrder(payment: PaymentOrder) {
-        cartModelLD.value!!.addPayment(payment)
+    fun addListPaymentOrder(paymentList: List<PaymentOrder>) {
+        cartModelLD.value!!.addPayment(paymentList)
         cartModelLD.notifyValueChange()
     }
 

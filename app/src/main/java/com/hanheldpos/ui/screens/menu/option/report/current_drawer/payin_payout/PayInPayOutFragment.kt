@@ -49,7 +49,7 @@ class PayInPayOutFragment(private val listener : PayInOutCallback) : BaseFragmen
             }
         }
 
-        viewModel.isValid.observe(this, {
+        viewModel.isValid.observe(this) {
             if (it) {
                 binding.textBtnPayIn.setTextColor(
                     ContextCompat.getColor(
@@ -86,9 +86,9 @@ class PayInPayOutFragment(private val listener : PayInOutCallback) : BaseFragmen
                 binding.btnPayOut.background =
                     ContextCompat.getDrawable(requireContext(), R.drawable.bg_outline);
             }
-        });
+        };
 
-        viewModel.isActiveButton.observe(this, {
+        viewModel.isActiveButton.observe(this) {
             when (it) {
                 PayInPayOutVM.ActiveButton.PayIn -> {
                     binding.textBtnPayIn.setTextColor(
@@ -130,7 +130,7 @@ class PayInPayOutFragment(private val listener : PayInOutCallback) : BaseFragmen
                     viewModel.isValid.postValue(viewModel.isValid.value);
                 }
             }
-        });
+        };
 
         paidInOutAdapter = PaidInOutAdapter();
         binding.paidInOutList.apply {

@@ -6,11 +6,15 @@ import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.payment.PaymentMethodResp
 import com.hanheldpos.databinding.FragmentPaymentInputBinding
 import com.hanheldpos.extension.toNiceString
+import com.hanheldpos.model.UserHelper
 import com.hanheldpos.model.cart.payment.PaymentMethodType
+import com.hanheldpos.model.cart.payment.PaymentOrder
 import com.hanheldpos.model.keyboard.KeyBoardType
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.input.KeyBoardVM
 import com.hanheldpos.utils.PriceHelper
+import com.hanheldpos.utils.time.DateTimeHelper
+import java.util.*
 
 class PaymentInputFragment(
     private val payable: Double,
@@ -60,8 +64,21 @@ class PaymentInputFragment(
 
     override fun onComplete() {
         navigator.goOneBack()
+        val paymentOrder = PaymentOrder(
+            paymentMethod._id,
+            paymentMethod.ApplyToId,
+            paymentMethod.PaymentMethodType,
+            paymentMethod.Title,
+            keyBoardVM.input.value?.toDouble(),
+            keyBoardVM.input.value?.toDouble(),
+            UserHelper.curEmployee?.FullName,
+            null,
+            null,
+            DateTimeHelper.dateToString(
+                Date(), DateTimeHelper.Format.FULL_DATE_UTC_TIMEZONE)
+        )
         if (!keyBoardVM.input.value?.trim().equals(""))
-            listener?.onCompleteTable(Integer.valueOf(keyBoardVM.input.value))
+            listener?.onCompleteTable(paymentOrder)
     }
 
     override fun initData() {
@@ -107,6 +124,6 @@ class PaymentInputFragment(
     }
 
     interface PaymentInputListener {
-        fun onCompleteTable(numberCustomer: Int)
+        fun onCompleteTable(paymentOrder: PaymentOrder)
     }
 }

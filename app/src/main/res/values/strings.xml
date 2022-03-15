@@ -209,4 +209,8 @@
     <string name="new_sale">New Sale</string>
     <string name="become_a_member">Become a Member</string>
     <string name="recent_account">Recent Account</string>
+    <string name="cash_voucher">Cash Voucher</string>
+    <string name="total_paid">Total Paid</string>
+    <string name="pay_type">Pay Type</string>
+    <string name="pay_amount">Pay Amount</string>
 </resources>

@@ -1,10 +1,12 @@
 package com.hanheldpos.ui.screens.cart.payment
 
+import android.view.View
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.payment.PaymentMethodResp
 import com.hanheldpos.data.api.pojo.payment.PaymentSuggestionItem
 import com.hanheldpos.databinding.FragmentPaymentBinding
 import com.hanheldpos.model.UserHelper
+import com.hanheldpos.model.cart.payment.PaymentApplyTo
 import com.hanheldpos.model.cart.payment.PaymentMethodType
 import com.hanheldpos.model.cart.payment.PaymentOrder
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
@@ -12,17 +14,25 @@ import com.hanheldpos.ui.base.adapter.GridSpacingItemDecoration
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.cart.payment.adapter.PaymentMethodAdapter
 import com.hanheldpos.ui.screens.cart.payment.adapter.PaymentSuggestionAdapter
+import com.hanheldpos.ui.screens.cart.payment.cash_voucher.CashVoucherFragment
+import com.hanheldpos.ui.screens.cart.payment.detail.PaymentDetailFragment
 import com.hanheldpos.ui.screens.cart.payment.input.PaymentInputFragment
+import com.hanheldpos.utils.PriceHelper
 import com.hanheldpos.utils.time.DateTimeHelper
 import java.util.*
 
 
-class PaymentFragment(private val alreadyBill : Boolean, private val payable: Double, private var listener: PaymentCallback) :
+class PaymentFragment(
+    private val alreadyBill: Boolean,
+    private var payable: Double,
+    private var listener: PaymentCallback
+) :
     BaseFragment<FragmentPaymentBinding, PaymentVM>(), PaymentUV {
     override fun layoutRes(): Int = R.layout.fragment_payment
 
     private lateinit var paymentMethodAdapter: PaymentMethodAdapter
     private lateinit var paymentSuggestionAdapter: PaymentSuggestionAdapter
+    private val paymentList = mutableListOf<PaymentOrder>()
 
 
     override fun viewModelClass(): Class<PaymentVM> {
@@ -43,11 +53,28 @@ class PaymentFragment(private val alreadyBill : Boolean, private val payable: Do
         paymentMethodAdapter = PaymentMethodAdapter(
             onPaymentMethodClickListener = object : BaseItemClickListener<PaymentMethodResp> {
                 override fun onItemClick(adapterPosition: Int, item: PaymentMethodResp) {
-                    navigator.goTo(PaymentInputFragment(listener = object : PaymentInputFragment.PaymentInputListener {
-                        override fun onCompleteTable(numberCustomer: Int) {
+                    when (item.ApplyToId) {
+                        PaymentApplyTo.CASH_VOUCHER.value -> {
+                            navigator.goTo(CashVoucherFragment(item))
+                        }
+                        PaymentApplyTo.SODEXO.value -> {
 
                         }
-                    }, paymentMethod = item, payable = payable))
+                        PaymentApplyTo.API.value -> {
+
+                        }
+                        else -> {
+                            navigator.goTo(PaymentInputFragment(listener = object :
+                                PaymentInputFragment.PaymentInputListener {
+                                override fun onCompleteTable(paymentOrder: PaymentOrder) {
+                                    setUpView(paymentOrder)
+                                    if(paymentList.size > 0){
+                                        binding.paymentDetail.visibility = View.VISIBLE
+                                    }
+                                }
+                            }, paymentMethod = item, payable = payable))
+                        }
+                    }
                 }
             },
         )
@@ -98,6 +125,8 @@ class PaymentFragment(private val alreadyBill : Boolean, private val payable: Do
             (viewModel.initPaymentSuggestion() as List<PaymentSuggestionItem>).toMutableList()
         paymentSuggestionAdapter.submitList(paymentSuggestion)
         //endregion
+
+        binding.totalPaid.text = "0"
     }
 
     override fun initAction() {
@@ -110,32 +139,56 @@ class PaymentFragment(private val alreadyBill : Boolean, private val payable: Do
     }
 
     override fun getPayment() {
-        //TODO : Fake payment cash for testing
-        val paymentCash = viewModel.getPaymentMethods().find { payment-> payment.PaymentMethodType == PaymentMethodType.CASH.value }
-        paymentCash?.let {
+        if (!paymentList.isNullOrEmpty()) {
             onFragmentBackPressed()
-            listener.onPaymentComplete(
+            // Add Cash Payment
+            val paymentCash = viewModel.getPaymentMethods()
+                .find { payment -> payment.PaymentMethodType == PaymentMethodType.CASH.value }
+            paymentList.add(
                 PaymentOrder(
-                    paymentCash._id,
-                    paymentCash.ApplyToId,
-                    paymentCash.PaymentMethodType,
-                    paymentCash.Title,
+                    paymentCash?._id,
+                    paymentCash?.ApplyToId,
+                    paymentCash?.PaymentMethodType,
+                    paymentCash?.Title,
                     payable,
                     payable,
                     UserHelper.curEmployee?.FullName,
-                    null,
-                    DateTimeHelper.dateToString(Date(), DateTimeHelper.Format.FULL_DATE_UTC_TIMEZONE)
+                    null, null,
+                    DateTimeHelper.dateToString(
+                        Date(),
+                        DateTimeHelper.Format.FULL_DATE_UTC_TIMEZONE
+                    )
                 )
             )
-            if(alreadyBill) listener.onPayment(true)
-
+            listener.onPaymentComplete(
+                paymentList
+            )
+            if (alreadyBill) listener.onPayment(true)
         }
+    }
 
+    override fun openPaymentDetail() {
+        navigator.goTo(PaymentDetailFragment(paymentList))
+    }
+
+    private fun setUpView(paymentOrder: PaymentOrder) {
+        paymentList.add(paymentOrder)
+        val totalPaid = paymentList.sumOf { it.Payable!! }
+        binding.totalPaid.text =
+            PriceHelper.formatStringPrice(totalPaid.toString())
+        payable = payable.minus(paymentOrder.Payable!!)
+        binding.payable = payable
+        if (payable <= 0) {
+            getPayment()
+        } else {
+            binding.btnClose.isClickable = false
+            binding.btnClose.isFocusable = false
+        }
     }
 
     interface PaymentCallback {
-        fun onPaymentComplete(paymentOrder: PaymentOrder)
-        fun onPayment(isSuccess : Boolean)
+        fun onPaymentComplete(paymentOrderList: List<PaymentOrder>)
+        fun onPayment(isSuccess: Boolean)
     }
 }
 

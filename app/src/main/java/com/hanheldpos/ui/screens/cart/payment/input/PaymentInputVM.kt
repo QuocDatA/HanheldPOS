@@ -3,7 +3,7 @@ package com.hanheldpos.ui.screens.cart.payment.input
 import androidx.lifecycle.MutableLiveData
 import com.hanheldpos.data.api.pojo.payment.PaymentMethodResp
 import com.hanheldpos.extension.toNiceString
-import com.hanheldpos.model.cart.payment.PaymentAppyTo
+import com.hanheldpos.model.cart.payment.PaymentApplyTo
 import com.hanheldpos.model.cart.payment.PaymentMethodType
 import com.hanheldpos.model.keyboard.KeyBoardType
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
@@ -41,7 +41,7 @@ class PaymentInputVM : BaseUiViewModel<PaymentInputUV>() {
                 uiCallback?.clearInput()
             }
             else -> {
-                if (paymentMethod.PaymentMethodType == PaymentAppyTo.SODEXO.value) {
+                if (paymentMethod.PaymentMethodType == PaymentApplyTo.SODEXO.value) {
                     keyBoardType = KeyBoardType.Text
                     paymentMethodTitle.postValue("Input Card Number")
                     uiCallback?.clearInput()

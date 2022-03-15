@@ -26,6 +26,10 @@ class PaymentVM : BaseUiViewModel<PaymentUV>() {
         )
     }
 
+    fun openPaymentDetail() {
+        uiCallback?.openPaymentDetail()
+    }
+
     fun getPayment() {
         uiCallback?.getPayment()
     }

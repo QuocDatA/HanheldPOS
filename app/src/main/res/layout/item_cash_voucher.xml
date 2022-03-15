@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.hanheldpos.data.api.pojo.payment.Voucher" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="@color/color_1"
+        android:clickable="true"
+        android:focusable="true"
+        app:cardCornerRadius="@dimen/_2sdp">
+
+        <com.diadiem.pos_components.PTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{item.Title}"
+            android:foreground="?attr/selectableItemBackground"
+            android:padding="@dimen/_10sdp"
+            android:gravity="center"
+            android:textColor="@color/color_2"
+            app:useTextColor="color2"
+            app:useTextHeader="h5"
+            tools:text="Cash Voucher" />
+
+    </com.google.android.material.card.MaterialCardView>
+
+</layout>
