@@ -7,12 +7,16 @@
         <variable
             name="viewModel"
             type="com.hanheldpos.ui.screens.home.HomeVM" />
+        <variable
+            name="cartDataVM"
+            type="com.hanheldpos.ui.screens.cart.CartDataVM" />
     </data>
 
     <LinearLayout style="@style/RootLayout">
         <include
             android:id="@+id/toolbarLayout"
             app:viewModelHome="@{viewModel}"
+            app:cartDataVM="@{cartDataVM}"
             layout="@layout/toolbar_main" />
         <androidx.viewpager2.widget.ViewPager2
             useInputEnable="@{false}"

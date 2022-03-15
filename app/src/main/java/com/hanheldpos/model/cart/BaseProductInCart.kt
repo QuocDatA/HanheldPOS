@@ -1,7 +1,6 @@
 package com.hanheldpos.model.cart
 
 import com.hanheldpos.data.api.pojo.discount.DiscountResp
-import com.hanheldpos.data.api.pojo.fee.Discount
 import com.hanheldpos.data.api.pojo.fee.Fee
 import com.hanheldpos.data.api.pojo.order.settings.DiningOption
 import com.hanheldpos.data.api.pojo.order.settings.Reason
@@ -11,6 +10,7 @@ import com.hanheldpos.model.cart.fee.FeeType
 import com.hanheldpos.model.discount.DiscountUser
 import com.hanheldpos.model.order.*
 import com.hanheldpos.model.product.ProductType
+import com.hanheldpos.ui.screens.cart.CartDataVM
 import com.hanheldpos.ui.screens.cart.CurCartData
 
 
@@ -36,7 +36,7 @@ abstract class BaseProductInCart {
     val totalCompValue get() = totalComp()
     val priceOverride
         get() = proOriginal?.priceOverride(
-            CurCartData.cartModelLD.value?.menuLocationGuid,
+            CurCartData.cartModel?.menuLocationGuid,
             sku,
             0.0
         ) ?: 0.0

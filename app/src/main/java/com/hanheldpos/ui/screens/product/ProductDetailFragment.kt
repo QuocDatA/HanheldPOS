@@ -2,6 +2,7 @@ package com.hanheldpos.ui.screens.product
 
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.activityViewModels
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.order.settings.Reason
 import com.hanheldpos.data.api.pojo.product.Product
@@ -17,7 +18,7 @@ import com.hanheldpos.model.product.GroupExtra
 import com.hanheldpos.model.product.ItemExtra
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
-import com.hanheldpos.ui.screens.cart.CurCartData
+import com.hanheldpos.ui.screens.cart.CartDataVM
 import com.hanheldpos.ui.screens.discount.DiscountFragment
 import com.hanheldpos.ui.screens.discount.discount_type.DiscountTypeItemFragment
 import com.hanheldpos.ui.screens.home.order.OrderFragment
@@ -36,9 +37,10 @@ class ProductDetailFragment(
     private val listener: OrderFragment.OrderMenuListener? = null,
 ) : BaseFragment<FragmentProductDetailBinding, ProductDetailVM>(), ProductDetailUV {
 
+    private val cartDataVM by activityViewModels<CartDataVM>()
+
     private lateinit var groupVariantAdapter: GroupVariantAdapter
     private lateinit var groupModifierAdapter: GroupModifierAdapter
-
 
     override fun layoutRes(): Int = R.layout.fragment_product_detail
 
@@ -49,7 +51,6 @@ class ProductDetailFragment(
     override fun initViewModel(viewModel: ProductDetailVM) {
         viewModel.run {
             init(this@ProductDetailFragment)
-            initLifeCycle(this@ProductDetailFragment)
             binding.viewModel = this
         }
     }
@@ -93,7 +94,7 @@ class ProductDetailFragment(
                 DiscountTypeItemFragment(
                     product = regular,
                     applyToType = DiscountApplyToType.ITEM_DISCOUNT_APPLY_TO,
-                    cart = CurCartData.cartModelLD.value!!,
+                    cart = cartDataVM.cartModelLD.value!!,
                     listener = object : DiscountFragment.DiscountTypeListener {
                         override fun discountUserChoose(discount: DiscountUser) {
                             if (viewModel.isValidDiscount.value != true) return

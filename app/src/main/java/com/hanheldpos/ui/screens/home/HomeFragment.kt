@@ -13,7 +13,7 @@ import com.hanheldpos.model.DataHelper
 import com.hanheldpos.ui.base.dialog.AppAlertDialog
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.base.pager.FragmentPagerAdapter
-import com.hanheldpos.ui.screens.cart.CurCartData
+import com.hanheldpos.ui.screens.cart.CartDataVM
 import com.hanheldpos.ui.screens.cashdrawer.CashDrawerHelper
 import com.hanheldpos.ui.screens.home.adapter.DiningOptionSpinnerAdapter
 import com.hanheldpos.ui.screens.home.order.OrderFragment
@@ -33,6 +33,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
     }
 
     private val screenViewModel by activityViewModels<ScreenViewModel>()
+    private val cartDataVM by activityViewModels<CartDataVM>()
 
     // Adapter
     private lateinit var paperAdapter: FragmentPagerAdapter
@@ -50,8 +51,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
         viewModel.run {
             init(this@HomeFragment)
             binding.viewModel = this;
+            binding.cartDataVM = cartDataVM
         }
-
+        cartDataVM.initObserveData(requireActivity())
     }
 
     override fun initView() {
@@ -78,11 +80,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
                 (DataHelper.orderSettingLocalStorage?.ListDiningOptions as List<DiningOption>).toMutableList();
 
             diningOptions.forEachIndexed { index, diningOption ->
-                if (CurCartData.diningOptionLD.value?.Id == diningOption.Id) {
+                if (cartDataVM.diningOptionLD.value?.Id == diningOption.Id) {
                     if (diningOptions.size - 1 <= index) {
-                        CurCartData.diningOptionChange(diningOptions[0])
+                        cartDataVM.diningOptionChange(diningOptions[0])
                     } else {
-                        CurCartData.diningOptionChange(diningOptions[index + 1])
+                        cartDataVM.diningOptionChange(diningOptions[index + 1])
                     }
                     return@setOnClickListener
                 }
@@ -96,7 +98,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
     }
 
     override fun initAction() {
-        CurCartData.diningOptionLD.observe(this) { diningOption ->
+        cartDataVM.diningOptionLD.observe(this) { diningOption ->
             if (diningOption?.SubDiningOption.isNullOrEmpty()) {
                 diningOptionSpinnerAdapter.submitList(mutableListOf())
             } else {
@@ -115,7 +117,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
             // Check cart initialized
             when (it.screen) {
                 HomePage.Order -> {
-                    if (CurCartData.cartModelLD.value == null) {
+                    if (cartDataVM.cartModelLD.value == null) {
                         showAlert(
                             message = "Cart has not been initialized!",
                             onClickListener = object : AppAlertDialog.AlertDialogOnClickListener {

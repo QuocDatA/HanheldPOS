@@ -2,6 +2,7 @@ package com.hanheldpos.ui.screens.cart
 
 import android.annotation.SuppressLint
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hanheldpos.R
@@ -9,6 +10,7 @@ import com.hanheldpos.data.api.pojo.customer.CustomerResp
 import com.hanheldpos.data.api.pojo.order.settings.DiningOption
 import com.hanheldpos.data.api.pojo.order.settings.Reason
 import com.hanheldpos.databinding.FragmentCartBinding
+import com.hanheldpos.extension.notifyValueChange
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.OrderHelper
 import com.hanheldpos.model.cart.BaseProductInCart
@@ -38,6 +40,9 @@ import com.hanheldpos.ui.screens.product.ProductDetailFragment
 
 class CartFragment(private val listener: CartCallBack) :
     BaseFragment<FragmentCartBinding, CartVM>(), CartUV {
+
+    private val cartDataVM by activityViewModels<CartDataVM>()
+
     override fun layoutRes() = R.layout.fragment_cart
 
     private lateinit var cartDiningOptionAdapter: CartDiningOptionAdapter
@@ -54,7 +59,7 @@ class CartFragment(private val listener: CartCallBack) :
         viewModel.run {
             init(this@CartFragment)
             binding.viewModel = this
-            initLifeCycle(this@CartFragment)
+            binding.cartDataVM = cartDataVM
         }
 
     }
@@ -66,7 +71,7 @@ class CartFragment(private val listener: CartCallBack) :
             CartDiningOptionAdapter(
                 onItemClickListener = object : BaseItemClickListener<DiningOption> {
                     override fun onItemClick(adapterPosition: Int, item: DiningOption) {
-                        CurCartData.diningOptionChange(item)
+                        cartDataVM.diningOptionChange(item)
                     }
                 },
             )
@@ -85,7 +90,7 @@ class CartFragment(private val listener: CartCallBack) :
                     discount: DiscountCart,
                     item: BaseProductInCart
                 ) {
-                    CurCartData.deleteDiscountCart(discount = discount, productInCart = item)
+                    cartDataVM.deleteDiscountCart(discount = discount, productInCart = item)
                 }
 
 
@@ -112,7 +117,7 @@ class CartFragment(private val listener: CartCallBack) :
         cartDiscountAdapter =
             CartDiscountAdapter(listener = object : BaseItemClickListener<DiscountCart> {
                 override fun onItemClick(adapterPosition: Int, item: DiscountCart) {
-                    CurCartData.deleteDiscountCart(item, null)
+                    cartDataVM.deleteDiscountCart(item, null)
                 }
             })
 
@@ -143,9 +148,9 @@ class CartFragment(private val listener: CartCallBack) :
             (DataHelper.orderSettingLocalStorage?.ListDiningOptions as List<DiningOption>).toMutableList()
         cartDiningOptionAdapter.submitList(diningOptions)
 
-        if (CurCartData.diningOptionLD.value != null) {
+        if (cartDataVM.diningOptionLD.value != null) {
             diningOptions.forEachIndexed { index, diningOptionItem ->
-                if (diningOptionItem.Id == CurCartData.diningOptionLD.value?.Id) {
+                if (diningOptionItem.Id == cartDataVM.diningOptionLD.value?.Id) {
                     cartDiningOptionAdapter.setSelectedIndex(index)
                     return@forEachIndexed
                 }
@@ -164,13 +169,13 @@ class CartFragment(private val listener: CartCallBack) :
         cartTipAdapter.submitList(tipOptions)
 
         //product data
-        cartProductAdapter.submitList(CurCartData.cartModelLD.value?.productsList)
+        cartProductAdapter.submitList(cartDataVM.cartModelLD.value?.productsList)
 
     }
 
     @SuppressLint("NotifyDataSetChanged")
     override fun initAction() {
-        CurCartData.cartModelLD.observe(this) {
+        cartDataVM.cartModelLD.observe(this) {
             it ?: return@observe
             val list = viewModel.processDataDiscount(it)
             binding.isShowDiscount = list.isNotEmpty()
@@ -185,7 +190,7 @@ class CartFragment(private val listener: CartCallBack) :
     }
 
     override fun deleteCart() {
-        CurCartData.deleteCart(
+        cartDataVM.deleteCart(
             getString(R.string.confirmation),
             getString(R.string.delete_cart_warning),
             getString(R.string.delete),
@@ -204,15 +209,15 @@ class CartFragment(private val listener: CartCallBack) :
             .goToWithCustomAnimation(DiscountFragment(listener = object :
                 DiscountFragment.DiscountCallback {
                 override fun onDiscountUserChoose(discount: DiscountUser) {
-                    CurCartData.addDiscountUser(discount)
+                    cartDataVM.addDiscountUser(discount)
                 }
 
                 override fun onCompReasonChoose(reason: Reason) {
-                    CurCartData.addCompReason(reason)
+                    cartDataVM.addCompReason(reason)
                 }
 
                 override fun onCompRemove() {
-                    CurCartData.removeCompReason()
+                    cartDataVM.removeCompReason()
                 }
             }))
     }
@@ -224,12 +229,12 @@ class CartFragment(private val listener: CartCallBack) :
                 payable,
                 listener = object : PaymentFragment.PaymentCallback {
                     override fun onPaymentComplete(paymentOrder: PaymentOrder) {
-                        CurCartData.addPaymentOrder(paymentOrder)
+                        cartDataVM.addPaymentOrder(paymentOrder)
                     }
 
                     override fun onPayment(isSuccess: Boolean) {
                         if (isSuccess) {
-                            viewModel.billCart(requireContext(), CurCartData.cartModelLD.value!!)
+                            onBillCart()
                         } else
                             this@CartFragment.onFinishOrder(false)
                     }
@@ -241,15 +246,15 @@ class CartFragment(private val listener: CartCallBack) :
         navigator.goToWithCustomAnimation(AddCustomerFragment(listener = object :
             AddCustomerFragment.CustomerEvent {
             override fun onSelectedCustomer(item: CustomerResp) {
-                CurCartData.addCustomerToCart(item)
+                cartDataVM.addCustomerToCart(item)
             }
         }))
     }
 
     override fun onBillSuccess() {
         listener.onBillSuccess()
-        if (!OrderHelper.isPaymentSuccess(CurCartData.cartModelLD.value!!)) {
-            val totalNeedPay = CurCartData.cartModelLD.value!!.getTotalPrice()
+        if (!OrderHelper.isPaymentSuccess(cartDataVM.cartModelLD.value!!)) {
+            val totalNeedPay = cartDataVM.cartModelLD.value!!.getTotalPrice()
             this.openSelectPayment(true, totalNeedPay)
         } else {
             this.onFinishOrder(true)
@@ -260,8 +265,8 @@ class CartFragment(private val listener: CartCallBack) :
     override fun onFinishOrder(isSuccess: Boolean) {
         onFragmentBackPressed()
         if (isSuccess) {
-            CurCartData.removeCart()
-            CurCartData.cartModelLD.value?.let {
+            cartDataVM.removeCart()
+            cartDataVM.cartModelLD.value?.let {
                 navigator.goTo(
                     PaymentCompletedFragment(
                         it.customer != null,
@@ -289,11 +294,19 @@ class CartFragment(private val listener: CartCallBack) :
     }
 
     override fun onShowCustomerDetail() {
-        navigator.goToWithCustomAnimation(CustomerDetailFragment(CurCartData.cartModelLD.value?.customer))
+        navigator.goToWithCustomAnimation(CustomerDetailFragment(cartDataVM.cartModelLD.value?.customer))
     }
 
     private fun onBillCart() {
-        viewModel.billCart(requireContext(), CurCartData.cartModelLD.value!!)
+        viewModel.billCart(
+            requireContext(),
+            CurCartData.cartModel!!,
+            object : CartVM.CartActionCallBack {
+                override fun onTableChange() {
+                    cartDataVM.currentTableFocus.notifyValueChange()
+                }
+
+            })
     }
 
     fun onEditItemInCart(position: Int, item: BaseProductInCart) {
@@ -334,7 +347,7 @@ class CartFragment(private val listener: CartCallBack) :
 
     @SuppressLint("NotifyDataSetChanged")
     fun onUpdateItemInCart(position: Int, item: BaseProductInCart) {
-        CurCartData.updateItemInCart(position, item)
+        cartDataVM.updateItemInCart(position, item)
         cartProductAdapter.notifyDataSetChanged()
     }
 

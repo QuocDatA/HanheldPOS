@@ -6,7 +6,6 @@ import androidx.lifecycle.viewModelScope
 import com.hanheldpos.R
 import com.hanheldpos.database.DatabaseMapper
 import com.hanheldpos.extension.notifyValueChange
-import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.DatabaseHelper
 import com.hanheldpos.model.OrderHelper
 import com.hanheldpos.model.cart.CartConverter
@@ -23,10 +22,6 @@ import kotlinx.coroutines.launch
 import java.util.*
 
 class CartVM : BaseUiViewModel<CartUV>() {
-
-    fun initLifeCycle(owner: LifecycleOwner) {
-        owner.lifecycle.addObserver(this)
-    }
 
     fun backPress() {
         uiCallback?.getBack()
@@ -52,7 +47,7 @@ class CartVM : BaseUiViewModel<CartUV>() {
         uiCallback?.onShowCustomerDetail()
     }
 
-    fun billCart(context: Context, cart: CartModel) {
+    fun billCart(context: Context, cart: CartModel , listener : CartActionCallBack) {
         if (cart.productsList.isEmpty()) {
             AppAlertDialog.get()
                 .show(
@@ -61,10 +56,10 @@ class CartVM : BaseUiViewModel<CartUV>() {
                 )
             return
         }
-        onOrderProcessing(context, cart)
+        onOrderProcessing(context, cart,listener)
     }
 
-    private fun onOrderProcessing(context: Context, cart: CartModel) {
+    private fun onOrderProcessing(context: Context, cart: CartModel, listener : CartActionCallBack) {
         showLoading(true)
         try {
             // Order
@@ -87,7 +82,7 @@ class CartVM : BaseUiViewModel<CartUV>() {
             )
 
             // Table
-            val table = CurCartData.currentTableFocus.value!!
+            val table = CurCartData.tableFocus!!
             if (orderStatus == OrderStatus.ORDER.value && paymentStatus == PaymentStatus.UNPAID.value)
                 table.updateTableStatus(TableStatusType.Unavailable, orderReq.OrderSummary)
             else
@@ -105,11 +100,11 @@ class CartVM : BaseUiViewModel<CartUV>() {
                 }
                 if (orderStatus != OrderStatus.COMPLETED.value && paymentStatus != PaymentStatus.PAID.value) {
                     DatabaseHelper.tableStatuses.insert(DatabaseMapper.mappingTableToEntity(table))
-                    launch(Dispatchers.Main) { CurCartData.currentTableFocus.notifyValueChange() }
+                    launch(Dispatchers.Main) { listener.onTableChange() }
                 }
                 else {
                     DatabaseHelper.tableStatuses.delete(table._Id)
-                    launch(Dispatchers.Main) { CurCartData.currentTableFocus.notifyValueChange() }
+                    launch(Dispatchers.Main) { listener.onTableChange() }
                 }
 
                 launch(Dispatchers.Main) {
@@ -143,5 +138,8 @@ class CartVM : BaseUiViewModel<CartUV>() {
         return list
     }
 
+    interface CartActionCallBack {
+        fun onTableChange()
+    }
 
 }

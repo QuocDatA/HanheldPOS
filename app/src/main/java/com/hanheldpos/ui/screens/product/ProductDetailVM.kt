@@ -54,10 +54,6 @@ class ProductDetailVM : BaseUiViewModel<ProductDetailUV>() {
         }
     }
 
-    fun initLifeCycle(owner: LifecycleOwner) {
-        owner.lifecycle.addObserver(this);
-    }
-
     fun onQuantityAdded() {
         if (numberQuantity.value!! < maxQuantity)
             regularInCart.value?.plusOrderQuantity(1);
