@@ -1,13 +1,13 @@
 package com.hanheldpos.model.cart
 
 import com.hanheldpos.data.api.pojo.customer.CustomerResp
+import com.hanheldpos.data.api.pojo.discount.DiscountResp
+import com.hanheldpos.data.api.pojo.fee.Discount
 import com.hanheldpos.data.api.pojo.fee.Fee
 import com.hanheldpos.data.api.pojo.order.settings.DiningOption
 import com.hanheldpos.data.api.pojo.order.settings.Reason
 import com.hanheldpos.model.OrderHelper
-import com.hanheldpos.model.cart.fee.FeeApplyToType
 import com.hanheldpos.model.cart.payment.PaymentOrder
-import com.hanheldpos.model.discount.DiscountServer
 import com.hanheldpos.model.discount.DiscountUser
 import com.hanheldpos.model.home.table.TableSummary
 import com.hanheldpos.model.order.DeliveryTime
@@ -25,7 +25,7 @@ data class CartModel(
     var paymentsList: MutableList<PaymentOrder>,
     var productsList: MutableList<BaseProductInCart>,
     var discountUserList: MutableList<DiscountUser>,
-    var discountServerList: MutableList<DiscountServer>,
+    var discountServerList: MutableList<DiscountResp>,
     var compReason: Reason? = null,
     var createDate: String? = null,
     var orderCode: String? = null,

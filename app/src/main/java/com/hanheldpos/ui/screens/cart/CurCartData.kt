@@ -87,7 +87,7 @@ object CurCartData {
         this.cartModelLD.notifyValueChange()
     }
 
-    fun updatePriceList(menuLocation_id: String?) {
+    private fun updatePriceList(menuLocation_id: String?) {
         this.cartModelLD.value?.updatePriceList(menuLocation_id ?: UserHelper.getLocationGuid())
         this.cartModelLD.notifyValueChange()
     }

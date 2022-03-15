@@ -22,7 +22,7 @@ data class OrderDetail(
     var ShippingFeeList: List<OrderFee>?= null,
     var TaxFeeList: List<OrderFee>,
     var CompVoidList: List<CompVoid>,
-    var OrderProducts: List<ProductBuy>,
+    var OrderProducts: List<ProductChosen>,
     // comment => already has class
 ) : Parcelable {
 }

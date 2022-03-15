@@ -36,21 +36,21 @@ class ProductDetailFragment(
     private val listener: OrderFragment.OrderMenuListener? = null,
 ) : BaseFragment<FragmentProductDetailBinding, ProductDetailVM>(), ProductDetailUV {
 
-    private lateinit var groupVariantAdapter: GroupVariantAdapter;
-    private lateinit var groupModifierAdapter: GroupModifierAdapter;
+    private lateinit var groupVariantAdapter: GroupVariantAdapter
+    private lateinit var groupModifierAdapter: GroupModifierAdapter
 
 
-    override fun layoutRes(): Int = R.layout.fragment_product_detail;
+    override fun layoutRes(): Int = R.layout.fragment_product_detail
 
     override fun viewModelClass(): Class<ProductDetailVM> {
-        return ProductDetailVM::class.java;
+        return ProductDetailVM::class.java
     }
 
     override fun initViewModel(viewModel: ProductDetailVM) {
         viewModel.run {
-            init(this@ProductDetailFragment);
-            initLifeCycle(this@ProductDetailFragment);
-            binding.viewModel = this;
+            init(this@ProductDetailFragment)
+            initLifeCycle(this@ProductDetailFragment)
+            binding.viewModel = this
         }
     }
 
@@ -64,11 +64,11 @@ class ProductDetailFragment(
                     adapterPosition: Int,
                     item: VariantsGroup.OptionValueVariantsGroup
                 ) {
-                    onSelectedVariant(item);
+                    onSelectedVariant(item)
                 }
             },
         ).also {
-            binding.groupVariants.adapter = it;
+            binding.groupVariants.adapter = it
             binding.groupVariants.itemAnimator = null
         }
 
@@ -78,12 +78,12 @@ class ProductDetailFragment(
             regular.modifierList,
             listener = object : BaseItemClickListener<ItemExtra> {
                 override fun onItemClick(adapterPosition: Int, item: ItemExtra) {
-                    onSelectedModifier(item);
+                    onSelectedModifier(item)
                 }
 
             }
         ).also {
-            binding.groupModifiers.adapter = it;
+            binding.groupModifiers.adapter = it
             binding.groupVariants.itemAnimator = null
         }
 
@@ -96,32 +96,32 @@ class ProductDetailFragment(
                     cart = CurCartData.cartModelLD.value!!,
                     listener = object : DiscountFragment.DiscountTypeListener {
                         override fun discountUserChoose(discount: DiscountUser) {
-                            if (viewModel.isValidDiscount.value != true) return;
+                            if (viewModel.isValidDiscount.value != true) return
                             viewModel.regularInCart.value?.discountUsersList =
-                                mutableListOf(discount);
-                            viewModel.regularInCart.notifyValueChange();
+                                mutableListOf(discount)
+                            viewModel.regularInCart.notifyValueChange()
                         }
 
                         override fun compReasonChoose(item: Reason) {
-                            if (viewModel.isValidDiscount.value != true) return;
-                            viewModel.regularInCart.value?.compReason = item;
-                            viewModel.regularInCart.notifyValueChange();
+                            if (viewModel.isValidDiscount.value != true) return
+                            viewModel.regularInCart.value?.compReason = item
+                            viewModel.regularInCart.notifyValueChange()
                         }
 
                         override fun compRemoveAll() {
-                            viewModel.regularInCart.value?.compReason = null;
-                            viewModel.regularInCart.notifyValueChange();
+                            viewModel.regularInCart.value?.compReason = null
+                            viewModel.regularInCart.notifyValueChange()
                         }
 
                         override fun discountFocus(type: DiscountTypeFor) {
-                            viewModel.typeDiscountSelect = type;
+                            viewModel.typeDiscountSelect = type
                         }
 
                         override fun validDiscount(isValid: Boolean) {
-                            viewModel.isValidDiscount.postValue(isValid);
+                            viewModel.isValidDiscount.postValue(isValid)
                         }
                     })
-            ).commit();
+            ).commit()
     }
 
     override fun initData() {
@@ -135,16 +135,16 @@ class ProductDetailFragment(
         regular.apply {
             proOriginal?.VariantsGroup.let {
                 if (it == null) {
-                    binding.groupVariants.visibility = View.GONE;
+                    binding.groupVariants.visibility = View.GONE
                 } else
                     viewModel.listVariantGroups.add(it)
             }
             variantList?.let {
-                groupVariantAdapter.itemSelected = it;
-            };
+                groupVariantAdapter.itemSelected = it
+            }
             proOriginal?.ProductModifiersList.let { modifiers ->
                 if (modifiers == null) {
-                    binding.groupModifiers.visibility = View.GONE;
+                    binding.groupModifiers.visibility = View.GONE
                 } else
                     viewModel.listModifierGroups.addAll(modifiers.map {
                         GroupExtra(
@@ -166,8 +166,8 @@ class ProductDetailFragment(
             while (!isVisible) {
             }
             launch(Dispatchers.Main) {
-                groupVariantAdapter.submitList(viewModel.listVariantGroups);
-                groupModifierAdapter.submitList(viewModel.listModifierGroups);
+                groupVariantAdapter.submitList(viewModel.listVariantGroups)
+                groupModifierAdapter.submitList(viewModel.listModifierGroups)
             }
 
         }
@@ -183,7 +183,7 @@ class ProductDetailFragment(
         // Add variant selected
         if (viewModel.regularInCart.value!!.variantList?.size ?: 0 >= item.Level) {
             viewModel.regularInCart.value!!.variantList!![item.Level - 1] =
-                VariantCart(item.Id, item.Value);
+                VariantCart(item.Id, item.Value)
         } else {
             if (viewModel.regularInCart.value!!.variantList == null) viewModel.regularInCart.value!!.variantList =
                 mutableListOf()
@@ -195,26 +195,25 @@ class ProductDetailFragment(
         if (item.Variant?.OptionValueList == null || !item.Variant.OptionValueList.any()) {
 
             viewModel.regularInCart.value!!.apply {
-                this.sku = item.Sku
-                this.variants = item.GroupValue;
+                updateVariant(item.Sku, item.GroupValue)
             }
-            viewModel.regularInCart.notifyValueChange();
-            return;
+            viewModel.regularInCart.notifyValueChange()
+            return
         }
         item.Variant.let { group ->
             if (viewModel.listVariantGroups.size > item.Level) {
                 viewModel.listVariantGroups[item.Level] = group
                 binding.groupVariants.post {
-                    groupVariantAdapter.notifyItemChanged(item.Level);
+                    groupVariantAdapter.notifyItemChanged(item.Level)
                 }
             } else {
                 viewModel.listVariantGroups.add(group)
                 binding.groupVariants.post {
-                    groupVariantAdapter.notifyItemInserted(item.Level);
+                    groupVariantAdapter.notifyItemInserted(item.Level)
                 }
             }
         }
-        viewModel.regularInCart.notifyValueChange();
+        viewModel.regularInCart.notifyValueChange()
 
     }
 
@@ -227,29 +226,20 @@ class ProductDetailFragment(
         )
         if (item.extraQuantity > 0) {
             viewModel.regularInCart.value?.apply {
-                modifierList.find { m ->
-                    m.modifierId == modifier.modifierId
-                }.let {
-                    if (it != null) {
-                        val index = modifierList.indexOf(it);
-                        modifierList[index] = modifier;
-                    } else {
-                        modifierList.add(modifier)
-                    }
-                }
+                addModifier(modifier)
             }
 
         } else {
             viewModel.regularInCart.value
                 ?.apply {
-                    modifierList.removeAll { it.modifierId == modifier.modifierId }
+                    removeModifier(modifier)
                 }
         }
-        viewModel.regularInCart.notifyValueChange();
+        viewModel.regularInCart.notifyValueChange()
     }
 
     override fun getBack() {
-        onFragmentBackPressed();
+        onFragmentBackPressed()
     }
 
     override fun onAddCart(item: BaseProductInCart) {
