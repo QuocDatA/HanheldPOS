@@ -147,6 +147,11 @@ class PaymentFragment(
                 viewModel.completedPayment(alreadyBill, listener)
             }
         }
+        binding.totalPriceButton.setOnClickListener {
+            paymentMethodAdapter.currentList.find { PaymentMethodType.fromInt(it.paymentMethod.PaymentMethodType) == PaymentMethodType.CASH }?.let {
+                paymentChosenSuccess(it,viewModel.balance.value!!)
+            }
+        }
     }
 
     override fun getBack() {
