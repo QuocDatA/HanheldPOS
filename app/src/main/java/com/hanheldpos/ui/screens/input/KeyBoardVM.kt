@@ -71,6 +71,10 @@ class KeyBoardVM(type: KeyBoardType) : ViewModel() {
         isCapLock.postValue(!isCapLock.value!!)
     }
 
+    fun clearText() {
+        input.postValue("")
+    }
+
     fun switchKeyBoardType() {
         when(keyBoardType.value!!)  {
             KeyBoardType.Number -> {

@@ -1,9 +1,11 @@
 package com.hanheldpos.ui.screens.cart.payment
 
+import android.view.View
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.payment.PaymentSuggestionItem
 import com.hanheldpos.databinding.FragmentPaymentBinding
 import com.hanheldpos.model.cart.payment.PaymentFactory
+import com.hanheldpos.model.cart.payment.PaymentMethodType
 import com.hanheldpos.model.cart.payment.PaymentOrder
 import com.hanheldpos.model.cart.payment.method.BasePayment
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
@@ -73,7 +75,9 @@ class PaymentFragment(
             onPaymentSuggestionClickListener = object :
                 BaseItemClickListener<PaymentSuggestionItem> {
                 override fun onItemClick(adapterPosition: Int, item: PaymentSuggestionItem) {
-
+                    paymentMethodAdapter.currentList.find { PaymentMethodType.fromInt(it.paymentMethod.PaymentMethodType) == PaymentMethodType.CASH }?.let {
+                        paymentChosenSuccess(it,item.price)
+                    }
                 }
             },
         )
@@ -88,6 +92,10 @@ class PaymentFragment(
             binding.paymentSuggestionContainer.adapter = paymentSuggestionAdapter
         }
         //endregion
+
+        viewModel.listPaymentChosen.observe(this) {
+            binding.paymentDetail.visibility = if (it.isEmpty())  View.GONE else View.VISIBLE
+        }
 
     }
 
@@ -152,7 +160,8 @@ class PaymentFragment(
     }
 
     private fun paymentChosenSuccess(payment: BasePayment, amount: Double) {
-        viewModel.balance.postValue(viewModel.balance.value!! - amount)
+        val balance = viewModel.balance.value!!
+        viewModel.balance.postValue(balance - amount)
         val payable = payment.getPayable(amount, balance)
         viewModel.addPaymentChosen(
             PaymentOrder(

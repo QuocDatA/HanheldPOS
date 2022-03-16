@@ -110,7 +110,7 @@
                             android:onClick="@{v -> viewModel.openPaymentDetail()}"
                             android:scaleType="fitXY"
                             android:src="@drawable/ic_info"
-                            visibleObject="@{!viewModel.paymentMethods.empty}" />
+                            />
 
                         <com.diadiem.pos_components.PTextView
                             android:id="@+id/totalPaid"

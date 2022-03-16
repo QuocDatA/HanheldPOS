@@ -81,7 +81,7 @@ class PaymentInputFragment(
     }
 
     override fun clearInput() {
-
+        keyBoardVM.clearText()
     }
 
     override fun initAction() {
