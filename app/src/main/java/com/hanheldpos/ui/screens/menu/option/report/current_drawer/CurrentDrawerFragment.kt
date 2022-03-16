@@ -11,6 +11,7 @@ import com.hanheldpos.data.api.pojo.cashdrawer.report.ReportCashDrawerResp
 import com.hanheldpos.databinding.FragmentCurrentDrawerBinding
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.DatabaseHelper
+import com.hanheldpos.model.OrderHelper
 import com.hanheldpos.ui.base.dialog.AppAlertDialog
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.cashdrawer.enddrawer.EndDrawerFragment
@@ -19,6 +20,7 @@ import com.hanheldpos.ui.screens.menu.option.report.current_drawer.payin_payout.
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
 
 class CurrentDrawerFragment : BaseFragment<FragmentCurrentDrawerBinding, CurrentDrawerVM>(),
@@ -81,8 +83,9 @@ class CurrentDrawerFragment : BaseFragment<FragmentCurrentDrawerBinding, Current
     override fun onOpenEndDrawer() {
         CoroutineScope(Dispatchers.IO).launch {
             val ordersCompletedFlow = DatabaseHelper.ordersCompleted.getAll();
-            ordersCompletedFlow.collectLatest { ordersCompleted ->
-                if (!ordersCompleted.isNullOrEmpty()) {
+            ordersCompletedFlow.take(1).collectLatest { ordersCompleted ->
+                val listOrder = ordersCompleted.filter { OrderHelper.isValidOrderPush(it) }
+                if (!listOrder.isNullOrEmpty()) {
                     launch(Dispatchers.Main) {
                         AppAlertDialog.get().show(
                             getString(R.string.notification),

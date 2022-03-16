@@ -7,7 +7,7 @@
         <variable
             name="viewModel"
             type="com.hanheldpos.ui.screens.cashdrawer.enddrawer.EndDrawerVM" />
-        <import type="com.hanheldpos.utils.PriceHelper"/>
+        <import type="com.hanheldpos.utils.PriceUtils"/>
     </data>
 
     <LinearLayout
@@ -98,7 +98,7 @@
                                     android:layout_gravity="start"
                                     android:layout_marginEnd="@dimen/_8sdp"
                                     android:paddingVertical="@dimen/_11sdp"
-                                    android:text="@{PriceHelper.INSTANCE.formatStringPrice(String.valueOf(viewModel.amountExpected))}"
+                                    android:text="@{PriceUtils.INSTANCE.formatStringPrice(String.valueOf(viewModel.amountExpected))}"
                                     app:useFontStyle="normal"
                                     app:useTextColor="color4"
                                     app:useTextHeader="h5" />
@@ -201,7 +201,7 @@
                                     android:layout_gravity="start"
                                     android:layout_marginEnd="@dimen/_8sdp"
                                     android:paddingVertical="@dimen/_11sdp"
-                                    android:text="@{PriceHelper.INSTANCE.formatStringPrice(String.valueOf(viewModel.amountExpected-viewModel.amount))}"
+                                    android:text="@{PriceUtils.INSTANCE.formatStringPrice(String.valueOf(viewModel.amountExpected-viewModel.amount))}"
                                     app:useFontStyle="normal"
                                     app:useTextColor="color4"
                                     app:useTextHeader="h5" />

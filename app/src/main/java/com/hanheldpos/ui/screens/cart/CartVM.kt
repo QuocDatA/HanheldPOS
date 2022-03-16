@@ -47,7 +47,7 @@ class CartVM : BaseUiViewModel<CartUV>() {
         uiCallback?.onShowCustomerDetail()
     }
 
-    fun billCart(context: Context, cart: CartModel , listener : CartActionCallBack) {
+    fun billCart(context: Context, cart: CartModel, listener: CartActionCallBack) {
         if (cart.productsList.isEmpty()) {
             AppAlertDialog.get()
                 .show(
@@ -56,15 +56,17 @@ class CartVM : BaseUiViewModel<CartUV>() {
                 )
             return
         }
-        onOrderProcessing(context, cart,listener)
+        onOrderProcessing(context, cart, listener)
     }
 
-    private fun onOrderProcessing(context: Context, cart: CartModel, listener : CartActionCallBack) {
+    private fun onOrderProcessing(context: Context, cart: CartModel, listener: CartActionCallBack) {
         showLoading(true)
         try {
-            // Order
+            // Update cart object
             if (cart.orderCode == null)
                 cart.orderCode = OrderHelper.generateOrderIdByFormat()
+            if (cart.orderGuid == null)
+                cart.orderGuid = cart.orderCode
             if (cart.createDate == null)
                 cart.createDate =
                     DateTimeHelper.dateToString(
@@ -101,8 +103,7 @@ class CartVM : BaseUiViewModel<CartUV>() {
                 if (orderStatus != OrderStatus.COMPLETED.value && paymentStatus != PaymentStatus.PAID.value) {
                     DatabaseHelper.tableStatuses.insert(DatabaseMapper.mappingTableToEntity(table))
                     launch(Dispatchers.Main) { listener.onTableChange() }
-                }
-                else {
+                } else {
                     DatabaseHelper.tableStatuses.delete(table._Id)
                     launch(Dispatchers.Main) { listener.onTableChange() }
                 }

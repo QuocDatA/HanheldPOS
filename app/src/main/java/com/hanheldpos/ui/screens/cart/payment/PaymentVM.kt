@@ -13,7 +13,7 @@ import java.util.*
 
 class PaymentVM : BaseUiViewModel<PaymentUV>() {
 
-    val balance = MutableLiveData<Double>()
+    val balance = MutableLiveData<Double>(0.0)
     val listPaymentChosen = MutableLiveData(mutableListOf<PaymentOrder>())
 
     fun backPress() {

@@ -43,7 +43,6 @@
                     app:useTextHeader="h4" />
 
                 <com.diadiem.pos_components.PTextInputEditText
-                    android:text="@{keyboardVM.input}"
                     android:id="@+id/numberCustomer"
                     style="@style/BaseTextInput"
                     android:layout_marginHorizontal="@dimen/_17sdp"

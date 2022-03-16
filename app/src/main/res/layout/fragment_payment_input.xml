@@ -41,7 +41,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_13sdp"
-                    android:text="@{viewModel.paymentMethodTitle}"
                     app:useFontStyle="bold"
                     app:useTextColor="color4"
                     app:useTextHeader="h4"
@@ -68,72 +67,16 @@
                         android:id="@+id/numberPaymentInput"
                         style="@style/BaseTextInput"
                         android:focusable="false"
-                        android:hint="Enter amount"
+                        android:hint="@string/enter_amount"
                         android:focusableInTouchMode="true"
                         android:paddingHorizontal="@dimen/_13sdp"
                         android:paddingVertical="@dimen/_10sdp"
-                        android:text="@{keyboardVM.input}"
                         app:ipt_useFontStyle="normal"
                         app:ipt_useHintTextColor="color8"
                         app:ipt_useTextColor="color4"
                         app:ipt_useTextHeader="h5" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_32sdp"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:gravity="center"
-                    android:orientation="horizontal">
-
-                    <LinearLayout
-                        android:onClick="@{v->viewModel.onCancel()}"
-                        android:id="@+id/cancelBtn"
-                        android:focusable="true"
-                        android:clickable="true"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:background="@drawable/bg_outline"
-                        android:foreground="?attr/selectableItemBackground"
-                        android:gravity="center">
-
-                        <com.diadiem.pos_components.PTextView
-
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Cancel"
-                            android:textAlignment="center"
-                            android:textAllCaps="true"
-                            app:useFontStyle="normal"
-                            app:useTextColor="color4"
-                            app:useTextHeader="h5" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:onClick="@{v->viewModel.onComplete()}"
-                        android:id="@+id/acceptBtn"
-                        android:focusable="true"
-                        android:clickable="true"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:background="@drawable/bg_outline"
-                        android:foreground="?attr/selectableItemBackground"
-                        android:gravity="center">
-
-                        <com.diadiem.pos_components.PTextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Ok"
-                            android:textAlignment="center"
-                            android:textAllCaps="true"
-                            app:useFontStyle="bold"
-                            app:useTextColor="color0"
-                            app:useTextHeader="h5" />
-                    </LinearLayout>
-                </LinearLayout>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 

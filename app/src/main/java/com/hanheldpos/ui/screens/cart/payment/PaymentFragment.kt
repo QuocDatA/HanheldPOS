@@ -1,23 +1,20 @@
 package com.hanheldpos.ui.screens.cart.payment
 
 import com.hanheldpos.R
-import com.hanheldpos.data.api.pojo.payment.PaymentMethodResp
 import com.hanheldpos.data.api.pojo.payment.PaymentSuggestionItem
 import com.hanheldpos.databinding.FragmentPaymentBinding
-import com.hanheldpos.model.UserHelper
 import com.hanheldpos.model.cart.payment.PaymentFactory
-import com.hanheldpos.model.cart.payment.PaymentMethodType
 import com.hanheldpos.model.cart.payment.PaymentOrder
 import com.hanheldpos.model.cart.payment.method.BasePayment
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.adapter.GridSpacingItemDecoration
 import com.hanheldpos.ui.base.fragment.BaseFragment
+import com.hanheldpos.ui.screens.cart.CurCartData
 import com.hanheldpos.ui.screens.cart.payment.adapter.PaymentMethodAdapter
 import com.hanheldpos.ui.screens.cart.payment.adapter.PaymentSuggestionAdapter
 import com.hanheldpos.ui.screens.cart.payment.detail.PaymentDetailFragment
-import com.hanheldpos.utils.PriceHelper
-import com.hanheldpos.utils.time.DateTimeHelper
-import java.util.*
+import com.hanheldpos.ui.screens.cart.payment.input.PaymentInputFragment
+import com.hanheldpos.utils.PriceUtils
 
 
 class PaymentFragment(
@@ -26,6 +23,7 @@ class PaymentFragment(
     private var listener: PaymentCallback
 ) :
     BaseFragment<FragmentPaymentBinding, PaymentVM>(), PaymentUV {
+
     override fun layoutRes(): Int = R.layout.fragment_payment
 
     private lateinit var paymentMethodAdapter: PaymentMethodAdapter
@@ -50,7 +48,7 @@ class PaymentFragment(
         paymentMethodAdapter = PaymentMethodAdapter(
             onPaymentMethodClickListener = object : BaseItemClickListener<BasePayment> {
                 override fun onItemClick(adapterPosition: Int, item: BasePayment) {
-
+                    item.startPayment(viewModel.balance.value!!,CurCartData.cartModel?.orderGuid!!,CurCartData.cartModel?.customer?._Id)
                 }
             },
         )
@@ -101,7 +99,15 @@ class PaymentFragment(
                         orderId: String,
                         customerId: String?
                     ) {
-
+                        navigator.goTo(
+                            PaymentInputFragment(
+                                title = "${payment.Title} (${getString(R.string.amount_due)} ${
+                                    PriceUtils.formatStringPrice(
+                                        balance
+                                    )
+                                })", balance = balance,
+                            )
+                        )
                     }
 
                     override fun onShowCashVoucherList() {
@@ -123,11 +129,9 @@ class PaymentFragment(
 
         //region init payment suggestion data
         val paymentSuggestion: MutableList<PaymentSuggestionItem> =
-            (viewModel.initPaymentSuggestion() as List<PaymentSuggestionItem>).toMutableList()
+            viewModel.initPaymentSuggestion().toMutableList()
         paymentSuggestionAdapter.submitList(paymentSuggestion)
         //endregion
-
-        binding.totalPaid.text = "0"
     }
 
     override fun initAction() {

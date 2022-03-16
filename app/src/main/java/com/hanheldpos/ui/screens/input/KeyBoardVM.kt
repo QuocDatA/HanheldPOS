@@ -2,15 +2,22 @@ package com.hanheldpos.ui.screens.input
 
 import android.view.View
 import android.widget.TextView
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.hanheldpos.model.keyboard.KeyBoardType
 
-class KeyBoardVM : ViewModel() {
-    val input = MutableLiveData<String>()
+class KeyBoardVM(type: KeyBoardType) : ViewModel() {
+
+    private val input = MutableLiveData<String>()
     var listener: KeyBoardCallBack? = null;
     var keyBoardType = MutableLiveData<KeyBoardType>(KeyBoardType.Number);
     var isCapLock = MutableLiveData<Boolean>(false);
+
+    init {
+        keyBoardType.postValue(type)
+    }
+
     fun concatenateInputString(view: View) {
         val textView = view as TextView
         if (input.value.isNullOrEmpty()) {
@@ -74,10 +81,12 @@ class KeyBoardVM : ViewModel() {
             KeyBoardType.TextOnly -> {}
             KeyBoardType.NumberOnly -> {}
         }
-
     }
 
-    fun onListener(listener: KeyBoardCallBack) {
+    fun onListener(view: TextView, listener: KeyBoardCallBack) {
+        input.observe(view.context as LifecycleOwner) {
+            view.text = it
+        }
         this.listener = listener;
     }
 

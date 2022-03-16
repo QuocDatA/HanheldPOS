@@ -617,10 +617,9 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:clickable="true"
-                    android:focusable="true"
+                    android:clickable="false"
+                    android:focusable="false"
                     android:foreground="?attr/selectableItemBackground"
-                    android:onClick="@{v->viewModel.openSelectPayment(cartDataVM.cartModelLD.total)}"
                     android:padding="@dimen/_12sdp">
 
                     <ImageView

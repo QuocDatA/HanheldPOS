@@ -213,4 +213,5 @@
     <string name="total_paid">Total Paid</string>
     <string name="pay_type">Pay Type</string>
     <string name="pay_amount">Pay Amount</string>
+    <string name="amount_due">Amount Due</string>
 </resources>

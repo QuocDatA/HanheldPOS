@@ -18,11 +18,11 @@ import com.hanheldpos.utils.GSonUtils
 
 class StartDrawerVM : BaseRepoViewModel<CashDrawerRepo, StartDrawerUV>() {
 
-    val amountString = MutableLiveData(0.toString())
+    var amount : Double = 0.0
 
     fun startDrawer(context: Context) {
         showLoading(true);
-        val startingCash = amountString.value!!.replace(",","").toDouble();
+        val startingCash = amount;
         val startDrawerReq = CreateCashDrawerReq(
             UserGuid = UserHelper.getUserGuid(),
             LocationGuid = UserHelper.getLocationGuid(),

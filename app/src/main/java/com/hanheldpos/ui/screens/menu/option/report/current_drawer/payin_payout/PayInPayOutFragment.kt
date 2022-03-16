@@ -10,11 +10,7 @@ import com.hanheldpos.data.api.pojo.cashdrawer.pay_in_out.PaidInOutListResp
 import com.hanheldpos.databinding.FragmentPayInPayOutBinding
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.menu.option.report.current_drawer.payin_payout.adapter.PaidInOutAdapter
-import com.hanheldpos.utils.PriceHelper
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
+import com.hanheldpos.utils.PriceUtils
 
 class PayInPayOutFragment(private val listener : PayInOutCallback) : BaseFragment<FragmentPayInPayOutBinding, PayInPayOutVM>(),
     PayInPayOutUV {
@@ -42,7 +38,7 @@ class PayInPayOutFragment(private val listener : PayInOutCallback) : BaseFragmen
                 if (it.toString().isEmpty()) input.setText("0");
                 else {
                     isEditing = true;
-                    input.setText(PriceHelper.formatStringPrice(it.toString()))
+                    input.setText(PriceUtils.formatStringPrice(it.toString()))
                 }
                 input.setSelection(input.length());
                 isEditing = false;
@@ -168,7 +164,7 @@ class PayInPayOutFragment(private val listener : PayInOutCallback) : BaseFragmen
         paidInOutAdapter.submitList(list);
         paidInOutAdapter.notifyDataSetChanged();
         val totalPrice = list?.sumOf { (it.Receivable?:0.0).minus(it.Payable?:0.0) };
-        binding.totalPaid.text =PriceHelper.formatStringPrice( totalPrice.toString() );
+        binding.totalPaid.text =PriceUtils.formatStringPrice( totalPrice.toString() );
     }
 
     interface PayInOutCallback {
