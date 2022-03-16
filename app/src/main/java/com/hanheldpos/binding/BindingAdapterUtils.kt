@@ -9,14 +9,9 @@ import android.text.*
 import android.text.style.ReplacementSpan
 import android.view.View
 import android.widget.TextView
-import androidx.core.text.set
 import androidx.databinding.BindingAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.textfield.TextInputEditText
-import java.lang.Exception
-import java.util.*
-import java.util.Locale.filter
-import java.util.regex.Pattern
 
 
 @BindingAdapter("useInputEnable")
@@ -81,20 +76,13 @@ fun visibleObject(`object`: Any?): Boolean {
 @BindingAdapter("groupSize")
 fun setGroupSize(inputEditText: TextInputEditText?, groupSize: Int) {
     if (inputEditText == null) return
-    inputEditText.filters = arrayOf(object : InputFilter {
-        override fun filter(
-            source: CharSequence?,
-            start: Int,
-            end: Int,
-            dest: Spanned?,
-            dstart: Int,
-            dend: Int
-        ): CharSequence {
-            return source?.subSequence(start, end).toString().uppercase()
-                .replace(Regex("[^A-Z0-9]"), "")
-        }
+    inputEditText.filters = arrayOf(getCustomInputFilter(
+        allowCharacters = true,
+        allowDigits = true,
+        allowSpaceChar = false
+    ))
 
-    })
+
     inputEditText.addTextChangedListener(object : TextWatcher {
         override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
         override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
@@ -153,6 +141,55 @@ fun setGroupSize(inputEditText: TextInputEditText?, groupSize: Int) {
             }
         }
     })
+}
+
+private fun getCustomInputFilter(
+    allowCharacters: Boolean,
+    allowDigits: Boolean,
+    allowSpaceChar: Boolean
+): InputFilter {
+    return object : InputFilter {
+        override fun filter(
+            source: CharSequence,
+            start: Int,
+            end: Int,
+            dest: Spanned?,
+            dstart: Int,
+            dend: Int
+        ): CharSequence? {
+            var keepOriginal = true
+            val sb = StringBuilder(end - start)
+            for (i in start until end) {
+                val c = source[i]
+                if (isCharAllowed(c)) {
+                    sb.append(c.toUpperCase())
+                } else {
+                    keepOriginal = false
+                }
+            }
+            return if (keepOriginal) {
+                null
+            } else {
+                if (source is Spanned) {
+                    val sp = SpannableString(sb)
+                    TextUtils.copySpansFrom(source, start, sb.length, null, sp, 0)
+                    sp
+                } else {
+                    sb
+                }
+            }
+        }
+
+        private fun isCharAllowed(c: Char): Boolean {
+            if (Character.isLetter(c) && allowCharacters) {
+                return true
+            }
+            if (Character.isDigit(c) && allowDigits) {
+                return true
+            }
+            return Character.isSpaceChar(c) && allowSpaceChar
+        }
+    }
 }
 
 @BindingAdapter("backColor")
