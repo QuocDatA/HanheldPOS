@@ -6,7 +6,7 @@ import com.hanheldpos.data.api.pojo.cashdrawer.report.Report
 import com.hanheldpos.databinding.ItemCurrentDrawerInfoBinding
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
-import com.hanheldpos.utils.PriceHelper
+import com.hanheldpos.utils.PriceUtils
 
 class ReportDrawerInfoAdapter : BaseBindingListAdapter<Report>(DiffCallBack()) {
 
@@ -21,7 +21,7 @@ class ReportDrawerInfoAdapter : BaseBindingListAdapter<Report>(DiffCallBack()) {
         binding.titleReport.text = item.Title;
 
         if (item.Value is Double){
-            binding.valueReport.text = PriceHelper.formatStringPrice(item.Value.toString());
+            binding.valueReport.text = PriceUtils.formatStringPrice(item.Value.toString());
         }
         else binding.valueReport.text = item.Value.toString();
     }

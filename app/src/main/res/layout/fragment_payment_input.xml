@@ -41,99 +41,47 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_13sdp"
-                    android:text="@{viewModel.paymentMethodTitle}"
                     app:useFontStyle="bold"
                     app:useTextColor="color4"
                     app:useTextHeader="h4"
                     tools:text="TIEN MAT" />
 
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/BaseTextInput.OutlineBox"
-                    android:id="@+id/textInputLayout"
-                    android:layout_marginHorizontal="@dimen/_17sdp"
-                    android:layout_marginVertical="@dimen/_20sdp"
-                    android:background="@drawable/bg_outline"
-                    android:importantForAutofill="no"
-                    app:boxCornerRadiusBottomEnd="0dp"
-                    app:boxCornerRadiusBottomStart="0dp"
-                    app:boxCornerRadiusTopEnd="0dp"
-                    app:boxCornerRadiusTopStart="0dp"
-                    app:endIconDrawable="@drawable/ic_clear_text"
-                    app:endIconTint="@android:color/transparent"
-                    app:endIconMode="custom"
-                    app:hintEnabled="false"
-                    tools:ignore="LabelFor">
-
-                    <com.diadiem.pos_components.PTextInputEditText
-                        android:id="@+id/numberPaymentInput"
-                        style="@style/BaseTextInput"
-                        android:focusable="false"
-                        android:hint="Enter amount"
-                        android:focusableInTouchMode="true"
-                        android:paddingHorizontal="@dimen/_13sdp"
-                        android:paddingVertical="@dimen/_10sdp"
-                        android:text="@{keyboardVM.input}"
-                        app:ipt_useFontStyle="normal"
-                        app:ipt_useHintTextColor="color8"
-                        app:ipt_useTextColor="color4"
-                        app:ipt_useTextHeader="h5" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_32sdp"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:gravity="center"
-                    android:orientation="horizontal">
 
                     <LinearLayout
-                        android:onClick="@{v->viewModel.onCancel()}"
-                        android:id="@+id/cancelBtn"
-                        android:focusable="true"
-                        android:clickable="true"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:background="@drawable/bg_outline"
-                        android:foreground="?attr/selectableItemBackground"
-                        android:gravity="center">
-
-                        <com.diadiem.pos_components.PTextView
-
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Cancel"
-                            android:textAlignment="center"
-                            android:textAllCaps="true"
-                            app:useFontStyle="normal"
-                            app:useTextColor="color4"
-                            app:useTextHeader="h5" />
+                        android:gravity="center_vertical"
+                        android:background="@drawable/bg_outline_round"
+                        android:layout_marginHorizontal="@dimen/_17sdp"
+                        android:layout_marginVertical="@dimen/_20sdp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <com.diadiem.pos_components.PTextInputEditText
+                            android:id="@+id/numberPaymentInput"
+                            style="@style/BaseTextInput"
+                            android:layout_margin="0dp"
+                            android:layout_weight="1"
+                            android:layout_width="0dp"
+                            android:focusable="false"
+                            android:hint="@string/enter_amount"
+                            android:focusableInTouchMode="true"
+                            android:paddingHorizontal="@dimen/_13sdp"
+                            android:paddingVertical="@dimen/_10sdp"
+                            app:ipt_useFontStyle="normal"
+                            app:ipt_useHintTextColor="color8"
+                            app:ipt_useTextColor="color4"
+                            app:ipt_useTextHeader="h5" />
+                        <ImageView
+                            android:layout_width="@dimen/_25sdp"
+                            android:layout_height="@dimen/_25sdp"
+                            android:src="@drawable/ic_clear_text"
+                            android:padding="@dimen/_4sdp"
+                            android:scaleType="fitXY"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:onClick="@{v-> viewModel.clearInput() }"
+                            />
                     </LinearLayout>
 
-                    <LinearLayout
-                        android:onClick="@{v->viewModel.onComplete()}"
-                        android:id="@+id/acceptBtn"
-                        android:focusable="true"
-                        android:clickable="true"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:background="@drawable/bg_outline"
-                        android:foreground="?attr/selectableItemBackground"
-                        android:gravity="center">
 
-                        <com.diadiem.pos_components.PTextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Ok"
-                            android:textAlignment="center"
-                            android:textAllCaps="true"
-                            app:useFontStyle="bold"
-                            app:useTextColor="color0"
-                            app:useTextHeader="h5" />
-                    </LinearLayout>
-                </LinearLayout>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 

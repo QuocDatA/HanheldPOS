@@ -2,7 +2,7 @@ package com.hanheldpos.database.repo
 
 import com.hanheldpos.database.dao.OrderCompletedDao
 import com.hanheldpos.database.entities.OrderCompletedEntity
-import com.hanheldpos.utils.time.DateTimeHelper
+import com.hanheldpos.utils.time.DateTimeUtils
 import kotlinx.coroutines.flow.Flow
 import java.util.*
 
@@ -17,7 +17,7 @@ class OrderCompletedLocalRepo(private val orderCompletedDao: OrderCompletedDao) 
     fun update(orderCompletedEntity: OrderCompletedEntity) =
         orderCompletedDao.update(orderCompletedEntity.apply {
             modifierAt =
-                DateTimeHelper.dateToString(Date(), DateTimeHelper.Format.FULL_DATE_UTC_TIMEZONE)
+                DateTimeUtils.dateToString(Date(), DateTimeUtils.Format.FULL_DATE_UTC_TIMEZONE)
         });
 
     fun delete(id: String) = orderCompletedDao.delete(id)

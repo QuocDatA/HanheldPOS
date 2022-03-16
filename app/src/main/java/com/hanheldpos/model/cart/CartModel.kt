@@ -113,8 +113,8 @@ data class CartModel(
         discountUserList = mutableListOf(discount);
     }
 
-    fun addPayment(payment: PaymentOrder) {
-        paymentsList = mutableListOf(payment);
+    fun addPayment(payment: List<PaymentOrder>) {
+        paymentsList = payment.toMutableList();
     }
 
     fun clearCart() {

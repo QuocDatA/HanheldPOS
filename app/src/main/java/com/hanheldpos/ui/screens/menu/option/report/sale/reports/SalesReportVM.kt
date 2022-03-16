@@ -13,12 +13,10 @@ import com.hanheldpos.data.repository.base.BaseRepoCallback
 import com.hanheldpos.data.repository.order.OrderAsyncRepo
 import com.hanheldpos.data.repository.setting.SettingRepo
 import com.hanheldpos.database.DatabaseMapper
-import com.hanheldpos.database.entities.OrderCompletedEntity
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.DatabaseHelper
 import com.hanheldpos.model.OrderHelper
 import com.hanheldpos.model.UserHelper
-import com.hanheldpos.model.order.OrderStatus
 import com.hanheldpos.model.order.OrderSubmitResp
 import com.hanheldpos.model.report.SaleReportCustomData
 import com.hanheldpos.model.setting.SettingDevicePut
@@ -26,7 +24,7 @@ import com.hanheldpos.ui.base.dialog.AppAlertDialog
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
 import com.hanheldpos.ui.screens.menu.option.report.sale.reports.adapter.NumberDayReportItem
 import com.hanheldpos.utils.GSonUtils
-import com.hanheldpos.utils.time.DateTimeHelper
+import com.hanheldpos.utils.time.DateTimeUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.take
@@ -38,8 +36,8 @@ class SalesReportVM : BaseUiViewModel<SalesReportUV>() {
 
     var saleReportCustomData = MutableLiveData<SaleReportCustomData>(
         SaleReportCustomData(
-            startDay = DateTimeHelper.curDate,
-            endDay = DateTimeHelper.curDate,
+            startDay = DateTimeUtils.curDate,
+            endDay = DateTimeUtils.curDate,
             isCurrentDrawer = true,
             isAllDevice = false,
             isAllDay = false,

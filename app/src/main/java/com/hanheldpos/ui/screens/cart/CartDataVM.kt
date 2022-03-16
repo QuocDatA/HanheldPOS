@@ -114,8 +114,8 @@ class CartDataVM : BaseViewModel() {
         cartModelLD.notifyValueChange()
     }
 
-    fun addPaymentOrder(payment: PaymentOrder) {
-        cartModelLD.value!!.addPayment(payment)
+    fun addPaymentOrder(payments: List<PaymentOrder>) {
+        cartModelLD.value!!.addPayment(payments)
         cartModelLD.notifyValueChange()
     }
 

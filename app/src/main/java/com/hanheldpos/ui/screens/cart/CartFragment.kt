@@ -228,8 +228,9 @@ class CartFragment(private val listener: CartCallBack) :
                 alreadyBill,
                 payable,
                 listener = object : PaymentFragment.PaymentCallback {
-                    override fun onPaymentComplete(paymentOrder: PaymentOrder) {
-                        cartDataVM.addPaymentOrder(paymentOrder)
+
+                    override fun onPaymentComplete(paymentOrderList: List<PaymentOrder>) {
+                        cartDataVM.addPaymentOrder(paymentOrderList)
                     }
 
                     override fun onPayment(isSuccess: Boolean) {

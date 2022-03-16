@@ -9,7 +9,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
 
-object DateTimeHelper {
+object DateTimeUtils {
     fun doubleToDate(value: Double, format: String?): String {
         val dateFormat = SimpleDateFormat(format, Locale.ENGLISH)
         return dateFormat.format(Date(value.toLong()))

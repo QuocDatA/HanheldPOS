@@ -7,13 +7,13 @@
 
         <variable
             name="item"
-            type="com.hanheldpos.data.api.pojo.payment.PaymentMethodResp" />
+            type="com.hanheldpos.model.cart.payment.method.BasePayment" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        backColor="@{item.color}"
+        backColor="@{item.paymentMethod.color}"
         android:clickable="true"
         android:focusable="true"
         app:cardCornerRadius="@dimen/_2sdp">
@@ -21,7 +21,7 @@
         <com.diadiem.pos_components.PTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{item.Title}"
+            android:text="@{item.paymentMethod.Title}"
             android:foreground="?attr/selectableItemBackground"
             android:padding="@dimen/_10sdp"
             android:gravity="center"

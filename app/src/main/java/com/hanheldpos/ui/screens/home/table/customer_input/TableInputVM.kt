@@ -4,6 +4,9 @@ import com.hanheldpos.model.keyboard.KeyBoardType
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
 
 class TableInputVM : BaseUiViewModel<TableInputUV>() {
+
+    var numberCustomer : Int = 0
+
     fun onComplete(){
         uiCallback?.onComplete();
     }

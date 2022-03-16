@@ -61,7 +61,6 @@
                 android:maxLength="20"
                 android:paddingHorizontal="@dimen/_8sdp"
                 android:paddingVertical="@dimen/_17sdp"
-                android:text="@={viewModel.amountString}"
                 app:ipt_useFontStyle="normal"
                 app:ipt_useHintTextColor="color8"
                 app:ipt_useTextColor="color4"
