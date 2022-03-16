@@ -1,21 +1,24 @@
 package com.hanheldpos.ui.screens.cart.payment
 
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import com.hanheldpos.data.api.pojo.payment.PaymentMethodResp
 import com.hanheldpos.data.api.pojo.payment.PaymentSuggestionItem
+import com.hanheldpos.extension.notifyValueChange
 import com.hanheldpos.model.DataHelper
-import com.hanheldpos.model.UserHelper
-import com.hanheldpos.model.cart.payment.PaymentMethodType
 import com.hanheldpos.model.cart.payment.PaymentOrder
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
-import com.hanheldpos.utils.time.DateTimeHelper
-import java.util.*
 
 class PaymentVM : BaseUiViewModel<PaymentUV>() {
 
-    val balance = MutableLiveData<Double>(0.0)
+    val balance = MutableLiveData<Double>()
     val listPaymentChosen = MutableLiveData(mutableListOf<PaymentOrder>())
 
+    val totalPay = Transformations.map(listPaymentChosen) {
+        return@map it.sumOf { paymentOrder ->
+            paymentOrder.OverPay?: 0.0
+        }
+    }
     fun backPress() {
         uiCallback?.getBack()
     }
@@ -33,21 +36,23 @@ class PaymentVM : BaseUiViewModel<PaymentUV>() {
         )
     }
 
-    fun completedPayment(alreadyBill : Boolean,callback : PaymentFragment.PaymentCallback) {
-        if (!listPaymentChosen.value.isNullOrEmpty()) {
-            uiCallback?.onFragmentBackPressed()
-            callback.onPaymentComplete(
-                listPaymentChosen.value!!
-            )
-            if (alreadyBill) callback.onPayment(true)
+    fun completedPayment(alreadyBill: Boolean, callback: PaymentFragment.PaymentCallback) {
+        uiCallback?.onFragmentBackPressed()
+        callback.onPaymentComplete(
+            listPaymentChosen.value!!
+        )
+        if (alreadyBill) callback.onPayment(true)
+    }
+
+    fun addPaymentChosen(payment: PaymentOrder) {
+        listPaymentChosen.value?.apply {
+            this.add(payment)
         }
+        listPaymentChosen.notifyValueChange()
     }
 
     fun openPaymentDetail() {
         uiCallback?.openPaymentDetail()
     }
 
-    fun getPayment() {
-        uiCallback?.getPayment()
-    }
 }

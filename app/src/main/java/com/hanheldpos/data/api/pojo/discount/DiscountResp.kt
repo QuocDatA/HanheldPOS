@@ -2,7 +2,6 @@ package com.hanheldpos.data.api.pojo.discount
 
 import android.os.Parcelable
 import com.google.gson.Gson
-import com.google.gson.annotations.SerializedName
 import com.google.gson.reflect.TypeToken
 import com.hanheldpos.data.api.pojo.customer.CustomerGroup
 import com.hanheldpos.data.api.pojo.customer.CustomerResp
@@ -14,7 +13,7 @@ import com.hanheldpos.model.discount.DiscMinRequiredType
 import com.hanheldpos.model.cart.BaseProductInCart
 import com.hanheldpos.model.discount.DiscountEntireType
 import com.hanheldpos.model.discount.DiscountTypeEnum
-import com.hanheldpos.utils.time.DateTimeHelper
+import com.hanheldpos.utils.time.DateTimeUtils
 import kotlinx.parcelize.Parcelize
 import java.util.*
 
@@ -165,14 +164,14 @@ data class DiscountResp(
             }
 
             if (curDateTime.compareTo(
-                    DateTimeHelper.strToDate(
+                    DateTimeUtils.strToDate(
                         DateOff,
-                        DateTimeHelper.Format.FULL_DATE_UTC_Z
+                        DateTimeUtils.Format.FULL_DATE_UTC_Z
                     )
                 ) <= 0 && curDateTime.compareTo(
-                    DateTimeHelper.strToDate(
+                    DateTimeUtils.strToDate(
                         DateOn,
-                        DateTimeHelper.Format.FULL_DATE_UTC_Z
+                        DateTimeUtils.Format.FULL_DATE_UTC_Z
                     )
                 ) >= 0
             ) {
@@ -211,8 +210,8 @@ data class DiscountResp(
         curDateTime: Date
     ): Boolean {
         try {
-            val timeOff = DateTimeHelper.strToDate(timeOffString, DateTimeHelper.Format.HH_mm);
-            val timeOn = DateTimeHelper.strToDate(timeOnString, DateTimeHelper.Format.HH_mm);
+            val timeOff = DateTimeUtils.strToDate(timeOffString, DateTimeUtils.Format.HH_mm);
+            val timeOn = DateTimeUtils.strToDate(timeOnString, DateTimeUtils.Format.HH_mm);
 
             return curDateTime.compareTo(timeOff) <= 0 && curDateTime.compareTo(timeOn) >= 0;
         } catch (error: Exception) {

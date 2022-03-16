@@ -48,7 +48,11 @@ class PaymentFragment(
         paymentMethodAdapter = PaymentMethodAdapter(
             onPaymentMethodClickListener = object : BaseItemClickListener<BasePayment> {
                 override fun onItemClick(adapterPosition: Int, item: BasePayment) {
-                    item.startPayment(viewModel.balance.value!!,CurCartData.cartModel?.orderGuid!!,CurCartData.cartModel?.customer?._Id)
+                    item.startPayment(
+                        viewModel.balance.value!!,
+                        CurCartData.cartModel?.orderGuid!!,
+                        CurCartData.cartModel?.customer?._Id
+                    )
                 }
             },
         )
@@ -89,12 +93,12 @@ class PaymentFragment(
 
     override fun initData() {
         viewModel.balance.postValue(this.balance)
-        //region init payment method data
         val paymentMethods = viewModel.getPaymentMethods().map { payment ->
             PaymentFactory.getPaymentMethod(
                 payment,
                 callback = object : BasePayment.PaymentMethodCallback {
                     override fun onShowPaymentInput(
+                        base: BasePayment,
                         balance: Double,
                         orderId: String,
                         customerId: String?
@@ -105,7 +109,13 @@ class PaymentFragment(
                                     PriceUtils.formatStringPrice(
                                         balance
                                     )
-                                })", balance = balance,
+                                })",
+                                balance = balance,
+                                listener = object : PaymentInputFragment.PaymentInputListener {
+                                    override fun onSave(amount: Double) {
+                                        paymentChosenSuccess(base, amount)
+                                    }
+                                }
                             )
                         )
                     }
@@ -113,29 +123,22 @@ class PaymentFragment(
                     override fun onShowCashVoucherList() {
 
                     }
-
-                    override fun onPaymentSuccess(payment: PaymentOrder) {
-
-                    }
-
-                    override fun onPayFail() {
-
-                    }
-
                 })
         }
         paymentMethodAdapter.submitList(paymentMethods)
-        //endregion
 
-        //region init payment suggestion data
         val paymentSuggestion: MutableList<PaymentSuggestionItem> =
             viewModel.initPaymentSuggestion().toMutableList()
         paymentSuggestionAdapter.submitList(paymentSuggestion)
-        //endregion
+
     }
 
     override fun initAction() {
-
+        viewModel.balance.observe(this) {
+            if (it != null && it <= 0) {
+                viewModel.completedPayment(alreadyBill, listener)
+            }
+        }
     }
 
     override fun getBack() {
@@ -143,12 +146,21 @@ class PaymentFragment(
         onFragmentBackPressed()
     }
 
-    override fun getPayment() {
-        viewModel.completedPayment(alreadyBill, listener)
-    }
 
     override fun openPaymentDetail() {
         navigator.goTo(PaymentDetailFragment(viewModel.listPaymentChosen.value))
+    }
+
+    private fun paymentChosenSuccess(payment: BasePayment, amount: Double) {
+        viewModel.balance.postValue(viewModel.balance.value!! - amount)
+        val payable = payment.getPayable(amount, balance)
+        viewModel.addPaymentChosen(
+            PaymentOrder(
+                payment.paymentMethod,
+                payable = payable,
+                overPay = amount,
+            )
+        )
     }
 
     interface PaymentCallback {

@@ -14,8 +14,7 @@ import com.hanheldpos.utils.PriceUtils
 class PaymentInputFragment(
     private val title: String,
     private val balance: Double,
-    private val recommend: Boolean = true,
-    private val listener: PaymentInputListener? = null
+    private val listener: PaymentInputListener
 ) :
     BaseFragment<FragmentPaymentInputBinding, PaymentInputVM>(), PaymentInputUV {
 
@@ -37,16 +36,22 @@ class PaymentInputFragment(
     }
 
     override fun initView() {
-        keyBoardVM.onListener(binding.paymentInputTitle,listener = object : KeyBoardVM.KeyBoardCallBack {
-            override fun onComplete() {
+        viewModel.inputAmount = balance
+        keyBoardVM.onListener(
+            this,
+            binding.numberPaymentInput,
+            initInput = PriceUtils.formatStringPrice(viewModel.inputAmount),
+            listener = object : KeyBoardVM.KeyBoardCallBack {
+                override fun onComplete() {
+                    onCancel()
+                    listener.onSave(viewModel.inputAmount)
 
-            }
+                }
 
-            override fun onCancel() {
-                onFragmentBackPressed()
-            }
-        })
-
+                override fun onCancel() {
+                    onFragmentBackPressed()
+                }
+            })
         binding.numberPaymentInput.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
 
@@ -62,16 +67,14 @@ class PaymentInputFragment(
                     return
                 }
                 binding.numberPaymentInput.removeTextChangedListener(this)
-                viewModel.inputAmount = s.replace(Regex(","), "").toDouble()
+                viewModel.inputAmount = s.replace(Regex("[,]"), "").toDouble()
                 binding.numberPaymentInput.setText(PriceUtils.formatStringPrice(viewModel.inputAmount))
                 binding.numberPaymentInput.addTextChangedListener(this)
             }
         })
 
         binding.paymentInputTitle.text = title
-        if (recommend) {
-            binding.numberPaymentInput.setText(PriceUtils.formatStringPrice(balance))
-        }
+
     }
 
     override fun initData() {

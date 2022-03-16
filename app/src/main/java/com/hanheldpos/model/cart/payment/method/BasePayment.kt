@@ -14,9 +14,7 @@ abstract class BasePayment(
     }
 
     interface PaymentMethodCallback {
-        fun onShowPaymentInput(balance: Double, orderId: String, customerId: String?)
+        fun onShowPaymentInput(base : BasePayment, balance: Double, orderId: String, customerId: String?)
         fun onShowCashVoucherList()
-        fun onPaymentSuccess(payment: PaymentOrder)
-        fun onPayFail()
     }
 }

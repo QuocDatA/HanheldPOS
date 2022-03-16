@@ -35,6 +35,7 @@ class TableInputFragment(
 
     override fun initView() {
         keyBoardVM.onListener(
+            this,
             binding.numberCustomer,
             listener = object : KeyBoardVM.KeyBoardCallBack {
                 override fun onComplete() {
@@ -68,7 +69,7 @@ class TableInputFragment(
                     return
                 }
                 binding.numberCustomer.removeTextChangedListener(this)
-                viewModel.numberCustomer = s.replace(Regex(","), "").toInt()
+                viewModel.numberCustomer = s.replace(Regex("[,]"), "").toInt()
                 binding.numberCustomer.setText(viewModel.numberCustomer.toString())
                 binding.numberCustomer.addTextChangedListener(this)
             }

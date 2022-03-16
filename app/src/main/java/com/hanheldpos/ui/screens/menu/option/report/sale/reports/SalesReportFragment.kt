@@ -10,8 +10,7 @@ import com.hanheldpos.ui.screens.menu.option.report.sale.customize.CustomizeRepo
 import com.hanheldpos.ui.screens.menu.option.report.sale.reports.adapter.NumberDayReportAdapter
 import com.hanheldpos.ui.screens.menu.option.report.sale.reports.adapter.NumberDayReportItem
 import com.hanheldpos.ui.screens.menu.option.report.sale.reports.adapter.ReportOptionPageAdapter
-import com.hanheldpos.ui.screens.menu.option.report.sale.reports.overview.OverviewReportFragment
-import com.hanheldpos.utils.time.DateTimeHelper
+import com.hanheldpos.utils.time.DateTimeUtils
 import java.time.temporal.ChronoUnit
 import java.util.*
 
@@ -121,12 +120,12 @@ class SalesReportFragment : BaseFragment<FragmentSalesReportBinding, SalesReport
 
     private fun setUpDateTitle(saleReportCustomData: SaleReportCustomData) {
 
-        val dateStr: String = DateTimeHelper.dateToString(
+        val dateStr: String = DateTimeUtils.dateToString(
             saleReportCustomData.startDay,
-            DateTimeHelper.Format.dd_MMM_YYYY
-        ) + " - " + DateTimeHelper.dateToString(
+            DateTimeUtils.Format.dd_MMM_YYYY
+        ) + " - " + DateTimeUtils.dateToString(
             saleReportCustomData.endDay,
-            DateTimeHelper.Format.dd_MMM_YYYY
+            DateTimeUtils.Format.dd_MMM_YYYY
         )
         binding.dateFromTo.text = dateStr
 

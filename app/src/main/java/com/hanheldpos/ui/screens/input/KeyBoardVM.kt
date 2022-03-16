@@ -1,6 +1,7 @@
 package com.hanheldpos.ui.screens.input
 
 import android.view.View
+import android.widget.EditText
 import android.widget.TextView
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
@@ -83,10 +84,11 @@ class KeyBoardVM(type: KeyBoardType) : ViewModel() {
         }
     }
 
-    fun onListener(view: TextView, listener: KeyBoardCallBack) {
-        input.observe(view.context as LifecycleOwner) {
-            view.text = it
+    fun onListener(owner: LifecycleOwner,view: EditText, listener: KeyBoardCallBack,initInput : String = "") {
+        input.observe(owner) {
+            view.setText(it)
         }
+        input.postValue(initInput)
         this.listener = listener;
     }
 

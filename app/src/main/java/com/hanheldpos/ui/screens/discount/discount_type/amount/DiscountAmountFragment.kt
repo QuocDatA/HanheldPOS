@@ -10,6 +10,7 @@ import com.hanheldpos.model.discount.DiscountUser
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.discount.DiscountFragment
 import com.hanheldpos.ui.screens.discount.discount_type.DiscountTypeItemFragment
+import com.hanheldpos.utils.PriceUtils
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 
@@ -41,15 +42,7 @@ class DiscountAmountFragment(private val applyToType: DiscountApplyToType, priva
                 if (it.toString().isEmpty()) input.setText("0");
                 else {
                     isEditing = true;
-                    val dfSymbols = DecimalFormatSymbols()
-                    dfSymbols.decimalSeparator = '.'
-                    dfSymbols.groupingSeparator = ','
-                    val df = DecimalFormat("###", dfSymbols)
-                    df.groupingSize = 3
-                    df.isGroupingUsed = true
-                    val text = df.format(it.toString().replace(",", "").toDouble());
-                    input.setText(text);
-
+                    input.setText(PriceUtils.formatStringPrice(it.toString()));
                 }
                 input.setSelection(input.length());
                 isEditing = false;

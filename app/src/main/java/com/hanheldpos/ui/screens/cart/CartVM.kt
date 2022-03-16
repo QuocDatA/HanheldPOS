@@ -1,11 +1,9 @@
 package com.hanheldpos.ui.screens.cart
 
 import android.content.Context
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.viewModelScope
 import com.hanheldpos.R
 import com.hanheldpos.database.DatabaseMapper
-import com.hanheldpos.extension.notifyValueChange
 import com.hanheldpos.model.DatabaseHelper
 import com.hanheldpos.model.OrderHelper
 import com.hanheldpos.model.cart.CartConverter
@@ -16,7 +14,7 @@ import com.hanheldpos.model.home.table.TableStatusType
 import com.hanheldpos.model.order.OrderStatus
 import com.hanheldpos.ui.base.dialog.AppAlertDialog
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
-import com.hanheldpos.utils.time.DateTimeHelper
+import com.hanheldpos.utils.time.DateTimeUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
@@ -69,9 +67,9 @@ class CartVM : BaseUiViewModel<CartUV>() {
                 cart.orderGuid = cart.orderCode
             if (cart.createDate == null)
                 cart.createDate =
-                    DateTimeHelper.dateToString(
+                    DateTimeUtils.dateToString(
                         Date(),
-                        DateTimeHelper.Format.FULL_DATE_UTC_TIMEZONE
+                        DateTimeUtils.Format.FULL_DATE_UTC_TIMEZONE
                     )
             val orderStatus =
                 if (OrderHelper.isPaymentSuccess(cart)) OrderStatus.COMPLETED.value else OrderStatus.ORDER.value

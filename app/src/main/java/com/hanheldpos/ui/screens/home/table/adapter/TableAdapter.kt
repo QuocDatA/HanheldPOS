@@ -20,7 +20,7 @@ import com.hanheldpos.model.home.table.TableStatusType
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
-import com.hanheldpos.utils.time.DateTimeHelper
+import com.hanheldpos.utils.time.DateTimeUtils
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -115,9 +115,9 @@ class TableAdapter(
                             view.tableItemBackground.setBackgroundColor(
                                 unavailableColor
                             )
-                            DateTimeHelper.strToDate(
+                            DateTimeUtils.strToDate(
                                 item.orderSummary!!.CreateDate,
-                                DateTimeHelper.Format.FULL_DATE_UTC_TIMEZONE
+                                DateTimeUtils.Format.FULL_DATE_UTC_TIMEZONE
                             )?.let {
                                 val time = Date().time  - it.time
                                 view.timeCount.text = String.format("%02d:%02d",

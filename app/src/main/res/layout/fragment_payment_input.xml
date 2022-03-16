@@ -59,7 +59,7 @@
                     app:boxCornerRadiusTopStart="0dp"
                     app:endIconDrawable="@drawable/ic_clear_text"
                     app:endIconTint="@android:color/transparent"
-                    app:endIconMode="custom"
+                    app:endIconMode="clear_text"
                     app:hintEnabled="false"
                     tools:ignore="LabelFor">
 

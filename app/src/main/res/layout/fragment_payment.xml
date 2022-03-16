@@ -110,12 +110,12 @@
                             android:onClick="@{v -> viewModel.openPaymentDetail()}"
                             android:scaleType="fitXY"
                             android:src="@drawable/ic_info"
-                            android:visibility="gone" />
+                            visibleObject="@{!viewModel.paymentMethods.empty}" />
 
                         <com.diadiem.pos_components.PTextView
                             android:id="@+id/totalPaid"
                             style="@style/CartTitle"
-                            priceView="0"
+                            priceView="@{viewModel.totalPay}"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="start"
@@ -175,7 +175,6 @@
                     android:focusable="true"
                     android:foreground="?attr/selectableItemBackground"
                     android:gravity="center"
-                    android:onClick="@{v->viewModel.getPayment()}"
                     android:paddingVertical="@dimen/_6sdp"
                     app:pbtn_useBackgroundColor="true"
                     app:pbtn_useFontStyle="bold"

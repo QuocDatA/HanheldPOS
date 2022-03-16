@@ -6,6 +6,6 @@ class WalletPayment(paymentMethod: PaymentMethodResp,
                     listener: PaymentMethodCallback,
 ) : BasePayment(paymentMethod, listener) {
     override fun startPayment(balance: Double, orderId: String, customerId: String?) {
-        TODO("Not yet implemented")
+        listener.onShowPaymentInput(this,balance, orderId, customerId)
     }
 }

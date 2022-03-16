@@ -7,7 +7,7 @@ import com.hanheldpos.databinding.ItemCashDrawerPaidInOutBinding
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
 import com.hanheldpos.utils.PriceUtils
-import com.hanheldpos.utils.time.DateTimeHelper
+import com.hanheldpos.utils.time.DateTimeUtils
 
 class PaidInOutAdapter : BaseBindingListAdapter<PaidInOutListResp>(DiffCallback()) {
     override fun getItemViewType(position: Int): Int {
@@ -19,11 +19,11 @@ class PaidInOutAdapter : BaseBindingListAdapter<PaidInOutListResp>(DiffCallback(
         val binding = holder.binding as ItemCashDrawerPaidInOutBinding;
 
         binding.timeApply.text =
-            DateTimeHelper.dateToString(
-                DateTimeHelper.strToDate(
+            DateTimeUtils.dateToString(
+                DateTimeUtils.strToDate(
                     item.CreateDate,
-                    DateTimeHelper.Format.FULL_DATE_UTC_NOT_MILI
-                ), DateTimeHelper.Format.DD_MM_YYYY_HH_MM
+                    DateTimeUtils.Format.FULL_DATE_UTC_NOT_MILI
+                ), DateTimeUtils.Format.DD_MM_YYYY_HH_MM
             )
         binding.description.text = item.Description;
         binding.amount.text =
