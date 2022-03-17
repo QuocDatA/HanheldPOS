@@ -20,6 +20,9 @@ import com.hanheldpos.ui.screens.root.RootFragment
 import com.hanheldpos.ui.screens.welcome.WelcomeFragment
 import com.hanheldpos.utils.NetworkUtils
 import com.utils.helper.SystemHelper
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class MainActivity : BaseFragmentBindingActivity<ActivityMainBinding, MainVM>(), MainUV {
 
@@ -48,7 +51,17 @@ class MainActivity : BaseFragmentBindingActivity<ActivityMainBinding, MainVM>(),
     }
 
     override fun initData() {
+        NetworkUtils.checkActiveInternetConnection(listener = object : NetworkUtils.NetworkConnectionCallBack {
+            override fun onAvailable() {
 
+            }
+
+            override fun onLost() {
+                CoroutineScope(Dispatchers.Main).launch {
+                    showAlert(title =  getString(R.string.notification), message =  getString(R.string.no_network_connection))
+                }
+            }
+        })
     }
 
     override fun initAction() {
