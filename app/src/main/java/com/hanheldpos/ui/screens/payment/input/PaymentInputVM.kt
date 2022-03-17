@@ -17,4 +17,8 @@ class PaymentInputVM : BaseUiViewModel<PaymentInputUV>() {
         uiCallback?.clearInput()
     }
 
+    fun onFragmentBackPressed() {
+        uiCallback?.onFragmentBackPressed()
+    }
+
 }

@@ -4,7 +4,7 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class CardNumberResp(
+data class GiftCardResp(
     val Active: Int,
     val Balance: Double,
     val CardNumber: String,

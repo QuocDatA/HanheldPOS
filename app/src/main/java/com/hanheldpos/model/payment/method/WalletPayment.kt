@@ -6,6 +6,6 @@ class WalletPayment(paymentMethod: PaymentMethodResp,
                     listener: PaymentMethodCallback,
 ) : BasePayment(paymentMethod, listener) {
     override fun startPayment(balance: Double, orderId: String, customerId: String?) {
-        listener.onShowPaymentInputAmount(this,balance, orderId, customerId)
+        listener.onShowPaymentInputCartNumber(this,balance, orderId, customerId)
     }
 }

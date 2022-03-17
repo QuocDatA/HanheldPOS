@@ -9,6 +9,7 @@ import com.hanheldpos.model.payment.PaymentFactory
 import com.hanheldpos.model.payment.PaymentMethodType
 import com.hanheldpos.model.payment.PaymentOrder
 import com.hanheldpos.model.payment.method.BasePayment
+import com.hanheldpos.model.payment.method.GiftCartPayment
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.adapter.GridSpacingItemDecoration
 import com.hanheldpos.ui.base.fragment.BaseFragment
@@ -76,9 +77,10 @@ class PaymentFragment(
             onPaymentSuggestionClickListener = object :
                 BaseItemClickListener<PaymentSuggestionItem> {
                 override fun onItemClick(adapterPosition: Int, item: PaymentSuggestionItem) {
-                    paymentMethodAdapter.currentList.find { PaymentMethodType.fromInt(it.paymentMethod.PaymentMethodType) == PaymentMethodType.CASH }?.let {
-                        paymentChosenSuccess(it,item.price)
-                    }
+                    paymentMethodAdapter.currentList.find { PaymentMethodType.fromInt(it.paymentMethod.PaymentMethodType) == PaymentMethodType.CASH }
+                        ?.let {
+                            paymentChosenSuccess(it, item.price)
+                        }
                 }
             },
         )
@@ -95,7 +97,7 @@ class PaymentFragment(
         //endregion
 
         viewModel.listPaymentChosen.observe(this) {
-            binding.paymentDetail.visibility = if (it.isEmpty())  View.GONE else View.VISIBLE
+            binding.paymentDetail.visibility = if (it.isEmpty()) View.GONE else View.VISIBLE
         }
 
     }
@@ -110,7 +112,8 @@ class PaymentFragment(
                         base: BasePayment,
                         balance: Double,
                         orderId: String,
-                        customerId: String?
+                        customerId: String?,
+                        balanceCart: Double?
                     ) {
                         navigator.goTo(
                             PaymentInputFragment(
@@ -119,13 +122,14 @@ class PaymentFragment(
                                         balance
                                     )
                                 })",
-                                balance = balance,
+                                amountDue = balance,
                                 keyBoardType = KeyBoardType.NumberOnly,
                                 listener = object : PaymentInputFragment.PaymentInputListener {
                                     override fun onSave(amount: Double) {
                                         paymentChosenSuccess(base, amount)
                                     }
-                                }
+                                },
+                                balance = balanceCart
                             )
                         )
                     }
@@ -139,11 +143,11 @@ class PaymentFragment(
                         navigator.goTo(
                             PaymentInputFragment(
                                 title = getString(R.string.input_card_number),
-                                balance = balance,
+                                amountDue = balance,
                                 keyBoardType = KeyBoardType.Text,
                                 listener = object : PaymentInputFragment.PaymentInputListener {
-                                    override fun onSave(cartNumber: String) {
-
+                                    override fun onSave(cardNumber: String) {
+                                        viewModel.processPaymentGiftCard(base, cardNumber)
                                     }
                                 }
                             )
@@ -170,9 +174,10 @@ class PaymentFragment(
             }
         }
         binding.totalPriceButton.setOnClickListener {
-            paymentMethodAdapter.currentList.find { PaymentMethodType.fromInt(it.paymentMethod.PaymentMethodType) == PaymentMethodType.CASH }?.let {
-                paymentChosenSuccess(it,viewModel.balance.value!!)
-            }
+            paymentMethodAdapter.currentList.find { PaymentMethodType.fromInt(it.paymentMethod.PaymentMethodType) == PaymentMethodType.CASH }
+                ?.let {
+                    paymentChosenSuccess(it, viewModel.balance.value!!)
+                }
         }
     }
 
@@ -186,7 +191,18 @@ class PaymentFragment(
         navigator.goTo(PaymentDetailFragment(viewModel.listPaymentChosen.value))
     }
 
+    override fun onValidCardNumber(payment: BasePayment, balanceCart: Double?) {
+        if (payment is GiftCartPayment)
+            payment.onValidPayment(
+                viewModel.balance.value!!,
+                balanceCart,
+                CurCartData.cartModel?.orderGuid!!,
+                CurCartData.cartModel?.customer?._Id
+            )
+    }
+
     private fun paymentChosenSuccess(payment: BasePayment, amount: Double) {
+        if (amount <= 0) return
         val balance = viewModel.balance.value!!
         viewModel.balance.postValue(balance - amount)
         val payable = payment.getPayable(amount, balance)

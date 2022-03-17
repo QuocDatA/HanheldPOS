@@ -2,8 +2,7 @@ package com.hanheldpos.ui.screens.payment.input
 
 import android.text.Editable
 import android.text.TextWatcher
-import androidx.core.widget.doAfterTextChanged
-import androidx.core.widget.doOnTextChanged
+import android.view.View
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentPaymentInputBinding
 import com.hanheldpos.model.keyboard.KeyBoardType
@@ -13,9 +12,10 @@ import com.hanheldpos.utils.PriceUtils
 
 class PaymentInputFragment(
     private val title: String,
-    private val balance: Double,
+    private val amountDue: Double,
     private val keyBoardType: KeyBoardType,
-    private val listener: PaymentInputListener
+    private val listener: PaymentInputListener,
+    private val balance: Double? = null
 ) :
     BaseFragment<FragmentPaymentInputBinding, PaymentInputVM>(), PaymentInputUV {
 
@@ -54,8 +54,15 @@ class PaymentInputFragment(
     }
 
     private fun setViewForAmount() {
-        viewModel.inputAmount = balance
+        viewModel.inputAmount = amountDue
         binding.numberPaymentInput.hint = getString(R.string.enter_amount)
+
+        balance?.let {
+            binding.balanceTitleCardNumber.visibility = View.VISIBLE
+            binding.balanceTitleCardNumber.text =
+                "(${getString(R.string.balance)} : ${PriceUtils.formatStringPrice(balance)})"
+        }
+
 
         keyBoardVM.onListener(
             this,
@@ -85,8 +92,10 @@ class PaymentInputFragment(
                     viewModel.inputAmount = 0.0
                     return
                 }
+                var result = s.replace(Regex("[,]"), "").toDouble()
+                if (balance != null && result > balance) result = balance
                 binding.numberPaymentInput.removeTextChangedListener(this)
-                viewModel.inputAmount = s.replace(Regex("[,]"), "").toDouble()
+                viewModel.inputAmount = result
                 binding.numberPaymentInput.setText(PriceUtils.formatStringPrice(viewModel.inputAmount))
                 binding.numberPaymentInput.addTextChangedListener(this)
             }
@@ -95,7 +104,7 @@ class PaymentInputFragment(
 
     private fun setViewForCardNumber() {
         binding.numberPaymentInput.hint = getString(R.string.card_number)
-
+        keyBoardVM.onCapLock(true)
         keyBoardVM.onListener(
             this,
             binding.numberPaymentInput,
@@ -125,7 +134,7 @@ class PaymentInputFragment(
                     return
                 }
                 binding.numberPaymentInput.removeTextChangedListener(this)
-                viewModel.inputCardNumber = s.replace(Regex("[ ]"), "")
+                viewModel.inputCardNumber = s.replace(Regex("[^A-Z0-9]"), "")
                 binding.numberPaymentInput.setText(viewModel.inputCardNumber)
                 binding.numberPaymentInput.addTextChangedListener(this)
             }
@@ -144,6 +153,6 @@ class PaymentInputFragment(
 
     interface PaymentInputListener {
         fun onSave(amount: Double): Unit {}
-        fun onSave(cartNumber: String): Unit {}
+        fun onSave(cardNumber: String): Unit {}
     }
 }

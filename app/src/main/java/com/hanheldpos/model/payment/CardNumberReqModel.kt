@@ -5,7 +5,7 @@ import kotlinx.parcelize.Parcelize
 
 
 @Parcelize
-data class GiftCardReqModel(
+data class CardNumberReqModel(
     val ApplyToId: Double?,
     val ApplyToPayment: Double,
     val CardCode: String,
