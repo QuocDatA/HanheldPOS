@@ -214,4 +214,7 @@
     <string name="pay_type">Pay Type</string>
     <string name="pay_amount">Pay Amount</string>
     <string name="amount_due">Amount Due</string>
+    <string name="input_card_number">Input Card Number</string>
+    <string name="card_number">Card Number</string>
+    <string name="balance">Balance</string>
 </resources>

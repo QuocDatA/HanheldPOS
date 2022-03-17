@@ -13,7 +13,8 @@
         <import type="android.view.View" />
     </data>
 
-    <FrameLayout
+    <LinearLayout
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center_horizontal"
@@ -49,7 +50,7 @@
                             android:onClick="@{(view) -> viewModel.concatenateInputString(view)}"
                             android:text="7" />
 
-                        <Space
+                        <androidx.legacy.widget.Space
                             android:layout_width="wrap_content"
                             android:layout_height="@dimen/_10sdp" />
 
@@ -58,7 +59,7 @@
                             android:onClick="@{(view) -> viewModel.concatenateInputString(view)}"
                             android:text="4" />
 
-                        <Space
+                        <androidx.legacy.widget.Space
                             android:layout_width="wrap_content"
                             android:layout_height="@dimen/_10sdp" />
 
@@ -67,7 +68,7 @@
                             android:onClick="@{(view) -> viewModel.concatenateInputString(view)}"
                             android:text="1" />
 
-                        <Space
+                        <androidx.legacy.widget.Space
                             android:layout_width="wrap_content"
                             android:layout_height="@dimen/_10sdp" />
 
@@ -80,7 +81,7 @@
 
                     </LinearLayout>
 
-                    <Space
+                    <androidx.legacy.widget.Space
                         android:layout_width="@dimen/_10sdp"
                         android:layout_height="wrap_content" />
 
@@ -96,7 +97,7 @@
                             android:onClick="@{(view) -> viewModel.concatenateInputString(view)}"
                             android:text="8" />
 
-                        <Space
+                        <androidx.legacy.widget.Space
                             android:layout_width="wrap_content"
                             android:layout_height="@dimen/_10sdp" />
 
@@ -106,7 +107,7 @@
                             android:onClick="@{(view) -> viewModel.concatenateInputString(view)}"
                             android:text="5" />
 
-                        <Space
+                        <androidx.legacy.widget.Space
                             android:layout_width="wrap_content"
                             android:layout_height="@dimen/_10sdp" />
 
@@ -116,7 +117,7 @@
                             android:onClick="@{(view) -> viewModel.concatenateInputString(view)}"
                             android:text="2" />
 
-                        <Space
+                        <androidx.legacy.widget.Space
                             android:layout_width="wrap_content"
                             android:layout_height="@dimen/_10sdp" />
 
@@ -139,7 +140,7 @@
             </LinearLayout>
 
 
-            <Space
+            <androidx.legacy.widget.Space
                 android:layout_width="@dimen/_10sdp"
                 android:layout_height="wrap_content" />
 
@@ -154,7 +155,7 @@
                     android:onClick="@{(view) -> viewModel.concatenateInputString(view)}"
                     android:text="9" />
 
-                <Space
+                <androidx.legacy.widget.Space
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/_10sdp" />
 
@@ -163,7 +164,7 @@
                     android:onClick="@{(view) -> viewModel.concatenateInputString(view)}"
                     android:text="6" />
 
-                <Space
+                <androidx.legacy.widget.Space
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/_10sdp" />
 
@@ -172,7 +173,7 @@
                     android:onClick="@{(view) -> viewModel.concatenateInputString(view)}"
                     android:text="3" />
 
-                <Space
+                <androidx.legacy.widget.Space
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/_10sdp" />
 
@@ -182,7 +183,7 @@
                     android:text="00" />
             </LinearLayout>
 
-            <Space
+            <androidx.legacy.widget.Space
                 android:layout_width="@dimen/_10sdp"
                 android:layout_height="wrap_content" />
 
@@ -200,7 +201,7 @@
                     android:scaleType="centerInside"
                     android:src="@drawable/ic_backspace" />
 
-                <Space
+                <androidx.legacy.widget.Space
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/_10sdp" />
 
@@ -211,7 +212,7 @@
                     android:onClick="@{v->viewModel.listener.onComplete()}"
                     android:text="OK" />
 
-                <Space
+                <androidx.legacy.widget.Space
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/_10sdp" />
 
@@ -224,5 +225,5 @@
 
         </LinearLayout>
 
-    </FrameLayout>
+    </LinearLayout>
 </layout>

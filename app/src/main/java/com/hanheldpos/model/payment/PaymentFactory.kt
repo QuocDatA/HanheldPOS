@@ -1,7 +1,7 @@
-package com.hanheldpos.model.cart.payment
+package com.hanheldpos.model.payment
 
 import com.hanheldpos.data.api.pojo.payment.PaymentMethodResp
-import com.hanheldpos.model.cart.payment.method.*
+import com.hanheldpos.model.payment.method.*
 
 object PaymentFactory {
     fun getPaymentMethod(

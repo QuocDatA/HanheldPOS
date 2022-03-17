@@ -1,4 +1,4 @@
-package com.hanheldpos.model.cart.payment.method
+package com.hanheldpos.model.payment.method
 
 import com.hanheldpos.data.api.pojo.payment.PaymentMethodResp
 
@@ -7,7 +7,7 @@ class CashVoucherPayment(
     listener: PaymentMethodCallback,
 ) : BasePayment(paymentMethod, listener) {
     override fun startPayment(balance: Double, orderId: String, customerId: String?) {
-        listener.onShowCashVoucherList(this,balance,orderId,customerId)
+        listener.onShowCashVoucherList(this)
     }
 
 }

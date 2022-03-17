@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentPaymentDetailBinding
-import com.hanheldpos.model.cart.payment.PaymentOrder
+import com.hanheldpos.model.payment.PaymentOrder
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.payment.detail.adapter.PaymentDetailAdapter
 

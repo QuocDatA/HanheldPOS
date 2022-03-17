@@ -9,7 +9,7 @@ import com.hanheldpos.model.OrderHelper
 import com.hanheldpos.model.cart.CartConverter
 import com.hanheldpos.model.cart.CartModel
 import com.hanheldpos.model.cart.DiscountCart
-import com.hanheldpos.model.cart.payment.PaymentStatus
+import com.hanheldpos.model.payment.PaymentStatus
 import com.hanheldpos.model.home.table.TableStatusType
 import com.hanheldpos.model.order.OrderStatus
 import com.hanheldpos.ui.base.dialog.AppAlertDialog

@@ -1,11 +1,11 @@
-package com.hanheldpos.model.cart.payment
+package com.hanheldpos.model.payment
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 
 @Parcelize
-data class GiftCardReqModel(
+data class CardNumberReqModel(
     val ApplyToId: Double?,
     val ApplyToPayment: Double,
     val CardCode: String,

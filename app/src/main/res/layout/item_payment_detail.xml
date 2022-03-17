@@ -7,7 +7,7 @@
 
         <variable
             name="item"
-            type="com.hanheldpos.model.cart.payment.PaymentOrder" />
+            type="com.hanheldpos.model.payment.PaymentOrder" />
     </data>
 
     <LinearLayout

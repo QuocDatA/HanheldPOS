@@ -31,20 +31,20 @@ class KeyBoardVM(type: KeyBoardType) : ViewModel() {
         val textView = view as TextView
         if (input.value.isNullOrEmpty()) {
             input.value = ""
-            if(textView.text == "space") {
+            if (textView.text == "space") {
                 input.value = (input.value + " ")
             } else {
-                if(isCapLock.value!!){
+                if (isCapLock.value!!) {
                     input.value = (input.value + (textView.text).toString().uppercase())
                 } else {
                     input.value = (input.value + textView.text)
                 }
             }
         } else {
-            if(textView.text == "space") {
+            if (textView.text == "space") {
                 input.value = (input.value + " ")
             } else {
-                if(isCapLock.value!!){
+                if (isCapLock.value!!) {
                     input.value = (input.value + (textView.text).toString().uppercase())
                 } else {
                     input.value = (input.value + textView.text)
@@ -71,12 +71,16 @@ class KeyBoardVM(type: KeyBoardType) : ViewModel() {
         isCapLock.postValue(!isCapLock.value!!)
     }
 
+    fun onCapLock(capLock: Boolean) {
+        isCapLock.postValue(capLock)
+    }
+
     fun clearText() {
         input.postValue("")
     }
 
     fun switchKeyBoardType() {
-        when(keyBoardType.value!!)  {
+        when (keyBoardType.value!!) {
             KeyBoardType.Number -> {
                 keyBoardType.postValue(KeyBoardType.Text)
             }
@@ -88,7 +92,12 @@ class KeyBoardVM(type: KeyBoardType) : ViewModel() {
         }
     }
 
-    fun onListener(owner: LifecycleOwner,view: EditText, listener: KeyBoardCallBack,initInput : String = "") {
+    fun onListener(
+        owner: LifecycleOwner,
+        view: EditText,
+        listener: KeyBoardCallBack,
+        initInput: String = ""
+    ) {
         input.observe(owner) {
             view.setText(it)
         }
