@@ -2,7 +2,6 @@ package com.hanheldpos.data.api.pojo.device
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
-import kotlinx.parcelize.RawValue
 
 @Parcelize
 data class Device(
@@ -14,8 +13,8 @@ data class Device(
     val DeviceId: Int,
     val DeviceType: Int,
     val DisplayStyle: Int,
-    val EnableLocation: @RawValue Any,
-    val EnableNotification: @RawValue Any,
+    val EnableLocation: Long?,
+    val EnableNotification: Long?,
     val ExtraItemStyle: Int,
     val ExtraStyle: Int,
     val HexCode: String,
@@ -27,7 +26,7 @@ data class Device(
     val Phone: String,
     val PrintKitchen: Int,
     val PrintStandard: Int,
-    val RequestNotification: @RawValue Any,
+    val RequestNotification: Long?,
     val ResolutionId: Int,
     val SecretKey: String,
     val ShowReceiptScreen: Int,
