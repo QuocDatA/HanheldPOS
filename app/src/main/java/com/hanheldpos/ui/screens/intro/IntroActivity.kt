@@ -34,17 +34,6 @@ class IntroActivity : BaseActivity<ActivityIntroBinding, IntroVM>(), IntroUV {
     }
 
     override fun initAction() {
-        NetworkUtils.checkActiveInternetConnection(listener = object : NetworkUtils.NetworkConnectionCallBack {
-            override fun onAvailable() {
-
-            }
-
-            override fun onLost() {
-                CoroutineScope(Dispatchers.Main).launch {
-                    showAlert(title =  getString(R.string.notification), message =  getString(R.string.no_network_connection))
-                }
-            }
-        })
 
     }
 

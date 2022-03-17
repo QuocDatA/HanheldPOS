@@ -59,8 +59,8 @@ object NetworkUtils {
     }
 
     fun checkActiveInternetConnection(listener: NetworkConnectionCallBack) {
-        isCheckOnlineStatus = true
         CoroutineScope(Dispatchers.IO).launch {
+            isCheckOnlineStatus = true
             while (isCheckOnlineStatus) {
                 if (isOnline())
                     listener.onAvailable()

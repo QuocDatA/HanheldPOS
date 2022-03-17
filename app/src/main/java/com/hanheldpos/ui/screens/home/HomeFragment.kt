@@ -21,6 +21,7 @@ import com.hanheldpos.ui.screens.home.table.TableFragment
 import com.hanheldpos.ui.screens.main.adapter.SubSpinnerAdapter
 import com.hanheldpos.ui.screens.main.adapter.TabSpinnerAdapter
 import com.hanheldpos.ui.screens.menu.MenuFragment
+import com.hanheldpos.utils.NetworkUtils
 
 
 class HomeFragment : BaseFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
@@ -98,6 +99,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
     }
 
     override fun initAction() {
+        NetworkUtils.cancelNetworkCheck()
+
         cartDataVM.diningOptionLD.observe(this) { diningOption ->
             if (diningOption?.SubDiningOption.isNullOrEmpty()) {
                 diningOptionSpinnerAdapter.submitList(mutableListOf())

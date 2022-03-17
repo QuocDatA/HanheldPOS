@@ -3,6 +3,7 @@ package com.hanheldpos.ui.screens.payment
 import android.view.View
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.payment.PaymentSuggestionItem
+import com.hanheldpos.data.api.pojo.payment.Voucher
 import com.hanheldpos.databinding.FragmentPaymentBinding
 import com.hanheldpos.model.keyboard.KeyBoardType
 import com.hanheldpos.model.payment.PaymentFactory
@@ -18,6 +19,7 @@ import com.hanheldpos.ui.screens.payment.adapter.PaymentMethodAdapter
 import com.hanheldpos.ui.screens.payment.adapter.PaymentSuggestionAdapter
 import com.hanheldpos.ui.screens.payment.detail.PaymentDetailFragment
 import com.hanheldpos.ui.screens.payment.input.PaymentInputFragment
+import com.hanheldpos.ui.screens.payment.voucher.VoucherFragment
 import com.hanheldpos.utils.PriceUtils
 
 
@@ -154,10 +156,22 @@ class PaymentFragment(
                         )
                     }
 
-                    override fun onShowCashVoucherList() {
-
+                    override fun onShowCashVoucherList(
+                        base: BasePayment,
+                    ) {
+                        navigator.goTo(
+                            VoucherFragment(
+                                payment.ListPayment,
+                                listener = object : VoucherFragment.CashVoucherCallBack {
+                                    override fun onVoucherSelected(amount: Double) {
+                                        paymentChosenSuccess(base, amount)
+                                    }
+                                },
+                            )
+                        )
                     }
-                })
+                },
+            )
         }
         paymentMethodAdapter.submitList(paymentMethods)
 

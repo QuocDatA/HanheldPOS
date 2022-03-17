@@ -7,7 +7,7 @@ class CashVoucherPayment(
     listener: PaymentMethodCallback,
 ) : BasePayment(paymentMethod, listener) {
     override fun startPayment(balance: Double, orderId: String, customerId: String?) {
-        listener.onShowCashVoucherList()
+        listener.onShowCashVoucherList(this)
     }
 
 }
