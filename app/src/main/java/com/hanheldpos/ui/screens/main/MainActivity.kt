@@ -65,7 +65,7 @@ class MainActivity : BaseFragmentBindingActivity<ActivityMainBinding, MainVM>(),
     }
 
     override fun initAction() {
-        NetworkUtils.cancelNetworkCheck()
+
     }
 
     override fun openPinCode() {

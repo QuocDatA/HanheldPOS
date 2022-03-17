@@ -53,7 +53,7 @@
 
             <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -72,6 +72,9 @@
                         android:background="@color/color_2"
                         android:paddingHorizontal="@dimen/_8sdp"
                         android:paddingVertical="@dimen/_15sdp"
+                        android:fadeScrollbars="false"
+                        android:overScrollMode="never"
+                        android:scrollbarSize="@dimen/_4sdp"
                         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                         app:spanCount="2"
                         tools:listitem="@layout/item_cash_voucher" />
