@@ -19,6 +19,7 @@ import com.hanheldpos.ui.screens.menu.adapter.OptionNavAdapter
 import com.hanheldpos.ui.screens.menu.option.report.ReportFragment
 import com.hanheldpos.ui.screens.pincode.PinCodeFragment
 import com.hanheldpos.ui.screens.welcome.WelcomeFragment
+import com.hanheldpos.utils.NetworkUtils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
@@ -140,6 +141,7 @@ class MenuFragment : BaseFragment<FragmentMenuBinding, MenuVM>(), MenuUV {
                                 when (typeLogout) {
                                     LogoutType.LOGOUT_DEVICE -> {
                                         navigator.clearHistory()
+                                        NetworkUtils.enableNetworkCheck()
                                         navigator.goTo(WelcomeFragment())
                                     }
                                     LogoutType.RESET -> TODO()
@@ -161,6 +163,7 @@ class MenuFragment : BaseFragment<FragmentMenuBinding, MenuVM>(), MenuUV {
             onClickListener = object : AppAlertDialog.AlertDialogOnClickListener {
                 override fun onPositiveClick() {
                     navigator.clearHistory()
+                    NetworkUtils.enableNetworkCheck()
                     navigator.goTo(PinCodeFragment())
                 }
             })

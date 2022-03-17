@@ -1,5 +1,6 @@
 package com.hanheldpos.ui.screens.devicecode
 
+import android.text.InputFilter
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -22,6 +23,8 @@ class DeviceCodeFragment : BaseFragment<FragmentDeviceCodeBinding, DeviceCodeVM>
     override fun layoutRes() = R.layout.fragment_device_code
 
     override fun initView() {
+
+
         recentDeviceAdapter = RecentDeviceAdapter(listener = object: RecentDeviceAdapter.RecentAccountClickListener<Device> {
             val subList = DataHelper.recentDeviceCodeLocalStorage?.toMutableList()
             override fun onItemClick(adapterPosition: Int, item: Device, view: View) {

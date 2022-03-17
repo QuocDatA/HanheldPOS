@@ -78,11 +78,12 @@
                 tools:ignore="LabelFor">
 
                 <com.diadiem.pos_components.PTextInputEditText
+                    android:id="@+id/deviceCodeInputEditText"
                     style="@style/BaseTextInput"
                     groupSize="@{viewModel.pinGroupSize}"
                     android:focusableInTouchMode="true"
                     android:hint="@string/device_code"
-                    android:inputType="textCapCharacters"
+                    android:inputType="textCapWords"
                     android:paddingHorizontal="@dimen/_10sdp"
                     android:paddingVertical="@dimen/_17sdp"
                     android:text="@={viewModel.pinTextLD}"
