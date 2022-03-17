@@ -71,7 +71,7 @@ class PaymentInputFragment(
             listener = object : KeyBoardVM.KeyBoardCallBack {
                 override fun onComplete() {
                     onCancel()
-                    listener.onSave(viewModel.inputAmount)
+                    listener.onSave(viewModel.inputAmount,balance)
                 }
 
                 override fun onCancel() {
@@ -149,10 +149,11 @@ class PaymentInputFragment(
     }
 
     override fun initAction() {
+
     }
 
     interface PaymentInputListener {
-        fun onSave(amount: Double): Unit {}
+        fun onSave(amount: Double,balance: Double?): Unit {}
         fun onSave(cardNumber: String): Unit {}
     }
 }

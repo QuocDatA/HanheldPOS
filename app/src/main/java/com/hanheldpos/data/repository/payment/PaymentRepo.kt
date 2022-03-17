@@ -2,6 +2,7 @@ package com.hanheldpos.data.repository.payment
 
 import com.hanheldpos.data.api.pojo.payment.GiftCardResp
 import com.hanheldpos.data.api.pojo.payment.PaymentMethodResp
+import com.hanheldpos.data.api.pojo.payment.WalletCardResp
 import com.hanheldpos.data.repository.BaseResponse
 import com.hanheldpos.data.repository.base.BaseRepo
 import com.hanheldpos.data.repository.base.BaseRepoCallback
@@ -61,4 +62,32 @@ class PaymentRepo : BaseRepo() {
 
         })
     }
+
+    fun getValidWallet(keyWallet : String,callback: BaseRepoCallback<BaseResponse<WalletCardResp>> ) {
+        callback.apiRequesting(true);
+        paymentService.getValidWallet(keyWallet).enqueue(object :
+            Callback<BaseResponse<WalletCardResp>> {
+            override fun onResponse(
+                call: Call<BaseResponse<WalletCardResp>>,
+                response: Response<BaseResponse<WalletCardResp>>
+            ) {
+                callback.apiRequesting(false);
+                callback.apiResponse(getBodyResponse(response));
+            }
+
+            override fun onFailure(call: Call<BaseResponse<WalletCardResp>>, t: Throwable) {
+                callback.apiRequesting(false);
+                t.printStackTrace();
+                callback.showMessage(t.message);
+            }
+
+        })
+    }
+
+    fun syncPaymentCard(body: String?, callback: BaseRepoCallback<BaseResponse<GiftCardResp>>) {
+        callback.apiRequesting(true)
+
+    }
+
+
 }

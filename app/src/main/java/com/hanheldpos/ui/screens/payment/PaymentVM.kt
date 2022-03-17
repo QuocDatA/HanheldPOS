@@ -5,15 +5,19 @@ import androidx.lifecycle.Transformations
 import com.hanheldpos.data.api.pojo.payment.GiftCardResp
 import com.hanheldpos.data.api.pojo.payment.PaymentMethodResp
 import com.hanheldpos.data.api.pojo.payment.PaymentSuggestionItem
+import com.hanheldpos.data.api.pojo.payment.WalletCardResp
 import com.hanheldpos.data.repository.BaseResponse
 import com.hanheldpos.data.repository.base.BaseRepoCallback
 import com.hanheldpos.data.repository.payment.PaymentRepo
 import com.hanheldpos.extension.notifyValueChange
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.UserHelper
+import com.hanheldpos.model.payment.CardNumberReqModel
 import com.hanheldpos.model.payment.PaymentOrder
+import com.hanheldpos.model.payment.method.BaseCardPayment
 import com.hanheldpos.model.payment.method.BasePayment
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
+import com.hanheldpos.ui.screens.cart.CurCartData
 
 class PaymentVM : BaseUiViewModel<PaymentUV>() {
     private val paymentRepo = PaymentRepo()
@@ -58,7 +62,7 @@ class PaymentVM : BaseUiViewModel<PaymentUV>() {
         listPaymentChosen.notifyValueChange()
     }
 
-    fun processPaymentGiftCard(payment: BasePayment, cardNumber: String) {
+    fun processPaymentGiftCard(payment: BaseCardPayment, cardNumber: String) {
         showLoading(true)
         paymentRepo.getValidGiftCard(
             UserHelper.getUserGuid(),
@@ -69,7 +73,7 @@ class PaymentVM : BaseUiViewModel<PaymentUV>() {
                     if (data == null || data.DidError) {
                         showError(data?.ErrorMessage)
                     } else {
-                        uiCallback?.onValidCardNumber(payment,data.Model?.Balance)
+                        uiCallback?.onValidCardNumber(payment, cardNumber, data.Model?.Balance)
                     }
                 }
 
@@ -78,6 +82,51 @@ class PaymentVM : BaseUiViewModel<PaymentUV>() {
                     showError(message)
                 }
             })
+    }
+
+    fun processPaymentWalletCard(payment: BaseCardPayment, keyWallet : String)  {
+        showLoading(true)
+        paymentRepo.getValidWallet(
+            keyWallet,
+            callback = object : BaseRepoCallback<BaseResponse<WalletCardResp>> {
+                override fun apiResponse(data: BaseResponse<WalletCardResp>?) {
+                    showLoading(false)
+                    if (data == null || data.DidError) {
+                        showError(data?.Message)
+                    } else {
+                        uiCallback?.onValidCardNumber(payment, keyWallet, data.Model?.Balance)
+                    }
+                }
+
+                override fun showMessage(message: String?) {
+                    showLoading(false)
+                    showError(message)
+                }
+            })
+    }
+
+    fun syncPaymentCard(
+        base: BaseCardPayment,
+        orderGuid: String,
+        cardCode: String,
+        amount: Double,
+        balance: Double,
+        customerId: String?
+    ) {
+        var carNumberReq = CardNumberReqModel(
+            UserGuid = UserHelper.getUserGuid(),
+            EmployeeGuid = UserHelper.getEmployeeGuid(),
+            DeviceGuid = UserHelper.getDeviceGuid(),
+            CustomerGuid = customerId,
+            OrderGuid = orderGuid,
+            LocationGuid = UserHelper.getLocationGuid(),
+            CardCode = cardCode,
+            MethodId = base.paymentMethod._id,
+            ApplyToId = base.paymentMethod.ApplyToId,
+            Payable = base.getPayable(amount, balance),
+        )
+
+
     }
 
     fun openPaymentDetail() {

@@ -9,8 +9,10 @@ import com.hanheldpos.model.keyboard.KeyBoardType
 import com.hanheldpos.model.payment.PaymentFactory
 import com.hanheldpos.model.payment.PaymentMethodType
 import com.hanheldpos.model.payment.PaymentOrder
+import com.hanheldpos.model.payment.method.BaseCardPayment
 import com.hanheldpos.model.payment.method.BasePayment
 import com.hanheldpos.model.payment.method.GiftCartPayment
+import com.hanheldpos.model.payment.method.WalletPayment
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.adapter.GridSpacingItemDecoration
 import com.hanheldpos.ui.base.fragment.BaseFragment
@@ -115,6 +117,7 @@ class PaymentFragment(
                         balance: Double,
                         orderId: String,
                         customerId: String?,
+                        cardCode: String?,
                         balanceCart: Double?
                     ) {
                         navigator.goTo(
@@ -127,8 +130,19 @@ class PaymentFragment(
                                 amountDue = balance,
                                 keyBoardType = KeyBoardType.NumberOnly,
                                 listener = object : PaymentInputFragment.PaymentInputListener {
-                                    override fun onSave(amount: Double) {
-                                        paymentChosenSuccess(base, amount)
+                                    override fun onSave(amount: Double, balance: Double?) {
+                                        if (amount <= 0) return
+                                        if (balance != null && cardCode != null) {
+                                            viewModel.syncPaymentCard(
+                                                base as BaseCardPayment,
+                                                CurCartData.cartModel?.orderGuid!!,
+                                                cardCode,
+                                                amount,
+                                                balance,
+                                                CurCartData.cartModel?.customer?._Id
+                                            )
+                                        } else
+                                            paymentChosenSuccess(base, amount)
                                     }
                                 },
                                 balance = balanceCart
@@ -137,7 +151,7 @@ class PaymentFragment(
                     }
 
                     override fun onShowPaymentInputCartNumber(
-                        base: BasePayment,
+                        base: BaseCardPayment,
                         balance: Double,
                         orderId: String,
                         customerId: String?
@@ -149,7 +163,15 @@ class PaymentFragment(
                                 keyBoardType = KeyBoardType.Text,
                                 listener = object : PaymentInputFragment.PaymentInputListener {
                                     override fun onSave(cardNumber: String) {
-                                        viewModel.processPaymentGiftCard(base, cardNumber)
+                                        when (base.javaClass) {
+                                            GiftCartPayment::class.java -> {
+                                                viewModel.processPaymentGiftCard(base, cardNumber)
+                                            }
+                                            WalletPayment::class.java -> {
+                                                viewModel.processPaymentWalletCard(base, cardNumber)
+                                            }
+                                        }
+
                                     }
                                 }
                             )
@@ -205,18 +227,21 @@ class PaymentFragment(
         navigator.goTo(PaymentDetailFragment(viewModel.listPaymentChosen.value))
     }
 
-    override fun onValidCardNumber(payment: BasePayment, balanceCart: Double?) {
-        if (payment is GiftCartPayment)
-            payment.onValidPayment(
-                viewModel.balance.value!!,
-                balanceCart,
-                CurCartData.cartModel?.orderGuid!!,
-                CurCartData.cartModel?.customer?._Id
-            )
+    override fun onValidCardNumber(
+        payment: BaseCardPayment,
+        cardCode: String?,
+        balanceCart: Double?
+    ) {
+        payment.onValidPayment(
+            viewModel.balance.value!!,
+            cardCode,
+            balanceCart,
+            CurCartData.cartModel?.orderGuid!!,
+            CurCartData.cartModel?.customer?._Id
+        )
     }
 
-    private fun paymentChosenSuccess(payment: BasePayment, amount: Double) {
-        if (amount <= 0) return
+    override fun paymentChosenSuccess(payment: BasePayment, amount: Double) {
         val balance = viewModel.balance.value!!
         viewModel.balance.postValue(balance - amount)
         val payable = payment.getPayable(amount, balance)

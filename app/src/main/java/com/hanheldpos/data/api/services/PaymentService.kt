@@ -2,10 +2,10 @@ package com.hanheldpos.data.api.services
 
 import com.hanheldpos.data.api.pojo.payment.GiftCardResp
 import com.hanheldpos.data.api.pojo.payment.PaymentMethodResp
+import com.hanheldpos.data.api.pojo.payment.WalletCardResp
 import com.hanheldpos.data.repository.BaseResponse
 import retrofit2.Call
-import retrofit2.http.GET
-import retrofit2.http.Query
+import retrofit2.http.*
 
 interface PaymentService {
     @GET("payments")
@@ -18,4 +18,9 @@ interface PaymentService {
         @Query("userGuid") userGuid: String?,
         @Query("codeCard") codeCard: String?
     ): Call<BaseResponse<GiftCardResp>>
+
+    @GET("payments/v3")
+    fun getValidWallet(
+        @Query("_key") keyWallet: String?
+    ): Call<BaseResponse<WalletCardResp>>
 }
