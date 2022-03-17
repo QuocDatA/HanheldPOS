@@ -18,6 +18,8 @@ import com.hanheldpos.model.payment.method.BaseCardPayment
 import com.hanheldpos.model.payment.method.BasePayment
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
 import com.hanheldpos.ui.screens.cart.CurCartData
+import com.hanheldpos.utils.GSonUtils
+import kotlinx.parcelize.RawValue
 
 class PaymentVM : BaseUiViewModel<PaymentUV>() {
     private val paymentRepo = PaymentRepo()
@@ -84,7 +86,7 @@ class PaymentVM : BaseUiViewModel<PaymentUV>() {
             })
     }
 
-    fun processPaymentWalletCard(payment: BaseCardPayment, keyWallet : String)  {
+    fun processPaymentWalletCard(payment: BaseCardPayment, keyWallet: String) {
         showLoading(true)
         paymentRepo.getValidWallet(
             keyWallet,
@@ -113,7 +115,8 @@ class PaymentVM : BaseUiViewModel<PaymentUV>() {
         balance: Double,
         customerId: String?
     ) {
-        var carNumberReq = CardNumberReqModel(
+        showLoading(true)
+        val cardNumberReq = CardNumberReqModel(
             UserGuid = UserHelper.getUserGuid(),
             EmployeeGuid = UserHelper.getEmployeeGuid(),
             DeviceGuid = UserHelper.getDeviceGuid(),
@@ -126,7 +129,23 @@ class PaymentVM : BaseUiViewModel<PaymentUV>() {
             Payable = base.getPayable(amount, balance),
         )
 
+        paymentRepo.syncPaymentCard(
+            GSonUtils.toServerJson(cardNumberReq),
+            callback = object : BaseRepoCallback<BaseResponse<@RawValue Any>> {
+                override fun apiResponse(data: BaseResponse<@RawValue Any>?) {
+                    showLoading(false)
+                    if (data == null || data.DidError) {
+                        showError(data?.Message ?: data?.ErrorMessage)
+                    } else {
+                        uiCallback?.paymentChosenSuccess(base, amount)
+                    }
+                }
 
+                override fun showMessage(message: String?) {
+                    showLoading(false)
+                    showError(message)
+                }
+            })
     }
 
     fun openPaymentDetail() {

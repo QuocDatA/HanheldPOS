@@ -6,6 +6,7 @@ import com.hanheldpos.data.api.pojo.payment.WalletCardResp
 import com.hanheldpos.data.repository.BaseResponse
 import com.hanheldpos.data.repository.base.BaseRepo
 import com.hanheldpos.data.repository.base.BaseRepoCallback
+import kotlinx.parcelize.RawValue
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -84,9 +85,25 @@ class PaymentRepo : BaseRepo() {
         })
     }
 
-    fun syncPaymentCard(body: String?, callback: BaseRepoCallback<BaseResponse<GiftCardResp>>) {
+    fun syncPaymentCard(body: String?, callback: BaseRepoCallback<BaseResponse<@RawValue Any>>) {
         callback.apiRequesting(true)
+        paymentService.syncPayment(body).enqueue(object :
+            Callback<BaseResponse<@RawValue Any>> {
+            override fun onResponse(
+                call: Call<BaseResponse<@RawValue Any>>,
+                response: Response<BaseResponse<@RawValue Any>>
+            ) {
+                callback.apiRequesting(false);
+                callback.apiResponse(getBodyResponse(response));
+            }
 
+            override fun onFailure(call: Call<BaseResponse<@RawValue Any>>, t: Throwable) {
+                callback.apiRequesting(false);
+                t.printStackTrace();
+                callback.showMessage(t.message);
+            }
+
+        })
     }
 
 
