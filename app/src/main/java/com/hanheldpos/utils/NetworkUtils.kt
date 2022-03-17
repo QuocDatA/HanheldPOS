@@ -42,7 +42,7 @@ object NetworkUtils {
                 URL("http://www.google.com").openConnection() as HttpURLConnection
             urlConnection.setRequestProperty("User-Agent", "Test")
             urlConnection.setRequestProperty("Connection", "close")
-            urlConnection.connectTimeout = 1500
+            urlConnection.connectTimeout = 5000
             urlConnection.connect()
             true
         } catch (e: IOException) {
@@ -60,8 +60,9 @@ object NetworkUtils {
 
     fun checkActiveInternetConnection(listener: NetworkConnectionCallBack) {
         CoroutineScope(Dispatchers.IO).launch {
-            isCheckOnlineStatus = true
-            while (isCheckOnlineStatus) {
+            enableNetworkCheck()
+            while (true) {
+                if(!isCheckOnlineStatus) continue
                 if (isOnline())
                     listener.onAvailable()
                 else
@@ -73,6 +74,10 @@ object NetworkUtils {
 
     fun cancelNetworkCheck() {
         isCheckOnlineStatus = false
+    }
+
+    fun enableNetworkCheck() {
+        isCheckOnlineStatus = true
     }
 
     interface NetworkConnectionCallBack {
