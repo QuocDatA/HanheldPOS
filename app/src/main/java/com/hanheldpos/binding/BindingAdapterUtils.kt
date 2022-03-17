@@ -76,17 +76,19 @@ fun visibleObject(`object`: Any?): Boolean {
 @BindingAdapter("groupSize")
 fun setGroupSize(inputEditText: TextInputEditText?, groupSize: Int) {
     if (inputEditText == null) return
-    inputEditText.filters = arrayOf(getCustomInputFilter(
+    val inputFilter: InputFilter = getCustomInputFilter(
         allowCharacters = true,
         allowDigits = true,
         allowSpaceChar = false
-    ))
+    )
+    inputEditText.filters = arrayOf(InputFilter.AllCaps(),inputFilter)
 
 
     inputEditText.addTextChangedListener(object : TextWatcher {
         override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
         override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
         override fun afterTextChanged(editable: Editable) {
+            editable.toString().filter { it -> it.isLetter() }
             val paddingSpans: Array<SpaceSpan> =
                 editable.getSpans(0, editable.length, SpaceSpan::class.java)
             for (span in paddingSpans) {
@@ -162,7 +164,7 @@ private fun getCustomInputFilter(
             for (i in start until end) {
                 val c = source[i]
                 if (isCharAllowed(c)) {
-                    sb.append(c.toUpperCase())
+                    sb.append(c.uppercaseChar())
                 } else {
                     keepOriginal = false
                 }
