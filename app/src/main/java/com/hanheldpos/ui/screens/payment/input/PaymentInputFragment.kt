@@ -1,4 +1,4 @@
-package com.hanheldpos.ui.screens.cart.payment.input
+package com.hanheldpos.ui.screens.payment.input
 
 import android.text.Editable
 import android.text.TextWatcher

@@ -1,4 +1,4 @@
-package com.hanheldpos.ui.screens.cart.payment
+package com.hanheldpos.ui.screens.payment
 
 import android.view.View
 import com.hanheldpos.R
@@ -12,10 +12,10 @@ import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.adapter.GridSpacingItemDecoration
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.cart.CurCartData
-import com.hanheldpos.ui.screens.cart.payment.adapter.PaymentMethodAdapter
-import com.hanheldpos.ui.screens.cart.payment.adapter.PaymentSuggestionAdapter
-import com.hanheldpos.ui.screens.cart.payment.detail.PaymentDetailFragment
-import com.hanheldpos.ui.screens.cart.payment.input.PaymentInputFragment
+import com.hanheldpos.ui.screens.payment.adapter.PaymentMethodAdapter
+import com.hanheldpos.ui.screens.payment.adapter.PaymentSuggestionAdapter
+import com.hanheldpos.ui.screens.payment.detail.PaymentDetailFragment
+import com.hanheldpos.ui.screens.payment.input.PaymentInputFragment
 import com.hanheldpos.utils.PriceUtils
 
 

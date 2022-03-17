@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.hanheldpos.ui.screens.cart.payment.input.PaymentInputVM" />
+            type="com.hanheldpos.ui.screens.payment.input.PaymentInputVM" />
         <variable
             name="keyboardVM"
             type="com.hanheldpos.ui.screens.input.KeyBoardVM" />

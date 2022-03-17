@@ -1,4 +1,4 @@
-package com.hanheldpos.ui.screens.cart.payment.adapter
+package com.hanheldpos.ui.screens.payment.adapter
 
 
 import androidx.recyclerview.widget.DiffUtil

@@ -1,4 +1,4 @@
-package com.hanheldpos.ui.screens.cart.payment.input
+package com.hanheldpos.ui.screens.payment.input
 
 import androidx.lifecycle.MutableLiveData
 import com.hanheldpos.data.api.pojo.payment.PaymentMethodResp

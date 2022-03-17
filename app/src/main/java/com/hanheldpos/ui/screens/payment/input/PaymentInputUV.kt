@@ -1,4 +1,4 @@
-package com.hanheldpos.ui.screens.cart.payment.input
+package com.hanheldpos.ui.screens.payment.input
 
 import com.hanheldpos.model.keyboard.KeyBoardType
 import com.hanheldpos.ui.base.BaseUserView

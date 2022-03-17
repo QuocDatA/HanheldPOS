@@ -1,4 +1,4 @@
-package com.hanheldpos.ui.screens.cart.payment.detail
+package com.hanheldpos.ui.screens.payment.detail
 
 import androidx.lifecycle.ViewModel
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel

@@ -1,4 +1,4 @@
-package com.hanheldpos.ui.screens.cart.payment.detail
+package com.hanheldpos.ui.screens.payment.detail
 
 import com.hanheldpos.ui.base.BaseUserView
 

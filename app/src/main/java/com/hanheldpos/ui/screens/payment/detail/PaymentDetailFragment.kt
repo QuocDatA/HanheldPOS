@@ -1,4 +1,4 @@
-package com.hanheldpos.ui.screens.cart.payment.detail
+package com.hanheldpos.ui.screens.payment.detail
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
@@ -10,7 +10,7 @@ import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentPaymentDetailBinding
 import com.hanheldpos.model.cart.payment.PaymentOrder
 import com.hanheldpos.ui.base.fragment.BaseFragment
-import com.hanheldpos.ui.screens.cart.payment.detail.adapter.PaymentDetailAdapter
+import com.hanheldpos.ui.screens.payment.detail.adapter.PaymentDetailAdapter
 
 class PaymentDetailFragment(private val paymentOrderList: List<PaymentOrder>?) :
     BaseFragment<FragmentPaymentDetailBinding, PaymentDetailVM>(), PaymentDetailUV {

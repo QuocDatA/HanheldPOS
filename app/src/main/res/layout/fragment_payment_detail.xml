@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="com.hanheldpos.ui.screens.cart.payment.detail.PaymentDetailVM" />
+            type="com.hanheldpos.ui.screens.payment.detail.PaymentDetailVM" />
     </data>
 
     <LinearLayout

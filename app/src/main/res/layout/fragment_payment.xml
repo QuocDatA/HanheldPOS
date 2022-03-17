@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="com.hanheldpos.ui.screens.cart.payment.PaymentVM" />
+            type="com.hanheldpos.ui.screens.payment.PaymentVM" />
 
         <variable
             name="payable"

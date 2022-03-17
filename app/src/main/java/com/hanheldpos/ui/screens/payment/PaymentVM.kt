@@ -1,4 +1,4 @@
-package com.hanheldpos.ui.screens.cart.payment
+package com.hanheldpos.ui.screens.payment
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations

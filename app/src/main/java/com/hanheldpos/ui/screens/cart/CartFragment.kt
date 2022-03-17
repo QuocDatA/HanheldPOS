@@ -30,8 +30,8 @@ import com.hanheldpos.ui.screens.cart.adapter.CartProductAdapter
 import com.hanheldpos.ui.screens.cart.adapter.CartTipAdapter
 import com.hanheldpos.ui.screens.cart.customer.add_customer.AddCustomerFragment
 import com.hanheldpos.ui.screens.cart.customer.detail_customer.CustomerDetailFragment
-import com.hanheldpos.ui.screens.cart.payment.PaymentFragment
-import com.hanheldpos.ui.screens.cart.payment.completed.PaymentCompletedFragment
+import com.hanheldpos.ui.screens.payment.PaymentFragment
+import com.hanheldpos.ui.screens.payment.completed.PaymentCompletedFragment
 import com.hanheldpos.ui.screens.combo.ComboFragment
 import com.hanheldpos.ui.screens.discount.DiscountFragment
 import com.hanheldpos.ui.screens.home.order.OrderFragment
