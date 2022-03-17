@@ -1,7 +1,7 @@
-package com.hanheldpos.model.cart.payment.method
+package com.hanheldpos.model.payment.method
 
 import com.hanheldpos.data.api.pojo.payment.PaymentMethodResp
-import com.hanheldpos.model.cart.payment.PaymentOrder
+import com.hanheldpos.model.payment.PaymentOrder
 
 abstract class BasePayment(
     public val paymentMethod: PaymentMethodResp,
@@ -14,7 +14,8 @@ abstract class BasePayment(
     }
 
     interface PaymentMethodCallback {
-        fun onShowPaymentInput(base : BasePayment, balance: Double, orderId: String, customerId: String?)
+        fun onShowPaymentInputAmount(base : BasePayment, balance: Double, orderId: String, customerId: String?)
+        fun onShowPaymentInputCartNumber(base : BasePayment, balance: Double, orderId: String, customerId: String?)
         fun onShowCashVoucherList()
     }
 }

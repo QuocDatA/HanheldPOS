@@ -7,7 +7,7 @@ import com.hanheldpos.data.api.pojo.fee.Fee
 import com.hanheldpos.data.api.pojo.order.settings.DiningOption
 import com.hanheldpos.data.api.pojo.order.settings.Reason
 import com.hanheldpos.model.OrderHelper
-import com.hanheldpos.model.cart.payment.PaymentOrder
+import com.hanheldpos.model.payment.PaymentOrder
 import com.hanheldpos.model.discount.DiscountUser
 import com.hanheldpos.model.home.table.TableSummary
 import com.hanheldpos.model.order.DeliveryTime

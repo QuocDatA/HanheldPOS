@@ -7,7 +7,7 @@
 
         <variable
             name="item"
-            type="com.hanheldpos.model.cart.payment.method.BasePayment" />
+            type="com.hanheldpos.model.payment.method.BasePayment" />
     </data>
 
     <com.google.android.material.card.MaterialCardView

@@ -1,4 +1,4 @@
-package com.hanheldpos.model.cart.payment.method
+package com.hanheldpos.model.payment.method
 
 import com.hanheldpos.data.api.pojo.payment.PaymentMethodResp
 

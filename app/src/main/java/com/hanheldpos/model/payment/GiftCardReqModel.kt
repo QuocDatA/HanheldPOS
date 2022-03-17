@@ -1,4 +1,4 @@
-package com.hanheldpos.model.cart.payment
+package com.hanheldpos.model.payment
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

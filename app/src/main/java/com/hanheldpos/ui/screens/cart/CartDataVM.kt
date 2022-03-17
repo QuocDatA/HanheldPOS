@@ -14,7 +14,7 @@ import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.OrderHelper
 import com.hanheldpos.model.UserHelper
 import com.hanheldpos.model.cart.*
-import com.hanheldpos.model.cart.payment.PaymentOrder
+import com.hanheldpos.model.payment.PaymentOrder
 import com.hanheldpos.model.discount.DiscountUser
 import com.hanheldpos.model.home.table.TableSummary
 import com.hanheldpos.ui.base.dialog.AppAlertDialog

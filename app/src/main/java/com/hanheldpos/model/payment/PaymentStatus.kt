@@ -1,4 +1,4 @@
-package com.hanheldpos.model.cart.payment
+package com.hanheldpos.model.payment
 
 enum class PaymentStatus(val value: Int) {
     UNPAID (1),

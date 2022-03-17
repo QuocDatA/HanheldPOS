@@ -4,10 +4,11 @@ import android.view.View
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.payment.PaymentSuggestionItem
 import com.hanheldpos.databinding.FragmentPaymentBinding
-import com.hanheldpos.model.cart.payment.PaymentFactory
-import com.hanheldpos.model.cart.payment.PaymentMethodType
-import com.hanheldpos.model.cart.payment.PaymentOrder
-import com.hanheldpos.model.cart.payment.method.BasePayment
+import com.hanheldpos.model.keyboard.KeyBoardType
+import com.hanheldpos.model.payment.PaymentFactory
+import com.hanheldpos.model.payment.PaymentMethodType
+import com.hanheldpos.model.payment.PaymentOrder
+import com.hanheldpos.model.payment.method.BasePayment
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.adapter.GridSpacingItemDecoration
 import com.hanheldpos.ui.base.fragment.BaseFragment
@@ -105,7 +106,7 @@ class PaymentFragment(
             PaymentFactory.getPaymentMethod(
                 payment,
                 callback = object : BasePayment.PaymentMethodCallback {
-                    override fun onShowPaymentInput(
+                    override fun onShowPaymentInputAmount(
                         base: BasePayment,
                         balance: Double,
                         orderId: String,
@@ -119,9 +120,30 @@ class PaymentFragment(
                                     )
                                 })",
                                 balance = balance,
+                                keyBoardType = KeyBoardType.NumberOnly,
                                 listener = object : PaymentInputFragment.PaymentInputListener {
                                     override fun onSave(amount: Double) {
                                         paymentChosenSuccess(base, amount)
+                                    }
+                                }
+                            )
+                        )
+                    }
+
+                    override fun onShowPaymentInputCartNumber(
+                        base: BasePayment,
+                        balance: Double,
+                        orderId: String,
+                        customerId: String?
+                    ) {
+                        navigator.goTo(
+                            PaymentInputFragment(
+                                title = getString(R.string.input_card_number),
+                                balance = balance,
+                                keyBoardType = KeyBoardType.Text,
+                                listener = object : PaymentInputFragment.PaymentInputListener {
+                                    override fun onSave(cartNumber: String) {
+
                                     }
                                 }
                             )

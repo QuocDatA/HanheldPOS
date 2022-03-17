@@ -6,7 +6,7 @@ import com.hanheldpos.data.api.pojo.payment.PaymentMethodResp
 import com.hanheldpos.data.api.pojo.payment.PaymentSuggestionItem
 import com.hanheldpos.extension.notifyValueChange
 import com.hanheldpos.model.DataHelper
-import com.hanheldpos.model.cart.payment.PaymentOrder
+import com.hanheldpos.model.payment.PaymentOrder
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
 
 class PaymentVM : BaseUiViewModel<PaymentUV>() {

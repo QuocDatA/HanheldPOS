@@ -3,7 +3,7 @@ package com.hanheldpos.ui.screens.payment.adapter
 import androidx.recyclerview.widget.DiffUtil
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.payment.PaymentMethodResp
-import com.hanheldpos.model.cart.payment.method.BasePayment
+import com.hanheldpos.model.payment.method.BasePayment
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 

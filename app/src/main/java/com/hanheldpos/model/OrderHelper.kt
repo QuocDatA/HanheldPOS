@@ -5,7 +5,7 @@ import com.hanheldpos.data.api.pojo.fee.Fee
 import com.hanheldpos.database.entities.OrderCompletedEntity
 import com.hanheldpos.model.cart.CartModel
 import com.hanheldpos.model.cart.fee.FeeApplyToType
-import com.hanheldpos.model.cart.payment.PaymentOrder
+import com.hanheldpos.model.payment.PaymentOrder
 import com.hanheldpos.model.order.Order
 import com.hanheldpos.model.order.OrderReq
 import com.hanheldpos.model.order.OrderStatus

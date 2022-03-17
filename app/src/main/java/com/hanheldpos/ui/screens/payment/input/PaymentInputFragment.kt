@@ -14,12 +14,13 @@ import com.hanheldpos.utils.PriceUtils
 class PaymentInputFragment(
     private val title: String,
     private val balance: Double,
+    private val keyBoardType: KeyBoardType,
     private val listener: PaymentInputListener
 ) :
     BaseFragment<FragmentPaymentInputBinding, PaymentInputVM>(), PaymentInputUV {
 
     //ViewModel
-    private val keyBoardVM = KeyBoardVM(KeyBoardType.NumberOnly)
+    private val keyBoardVM = KeyBoardVM(keyBoardType)
 
     override fun layoutRes() = R.layout.fragment_payment_input
 
@@ -36,7 +37,26 @@ class PaymentInputFragment(
     }
 
     override fun initView() {
+
+        when (keyBoardType) {
+            KeyBoardType.NumberOnly -> {
+                setViewForAmount()
+            }
+            KeyBoardType.Text -> {
+                setViewForCardNumber()
+            }
+            else -> {
+
+            }
+        }
+        binding.paymentInputTitle.text = title
+
+    }
+
+    private fun setViewForAmount() {
         viewModel.inputAmount = balance
+        binding.numberPaymentInput.hint = getString(R.string.enter_amount)
+
         keyBoardVM.onListener(
             this,
             binding.numberPaymentInput,
@@ -45,7 +65,6 @@ class PaymentInputFragment(
                 override fun onComplete() {
                     onCancel()
                     listener.onSave(viewModel.inputAmount)
-
                 }
 
                 override fun onCancel() {
@@ -72,9 +91,45 @@ class PaymentInputFragment(
                 binding.numberPaymentInput.addTextChangedListener(this)
             }
         })
+    }
 
-        binding.paymentInputTitle.text = title
+    private fun setViewForCardNumber() {
+        binding.numberPaymentInput.hint = getString(R.string.card_number)
 
+        keyBoardVM.onListener(
+            this,
+            binding.numberPaymentInput,
+            initInput = viewModel.inputCardNumber,
+            listener = object : KeyBoardVM.KeyBoardCallBack {
+                override fun onComplete() {
+                    onCancel()
+                    listener.onSave(viewModel.inputCardNumber)
+                }
+
+                override fun onCancel() {
+                    onFragmentBackPressed()
+                }
+            })
+        binding.numberPaymentInput.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                if (s.isNullOrEmpty()) {
+                    viewModel.inputCardNumber = ""
+                    return
+                }
+                binding.numberPaymentInput.removeTextChangedListener(this)
+                viewModel.inputCardNumber = s.replace(Regex("[ ]"), "")
+                binding.numberPaymentInput.setText(viewModel.inputCardNumber)
+                binding.numberPaymentInput.addTextChangedListener(this)
+            }
+        })
     }
 
     override fun initData() {
@@ -88,6 +143,7 @@ class PaymentInputFragment(
     }
 
     interface PaymentInputListener {
-        fun onSave(amount: Double)
+        fun onSave(amount: Double): Unit {}
+        fun onSave(cartNumber: String): Unit {}
     }
 }
