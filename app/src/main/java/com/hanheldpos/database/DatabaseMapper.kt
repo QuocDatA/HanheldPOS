@@ -13,7 +13,8 @@ object DatabaseMapper {
         return OrderCompletedEntity(
             id = orderReq.Order.Code!!,
             orderReq.OrderSummary.TableId,
-            orderCompletedJson = GSonUtils.toJson(orderReq),
+            orderDetailsJson = GSonUtils.toJson(orderReq),
+            orderJson = GSonUtils.toJson(orderReq.Order),
             false,
             orderReq.Order.CashDrawer_id!!,
             statusId = OrderStatus.fromInt(orderReq.Order.OrderStatusId!!)!!,
@@ -23,7 +24,7 @@ object DatabaseMapper {
     }
 
     fun mappingOrderReqFromEntity(orderCompletedEntity: OrderCompletedEntity): OrderReq {
-        return GSonUtils.toObject<OrderReq>(orderCompletedEntity.orderCompletedJson)!!;
+        return GSonUtils.toObject<OrderReq>(orderCompletedEntity.orderDetailsJson)!!;
     }
 
     fun mappingTableToEntity(table: FloorTable): TableStatusEntity {

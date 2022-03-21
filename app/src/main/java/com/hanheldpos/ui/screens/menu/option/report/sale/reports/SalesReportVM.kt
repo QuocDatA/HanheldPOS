@@ -114,10 +114,17 @@ class SalesReportVM : BaseUiViewModel<SalesReportUV>() {
                                 countOrderPush += 1
                                 if (data == null || data.Message?.contains("exist") == true || data.DidError) {
                                     Log.d("Sync Order", "Post order failed!")
+                                    DatabaseHelper.ordersCompleted.update(
+                                        orderEntity.apply {
+                                            requestLogJson = GSonUtils.toJson(data)
+                                        })
                                 } else {
                                     viewModelScope.launch(Dispatchers.IO) {
                                         DatabaseHelper.ordersCompleted.update(
-                                            orderEntity.apply { isSync = true })
+                                            orderEntity.apply {
+                                                isSync = true; requestLogJson =
+                                                GSonUtils.toJson(data)
+                                            })
                                     }
                                 }
                                 if (countOrderPush >= listNeedPush.size) {

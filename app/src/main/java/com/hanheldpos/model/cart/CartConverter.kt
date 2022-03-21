@@ -50,6 +50,7 @@ object CartConverter {
                 MenuLocationGuid = cart.menuLocationGuid,
                 CurrencySymbol = OrderHelper.getCurrencySymbol()!!,
                 CashDrawer_id = DataHelper.currentDrawerId,
+                CustomerGuestGuid = cart.customer?._Id
             ),
             OrderDetail = OrderDetail(
                 DiningOption = OrderDiningOption(
@@ -127,8 +128,10 @@ object CartConverter {
                 ProductType.REGULAR -> {
                     val regular = baseProductInCart as Regular
                     proOrderList.add(
-                        regular.toProductChosen(index,
-                            regular.quantity!!)
+                        regular.toProductChosen(
+                            index,
+                            regular.quantity!!
+                        )
                     )
                 }
                 ProductType.BUNDLE -> {

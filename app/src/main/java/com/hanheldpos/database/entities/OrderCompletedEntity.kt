@@ -13,8 +13,10 @@ data class OrderCompletedEntity(
     val id : String,
     @ColumnInfo(name = "table_id")
     var tableId : String,
-    @ColumnInfo(name = "order_completed_json")
-    val orderCompletedJson: String,
+    @ColumnInfo(name = "order_details_json")
+    var orderDetailsJson : String,
+    @ColumnInfo(name = "order_json")
+    val orderJson: String,
     @ColumnInfo(name = "is_sync", defaultValue = "false")
     var isSync : Boolean ,
     @ColumnInfo(name = "drawer_id")
@@ -25,5 +27,7 @@ data class OrderCompletedEntity(
     val createAt : String,
     @ColumnInfo(name = "modifier_at" , defaultValue = "CURRENT_TIMESTAMP")
     var modifierAt : String,
+    @ColumnInfo(name = "request_log_json" , defaultValue = "")
+    var requestLogJson : String? = null,
 ): BaseEntity() {
 }
