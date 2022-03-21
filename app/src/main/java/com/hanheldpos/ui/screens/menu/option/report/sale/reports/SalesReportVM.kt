@@ -9,6 +9,7 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.setting.SettingDeviceResp
+import com.hanheldpos.data.repository.BaseResponse
 import com.hanheldpos.data.repository.base.BaseRepoCallback
 import com.hanheldpos.data.repository.order.OrderAsyncRepo
 import com.hanheldpos.data.repository.setting.SettingRepo
@@ -108,10 +109,10 @@ class SalesReportVM : BaseUiViewModel<SalesReportUV>() {
                         // TODO : check if cart is pay or not
                         val orderJson = GSonUtils.toServerJson(orderReq);
                         orderAlterRepo.postOrderSubmit(orderJson, callback = object :
-                            BaseRepoCallback<OrderSubmitResp> {
-                            override fun apiResponse(data: OrderSubmitResp?) {
+                            BaseRepoCallback<BaseResponse<OrderSubmitResp>> {
+                            override fun apiResponse(data: BaseResponse<OrderSubmitResp>?) {
                                 countOrderPush += 1
-                                if (data == null || data.Message?.contains("exist") == true) {
+                                if (data == null || data.Message?.contains("exist") == true || data.DidError) {
                                     Log.d("Sync Order", "Post order failed!")
                                 } else {
                                     viewModelScope.launch(Dispatchers.IO) {
