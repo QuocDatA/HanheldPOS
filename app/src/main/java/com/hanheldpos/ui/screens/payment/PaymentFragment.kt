@@ -28,6 +28,7 @@ import com.hanheldpos.utils.PriceUtils
 class PaymentFragment(
     private val alreadyBill: Boolean,
     private var balance: Double,
+    private val paymentList: List<PaymentOrder>,
     private var listener: PaymentCallback
 ) :
     BaseFragment<FragmentPaymentBinding, PaymentVM>(), PaymentUV {
@@ -108,6 +109,7 @@ class PaymentFragment(
 
     override fun initData() {
         viewModel.balance.postValue(this.balance)
+        viewModel.listPaymentChosen.postValue(this.paymentList.toMutableList())
         val paymentMethods = viewModel.getPaymentMethods().map { payment ->
             PaymentFactory.getPaymentMethod(
                 payment,

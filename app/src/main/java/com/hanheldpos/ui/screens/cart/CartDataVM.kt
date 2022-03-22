@@ -143,7 +143,7 @@ class CartDataVM : BaseViewModel() {
     }
 
     fun removeCart() {
-        this@CartDataVM.cartModelLD.postValue(null)
+        this.cartModelLD.postValue(null)
         this.currentTableFocus.postValue(null)
     }
 

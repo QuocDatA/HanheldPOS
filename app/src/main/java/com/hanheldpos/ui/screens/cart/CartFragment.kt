@@ -21,6 +21,7 @@ import com.hanheldpos.model.cart.fee.FeeTip
 import com.hanheldpos.model.payment.PaymentOrder
 import com.hanheldpos.model.combo.ItemActionType
 import com.hanheldpos.model.discount.DiscountUser
+import com.hanheldpos.model.order.OrderReq
 import com.hanheldpos.model.product.ProductType
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
@@ -222,11 +223,16 @@ class CartFragment(private val listener: CartCallBack) :
             }))
     }
 
-    override fun openSelectPayment(alreadyBill: Boolean, payable: Double) {
+    override fun openSelectPayment(
+        alreadyBill: Boolean,
+        payable: Double,
+        paymentList: List<PaymentOrder>
+    ) {
         navigator.goToWithCustomAnimation(
             PaymentFragment(
                 alreadyBill,
                 payable,
+                paymentList,
                 listener = object : PaymentFragment.PaymentCallback {
 
                     override fun onPaymentComplete(paymentOrderList: List<PaymentOrder>) {
@@ -252,11 +258,11 @@ class CartFragment(private val listener: CartCallBack) :
         }))
     }
 
-    override fun onBillSuccess() {
+    override fun onBillSuccess(orderReq: OrderReq) {
         listener.onBillSuccess()
         if (!OrderHelper.isPaymentSuccess(cartDataVM.cartModelLD.value!!)) {
             val totalNeedPay = cartDataVM.cartModelLD.value!!.getTotalPrice()
-            this.openSelectPayment(true, totalNeedPay)
+            this.openSelectPayment(true, totalNeedPay, orderReq.OrderDetail.PaymentList)
         } else {
             this.onFinishOrder(true)
         }

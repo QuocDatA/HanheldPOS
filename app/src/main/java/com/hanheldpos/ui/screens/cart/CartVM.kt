@@ -33,10 +33,6 @@ class CartVM : BaseUiViewModel<CartUV>() {
         uiCallback?.onOpenDiscount()
     }
 
-    fun openSelectPayment(payable: Double) {
-        uiCallback?.openSelectPayment(false, payable)
-    }
-
     fun onOpenAddCustomer() {
         uiCallback?.onOpenAddCustomer()
     }
@@ -108,7 +104,7 @@ class CartVM : BaseUiViewModel<CartUV>() {
 
                 launch(Dispatchers.Main) {
                     showLoading(false)
-                    uiCallback?.onBillSuccess()
+                    uiCallback?.onBillSuccess(orderReq)
                 }
             }
 
