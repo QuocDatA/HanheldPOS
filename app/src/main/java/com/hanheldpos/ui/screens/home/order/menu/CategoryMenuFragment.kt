@@ -63,7 +63,11 @@ class CategoryMenuFragment(
         ).also {
             binding.categoryList.adapter = it
             binding.categoryList.addItemDecoration(
-                GridSpacingItemDecoration(spanCount = 2,includeEdge = true, spacing = resources.getDimensionPixelSize(R.dimen._13sdp))
+                GridSpacingItemDecoration(
+                    spanCount = 2,
+                    includeEdge = true,
+                    spacing = resources.getDimensionPixelSize(R.dimen._13sdp)
+                )
             )
         }
     }
@@ -85,7 +89,7 @@ class CategoryMenuFragment(
     }
 
     private fun menuItemSelected(menuItem: OrderMenuItem) {
-        dataVM.selectedMenu.value = menuItem
+        dataVM.selectedMenu.postValue(menuItem)
     }
 
     interface CategoryMenuCallBack {

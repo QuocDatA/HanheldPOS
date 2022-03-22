@@ -19,6 +19,7 @@ import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.cart.CartDataVM
 import com.hanheldpos.ui.screens.home.HomeFragment
 import com.hanheldpos.ui.screens.home.ScreenViewModel
+import com.hanheldpos.ui.screens.home.order.OrderDataVM
 import com.hanheldpos.ui.screens.home.table.adapter.TableAdapter
 import com.hanheldpos.ui.screens.home.table.adapter.TableAdapterHelper
 import com.hanheldpos.ui.screens.home.table.customer_input.TableInputFragment
@@ -38,6 +39,7 @@ class TableFragment : BaseFragment<FragmentTableBinding, TableVM>(), TableUV {
     // ViewModel
     private val screenViewModel by activityViewModels<ScreenViewModel>()
     private val cartDataVM by activityViewModels<CartDataVM>()
+    private val orderDataVM by activityViewModels<OrderDataVM>()
 
     override fun viewModelClass(): Class<TableVM> {
         return TableVM::class.java;
@@ -68,7 +70,7 @@ class TableFragment : BaseFragment<FragmentTableBinding, TableVM>(), TableUV {
             listener = object : BaseItemClickListener<FloorTable> {
                 override fun onItemClick(adapterPosition: Int, item: FloorTable) {
                     Log.d("TableFragment", "Table Selected");
-                    if (SystemClock.elapsedRealtime() - viewModel.mLastTimeClick  < 500) return
+                    if (SystemClock.elapsedRealtime() - viewModel.mLastTimeClick < 500) return
                     viewModel.mLastTimeClick = SystemClock.elapsedRealtime()
                     when (item.uiType) {
                         TableModeViewType.Table -> {
@@ -155,6 +157,7 @@ class TableFragment : BaseFragment<FragmentTableBinding, TableVM>(), TableUV {
                     override fun onCompleteTable(numberCustomer: Int) {
                         // Init cart first time
                         item.updateTableStatus(TableStatusType.Pending);
+                        orderDataVM.onMenuChange(0)
                         cartDataVM.initCart(numberCustomer, item);
                         screenViewModel.showOrderPage();
                     }
@@ -188,7 +191,7 @@ class TableFragment : BaseFragment<FragmentTableBinding, TableVM>(), TableUV {
                         DatabaseHelper.ordersCompleted.get(it.OrderCode)!!
                     )
                     launch(Dispatchers.Main) {
-                        cartDataVM.initCart(OrderConverter.toCart(orderReq,it.OrderCode),table)
+                        cartDataVM.initCart(OrderConverter.toCart(orderReq, it.OrderCode), table)
                         screenViewModel.showOrderPage()
                     }
 
