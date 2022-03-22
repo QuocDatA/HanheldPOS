@@ -22,7 +22,7 @@ data class CartModel(
     var diningOption: DiningOption,
     var deliveryTime: DeliveryTime? = null,
     val fees: List<Fee>,
-    var paymentsList: MutableList<PaymentOrder>,
+    var paymentsList: MutableList<PaymentOrder>? = null,
     var productsList: MutableList<BaseProductInCart>,
     var discountUserList: MutableList<DiscountUser>,
     var discountServerList: MutableList<DiscountResp>,

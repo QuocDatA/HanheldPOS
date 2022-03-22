@@ -41,7 +41,12 @@ class CartVM : BaseUiViewModel<CartUV>() {
         uiCallback?.onShowCustomerDetail()
     }
 
-    fun billCart(context: Context, cart: CartModel, listener: CartActionCallBack) {
+    fun billCart(
+        context: Context,
+        cart: CartModel,
+        onPaymentSelected: Boolean = false,
+        listener: CartActionCallBack
+    ) {
         if (cart.productsList.isEmpty()) {
             AppAlertDialog.get()
                 .show(
@@ -50,10 +55,15 @@ class CartVM : BaseUiViewModel<CartUV>() {
                 )
             return
         }
-        onOrderProcessing(context, cart, listener)
+        onOrderProcessing(context, cart, onPaymentSelected, listener)
     }
 
-    private fun onOrderProcessing(context: Context, cart: CartModel, listener: CartActionCallBack) {
+    private fun onOrderProcessing(
+        context: Context,
+        cart: CartModel,
+        onPaymentSelected: Boolean = false,
+        listener: CartActionCallBack
+    ) {
         showLoading(true)
         try {
             // Update cart object
@@ -104,7 +114,8 @@ class CartVM : BaseUiViewModel<CartUV>() {
 
                 launch(Dispatchers.Main) {
                     showLoading(false)
-                    uiCallback?.onBillSuccess(orderReq)
+                    if (!onPaymentSelected)
+                        uiCallback?.onBillSuccess()
                 }
             }
 

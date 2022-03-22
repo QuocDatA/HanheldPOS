@@ -59,7 +59,6 @@ class CartDataVM : BaseViewModel() {
                 ),
                 fees = OrderHelper.findFeeOrderList() ?: mutableListOf(),
                 productsList = mutableListOf(),
-                paymentsList = mutableListOf(),
                 discountUserList = mutableListOf(),
                 discountServerList = mutableListOf(),
                 diningOption = DataHelper.orderSettingLocalStorage?.ListDiningOptions?.firstOrNull()!!,

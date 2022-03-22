@@ -26,7 +26,7 @@ object OrderConverter {
         return CartModel(
             order = orderModel.Order,
             compReason = toReasonComp(orderData.CompVoidList),
-            paymentsList = orderPayment.toMutableList(),
+            paymentsList = orderPayment?.toMutableList(),
             customer = orderData.Billing,
             shipping = orderData.Shipping,
             table = orderData.TableList.firstOrNull()!!,

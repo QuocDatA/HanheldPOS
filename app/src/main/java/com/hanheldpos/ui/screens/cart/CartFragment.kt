@@ -226,7 +226,7 @@ class CartFragment(private val listener: CartCallBack) :
     override fun openSelectPayment(
         alreadyBill: Boolean,
         payable: Double,
-        paymentList: List<PaymentOrder>
+        paymentList: List<PaymentOrder>?
     ) {
         navigator.goToWithCustomAnimation(
             PaymentFragment(
@@ -239,7 +239,11 @@ class CartFragment(private val listener: CartCallBack) :
                         cartDataVM.addPaymentOrder(paymentOrderList)
                     }
 
-                    override fun onPayment(isSuccess: Boolean) {
+                    override fun onPaymentSelected() {
+                        onBillCart(true)
+                    }
+
+                    override fun onPaymentState(isSuccess: Boolean) {
                         if (isSuccess) {
                             onBillCart()
                         } else
@@ -258,11 +262,11 @@ class CartFragment(private val listener: CartCallBack) :
         }))
     }
 
-    override fun onBillSuccess(orderReq: OrderReq) {
+    override fun onBillSuccess() {
         listener.onBillSuccess()
         if (!OrderHelper.isPaymentSuccess(cartDataVM.cartModelLD.value!!)) {
             val totalNeedPay = cartDataVM.cartModelLD.value!!.getTotalPrice()
-            this.openSelectPayment(true, totalNeedPay, orderReq.OrderDetail.PaymentList)
+            this.openSelectPayment(true, totalNeedPay, CurCartData.cartModel!!.paymentsList)
         } else {
             this.onFinishOrder(true)
         }
@@ -277,12 +281,12 @@ class CartFragment(private val listener: CartCallBack) :
                 navigator.goTo(
                     PaymentCompletedFragment(
                         it.customer != null,
-                        it.paymentsList.sumOf { payment ->
+                        it.paymentsList?.sumOf { payment ->
                             payment.Payable ?: 0.0
-                        },
-                        it.paymentsList.sumOf { payment ->
+                        } ?: 0.0,
+                        it.paymentsList?.sumOf { payment ->
                             payment.OverPay ?: 0.0
-                        },
+                        } ?: 0.0,
                         listener = object : PaymentCompletedFragment.PaymentCompletedCallBack {
                             override fun becomeAMember() {
 
@@ -304,11 +308,12 @@ class CartFragment(private val listener: CartCallBack) :
         navigator.goToWithCustomAnimation(CustomerDetailFragment(cartDataVM.cartModelLD.value?.customer))
     }
 
-    private fun onBillCart() {
+    private fun onBillCart(onPaymentSelected : Boolean = false) {
         viewModel.billCart(
             requireContext(),
             CurCartData.cartModel!!,
-            object : CartVM.CartActionCallBack {
+            onPaymentSelected,
+            listener = object : CartVM.CartActionCallBack {
                 override fun onTableChange() {
                     cartDataVM.currentTableFocus.notifyValueChange()
                 }

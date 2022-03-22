@@ -157,13 +157,13 @@ object CartConverter {
         totalTaxe: Double?,
         note: String?,
         otherFee: Double,
-        paymentList: List<PaymentOrder>
+        paymentList: List<PaymentOrder>?
     ): OrderSummary {
-        val totalPaid = paymentList.sumOf { it.Payable!! }
+        val totalPaid = paymentList?.sumOf { it.OverPay!! }
         val totalGrand = total
-        val balance = totalGrand - totalPaid
+        val balance = if (totalPaid != null) totalGrand - totalPaid else null
         val received = totalPaid
-        val change = received - totalGrand
+        val change = received?.minus(totalGrand)
 
         return OrderSummary(
             Grandtotal = total,
@@ -175,9 +175,15 @@ object CartConverter {
             Tax = totalTaxe,
             Note = note,
             OtherFee = otherFee,
-            Balance = if (balance < 0.0) 0.0 else balance,
+            Balance = if (balance != null)
+                if (balance < 0.0) 0.0
+                else balance
+            else null,
             Received = received,
-            Change = change,
+            Change = if (change != null)
+                if (change < 0.0) 0.0
+                else change
+            else null,
             PaymentAmount = totalPaid
         )
     }

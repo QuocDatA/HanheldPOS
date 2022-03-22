@@ -15,7 +15,7 @@ data class OrderDetail(
     var Shipping: Shipping?,
     var Billing: CustomerResp?,
     var TableList: List<TableSummary>,
-    var PaymentList: List<PaymentOrder>,
+    var PaymentList: List<PaymentOrder>?,
     var DiscountList: List<DiscountOrder>,
     var ServiceFeeList: List<OrderFee>,
     var SurchargeFeeList: List<OrderFee>,

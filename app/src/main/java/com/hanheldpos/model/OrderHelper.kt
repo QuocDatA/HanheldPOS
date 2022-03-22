@@ -59,17 +59,17 @@ object OrderHelper {
 
     fun isPaymentSuccess(cart: CartModel): Boolean {
         val total = cart.getTotalPrice()
-        val totalPay = cart.paymentsList.sumOf {
+        val totalPay = cart.paymentsList?.sumOf {
             it.Payable ?: 0.0
-        }
+        } ?: 0.0
         return totalPay >= total
     }
 
     fun isPaymentSuccess(orderReq: OrderReq): Boolean {
         val total = orderReq.OrderSummary.GrandTotal ?: 0.0
-        val totalPay = orderReq.OrderDetail.PaymentList.sumOf {
+        val totalPay = orderReq.OrderDetail.PaymentList?.sumOf {
             it.Payable ?: 0.0
-        }
+        }?: 0.0
         return totalPay >= total
     }
 

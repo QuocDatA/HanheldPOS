@@ -157,7 +157,9 @@ class SalesReportVM : BaseUiViewModel<SalesReportUV>() {
                             }
                             })
                         }
-                        while (countOrderPush < countPushNeed){}
+                        while (countOrderPush < countPushNeed){
+
+                        }
                     }
 //                    listNeedPush.forEach { orderEntity ->
 //                        val orderReq = DatabaseMapper.mappingOrderReqFromEntity(orderEntity)

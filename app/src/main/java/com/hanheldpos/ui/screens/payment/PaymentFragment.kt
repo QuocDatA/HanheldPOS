@@ -1,9 +1,7 @@
 package com.hanheldpos.ui.screens.payment
 
-import android.content.Context
 import android.view.KeyEvent
 import android.view.View
-import androidx.activity.OnBackPressedCallback
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.payment.PaymentSuggestionItem
 import com.hanheldpos.databinding.FragmentPaymentBinding
@@ -30,7 +28,7 @@ import com.hanheldpos.utils.PriceUtils
 class PaymentFragment(
     private val alreadyBill: Boolean,
     private var balance: Double,
-    private val paymentList: List<PaymentOrder>,
+    private val paymentList: List<PaymentOrder>?,
     private var listener: PaymentCallback
 ) :
     BaseFragment<FragmentPaymentBinding, PaymentVM>(), PaymentUV {
@@ -104,14 +102,14 @@ class PaymentFragment(
         //endregion
 
         viewModel.listPaymentChosen.observe(this) {
-            binding.paymentDetail.visibility = if (it.isEmpty()) View.GONE else View.VISIBLE
+            binding.paymentDetail.visibility = if (it.isNullOrEmpty()) View.GONE else View.VISIBLE
         }
 
     }
 
     override fun initData() {
         viewModel.balance.postValue(this.balance)
-        viewModel.listPaymentChosen.postValue(this.paymentList.toMutableList())
+        viewModel.listPaymentChosen.postValue(this.paymentList?.toMutableList() ?: mutableListOf())
         val paymentMethods = viewModel.getPaymentMethods().map { payment ->
             PaymentFactory.getPaymentMethod(
                 payment,
@@ -220,15 +218,15 @@ class PaymentFragment(
                 }
         }
         viewModel.listPaymentChosen.observe(this) {
-            if(it.size > 0) {
+            if (it.size > 0) {
                 disableBackButton()
             }
         }
     }
 
     override fun getBack() {
-        if(viewModel.listPaymentChosen.value?.size!! < 0 || viewModel.listPaymentChosen.value.isNullOrEmpty()) {
-            listener.onPayment(false)
+        if(viewModel.listPaymentChosen.value?.isNullOrEmpty() == true) {
+            listener.onPaymentState(false)
             onFragmentBackPressed()
         }
     }
@@ -261,13 +259,14 @@ class PaymentFragment(
                 payment.paymentMethod,
                 payable = payable,
                 overPay = amount,
-            )
+            ), listener
         )
     }
 
     interface PaymentCallback {
         fun onPaymentComplete(paymentOrderList: List<PaymentOrder>)
-        fun onPayment(isSuccess: Boolean)
+        fun onPaymentSelected()
+        fun onPaymentState(isSuccess: Boolean)
     }
 
     private fun disableBackButton() {
