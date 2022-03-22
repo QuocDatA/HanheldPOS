@@ -104,17 +104,20 @@ class SalesReportVM : BaseUiViewModel<SalesReportUV>() {
             var countOrderPush = 0
             listOrdersFlow.take(1).collectLatest { listOrders ->
                 listOrders.filter { OrderHelper.isValidOrderPush(it) }.let { listNeedPush ->
-                    listNeedPush.forEach { orderEntity ->
-                        val orderReq = DatabaseMapper.mappingOrderReqFromEntity(orderEntity)
-                        // TODO : check if cart is pay or not
-                        val orderJson = GSonUtils.toServerJson(orderReq);
-                        orderAlterRepo.postOrderSubmit(orderJson, callback = object :
-                            BaseRepoCallback<BaseResponse<OrderSubmitResp>> {
-                            override fun apiResponse(data: BaseResponse<OrderSubmitResp>?) {
-                                countOrderPush += 1
-                                if (data == null || data.Message?.contains("exist") == true || data.DidError) {
-                                    Log.d("Sync Order", "Post order failed!")
-                                    DatabaseHelper.ordersCompleted.update(
+                    val listAfterSplit = listNeedPush.chunked(4)
+                    listAfterSplit.forEach { subListNeedPush ->
+                        val countPushNeed = countOrderPush + subListNeedPush.size
+                        subListNeedPush.forEach { orderEntity ->
+                            val orderReq = DatabaseMapper.mappingOrderReqFromEntity(orderEntity)
+                            // TODO : check if cart is pay or not
+                            val orderJson = GSonUtils.toServerJson(orderReq);
+                            orderAlterRepo.postOrderSubmit(orderJson, callback = object :
+                                BaseRepoCallback<BaseResponse<OrderSubmitResp>> {
+                                override fun apiResponse(data: BaseResponse<OrderSubmitResp>?) {
+                                    countOrderPush += 1
+                                    if (data == null || data.Message?.contains("exist") == true || data.DidError) {
+                                        Log.d("Sync Order", "Post order failed!")
+                                        DatabaseHelper.ordersCompleted.update(
                                         orderEntity.apply {
                                             requestLogJson = GSonUtils.toJson(data)
                                         })
@@ -152,8 +155,60 @@ class SalesReportVM : BaseUiViewModel<SalesReportUV>() {
                                         )
                                 }
                             }
-                        })
+                            })
+                        }
+                        while (countOrderPush < countPushNeed){}
                     }
+//                    listNeedPush.forEach { orderEntity ->
+//                        val orderReq = DatabaseMapper.mappingOrderReqFromEntity(orderEntity)
+//                        // TODO : check if cart is pay or not
+//                        val orderJson = GSonUtils.toServerJson(orderReq);
+//                        orderAlterRepo.postOrderSubmit(orderJson, callback = object :
+//                            BaseRepoCallback<BaseResponse<OrderSubmitResp>> {
+//                            override fun apiResponse(data: BaseResponse<OrderSubmitResp>?) {
+//                                countOrderPush += 1
+//                                if (data == null || data.Message?.contains("exist") == true || data.DidError) {
+//                                    Log.d("Sync Order", "Post order failed!")
+//                                    DatabaseHelper.ordersCompleted.update(
+//                                        orderEntity.apply {
+//                                            requestLogJson = GSonUtils.toJson(data)
+//                                        })
+//                                } else {
+//                                    viewModelScope.launch(Dispatchers.IO) {
+//                                        DatabaseHelper.ordersCompleted.update(
+//                                            orderEntity.apply {
+//                                                isSync = true; requestLogJson =
+//                                                GSonUtils.toJson(data)
+//                                            })
+//                                    }
+//                                }
+//                                if (countOrderPush >= listNeedPush.size) {
+//                                    viewModelScope.launch(Dispatchers.IO) {
+//                                        launch(Dispatchers.Main) {
+//                                            isSyncOrderToServer = false
+//                                            showLoading(false)
+//                                        }
+//                                    }
+//
+//                                }
+//                            }
+//
+//                            override fun showMessage(message: String?) {
+//                                countOrderPush += 1
+//                                if (countOrderPush >= listNeedPush.size) {
+//                                    isSyncOrderToServer = false
+//                                    showLoading(false)
+//                                }
+//                                viewModelScope.launch(Dispatchers.Main) {
+//                                    AppAlertDialog.get()
+//                                        .show(
+//                                            context.getString(R.string.notification),
+//                                            message,
+//                                        )
+//                                }
+//                            }
+//                        })
+//                    }
                 }
 
             }
