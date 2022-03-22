@@ -17,6 +17,7 @@ data class Order(
     val MenuLocationGuid: String?,
     val CashDrawer_id: String?,
     val CurrencySymbol : String,
+    val CustomerGuestGuid : String?
 ) : Parcelable {
 
 }

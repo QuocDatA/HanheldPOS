@@ -15,12 +15,16 @@ import com.hanheldpos.ui.base.dialog.AppAlertDialog
 import com.hanheldpos.ui.base.fragment.FragmentNavigator
 import com.hanheldpos.ui.screens.home.HomeFragment
 import com.hanheldpos.ui.screens.home.ScreenViewModel
+import com.hanheldpos.ui.screens.pincode.PinCodeFragment
 import com.hanheldpos.ui.screens.root.RootFragment
+import com.hanheldpos.ui.screens.welcome.WelcomeFragment
+import com.hanheldpos.utils.NetworkUtils
 import com.utils.helper.SystemHelper
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class MainActivity : BaseFragmentBindingActivity<ActivityMainBinding, MainVM>(), MainUV {
-
-
 
     override fun createFragmentNavigator(): FragmentNavigator {
         return FragmentNavigator(supportFragmentManager, R.id.main_fragment_container)
@@ -39,21 +43,37 @@ class MainActivity : BaseFragmentBindingActivity<ActivityMainBinding, MainVM>(),
     }
 
     override fun initView() {
-
         binding.root.viewTreeObserver.addOnGlobalLayoutListener {
-
             SystemHelper.hideSystemUI(window);
         }
-        getNavigator().rootFragment = HomeFragment()
 
+        viewModel.initView()
     }
 
     override fun initData() {
+        NetworkUtils.checkActiveInternetConnection(listener = object : NetworkUtils.NetworkConnectionCallBack {
+            override fun onAvailable() {
 
+            }
+
+            override fun onLost() {
+                CoroutineScope(Dispatchers.Main).launch {
+                    showAlert(title =  getString(R.string.notification), message =  getString(R.string.no_network_connection))
+                }
+            }
+        })
     }
 
     override fun initAction() {
 
+    }
+
+    override fun openPinCode() {
+        getNavigator().rootFragment = PinCodeFragment()
+    }
+
+    override fun openWelcome() {
+        getNavigator().rootFragment = WelcomeFragment()
     }
 
 

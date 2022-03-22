@@ -1,17 +1,21 @@
 package com.hanheldpos.ui.screens.discount.discount_type.percentage
 
 import androidx.core.widget.doAfterTextChanged
-import androidx.fragment.app.setFragmentResultListener
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentDiscountPercentageBinding
+import com.hanheldpos.model.discount.DiscountApplyToType
 import com.hanheldpos.model.discount.DiscountTypeEnum
 import com.hanheldpos.model.discount.DiscountTypeFor
 import com.hanheldpos.model.discount.DiscountUser
 import com.hanheldpos.ui.base.fragment.BaseFragment
-import com.hanheldpos.ui.screens.discount.discount_type.DiscountTypeFragment
+import com.hanheldpos.ui.screens.discount.DiscountFragment
+import com.hanheldpos.ui.screens.discount.discount_type.DiscountTypeItemFragment
 
 
-class DiscountPercentageFragment(private val listener : DiscountTypeFragment.DiscountTypeListener) :
+class DiscountPercentageFragment(
+    private val applyToType: DiscountApplyToType,
+    private val listener: DiscountFragment.DiscountTypeListener
+) :
     BaseFragment<FragmentDiscountPercentageBinding, DiscountPercentageVM>(), DiscountPercentageUV {
     override fun layoutRes(): Int = R.layout.fragment_discount_percentage;
 
@@ -50,18 +54,18 @@ class DiscountPercentageFragment(private val listener : DiscountTypeFragment.Dis
     }
 
     override fun initAction() {
-        viewModel.percent.observe(this,{
-            listener.validDiscount(viewModel.percentValue > 0.0 && !viewModel.title.value.isNullOrEmpty());
-        });
-        viewModel.title.observe(this,{
-            listener.validDiscount(viewModel.percentValue > 0.0 && !viewModel.title.value.isNullOrEmpty());
-        })
+        viewModel.percent.observe(this) {
+            listener.validDiscount(validDiscount());
+        };
+        viewModel.title.observe(this) {
+            listener.validDiscount(validDiscount());
+        }
     }
 
     override fun onResume() {
         super.onResume()
         requireActivity().supportFragmentManager.setFragmentResultListener("saveDiscount",this) { _, bundle ->
-            if (bundle.getSerializable("DiscountTypeFor") == DiscountTypeFor.PERCENTAGE) {
+            if (bundle.getSerializable("DiscountTypeFor") == DiscountTypeFor.PERCENTAGE && validChooseDiscount()) {
                 listener.discountUserChoose(
                     DiscountUser(
                         DiscountName = viewModel.title.value!!,
@@ -71,7 +75,21 @@ class DiscountPercentageFragment(private val listener : DiscountTypeFragment.Dis
                 )
             }
         }
+        listener.validDiscount(validDiscount());
+    }
 
-        listener.validDiscount(viewModel.percentValue > 0.0 && !viewModel.title.value.isNullOrEmpty());
+    private fun validChooseDiscount() : Boolean {
+        return (viewModel.percentValue > 0.0 && !viewModel.title.value.isNullOrEmpty())
+    }
+
+    private fun validDiscount() : Boolean {
+        return when (applyToType) {
+            DiscountApplyToType.ITEM_DISCOUNT_APPLY_TO -> {
+                (viewModel.percentValue == 0.0 && viewModel.title.value.isNullOrEmpty()) || validChooseDiscount()
+            }
+            DiscountApplyToType.ORDER_DISCOUNT_APPLY_TO -> {
+                validChooseDiscount()
+            }
+        }
     }
 }

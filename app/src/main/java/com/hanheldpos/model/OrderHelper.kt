@@ -1,27 +1,37 @@
 package com.hanheldpos.model
 
+import androidx.room.Index
 import com.hanheldpos.data.api.pojo.fee.Fee
+import com.hanheldpos.database.entities.OrderCompletedEntity
+import com.hanheldpos.model.cart.CartModel
 import com.hanheldpos.model.cart.fee.FeeApplyToType
+import com.hanheldpos.model.payment.PaymentOrder
+import com.hanheldpos.model.order.Order
+import com.hanheldpos.model.order.OrderReq
+import com.hanheldpos.model.order.OrderStatus
 
 object OrderHelper {
     fun findGroupNameOrderMenu(group_id: String): String {
-        return DataHelper.menuLocalStorage?.GroupList?.firstOrNull { groupsItem -> groupsItem._Id == group_id }?.GroupName ?: ""
+        return DataHelper.menuLocalStorage?.GroupList?.firstOrNull { groupsItem -> groupsItem._Id == group_id }?.GroupName
+            ?: ""
     }
 
     fun generateOrderIdByFormat(): String {
         var numberIncrement: Long = DataHelper.numberIncreaseOrder;
         numberIncrement = numberIncrement.plus(1);
         DataHelper.numberIncreaseOrder = numberIncrement;
-        val prefix = DataHelper.deviceCodeLocalStorage?.SettingsId?.firstOrNull()?.Prefix ?: ""
-        val deviceAcronymn = DataHelper.deviceCodeLocalStorage?.Device?.firstOrNull()?.Acronymn ?: ""
-        val minimumNumber = DataHelper.deviceCodeLocalStorage?.SettingsId?.firstOrNull()?.MinimumNumber ?: 0
+        val prefix = DataHelper.deviceCodeLocalStorage?.ListSettingsId?.firstOrNull()?.Prefix ?: ""
+        val deviceAcronymn =
+            DataHelper.deviceCodeLocalStorage?.Device?.firstOrNull()?.Acronymn ?: ""
+        val minimumNumber =
+            DataHelper.deviceCodeLocalStorage?.ListSettingsId?.firstOrNull()?.MinimumNumber ?: 0
         return "${prefix}${deviceAcronymn}${numberIncrement.toString().padEnd(minimumNumber, '0')}";
     }
 
     fun getDiningOptionItem(diningOptionId: Int?) =
         DataHelper.orderSettingLocalStorage?.ListDiningOptions?.find { it.Id == diningOptionId }
 
-    fun getDeviceCodeEmployee() = DataHelper.deviceCodeLocalStorage?.EmployeeList;
+    fun getDeviceCodeEmployee() = DataHelper.deviceCodeLocalStorage?.Employees;
 
     private fun getDeviceByDeviceCode() = DataHelper.deviceCodeLocalStorage?.Device?.firstOrNull()
 
@@ -43,8 +53,28 @@ object OrderHelper {
 
     fun findFeeOrderList(): List<Fee>? {
         return DataHelper.feeLocalStorage?.Fees?.filter { fee ->
-            FeeApplyToType.fromInt(fee.Id) != FeeApplyToType.Order
+            FeeApplyToType.fromInt(fee.Id) == FeeApplyToType.Order
         }?.toList()
+    }
+
+    fun isPaymentSuccess(cart: CartModel): Boolean {
+        val total = cart.getTotalPrice()
+        val totalPay = cart.paymentsList?.sumOf {
+            it.Payable ?: 0.0
+        } ?: 0.0
+        return totalPay >= total
+    }
+
+    fun isPaymentSuccess(orderReq: OrderReq): Boolean {
+        val total = orderReq.OrderSummary.GrandTotal ?: 0.0
+        val totalPay = orderReq.OrderDetail.PaymentList?.sumOf {
+            it.Payable ?: 0.0
+        }?: 0.0
+        return totalPay >= total
+    }
+
+    fun isValidOrderPush(orderEntity: OrderCompletedEntity): Boolean {
+        return !orderEntity.isSync && orderEntity.statusId == OrderStatus.COMPLETED
     }
 
 }

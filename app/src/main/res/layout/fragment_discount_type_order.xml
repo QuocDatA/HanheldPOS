@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.hanheldpos.ui.screens.discount.discount_type.DiscountTypeVM" />
+
+        <import type="android.view.View" />
+
+        <import type="com.hanheldpos.model.discount.DiscountApplyToType" />
+
+        <variable
+            name="discountType"
+            type="com.hanheldpos.model.discount.DiscountApplyToType" />
+    </data>
+
+    <LinearLayout
+        android:id="@+id/parentLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/tabLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_8sdp"
+            android:layout_marginVertical="@dimen/_19sdp"
+            android:orientation="vertical"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.diadiem.pos_components.PTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/discount"
+                android:layout_marginBottom="@dimen/_8sdp"
+                app:useFontStyle="bold"
+                app:useTextColor="color4"
+                app:useTextHeader="h5" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/tabDiscountType"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:itemCount="3"
+                tools:listitem="@layout/item_tab_discount_type" />
+
+            <include layout="@layout/divider_vertical" />
+        </LinearLayout>
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/discountFragmentContainer"
+            useInputEnable="@{false}"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_18sdp"
+            app:layout_constrainedHeight="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHeight_min="wrap"
+            app:layout_constraintTop_toBottomOf="@id/tabLayout" />
+
+    </LinearLayout>
+</layout>

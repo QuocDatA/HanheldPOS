@@ -1,16 +1,23 @@
 package com.hanheldpos.ui.screens.menu.option.report.sale.reports
 
 import android.content.Context
+import android.util.Log
 import android.view.View
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewModelScope
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.setting.SettingDeviceResp
+import com.hanheldpos.data.repository.BaseResponse
 import com.hanheldpos.data.repository.base.BaseRepoCallback
 import com.hanheldpos.data.repository.order.OrderAsyncRepo
 import com.hanheldpos.data.repository.setting.SettingRepo
+import com.hanheldpos.database.DatabaseMapper
 import com.hanheldpos.model.DataHelper
+import com.hanheldpos.model.DatabaseHelper
+import com.hanheldpos.model.OrderHelper
 import com.hanheldpos.model.UserHelper
-import com.hanheldpos.model.order.OrderReq
 import com.hanheldpos.model.order.OrderSubmitResp
 import com.hanheldpos.model.report.SaleReportCustomData
 import com.hanheldpos.model.setting.SettingDevicePut
@@ -18,14 +25,20 @@ import com.hanheldpos.ui.base.dialog.AppAlertDialog
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
 import com.hanheldpos.ui.screens.menu.option.report.sale.reports.adapter.NumberDayReportItem
 import com.hanheldpos.utils.GSonUtils
-import com.hanheldpos.utils.time.DateTimeHelper
+import com.hanheldpos.utils.time.DateTimeUtils
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.take
+import kotlinx.coroutines.launch
 
 class SalesReportVM : BaseUiViewModel<SalesReportUV>() {
 
+    var isSyncOrderToServer: Boolean = false
+
     var saleReportCustomData = MutableLiveData<SaleReportCustomData>(
         SaleReportCustomData(
-            startDay = DateTimeHelper.curDate,
-            endDay = DateTimeHelper.curDate,
+            startDay = DateTimeUtils.curDate,
+            endDay = DateTimeUtils.curDate,
             isCurrentDrawer = true,
             isAllDevice = false,
             isAllDay = false,
@@ -37,11 +50,14 @@ class SalesReportVM : BaseUiViewModel<SalesReportUV>() {
     private val settingRepo = SettingRepo();
     private val orderAlterRepo = OrderAsyncRepo();
 
-    val numberOrder = MutableLiveData<Int>(DataHelper.ordersCompletedLocalStorage?.size ?: 0);
+    val numberOrder = Transformations.map(DatabaseHelper.ordersCompleted.getAll().asLiveData()) {
+        return@map it.filter { order -> OrderHelper.isValidOrderPush(order) }.size
+    }
 
     fun onSyncOrders(view: View) {
-        if (DataHelper.ordersCompletedLocalStorage?.size ?: 0 <= 0) return
-
+        if (numberOrder.value ?: 0 <= 0) return
+        if (isSyncOrderToServer) return
+        isSyncOrderToServer = true
         //TODO : sync order
         showLoading(true);
         val json = GSonUtils.toServerJson(
@@ -56,8 +72,8 @@ class SalesReportVM : BaseUiViewModel<SalesReportUV>() {
         );
         settingRepo.putSettingDeviceIds(
             json,
-            callback = object : BaseRepoCallback<SettingDeviceResp> {
-                override fun apiResponse(data: SettingDeviceResp?) {
+            callback = object : BaseRepoCallback<BaseResponse<String>> {
+                override fun apiResponse(data: BaseResponse<String>?) {
                     if (data == null || data.DidError) {
                         showLoading(false);
                         AppAlertDialog.get()
@@ -77,56 +93,131 @@ class SalesReportVM : BaseUiViewModel<SalesReportUV>() {
                     showError(message);
                 }
             });
+
+
     }
 
     private fun pushOrder(context: Context) {
 
-        val listOrders = DataHelper.ordersCompletedLocalStorage;
-        var countOrderPush = 0;
-        val listPushSucceeded = mutableListOf<OrderReq>();
-        listOrders?.forEach { orderReq ->
-            // TODO : check if cart is pay or not
-            val orderJson = GSonUtils.toServerJson(orderReq);
-            orderAlterRepo.postOrderSubmit(orderJson, callback = object :
-                BaseRepoCallback<OrderSubmitResp> {
-                override fun apiResponse(data: OrderSubmitResp?) {
-                    if (data == null || data.Message?.contains("exist") == true) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val listOrdersFlow = DatabaseHelper.ordersCompleted.getAll()
+            var countOrderPush = 0
+            listOrdersFlow.take(1).collectLatest { listOrders ->
+                listOrders.filter { OrderHelper.isValidOrderPush(it) }.let { listNeedPush ->
+                    val listAfterSplit = listNeedPush.chunked(3)
+                    listAfterSplit.forEach { subListNeedPush ->
+                        val countPushNeed = countOrderPush + subListNeedPush.size
+                        subListNeedPush.forEach { orderEntity ->
+                            val orderReq = DatabaseMapper.mappingOrderReqFromEntity(orderEntity)
+                            // TODO : check if cart is pay or not
+                            val orderJson = GSonUtils.toServerJson(orderReq);
+                            orderAlterRepo.postOrderSubmit(orderJson, callback = object :
+                                BaseRepoCallback<BaseResponse<OrderSubmitResp>> {
+                                override fun apiResponse(data: BaseResponse<OrderSubmitResp>?) {
+                                    countOrderPush += 1
+                                    if (data == null || data.Message?.contains("exist") == true || data.DidError) {
+                                        Log.d("Sync Order", "Post order failed!")
+                                        DatabaseHelper.ordersCompleted.update(
+                                        orderEntity.apply {
+                                            requestLogJson = GSonUtils.toJson(data)
+                                        })
+                                } else {
+                                    viewModelScope.launch(Dispatchers.IO) {
+                                        DatabaseHelper.ordersCompleted.update(
+                                            orderEntity.apply {
+                                                isSync = true; requestLogJson =
+                                                GSonUtils.toJson(data)
+                                            })
+                                    }
+                                }
+                                if (countOrderPush >= listNeedPush.size) {
+                                    viewModelScope.launch(Dispatchers.IO) {
+                                        launch(Dispatchers.Main) {
+                                            isSyncOrderToServer = false
+                                            showLoading(false)
+                                        }
+                                    }
 
-                    } else {
-                        listPushSucceeded.add(orderReq);
-                    }
+                                }
+                            }
 
-                    countOrderPush += 1;
-                    if (countOrderPush >= listOrders.size) {
-                        showLoading(false);
-                        val list = listOrders.toMutableList().filter { it !in listPushSucceeded };
-                        numberOrder.postValue(list.size);
-                        DataHelper.ordersCompletedLocalStorage = list;
+                            override fun showMessage(message: String?) {
+                                countOrderPush += 1
+                                if (countOrderPush >= listNeedPush.size) {
+                                    isSyncOrderToServer = false
+                                    showLoading(false)
+                                }
+                                viewModelScope.launch(Dispatchers.Main) {
+                                    AppAlertDialog.get()
+                                        .show(
+                                            context.getString(R.string.notification),
+                                            message,
+                                        )
+                                }
+                            }
+                            })
+                        }
+                        while (countOrderPush < countPushNeed){
+
+                        }
                     }
+//                    listNeedPush.forEach { orderEntity ->
+//                        val orderReq = DatabaseMapper.mappingOrderReqFromEntity(orderEntity)
+//                        // TODO : check if cart is pay or not
+//                        val orderJson = GSonUtils.toServerJson(orderReq);
+//                        orderAlterRepo.postOrderSubmit(orderJson, callback = object :
+//                            BaseRepoCallback<BaseResponse<OrderSubmitResp>> {
+//                            override fun apiResponse(data: BaseResponse<OrderSubmitResp>?) {
+//                                countOrderPush += 1
+//                                if (data == null || data.Message?.contains("exist") == true || data.DidError) {
+//                                    Log.d("Sync Order", "Post order failed!")
+//                                    DatabaseHelper.ordersCompleted.update(
+//                                        orderEntity.apply {
+//                                            requestLogJson = GSonUtils.toJson(data)
+//                                        })
+//                                } else {
+//                                    viewModelScope.launch(Dispatchers.IO) {
+//                                        DatabaseHelper.ordersCompleted.update(
+//                                            orderEntity.apply {
+//                                                isSync = true; requestLogJson =
+//                                                GSonUtils.toJson(data)
+//                                            })
+//                                    }
+//                                }
+//                                if (countOrderPush >= listNeedPush.size) {
+//                                    viewModelScope.launch(Dispatchers.IO) {
+//                                        launch(Dispatchers.Main) {
+//                                            isSyncOrderToServer = false
+//                                            showLoading(false)
+//                                        }
+//                                    }
+//
+//                                }
+//                            }
+//
+//                            override fun showMessage(message: String?) {
+//                                countOrderPush += 1
+//                                if (countOrderPush >= listNeedPush.size) {
+//                                    isSyncOrderToServer = false
+//                                    showLoading(false)
+//                                }
+//                                viewModelScope.launch(Dispatchers.Main) {
+//                                    AppAlertDialog.get()
+//                                        .show(
+//                                            context.getString(R.string.notification),
+//                                            message,
+//                                        )
+//                                }
+//                            }
+//                        })
+//                    }
                 }
 
-                override fun showMessage(message: String?) {
-                    countOrderPush += 1;
-                    if (countOrderPush >= listOrders.size) {
-                        showLoading(false);
-                        val list = listOrders.toMutableList().filter { it !in listPushSucceeded };
-                        numberOrder.postValue(list.size);
-                        DataHelper.ordersCompletedLocalStorage = list;
-                    }
-                    AppAlertDialog.get()
-                        .show(
-                            context.getString(R.string.notification),
-                            message,
-                        )
-                }
-            })
+            }
+
         }
-    }
-
-    fun onPrint() {
 
     }
-
 
     fun initNumberDaySelected(): MutableList<NumberDayReportItem> {
         return mutableListOf(

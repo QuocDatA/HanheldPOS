@@ -1,23 +1,29 @@
 package com.hanheldpos.database.dao
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.hanheldpos.database.entities.OrderCompletedEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface OrderCompletedDao {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert
     fun insert(orderCompleted: OrderCompletedEntity)
 
+    @Insert
+    fun insertAll(objects: List<OrderCompletedEntity>)
+
+    @Update
+    fun update(orderCompleted: OrderCompletedEntity)
+
     @Query("SELECT * FROM order_completed WHERE id = :id")
-    fun get(id: String): OrderCompletedEntity
+    fun get(id: String): OrderCompletedEntity?
 
     @Query("SELECT * FROM order_completed")
-    fun getAll(): MutableList<OrderCompletedEntity>
+    fun getAll(): Flow<MutableList<OrderCompletedEntity>>
+
+    @Query("DELETE FROM order_completed WHERE id = :id")
+    fun delete(id : String)
 
     @Query("DELETE FROM order_completed")
     fun deleteAll()

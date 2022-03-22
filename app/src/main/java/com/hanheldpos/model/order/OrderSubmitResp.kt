@@ -6,6 +6,6 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class OrderSubmitResp(
     val Code: String,
-    val Message: String?,
+    val OrderDetail_id: String?,
     val _id: String
 ) : Parcelable

@@ -2,9 +2,13 @@ package com.hanheldpos.ui.screens.home.table.adapter
 
 
 import com.hanheldpos.data.api.pojo.floor.FloorTable
+import com.hanheldpos.database.DatabaseMapper
+import com.hanheldpos.model.DatabaseHelper
 import com.hanheldpos.model.home.table.TableModeViewType
 import com.hanheldpos.model.home.table.TableStatusType
-import com.hanheldpos.ui.screens.home.order.adapter.OrderProductAdapterHelper
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.take
+import kotlinx.coroutines.runBlocking
 
 
 class TableAdapterHelper(private val callback: AdapterCallBack) {
@@ -19,25 +23,30 @@ class TableAdapterHelper(private val callback: AdapterCallBack) {
     private var listOfTablePage: MutableList<List<FloorTable>> = mutableListOf();
 
     fun submitList(list: MutableList<FloorTable>) {
-        this.list = list.onEach {
-            it.uiType =  TableModeViewType.Table
-            it.tableStatus = TableStatusType.Available
+
+        // Processing order in table
+
+        this.list = runBlocking {
+            processingOrderInTable(list.onEach {
+                it.uiType = TableModeViewType.Table
+                it.tableStatus = TableStatusType.Available
+            }).toMutableList()
         }
-        currentIndex = 1;
+
+        currentIndex = 1
         listOfTablePage.clear()
         var sizeOfMainList: Int = this.list.size
-        var currentListIndex: Int = 1 // page currentIndex
+        var currentListIndex = 1 // page currentIndex
 
         if (sizeOfMainList > 0) {
             while (sizeOfMainList > 0) {
-                var tablePage = split(currentListIndex)
+                val tablePage = split(currentListIndex)
                 listOfTablePage.add(tablePage)
-                sizeOfMainList -= (tablePage.size-2) // reduce list size except for 2 dirButton
+                sizeOfMainList -= (tablePage.size - 2) // reduce list size except for 2 dirButton
                 currentListIndex++
             }
-        }
-        else if (sizeOfMainList == 0) {
-            var tempList = split(currentListIndex)
+        } else if (sizeOfMainList == 0) {
+            val tempList = split(currentListIndex)
             listOfTablePage.add(tempList)
         }
 
@@ -73,7 +82,7 @@ class TableAdapterHelper(private val callback: AdapterCallBack) {
 
         // Add Empty
         for (i in rs.size until maxItemViewProduct) {
-            rs.add( FloorTable("","",0.0,0.0,0,0,"","",0,0.0,"",0,0.0,"",0,"").apply {
+            rs.add(FloorTable("", "", 0.0, 0.0, 0, 0, "", "", 0, 0.0, "", 0, 0.0, "", 0, "").apply {
                 uiType = TableModeViewType.Empty;
             })
         }
@@ -89,19 +98,34 @@ class TableAdapterHelper(private val callback: AdapterCallBack) {
         }
 
         // Add Direction Button
-        rs.addAll(listOf(
-            /*
-            * 1 : Enable
-            * 2 : Disable
-            * */
-            FloorTable("","",0.0,0.0,0,0,"","",0,0.0,"",0,0.0,"",0,"").apply {
-                uiType = prevButtonType
-            },
-            FloorTable("","",0.0,0.0,0,0,"","",0,0.0,"",0,0.0,"",0,"").apply {
-                uiType = nextButtonType
-            } )
+        rs.addAll(
+            listOf(
+                /*
+                * 1 : Enable
+                * 2 : Disable
+                * */
+                FloorTable("", "", 0.0, 0.0, 0, 0, "", "", 0, 0.0, "", 0, 0.0, "", 0, "").apply {
+                    uiType = prevButtonType
+                },
+                FloorTable("", "", 0.0, 0.0, 0, 0, "", "", 0, 0.0, "", 0, 0.0, "", 0, "").apply {
+                    uiType = nextButtonType
+                })
         )
         return rs
+    }
+
+    private suspend fun processingOrderInTable(list: List<FloorTable>): List<FloorTable> {
+
+        DatabaseHelper.tableStatuses.getAll().take(1).collectLatest { listEntity ->
+            listEntity.map { DatabaseMapper.mappingTableFromEntity(it) }.forEach {
+                list.find { floorTable -> floorTable._Id == it._Id }?.let { tableFind ->
+                    tableFind.tableStatus = it.tableStatus
+                    tableFind.orderSummary = it.orderSummary
+                }
+            }
+        }
+
+        return list
     }
 
     companion object {

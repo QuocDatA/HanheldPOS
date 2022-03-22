@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.os.SystemClock
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hanheldpos.R
@@ -20,14 +21,13 @@ import com.hanheldpos.model.discount.DiscountTypeFor
 import com.hanheldpos.model.discount.DiscountUser
 import com.hanheldpos.model.cart.BaseProductInCart
 import com.hanheldpos.ui.base.fragment.BaseFragment
-import com.hanheldpos.ui.screens.cart.CurCartData
+import com.hanheldpos.ui.screens.cart.CartDataVM
 import com.hanheldpos.ui.screens.combo.adapter.ComboGroupAdapter
-import com.hanheldpos.ui.screens.discount.discount_type.DiscountTypeFragment
+import com.hanheldpos.ui.screens.discount.DiscountFragment
+import com.hanheldpos.ui.screens.discount.discount_type.DiscountTypeItemFragment
 import com.hanheldpos.ui.screens.home.order.OrderFragment
 import com.hanheldpos.ui.screens.product.ProductDetailFragment
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 class ComboFragment(
     private val combo: Combo,
@@ -36,6 +36,8 @@ class ComboFragment(
     private val listener: OrderFragment.OrderMenuListener
 ) : BaseFragment<FragmentComboBinding, ComboVM>(), ComboUV {
 
+    private val cartDataVM by activityViewModels<CartDataVM>()
+    
     override fun layoutRes() = R.layout.fragment_combo;
 
     override fun viewModelClass(): Class<ComboVM> {
@@ -49,6 +51,7 @@ class ComboFragment(
             init(this@ComboFragment);
             initLifeCycle(this@ComboFragment);
             binding.viewModel = viewModel
+            binding
         }
     }
 
@@ -85,11 +88,11 @@ class ComboFragment(
         if (action == ItemActionType.Modify)
             childFragmentManager.beginTransaction().replace(
                 R.id.fragment_container_discount,
-                DiscountTypeFragment(
+                DiscountTypeItemFragment(
                     product = combo,
                     applyToType = DiscountApplyToType.ITEM_DISCOUNT_APPLY_TO,
-                    cart = CurCartData.cartModelLD.value!!,
-                    listener = object : DiscountTypeFragment.DiscountTypeListener {
+                    cart = cartDataVM.cartModelLD.value!!,
+                    listener = object : DiscountFragment.DiscountTypeListener {
                         override fun discountUserChoose(discount: DiscountUser) {
                             if (viewModel.isValidDiscount.value != true) return;
                             viewModel.bundleInCart.value?.discountUsersList =
@@ -123,22 +126,20 @@ class ComboFragment(
         viewModel.bundleInCart.value = combo;
         viewModel.actionType.value = action;
         viewModel.maxQuantity = quantityCanChoose;
-        GlobalScope.launch(Dispatchers.IO) {
+        CoroutineScope(Dispatchers.IO).launch {
+            while(!isVisible){}
             viewModel.getCombo()?.let {
                 viewModel.initDefaultComboList(
                     it,
-                    CurCartData.diningOptionLD.value!!,
+                    cartDataVM.diningOptionLD.value!!,
                     UserHelper.getLocationGuid()
                 )
             };
         }
-
-
     }
 
     override fun initAction() {
     }
-
 
     override fun onBack() {
         navigator.goOneBack();
@@ -159,7 +160,7 @@ class ComboFragment(
                 comboGroupAdapter.notifyDataSetChanged()
             }
             else->{
-                navigator.goToWithCustomAnimation(ProductDetailFragment(
+                navigator.goTo(ProductDetailFragment(
                     regular = item.clone(),
                     groupBundle = group.groupBundle,
                     productBundle = this.combo.proOriginal,
@@ -180,6 +181,7 @@ class ComboFragment(
 
 
     override fun cartAdded(item: BaseProductInCart, action: ItemActionType) {
+        if (viewModel.numberQuantity.value ?: 0 > 0 && (viewModel.isValidDiscount.value == false && action == ItemActionType.Modify)) return;
         requireActivity().supportFragmentManager.setFragmentResult("saveDiscount", Bundle().apply { putSerializable("DiscountTypeFor", viewModel.typeDiscountSelect) });
         onBack();
         listener.onCartAdded(item, action);
@@ -187,7 +189,7 @@ class ComboFragment(
 
     @SuppressLint("NotifyDataSetChanged")
     override fun onLoadComboSuccess(list: List<ItemComboGroup>) {
-        GlobalScope.launch(Dispatchers.Main) {
+        CoroutineScope(Dispatchers.Main).launch {
             comboGroupAdapter.submitList(list.toMutableList());
             comboGroupAdapter.notifyDataSetChanged();
         }

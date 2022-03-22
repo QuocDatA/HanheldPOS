@@ -1,0 +1,557 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.hanheldpos.ui.screens.discount.discount_detail.DiscountDetailVM" />
+
+        <variable
+            name="discountDetail"
+            type="com.hanheldpos.data.api.pojo.discount.CouponResp" />
+    </data>
+
+    <LinearLayout
+        style="@style/RootLayout"
+        android:background="@color/color_2"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_42sdp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+                <ImageButton
+                    style="@style/MaterialButton.Icon"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center|start"
+                    android:adjustViewBounds="true"
+                    android:backgroundTint="@color/textPrimary"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:onClick="@{v -> viewModel.backPress()}"
+                    android:padding="@dimen/_14sdp"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_close"
+                    tools:ignore="ContentDescription" />
+
+                <com.diadiem.pos_components.PTextView
+                    android:id="@+id/discountName"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    app:useFontStyle="bold"
+                    app:useTextColor="color4"
+                    tools:text= "Discount 50%"
+                    app:useTextHeader="h4" />
+
+                <ImageButton
+                    android:visibility="invisible"
+                    style="@style/MaterialButton.Icon"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center|start"
+                    android:adjustViewBounds="true"
+                    android:backgroundTint="@color/textPrimary"
+                    android:padding="@dimen/_14sdp"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_close"
+                    tools:ignore="ContentDescription" />
+            </LinearLayout>
+
+        </FrameLayout>
+        <include layout="@layout/divider_vertical" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginHorizontal="@dimen/_12sdp"
+                android:layout_marginTop="@dimen/_14sdp">
+
+                <com.diadiem.pos_components.PTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:useFontStyle="normal"
+                    app:useTextColor="color6"
+                    app:useTextHeader="h6"
+                    android:text="@string/description" />
+
+                <androidx.legacy.widget.Space
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_6sdp" />
+
+                <com.diadiem.pos_components.PTextView
+                    android:id="@+id/discountDescription"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:useFontStyle="normal"
+                    app:useTextColor="color5"
+                    app:useTextHeader="h5"
+                    tools:text="Description Text" />
+
+                <androidx.legacy.widget.Space
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_12sdp" />
+
+                <include layout="@layout/divider_vertical" />
+
+                <androidx.legacy.widget.Space
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_12sdp" />
+
+                <com.diadiem.pos_components.PTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:useFontStyle="normal"
+                    app:useTextColor="color6"
+                    app:useTextHeader="h6"
+                    android:text="@string/term_and_conditions" />
+
+                <androidx.legacy.widget.Space
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_6sdp" />
+
+                <com.diadiem.pos_components.PTextView
+                    android:id="@+id/discountTermCondition"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:useFontStyle="normal"
+                    app:useTextColor="color5"
+                    app:useTextHeader="h5"
+                    tools:text="Description Text" />
+
+                <androidx.legacy.widget.Space
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_12sdp" />
+
+                <include layout="@layout/divider_vertical" />
+
+                <androidx.legacy.widget.Space
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_12sdp" />
+
+                <com.diadiem.pos_components.PTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:useFontStyle="normal"
+                    app:useTextColor="color6"
+                    app:useTextHeader="h6"
+                    android:text="@string/discount_type" />
+
+                <androidx.legacy.widget.Space
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_6sdp" />
+
+                <com.diadiem.pos_components.PTextView
+                    android:id="@+id/discountTypeText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{discountDetail.discountTypeText}"
+                    app:useFontStyle="normal"
+                    app:useTextColor="color5"
+                    app:useTextHeader="h5"
+                    tools:text="Description Text" />
+
+                <androidx.legacy.widget.Space
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_12sdp" />
+
+                <include layout="@layout/divider_vertical" />
+
+                <LinearLayout
+                    visibleObject="@{discountDetail.discountValueFormatter.length() > 0}"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <androidx.legacy.widget.Space
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/_12sdp" />
+
+                    <com.diadiem.pos_components.PTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/discount_value"
+                        app:useFontStyle="normal"
+                        app:useTextColor="color6"
+                        app:useTextHeader="h6" />
+
+                    <androidx.legacy.widget.Space
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/_6sdp" />
+
+                    <com.diadiem.pos_components.PTextView
+                        android:id="@+id/discountValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{discountDetail.discountValueFormatter}"
+                        app:useFontStyle="normal"
+                        app:useTextColor="color5"
+                        app:useTextHeader="h5"
+                        tools:text="Description Text" />
+
+                    <androidx.legacy.widget.Space
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/_12sdp" />
+
+                    <include layout="@layout/divider_vertical" />
+
+                </LinearLayout>
+
+                <androidx.legacy.widget.Space
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_12sdp" />
+
+
+                <com.diadiem.pos_components.PTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/discount_option"
+                    app:useFontStyle="normal"
+                    app:useTextColor="color6"
+                    app:useTextHeader="h6" />
+
+
+                <androidx.legacy.widget.Space
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_6sdp" />
+
+                <com.diadiem.pos_components.PTextView
+                    android:id="@+id/discountOptionValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{discountDetail.diningOptionValue}"
+                    app:useFontStyle="normal"
+                    app:useTextColor="color5"
+                    app:useTextHeader="h5"
+                    tools:text="Description Text" />
+
+                <androidx.legacy.widget.Space
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_12sdp" />
+
+                <include layout="@layout/divider_vertical" />
+
+                <androidx.legacy.widget.Space
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_12sdp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <com.diadiem.pos_components.PTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/applies_to"
+                        app:useFontStyle="normal"
+                        app:useTextColor="color6"
+                        app:useTextHeader="h6" />
+
+                    <ImageView
+                        visibleObject="@{discountDetail.requirementProductList.size() > 0}"
+                        android:layout_width="@dimen/_14sdp"
+                        android:layout_height="@dimen/_14sdp"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="@dimen/_7sdp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/ic_info" />
+                </LinearLayout>
+
+
+                <androidx.legacy.widget.Space
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_6sdp" />
+
+                <com.diadiem.pos_components.PTextView
+                    android:id="@+id/appliesTo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{discountDetail.requirementValue}"
+                    app:useFontStyle="normal"
+                    app:useTextColor="color5"
+                    app:useTextHeader="h5"
+                    tools:text="Description Text" />
+
+                <androidx.legacy.widget.Space
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_12sdp" />
+
+                <include layout="@layout/divider_vertical" />
+
+                <androidx.legacy.widget.Space
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_12sdp" />
+
+                <com.diadiem.pos_components.PTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:useFontStyle="normal"
+                    app:useTextColor="color6"
+                    app:useTextHeader="h6"
+                    android:text="@string/discount_limit" />
+
+                <androidx.legacy.widget.Space
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_6sdp" />
+
+                <com.diadiem.pos_components.PTextView
+                    android:id="@+id/discountLimit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{discountDetail.discountLimitValue}"
+                    app:useFontStyle="normal"
+                    app:useTextColor="color5"
+                    app:useTextHeader="h5"
+                    tools:text="Description Text" />
+
+                <androidx.legacy.widget.Space
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_12sdp" />
+
+                <include layout="@layout/divider_vertical" />
+
+                <androidx.legacy.widget.Space
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_12sdp" />
+
+                <com.diadiem.pos_components.PTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:useFontStyle="normal"
+                    app:useTextColor="color6"
+                    app:useTextHeader="h6"
+                    android:text="@string/minimum_requirements" />
+
+                <androidx.legacy.widget.Space
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_6sdp" />
+
+                <com.diadiem.pos_components.PTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/discountMinimumRequirement"
+                    android:text="@{discountDetail.minimumRequirementValue}"
+                    app:useFontStyle="normal"
+                    app:useTextColor="color5"
+                    app:useTextHeader="h5"
+                    tools:text="Description Text" />
+
+                <androidx.legacy.widget.Space
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_12sdp" />
+
+                <include layout="@layout/divider_vertical" />
+
+                <androidx.legacy.widget.Space
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_12sdp" />
+
+                <com.diadiem.pos_components.PTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:useFontStyle="normal"
+                    app:useTextColor="color6"
+                    app:useTextHeader="h6"
+                    android:text="@string/eligible_customers" />
+
+                <androidx.legacy.widget.Space
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_6sdp" />
+
+                <com.diadiem.pos_components.PTextView
+                    android:id="@+id/eligiableCustomers"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{discountDetail.customerEligibilityValue}"
+                    app:useFontStyle="normal"
+                    app:useTextColor="color5"
+                    app:useTextHeader="h5"
+                    tools:text="Description Text" />
+
+                <androidx.legacy.widget.Space
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_12sdp" />
+
+                <include layout="@layout/divider_vertical" />
+
+                <androidx.legacy.widget.Space
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_12sdp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.diadiem.pos_components.PTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/usage_limits"
+                        app:useFontStyle="normal"
+                        app:useTextColor="color6"
+                        app:useTextHeader="h6" />
+
+                </LinearLayout>
+
+                <androidx.legacy.widget.Space
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_6sdp" />
+
+                <com.diadiem.pos_components.PTextView
+                    android:id="@+id/usageLimit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{discountDetail.usageLimitValue}"
+                    app:useFontStyle="normal"
+                    app:useTextColor="color5"
+                    app:useTextHeader="h5"
+                    tools:text="Description Text" />
+
+                <androidx.legacy.widget.Space
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_12sdp" />
+
+                <include layout="@layout/divider_vertical" />
+
+                <androidx.legacy.widget.Space
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_12sdp" />
+
+                <com.diadiem.pos_components.PTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:useFontStyle="normal"
+                    app:useTextColor="color6"
+                    app:useTextHeader="h6"
+                    android:text="@string/apply_to_other_discounts" />
+
+                <androidx.legacy.widget.Space
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_6sdp" />
+
+                <com.diadiem.pos_components.PTextView
+                    android:id="@+id/applyToOtherDiscounts"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{discountDetail.combineValue}"
+                    app:useFontStyle="normal"
+                    app:useTextColor="color5"
+                    app:useTextHeader="h5"
+                    tools:text="Description Text" />
+
+                <androidx.legacy.widget.Space
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_12sdp" />
+
+                <include layout="@layout/divider_vertical" />
+
+                <androidx.legacy.widget.Space
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_12sdp" />
+
+                <com.diadiem.pos_components.PTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:useFontStyle="normal"
+                    app:useTextColor="color6"
+                    app:useTextHeader="h6"
+                    android:text="@string/valid_date" />
+
+                <androidx.legacy.widget.Space
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_6sdp" />
+
+                <com.diadiem.pos_components.PTextView
+                    android:id="@+id/validDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{discountDetail.validDateValue}"
+                    app:useFontStyle="normal"
+                    app:useTextColor="color5"
+                    app:useTextHeader="h5"
+                    tools:text="Description Text" />
+
+                <androidx.legacy.widget.Space
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_12sdp" />
+
+                <include layout="@layout/divider_vertical" />
+
+                <androidx.legacy.widget.Space
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_12sdp" />
+
+                <com.diadiem.pos_components.PTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:useFontStyle="normal"
+                    app:useTextColor="color6"
+                    app:useTextHeader="h6"
+                    android:text="@string/schedule" />
+
+                <androidx.legacy.widget.Space
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_6sdp" />
+
+                <com.diadiem.pos_components.PTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/schedule"
+                    android:text="@{discountDetail.useSchedule ? @string/see_schedule: discountDetail.scheduleValue}"
+                    app:useFontStyle="normal"
+                    android:textColor="@{discountDetail.useSchedule ? @color/color_0 : @color/color_5}"
+                    app:useTextHeader="h5"
+                    tools:text="Description Text" />
+
+                <androidx.legacy.widget.Space
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_12sdp" />
+
+                <include layout="@layout/divider_vertical" />
+
+                <androidx.legacy.widget.Space
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_25sdp" />
+
+                <com.diadiem.pos_components.PMaterialButton
+                    android:id="@+id/btnApplyDiscount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/_14sdp"
+                    android:background="@color/color_0"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:gravity="center"
+                    android:text="@string/apply"
+                    android:paddingVertical="@dimen/_6sdp"
+                    app:pbtn_useBackgroundColor="true"
+                    app:pbtn_useFontStyle="bold"
+                    app:pbtn_useTextColor="color2"
+                    app:pbtn_useTextHeader="h5" />
+
+                <androidx.legacy.widget.Space
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_25sdp" />
+            </LinearLayout>
+
+        </ScrollView>
+    </LinearLayout>
+
+</layout>

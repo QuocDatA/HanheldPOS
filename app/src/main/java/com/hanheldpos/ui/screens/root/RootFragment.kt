@@ -1,9 +1,11 @@
 package com.hanheldpos.ui.screens.root
 
+import android.app.Application
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentRootBinding
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.main.MainVM
+import com.hanheldpos.utils.NetworkUtils
 
 class RootFragment : BaseFragment<FragmentRootBinding, RootVM>(),
     RootUV {
@@ -26,6 +28,7 @@ class RootFragment : BaseFragment<FragmentRootBinding, RootVM>(),
     }
 
     override fun initData() {
+
 
     }
 

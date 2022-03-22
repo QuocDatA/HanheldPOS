@@ -106,6 +106,7 @@
 
 
             <androidx.recyclerview.widget.RecyclerView
+                android:visibility="gone"
                 android:id="@+id/itemForSelectAdapter"
                 visibleObject="@{item.isFocused}"
                 android:layout_width="match_parent"

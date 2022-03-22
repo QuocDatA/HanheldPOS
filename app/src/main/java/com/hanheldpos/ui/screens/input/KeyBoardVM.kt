@@ -1,16 +1,24 @@
 package com.hanheldpos.ui.screens.input
 
 import android.view.View
+import android.widget.EditText
 import android.widget.TextView
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.hanheldpos.model.keyboard.KeyBoardType
 
-class KeyBoardVM : ViewModel() {
-    val input = MutableLiveData<String>()
+class KeyBoardVM(type: KeyBoardType) : ViewModel() {
+
+    private val input = MutableLiveData<String>()
     var listener: KeyBoardCallBack? = null;
     var keyBoardType = MutableLiveData<KeyBoardType>(KeyBoardType.Number);
     var isCapLock = MutableLiveData<Boolean>(false);
+
+    init {
+        keyBoardType.postValue(type)
+    }
+
     fun concatenateInputString(view: View) {
         val textView = view as TextView
         if (input.value.isNullOrEmpty()) {
@@ -23,20 +31,20 @@ class KeyBoardVM : ViewModel() {
         val textView = view as TextView
         if (input.value.isNullOrEmpty()) {
             input.value = ""
-            if(textView.text == "space") {
+            if (textView.text == "space") {
                 input.value = (input.value + " ")
             } else {
-                if(isCapLock.value!!){
+                if (isCapLock.value!!) {
                     input.value = (input.value + (textView.text).toString().uppercase())
                 } else {
                     input.value = (input.value + textView.text)
                 }
             }
         } else {
-            if(textView.text == "space") {
+            if (textView.text == "space") {
                 input.value = (input.value + " ")
             } else {
-                if(isCapLock.value!!){
+                if (isCapLock.value!!) {
                     input.value = (input.value + (textView.text).toString().uppercase())
                 } else {
                     input.value = (input.value + textView.text)
@@ -63,8 +71,16 @@ class KeyBoardVM : ViewModel() {
         isCapLock.postValue(!isCapLock.value!!)
     }
 
+    fun onCapLock(capLock: Boolean) {
+        isCapLock.postValue(capLock)
+    }
+
+    fun clearText() {
+        input.postValue("")
+    }
+
     fun switchKeyBoardType() {
-        when(keyBoardType.value!!)  {
+        when (keyBoardType.value!!) {
             KeyBoardType.Number -> {
                 keyBoardType.postValue(KeyBoardType.Text)
             }
@@ -74,10 +90,18 @@ class KeyBoardVM : ViewModel() {
             KeyBoardType.TextOnly -> {}
             KeyBoardType.NumberOnly -> {}
         }
-
     }
 
-    fun onListener(listener: KeyBoardCallBack) {
+    fun onListener(
+        owner: LifecycleOwner,
+        view: EditText,
+        listener: KeyBoardCallBack,
+        initInput: String = ""
+    ) {
+        input.observe(owner) {
+            view.setText(it)
+        }
+        input.postValue(initInput)
         this.listener = listener;
     }
 

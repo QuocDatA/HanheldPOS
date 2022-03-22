@@ -1,42 +1,40 @@
 package com.hanheldpos.model.cart
 
+import com.hanheldpos.data.api.pojo.discount.DiscountResp
+import com.hanheldpos.data.api.pojo.fee.Discount
 import com.hanheldpos.data.api.pojo.fee.Fee
 import com.hanheldpos.data.api.pojo.order.settings.Reason
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.OrderHelper
 import com.hanheldpos.model.UserHelper
 import com.hanheldpos.model.cart.fee.FeeType
-import com.hanheldpos.model.cart.payment.PaymentOrder
-import com.hanheldpos.model.discount.DiscountServer
+import com.hanheldpos.model.payment.PaymentOrder
 import com.hanheldpos.model.discount.DiscountUser
 import com.hanheldpos.model.order.*
 import com.hanheldpos.model.product.ProductType
-import com.hanheldpos.utils.time.DateTimeHelper
-import java.util.*
 
 object CartConverter {
 
     fun toOrder(cart: CartModel, orderStatus: Int, paymentStatus: Int): OrderReq {
-        val subTotal = cart.getSubTotal();
-        val total = cart.total();
-        val totalCompVoid = cart.totalComp();
-        val totalDisc = cart.totalDiscount(subTotal);
-        val totalService = cart.fees.firstOrNull { fee -> fee.FeeTypeId == FeeType.ServiceFee }
-            ?.price(subTotal, totalDisc);
-        val totalSurcharge = cart.fees.firstOrNull { fee -> fee.FeeTypeId == FeeType.SurchargeFee }
-            ?.price(subTotal, totalDisc);
-        val totalTaxes = cart.fees.firstOrNull { fee -> fee.FeeTypeId == FeeType.TaxFee }
-            ?.price(subTotal, totalDisc);
+        val subTotal = cart.getSubTotal()
+        val total = cart.total()
+        val totalCompVoid = cart.totalComp()
+        val totalDisc = cart.totalDiscount(subTotal)
+        val totalService =
+            cart.fees.firstOrNull { fee -> FeeType.fromInt(fee.FeeTypeId) == FeeType.ServiceFee }
+                ?.price(subTotal, totalDisc)
+        val totalSurcharge =
+            cart.fees.firstOrNull { fee -> FeeType.fromInt(fee.FeeTypeId) == FeeType.SurchargeFee }
+                ?.price(subTotal, totalDisc)
+        val totalTaxes =
+            cart.fees.firstOrNull { fee -> FeeType.fromInt(fee.FeeTypeId) == FeeType.TaxFee }
+                ?.price(subTotal, totalDisc)
 
-        val totalFees = cart.totalFee(subTotal, totalDisc);
-        val grossPrice = cart.totalGross(subTotal, totalDisc);
+        val totalFees = cart.totalFee(subTotal, totalDisc)
+        val grossPrice = cart.totalGross(subTotal, totalDisc)
 
         val description =
-            cart.productsList.map { baseProductInCart -> baseProductInCart.name }.joinToString(",");
-
-        // TODO : save temp order to local
-        cart.createDate =
-            DateTimeHelper.dateToString(Date(), DateTimeHelper.Format.FULL_DATE_UTC_TIMEZONE);
+            cart.productsList.map { baseProductInCart -> baseProductInCart.name }.joinToString(",")
 
         return OrderReq(
             Order = Order(
@@ -52,6 +50,7 @@ object CartConverter {
                 MenuLocationGuid = cart.menuLocationGuid,
                 CurrencySymbol = OrderHelper.getCurrencySymbol()!!,
                 CashDrawer_id = DataHelper.currentDrawerId,
+                CustomerGuestGuid = cart.customer?._Id
             ),
             OrderDetail = OrderDetail(
                 DiningOption = OrderDiningOption(
@@ -117,28 +116,27 @@ object CartConverter {
                 TableName = cart.table.TableName,
                 CreateDate = cart.createDate!!
             )
-        );
+        )
     }
 
-    private fun toProductBuyList(products: List<BaseProductInCart>): List<ProductBuy> {
-        val proOrderList = mutableListOf<ProductBuy>();
+    private fun toProductBuyList(products: List<BaseProductInCart>): List<ProductChosen> {
+        val proOrderList = mutableListOf<ProductChosen>()
 
         products.forEachIndexed { index, baseProductInCart ->
 
             when (baseProductInCart.productType) {
                 ProductType.REGULAR -> {
-                    val regular = baseProductInCart as Regular;
+                    val regular = baseProductInCart as Regular
                     proOrderList.add(
-                        OrderMapper.mappingProductBuy(
-                            regular,
+                        regular.toProductChosen(
                             index,
                             regular.quantity!!
                         )
                     )
                 }
                 ProductType.BUNDLE -> {
-                    val bundle = baseProductInCart as Combo;
-                    proOrderList.add(OrderMapper.mappingProductBuy(bundle, index, null));
+                    val bundle = baseProductInCart as Combo
+                    proOrderList.add(bundle.toProductChosen(index, null))
                 }
                 ProductType.NOT_FOUND -> TODO()
                 ProductType.GROUP_SKU -> TODO()
@@ -146,7 +144,7 @@ object CartConverter {
                 ProductType.COMBO_DISC -> TODO()
             }
         }
-        return proOrderList;
+        return proOrderList
     }
 
     private fun calOrderSummary(
@@ -159,13 +157,13 @@ object CartConverter {
         totalTaxe: Double?,
         note: String?,
         otherFee: Double,
-        paymentList: List<PaymentOrder>
+        paymentList: List<PaymentOrder>?
     ): OrderSummary {
-        val totalPaid = paymentList.sumOf { it.Payable!! }
-        val totalGrand = total;
-        val balance = totalGrand - totalPaid
+        val totalPaid = paymentList?.sumOf { it.OverPay!! }
+        val totalGrand = total
+        val balance = if (totalPaid != null) totalGrand - totalPaid else null
         val received = totalPaid
-        val change = received - totalGrand;
+        val change = received?.minus(totalGrand)
 
         return OrderSummary(
             Grandtotal = total,
@@ -177,22 +175,28 @@ object CartConverter {
             Tax = totalTaxe,
             Note = note,
             OtherFee = otherFee,
-            Balance = if (balance < 0.0) 0.0 else balance,
+            Balance = if (balance != null)
+                if (balance < 0.0) 0.0
+                else balance
+            else null,
             Received = received,
-            Change = change,
+            Change = if (change != null)
+                if (change < 0.0) 0.0
+                else change
+            else null,
             PaymentAmount = totalPaid
         )
     }
 
     private fun toOrderDiscountList(
-        discountServers: List<DiscountServer>?,
+        discountServers: List<DiscountResp>?,
         discountUsers: List<DiscountUser>?,
         proSubtotal: Double,
         modSubtotal: Double,
         productOriginal_id: String? = null,
         quantity: Int? = 1
     ): List<DiscountOrder> {
-        val discountOrders = mutableListOf<DiscountOrder>();
+        val discountOrders = mutableListOf<DiscountOrder>()
 
         // Mapping discount form client.
         val disUser = discountUsers?.map { disc ->
@@ -202,12 +206,26 @@ object CartConverter {
                 modSubtotal,
                 productOriginal_id ?: "",
                 quantity ?: 1
-            );
+            )
         }
         if (disUser != null) {
-            discountOrders.addAll(disUser);
+            discountOrders.addAll(disUser)
         }
-        return discountOrders;
+
+        // Mapping discount form client.
+        val disServers = discountUsers?.map { disc ->
+            DiscountOrder(
+                disc,
+                proSubtotal,
+                modSubtotal,
+                productOriginal_id ?: "",
+                quantity ?: 1
+            )
+        }
+        if (disServers != null) {
+            discountOrders.addAll(disServers)
+        }
+        return discountOrders
     }
 
     private fun toOrderFeeList(
@@ -216,16 +234,16 @@ object CartConverter {
         subtotal: Double?,
         totalDiscounts: Double?
     ): List<OrderFee> {
-        return fees.filter { f -> f.FeeTypeId == feeType }
+        return fees.filter { f -> FeeType.fromInt(f.FeeTypeId) == feeType }
             .map { fee -> OrderFee(fee, subtotal ?: 0.0, totalDiscounts ?: 0.0) }
     }
 
     private fun toOrderCompVoidList(reason: Reason?, totalPrice: Double?): List<CompVoid> {
-        val compVoids = mutableListOf<CompVoid>();
-        reason ?: return compVoids;
-        val parentId = DataHelper.orderSettingLocalStorage?.ListVoid?.firstOrNull()?.Id;
-        val compVoid = CompVoid(reason, parentId, totalPrice);
-        compVoids.add(compVoid);
-        return compVoids;
+        val compVoids = mutableListOf<CompVoid>()
+        reason ?: return compVoids
+        val parentId = DataHelper.orderSettingLocalStorage?.ListVoid?.firstOrNull()?.Id
+        val compVoid = CompVoid(reason, parentId, totalPrice)
+        compVoids.add(compVoid)
+        return compVoids
     }
 }

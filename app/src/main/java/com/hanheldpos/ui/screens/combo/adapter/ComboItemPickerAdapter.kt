@@ -13,16 +13,12 @@ import com.hanheldpos.R
 import com.hanheldpos.binding.setPricePlusView
 import com.hanheldpos.data.api.pojo.product.Product
 import com.hanheldpos.databinding.ItemComboRegularBinding
-import com.hanheldpos.databinding.ItemOrderProductBinding
-import com.hanheldpos.model.cart.Combo
 import com.hanheldpos.model.cart.GroupBundle
 import com.hanheldpos.model.cart.Regular
-import com.hanheldpos.model.home.order.menu.ProductMenuItem
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
-import com.hanheldpos.ui.screens.cart.CurCartData
-import com.hanheldpos.ui.screens.cart.customer.add_customer.adapter.CustomerAdapter
+import com.hanheldpos.ui.screens.cart.CartDataVM
 
 class ComboItemPickerAdapter(
     private val proOriginal : Product,
@@ -62,14 +58,11 @@ class ComboItemPickerAdapter(
         }
         holder.bindItem(item);
         val binding = holder.binding as ItemComboRegularBinding;
-        CurCartData.cartModelLD.observe(holder.itemView.context as LifecycleOwner) {
-            val price = item.groupPrice(groupBundle,proOriginal);
-            if(price > 0){
-                setPricePlusView(binding.priceProduct,price)
-            }
-            else binding.priceProduct.visibility = View.GONE
-
+        val price = item.groupPrice(groupBundle,proOriginal);
+        if(price > 0){
+            setPricePlusView(binding.priceProduct,price)
         }
+        else binding.priceProduct.visibility = View.GONE
         (holder.binding as ItemComboRegularBinding).root.setOnClickListener {
             listener.onItemClick(position,item);
         }

@@ -18,8 +18,6 @@ data class GroupBundle(
     fun isComplete() = totalQuantity >= comboInfo.Quantity ?: 0;
 
     fun addRegular(regular: Regular){
-//        val priceOverride  = productItem.priceOverride(menuLocation_id,productItem.skuDefault,productItem.price)
-//        val regular = Regular( productItem,diningOptionItem,1,productItem.skuDefault,productItem.variantDefault,priceOverride,null)
         productList.add(regular)
     }
 

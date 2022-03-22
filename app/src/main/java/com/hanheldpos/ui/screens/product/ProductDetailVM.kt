@@ -39,7 +39,7 @@ class ProductDetailVM : BaseUiViewModel<ProductDetailUV>() {
 
     val totalPriceLD = Transformations.map(regularInCart) {
         return@map if (productBundle == null)
-            regularInCart.value?.total(it.proOriginal!!) ?: 0.0
+            regularInCart.value?.total() ?: 0.0
         else
             regularInCart.value?.total(groupBundle!!, productBundle!!) ?: 0.0
     }
@@ -52,10 +52,6 @@ class ProductDetailVM : BaseUiViewModel<ProductDetailUV>() {
             ItemActionType.Add -> 1;
             else -> 1;
         }
-    }
-
-    fun initLifeCycle(owner: LifecycleOwner) {
-        owner.lifecycle.addObserver(this);
     }
 
     fun onQuantityAdded() {

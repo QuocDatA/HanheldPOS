@@ -4,8 +4,7 @@ import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentCustomizeReportBinding
 import com.hanheldpos.model.report.SaleReportCustomData
 import com.hanheldpos.ui.base.fragment.BaseFragment
-import com.hanheldpos.utils.time.DateTimeHelper
-import com.prolificinteractive.materialcalendarview.CalendarDay
+import com.hanheldpos.utils.time.DateTimeUtils
 import java.util.*
 
 class CustomizeReportFragment(
@@ -68,13 +67,13 @@ class CustomizeReportFragment(
         }
         listener.onComplete(
             saleReportCustomData = SaleReportCustomData(
-                startDay = (DateTimeHelper.strToDate(
+                startDay = (DateTimeUtils.strToDate(
                     "${viewModel.startDay.year}-${viewModel.startDay.month}-${viewModel.startDay.day}T00:00:00",
-                    DateTimeHelper.Format.FULL_DATE_UTC_NOT_MILI
+                    DateTimeUtils.Format.FULL_DATE_UTC_NOT_MILI
                 )),
-                endDay = (DateTimeHelper.strToDate(
+                endDay = (DateTimeUtils.strToDate(
                     "${viewModel.endDay.year}-${viewModel.endDay.month}-${viewModel.endDay.day}T00:00:00",
-                    DateTimeHelper.Format.FULL_DATE_UTC_NOT_MILI
+                    DateTimeUtils.Format.FULL_DATE_UTC_NOT_MILI
                 )),
                 isAllDay = viewModel.isAllDay.value!!,
                 isAllDevice = viewModel.isAllDevice.value!!,

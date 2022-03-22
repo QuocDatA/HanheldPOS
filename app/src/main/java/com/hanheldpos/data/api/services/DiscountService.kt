@@ -13,13 +13,13 @@ interface DiscountService {
     fun getDiscounts(
         @Query("userGuid") userGuid: String?,
         @Query("locationGuid") location: String?,
-        @Query("locationGuid") language: String? = "en",
+        @Query("language") language: String? = "en",
     ): Call<BaseResponse<List<DiscountResp>>>
 
-    @GET("coupon/list")
+    @GET("coupon/list/detail")
     fun getDiscountDetails(
         @Query("userGuid") userGuid: String?,
         @Query("locationGuid") location: String?,
-        @Query("locationGuid") language: String? = "en",
+        @Query("language") language: String? = "en",
     ): Call<BaseResponse<List<CouponResp>>>
 }

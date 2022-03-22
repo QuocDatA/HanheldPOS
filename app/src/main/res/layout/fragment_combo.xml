@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <import type="com.hanheldpos.model.combo.ItemActionType"/>
+
+        <import type="com.hanheldpos.model.combo.ItemActionType" />
+
         <variable
             name="viewModel"
             type="com.hanheldpos.ui.screens.combo.ComboVM" />
@@ -19,6 +21,7 @@
             android:layout_alignParentTop="true"
             android:background="@color/color_2"
             android:orientation="vertical">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -46,14 +49,14 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    app:layout_constrainedWidth="true"
                     android:ellipsize="end"
+                    android:gravity="center"
                     android:maxLines="1"
                     android:text="@{viewModel.bundleInCart.productName}"
+                    app:layout_constrainedWidth="true"
                     app:useFontStyle="bold"
                     app:useTextColor="color4"
                     app:useTextHeader="h4"
-                    android:gravity="center"
                     tools:text="Combo" />
 
                 <LinearLayout
@@ -87,9 +90,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
+                        android:text="@string/base_price"
                         app:useTextColor="color4"
                         app:useTextHeader="h8"
-                        android:text="@string/base_price"
                         tools:text="Base Price" />
                 </LinearLayout>
 
@@ -103,100 +106,97 @@
 
         </LinearLayout>
 
-        <androidx.core.widget.NestedScrollView
-            android:overScrollMode="always"
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_above="@+id/actionBar"
-            android:layout_below="@+id/toolbarContainer">
-            <ScrollView
+            android:layout_below="@+id/toolbarContainer"
+            android:fadeScrollbars="false"
+            android:scrollbarSize="@dimen/_4sdp">
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <LinearLayout
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/comboGroupAdapter"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/comboGroupAdapter"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:overScrollMode="never"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        tools:itemCount="1"
-                        tools:listitem="@layout/item_combo_group" />
+                    android:overScrollMode="never"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:itemCount="1"
+                    tools:listitem="@layout/item_combo_group" />
+
+                <LinearLayout
+                    android:id="@+id/noteProduct"
+                    visibleObject="@{viewModel.isSelectedComplete()}"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_19sdp"
+                    android:background="@color/color_2"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="@dimen/_10sdp">
+
                     <LinearLayout
-                        visibleObject="@{viewModel.isSelectedComplete()}"
-                        android:layout_marginTop="@dimen/_19sdp"
-                        android:id="@+id/noteProduct"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@color/color_2"
-                        android:orientation="vertical"
-                        android:paddingHorizontal="@dimen/_10sdp">
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
+                        <ImageView
+                            android:layout_width="@dimen/_16sdp"
+                            android:layout_height="@dimen/_16sdp"
+                            android:layout_marginTop="@dimen/_2sdp"
+                            android:src="@drawable/ic_note" />
+
+                        <com.diadiem.pos_components.PTextView
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal">
+                            android:layout_marginHorizontal="@dimen/_4sdp"
+                            android:text="@string/special_instructions"
+                            app:useFontStyle="bold"
+                            app:useTextColor="color4"
+                            app:useTextHeader="h5" />
 
-                            <ImageView
-                                android:layout_width="@dimen/_16sdp"
-                                android:layout_height="@dimen/_16sdp"
-                                android:layout_marginTop="@dimen/_2sdp"
-                                android:src="@drawable/ic_note" />
+                        <com.diadiem.pos_components.PTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/optional"
+                            app:useFontStyle="normal"
+                            app:useTextColor="color8"
 
-                            <com.diadiem.pos_components.PTextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginHorizontal="@dimen/_4sdp"
-                                android:text="Special Instructions"
-                                app:useFontStyle="bold"
-                                app:useTextColor="color4"
-                                app:useTextHeader="h5" />
-
-                            <com.diadiem.pos_components.PTextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Optional"
-                                app:useFontStyle="normal"
-                                app:useTextColor="color8"
-
-                                app:useTextHeader="h7" />
-                        </LinearLayout>
-
-                        <com.diadiem.pos_components.PTextInputEditText
-                            style="@style/BaseTextInput"
-                            android:layout_marginVertical="@dimen/_8sdp"
-                            android:background="@drawable/bg_outline"
-                            android:id="@+id/noteInput"
-                            android:focusable="true"
-                            android:focusableInTouchMode="true"
-                            android:hint="@string/special_instructions"
-                            android:inputType="text"
-                            android:minHeight="@dimen/_40sdp"
-                            android:paddingHorizontal="@dimen/_6sdp"
-                            android:paddingVertical="@dimen/_7sdp"
-                            app:ipt_useFontStyle="normal"
-                            app:ipt_useHintTextColor="color8"
-                            android:text="@={viewModel.bundleInCart.note}"
-                            app:ipt_useTextColor="color4"
-                            app:ipt_useTextHeader="h5" />
+                            app:useTextHeader="h7" />
                     </LinearLayout>
-                    <androidx.fragment.app.FragmentContainerView
-                        android:id="@+id/fragment_container_discount"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        />
+
+                    <com.diadiem.pos_components.PTextInputEditText
+                        android:id="@+id/noteInput"
+                        style="@style/BaseTextInput"
+                        android:layout_marginVertical="@dimen/_8sdp"
+                        android:background="@drawable/bg_outline"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:hint="@string/special_instructions"
+                        android:inputType="text"
+                        android:minHeight="@dimen/_40sdp"
+                        android:paddingHorizontal="@dimen/_6sdp"
+                        android:paddingVertical="@dimen/_7sdp"
+                        android:text="@={viewModel.bundleInCart.note}"
+                        app:ipt_useFontStyle="normal"
+                        app:ipt_useHintTextColor="color8"
+                        app:ipt_useTextColor="color4"
+                        app:ipt_useTextHeader="h5" />
                 </LinearLayout>
-            </ScrollView>
 
-
-
-        </androidx.core.widget.NestedScrollView>
+                <androidx.fragment.app.FragmentContainerView
+                    android:id="@+id/fragment_container_discount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </ScrollView>
 
         <include
-            android:id="@+id/dividerActin"
+            android:id="@+id/dividerAction"
             layout="@layout/divider_vertical"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_1sdp"
@@ -212,6 +212,7 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:layout_alignParentStart="true"
                 android:layout_marginHorizontal="@dimen/_16sdp"
                 android:gravity="center"
                 android:orientation="horizontal">
@@ -239,10 +240,9 @@
                     style="@style/ProductDetailBtnQuantity"
                     android:layout_width="@dimen/_25sdp"
                     android:layout_height="@dimen/_25sdp"
-                    android:layout_alignParentStart="true"
-                    android:layout_centerVertical="true"
                     android:onClick="@{v -> viewModel.onAddQuantity()}"
-                    android:src="@{viewModel.numberQuantity &lt; viewModel.maxQuantity ? @drawable/ic_add_primary : @drawable/ic_add_disable}" />
+                    android:src="@{viewModel.numberQuantity &lt; viewModel.maxQuantity ? @drawable/ic_add_primary : @drawable/ic_add_disable}"
+                    tools:ignore="ContentDescription" />
             </LinearLayout>
 
             <com.google.android.material.card.MaterialCardView

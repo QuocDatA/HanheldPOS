@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
         <variable
             name="item"
             type="com.hanheldpos.data.api.pojo.discount.DiscountResp" />
+        <import type="com.hanheldpos.model.discount.DiscountTypeTo" />
+        <variable
+            name="discountTypeTo"
+            type="com.hanheldpos.model.discount.DiscountTypeTo.Companion" />
     </data>
 
     <LinearLayout
@@ -35,29 +40,85 @@
                 android:text="@{item.discountText,default= `-50%`}"
                 />
         </FrameLayout>
+
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content">
-            <com.diadiem.pos_components.PTextView
-                android:layout_marginHorizontal="@dimen/_9sdp"
-                app:useTextHeader="h5"
-                app:useFontStyle="normal"
-                app:useTextColor="color4"
-                android:layout_width="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_45sdp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@{item.discountName, default=`50% Off for Total Order`}"
-                />
+                android:layout_marginHorizontal="@dimen/_9sdp"
+                android:gravity="center_vertical">
+
+                <com.diadiem.pos_components.PTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/_9sdp"
+                    android:layout_weight="1"
+                    android:text="@{item.discountName, default=`50% Off for Total Order`}"
+                    app:useFontStyle="normal"
+                    android:ellipsize="end"
+                    android:maxEms="10"
+                    android:maxLines="1"
+                    app:useTextColor="color4"
+                    app:useTextHeader="h5" />
+
+                <com.diadiem.pos_components.PTextView
+                    android:layout_width="@dimen/_17sdp"
+                    android:layout_height="@dimen/_17sdp"
+                    android:background="@drawable/bg_discount_automatic"
+                    android:text="@{item.discountAutomaticText,default= `M`}"
+                    android:textAlignment="center"
+                    app:useFontStyle="normal"
+                    app:useTextColor="color2"
+                    app:useTextHeader="h5" />
+            </LinearLayout>
+
+            <androidx.legacy.widget.Space
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_9sdp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <com.diadiem.pos_components.PTextView
+                    visibleObject="@{item.discountApplyTo != DiscountTypeTo.NOT_FOUND.value}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_cart_tip_item"
+                    android:paddingHorizontal="@dimen/_5sdp"
+                    android:paddingVertical="@dimen/_1sdp"
+                    android:text="@{item.discountApplyTo == DiscountTypeTo.ITEM.value ? @string/item : @string/order}"
+                    app:useFontStyle="normal"
+                    app:useTextColor="color6"
+                    app:useTextHeader="h7"
+                    tools:text="Item" />
+
+                <androidx.legacy.widget.Space
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <com.diadiem.pos_components.PTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="@dimen/_5sdp"
+                    android:paddingVertical="@dimen/_1sdp"
+                    android:text="@string/view_details"
+                    app:useFontStyle="normal"
+                    app:useTextColor="color0"
+                    app:useTextHeader="h6"
+                     />
+            </LinearLayout>
         </LinearLayout>
-        <com.diadiem.pos_components.PTextView
-            android:background="@drawable/bg_discount_automatic"
-            android:textAlignment="center"
-            app:useTextHeader="h5"
-            app:useFontStyle="normal"
-            app:useTextColor="color2"
-            android:layout_width="@dimen/_17sdp"
-            android:layout_height="@dimen/_17sdp"
-            android:text="@{item.discountAutomaticText,default= `M`}"
-            />
+
+
     </LinearLayout>
 </layout>

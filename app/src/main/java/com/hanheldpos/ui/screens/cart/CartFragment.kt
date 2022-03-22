@@ -10,15 +10,18 @@ import com.hanheldpos.data.api.pojo.customer.CustomerResp
 import com.hanheldpos.data.api.pojo.order.settings.DiningOption
 import com.hanheldpos.data.api.pojo.order.settings.Reason
 import com.hanheldpos.databinding.FragmentCartBinding
+import com.hanheldpos.extension.notifyValueChange
 import com.hanheldpos.model.DataHelper
+import com.hanheldpos.model.OrderHelper
+import com.hanheldpos.model.cart.BaseProductInCart
 import com.hanheldpos.model.cart.Combo
 import com.hanheldpos.model.cart.DiscountCart
 import com.hanheldpos.model.cart.Regular
 import com.hanheldpos.model.cart.fee.FeeTip
-import com.hanheldpos.model.cart.payment.PaymentOrder
+import com.hanheldpos.model.payment.PaymentOrder
 import com.hanheldpos.model.combo.ItemActionType
 import com.hanheldpos.model.discount.DiscountUser
-import com.hanheldpos.model.cart.BaseProductInCart
+import com.hanheldpos.model.order.OrderReq
 import com.hanheldpos.model.product.ProductType
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
@@ -28,66 +31,72 @@ import com.hanheldpos.ui.screens.cart.adapter.CartProductAdapter
 import com.hanheldpos.ui.screens.cart.adapter.CartTipAdapter
 import com.hanheldpos.ui.screens.cart.customer.add_customer.AddCustomerFragment
 import com.hanheldpos.ui.screens.cart.customer.detail_customer.CustomerDetailFragment
-import com.hanheldpos.ui.screens.cart.payment.PaymentFragment
+import com.hanheldpos.ui.screens.payment.PaymentFragment
+import com.hanheldpos.ui.screens.payment.completed.PaymentCompletedFragment
 import com.hanheldpos.ui.screens.combo.ComboFragment
 import com.hanheldpos.ui.screens.discount.DiscountFragment
-import com.hanheldpos.ui.screens.home.ScreenViewModel
 import com.hanheldpos.ui.screens.home.order.OrderFragment
 import com.hanheldpos.ui.screens.product.ProductDetailFragment
 
 
-class CartFragment( private val listener : CartCallBack) : BaseFragment<FragmentCartBinding, CartVM>(), CartUV {
-    override fun layoutRes() = R.layout.fragment_cart;
+class CartFragment(private val listener: CartCallBack) :
+    BaseFragment<FragmentCartBinding, CartVM>(), CartUV {
 
-    private lateinit var cartDiningOptionAdapter: CartDiningOptionAdapter;
-    private lateinit var cartProductAdapter: CartProductAdapter;
-    private lateinit var cartDiscountAdapter: CartDiscountAdapter;
-    private lateinit var cartTipAdapter: CartTipAdapter;
-    private val screenViewModel by activityViewModels<ScreenViewModel>();
+    private val cartDataVM by activityViewModels<CartDataVM>()
+
+    override fun layoutRes() = R.layout.fragment_cart
+
+    private lateinit var cartDiningOptionAdapter: CartDiningOptionAdapter
+    private lateinit var cartProductAdapter: CartProductAdapter
+    private lateinit var cartDiscountAdapter: CartDiscountAdapter
+    private lateinit var cartTipAdapter: CartTipAdapter
 
 
     override fun viewModelClass(): Class<CartVM> {
-        return CartVM::class.java;
+        return CartVM::class.java
     }
 
     override fun initViewModel(viewModel: CartVM) {
         viewModel.run {
-            init(this@CartFragment);
-            binding.viewModel = this;
-            initLifeCycle(this@CartFragment);
+            init(this@CartFragment)
+            binding.viewModel = this
+            binding.cartDataVM = cartDataVM
         }
 
     }
 
     override fun initView() {
 
-        //region setup dining option recyclerview
+        //setup dining option recyclerview
         cartDiningOptionAdapter =
             CartDiningOptionAdapter(
                 onItemClickListener = object : BaseItemClickListener<DiningOption> {
                     override fun onItemClick(adapterPosition: Int, item: DiningOption) {
-                        CurCartData.diningOptionChange(item)
+                        cartDataVM.diningOptionChange(item)
                     }
                 },
-            );
-        binding.diningOptionRecyclerView.adapter = cartDiningOptionAdapter;
-        //endregion
+            )
+        binding.diningOptionRecyclerView.adapter = cartDiningOptionAdapter
 
 
-        //region setup product recycler view
+        // setup product recycler view
         cartProductAdapter = CartProductAdapter(
             listener = object : CartProductAdapter.CartProductListener {
                 override fun onItemClick(adapterPosition: Int, item: BaseProductInCart) {
-                    onEditItemInCart(adapterPosition, item);
+                    onEditItemInCart(adapterPosition, item)
                 }
 
-                override fun onDiscountDelete(adapterPosition: Int, discount : DiscountCart , item: BaseProductInCart) {
-                    CurCartData.deleteDiscountCart(discount = discount, productInCart = item);
+                override fun onDiscountDelete(
+                    adapterPosition: Int,
+                    discount: DiscountCart,
+                    item: BaseProductInCart
+                ) {
+                    cartDataVM.deleteDiscountCart(discount = discount, productInCart = item)
                 }
 
 
             }
-        );
+        )
         binding.productRecyclerView.apply {
             addItemDecoration(
                 DividerItemDecoration(
@@ -102,24 +111,22 @@ class CartFragment( private val listener : CartCallBack) : BaseFragment<Fragment
                     )
                 }
             )
-            adapter = cartProductAdapter;
-        };
-        //endregion
+            adapter = cartProductAdapter
+        }
 
-        //region setup discount recycle view
-        cartDiscountAdapter = CartDiscountAdapter(listener = object : BaseItemClickListener<DiscountCart>{
-            override fun onItemClick(adapterPosition: Int, item: DiscountCart) {
-                CurCartData.deleteDiscountCart(item,null);
-            }
-        })
+        // setup discount recycle view
+        cartDiscountAdapter =
+            CartDiscountAdapter(listener = object : BaseItemClickListener<DiscountCart> {
+                override fun onItemClick(adapterPosition: Int, item: DiscountCart) {
+                    cartDataVM.deleteDiscountCart(item, null)
+                }
+            })
 
         binding.discountRecycleView.apply {
             adapter = cartDiscountAdapter
         }
 
-        //endregion
-
-        //region setup cart tip adapter
+        // setup cart tip adapter
         cartTipAdapter = CartTipAdapter(
             onItemClickListener = object : BaseItemClickListener<FeeTip> {
                 override fun onItemClick(adapterPosition: Int, item: FeeTip) {
@@ -128,38 +135,31 @@ class CartFragment( private val listener : CartCallBack) : BaseFragment<Fragment
             },
         )
         binding.tipRecyclerView.apply {
-            binding.tipRecyclerView.adapter = cartTipAdapter;
-        };
-        //endregion
+            binding.tipRecyclerView.adapter = cartTipAdapter
+        }
 
         binding.btnBill.setOnClickListener {
-            onBillCart();
+            onBillCart()
         }
     }
 
     override fun initData() {
-        //region init dining option data
-        CurCartData.diningOptionLD.observe(this) {
-            var selectedIndex = 0;
+        //init dining option data
+        val diningOptions: MutableList<DiningOption> =
+            (DataHelper.orderSettingLocalStorage?.ListDiningOptions as List<DiningOption>).toMutableList()
+        cartDiningOptionAdapter.submitList(diningOptions)
 
-            val diningOptions: MutableList<DiningOption> =
-                (DataHelper.orderSettingLocalStorage?.ListDiningOptions as List<DiningOption>).toMutableList();
-            cartDiningOptionAdapter.submitList(diningOptions);
-
-            if (CurCartData.cartModelLD.value != null) {
-                diningOptions.forEachIndexed { index, diningOptionItem ->
-                    if (diningOptionItem.Id == CurCartData.cartModelLD.value?.diningOption?.Id) selectedIndex =
-                        index
+        if (cartDataVM.diningOptionLD.value != null) {
+            diningOptions.forEachIndexed { index, diningOptionItem ->
+                if (diningOptionItem.Id == cartDataVM.diningOptionLD.value?.Id) {
+                    cartDiningOptionAdapter.setSelectedIndex(index)
+                    return@forEachIndexed
                 }
             }
-            cartDiningOptionAdapter.setSelectedIndex(selectedIndex);
-
         }
 
-        //endregion
-
-        //region init tip option
-        val tipOptions: MutableList<FeeTip> = mutableListOf<FeeTip>(
+        //init tip option
+        val tipOptions: MutableList<FeeTip> = mutableListOf(
             FeeTip("0", 0.0),
             FeeTip("5K", 5000.0),
             FeeTip("10K", 10000.0),
@@ -168,23 +168,21 @@ class CartFragment( private val listener : CartCallBack) : BaseFragment<Fragment
         )
         cartTipAdapter.setSelectedIndex(0)
         cartTipAdapter.submitList(tipOptions)
-        //endregion
 
-        //init product data
-        cartProductAdapter.submitList(CurCartData.cartModelLD.value?.productsList);
-        //endregion
-
+        //product data
+        cartProductAdapter.submitList(cartDataVM.cartModelLD.value?.productsList)
 
     }
 
     @SuppressLint("NotifyDataSetChanged")
     override fun initAction() {
-        CurCartData.cartModelLD.observe(this) {
-            val list = viewModel.processDataDiscount(it);
-            binding.isShowDiscount = list.isNotEmpty();
-            cartDiscountAdapter.submitList(list);
-            cartDiscountAdapter.notifyDataSetChanged();
-            cartProductAdapter.notifyDataSetChanged();
+        cartDataVM.cartModelLD.observe(this) {
+            it ?: return@observe
+            val list = viewModel.processDataDiscount(it)
+            binding.isShowDiscount = list.isNotEmpty()
+            cartDiscountAdapter.submitList(list)
+            cartDiscountAdapter.notifyDataSetChanged()
+            cartProductAdapter.notifyDataSetChanged()
         }
     }
 
@@ -193,15 +191,15 @@ class CartFragment( private val listener : CartCallBack) : BaseFragment<Fragment
     }
 
     override fun deleteCart() {
-        CurCartData.deleteCart(
+        cartDataVM.deleteCart(
             getString(R.string.confirmation),
             getString(R.string.delete_cart_warning),
             getString(R.string.delete),
             getString(R.string.alert_btn_negative),
             callback = object : () -> Unit {
                 override fun invoke() {
-                    onFragmentBackPressed();
-                    listener.onCartDelete();
+                    onFragmentBackPressed()
+                    listener.onCartDelete()
                 }
             }
         )
@@ -212,48 +210,115 @@ class CartFragment( private val listener : CartCallBack) : BaseFragment<Fragment
             .goToWithCustomAnimation(DiscountFragment(listener = object :
                 DiscountFragment.DiscountCallback {
                 override fun onDiscountUserChoose(discount: DiscountUser) {
-                    CurCartData.addDiscountUser(discount);
+                    cartDataVM.addDiscountUser(discount)
                 }
 
                 override fun onCompReasonChoose(reason: Reason) {
-                    CurCartData.addCompReason(reason);
+                    cartDataVM.addCompReason(reason)
                 }
 
                 override fun onCompRemove() {
-                    CurCartData.removeCompReason();
+                    cartDataVM.removeCompReason()
                 }
-            }));
+            }))
     }
 
-    override fun openSelectPayment(payable: Double) {
-        navigator.goToWithCustomAnimation(PaymentFragment(payable,listener = object : PaymentFragment.PaymentCallback {
-            override fun onPaymentComplete(paymentOrder: PaymentOrder) {
-                CurCartData.addPaymentOrder(paymentOrder)
-            }
-        }));
+    override fun openSelectPayment(
+        alreadyBill: Boolean,
+        payable: Double,
+        paymentList: List<PaymentOrder>?
+    ) {
+        navigator.goToWithCustomAnimation(
+            PaymentFragment(
+                alreadyBill,
+                payable,
+                paymentList,
+                listener = object : PaymentFragment.PaymentCallback {
+
+                    override fun onPaymentComplete(paymentOrderList: List<PaymentOrder>) {
+                        cartDataVM.addPaymentOrder(paymentOrderList)
+                    }
+
+                    override fun onPaymentSelected() {
+                        onBillCart(true)
+                    }
+
+                    override fun onPaymentState(isSuccess: Boolean) {
+                        if (isSuccess) {
+                            onBillCart()
+                        } else
+                            this@CartFragment.onFinishOrder(false)
+                    }
+                })
+        )
     }
 
     override fun onOpenAddCustomer() {
         navigator.goToWithCustomAnimation(AddCustomerFragment(listener = object :
             AddCustomerFragment.CustomerEvent {
             override fun onSelectedCustomer(item: CustomerResp) {
-                CurCartData.addCustomerToCart(item);
+                cartDataVM.addCustomerToCart(item)
             }
-        }));
+        }))
     }
 
     override fun onBillSuccess() {
-        getBack();
-        CurCartData.removeCart();
-        listener.onBillSuccess();
+        listener.onBillSuccess()
+        if (!OrderHelper.isPaymentSuccess(cartDataVM.cartModelLD.value!!)) {
+            val totalNeedPay = cartDataVM.cartModelLD.value!!.getTotalPrice()
+            this.openSelectPayment(true, totalNeedPay, CurCartData.cartModel!!.paymentsList)
+        } else {
+            this.onFinishOrder(true)
+        }
+
+    }
+
+    override fun onFinishOrder(isSuccess: Boolean) {
+        onFragmentBackPressed()
+        if (isSuccess) {
+            cartDataVM.removeCart()
+            cartDataVM.cartModelLD.value?.let {
+                navigator.goTo(
+                    PaymentCompletedFragment(
+                        it.customer != null,
+                        it.paymentsList?.sumOf { payment ->
+                            payment.Payable ?: 0.0
+                        } ?: 0.0,
+                        it.paymentsList?.sumOf { payment ->
+                            payment.OverPay ?: 0.0
+                        } ?: 0.0,
+                        listener = object : PaymentCompletedFragment.PaymentCompletedCallBack {
+                            override fun becomeAMember() {
+
+                            }
+
+                            override fun newSale() {
+                            }
+                        },
+                    ),
+                )
+            }
+            listener.onOrderSuccess()
+
+        }
+
     }
 
     override fun onShowCustomerDetail() {
-        navigator.goToWithCustomAnimation(CustomerDetailFragment(CurCartData.cartModelLD.value?.customer));
+        navigator.goToWithCustomAnimation(CustomerDetailFragment(cartDataVM.cartModelLD.value?.customer))
     }
 
-    private fun onBillCart() {
-        viewModel.billCart(requireContext(),CurCartData.cartModelLD.value!!);
+    private fun onBillCart(onPaymentSelected : Boolean = false) {
+        viewModel.billCart(
+            requireContext(),
+            CurCartData.cartModel!!,
+            onPaymentSelected,
+            listener = object : CartVM.CartActionCallBack {
+                override fun onTableChange() {
+                    cartDataVM.currentTableFocus.notifyValueChange()
+                }
+
+            })
     }
 
     fun onEditItemInCart(position: Int, item: BaseProductInCart) {
@@ -263,8 +328,7 @@ class CartFragment( private val listener : CartCallBack) : BaseFragment<Fragment
                 item: BaseProductInCart,
                 action: ItemActionType
             ) {
-                onUpdateItemInCart(position, item);
-
+                onUpdateItemInCart(position, item)
             }
         }
 
@@ -274,7 +338,7 @@ class CartFragment( private val listener : CartCallBack) : BaseFragment<Fragment
                     ProductDetailFragment(
                         regular = (item as Regular).clone(),
                         action = ItemActionType.Modify,
-                        quantityCanChoose = 100,
+                        quantityCanChoose = 1000,
                         listener = callbackEdit
                     )
                 )
@@ -284,22 +348,24 @@ class CartFragment( private val listener : CartCallBack) : BaseFragment<Fragment
                     ComboFragment(
                         combo = (item as Combo).clone(),
                         action = ItemActionType.Modify,
-                        quantityCanChoose = 100,
+                        quantityCanChoose = 1000,
                         listener = callbackEdit
                     )
-                );
+                )
             }
+            else -> {}
         }
     }
 
     @SuppressLint("NotifyDataSetChanged")
     fun onUpdateItemInCart(position: Int, item: BaseProductInCart) {
-        CurCartData.updateItemInCart(position, item);
-        cartProductAdapter.notifyDataSetChanged();
+        cartDataVM.updateItemInCart(position, item)
+        cartProductAdapter.notifyDataSetChanged()
     }
 
     interface CartCallBack {
-        fun onCartDelete();
-        fun onBillSuccess();
+        fun onCartDelete()
+        fun onBillSuccess()
+        fun onOrderSuccess()
     }
 }

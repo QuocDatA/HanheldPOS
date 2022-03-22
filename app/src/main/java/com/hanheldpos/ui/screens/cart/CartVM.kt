@@ -1,128 +1,151 @@
 package com.hanheldpos.ui.screens.cart
 
 import android.content.Context
-import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.viewModelScope
 import com.hanheldpos.R
-import com.hanheldpos.model.DataHelper
+import com.hanheldpos.database.DatabaseMapper
+import com.hanheldpos.model.DatabaseHelper
 import com.hanheldpos.model.OrderHelper
 import com.hanheldpos.model.cart.CartConverter
 import com.hanheldpos.model.cart.CartModel
 import com.hanheldpos.model.cart.DiscountCart
-import com.hanheldpos.model.cart.payment.PaymentStatus
+import com.hanheldpos.model.payment.PaymentStatus
+import com.hanheldpos.model.home.table.TableStatusType
 import com.hanheldpos.model.order.OrderStatus
 import com.hanheldpos.ui.base.dialog.AppAlertDialog
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
+import com.hanheldpos.utils.time.DateTimeUtils
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import java.util.*
 
 class CartVM : BaseUiViewModel<CartUV>() {
 
-
-    fun initLifeCycle(owner: LifecycleOwner) {
-        owner.lifecycle.addObserver(this);
-    }
-
     fun backPress() {
-        uiCallback?.getBack();
+        uiCallback?.getBack()
     }
 
     fun deleteCart() {
-        uiCallback?.deleteCart();
+        uiCallback?.deleteCart()
     }
 
     fun openDiscount() {
-        uiCallback?.onOpenDiscount();
-    }
-
-    fun openSelectPayment(payable: Double) {
-        uiCallback?.openSelectPayment(payable);
+        uiCallback?.onOpenDiscount()
     }
 
     fun onOpenAddCustomer() {
-        uiCallback?.onOpenAddCustomer();
+        uiCallback?.onOpenAddCustomer()
     }
 
     fun onShowCustomerDetail() {
-        uiCallback?.onShowCustomerDetail();
+        uiCallback?.onShowCustomerDetail()
     }
 
-    fun billCart(context: Context, cart: CartModel) {
-
+    fun billCart(
+        context: Context,
+        cart: CartModel,
+        onPaymentSelected: Boolean = false,
+        listener: CartActionCallBack
+    ) {
         if (cart.productsList.isEmpty()) {
             AppAlertDialog.get()
                 .show(
                     context.getString(R.string.notification),
                     context.getString(R.string.order_not_completed),
                 )
-            return;
+            return
         }
-
-        if (cart.paymentsList.isEmpty() && cart.compReason == null) {
-            AppAlertDialog.get()
-                .show(
-                    context.getString(R.string.notification),
-                    context.getString(R.string.please_choose_payment_method),
-                )
-            return;
-        }
-        onOrderProcessing(cart);
-
+        onOrderProcessing(context, cart, onPaymentSelected, listener)
     }
 
-    private fun onOrderProcessing(cart: CartModel) {
+    private fun onOrderProcessing(
+        context: Context,
+        cart: CartModel,
+        onPaymentSelected: Boolean = false,
+        listener: CartActionCallBack
+    ) {
         showLoading(true)
         try {
-            cart.orderCode = OrderHelper.generateOrderIdByFormat();
-
-            if (DataHelper.ordersCompletedLocalStorage == null) {
-                DataHelper.ordersCompletedLocalStorage = mutableListOf(
-                    CartConverter.toOrder(
-                        cart,
-                        OrderStatus.COMPLETED.value,
-                        PaymentStatus.PAID.value
+            // Update cart object
+            if (cart.orderCode == null)
+                cart.orderCode = OrderHelper.generateOrderIdByFormat()
+            if (cart.orderGuid == null)
+                cart.orderGuid = cart.orderCode
+            if (cart.createDate == null)
+                cart.createDate =
+                    DateTimeUtils.dateToString(
+                        Date(),
+                        DateTimeUtils.Format.FULL_DATE_UTC_TIMEZONE
                     )
-                );
-            } else {
-                DataHelper.ordersCompletedLocalStorage =
-                    DataHelper.ordersCompletedLocalStorage.apply {
-                        (this as MutableList).add(
-                            CartConverter.toOrder(
-                                cart,
-                                OrderStatus.COMPLETED.value,
-                                PaymentStatus.PAID.value
-                            )
-                        );
-                    }
+            val orderStatus =
+                if (OrderHelper.isPaymentSuccess(cart)) OrderStatus.COMPLETED.value else OrderStatus.ORDER.value
+            val paymentStatus =
+                if (OrderHelper.isPaymentSuccess(cart)) PaymentStatus.PAID.value else PaymentStatus.UNPAID.value
+            val orderReq = CartConverter.toOrder(
+                cart,
+                orderStatus,
+                paymentStatus,
+            )
+
+            // Table
+            val table = CurCartData.tableFocus!!
+            if (orderStatus == OrderStatus.ORDER.value && paymentStatus == PaymentStatus.UNPAID.value)
+                table.updateTableStatus(TableStatusType.Unavailable, orderReq.OrderSummary)
+            else
+                table.updateTableStatus(TableStatusType.Available)
+
+            viewModelScope.launch(Dispatchers.IO) {
+                val orderEntity = DatabaseHelper.ordersCompleted.get(orderReq.Order.Code!!)
+                if (orderEntity == null)
+                    DatabaseHelper.ordersCompleted.insert(
+                        DatabaseMapper.mappingOrderCompletedReqToEntity(orderReq)
+                    ) else {
+                    DatabaseHelper.ordersCompleted.update(
+                        DatabaseMapper.mappingOrderCompletedReqToEntity(orderReq)
+                    )
+                }
+                if (orderStatus != OrderStatus.COMPLETED.value && paymentStatus != PaymentStatus.PAID.value) {
+                    DatabaseHelper.tableStatuses.insert(DatabaseMapper.mappingTableToEntity(table))
+                    launch(Dispatchers.Main) { listener.onTableChange() }
+                } else {
+                    DatabaseHelper.tableStatuses.delete(table._Id)
+                    launch(Dispatchers.Main) { listener.onTableChange() }
+                }
+
+                launch(Dispatchers.Main) {
+                    showLoading(false)
+                    if (!onPaymentSelected)
+                        uiCallback?.onBillSuccess()
+                }
             }
-            showLoading(false);
-            uiCallback?.onBillSuccess();
-            AppAlertDialog.get()
-                .show(
-                    "Notification",
-                    "Successful bill payment",
-                );
+
 
         } catch (ex: Exception) {
             showLoading(false)
             AppAlertDialog.get()
                 .show(
-                    "Notification",
-                    "Bill payment failed!",
-                );
+                    context.getString(R.string.notification),
+                    context.getString(R.string.bill_payment_failed),
+                )
         }
 
     }
 
 
     fun processDataDiscount(cart: CartModel): List<DiscountCart> {
-        val list = mutableListOf<DiscountCart>();
+        val list = mutableListOf<DiscountCart>()
 
         cart.discountUserList.forEach {
-            list.add(DiscountCart(it, it.DiscountName, it.total(cart.getSubTotal())));
+            list.add(DiscountCart(it, it.DiscountName, it.total(cart.getSubTotal())))
         }
         cart.compReason?.let {
-            list.add(DiscountCart(it, it.Title!!, cart.totalComp(cart.totalTemp())));
+            list.add(DiscountCart(it, it.Title!!, cart.totalComp(cart.totalTemp())))
         }
-        return list;
+        return list
     }
 
+    interface CartActionCallBack {
+        fun onTableChange()
+    }
 
 }

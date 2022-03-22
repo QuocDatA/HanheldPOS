@@ -7,6 +7,8 @@ import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentMenuBinding
 import com.hanheldpos.extension.navigateTo
 import com.hanheldpos.model.DataHelper
+import com.hanheldpos.model.DatabaseHelper
+import com.hanheldpos.model.OrderHelper
 import com.hanheldpos.model.menu_nav_opt.LogoutType
 import com.hanheldpos.model.menu_nav_opt.NavBarOptionType
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
@@ -15,10 +17,15 @@ import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.menu.adapter.ItemOptionNav
 import com.hanheldpos.ui.screens.menu.adapter.OptionNavAdapter
 import com.hanheldpos.ui.screens.menu.option.report.ReportFragment
-import com.hanheldpos.ui.screens.pincode.PinCodeActivity
-import com.hanheldpos.ui.screens.welcome.WelcomeActivity
+import com.hanheldpos.ui.screens.pincode.PinCodeFragment
+import com.hanheldpos.ui.screens.welcome.WelcomeFragment
+import com.hanheldpos.utils.NetworkUtils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.count
+import kotlinx.coroutines.flow.take
+import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
 
 class MenuFragment : BaseFragment<FragmentMenuBinding, MenuVM>(), MenuUV {
@@ -87,7 +94,9 @@ class MenuFragment : BaseFragment<FragmentMenuBinding, MenuVM>(), MenuUV {
 
     fun onNavOptionClick(option: ItemOptionNav) {
         when (option.type as NavBarOptionType) {
-            NavBarOptionType.ORDERS -> {}
+            NavBarOptionType.ORDERS -> {
+
+            }
             NavBarOptionType.TRANSACTIONS -> {}
             NavBarOptionType.REPORTS -> navigator.goToWithCustomAnimation(ReportFragment());
             NavBarOptionType.CUSTOMER -> {}
@@ -105,41 +114,44 @@ class MenuFragment : BaseFragment<FragmentMenuBinding, MenuVM>(), MenuUV {
         }
     }
 
-    private fun onLogoutOption(type: LogoutType, title: String?, message: String?) {
-        if (!DataHelper.ordersCompletedLocalStorage.isNullOrEmpty()) {
-            AppAlertDialog.get().show(
-                getString(R.string.notification),
-                getString(R.string.please_sync_local_data_before_logging_out_of_this_account)
-            )
-            return;
-        }
-        //TODO : syncing local data orders.
-        showAlert(
-            title = title,
-            message = message,
-            positiveText = getString(R.string.ok),
-            negativeText = getString(R.string.cancel),
-            onClickListener = object : AppAlertDialog.AlertDialogOnClickListener {
-                override fun onPositiveClick() {
-                    CoroutineScope(Dispatchers.IO).launch {
-                        DataHelper.clearData();
-                        launch {
-                            when (type) {
-                                LogoutType.LOGOUT_DEVICE -> {
-                                    activity?.navigateTo(
-                                        WelcomeActivity::class.java,
-                                        alsoFinishCurrentActivity = true,
-                                        alsoClearActivity = true,
-                                    )
-                                }
-                                LogoutType.RESET -> TODO()
-                            }
-                        }
+    private fun onLogoutOption(typeLogout: LogoutType, title: String?, message: String?) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val ordersCompletedFlow = DatabaseHelper.ordersCompleted.getAll()
+            ordersCompletedFlow.take(1).collectLatest { ordersCompleted ->
+                val listOrder = ordersCompleted.filter { OrderHelper.isValidOrderPush(it) }
+                if (!listOrder.isNullOrEmpty()) {
+                    launch(Dispatchers.Main) {
+                        AppAlertDialog.get().show(
+                            getString(R.string.notification),
+                            getString(R.string.please_sync_local_data_before_logging_out_of_this_account)
+                        )
                     }
-
-
+                    return@collectLatest
                 }
-            })
+                launch(Dispatchers.Main) {
+                    //TODO : syncing local data orders.
+                    showAlert(
+                        title = title,
+                        message = message,
+                        positiveText = getString(R.string.ok),
+                        negativeText = getString(R.string.cancel),
+                        onClickListener = object : AppAlertDialog.AlertDialogOnClickListener {
+                            override fun onPositiveClick() {
+                                DataHelper.clearData()
+                                when (typeLogout) {
+                                    LogoutType.LOGOUT_DEVICE -> {
+                                        navigator.clearHistory()
+                                        NetworkUtils.enableNetworkCheck()
+                                        navigator.goTo(WelcomeFragment())
+                                    }
+                                    LogoutType.RESET -> TODO()
+                                }
+                            }
+                        })
+                }
+            }
+        }
+
     }
 
     private fun onLogoutEmployee() {
@@ -150,11 +162,9 @@ class MenuFragment : BaseFragment<FragmentMenuBinding, MenuVM>(), MenuUV {
             negativeText = getString(R.string.cancel),
             onClickListener = object : AppAlertDialog.AlertDialogOnClickListener {
                 override fun onPositiveClick() {
-                    activity?.navigateTo(
-                        PinCodeActivity::class.java,
-                        alsoFinishCurrentActivity = true,
-                        alsoClearActivity = true,
-                    )
+                    navigator.clearHistory()
+                    NetworkUtils.enableNetworkCheck()
+                    navigator.goTo(PinCodeFragment())
                 }
             })
     }

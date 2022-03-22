@@ -5,8 +5,12 @@ import com.hanheldpos.R
 import com.hanheldpos.databinding.ActivityIntroBinding
 import com.hanheldpos.extension.navigateTo
 import com.hanheldpos.ui.base.activity.BaseActivity
-import com.hanheldpos.ui.screens.welcome.WelcomeActivity
+import com.hanheldpos.ui.screens.main.MainActivity
+import com.hanheldpos.utils.NetworkUtils
 import com.utils.helper.SystemHelper
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class IntroActivity : BaseActivity<ActivityIntroBinding, IntroVM>(), IntroUV {
 
@@ -34,13 +38,12 @@ class IntroActivity : BaseActivity<ActivityIntroBinding, IntroVM>(), IntroUV {
     }
 
     override fun finishIntro() {
-        navigateTo(WelcomeActivity::class.java, true)
+        navigateTo(MainActivity::class.java, true)
     }
     private fun hideSystem(){
         SystemHelper.hideSystemUI(window);
         window.setFlags(
             WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
             WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-
     }
 }

@@ -1,19 +1,22 @@
 package com.hanheldpos.ui.screens.home.table.customer_input
 
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentTableInputBinding
 import com.hanheldpos.model.keyboard.KeyBoardType
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.input.KeyBoardVM
+import com.hanheldpos.utils.PriceUtils
 
 
 class TableInputFragment(
-    private val listener : TableInputListener? = null
+    private val listener: TableInputListener? = null
 ) : BaseFragment<FragmentTableInputBinding, TableInputVM>(), TableInputUV {
 
     //ViewModel
-    private val keyBoardVM  = KeyBoardVM();
+    private val keyBoardVM = KeyBoardVM(KeyBoardType.NumberOnly);
 
     override fun layoutRes() = R.layout.fragment_table_input
 
@@ -31,43 +34,51 @@ class TableInputFragment(
     }
 
     override fun initView() {
-        keyBoardVM.onListener(listener = object : KeyBoardVM.KeyBoardCallBack {
-            override fun onComplete() {
-                viewModel.onComplete();
-            }
+        keyBoardVM.onListener(
+            this,
+            binding.numberCustomer,
+            listener = object : KeyBoardVM.KeyBoardCallBack {
+                override fun onComplete() {
+                    viewModel.onComplete();
+                }
 
-            override fun onCancel() {
-                viewModel.onCancel();
-            }
+                override fun onCancel() {
+                    viewModel.onCancel();
+                }
+            });
 
-
-
-        });
     }
 
     override fun initData() {
-        keyBoardVM.input.value = "";
-        keyBoardVM.keyBoardType.postValue(KeyBoardType.NumberOnly);
+
     }
 
     override fun initAction() {
+        binding.numberCustomer.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
 
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                if (s.isNullOrEmpty()) {
+                    viewModel.numberCustomer = 0
+                    return
+                }
+                binding.numberCustomer.removeTextChangedListener(this)
+                viewModel.numberCustomer = s.replace(Regex("[,]"), "").toInt()
+                binding.numberCustomer.setText(viewModel.numberCustomer.toString())
+                binding.numberCustomer.addTextChangedListener(this)
+            }
+
+        })
     }
 
     interface TableInputListener {
-        fun onCompleteTable(numberCustomer : Int)
-    }
-
-    companion object{
-        fun getInstance(
-            listener: TableInputListener? = null
-        ): TableInputFragment {
-            return TableInputFragment(
-                listener = listener
-            ).apply {
-
-            };
-        }
+        fun onCompleteTable(numberCustomer: Int)
     }
 
     override fun onCancel() {
@@ -76,8 +87,8 @@ class TableInputFragment(
 
     override fun onComplete() {
         navigator.goOneBack();
-        if (!keyBoardVM.input.value?.trim().equals(""))
-        listener?.onCompleteTable(Integer.valueOf(keyBoardVM.input.value));
+        if (viewModel.numberCustomer > 0)
+            listener?.onCompleteTable(Integer.valueOf(viewModel.numberCustomer))
     }
 
 }

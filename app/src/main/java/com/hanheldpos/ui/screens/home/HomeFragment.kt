@@ -7,21 +7,24 @@ import android.widget.AdapterView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.hanheldpos.R
+import com.hanheldpos.data.api.pojo.order.settings.DiningOption
 import com.hanheldpos.databinding.FragmentHomeBinding
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.ui.base.dialog.AppAlertDialog
+import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.base.pager.FragmentPagerAdapter
-import com.hanheldpos.ui.screens.cart.CurCartData
+import com.hanheldpos.ui.screens.cart.CartDataVM
 import com.hanheldpos.ui.screens.cashdrawer.CashDrawerHelper
+import com.hanheldpos.ui.screens.home.adapter.DiningOptionSpinnerAdapter
 import com.hanheldpos.ui.screens.home.order.OrderFragment
 import com.hanheldpos.ui.screens.home.table.TableFragment
-import com.hanheldpos.ui.screens.main.BaseMainFragment
-import com.hanheldpos.ui.screens.main.adapter.TabSpinnerAdapter
 import com.hanheldpos.ui.screens.main.adapter.SubSpinnerAdapter
+import com.hanheldpos.ui.screens.main.adapter.TabSpinnerAdapter
 import com.hanheldpos.ui.screens.menu.MenuFragment
+import com.hanheldpos.utils.NetworkUtils
 
 
-class HomeFragment : BaseMainFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
+class HomeFragment : BaseFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
 
     private val fragmentMap: MutableMap<HomePage, Fragment> = mutableMapOf()
 
@@ -31,10 +34,12 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
     }
 
     private val screenViewModel by activityViewModels<ScreenViewModel>()
+    private val cartDataVM by activityViewModels<CartDataVM>()
 
     // Adapter
     private lateinit var paperAdapter: FragmentPagerAdapter
     private lateinit var subSpinnerAdapter: SubSpinnerAdapter
+    private lateinit var diningOptionSpinnerAdapter: DiningOptionSpinnerAdapter
 
     override fun layoutRes() = R.layout.fragment_home;
 
@@ -47,12 +52,14 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
         viewModel.run {
             init(this@HomeFragment)
             binding.viewModel = this;
+            binding.cartDataVM = cartDataVM
         }
-
+        cartDataVM.initObserveData(requireActivity())
     }
 
     override fun initView() {
-        binding.root.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener{
+        binding.root.viewTreeObserver.addOnGlobalLayoutListener(object :
+            ViewTreeObserver.OnGlobalLayoutListener {
             override fun onGlobalLayout() {
                 if (CashDrawerHelper.isStartDrawer)
                     CashDrawerHelper.showDrawerNotification(this@HomeFragment.requireActivity());
@@ -67,6 +74,23 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
             adapter = paperAdapter;
             paperAdapter.submitList(fragmentMap.values)
         }
+
+        binding.toolbarLayout.spnDiningOptionBox.setOnClickListener {
+
+            val diningOptions: MutableList<DiningOption> =
+                (DataHelper.orderSettingLocalStorage?.ListDiningOptions as List<DiningOption>).toMutableList();
+
+            diningOptions.forEachIndexed { index, diningOption ->
+                if (cartDataVM.diningOptionLD.value?.Id == diningOption.Id) {
+                    if (diningOptions.size - 1 <= index) {
+                        cartDataVM.diningOptionChange(diningOptions[0])
+                    } else {
+                        cartDataVM.diningOptionChange(diningOptions[index + 1])
+                    }
+                    return@setOnClickListener
+                }
+            }
+        }
         initSpinner();
     }
 
@@ -75,16 +99,42 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
     }
 
     override fun initAction() {
+        NetworkUtils.cancelNetworkCheck()
+
+        cartDataVM.diningOptionLD.observe(this) { diningOption ->
+            if (diningOption?.SubDiningOption.isNullOrEmpty()) {
+                diningOptionSpinnerAdapter.submitList(mutableListOf())
+            } else {
+                diningOption?.SubDiningOption?.mapIndexed { index, subDiningOptionItem ->
+                    DropDownItem(
+                        name = subDiningOptionItem.NickName!!,
+                        realItem = subDiningOptionItem,
+                        position = index
+                    )
+                }?.let { listSubDiningOption ->
+                    diningOptionSpinnerAdapter.submitList(listSubDiningOption)
+                }
+            }
+        }
         screenViewModel.screenEvent.observe(this) {
             // Check cart initialized
-            if (it.screen == HomePage.Order && CurCartData.cartModelLD.value == null) {
-                showAlert(
-                    message = "Cart has not been initialized!",
-                    onClickListener = object : AppAlertDialog.AlertDialogOnClickListener {
-                        override fun onPositiveClick() {
-                            screenViewModel.showTablePage();
-                        }
-                    })
+            when (it.screen) {
+                HomePage.Order -> {
+                    if (cartDataVM.cartModelLD.value == null) {
+                        showAlert(
+                            message = "Cart has not been initialized!",
+                            onClickListener = object : AppAlertDialog.AlertDialogOnClickListener {
+                                override fun onPositiveClick() {
+                                    screenViewModel.showTablePage()
+                                }
+                            })
+                    } else {
+                        binding.toolbarLayout.spnDiningOptionBox.visibility = View.VISIBLE
+                    }
+                }
+                HomePage.Table -> {
+                    binding.toolbarLayout.spnDiningOptionBox.visibility = View.INVISIBLE
+                }
             }
             binding.toolbarLayout.spinnerMain.setSelection(it.screen.pos);
         }
@@ -124,8 +174,10 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
                     }
                     switchToPage(item);
                 }
+
                 override fun onNothingSelected(parent: AdapterView<*>?) {}
             }
+
         // Init Page
         screenViewModel.showTablePage();
 
@@ -137,6 +189,9 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
         binding.toolbarLayout.spinnerMain.adapter = tabSpinnerAdapter
         subSpinnerAdapter = SubSpinnerAdapter(requireContext());
         binding.toolbarLayout.spnGroupBy.adapter = subSpinnerAdapter;
+
+        //init SubDiningOption
+        diningOptionSpinnerAdapter = DiningOptionSpinnerAdapter(fragmentContext)
     }
 
     private fun switchToPage(page: HomePage?) {
@@ -160,7 +215,7 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
                 DataHelper.menuLocalStorage?.MenuList?.map {
                     DropDownItem(name = it.Name, realItem = it, position = i++)
                 }?.let {
-                    listDropdown.addAll(it);
+                    listDropdown.addAll(it)
                 }
 
             }
@@ -169,8 +224,8 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
         subSpinnerAdapter.submitList(listDropdown);
         binding.toolbarLayout.spnGroupBy.setSelection(
             when (page) {
-                HomePage.Order -> OrderFragment.selectedSort;
-                HomePage.Table -> TableFragment.selectedSort;
+                HomePage.Order -> OrderFragment.selectedSort
+                HomePage.Table -> TableFragment.selectedSort
                 else -> 0
             }
         )
@@ -180,4 +235,7 @@ class HomeFragment : BaseMainFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
         navigator.goToWithAnimationEnterFromLeft(MenuFragment());
     }
 
+    override fun onFragmentBackPressed() {
+        requireActivity().finish()
+    }
 }

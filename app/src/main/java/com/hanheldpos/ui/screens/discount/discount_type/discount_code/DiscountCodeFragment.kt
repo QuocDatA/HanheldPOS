@@ -1,24 +1,31 @@
 package com.hanheldpos.ui.screens.discount.discount_type.discount_code
 
 import android.annotation.SuppressLint
+import android.os.Bundle
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
-import androidx.fragment.app.setFragmentResultListener
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.databinding.FragmentDiscountCodeBinding
+import com.hanheldpos.databinding.FragmentDiscountCompBinding
 import com.hanheldpos.model.discount.DiscountApplyToType
-import com.hanheldpos.model.discount.DiscountTypeFor
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
+import com.hanheldpos.ui.base.adapter.GridSpacingItemDecoration
 import com.hanheldpos.ui.base.fragment.BaseFragment
+import com.hanheldpos.ui.screens.discount.discount_detail.DiscountDetailFragment
 import com.hanheldpos.ui.screens.discount.discount_type.discount_code.adapter.DiscountCodeAdapter
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-
-class DiscountCodeFragment(private val applyToType: DiscountApplyToType) :
-    BaseFragment<FragmentDiscountCodeBinding, DiscountCodeVM>(), DiscountCodeUV {
-    override fun layoutRes(): Int = R.layout.fragment_discount_code
+class DiscountCodeFragment(private val applyToType : DiscountApplyToType) : BaseFragment<FragmentDiscountCodeBinding,DiscountCodeVM>() , DiscountCodeUV {
+    override fun layoutRes(): Int =  R.layout.fragment_discount_code
 
     private lateinit var discountCodeAdapter: DiscountCodeAdapter;
 
@@ -35,18 +42,29 @@ class DiscountCodeFragment(private val applyToType: DiscountApplyToType) :
     }
 
     override fun initView() {
-        setFragmentResultListener("saveDiscount") { _, bundle ->
-            if (bundle.getSerializable("DiscountTypeFor") == DiscountTypeFor.DISCOUNT_CODE) {
 
-            }
 
-        }
         discountCodeAdapter =
             DiscountCodeAdapter(listener = object : BaseItemClickListener<DiscountResp> {
                 override fun onItemClick(adapterPosition: Int, item: DiscountResp) {
-
+                    navigator.goTo(DiscountDetailFragment(item))
                 }
             });
+        binding.listDiscountCode.apply {
+            addItemDecoration(
+                DividerItemDecoration(
+                    context,
+                    LinearLayoutManager.VERTICAL
+                ).apply {
+                    setDrawable(
+                        ContextCompat.getDrawable(
+                            context,
+                            R.drawable.divider_vertical
+                        )!!
+                    )
+                }
+            )
+        };
         binding.listDiscountCode.adapter = discountCodeAdapter;
         binding.firstNameInput.doAfterTextChanged {
             viewModel.searchDiscountCode(it.toString())
@@ -55,7 +73,7 @@ class DiscountCodeFragment(private val applyToType: DiscountApplyToType) :
 
     override fun initData() {
         if (applyToType == DiscountApplyToType.ORDER_DISCOUNT_APPLY_TO)
-            GlobalScope.launch(Dispatchers.IO) {
+            CoroutineScope(Dispatchers.IO).launch {
                 viewModel.initData();
             }
 
@@ -67,14 +85,9 @@ class DiscountCodeFragment(private val applyToType: DiscountApplyToType) :
 
     @SuppressLint("NotifyDataSetChanged")
     override fun loadDataDiscountCode(list: List<DiscountResp>) {
-            GlobalScope.launch (Dispatchers.Main) {
-                discountCodeAdapter.submitList(list);
-                discountCodeAdapter.notifyDataSetChanged();
-            }
+        CoroutineScope(Dispatchers.Main).launch {
+            discountCodeAdapter.submitList(list);
+            discountCodeAdapter.notifyDataSetChanged();
+        }
     }
-
-    override fun onResume() {
-        super.onResume()
-    }
-
 }

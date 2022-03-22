@@ -4,23 +4,27 @@ import android.util.Log
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import com.hanheldpos.R
+import com.hanheldpos.data.api.pojo.discount.DiscountResp
+import com.hanheldpos.data.api.pojo.resource.ResourceResp
 import com.hanheldpos.data.api.pojo.welcome.WelcomeRespModel
 import com.hanheldpos.data.repository.BaseResponse
 import com.hanheldpos.data.repository.base.BaseRepoCallback
+import com.hanheldpos.data.repository.resource.ResourceRepo
 import com.hanheldpos.data.repository.welcome.WelcomeRepo
 import com.hanheldpos.model.DataHelper
+import com.hanheldpos.model.UserHelper
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
 
 class WelcomeVM : BaseUiViewModel<WelcomeUV>() {
-    var welcomeRepo: WelcomeRepo = WelcomeRepo()
-    var isLoading = MutableLiveData<Boolean>(false)
+    private var welcomeRepo: WelcomeRepo = WelcomeRepo()
+
+    var isLoading = MutableLiveData(false)
 
     fun initLifeCycle(owner: LifecycleOwner) {
         owner.lifecycle.addObserver(this)
     }
 
     fun openDeviceCode() {
-        Log.d("Test Click", "is Clicked");
         uiCallback?.openDeviceCode();
     }
 
@@ -36,16 +40,12 @@ class WelcomeVM : BaseUiViewModel<WelcomeUV>() {
             }
 
             override fun showMessage(message: String?) {
-
+                isLoading.postValue(false);
             }
 
         })
     }
 
-    fun checkDeviceCode() {
-        DataHelper.deviceCodeLocalStorage?.let {
-            uiCallback?.openPinCode();
-        }
-    }
+
 
 }

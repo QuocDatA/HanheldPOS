@@ -9,18 +9,18 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class DeviceRepo :  BaseRepo() {
-    fun getDataByAppCode(pinTextStr: String, callback: BaseRepoCallback<BaseResponse<DeviceCodeResp>>) {
+    fun getDataByAppCode(pinTextStr: String, callback: BaseRepoCallback<BaseResponse<List<DeviceCodeResp>>>) {
         callback.apiRequesting(true)
-        deviceService.getDataByDeviceCode(pinTextStr).enqueue(object : Callback<BaseResponse<DeviceCodeResp>> {
+        deviceService.getDataByDeviceCode(pinTextStr).enqueue(object : Callback<BaseResponse<List<DeviceCodeResp>>> {
             override fun onResponse(
-                call: Call<BaseResponse<DeviceCodeResp>>,
-                response: Response<BaseResponse<DeviceCodeResp>>
+                call: Call<BaseResponse<List<DeviceCodeResp>>>,
+                response: Response<BaseResponse<List<DeviceCodeResp>>>
             ) {
                 callback.apiRequesting(false);
                 callback.apiResponse(getBodyResponse(response));
             }
 
-            override fun onFailure(call: Call<BaseResponse<DeviceCodeResp>>, t: Throwable) {
+            override fun onFailure(call: Call<BaseResponse<List<DeviceCodeResp>>>, t: Throwable) {
                 callback.apiRequesting(false);
                 t.printStackTrace();
                 callback.showMessage(t.message);

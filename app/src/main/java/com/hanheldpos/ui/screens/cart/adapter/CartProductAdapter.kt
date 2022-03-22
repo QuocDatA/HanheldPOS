@@ -17,42 +17,42 @@ class CartProductAdapter(
 ) {
 
     override fun getItemViewType(position: Int): Int {
-        return R.layout.item_cart_product;
+        return R.layout.item_cart_product
     }
 
     override fun onBindViewHolder(holder: BaseBindingViewHolder<BaseProductInCart>, position: Int) {
-        val item = getItem(position);
-        holder.bindItem(item);
-        val binding = (holder.binding as ItemCartProductBinding);
-        binding.layoutTitle.setOnClickListener { listener.onItemClick(position, item); }
+        val item = getItem(position)
+        holder.bindItem(item)
+        val binding = (holder.binding as ItemCartProductBinding)
+        binding.layoutRoot.setOnClickListener { listener.onItemClick(position, item) }
         binding.discountDetail.setClickListener {
              if (item.discountUsersList != null)  listener.onDiscountDelete(
                 position,
                 DiscountCart(disOriginal = item.discountUsersList!!.first(), "", 0.0),
                 item
-            );
+            )
         }
         binding.compDetail.setClickListener {
             if (item.compReason != null) listener.onDiscountDelete(
                 position,
                 DiscountCart(disOriginal = item.compReason!!, "", 0.0),
                 item
-            );
+            )
         }
-        if (item.proOriginal!!.isBundle()) {
-            binding.isShownDetail = (item as Combo).isShowDetail;
+        if (item is Combo) {
+            binding.isShownDetail = item.isShowDetail
             binding.viewDetailTextView.setOnClickListener {
-                item.isShowDetail = true;
-                notifyItemChanged(position);
+                item.isShowDetail = true
+                notifyItemChanged(position)
             }
             binding.hideDetailTextView.setOnClickListener {
-                item.isShowDetail = false;
-                notifyItemChanged(position);
+                item.isShowDetail = false
+                notifyItemChanged(position)
             }
 
-            val cartComboGroupAdapter = CartComboGroupAdapter(productOrigin = item.proOriginal!!);
+            val cartComboGroupAdapter = CartComboGroupAdapter(productOrigin = item.proOriginal!!)
             cartComboGroupAdapter.submitList(item.groupList)
-            binding.productComboGroupRecyclerView.adapter = cartComboGroupAdapter;
+            binding.productComboGroupRecyclerView.adapter = cartComboGroupAdapter
         }
     }
 
@@ -62,7 +62,7 @@ class CartProductAdapter(
             oldItem: BaseProductInCart,
             newItem: BaseProductInCart
         ): Boolean {
-            return oldItem == newItem;
+            return oldItem == newItem
         }
 
         override fun areContentsTheSame(
@@ -75,7 +75,7 @@ class CartProductAdapter(
     }
 
     interface CartProductListener {
-        fun onItemClick(adapterPosition: Int, item: BaseProductInCart);
-        fun onDiscountDelete(adapterPosition: Int, discount: DiscountCart, item: BaseProductInCart);
+        fun onItemClick(adapterPosition: Int, item: BaseProductInCart)
+        fun onDiscountDelete(adapterPosition: Int, discount: DiscountCart, item: BaseProductInCart)
     }
 }
