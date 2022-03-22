@@ -1,9 +1,11 @@
 package com.hanheldpos.ui.screens.payment
 
+import android.content.Context
+import android.view.KeyEvent
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.payment.PaymentSuggestionItem
-import com.hanheldpos.data.api.pojo.payment.Voucher
 import com.hanheldpos.databinding.FragmentPaymentBinding
 import com.hanheldpos.model.keyboard.KeyBoardType
 import com.hanheldpos.model.payment.PaymentFactory
@@ -217,11 +219,18 @@ class PaymentFragment(
                     paymentChosenSuccess(it, viewModel.balance.value!!)
                 }
         }
+        viewModel.listPaymentChosen.observe(this) {
+            if(it.size > 0) {
+                disableBackButton()
+            }
+        }
     }
 
     override fun getBack() {
-        listener.onPayment(false)
-        onFragmentBackPressed()
+        if(viewModel.listPaymentChosen.value?.size!! < 0 || viewModel.listPaymentChosen.value.isNullOrEmpty()) {
+            listener.onPayment(false)
+            onFragmentBackPressed()
+        }
     }
 
 
@@ -261,6 +270,12 @@ class PaymentFragment(
         fun onPayment(isSuccess: Boolean)
     }
 
-
+    private fun disableBackButton() {
+        this.requireView().isFocusableInTouchMode = true
+        this.requireView().requestFocus()
+        this.requireView().setOnKeyListener { _, keyCode, _ ->
+            keyCode == KeyEvent.KEYCODE_BACK
+        }
+    }
 }
 
