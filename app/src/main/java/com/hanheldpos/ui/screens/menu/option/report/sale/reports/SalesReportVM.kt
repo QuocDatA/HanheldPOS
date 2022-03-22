@@ -72,8 +72,8 @@ class SalesReportVM : BaseUiViewModel<SalesReportUV>() {
         );
         settingRepo.putSettingDeviceIds(
             json,
-            callback = object : BaseRepoCallback<SettingDeviceResp> {
-                override fun apiResponse(data: SettingDeviceResp?) {
+            callback = object : BaseRepoCallback<BaseResponse<String>> {
+                override fun apiResponse(data: BaseResponse<String>?) {
                     if (data == null || data.DidError) {
                         showLoading(false);
                         AppAlertDialog.get()
