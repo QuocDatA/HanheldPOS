@@ -67,7 +67,6 @@ data class Product(
     val Units: List<UnitsItem>? = null,
     var Url: String,
     val UrlList: List<UrlListItem>,
-    val VariantPriceOverrideList: List<VariantPriceOverrideListItem>?= null,
     val Variants: String,
     val VariantsGroup: VariantsGroup? = null,
     val VariantsGroupNameDefault: String?,
@@ -83,14 +82,14 @@ data class Product(
     val strName3: String,
     val strSku: String,
     val strUnit: String,
-    val MaxQuantity : Int,
-    val MaxAmount : Double,
-    val ApplyToModifier : Int?
+    val MaxQuantity: Int,
+    val MaxAmount: Double,
+    val ApplyToModifier: Int?
 ) : Parcelable, Cloneable {
 
     @Parcelize
     data class UrlListItem(
-        val Url : String,
+        val Url: String,
     ) : Parcelable
 
     public override fun clone(): Product {
@@ -113,20 +112,13 @@ data class Product(
 
     fun priceOverride(locationId: String?, sku: String?, priceDefault: Double): Double {
         val locationIdLast = locationId ?: UserHelper.getLocationGuid()
-        if (VariantsGroup != null) {
-            val priceOverride =
-                VariantPriceOverrideList?.firstOrNull { it.VariationSku.equals(sku) }
-            val listPriceOverride: List<VariantsPriceOverrideLocation>? = Gson().fromJson(
-                priceOverride?.PriceOverride,
-                object : TypeToken<List<VariantsPriceOverrideLocation>>() {}.type
-            )
-            val priceOverrideOfLocation: VariantsPriceOverrideLocation? =
-                listPriceOverride?.firstOrNull { it.LocationGuid.equals(locationIdLast) }
-            return if (priceOverrideOfLocation != null) priceOverrideOfLocation.Price
-                ?: 0.0 else priceDefault
-        }
-        return ProductPriceOverrideList?.firstOrNull { it.LocationGuid == locationIdLast }?.Price
-            ?: Price
+        val productPriceOverride =
+            ProductPriceOverrideList?.firstOrNull { p_override -> p_override.LocationGuid == locationIdLast }
+
+        return if (sku.isNullOrEmpty() || VariantsGroup == null) (productPriceOverride?.Price
+            ?: (Price ?: 0.0)) else
+            productPriceOverride?.VariantPriceOverrideList?.firstOrNull { variantPriceOverride -> variantPriceOverride.Sku == sku ?: false }?.Price
+                ?: 0.0;
     }
 }
 

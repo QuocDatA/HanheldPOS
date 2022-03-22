@@ -104,7 +104,7 @@ class SalesReportVM : BaseUiViewModel<SalesReportUV>() {
             var countOrderPush = 0
             listOrdersFlow.take(1).collectLatest { listOrders ->
                 listOrders.filter { OrderHelper.isValidOrderPush(it) }.let { listNeedPush ->
-                    val listAfterSplit = listNeedPush.chunked(4)
+                    val listAfterSplit = listNeedPush.chunked(3)
                     listAfterSplit.forEach { subListNeedPush ->
                         val countPushNeed = countOrderPush + subListNeedPush.size
                         subListNeedPush.forEach { orderEntity ->
