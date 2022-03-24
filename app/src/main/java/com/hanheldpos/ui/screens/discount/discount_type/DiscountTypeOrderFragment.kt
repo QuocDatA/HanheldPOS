@@ -1,5 +1,6 @@
 package com.hanheldpos.ui.screens.discount.discount_type
 
+import android.view.View
 import androidx.fragment.app.Fragment
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.order.settings.Reason
