@@ -39,7 +39,6 @@ class DiscountAutomaticVM : BaseUiViewModel<DiscountAutomaticUV>() {
                 return;
             };
         }
-
     }
 
 }

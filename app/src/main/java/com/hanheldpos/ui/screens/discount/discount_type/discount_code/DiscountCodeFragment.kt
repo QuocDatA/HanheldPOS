@@ -45,10 +45,14 @@ class DiscountCodeFragment(private val applyToType : DiscountApplyToType) : Base
 
 
         discountCodeAdapter =
-            DiscountCodeAdapter(listener = object : BaseItemClickListener<DiscountResp> {
-                override fun onItemClick(adapterPosition: Int, item: DiscountResp) {
+            DiscountCodeAdapter(listener = object : DiscountCodeAdapter.DiscountItemCallBack {
+                override fun onViewDetailClick(item: DiscountResp) {
                     navigator.goTo(DiscountDetailFragment(item))
                 }
+
+                override fun onItemClick() {
+                }
+
             });
         binding.listDiscountCode.apply {
             addItemDecoration(

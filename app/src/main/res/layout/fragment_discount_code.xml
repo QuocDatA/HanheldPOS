@@ -11,6 +11,21 @@
     </data>
 
     <LinearLayout style="@style/RootLayout">
+
+        <com.diadiem.pos_components.PTextView
+            android:id="@+id/btnClearDiscount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/clear_discount"
+            android:layout_gravity="end"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_marginEnd="@dimen/_9sdp"
+            android:layout_marginBottom="@dimen/_14sdp"
+            app:useFontStyle="normal"
+            app:useTextColor="color8"
+            app:useTextHeader="h6" />
+
         <com.diadiem.pos_components.PTextInputEditText
             android:id="@+id/firstNameInput"
             style="@style/BaseTextInput"

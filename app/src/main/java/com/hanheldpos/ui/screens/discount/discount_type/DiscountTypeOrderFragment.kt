@@ -57,11 +57,6 @@ class DiscountTypeOrderFragment(
         adapter = DiscountTabAdapter(listener = object : BaseItemClickListener<DiscountTypeTab> {
             override fun onItemClick(adapterPosition: Int, item: DiscountTypeTab) {
                 binding.discountFragmentContainer.currentItem = item.type.value;
-                if(item.type == DiscountTypeFor.COMP) {
-                    binding.btnClearDiscount.visibility = View.GONE
-                } else {
-                    binding.btnClearDiscount.visibility = View.VISIBLE
-                }
                 viewModel.typeDiscountSelect.postValue(item.type);
                 listener.discountFocus(item.type);
             }
