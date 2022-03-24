@@ -42,7 +42,7 @@ object NetworkUtils {
                 URL("http://www.google.com").openConnection() as HttpURLConnection
             urlConnection.setRequestProperty("User-Agent", "Test")
             urlConnection.setRequestProperty("Connection", "close")
-            urlConnection.connectTimeout = 5000
+            urlConnection.connectTimeout = 30000
             urlConnection.connect()
             true
         } catch (e: IOException) {

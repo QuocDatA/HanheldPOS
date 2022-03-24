@@ -1,5 +1,6 @@
 package com.hanheldpos.ui.screens.discount.discount_type
 
+import android.view.View
 import androidx.fragment.app.Fragment
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.order.settings.Reason
@@ -56,6 +57,11 @@ class DiscountTypeOrderFragment(
         adapter = DiscountTabAdapter(listener = object : BaseItemClickListener<DiscountTypeTab> {
             override fun onItemClick(adapterPosition: Int, item: DiscountTypeTab) {
                 binding.discountFragmentContainer.currentItem = item.type.value;
+                if(item.type == DiscountTypeFor.COMP) {
+                    binding.btnClearDiscount.visibility = View.GONE
+                } else {
+                    binding.btnClearDiscount.visibility = View.VISIBLE
+                }
                 viewModel.typeDiscountSelect.postValue(item.type);
                 listener.discountFocus(item.type);
             }
