@@ -619,7 +619,6 @@
                     android:layout_weight="1"
                     android:clickable="false"
                     android:focusable="false"
-                    android:foreground="?attr/selectableItemBackground"
                     android:padding="@dimen/_12sdp">
 
                     <ImageView
@@ -633,7 +632,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_9sdp"
-                        android:text="@{cartDataVM.cartModelLD.paymentsList.empty ? @string/payment_method: cartDataVM.cartModelLD.paymentsList.get(0).title}"
+                        android:text="@{(cartDataVM.cartModelLD.paymentsList == null || cartDataVM.cartModelLD.paymentsList.empty) ? @string/payment_method: cartDataVM.cartModelLD.paymentsList.get(0).title}"
                         app:useTextColor="color4"
                         app:useTextHeader="h5" />
 
