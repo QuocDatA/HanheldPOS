@@ -6,6 +6,7 @@ import com.hanheldpos.model.cart.CartModel
 import com.hanheldpos.model.discount.DiscountApplyToType
 import com.hanheldpos.model.cart.BaseProductInCart
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
+import com.hanheldpos.ui.screens.cart.CurCartData
 import java.util.*
 
 class DiscountAutomaticVM : BaseUiViewModel<DiscountAutomaticUV>() {
@@ -17,9 +18,10 @@ class DiscountAutomaticVM : BaseUiViewModel<DiscountAutomaticUV>() {
             val listDiscountCode = DataHelper.discountsLocalStorage?.filter {
                 it.DiscountAutomatic && it.DiscountApplyTo == DiscountApplyToType.ITEM_DISCOUNT_APPLY_TO.value && cart?.customer?.let { it1 ->
                     it.isValid(
+                        cart.getSubTotal(),
                         item,
                         it1,
-                        Date()
+                        Date(),
                     )
                 } == true
             };

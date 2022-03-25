@@ -1,6 +1,6 @@
 package com.hanheldpos.model.discount
 
-enum class DiscountTriggerType(value: Int) {
+enum class DiscountTriggerType(val value: Int) {
     ALL(0),
     ON_PAGE_LOAD(1),
     ON_CLICK (2),

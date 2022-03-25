@@ -76,17 +76,16 @@
                     app:useTextHeader="h5" />
             </LinearLayout>
 
-            <androidx.legacy.widget.Space
+            <!--<androidx.legacy.widget.Space
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
-                android:layout_weight="1" />
+                android:layout_weight="1" />-->
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_9sdp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:layout_marginHorizontal="@dimen/_9sdp">
 
                 <com.diadiem.pos_components.PTextView
                     visibleObject="@{item.discountApplyTo != DiscountTypeTo.NOT_FOUND.value}"
@@ -95,29 +94,25 @@
                     android:background="@drawable/bg_cart_tip_item"
                     android:paddingHorizontal="@dimen/_5sdp"
                     android:paddingVertical="@dimen/_1sdp"
+                    android:layout_alignParentBottom="true"
                     android:text="@{item.discountApplyTo == DiscountTypeTo.ITEM.value ? @string/item : @string/order}"
                     app:useFontStyle="normal"
                     app:useTextColor="color6"
                     app:useTextHeader="h7"
                     tools:text="Item" />
 
-                <androidx.legacy.widget.Space
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-
                 <com.diadiem.pos_components.PTextView
                     android:id="@+id/btnViewDetail"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingHorizontal="@dimen/_5sdp"
-                    android:paddingVertical="@dimen/_1sdp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="end"
+                    android:gravity="bottom|end"
+                    android:layout_alignParentEnd="true"
                     android:text="@string/view_details"
                     app:useFontStyle="normal"
                     app:useTextColor="color0"
-                    app:useTextHeader="h6"
-                     />
-            </LinearLayout>
+                    app:useTextHeader="h6" />
+            </RelativeLayout>
         </LinearLayout>
 
 

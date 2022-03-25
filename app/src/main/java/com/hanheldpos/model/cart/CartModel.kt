@@ -2,17 +2,21 @@ package com.hanheldpos.model.cart
 
 import com.hanheldpos.data.api.pojo.customer.CustomerResp
 import com.hanheldpos.data.api.pojo.discount.DiscountResp
-import com.hanheldpos.data.api.pojo.fee.Discount
 import com.hanheldpos.data.api.pojo.fee.Fee
 import com.hanheldpos.data.api.pojo.order.settings.DiningOption
 import com.hanheldpos.data.api.pojo.order.settings.Reason
+import com.hanheldpos.data.api.pojo.product.Product
+import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.OrderHelper
-import com.hanheldpos.model.payment.PaymentOrder
+import com.hanheldpos.model.discount.DiscountPriceType
+import com.hanheldpos.model.discount.DiscountTriggerType
 import com.hanheldpos.model.discount.DiscountUser
 import com.hanheldpos.model.home.table.TableSummary
 import com.hanheldpos.model.order.DeliveryTime
 import com.hanheldpos.model.order.Order
 import com.hanheldpos.model.order.Shipping
+import com.hanheldpos.model.payment.PaymentOrder
+import java.util.*
 
 data class CartModel(
     var order: Order? = null,
@@ -54,6 +58,10 @@ data class CartModel(
         val totalDiscUser = discountUserList.sumOf { it.total(subTotal) };
         var total = totalDiscUser;
         return total;
+    }
+
+    fun anyProductList(): Boolean {
+        return !this.productsList.isNullOrEmpty() && this.productsList.any()
     }
 
     fun totalFee(subTotal: Double, totalDiscount: Double): Double {
@@ -120,6 +128,127 @@ data class CartModel(
     fun clearCart() {
         productsList.clear();
         customer = null;
+    }
+
+    fun clearAllDiscounts() {
+        this.discountUserList.clear()
+        removeAllDiscountAutoInCart()
+        removeAllDiscountAutoOnClick()
+
+        this.productsList.forEach { product ->
+            product.clearAllDiscountCoupon()
+        }
+    }
+
+    fun removeAllDiscountAutoInCart() {
+        this.discountServerList.removeAll { disc ->
+            disc.isAutoInCart()
+        }
+    }
+
+    fun removeAllDiscountAutoOnClick() {
+        this.discountServerList.removeAll { disc ->
+            disc.isAutoOnClick()
+        }
+    }
+
+    fun updateDiscount(isRemoveCoupon: Boolean) {
+        //update discount coupon code
+        if (isRemoveCoupon) {
+            removeAllDiscountCoupon()
+        }
+        updateDiscountAutomatic(DiscountTriggerType.IN_CART)
+        updateDiscountAutomatic(DiscountTriggerType.ON_CLICK)
+    }
+
+    fun updateDiscountAutomatic(triggerType: DiscountTriggerType) {
+        if (!anyProductList()) return
+        var discountAutoList: List<DiscountResp> = listOf()
+        when (triggerType) {
+            DiscountTriggerType.IN_CART -> {
+                discountAutoList =
+                    DataHelper.findDiscountOrderList(this, Date(), DiscountTriggerType.IN_CART)
+                removeAllDiscountAutoInCart()
+            }
+            DiscountTriggerType.ON_CLICK -> {
+                discountAutoList = this.discountServerList.filter { disc ->
+                    disc.isAutoOnClick()
+                }.toList()
+                removeAllDiscountAutoOnClick()
+                discountAutoList = discountAutoList.filter { disc ->
+                    disc.isValid(this, Date())
+                }.toList()
+            }
+            else -> {}
+        }
+        this.discountServerList.addAll(discountAutoList)
+
+        // OnlyApplyDiscountProductOncePerOrder will tell us
+        // if this discount has to be applied 1 time per order.
+
+        val discOnePerOrderList: List<DiscountResp> = listOf()
+        this.productsList.forEach { baseProduct ->
+            baseProduct.getOnePerOrderAndUpdateDiscountAutomatic(
+                triggerType,
+                this.customer!!,
+                this.productsList
+            )
+        }
+
+        addRangeDiscountOnePerOrder(discOnePerOrderList)
+    }
+
+    fun addRangeDiscountOnePerOrder(discountOnePerOrderList: List<DiscountResp>) {
+        discountOnePerOrderList.distinctBy { disc -> disc._id }.toList()
+            .forEach { discOnePerOrder -> addDiscountOnePerOrder(discOnePerOrder)
+            }
+    }
+
+    fun addDiscountOnePerOrder(discountOnePerOrder: DiscountResp) {
+        val baseProductApplyDisc = getProductApplyOnePerOrderDisc(discountOnePerOrder)
+        baseProductApplyDisc.discountServersList?.add(discountOnePerOrder.clone())
+    }
+
+    fun getProductApplyOnePerOrderDisc(discOnePerOrder: DiscountResp): BaseProductInCart {
+        var applyToList = discOnePerOrder.Condition.CustomerBuys.ListApplyTo.toList()
+        var productApplyList = getProductListApplyToDiscount(applyToList)
+
+        var applyValue = 0.0
+        when (discOnePerOrder.ApplyToPriceProduct) {
+            DiscountPriceType.HIGHEST.value -> {
+                applyValue = productApplyList.maxOf { basePro -> basePro.compareValue(applyToList) }
+            }
+            DiscountPriceType.LOWEST.value -> {
+                applyValue = productApplyList.minOf { basePro -> basePro.compareValue(applyToList) }
+            }
+        }
+        return productApplyList.first {
+                basePro -> val subtotal = basePro.compareValue(applyToList)
+            return@first subtotal == applyValue
+        }
+    }
+
+    fun getProductListApplyToDiscount(productList: List<Product>): List<BaseProductInCart> {
+        var baseProductList: List<BaseProductInCart> = listOf()
+        productList.forEach { productDisc ->
+            val baseProduct = this.productsList.firstOrNull { p ->
+                p.proOriginal?._id == productDisc._id
+            }
+            if (baseProduct != null) {
+                baseProductList.toMutableList().add(baseProduct)
+            }
+        }
+        return baseProductList
+    }
+
+    fun removeAllDiscountCoupon() {
+        if (!anyProductList()) return
+        this.discountServerList.removeAll { disc ->
+            disc.isCoupon()
+        }
+        this.productsList.forEach { baseProduct ->
+            baseProduct.removeAllDiscountCoupon()
+        }
     }
 
 }

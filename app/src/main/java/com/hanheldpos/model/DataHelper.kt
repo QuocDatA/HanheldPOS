@@ -2,6 +2,7 @@ package com.hanheldpos.model
 
 
 import com.hanheldpos.data.api.ApiConst
+import com.hanheldpos.data.api.pojo.customer.CustomerResp
 import com.hanheldpos.data.api.pojo.device.Device
 import com.hanheldpos.data.api.pojo.device.DeviceCodeResp
 import com.hanheldpos.data.api.pojo.discount.CouponResp
@@ -13,10 +14,16 @@ import com.hanheldpos.data.api.pojo.order.settings.OrderSettingResp
 import com.hanheldpos.data.api.pojo.payment.PaymentMethodResp
 import com.hanheldpos.data.api.pojo.resource.ResourceResp
 import com.hanheldpos.data.api.pojo.system.AddressTypeResp
+import com.hanheldpos.model.cart.BaseProductInCart
+import com.hanheldpos.model.cart.CartModel
+import com.hanheldpos.model.discount.DiscountApplyTo
+import com.hanheldpos.model.discount.DiscountTriggerType
 import com.hanheldpos.model.order.OrderReq
 import com.hanheldpos.prefs.PrefKey
+import com.hanheldpos.ui.screens.cart.CurCartData
 import com.hanheldpos.utils.GSonUtils
 import com.utils.helper.AppPreferences
+import java.util.*
 
 object DataHelper {
 
@@ -204,4 +211,40 @@ object DataHelper {
             field = value
             AppPreferences.get().storeValue(PrefKey.Setting.RECENT_DEVICE_LIST, GSonUtils.toJson(value))
         }
+
+    fun findDiscountAutoList(applyTo: DiscountApplyTo): List<DiscountResp> {
+        return discountsLocalStorage?.filter { disc ->
+            disc.DiscountAutomatic && disc.DiscountApplyTo == applyTo.toString().toInt()
+        }?.toList() ?: listOf()
+    }
+
+    fun findDiscountItemList(
+        baseProductInCart: BaseProductInCart?,
+        customer: CustomerResp,
+        triggerType: DiscountTriggerType,
+        timerServer: Date
+    ): List<DiscountResp> {
+        if (baseProductInCart == null) return listOf()
+        return findDiscountAutoList(DiscountApplyTo.ITEM).filter { discount ->
+            discount.isValid(
+                CurCartData.cartModel?.getSubTotal() ?: 0.0,
+                baseProductInCart,
+                customer,
+                timerServer
+            ) && discount.isExistsTrigger(triggerType)
+        }.toList()
+    }
+
+    fun findDiscountOrderList(
+        cart: CartModel,
+        timeServer: Date,
+        triggerType: DiscountTriggerType = DiscountTriggerType.ALL
+    ): List<DiscountResp> {
+        return findDiscountAutoList(DiscountApplyTo.ORDER).filter { discount ->
+            discount.DiscountAutomatic && discount.isValid(
+                cart,
+                timeServer
+            )
+        }.toList()
+    }
 }
