@@ -182,6 +182,17 @@ class CartDataVM : BaseViewModel() {
         cartModelLD.notifyValueChange()
     }
 
+    fun clearDiscountUser() {
+        this.cartModelLD.value!!.clearAllDiscountUser()
+        cartModelLD.notifyValueChange()
+    }
+
+    fun clearDiscountServer() {
+        this.cartModelLD.value!!.clearAllDiscountServer()
+        cartModelLD.notifyValueChange()
+    }
+
+
     fun diningOptionChange(diningOption: DiningOption?) {
         diningOption?.let {
             cartModelLD.value?.diningOption = diningOption

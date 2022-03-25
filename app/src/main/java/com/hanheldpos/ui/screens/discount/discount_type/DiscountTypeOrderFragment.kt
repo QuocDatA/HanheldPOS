@@ -95,7 +95,7 @@ class DiscountTypeOrderFragment(
 
         // Data Container Fragment Type
         fragmentMap[DiscountTypeFor.AMOUNT] =
-            DiscountAmountFragment(listener = object : DiscountFragment.DiscountTypeListener {
+            DiscountAmountFragment(!cart.discountUserList.isNullOrEmpty(),listener = object : DiscountFragment.DiscountTypeListener {
                 override fun discountUserChoose(discount: DiscountUser) {
                     listener.discountUserChoose(discount);
                 }
@@ -105,7 +105,7 @@ class DiscountTypeOrderFragment(
                 }
             }, applyToType = applyToType);
         fragmentMap[DiscountTypeFor.PERCENTAGE] =
-            DiscountPercentageFragment(applyToType, listener = object :
+            DiscountPercentageFragment(!cart.discountUserList.isNullOrEmpty(),applyToType, listener = object :
                 DiscountFragment.DiscountTypeListener {
                 override fun discountUserChoose(discount: DiscountUser) {
                     listener.discountUserChoose(discount);
@@ -115,8 +115,8 @@ class DiscountTypeOrderFragment(
                     listener.validDiscount(isValid);
                 }
             });
-        fragmentMap[DiscountTypeFor.DISCOUNT_CODE] = DiscountCodeFragment(applyToType);
-        fragmentMap[DiscountTypeFor.AUTOMATIC] = DiscountAutomaticFragment(applyToType,cart,product);
+        fragmentMap[DiscountTypeFor.DISCOUNT_CODE] = DiscountCodeFragment(!cart.discountServerList.isNullOrEmpty(),applyToType,listener);
+        fragmentMap[DiscountTypeFor.AUTOMATIC] = DiscountAutomaticFragment(!cart.discountServerList.isNullOrEmpty(),applyToType,cart,product,listener);
         fragmentMap[DiscountTypeFor.COMP] =
             DiscountCompFragment(
                 comp = when (applyToType) {

@@ -133,4 +133,13 @@ abstract class BaseProductInCart {
             .map { fee -> OrderFee(fee, subtotal ?: 0.0, totalDiscounts ?: 0.0) }
     }
 
+    open fun clearAllDiscountServer() {
+        discountServersList?.clear()
+        discountServersList = null
+    }
+
+    open fun clearAllDiscountUser() {
+        discountUsersList?.clear()
+        discountUsersList = null
+    }
 }

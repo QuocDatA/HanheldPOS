@@ -18,13 +18,14 @@ import com.hanheldpos.model.discount.DiscountApplyToType
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.adapter.GridSpacingItemDecoration
 import com.hanheldpos.ui.base.fragment.BaseFragment
+import com.hanheldpos.ui.screens.discount.DiscountFragment
 import com.hanheldpos.ui.screens.discount.discount_detail.DiscountDetailFragment
 import com.hanheldpos.ui.screens.discount.discount_type.discount_code.adapter.DiscountCodeAdapter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class DiscountCodeFragment(private val applyToType : DiscountApplyToType) : BaseFragment<FragmentDiscountCodeBinding,DiscountCodeVM>() , DiscountCodeUV {
+class DiscountCodeFragment(private val isAlreadyExistDiscountSelect : Boolean =false,private val applyToType : DiscountApplyToType,private val listener: DiscountFragment.DiscountTypeListener) : BaseFragment<FragmentDiscountCodeBinding,DiscountCodeVM>() , DiscountCodeUV {
     override fun layoutRes(): Int =  R.layout.fragment_discount_code
 
     private lateinit var discountCodeAdapter: DiscountCodeAdapter;
@@ -42,7 +43,12 @@ class DiscountCodeFragment(private val applyToType : DiscountApplyToType) : Base
     }
 
     override fun initView() {
-
+        binding.btnClearDiscount.setTextColor(
+            ContextCompat.getColor(
+                requireContext(),
+                if (isAlreadyExistDiscountSelect) R.color.color_0 else R.color.color_8
+            )
+        )
 
         discountCodeAdapter =
             DiscountCodeAdapter(listener = object : DiscountCodeAdapter.DiscountItemCallBack {
@@ -84,7 +90,11 @@ class DiscountCodeFragment(private val applyToType : DiscountApplyToType) : Base
     }
 
     override fun initAction() {
-
+        binding.btnClearDiscount.setOnClickListener {
+            if (isAlreadyExistDiscountSelect) {
+                listener.discountServerRemoveAll()
+            }
+        }
     }
 
     @SuppressLint("NotifyDataSetChanged")

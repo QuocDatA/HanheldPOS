@@ -8,6 +8,7 @@ class DiscountAmountVM : BaseUiViewModel<DiscountAmountUV>() {
     val amount = MutableLiveData<String>(0.toString());
     val title = MutableLiveData<String>("");
     var amountValue : Double = 0.0;
+    var isAlreadyExistDiscountSelect = MutableLiveData(false)
 
     fun initLifeCycle(owner: LifecycleOwner) {
         owner.lifecycle.addObserver(this);

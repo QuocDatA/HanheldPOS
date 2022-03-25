@@ -14,7 +14,7 @@ import com.hanheldpos.model.order.DeliveryTime
 import com.hanheldpos.model.order.Order
 import com.hanheldpos.model.order.Shipping
 
-data class CartModel(
+open class CartModel(
     var order: Order? = null,
     var table: TableSummary,
     var customer: CustomerResp? = null,
@@ -115,6 +115,14 @@ data class CartModel(
 
     fun addPayment(payment: List<PaymentOrder>) {
         paymentsList = payment.toMutableList();
+    }
+
+    fun clearAllDiscountServer() {
+        discountServerList?.clear()
+    }
+
+    fun clearAllDiscountUser() {
+        discountUserList?.clear()
     }
 
     fun clearCart() {

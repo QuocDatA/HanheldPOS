@@ -12,11 +12,12 @@ import com.hanheldpos.model.cart.CartModel
 import com.hanheldpos.model.discount.DiscountApplyToType
 import com.hanheldpos.model.discount.DiscountTypeFor
 import com.hanheldpos.ui.base.fragment.BaseFragment
+import com.hanheldpos.ui.screens.discount.DiscountFragment
 import com.hanheldpos.ui.screens.discount.discount_detail.DiscountDetailFragment
 import com.hanheldpos.ui.screens.discount.discount_type.discount_code.adapter.DiscountCodeAdapter
 
 
-class DiscountAutomaticFragment(private val applyToType: DiscountApplyToType ,private val cart: CartModel?, private val product: BaseProductInCart?) :
+class DiscountAutomaticFragment(private val isAlreadyExistDiscountSelect : Boolean =false,private val applyToType: DiscountApplyToType ,private val cart: CartModel?, private val product: BaseProductInCart?,private val listener: DiscountFragment.DiscountTypeListener) :
     BaseFragment<FragmentDiscountAutomaticBinding, DiscountAutomaticVM>(), DiscountAutomaticUV {
 
     override fun layoutRes(): Int {
@@ -37,7 +38,12 @@ class DiscountAutomaticFragment(private val applyToType: DiscountApplyToType ,pr
     }
 
     override fun initView() {
-
+        binding.btnClearDiscount.setTextColor(
+            ContextCompat.getColor(
+                requireContext(),
+                if (isAlreadyExistDiscountSelect) R.color.color_0 else R.color.color_8
+            )
+        )
         discountCodeAdapter =
             DiscountCodeAdapter(listener = object : DiscountCodeAdapter.DiscountItemCallBack {
                 override fun onViewDetailClick(item: DiscountResp) {
@@ -72,7 +78,11 @@ class DiscountAutomaticFragment(private val applyToType: DiscountApplyToType ,pr
     }
 
     override fun initAction() {
-
+        binding.btnClearDiscount.setOnClickListener {
+            if (isAlreadyExistDiscountSelect) {
+                listener.discountServerRemoveAll()
+            }
+        }
     }
 
     @SuppressLint("NotifyDataSetChanged")

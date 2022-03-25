@@ -121,6 +121,16 @@ class ProductDetailFragment(
                         override fun validDiscount(isValid: Boolean) {
                             viewModel.isValidDiscount.postValue(isValid)
                         }
+
+                        override fun discountUserRemoveAll() {
+                            viewModel.regularInCart.value?.clearAllDiscountUser()
+                            viewModel.regularInCart.notifyValueChange()
+                        }
+
+                        override fun discountServerRemoveAll() {
+                            viewModel.regularInCart.value?.clearAllDiscountServer()
+                            viewModel.regularInCart.notifyValueChange()
+                        }
                     })
             ).commit()
     }

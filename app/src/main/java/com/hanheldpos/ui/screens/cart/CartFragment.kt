@@ -220,6 +220,15 @@ class CartFragment(private val listener: CartCallBack) :
                 override fun onCompRemove() {
                     cartDataVM.removeCompReason()
                 }
+
+                override fun discountUserRemoveAll() {
+                    cartDataVM.clearDiscountUser()
+                }
+
+                override fun discountServerRemoveAll() {
+                    cartDataVM.clearDiscountServer()
+                }
+
             }))
     }
 

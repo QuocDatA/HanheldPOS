@@ -89,6 +89,7 @@ class ComboFragment(
             childFragmentManager.beginTransaction().replace(
                 R.id.fragment_container_discount,
                 DiscountTypeItemFragment(
+
                     product = combo,
                     applyToType = DiscountApplyToType.ITEM_DISCOUNT_APPLY_TO,
                     cart = cartDataVM.cartModelLD.value!!,
@@ -117,6 +118,16 @@ class ComboFragment(
 
                         override fun validDiscount(isValid: Boolean) {
                             viewModel.isValidDiscount.postValue(isValid);
+                        }
+
+                        override fun discountUserRemoveAll() {
+                            viewModel.bundleInCart.value?.clearAllDiscountUser()
+                            viewModel.bundleInCart.notifyValueChange()
+                        }
+
+                        override fun discountServerRemoveAll() {
+                            viewModel.bundleInCart.value?.clearAllDiscountServer()
+                            viewModel.bundleInCart.notifyValueChange()
                         }
                     })
             ).commit();
