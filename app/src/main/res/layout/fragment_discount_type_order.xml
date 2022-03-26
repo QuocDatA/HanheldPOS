@@ -55,6 +55,20 @@
             <include layout="@layout/divider_vertical" />
         </LinearLayout>
 
+        <com.diadiem.pos_components.PTextView
+            android:id="@+id/btnClearDiscount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/clear_discount"
+            android:layout_gravity="end"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_marginEnd="@dimen/_9sdp"
+            android:layout_marginBottom="@dimen/_14sdp"
+            app:useFontStyle="normal"
+            app:useTextColor="color8"
+            app:useTextHeader="h6" />
+
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/discountFragmentContainer"
             useInputEnable="@{false}"

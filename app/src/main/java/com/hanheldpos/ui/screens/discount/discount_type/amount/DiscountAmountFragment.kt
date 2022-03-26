@@ -13,7 +13,6 @@ import com.hanheldpos.ui.screens.discount.DiscountFragment
 import com.hanheldpos.utils.PriceUtils
 
 class DiscountAmountFragment(
-    private val isAlreadyExistDiscountSelect: Boolean = false,
     private val applyToType: DiscApplyTo,
     private val listener: DiscountFragment.DiscountTypeListener
 ) :
@@ -35,15 +34,6 @@ class DiscountAmountFragment(
     }
 
     override fun initView() {
-        viewModel.isAlreadyExistDiscountSelect.observe(this) {
-            binding.btnClearDiscount.setTextColor(
-                ContextCompat.getColor(
-                    requireContext(),
-                    if (it) R.color.color_0 else R.color.color_8
-                )
-            )
-        }
-
 
         binding.amountDiscount.let { input ->
             var isEditing = false
@@ -63,7 +53,6 @@ class DiscountAmountFragment(
     }
 
     override fun initData() {
-        viewModel.isAlreadyExistDiscountSelect.postValue(isAlreadyExistDiscountSelect)
     }
 
     override fun initAction() {
@@ -72,12 +61,6 @@ class DiscountAmountFragment(
         };
         viewModel.title.observe(this) {
             listener.validDiscount(validDiscount());
-        }
-        binding.btnClearDiscount.setOnClickListener {
-            if (isAlreadyExistDiscountSelect) {
-                listener.clearAllDiscountCoupon()
-                viewModel.isAlreadyExistDiscountSelect.postValue(false)
-            }
         }
     }
 

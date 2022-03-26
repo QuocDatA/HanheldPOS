@@ -18,7 +18,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class DiscountCodeFragment(
-    private val isAlreadyExistDiscountSelect: Boolean = false,
     private val applyToType: DiscApplyTo,
     private val listener: DiscountFragment.DiscountTypeListener
 ) : BaseFragment<FragmentDiscountCodeBinding, DiscountCodeVM>(), DiscountCodeUV {
@@ -39,15 +38,6 @@ class DiscountCodeFragment(
     }
 
     override fun initView() {
-        viewModel.isAlreadyExistDiscountSelect.observe(this) {
-            binding.btnClearDiscount.setTextColor(
-                ContextCompat.getColor(
-                    requireContext(),
-                    if (it) R.color.color_0 else R.color.color_8
-                )
-            )
-        }
-
 
         discountCodeAdapter =
             DiscountCodeAdapter(listener = object : DiscountCodeAdapter.DiscountItemCallBack {
@@ -83,7 +73,6 @@ class DiscountCodeFragment(
     }
 
     override fun initData() {
-        viewModel.isAlreadyExistDiscountSelect.postValue(isAlreadyExistDiscountSelect)
         if (applyToType == DiscApplyTo.ORDER)
             CoroutineScope(Dispatchers.IO).launch {
                 viewModel.initData();
@@ -92,12 +81,6 @@ class DiscountCodeFragment(
     }
 
     override fun initAction() {
-        binding.btnClearDiscount.setOnClickListener {
-            if (isAlreadyExistDiscountSelect) {
-                listener.clearAllDiscountCoupon()
-                viewModel.isAlreadyExistDiscountSelect.postValue(false)
-            }
-        }
     }
 
     @SuppressLint("NotifyDataSetChanged")

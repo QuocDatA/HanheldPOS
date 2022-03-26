@@ -1,5 +1,7 @@
 package com.hanheldpos.ui.screens.discount.discount_type
 
+import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.order.settings.Reason
@@ -9,7 +11,6 @@ import com.hanheldpos.model.cart.CartModel
 import com.hanheldpos.model.discount.DiscApplyTo
 import com.hanheldpos.model.discount.DiscountTypeFor
 import com.hanheldpos.model.discount.DiscountTypeTab
-import com.hanheldpos.model.discount.DiscountUser
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.discount.DiscountFragment
@@ -51,11 +52,28 @@ class DiscountTypeOrderFragment(
     }
 
     override fun initView() {
+        viewModel.isAlreadyExistDiscountSelect.observe(this) {
+            binding.btnClearDiscount.setTextColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    if (it) R.color.color_0 else R.color.color_8
+                )
+            )
+        }
 
         // Discount Tab Adapter
         adapter = DiscountTabAdapter(listener = object : BaseItemClickListener<DiscountTypeTab> {
             override fun onItemClick(adapterPosition: Int, item: DiscountTypeTab) {
                 binding.discountFragmentContainer.currentItem = item.type.value;
+
+                if (item.type == DiscountTypeFor.COMP) {
+                    binding.btnClearDiscount.visibility = View.GONE
+                } else binding.btnClearDiscount.visibility = View.VISIBLE
+
+                viewModel.isAlreadyExistDiscountSelect.postValue(
+                    !cart.discountServerList.isNullOrEmpty() ||
+                            !cart.discountUserList.isNullOrEmpty()
+                )
                 viewModel.typeDiscountSelect.postValue(item.type);
                 listener.discountFocus(item.type);
             }
@@ -95,22 +113,19 @@ class DiscountTypeOrderFragment(
         // Data Container Fragment Type
         fragmentMap[DiscountTypeFor.AMOUNT] =
             DiscountAmountFragment(
-                !cart.discountUserList.isNullOrEmpty() || !cart.discountServerList.isNullOrEmpty(),
+
                 listener = listener,
                 applyToType = applyToType
             );
         fragmentMap[DiscountTypeFor.PERCENTAGE] =
             DiscountPercentageFragment(
-                !cart.discountUserList.isNullOrEmpty() || !cart.discountServerList.isNullOrEmpty(),
                 applyToType,
                 listener = listener);
         fragmentMap[DiscountTypeFor.DISCOUNT_CODE] = DiscountCodeFragment(
-            !cart.discountUserList.isNullOrEmpty() || !cart.discountServerList.isNullOrEmpty(),
             applyToType,
             listener
         );
         fragmentMap[DiscountTypeFor.AUTOMATIC] = DiscountAutomaticFragment(
-            !cart.discountUserList.isNullOrEmpty() || !cart.discountServerList.isNullOrEmpty(),
             applyToType,
             cart,
             product,
@@ -143,6 +158,12 @@ class DiscountTypeOrderFragment(
     }
 
     override fun initAction() {
+        binding.btnClearDiscount.setOnClickListener {
+            if (!cart.discountServerList.isNullOrEmpty() || !cart.discountUserList.isNullOrEmpty()) {
+                listener.clearAllDiscountCoupon()
+                viewModel.isAlreadyExistDiscountSelect.postValue(false)
+            }
+        }
     }
 
 

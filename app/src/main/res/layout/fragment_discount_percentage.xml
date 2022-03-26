@@ -24,19 +24,6 @@
             android:orientation="vertical"
             app:layout_constraintTop_toTopOf="parent">
 
-            <com.diadiem.pos_components.PTextView
-                android:id="@+id/btnClearDiscount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/clear_discount"
-                android:layout_gravity="end"
-                android:clickable="true"
-                android:focusable="true"
-                android:layout_marginBottom="@dimen/_14sdp"
-                app:useFontStyle="normal"
-                app:useTextColor="color8"
-                app:useTextHeader="h6" />
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

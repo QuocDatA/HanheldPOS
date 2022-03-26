@@ -14,7 +14,6 @@ import java.util.*
 class DiscountAutomaticVM : BaseUiViewModel<DiscountAutomaticUV>() {
 
     val isLoading = MutableLiveData<Boolean>(false);
-    var isAlreadyExistDiscountSelect = MutableLiveData(false)
 
     fun loadDiscountAutomatic()  {
         val listDiscountAutoItem = DataHelper.findDiscountAutoList(DiscApplyTo.ITEM)
@@ -24,7 +23,7 @@ class DiscountAutomaticVM : BaseUiViewModel<DiscountAutomaticUV>() {
 
     fun onApplyDiscountAuto(discount : DiscountResp) {
         // Re-check the validity of the discount.
-        if (discount.isBuyXGetY() || !discount?.isValid(CurCartData.cartModel!!, Date()) ?: false) {
+        if (discount.isBuyXGetY() || !discount.isValid(CurCartData.cartModel!!, Date()) ?: false) {
             showError(PosApp.instance.getString(R.string.invalid_discount))
             return;
         }
