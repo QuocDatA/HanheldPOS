@@ -217,4 +217,5 @@
     <string name="input_card_number">Input Card Number</string>
     <string name="card_number">Card Number</string>
     <string name="balance">Balance</string>
+    <string name="clear_discount">Clear Discount</string>
 </resources>

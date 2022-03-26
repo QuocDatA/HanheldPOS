@@ -1,5 +1,6 @@
 package com.hanheldpos.model.cart
 
+import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.data.api.pojo.fee.Fee
 import com.hanheldpos.data.api.pojo.order.settings.DiningOption
 import com.hanheldpos.data.api.pojo.product.Product
@@ -79,6 +80,39 @@ class Combo() : BaseProductInCart() {
         val totalTemp = totalTemp()
         val totalcomp = compReason?.total(totalTemp) ?: 0.0
         return totalcomp
+    }
+
+    override fun totalPriceUsed(discount: DiscountResp): Double {
+        val subtotal = this.subTotal()
+        val totalModifierPrice = this.totalModifier()
+        val totalPrice = subtotal - totalModifierPrice
+        if (this.discountServersList.isNullOrEmpty()) return 0.0
+        return this.discountServersList!!.filter { disc ->
+            disc._id == discount._id
+        }.toList().sumOf { disc ->
+            disc.total(
+                totalPrice,
+                totalModifierPrice,
+                this.proOriginal?._id,
+                this.quantity
+            ) ?: 0.0
+        }
+    }
+
+    override fun totalQtyUsed(discount: DiscountResp, product_id: String): Int {
+        return if (this.proOriginal?._id != product_id) 0
+        else this.discountServersList!!.filter { disc ->
+            disc._id == discount._id
+        }.sumOf { disc -> disc.quantityUsed ?: 0 }
+    }
+
+    override fun compareValue(productDiscList: List<Product>): Double {
+        val modSubTotal = this.modSubTotal()
+        val proModSubTotal = this.proModSubTotal()
+        val isApplyToMod = productDiscList.firstOrNull { p ->
+            p._id == this.proOriginal?._id
+        }?.ApplyToModifier == 1
+        return if (isApplyToMod) proModSubTotal else (proModSubTotal - modSubTotal)
     }
 
     fun totalModifier(): Double {

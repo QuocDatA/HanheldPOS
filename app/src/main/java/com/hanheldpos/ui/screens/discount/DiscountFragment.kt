@@ -75,6 +75,10 @@ class DiscountFragment(private val listener: DiscountCallback) :
                     override fun validDiscount(isValid: Boolean) {
                         binding.btnSave.isEnabled = isValid;
                     }
+
+                    override fun clearAllDiscountCoupon() {
+                        listener.clearAllDiscountCoupon()
+                    }
                 }
             )
         ).commit();
@@ -94,14 +98,16 @@ class DiscountFragment(private val listener: DiscountCallback) :
         fun onDiscountUserChoose(discount: DiscountUser);
         fun onCompReasonChoose(reason: Reason);
         fun onCompRemove();
+        fun clearAllDiscountCoupon()
     }
 
     interface DiscountTypeListener {
-        fun discountUserChoose(discount: DiscountUser): Unit {};
-        fun compReasonChoose(item: Reason): Unit {};
-        fun compRemoveAll(): Unit {};
+        fun discountUserChoose(discount: DiscountUser): Unit {}
+        fun compReasonChoose(item: Reason): Unit {}
+        fun compRemoveAll(): Unit {}
+        fun clearAllDiscountCoupon() : Unit {}
         fun discountFocus(type : DiscountTypeFor) : Unit{}
-        fun validDiscount(isValid : Boolean);
+        fun validDiscount(isValid : Boolean)
     }
 
     override fun backPress() {

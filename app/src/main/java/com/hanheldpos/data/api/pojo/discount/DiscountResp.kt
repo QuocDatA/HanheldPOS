@@ -7,12 +7,9 @@ import com.hanheldpos.data.api.pojo.customer.CustomerGroup
 import com.hanheldpos.data.api.pojo.customer.CustomerResp
 import com.hanheldpos.data.api.pojo.fee.CustomerGets
 import com.hanheldpos.data.api.pojo.product.Product
-import com.hanheldpos.model.cart.CartModel
-import com.hanheldpos.model.discount.CtmEligibilityType
-import com.hanheldpos.model.discount.DiscMinRequiredType
 import com.hanheldpos.model.cart.BaseProductInCart
-import com.hanheldpos.model.discount.DiscountEntireType
-import com.hanheldpos.model.discount.DiscountTypeEnum
+import com.hanheldpos.model.cart.CartModel
+import com.hanheldpos.model.discount.*
 import com.hanheldpos.utils.time.DateTimeUtils
 import kotlinx.parcelize.Parcelize
 import java.util.*
@@ -67,7 +64,7 @@ data class DiscountResp(
     val UseForOrder: Int,
     val _id: String,
     val jsaction: String
-) : Parcelable {
+) : Parcelable, Cloneable {
 
     var quantityUsed: Int? = null
     var maxAmountUsed: Double? = null
@@ -100,6 +97,7 @@ data class DiscountResp(
     }
 
     fun isValid(
+        subtotal: Double,
         baseProduct: BaseProductInCart,
         customer: CustomerResp,
         curDateTime: Date
@@ -108,7 +106,7 @@ data class DiscountResp(
             if (DateRange == 0 || isValidDate(curDateTime)) {
                 if (isValidProduct(baseProduct)) {
                     if (isValidMinRequired(
-                            baseProduct.total(),
+                            subtotal,
                             baseProduct.quantity!!
                         ) && isValidCtmEligibility(customer)
                     ) {
@@ -243,7 +241,7 @@ data class DiscountResp(
         quantity: Int? = 1
     ): Double? {
         val subtotal =
-            if (Condition?.CustomerBuys.IsApplyModifier(productOriginal_id ?: "")) totalPrice?.plus(
+            if (Condition?.CustomerBuys.isApplyModifier(productOriginal_id ?: "")) totalPrice?.plus(
                 totalModifier ?: 0.0
             ) else totalPrice
 
@@ -307,6 +305,28 @@ data class DiscountResp(
         }
         return discPrice;
     }
+
+    fun isAutoOnClick(): Boolean {
+        return (this.DiscountAutomatic) && isExistsTrigger(DiscountTriggerType.ON_CLICK)
+    }
+
+    fun isAutoInCart(): Boolean {
+        return (this.DiscountAutomatic) && isExistsTrigger(DiscountTriggerType.IN_CART)
+    }
+
+    fun isCoupon(): Boolean {
+        return !this.DiscountAutomatic
+    }
+
+    fun isExistsTrigger(triggerType: DiscountTriggerType): Boolean {
+        return this.Trigger.firstOrNull { trigger ->
+            trigger.Id == triggerType.toString().toInt()
+        } != null || triggerType == DiscountTriggerType.ALL
+    }
+
+    public override fun clone(): DiscountResp {
+        return copy()
+    }
 }
 
 @Parcelize
@@ -343,8 +363,23 @@ data class CustomerBuys(
         return amountUsed
     }
 
-    fun IsApplyModifier(productId: String?): Boolean {
-        return ListApplyTo?.firstOrNull { p -> p._id == productId }?.ApplyToModifier == 1;
+    fun getMaxQuantity(quantityUsed: Int, quantity: Int, product_id: String): Int? {
+        val productApply = this.ListApplyTo.firstOrNull { product -> product._id == product_id }
+        if (productApply != null) {
+            if (productApply.MaxQuantity == 0) {
+                return quantity
+            }
+            val maxQuantity = productApply.MaxQuantity - quantityUsed
+            return if (maxQuantity > 0) {
+                if (quantity >= maxQuantity) maxQuantity
+                else quantity
+            } else 0
+        }
+        return 0
+    }
+
+    fun isApplyModifier(productId: String?): Boolean {
+        return ListApplyTo.firstOrNull { p -> p._id == productId }?.ApplyToModifier == 1;
     }
 }
 

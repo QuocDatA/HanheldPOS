@@ -1,5 +1,6 @@
 package com.hanheldpos.ui.screens.discount.discount_type.amount
 
+import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentDiscountAmountBinding
@@ -9,12 +10,13 @@ import com.hanheldpos.model.discount.DiscountTypeFor
 import com.hanheldpos.model.discount.DiscountUser
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.discount.DiscountFragment
-import com.hanheldpos.ui.screens.discount.discount_type.DiscountTypeItemFragment
 import com.hanheldpos.utils.PriceUtils
-import java.text.DecimalFormat
-import java.text.DecimalFormatSymbols
 
-class DiscountAmountFragment(private val applyToType: DiscountApplyToType, private val listener: DiscountFragment.DiscountTypeListener) :
+class DiscountAmountFragment(
+    private val isAlreadyExistDiscountSelect: Boolean = false,
+    private val applyToType: DiscountApplyToType,
+    private val listener: DiscountFragment.DiscountTypeListener
+) :
     BaseFragment<FragmentDiscountAmountBinding, DiscountAmountVM>(),
     DiscountAmountUV {
     override fun layoutRes(): Int = R.layout.fragment_discount_amount
@@ -33,6 +35,14 @@ class DiscountAmountFragment(private val applyToType: DiscountApplyToType, priva
     }
 
     override fun initView() {
+        viewModel.isAlreadyExistDiscountSelect.observe(this) {
+            binding.btnClearDiscount.setTextColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    if (it) R.color.color_0 else R.color.color_8
+                )
+            )
+        }
 
 
         binding.amountDiscount.let { input ->
@@ -50,12 +60,10 @@ class DiscountAmountFragment(private val applyToType: DiscountApplyToType, priva
         }
 
 
-
-
     }
 
     override fun initData() {
-
+        viewModel.isAlreadyExistDiscountSelect.postValue(isAlreadyExistDiscountSelect)
     }
 
     override fun initAction() {
@@ -65,11 +73,20 @@ class DiscountAmountFragment(private val applyToType: DiscountApplyToType, priva
         viewModel.title.observe(this) {
             listener.validDiscount(validDiscount());
         }
+        binding.btnClearDiscount.setOnClickListener {
+            if (isAlreadyExistDiscountSelect) {
+                listener.clearAllDiscountCoupon()
+                viewModel.isAlreadyExistDiscountSelect.postValue(false)
+            }
+        }
     }
 
     override fun onResume() {
         super.onResume()
-        requireActivity().supportFragmentManager.setFragmentResultListener("saveDiscount",this) { _, bundle ->
+        requireActivity().supportFragmentManager.setFragmentResultListener(
+            "saveDiscount",
+            this
+        ) { _, bundle ->
             if (bundle.getSerializable("DiscountTypeFor") == DiscountTypeFor.AMOUNT && validChooseDiscount()) {
                 listener.discountUserChoose(
                     DiscountUser(
@@ -83,7 +100,7 @@ class DiscountAmountFragment(private val applyToType: DiscountApplyToType, priva
         listener.validDiscount(validDiscount());
     }
 
-    private fun validChooseDiscount() : Boolean {
+    private fun validChooseDiscount(): Boolean {
         return (viewModel.amountValue > 0.0 && !viewModel.title.value.isNullOrEmpty())
     }
 

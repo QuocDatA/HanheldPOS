@@ -213,7 +213,7 @@ object CartConverter {
         }
 
         // Mapping discount form client.
-        val disServers = discountUsers?.map { disc ->
+        val disServers = discountServers?.map { disc ->
             DiscountOrder(
                 disc,
                 proSubtotal,

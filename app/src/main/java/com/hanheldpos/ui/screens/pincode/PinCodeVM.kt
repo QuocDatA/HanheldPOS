@@ -108,7 +108,7 @@ class PinCodeVM : BaseRepoViewModel<EmployeeRepo, PinCodeUV>() {
             object : BaseRepoCallback<BaseResponse<List<EmployeeResp>>> {
                 override fun apiResponse(data: BaseResponse<List<EmployeeResp>>?) {
                     if (data == null || data.DidError || data.Model.isNullOrEmpty()) {
-                        showError(PosApp.instance.getString(R.string.passcode_does_not_exist_please_try_again));
+                        showError(data?.Message ?: data?.ErrorMessage ?: PosApp.instance.getString(R.string.passcode_does_not_exist_please_try_again));
                         onEmployeeError()
                     } else {
                         onEmployeeSuccess(data.Model.first())

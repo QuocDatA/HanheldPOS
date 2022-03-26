@@ -1,5 +1,6 @@
 package com.hanheldpos.ui.screens.discount.discount_type.percentage
 
+import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentDiscountPercentageBinding
@@ -9,10 +10,10 @@ import com.hanheldpos.model.discount.DiscountTypeFor
 import com.hanheldpos.model.discount.DiscountUser
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.discount.DiscountFragment
-import com.hanheldpos.ui.screens.discount.discount_type.DiscountTypeItemFragment
 
 
 class DiscountPercentageFragment(
+    private val isAlreadyExistDiscountSelect: Boolean = false,
     private val applyToType: DiscountApplyToType,
     private val listener: DiscountFragment.DiscountTypeListener
 ) :
@@ -32,6 +33,14 @@ class DiscountPercentageFragment(
     }
 
     override fun initView() {
+        viewModel.isAlreadyExistDiscountSelect.observe(this) {
+            binding.btnClearDiscount.setTextColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    if (it) R.color.color_0 else R.color.color_8
+                )
+            )
+        }
 
         binding.percentDiscount.let { input ->
             var isEditing = false
@@ -50,7 +59,7 @@ class DiscountPercentageFragment(
     }
 
     override fun initData() {
-
+        viewModel.isAlreadyExistDiscountSelect.postValue(isAlreadyExistDiscountSelect)
     }
 
     override fun initAction() {
@@ -60,11 +69,20 @@ class DiscountPercentageFragment(
         viewModel.title.observe(this) {
             listener.validDiscount(validDiscount());
         }
+        binding.btnClearDiscount.setOnClickListener {
+            if (isAlreadyExistDiscountSelect) {
+                listener.clearAllDiscountCoupon()
+                viewModel.isAlreadyExistDiscountSelect.postValue(false)
+            }
+        }
     }
 
     override fun onResume() {
         super.onResume()
-        requireActivity().supportFragmentManager.setFragmentResultListener("saveDiscount",this) { _, bundle ->
+        requireActivity().supportFragmentManager.setFragmentResultListener(
+            "saveDiscount",
+            this
+        ) { _, bundle ->
             if (bundle.getSerializable("DiscountTypeFor") == DiscountTypeFor.PERCENTAGE && validChooseDiscount()) {
                 listener.discountUserChoose(
                     DiscountUser(
@@ -78,11 +96,11 @@ class DiscountPercentageFragment(
         listener.validDiscount(validDiscount());
     }
 
-    private fun validChooseDiscount() : Boolean {
+    private fun validChooseDiscount(): Boolean {
         return (viewModel.percentValue > 0.0 && !viewModel.title.value.isNullOrEmpty())
     }
 
-    private fun validDiscount() : Boolean {
+    private fun validDiscount(): Boolean {
         return when (applyToType) {
             DiscountApplyToType.ITEM_DISCOUNT_APPLY_TO -> {
                 (viewModel.percentValue == 0.0 && viewModel.title.value.isNullOrEmpty()) || validChooseDiscount()

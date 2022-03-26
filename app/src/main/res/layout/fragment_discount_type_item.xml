@@ -29,7 +29,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/_8sdp"
-            android:layout_marginVertical="@dimen/_19sdp"
+            android:layout_marginTop="@dimen/_19sdp"
+            android:layout_marginBottom="@dimen/_14sdp"
             android:orientation="vertical"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -59,7 +60,7 @@
             useInputEnable="@{false}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_18sdp"
+            android:layout_marginTop="@dimen/_14sdp"
             app:layout_constrainedHeight="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintHeight_min="wrap"
