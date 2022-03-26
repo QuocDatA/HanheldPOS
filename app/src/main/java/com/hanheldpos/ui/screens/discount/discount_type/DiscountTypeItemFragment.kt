@@ -20,7 +20,7 @@ import com.hanheldpos.ui.screens.discount.discount_type.percentage.DiscountPerce
 
 
 class DiscountTypeItemFragment(
-    private val applyToType: DiscountApplyTo,
+    private val applyToType: DiscApplyTo,
     private val cart: CartModel,
     private val product: BaseProductInCart? = null,
     private val listener: DiscountFragment.DiscountTypeListener
@@ -80,7 +80,7 @@ class DiscountTypeItemFragment(
 
             DiscountTypeTab(title = "Comp", type = DiscountTypeFor.COMP),
         )
-        if (applyToType == DiscountApplyTo.ORDER) {
+        if (applyToType == DiscApplyTo.ORDER) {
             listTab.add(2, DiscountTypeTab(title = "Automatic", type = DiscountTypeFor.AUTOMATIC));
             listTab.add(
                 2,
@@ -93,23 +93,23 @@ class DiscountTypeItemFragment(
         // Data Container Fragment Type
         fragmentMap[DiscountTypeFor.AMOUNT] =
             DiscountAmountFragment(
-                !product?.discountUsersList.isNullOrEmpty(),
+                !product?.discountUsersList.isNullOrEmpty() || !product?.discountServersList.isNullOrEmpty(),
                 listener = listener,
                 applyToType = applyToType
             );
         fragmentMap[DiscountTypeFor.PERCENTAGE] =
             DiscountPercentageFragment(
-                !product?.discountUsersList.isNullOrEmpty(),
+                !product?.discountUsersList.isNullOrEmpty() || !product?.discountServersList.isNullOrEmpty(),
                 applyToType,
                 listener = listener
             );
         fragmentMap[DiscountTypeFor.DISCOUNT_CODE] = DiscountCodeFragment(
-            !product?.discountServersList.isNullOrEmpty(),
+            !product?.discountUsersList.isNullOrEmpty() || !product?.discountServersList.isNullOrEmpty(),
             applyToType,
             listener
         );
         fragmentMap[DiscountTypeFor.AUTOMATIC] = DiscountAutomaticFragment(
-            !product?.discountServersList.isNullOrEmpty(),
+            !product?.discountUsersList.isNullOrEmpty() || !product?.discountServersList.isNullOrEmpty(),
             applyToType,
             cart,
             product,
@@ -118,8 +118,8 @@ class DiscountTypeItemFragment(
         fragmentMap[DiscountTypeFor.COMP] =
             DiscountCompFragment(
                 comp = when (applyToType) {
-                    DiscountApplyTo.ITEM -> product?.compReason;
-                    DiscountApplyTo.ORDER -> cart.compReason;
+                    DiscApplyTo.ITEM -> product?.compReason;
+                    DiscApplyTo.ORDER -> cart.compReason;
                     else -> null
                 },
                 listener = object : DiscountFragment.DiscountTypeListener {

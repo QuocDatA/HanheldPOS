@@ -26,7 +26,7 @@ class DiscountCodeAdapter(private val listener : DiscountItemCallBack)  : BaseBi
         }
 
         holder.itemView.setOnClickListener {
-            listener.onItemClick()
+            listener.onItemClick(item)
         }
     }
 
@@ -44,6 +44,6 @@ class DiscountCodeAdapter(private val listener : DiscountItemCallBack)  : BaseBi
 
     interface DiscountItemCallBack {
         fun onViewDetailClick(item: DiscountResp)
-        fun onItemClick()
+        fun onItemClick(item : DiscountResp)
     }
 }

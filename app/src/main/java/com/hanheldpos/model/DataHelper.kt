@@ -16,9 +16,8 @@ import com.hanheldpos.data.api.pojo.resource.ResourceResp
 import com.hanheldpos.data.api.pojo.system.AddressTypeResp
 import com.hanheldpos.model.cart.BaseProductInCart
 import com.hanheldpos.model.cart.CartModel
-import com.hanheldpos.model.discount.DiscountApplyTo
+import com.hanheldpos.model.discount.DiscApplyTo
 import com.hanheldpos.model.discount.DiscountTriggerType
-import com.hanheldpos.model.order.OrderReq
 import com.hanheldpos.prefs.PrefKey
 import com.hanheldpos.ui.screens.cart.CurCartData
 import com.hanheldpos.utils.GSonUtils
@@ -213,7 +212,7 @@ object DataHelper {
                 .storeValue(PrefKey.Setting.RECENT_DEVICE_LIST, GSonUtils.toJson(value))
         }
 
-    fun findDiscountAutoList(applyTo: DiscountApplyTo): List<DiscountResp> {
+    fun findDiscountAutoList(applyTo: DiscApplyTo): List<DiscountResp> {
         return discountsLocalStorage?.filter { disc ->
             disc.DiscountAutomatic && disc.DiscountApplyTo == applyTo.value
         }?.toList() ?: listOf()
@@ -226,7 +225,7 @@ object DataHelper {
         timerServer: Date
     ): List<DiscountResp> {
         if (baseProductInCart == null) return listOf()
-        return findDiscountAutoList(DiscountApplyTo.ITEM).filter { discount ->
+        return findDiscountAutoList(DiscApplyTo.ITEM).filter { discount ->
             discount.isValid(
                 CurCartData.cartModel?.getSubTotal() ?: 0.0,
                 baseProductInCart,
@@ -241,7 +240,7 @@ object DataHelper {
         timeServer: Date,
         triggerType: DiscountTriggerType = DiscountTriggerType.ALL
     ): List<DiscountResp> {
-        return findDiscountAutoList(DiscountApplyTo.ORDER).filter { discount ->
+        return findDiscountAutoList(DiscApplyTo.ORDER).filter { discount ->
             discount.DiscountAutomatic && discount.isValid(
                 cart,
                 timeServer

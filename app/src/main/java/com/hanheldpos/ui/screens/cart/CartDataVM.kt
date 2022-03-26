@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.hanheldpos.PosApp
 import com.hanheldpos.data.api.pojo.customer.CustomerResp
+import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.data.api.pojo.floor.FloorTable
 import com.hanheldpos.data.api.pojo.order.settings.DiningOption
 import com.hanheldpos.data.api.pojo.order.settings.Reason
@@ -24,7 +25,7 @@ import kotlin.coroutines.coroutineContext
 class CartDataVM : BaseViewModel() {
 
     val cartModelLD: MutableLiveData<CartModel> = MutableLiveData()
-    val currentTableFocus : MutableLiveData<FloorTable> = MutableLiveData()
+    val currentTableFocus: MutableLiveData<FloorTable> = MutableLiveData()
 
     val diningOptionLD: LiveData<DiningOption> = Transformations.map(cartModelLD) {
         return@map it?.diningOption
@@ -39,7 +40,7 @@ class CartDataVM : BaseViewModel() {
         return@map it?.table?.PeopleQuantity
     }
 
-    fun initObserveData(owner: LifecycleOwner){
+    fun initObserveData(owner: LifecycleOwner) {
         cartModelLD.observe(owner) {
             CurCartData.cartModel = it
         }
@@ -73,7 +74,7 @@ class CartDataVM : BaseViewModel() {
 
     }
 
-    fun initCart(cart : CartModel , table: FloorTable) {
+    fun initCart(cart: CartModel, table: FloorTable) {
         cartModelLD.value = cart
         currentTableFocus.value = table
     }
@@ -149,18 +150,32 @@ class CartDataVM : BaseViewModel() {
     fun deleteDiscountCart(discount: DiscountCart, productInCart: BaseProductInCart?) {
         if (productInCart != null) {
             discount.disOriginal.let {
-                if (it is Reason) {
-                    productInCart.compReason = null
-                } else if (it is DiscountUser) {
-                    productInCart.discountUsersList?.remove(it)
+                when (it.javaClass) {
+                    Reason::class.java -> {
+                        productInCart.compReason = null
+                    }
+                    DiscountUser::class.java -> {
+                        productInCart.discountUsersList?.remove(it)
+                    }
+                    DiscountResp::class.java -> {
+                        productInCart.discountServersList?.remove(it)
+                    }
+                    else -> {}
                 }
             }
         } else
             discount.disOriginal.let {
-                if (it is Reason) {
-                    cartModelLD.value!!.compReason = null
-                } else if (it is DiscountUser) {
-                    cartModelLD.value!!.discountUserList.remove(it)
+                when (it.javaClass) {
+                    Reason::class.java -> {
+                        cartModelLD.value!!.compReason = null
+                    }
+                    DiscountUser::class.java -> {
+                        cartModelLD.value!!.discountUserList.remove(it)
+                    }
+                    DiscountResp::class.java -> {
+                        cartModelLD.value!!.discountServerList.remove(it)
+                    }
+                    else -> {}
                 }
             }
         cartModelLD.notifyValueChange()
@@ -179,6 +194,11 @@ class CartDataVM : BaseViewModel() {
 
     fun addDiscountUser(discount: DiscountUser) {
         this.cartModelLD.value!!.addDiscountUser(discount)
+        cartModelLD.notifyValueChange()
+    }
+
+    fun addDiscountServer(discount: DiscountResp) {
+        this.cartModelLD.value!!.addDiscountServer(discount)
         cartModelLD.notifyValueChange()
     }
 

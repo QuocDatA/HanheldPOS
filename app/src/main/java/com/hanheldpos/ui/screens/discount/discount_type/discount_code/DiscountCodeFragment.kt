@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.databinding.FragmentDiscountCodeBinding
-import com.hanheldpos.model.discount.DiscountApplyTo
+import com.hanheldpos.model.discount.DiscApplyTo
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.discount.DiscountFragment
 import com.hanheldpos.ui.screens.discount.discount_detail.DiscountDetailFragment
@@ -19,7 +19,7 @@ import kotlinx.coroutines.launch
 
 class DiscountCodeFragment(
     private val isAlreadyExistDiscountSelect: Boolean = false,
-    private val applyToType: DiscountApplyTo,
+    private val applyToType: DiscApplyTo,
     private val listener: DiscountFragment.DiscountTypeListener
 ) : BaseFragment<FragmentDiscountCodeBinding, DiscountCodeVM>(), DiscountCodeUV {
     override fun layoutRes(): Int = R.layout.fragment_discount_code
@@ -39,20 +39,25 @@ class DiscountCodeFragment(
     }
 
     override fun initView() {
-        binding.btnClearDiscount.setTextColor(
-            ContextCompat.getColor(
-                requireContext(),
-                if (isAlreadyExistDiscountSelect) R.color.color_0 else R.color.color_8
+        viewModel.isAlreadyExistDiscountSelect.observe(this) {
+            binding.btnClearDiscount.setTextColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    if (it) R.color.color_0 else R.color.color_8
+                )
             )
-        )
+        }
+
 
         discountCodeAdapter =
             DiscountCodeAdapter(listener = object : DiscountCodeAdapter.DiscountItemCallBack {
                 override fun onViewDetailClick(item: DiscountResp) {
-                    navigator.goTo(DiscountDetailFragment(item))
+                    navigator.goTo(DiscountDetailFragment(item, onApplyDiscountAuto = { discount ->
+
+                    }))
                 }
 
-                override fun onItemClick() {
+                override fun onItemClick(item : DiscountResp) {
                 }
 
             });
@@ -78,7 +83,8 @@ class DiscountCodeFragment(
     }
 
     override fun initData() {
-        if (applyToType == DiscountApplyTo.ORDER)
+        viewModel.isAlreadyExistDiscountSelect.postValue(isAlreadyExistDiscountSelect)
+        if (applyToType == DiscApplyTo.ORDER)
             CoroutineScope(Dispatchers.IO).launch {
                 viewModel.initData();
             }
@@ -89,6 +95,7 @@ class DiscountCodeFragment(
         binding.btnClearDiscount.setOnClickListener {
             if (isAlreadyExistDiscountSelect) {
                 listener.clearAllDiscountCoupon()
+                viewModel.isAlreadyExistDiscountSelect.postValue(false)
             }
         }
     }

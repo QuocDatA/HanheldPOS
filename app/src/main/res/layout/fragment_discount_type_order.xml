@@ -11,11 +11,11 @@
 
         <import type="android.view.View" />
 
-        <import type="com.hanheldpos.model.discount.DiscountApplyTo" />
+        <import type="com.hanheldpos.model.discount.DiscApplyTo" />
 
         <variable
             name="discountType"
-            type="com.hanheldpos.model.discount.DiscountApplyTo" />
+            type="com.hanheldpos.model.discount.DiscApplyTo" />
     </data>
 
     <LinearLayout

@@ -7,10 +7,10 @@
         <variable
             name="item"
             type="com.hanheldpos.data.api.pojo.discount.DiscountResp" />
-        <import type="com.hanheldpos.model.discount.DiscountTypeTo" />
+        <import type="com.hanheldpos.model.discount.DiscApplyTo" />
         <variable
             name="discountTypeTo"
-            type="com.hanheldpos.model.discount.DiscountTypeTo.Companion" />
+            type="com.hanheldpos.model.discount.DiscApplyTo.Companion" />
     </data>
 
     <LinearLayout
@@ -88,14 +88,14 @@
                 android:layout_marginHorizontal="@dimen/_9sdp">
 
                 <com.diadiem.pos_components.PTextView
-                    visibleObject="@{item.discountApplyTo != DiscountTypeTo.NOT_FOUND.value}"
+                    visibleObject="@{item.discountApplyTo != DiscApplyTo.UNKNOWN.value}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_cart_tip_item"
                     android:paddingHorizontal="@dimen/_5sdp"
                     android:paddingVertical="@dimen/_1sdp"
                     android:layout_alignParentBottom="true"
-                    android:text="@{item.discountApplyTo == DiscountTypeTo.ITEM.value ? @string/item : @string/order}"
+                    android:text="@{item.discountApplyTo == DiscApplyTo.ITEM.value ? @string/item : @string/order}"
                     app:useFontStyle="normal"
                     app:useTextColor="color6"
                     app:useTextHeader="h7"

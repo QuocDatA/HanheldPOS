@@ -4,9 +4,10 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import com.hanheldpos.R
+import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.data.api.pojo.order.settings.Reason
 import com.hanheldpos.databinding.FragmentDiscountBinding
-import com.hanheldpos.model.discount.DiscountApplyTo
+import com.hanheldpos.model.discount.DiscApplyTo
 import com.hanheldpos.model.discount.DiscountTypeFor
 import com.hanheldpos.model.discount.DiscountUser
 import com.hanheldpos.ui.base.fragment.BaseFragment
@@ -50,12 +51,17 @@ class DiscountFragment(private val listener: DiscountCallback) :
         childFragmentManager.beginTransaction().replace(
             R.id.fragment_container,
             DiscountTypeOrderFragment(
-                applyToType = DiscountApplyTo.ORDER,
+                applyToType = DiscApplyTo.ORDER,
                 cart = cartDataVM.cartModelLD.value!!,
                 listener = object : DiscountTypeListener {
                     override fun discountUserChoose(discount: DiscountUser) {
                         listener.onDiscountUserChoose(discount);
-                        backPress();
+                        onFragmentBackPressed()
+                    }
+
+                    override fun discountServerChoose(discount: DiscountResp) {
+                        listener.onDiscountServerChoose(discount)
+                        onFragmentBackPressed()
                     }
 
                     override fun compReasonChoose(item: Reason) {
@@ -79,6 +85,7 @@ class DiscountFragment(private val listener: DiscountCallback) :
                     override fun clearAllDiscountCoupon() {
                         listener.clearAllDiscountCoupon()
                     }
+
                 }
             )
         ).commit();
@@ -96,6 +103,7 @@ class DiscountFragment(private val listener: DiscountCallback) :
 
     interface DiscountCallback {
         fun onDiscountUserChoose(discount: DiscountUser);
+        fun onDiscountServerChoose(discount : DiscountResp)
         fun onCompReasonChoose(reason: Reason);
         fun onCompRemove();
         fun clearAllDiscountCoupon()
@@ -103,6 +111,7 @@ class DiscountFragment(private val listener: DiscountCallback) :
 
     interface DiscountTypeListener {
         fun discountUserChoose(discount: DiscountUser): Unit {}
+        fun discountServerChoose(discount : DiscountResp) : Unit {}
         fun compReasonChoose(item: Reason): Unit {}
         fun compRemoveAll(): Unit {}
         fun clearAllDiscountCoupon() : Unit {}

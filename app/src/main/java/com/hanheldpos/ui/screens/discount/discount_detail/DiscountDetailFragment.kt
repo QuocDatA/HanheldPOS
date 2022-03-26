@@ -7,7 +7,10 @@ import com.hanheldpos.databinding.FragmentDiscountDetailBinding
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.ui.base.fragment.BaseFragment
 
-class DiscountDetailFragment(private val discountResp: DiscountResp) : BaseFragment<FragmentDiscountDetailBinding, DiscountDetailVM>() , DiscountDetailUV {
+class DiscountDetailFragment(
+    private val discountResp: DiscountResp,
+    private val onApplyDiscountAuto: (discount: DiscountResp) -> Unit
+) : BaseFragment<FragmentDiscountDetailBinding, DiscountDetailVM>(), DiscountDetailUV {
     override fun layoutRes(): Int = R.layout.fragment_discount_detail
 
     override fun viewModelClass(): Class<DiscountDetailVM> {
@@ -48,7 +51,9 @@ class DiscountDetailFragment(private val discountResp: DiscountResp) : BaseFragm
     }
 
     override fun initAction() {
-
+        binding.btnApplyDiscount.setOnClickListener {
+            onApplyDiscountAuto(discountResp)
+        }
     }
 
     override fun getBack() {

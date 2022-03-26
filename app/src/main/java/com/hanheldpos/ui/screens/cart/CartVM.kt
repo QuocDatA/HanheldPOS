@@ -138,6 +138,11 @@ class CartVM : BaseUiViewModel<CartUV>() {
         cart.discountUserList.forEach {
             list.add(DiscountCart(it, it.DiscountName, it.total(cart.getSubTotal())))
         }
+
+        cart.discountServerList.forEach {
+            list.add(DiscountCart(it, it.DiscountName, it.total(cart.getSubTotal(), 0.0) ?: 0.0))
+        }
+
         cart.compReason?.let {
             list.add(DiscountCart(it, it.Title!!, cart.totalComp(cart.totalTemp())))
         }

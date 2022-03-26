@@ -56,7 +56,8 @@ open class CartModel(
 
     fun totalDiscount(subTotal: Double): Double {
         val totalDiscUser = discountUserList.sumOf { it.total(subTotal) };
-        var total = totalDiscUser;
+        val totalDiscServer  = discountServerList.sumOf { it.total(subTotal,0.0) ?: 0.0 }
+        val total = totalDiscUser + totalDiscServer;
         return total;
     }
 
@@ -119,6 +120,10 @@ open class CartModel(
 
     fun addDiscountUser(discount: DiscountUser) {
         discountUserList = mutableListOf(discount);
+    }
+
+    fun addDiscountServer(discount : DiscountResp) {
+        discountServerList.add(discount)
     }
 
     fun addPayment(payment: List<PaymentOrder>) {
@@ -251,4 +256,11 @@ open class CartModel(
         }
     }
 
+    fun totalQtyDiscUsed(discountId : String) : Int {
+        val totalQty = discountServerList?.count {
+            disc ->
+            disc._id == discountId
+        };
+        return totalQty ?: 0;
+    }
 }

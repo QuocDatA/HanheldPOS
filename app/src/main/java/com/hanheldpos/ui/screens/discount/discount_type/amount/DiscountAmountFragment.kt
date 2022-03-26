@@ -4,7 +4,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentDiscountAmountBinding
-import com.hanheldpos.model.discount.DiscountApplyTo
+import com.hanheldpos.model.discount.DiscApplyTo
 import com.hanheldpos.model.discount.DiscountTypeEnum
 import com.hanheldpos.model.discount.DiscountTypeFor
 import com.hanheldpos.model.discount.DiscountUser
@@ -14,7 +14,7 @@ import com.hanheldpos.utils.PriceUtils
 
 class DiscountAmountFragment(
     private val isAlreadyExistDiscountSelect: Boolean = false,
-    private val applyToType: DiscountApplyTo,
+    private val applyToType: DiscApplyTo,
     private val listener: DiscountFragment.DiscountTypeListener
 ) :
     BaseFragment<FragmentDiscountAmountBinding, DiscountAmountVM>(),
@@ -106,10 +106,10 @@ class DiscountAmountFragment(
 
     private fun validDiscount(): Boolean {
         return when (applyToType) {
-            DiscountApplyTo.ITEM -> {
+            DiscApplyTo.ITEM -> {
                 (viewModel.amountValue == 0.0 && viewModel.title.value.isNullOrEmpty()) || validChooseDiscount()
             }
-            DiscountApplyTo.ORDER -> {
+            DiscApplyTo.ORDER -> {
                 validChooseDiscount()
             }
             else -> false

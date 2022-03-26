@@ -9,7 +9,7 @@ import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.databinding.FragmentDiscountAutomaticBinding
 import com.hanheldpos.model.cart.BaseProductInCart
 import com.hanheldpos.model.cart.CartModel
-import com.hanheldpos.model.discount.DiscountApplyTo
+import com.hanheldpos.model.discount.DiscApplyTo
 import com.hanheldpos.model.discount.DiscountTypeFor
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.discount.DiscountFragment
@@ -17,7 +17,13 @@ import com.hanheldpos.ui.screens.discount.discount_detail.DiscountDetailFragment
 import com.hanheldpos.ui.screens.discount.discount_type.discount_code.adapter.DiscountCodeAdapter
 
 
-class DiscountAutomaticFragment(private val isAlreadyExistDiscountSelect : Boolean =false,private val applyToType: DiscountApplyTo ,private val cart: CartModel?, private val product: BaseProductInCart?,private val listener: DiscountFragment.DiscountTypeListener) :
+class DiscountAutomaticFragment(
+    private val isAlreadyExistDiscountSelect: Boolean = false,
+    private val applyToType: DiscApplyTo,
+    private val cart: CartModel?,
+    private val product: BaseProductInCart?,
+    private val listener: DiscountFragment.DiscountTypeListener
+) :
     BaseFragment<FragmentDiscountAutomaticBinding, DiscountAutomaticVM>(), DiscountAutomaticUV {
 
     override fun layoutRes(): Int {
@@ -38,20 +44,25 @@ class DiscountAutomaticFragment(private val isAlreadyExistDiscountSelect : Boole
     }
 
     override fun initView() {
-        binding.btnClearDiscount.setTextColor(
-            ContextCompat.getColor(
-                requireContext(),
-                if (isAlreadyExistDiscountSelect) R.color.color_0 else R.color.color_8
+        viewModel.isAlreadyExistDiscountSelect.observe(this) {
+            binding.btnClearDiscount.setTextColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    if (it) R.color.color_0 else R.color.color_8
+                )
             )
-        )
+        }
+
         discountCodeAdapter =
             DiscountCodeAdapter(listener = object : DiscountCodeAdapter.DiscountItemCallBack {
                 override fun onViewDetailClick(item: DiscountResp) {
-                    navigator.goTo(DiscountDetailFragment(item))
+                    navigator.goTo(DiscountDetailFragment(item, onApplyDiscountAuto = { discount ->
+                        viewModel.onApplyDiscountAuto(discount)
+                    }))
                 }
 
-                override fun onItemClick() {
-
+                override fun onItemClick(item: DiscountResp) {
+                    viewModel.onApplyDiscountAuto(item)
                 }
 
             });
@@ -74,6 +85,7 @@ class DiscountAutomaticFragment(private val isAlreadyExistDiscountSelect : Boole
     }
 
     override fun initData() {
+        viewModel.isAlreadyExistDiscountSelect.postValue(isAlreadyExistDiscountSelect)
         viewModel.loadDiscountAutomatic()
     }
 
@@ -81,6 +93,7 @@ class DiscountAutomaticFragment(private val isAlreadyExistDiscountSelect : Boole
         binding.btnClearDiscount.setOnClickListener {
             if (isAlreadyExistDiscountSelect) {
                 listener.clearAllDiscountCoupon()
+                viewModel.isAlreadyExistDiscountSelect.postValue(false)
             }
         }
     }
@@ -91,10 +104,17 @@ class DiscountAutomaticFragment(private val isAlreadyExistDiscountSelect : Boole
         discountCodeAdapter.notifyDataSetChanged();
     }
 
+    override fun onApplyDiscountForOrder(discount: DiscountResp) {
+        listener.discountServerChoose(discount)
+    }
+
 
     override fun onResume() {
         super.onResume()
-        requireActivity().supportFragmentManager.setFragmentResultListener("saveDiscount",this) { _, bundle ->
+        requireActivity().supportFragmentManager.setFragmentResultListener(
+            "saveDiscount",
+            this
+        ) { _, bundle ->
             if (bundle.getSerializable("DiscountTypeFor") == DiscountTypeFor.AUTOMATIC) {
 
             }

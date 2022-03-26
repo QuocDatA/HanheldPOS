@@ -10,6 +10,7 @@ import com.hanheldpos.data.api.pojo.product.Product
 import com.hanheldpos.model.cart.BaseProductInCart
 import com.hanheldpos.model.cart.CartModel
 import com.hanheldpos.model.discount.*
+import com.hanheldpos.ui.screens.cart.CurCartData
 import com.hanheldpos.utils.time.DateTimeUtils
 import kotlinx.parcelize.Parcelize
 import java.util.*
@@ -308,10 +309,28 @@ data class DiscountResp(
         return !this.DiscountAutomatic
     }
 
+    fun isBuyXGetY() : Boolean {
+        return this.DiscountType == DiscountTypeEnum.BUYX_GETY.value
+    }
+
     fun isExistsTrigger(triggerType: DiscountTriggerType): Boolean {
         return this.Trigger.firstOrNull { trigger ->
             trigger.Id == triggerType.value
         } != null || triggerType == DiscountTriggerType.ALL
+    }
+
+    fun isMaxNumberOfUsedPerOrder() : Boolean {
+        var totalQtyDiscUsed = 0;
+        when (DiscApplyTo.fromInt(DiscountApplyTo ?: 0) ) {
+            DiscApplyTo.ITEM->
+            totalQtyDiscUsed = CurCartData.cartModel?.productsList?.sumOf { pro -> pro.totalQtyDiscUsed(this._id)
+            } ?: 0;
+
+            DiscApplyTo.ORDER ->
+            totalQtyDiscUsed = CurCartData.cartModel?.totalQtyDiscUsed(this._id) ?: 0;
+        }
+
+        return MaximumNumberOfUsedPerOrder && totalQtyDiscUsed >= MaximumNumberOfUsedPerOrderValue;
     }
 
     public override fun clone(): DiscountResp {

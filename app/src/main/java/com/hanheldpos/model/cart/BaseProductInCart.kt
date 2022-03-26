@@ -8,7 +8,6 @@ import com.hanheldpos.data.api.pojo.order.settings.Reason
 import com.hanheldpos.data.api.pojo.product.Product
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.cart.fee.FeeType
-import com.hanheldpos.model.discount.DiscountApplyTo
 import com.hanheldpos.model.discount.DiscountTriggerType
 import com.hanheldpos.model.discount.DiscountUser
 import com.hanheldpos.model.order.CompVoid
@@ -149,8 +148,8 @@ abstract class BaseProductInCart {
     }
 
     open fun removeAllDiscountCoupon() {
-        this.discountServersList?.removeAll{
-            disc -> disc.isCoupon()
+        this.discountServersList?.removeAll { disc ->
+            disc.isCoupon()
         }
     }
 
@@ -213,7 +212,12 @@ abstract class BaseProductInCart {
             when (actionType) {
                 DiscountTriggerType.IN_CART -> {
                     discountAutoList =
-                        DataHelper.findDiscountItemList(this, customer, DiscountTriggerType.IN_CART, Date())
+                        DataHelper.findDiscountItemList(
+                            this,
+                            customer,
+                            DiscountTriggerType.IN_CART,
+                            Date()
+                        )
                     removeAllDiscountAutoInCart()
                 }
                 DiscountTriggerType.ON_CLICK -> {
@@ -246,5 +250,11 @@ abstract class BaseProductInCart {
         baseProductList: List<BaseProductInCart>
     ) {
         discountList.forEach { discountAuto -> addDiscountAutomatic(discountAuto, baseProductList) }
+    }
+
+    fun totalQtyDiscUsed(discountId: String): Int {
+        return discountServersList?.count {
+            it._id == discountId
+        } ?: 0
     }
 }

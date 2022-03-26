@@ -11,7 +11,7 @@ import com.hanheldpos.databinding.FragmentProductDetailBinding
 import com.hanheldpos.extension.notifyValueChange
 import com.hanheldpos.model.cart.*
 import com.hanheldpos.model.combo.ItemActionType
-import com.hanheldpos.model.discount.DiscountApplyTo
+import com.hanheldpos.model.discount.DiscApplyTo
 import com.hanheldpos.model.discount.DiscountTypeFor
 import com.hanheldpos.model.discount.DiscountUser
 import com.hanheldpos.model.product.GroupExtra
@@ -93,7 +93,7 @@ class ProductDetailFragment(
                 R.id.fragment_container_discount,
                 DiscountTypeItemFragment(
                     product = regular,
-                    applyToType = DiscountApplyTo.ITEM,
+                    applyToType = DiscApplyTo.ITEM,
                     cart = cartDataVM.cartModelLD.value!!,
                     listener = object : DiscountFragment.DiscountTypeListener {
                         override fun discountUserChoose(discount: DiscountUser) {

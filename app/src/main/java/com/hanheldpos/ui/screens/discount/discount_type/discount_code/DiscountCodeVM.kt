@@ -8,6 +8,7 @@ import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
 class DiscountCodeVM : BaseUiViewModel<DiscountCodeUV>() {
 
     val isLoading = MutableLiveData<Boolean>(false);
+    var isAlreadyExistDiscountSelect = MutableLiveData(false)
 
     fun initData() {
         val listDiscountCode = DataHelper.discountsLocalStorage?.filter { !it.DiscountAutomatic };

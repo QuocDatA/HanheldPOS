@@ -5,7 +5,7 @@ import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.order.settings.Reason
 import com.hanheldpos.databinding.FragmentDiscountCompBinding
 import com.hanheldpos.model.DataHelper
-import com.hanheldpos.model.discount.DiscountApplyTo
+import com.hanheldpos.model.discount.DiscApplyTo
 import com.hanheldpos.model.discount.DiscountTypeFor
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
@@ -14,7 +14,7 @@ import com.hanheldpos.ui.screens.discount.discount_type.comp.adapter.DiscountRea
 
 
 class DiscountCompFragment(
-    private val applyToType: DiscountApplyTo,
+    private val applyToType: DiscApplyTo,
     private val comp: Reason?,
     private val listener: DiscountFragment.DiscountTypeListener,
 ) : BaseFragment<FragmentDiscountCompBinding, DiscountCompVM>(), DiscountCompUV {
@@ -99,10 +99,10 @@ class DiscountCompFragment(
     }
     private fun validDiscount() : Boolean {
         return when (applyToType) {
-            DiscountApplyTo.ITEM -> {
+            DiscApplyTo.ITEM -> {
                 return true;
             }
-            DiscountApplyTo.ORDER -> {
+            DiscApplyTo.ORDER -> {
                 validChooseDiscount()
             }
             else -> false
