@@ -22,6 +22,7 @@ import com.hanheldpos.model.home.table.TableSummary
 import com.hanheldpos.ui.base.dialog.AppAlertDialog
 import com.hanheldpos.ui.base.viewmodel.BaseViewModel
 import kotlin.coroutines.coroutineContext
+import kotlin.reflect.jvm.internal.impl.load.java.structure.JavaClass
 
 class CartDataVM : BaseViewModel() {
 
@@ -148,37 +149,24 @@ class CartDataVM : BaseViewModel() {
         this.currentTableFocus.postValue(null)
     }
 
-    fun deleteDiscountCart(discount: DiscountCart, productInCart: BaseProductInCart?) {
+    fun deleteDiscountCart(discount: DiscountCart?, productInCart: BaseProductInCart?) {
         if (productInCart != null) {
-            discount.disOriginal.let {
-                when (it.javaClass) {
-                    Reason::class.java -> {
-                        productInCart.clearCompReason()
-                    }
-                    DiscountUser::class.java -> {
-                        productInCart.clearAllDiscountCoupon()
-                    }
-                    DiscountResp::class.java -> {
-                        productInCart.clearAllDiscountCoupon()
-                    }
-                    else -> {}
-                }
-            }
+            productInCart.clearAllDiscountCoupon()
         } else
-            discount.disOriginal.let {
+            discount?.disOriginal?.let {
                 when (it.javaClass) {
-                    Reason::class.java -> {
-                        cartModelLD.value!!.compReason = null
-                    }
                     DiscountUser::class.java -> {
                         cartModelLD.value!!.discountUserList.remove(it)
                     }
                     DiscountResp::class.java -> {
                         cartModelLD.value!!.discountServerList.remove(it)
                     }
-                    else -> {}
+                    else -> {
+
+                    }
                 }
             }
+
         cartModelLD.notifyValueChange()
     }
 
@@ -198,8 +186,8 @@ class CartDataVM : BaseViewModel() {
         cartModelLD.notifyValueChange()
     }
 
-    fun addDiscountServer(discount: DiscountResp , applyTo: DiscApplyTo) {
-        this.cartModelLD.value!!.addDiscountServer(discount,applyTo)
+    fun addDiscountServer(discount: DiscountResp, applyTo: DiscApplyTo) {
+        this.cartModelLD.value!!.addDiscountServer(discount, applyTo)
         cartModelLD.notifyValueChange()
     }
 

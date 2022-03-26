@@ -26,16 +26,16 @@ class CartProductAdapter(
         val binding = (holder.binding as ItemCartProductBinding)
         binding.layoutRoot.setOnClickListener { listener.onItemClick(position, item) }
         binding.discountDetail.setClickListener {
-             if (item.discountUsersList != null)  listener.onDiscountDelete(
+            if (!item.discountUsersList.isNullOrEmpty() || !item.discountServersList.isNullOrEmpty())
+            listener.onDiscountDelete(
                 position,
-                DiscountCart(disOriginal = item.discountUsersList!!.first(), "", 0.0),
+
                 item
             )
         }
         binding.compDetail.setClickListener {
-            if (item.compReason != null) listener.onDiscountDelete(
+            if (item.compReason != null) listener.onCompDelete(
                 position,
-                DiscountCart(disOriginal = item.compReason!!, "", 0.0),
                 item
             )
         }
@@ -76,6 +76,7 @@ class CartProductAdapter(
 
     interface CartProductListener {
         fun onItemClick(adapterPosition: Int, item: BaseProductInCart)
-        fun onDiscountDelete(adapterPosition: Int, discount: DiscountCart, item: BaseProductInCart)
+        fun onDiscountDelete(adapterPosition: Int, item: BaseProductInCart)
+        fun onCompDelete(adapterPosition: Int,item: BaseProductInCart)
     }
 }

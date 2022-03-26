@@ -90,10 +90,13 @@ class CartFragment(private val listener: CartCallBack) :
 
                 override fun onDiscountDelete(
                     adapterPosition: Int,
-                    discount: DiscountCart,
                     item: BaseProductInCart
                 ) {
-                    cartDataVM.deleteDiscountCart(discount = discount, productInCart = item)
+                    cartDataVM.deleteDiscountCart(discount = null, productInCart = item)
+                }
+
+                override fun onCompDelete(adapterPosition: Int, item: BaseProductInCart) {
+                    cartDataVM.removeCompReason()
                 }
 
 
