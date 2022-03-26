@@ -125,6 +125,14 @@ open class CartModel(
         paymentsList = payment.toMutableList();
     }
 
+    fun clearAllDiscountServer() {
+        discountServerList?.clear()
+    }
+
+    fun clearAllDiscountUser() {
+        discountUserList?.clear()
+    }
+
     fun clearCart() {
         productsList.clear();
         customer = null;
