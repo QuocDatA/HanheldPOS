@@ -9,7 +9,7 @@ import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.databinding.FragmentDiscountAutomaticBinding
 import com.hanheldpos.model.cart.BaseProductInCart
 import com.hanheldpos.model.cart.CartModel
-import com.hanheldpos.model.discount.DiscountApplyToType
+import com.hanheldpos.model.discount.DiscountApplyTo
 import com.hanheldpos.model.discount.DiscountTypeFor
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.discount.DiscountFragment
@@ -17,7 +17,7 @@ import com.hanheldpos.ui.screens.discount.discount_detail.DiscountDetailFragment
 import com.hanheldpos.ui.screens.discount.discount_type.discount_code.adapter.DiscountCodeAdapter
 
 
-class DiscountAutomaticFragment(private val isAlreadyExistDiscountSelect : Boolean =false,private val applyToType: DiscountApplyToType ,private val cart: CartModel?, private val product: BaseProductInCart?,private val listener: DiscountFragment.DiscountTypeListener) :
+class DiscountAutomaticFragment(private val isAlreadyExistDiscountSelect : Boolean =false,private val applyToType: DiscountApplyTo ,private val cart: CartModel?, private val product: BaseProductInCart?,private val listener: DiscountFragment.DiscountTypeListener) :
     BaseFragment<FragmentDiscountAutomaticBinding, DiscountAutomaticVM>(), DiscountAutomaticUV {
 
     override fun layoutRes(): Int {
@@ -74,7 +74,7 @@ class DiscountAutomaticFragment(private val isAlreadyExistDiscountSelect : Boole
     }
 
     override fun initData() {
-        viewModel.loadDiscountAutomatic(product, cart)
+        viewModel.loadDiscountAutomatic()
     }
 
     override fun initAction() {

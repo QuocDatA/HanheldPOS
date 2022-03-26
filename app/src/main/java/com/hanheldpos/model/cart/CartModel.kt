@@ -190,7 +190,7 @@ open class CartModel(
         this.productsList.forEach { baseProduct ->
             baseProduct.getOnePerOrderAndUpdateDiscountAutomatic(
                 triggerType,
-                this.customer!!,
+                this.customer,
                 this.productsList
             )
         }

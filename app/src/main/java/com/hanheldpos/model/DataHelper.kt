@@ -184,7 +184,7 @@ object DataHelper {
             field = value
             AppPreferences.get().storeValue(PrefKey.System.ADDRESS_TYPE, GSonUtils.toJson(value))
         }
-    var resourceLocalStorage : List<ResourceResp>? = null
+    var resourceLocalStorage: List<ResourceResp>? = null
         get() {
             if (field == null) {
                 field =
@@ -201,7 +201,7 @@ object DataHelper {
             if (field == null) {
                 field = GSonUtils.toList(
                     AppPreferences.get().getString(
-                            PrefKey.Setting.RECENT_DEVICE_LIST,
+                        PrefKey.Setting.RECENT_DEVICE_LIST,
                     )
                 )
             }
@@ -209,18 +209,19 @@ object DataHelper {
         }
         set(value) {
             field = value
-            AppPreferences.get().storeValue(PrefKey.Setting.RECENT_DEVICE_LIST, GSonUtils.toJson(value))
+            AppPreferences.get()
+                .storeValue(PrefKey.Setting.RECENT_DEVICE_LIST, GSonUtils.toJson(value))
         }
 
     fun findDiscountAutoList(applyTo: DiscountApplyTo): List<DiscountResp> {
         return discountsLocalStorage?.filter { disc ->
-            disc.DiscountAutomatic && disc.DiscountApplyTo == applyTo.toString().toInt()
+            disc.DiscountAutomatic && disc.DiscountApplyTo == applyTo.value
         }?.toList() ?: listOf()
     }
 
     fun findDiscountItemList(
         baseProductInCart: BaseProductInCart?,
-        customer: CustomerResp,
+        customer: CustomerResp?,
         triggerType: DiscountTriggerType,
         timerServer: Date
     ): List<DiscountResp> {

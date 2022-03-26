@@ -4,7 +4,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentDiscountPercentageBinding
-import com.hanheldpos.model.discount.DiscountApplyToType
+import com.hanheldpos.model.discount.DiscountApplyTo
 import com.hanheldpos.model.discount.DiscountTypeEnum
 import com.hanheldpos.model.discount.DiscountTypeFor
 import com.hanheldpos.model.discount.DiscountUser
@@ -14,7 +14,7 @@ import com.hanheldpos.ui.screens.discount.DiscountFragment
 
 class DiscountPercentageFragment(
     private val isAlreadyExistDiscountSelect: Boolean = false,
-    private val applyToType: DiscountApplyToType,
+    private val applyToType: DiscountApplyTo,
     private val listener: DiscountFragment.DiscountTypeListener
 ) :
     BaseFragment<FragmentDiscountPercentageBinding, DiscountPercentageVM>(), DiscountPercentageUV {
@@ -102,12 +102,13 @@ class DiscountPercentageFragment(
 
     private fun validDiscount(): Boolean {
         return when (applyToType) {
-            DiscountApplyToType.ITEM_DISCOUNT_APPLY_TO -> {
+            DiscountApplyTo.ITEM -> {
                 (viewModel.percentValue == 0.0 && viewModel.title.value.isNullOrEmpty()) || validChooseDiscount()
             }
-            DiscountApplyToType.ORDER_DISCOUNT_APPLY_TO -> {
+            DiscountApplyTo.ORDER -> {
                 validChooseDiscount()
             }
+            else -> false
         }
     }
 }

@@ -11,11 +11,11 @@
 
         <import type="android.view.View" />
 
-        <import type="com.hanheldpos.model.discount.DiscountApplyToType" />
+        <import type="com.hanheldpos.model.discount.DiscountApplyTo" />
 
         <variable
             name="discountType"
-            type="com.hanheldpos.model.discount.DiscountApplyToType" />
+            type="com.hanheldpos.model.discount.DiscountApplyTo" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

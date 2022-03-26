@@ -80,43 +80,32 @@ data class DiscountResp(
     fun isValid(cart: CartModel, curDateTime: Date): Boolean {
         val subTotal = cart.getSubTotal();
         val diningOptionList =
-            cart.productsList.map { baseProductInCart -> "${baseProductInCart.diningOption?.Id}" }
+            cart.productsList.map { baseProductInCart -> baseProductInCart.diningOption?.Id ?: 0 }
                 .distinct().toList();
-        if (isValidDiningOption(diningOptionList)) {
-            if (DateRange == 0 || isValidDate(curDateTime)) {
-                if (isValidMinRequired(
-                        subTotal,
-                        cart?.getTotalQuantity() ?: 0
-                    ) && isValidCtmEligibility(cart.customer)
-                ) {
-                    return true;
-                }
-            }
-        }
-        return false;
+        return isValidDiningOption(diningOptionList) &&
+                (DateRange == 0 || isValidDate(curDateTime)) &&
+                isValidMinRequired(
+                    subTotal, cart?.getTotalQuantity() ?: 0
+                ) && isValidCtmEligibility(cart.customer)
     }
 
     fun isValid(
         subtotal: Double,
         baseProduct: BaseProductInCart,
-        customer: CustomerResp,
+        customer: CustomerResp?,
         curDateTime: Date
     ): Boolean {
-        if (isValidDiningOption(mutableListOf(baseProduct?.diningOption?.Id.toString()))) {
-            if (DateRange == 0 || isValidDate(curDateTime)) {
-                if (isValidProduct(baseProduct)) {
-                    if (isValidMinRequired(
-                            subtotal,
-                            baseProduct.quantity!!
-                        ) && isValidCtmEligibility(customer)
-                    ) {
-                        return true;
-                    }
-                }
+        return isValidDiningOption(
+            mutableListOf(
+                baseProduct?.diningOption?.Id ?: 0
+            )
+        ) && (DateRange == 0 || isValidDate(curDateTime)) &&
+                isValidProduct(baseProduct) &&
+                isValidMinRequired(
+                    subtotal,
+                    baseProduct.quantity!!
+                ) && isValidCtmEligibility(customer)
 
-            }
-        }
-        return false;
     }
 
     private fun isValidProduct(baseProduct: BaseProductInCart): Boolean {
@@ -136,10 +125,11 @@ data class DiscountResp(
             CtmEligibilityType.SPECIFIC_GROUP_CUSTOMERS ->
                 ((Gson().fromJson(
                     customer?.ListGroups,
-                    object : TypeToken<List<CustomerGroup>>() {}.type
-                )) as List<CustomerGroup>).map { gr ->
+                    object : TypeToken<List<CustomerGroup>?>() {}.type
+                )) as List<CustomerGroup>?)?.map { gr ->
                     gr.CustomerGuestGroupGuid
-                }.intersect(CustomerEligibilityList.map { cus -> cus._id }.toSet()).isNotEmpty()
+                }?.intersect(CustomerEligibilityList.map { cus -> cus._id }.toSet())
+                    ?.isNotEmpty() == true
 
             CtmEligibilityType.SPECIFIC_CUSTOMER ->
                 CustomerEligibilityList.firstOrNull { c -> c._id == customer?._Id } != null;
@@ -149,7 +139,7 @@ data class DiscountResp(
         }
     }
 
-    private fun isValidDiningOption(diningOptionIdList: List<String>): Boolean {
+    private fun isValidDiningOption(diningOptionIdList: List<Int>): Boolean {
         val isValidDiningOption =
             diningOptionIdList.intersect(DiningOption?.map { d -> d.Id }.toSet())?.size > 0;
         return isValidDiningOption;
@@ -157,21 +147,20 @@ data class DiscountResp(
 
     private fun isValidDate(curDateTime: Date): Boolean {
         try {
-            if (DateOn.isNullOrEmpty() && DateOff.isNullOrEmpty()) {
-                return false;
+            if (DateOn?.isNullOrEmpty() && DateOff?.isNullOrEmpty()) {
+                return true;
             }
 
-            if (curDateTime.compareTo(
-                    DateTimeUtils.strToDate(
-                        DateOff,
-                        DateTimeUtils.Format.FULL_DATE_UTC_Z
-                    )
-                ) <= 0 && curDateTime.compareTo(
-                    DateTimeUtils.strToDate(
-                        DateOn,
-                        DateTimeUtils.Format.FULL_DATE_UTC_Z
-                    )
-                ) >= 0
+            if (curDateTime <=
+                DateTimeUtils.strToDate(
+                    DateOff,
+                    DateTimeUtils.Format.FULL_DATE_UTC_Z
+                )
+                && curDateTime >=
+                DateTimeUtils.strToDate(
+                    DateOn,
+                    DateTimeUtils.Format.FULL_DATE_UTC_Z
+                )
             ) {
                 return isValidSchedule(curDateTime);
             }
@@ -183,7 +172,8 @@ data class DiscountResp(
 
     private fun isValidSchedule(curDateTime: Date): Boolean {
         if (!ScheduleList?.any() ?: false) {
-            return true; }
+            return true;
+        }
         val c = Calendar.getInstance()
         c.time = curDateTime;
         return isValidTime(
@@ -320,7 +310,7 @@ data class DiscountResp(
 
     fun isExistsTrigger(triggerType: DiscountTriggerType): Boolean {
         return this.Trigger.firstOrNull { trigger ->
-            trigger.Id == triggerType.toString().toInt()
+            trigger.Id == triggerType.value
         } != null || triggerType == DiscountTriggerType.ALL
     }
 

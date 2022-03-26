@@ -16,10 +16,10 @@ import com.hanheldpos.model.cart.Combo
 import com.hanheldpos.model.cart.Regular
 import com.hanheldpos.model.combo.ItemActionType
 import com.hanheldpos.model.combo.ItemComboGroup
-import com.hanheldpos.model.discount.DiscountApplyToType
 import com.hanheldpos.model.discount.DiscountTypeFor
 import com.hanheldpos.model.discount.DiscountUser
 import com.hanheldpos.model.cart.BaseProductInCart
+import com.hanheldpos.model.discount.DiscountApplyTo
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.cart.CartDataVM
 import com.hanheldpos.ui.screens.combo.adapter.ComboGroupAdapter
@@ -89,9 +89,8 @@ class ComboFragment(
             childFragmentManager.beginTransaction().replace(
                 R.id.fragment_container_discount,
                 DiscountTypeItemFragment(
-
                     product = combo,
-                    applyToType = DiscountApplyToType.ITEM_DISCOUNT_APPLY_TO,
+                    applyToType = DiscountApplyTo.ITEM,
                     cart = cartDataVM.cartModelLD.value!!,
                     listener = object : DiscountFragment.DiscountTypeListener {
                         override fun discountUserChoose(discount: DiscountUser) {

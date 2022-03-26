@@ -1,13 +1,12 @@
 package com.hanheldpos.ui.screens.discount.discount_type
 
-import android.view.View
 import androidx.fragment.app.Fragment
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.order.settings.Reason
 import com.hanheldpos.databinding.FragmentDiscountTypeOrderBinding
 import com.hanheldpos.model.cart.BaseProductInCart
 import com.hanheldpos.model.cart.CartModel
-import com.hanheldpos.model.discount.DiscountApplyToType
+import com.hanheldpos.model.discount.DiscountApplyTo
 import com.hanheldpos.model.discount.DiscountTypeFor
 import com.hanheldpos.model.discount.DiscountTypeTab
 import com.hanheldpos.model.discount.DiscountUser
@@ -24,7 +23,7 @@ import com.hanheldpos.ui.screens.discount.discount_type.percentage.DiscountPerce
 
 
 class DiscountTypeOrderFragment(
-    private val applyToType: DiscountApplyToType,
+    private val applyToType: DiscountApplyTo,
     private val cart: CartModel,
     private val product: BaseProductInCart? = null,
     private val listener: DiscountFragment.DiscountTypeListener
@@ -83,7 +82,7 @@ class DiscountTypeOrderFragment(
 
             DiscountTypeTab(title = "Comp", type = DiscountTypeFor.COMP),
         )
-        if (applyToType == DiscountApplyToType.ORDER_DISCOUNT_APPLY_TO) {
+        if (applyToType == DiscountApplyTo.ORDER) {
             listTab.add(2, DiscountTypeTab(title = "Automatic", type = DiscountTypeFor.AUTOMATIC));
             listTab.add(
                 2,
@@ -120,8 +119,9 @@ class DiscountTypeOrderFragment(
         fragmentMap[DiscountTypeFor.COMP] =
             DiscountCompFragment(
                 comp = when (applyToType) {
-                    DiscountApplyToType.ITEM_DISCOUNT_APPLY_TO -> product?.compReason
-                    DiscountApplyToType.ORDER_DISCOUNT_APPLY_TO -> cart.compReason
+                    DiscountApplyTo.ITEM -> product?.compReason
+                    DiscountApplyTo.ORDER -> cart.compReason
+                    else -> null
                 },
                 listener = object : DiscountFragment.DiscountTypeListener {
                     override fun compReasonChoose(item: Reason) {

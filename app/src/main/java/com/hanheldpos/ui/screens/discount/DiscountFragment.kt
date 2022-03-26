@@ -6,7 +6,7 @@ import androidx.fragment.app.activityViewModels
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.order.settings.Reason
 import com.hanheldpos.databinding.FragmentDiscountBinding
-import com.hanheldpos.model.discount.DiscountApplyToType
+import com.hanheldpos.model.discount.DiscountApplyTo
 import com.hanheldpos.model.discount.DiscountTypeFor
 import com.hanheldpos.model.discount.DiscountUser
 import com.hanheldpos.ui.base.fragment.BaseFragment
@@ -50,7 +50,7 @@ class DiscountFragment(private val listener: DiscountCallback) :
         childFragmentManager.beginTransaction().replace(
             R.id.fragment_container,
             DiscountTypeOrderFragment(
-                applyToType = DiscountApplyToType.ORDER_DISCOUNT_APPLY_TO,
+                applyToType = DiscountApplyTo.ORDER,
                 cart = cartDataVM.cartModelLD.value!!,
                 listener = object : DiscountTypeListener {
                     override fun discountUserChoose(discount: DiscountUser) {

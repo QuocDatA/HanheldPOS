@@ -205,7 +205,7 @@ abstract class BaseProductInCart {
 
     fun getOnePerOrderAndUpdateDiscountAutomatic(
         actionType: DiscountTriggerType,
-        customer: CustomerResp,
+        customer: CustomerResp?,
         baseProductList: List<BaseProductInCart>
     ): List<DiscountResp> {
         if (this.productType != ProductType.BUYX_GETY_DISC) {
