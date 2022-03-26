@@ -8,7 +8,6 @@ class DiscountPercentageVM : BaseUiViewModel<DiscountPercentageUV>() {
     val percent = MutableLiveData<String>(0.toString());
     val title = MutableLiveData<String>("");
     var percentValue: Double = 0.0
-    var isAlreadyExistDiscountSelect = MutableLiveData(false)
     fun initLifeCycle(owner: LifecycleOwner) {
         owner.lifecycle.addObserver(this);
         percent.observe(owner) {

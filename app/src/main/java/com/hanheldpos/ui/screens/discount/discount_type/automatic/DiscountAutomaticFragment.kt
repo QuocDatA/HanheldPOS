@@ -18,7 +18,6 @@ import com.hanheldpos.ui.screens.discount.discount_type.discount_code.adapter.Di
 
 
 class DiscountAutomaticFragment(
-    private val isAlreadyExistDiscountSelect: Boolean = false,
     private val applyToType: DiscApplyTo,
     private val cart: CartModel?,
     private val product: BaseProductInCart?,
@@ -44,14 +43,6 @@ class DiscountAutomaticFragment(
     }
 
     override fun initView() {
-        viewModel.isAlreadyExistDiscountSelect.observe(this) {
-            binding.btnClearDiscount.setTextColor(
-                ContextCompat.getColor(
-                    requireContext(),
-                    if (it) R.color.color_0 else R.color.color_8
-                )
-            )
-        }
 
         discountCodeAdapter =
             DiscountCodeAdapter(listener = object : DiscountCodeAdapter.DiscountItemCallBack {
@@ -85,17 +76,10 @@ class DiscountAutomaticFragment(
     }
 
     override fun initData() {
-        viewModel.isAlreadyExistDiscountSelect.postValue(isAlreadyExistDiscountSelect)
         viewModel.loadDiscountAutomatic()
     }
 
     override fun initAction() {
-        binding.btnClearDiscount.setOnClickListener {
-            if (isAlreadyExistDiscountSelect) {
-                listener.clearAllDiscountCoupon()
-                viewModel.isAlreadyExistDiscountSelect.postValue(false)
-            }
-        }
     }
 
     @SuppressLint("NotifyDataSetChanged")

@@ -7,4 +7,5 @@ import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
 
 class DiscountTypeVM : BaseUiViewModel<DiscountTypeUV>() {
     var typeDiscountSelect = MutableLiveData<DiscountTypeFor>();
+    var isAlreadyExistDiscountSelect = MutableLiveData(false)
 }
