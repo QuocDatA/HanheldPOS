@@ -96,31 +96,14 @@ class DiscountTypeOrderFragment(
         fragmentMap[DiscountTypeFor.AMOUNT] =
             DiscountAmountFragment(
                 !cart.discountUserList.isNullOrEmpty() || !cart.discountServerList.isNullOrEmpty(),
-                listener = object : DiscountFragment.DiscountTypeListener {
-                    override fun discountUserChoose(discount: DiscountUser) {
-                        listener.discountUserChoose(discount);
-                    }
-
-                    override fun validDiscount(isValid: Boolean) {
-                        listener.validDiscount(isValid);
-                    }
-                },
+                listener = listener,
                 applyToType = applyToType
             );
         fragmentMap[DiscountTypeFor.PERCENTAGE] =
             DiscountPercentageFragment(
                 !cart.discountUserList.isNullOrEmpty() || !cart.discountServerList.isNullOrEmpty(),
                 applyToType,
-                listener = object :
-                    DiscountFragment.DiscountTypeListener {
-                    override fun discountUserChoose(discount: DiscountUser) {
-                        listener.discountUserChoose(discount);
-                    }
-
-                    override fun validDiscount(isValid: Boolean) {
-                        listener.validDiscount(isValid);
-                    }
-                });
+                listener = listener);
         fragmentMap[DiscountTypeFor.DISCOUNT_CODE] = DiscountCodeFragment(
             !cart.discountUserList.isNullOrEmpty() || !cart.discountServerList.isNullOrEmpty(),
             applyToType,
