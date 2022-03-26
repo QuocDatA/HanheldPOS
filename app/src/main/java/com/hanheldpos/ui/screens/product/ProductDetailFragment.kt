@@ -98,19 +98,18 @@ class ProductDetailFragment(
                     listener = object : DiscountFragment.DiscountTypeListener {
                         override fun discountUserChoose(discount: DiscountUser) {
                             if (viewModel.isValidDiscount.value != true) return
-                            viewModel.regularInCart.value?.discountUsersList =
-                                mutableListOf(discount)
+                            viewModel.regularInCart.value?.addDiscountUser(discount)
                             viewModel.regularInCart.notifyValueChange()
                         }
 
                         override fun compReasonChoose(item: Reason) {
                             if (viewModel.isValidDiscount.value != true) return
-                            viewModel.regularInCart.value?.compReason = item
+                            viewModel.regularInCart.value?.addCompReason(item)
                             viewModel.regularInCart.notifyValueChange()
                         }
 
                         override fun compRemoveAll() {
-                            viewModel.regularInCart.value?.compReason = null
+                            viewModel.regularInCart.value?.clearCompReason()
                             viewModel.regularInCart.notifyValueChange()
                         }
 

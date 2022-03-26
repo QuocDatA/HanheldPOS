@@ -8,6 +8,7 @@ import com.hanheldpos.data.api.pojo.order.settings.Reason
 import com.hanheldpos.data.api.pojo.product.Product
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.OrderHelper
+import com.hanheldpos.model.discount.DiscApplyTo
 import com.hanheldpos.model.discount.DiscountPriceType
 import com.hanheldpos.model.discount.DiscountTriggerType
 import com.hanheldpos.model.discount.DiscountUser
@@ -56,7 +57,7 @@ open class CartModel(
 
     fun totalDiscount(subTotal: Double): Double {
         val totalDiscUser = discountUserList.sumOf { it.total(subTotal) };
-        val totalDiscServer  = discountServerList.sumOf { it.total(subTotal,0.0) ?: 0.0 }
+        val totalDiscServer = discountServerList.sumOf { it.total(subTotal, 0.0) ?: 0.0 }
         val total = totalDiscUser + totalDiscServer;
         return total;
     }
@@ -122,8 +123,27 @@ open class CartModel(
         discountUserList = mutableListOf(discount);
     }
 
-    fun addDiscountServer(discount : DiscountResp) {
-        discountServerList.add(discount)
+    fun addDiscountServer(discount: DiscountResp, discApplyTo: DiscApplyTo) {
+        when (discApplyTo) {
+            DiscApplyTo.UNKNOWN -> {}
+            DiscApplyTo.ITEM -> {
+                addDiscountAutoOnClick(discount)
+            }
+            DiscApplyTo.ORDER -> {
+                discountServerList.add(discount)
+            }
+        }
+
+    }
+
+    fun addDiscountAutoOnClick(discount: DiscountResp) {
+        if (discount.OnlyApplyDiscountProductOncePerOrder == 1) {
+            addDiscountOnePerOrder(discount)
+        }
+        productsList?.forEach { baseProductInCart ->
+            if (discount.isValid(getSubTotal(), baseProductInCart, customer, Date()) && !baseProductInCart.isExistDiscount(discountId = discount?._id))
+                baseProductInCart.addDiscountAutomatic(discount, productsList);
+        }
     }
 
     fun addPayment(payment: List<PaymentOrder>) {
@@ -205,7 +225,8 @@ open class CartModel(
 
     fun addRangeDiscountOnePerOrder(discountOnePerOrderList: List<DiscountResp>) {
         discountOnePerOrderList.distinctBy { disc -> disc._id }.toList()
-            .forEach { discOnePerOrder -> addDiscountOnePerOrder(discOnePerOrder)
+            .forEach { discOnePerOrder ->
+                addDiscountOnePerOrder(discOnePerOrder)
             }
     }
 
@@ -227,8 +248,8 @@ open class CartModel(
                 applyValue = productApplyList.minOf { basePro -> basePro.compareValue(applyToList) }
             }
         }
-        return productApplyList.first {
-                basePro -> val subtotal = basePro.compareValue(applyToList)
+        return productApplyList.first { basePro ->
+            val subtotal = basePro.compareValue(applyToList)
             return@first subtotal == applyValue
         }
     }
@@ -256,9 +277,8 @@ open class CartModel(
         }
     }
 
-    fun totalQtyDiscUsed(discountId : String) : Int {
-        val totalQty = discountServerList?.count {
-            disc ->
+    fun totalQtyDiscUsed(discountId: String): Int {
+        val totalQty = discountServerList?.count { disc ->
             disc._id == discountId
         };
         return totalQty ?: 0;

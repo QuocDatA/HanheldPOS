@@ -95,19 +95,18 @@ class ComboFragment(
                     listener = object : DiscountFragment.DiscountTypeListener {
                         override fun discountUserChoose(discount: DiscountUser) {
                             if (viewModel.isValidDiscount.value != true) return;
-                            viewModel.bundleInCart.value?.discountUsersList =
-                                mutableListOf(discount);
+                            viewModel.bundleInCart.value?.addDiscountUser(discount)
                             viewModel.bundleInCart.notifyValueChange();
                         }
 
                         override fun compReasonChoose(item: Reason) {
                             if (viewModel.isValidDiscount.value != true) return;
-                            viewModel.bundleInCart.value?.compReason = item;
+                            viewModel.bundleInCart.value?.addCompReason(item)
                             viewModel.bundleInCart.notifyValueChange();
                         }
 
                         override fun compRemoveAll() {
-                            viewModel.bundleInCart.value?.compReason = null;
+                            viewModel.bundleInCart.value?.clearCompReason()
                             viewModel.bundleInCart.notifyValueChange();
                         }
 

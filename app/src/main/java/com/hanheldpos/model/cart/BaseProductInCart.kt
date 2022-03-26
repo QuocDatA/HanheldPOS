@@ -194,10 +194,11 @@ abstract class BaseProductInCart {
 
                 if (maxQty > 0) {
                     discountAuto.quantityUsed = maxQty
-                    this.discountServersList?.add(discountAuto.clone())
-                } else {
-                    this.discountServersList?.add(discountAuto.clone())
+                    this.addDiscountServer(discountAuto.clone())
                 }
+            } else {
+                this.addDiscountServer(discountAuto.clone())
+
             }
         }
     }
@@ -256,5 +257,30 @@ abstract class BaseProductInCart {
         return discountServersList?.count {
             it._id == discountId
         } ?: 0
+    }
+
+    fun isExistDiscount(discountId: String): Boolean {
+        return discountServersList?.firstOrNull { discServer -> discServer._id == discountId } != null;
+    }
+
+    open fun addDiscountUser(discount: DiscountUser) {
+        discountUsersList =
+            mutableListOf(discount);
+    }
+
+    open fun addDiscountServer(discount: DiscountResp) {
+        if (discountServersList == null) {
+            discountServersList = mutableListOf(discount)
+        } else discountServersList?.find { it._id == discount._id } ?: discountServersList?.add(
+            discount
+        )
+    }
+
+    open fun addCompReason(comp: Reason) {
+        compReason = comp;
+    }
+
+    open fun clearCompReason() {
+        compReason = null
     }
 }

@@ -15,6 +15,7 @@ import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.OrderHelper
 import com.hanheldpos.model.UserHelper
 import com.hanheldpos.model.cart.*
+import com.hanheldpos.model.discount.DiscApplyTo
 import com.hanheldpos.model.payment.PaymentOrder
 import com.hanheldpos.model.discount.DiscountUser
 import com.hanheldpos.model.home.table.TableSummary
@@ -152,13 +153,13 @@ class CartDataVM : BaseViewModel() {
             discount.disOriginal.let {
                 when (it.javaClass) {
                     Reason::class.java -> {
-                        productInCart.compReason = null
+                        productInCart.clearCompReason()
                     }
                     DiscountUser::class.java -> {
-                        productInCart.discountUsersList?.remove(it)
+                        productInCart.clearAllDiscountCoupon()
                     }
                     DiscountResp::class.java -> {
-                        productInCart.discountServersList?.remove(it)
+                        productInCart.clearAllDiscountCoupon()
                     }
                     else -> {}
                 }
@@ -197,8 +198,8 @@ class CartDataVM : BaseViewModel() {
         cartModelLD.notifyValueChange()
     }
 
-    fun addDiscountServer(discount: DiscountResp) {
-        this.cartModelLD.value!!.addDiscountServer(discount)
+    fun addDiscountServer(discount: DiscountResp , applyTo: DiscApplyTo) {
+        this.cartModelLD.value!!.addDiscountServer(discount,applyTo)
         cartModelLD.notifyValueChange()
     }
 

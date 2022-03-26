@@ -105,7 +105,11 @@ class DiscountAutomaticFragment(
     }
 
     override fun onApplyDiscountForOrder(discount: DiscountResp) {
-        listener.discountServerChoose(discount)
+        listener.discountServerChoose(discount,DiscApplyTo.ORDER)
+    }
+
+    override fun onApplyDiscountForItem(discount: DiscountResp) {
+        listener.discountServerChoose(discount,DiscApplyTo.ITEM)
     }
 
 

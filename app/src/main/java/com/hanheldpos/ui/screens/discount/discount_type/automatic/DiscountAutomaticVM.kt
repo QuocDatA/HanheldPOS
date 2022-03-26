@@ -37,7 +37,7 @@ class DiscountAutomaticVM : BaseUiViewModel<DiscountAutomaticUV>() {
 
         when (DiscApplyTo.fromInt(discount.DiscountApplyTo)) {
             DiscApplyTo.ITEM -> {
-
+                uiCallback?.onApplyDiscountForItem(discount)
             }
             DiscApplyTo.ORDER -> {
                 uiCallback?.onApplyDiscountForOrder(discount)

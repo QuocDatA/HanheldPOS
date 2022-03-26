@@ -7,4 +7,5 @@ import com.hanheldpos.ui.base.BaseUserView
 interface DiscountAutomaticUV : BaseUserView {
     fun loadDataDiscountCode(list : List<DiscountResp>);
     fun onApplyDiscountForOrder(discount : DiscountResp)
+    fun onApplyDiscountForItem(discount: DiscountResp)
 }

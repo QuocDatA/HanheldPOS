@@ -167,10 +167,9 @@ class Regular() : BaseProductInCart(), Parcelable, Cloneable {
 
         val subtotal = totalPrice + totalModifierPrice
         val totalDiscUser = discountUsersList?.sumOf { disc -> disc.total(subtotal) } ?: 0.0
-        // TODO : un comment when apply discount server
-        /*var totalDiscServer = discountServersList?.Sum(disc => disc.Total(totalPrice, totalModifierPrice, ProOriginal?.Id, Quantity)) ?? 0*/
+        var totalDiscServer = discountServersList?.sumOf { disc -> disc.total(totalPrice, totalModifierPrice, proOriginal?._id, quantity) ?: 0.0 } ?: 0.0
 
-        val total = totalDiscUser //+ totalDiscServer
+        val total = totalDiscUser + totalDiscServer
         return total
     }
 

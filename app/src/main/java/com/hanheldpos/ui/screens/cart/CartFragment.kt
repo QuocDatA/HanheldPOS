@@ -21,6 +21,7 @@ import com.hanheldpos.model.cart.Regular
 import com.hanheldpos.model.cart.fee.FeeTip
 import com.hanheldpos.model.payment.PaymentOrder
 import com.hanheldpos.model.combo.ItemActionType
+import com.hanheldpos.model.discount.DiscApplyTo
 import com.hanheldpos.model.discount.DiscountUser
 import com.hanheldpos.model.order.OrderReq
 import com.hanheldpos.model.product.ProductType
@@ -214,8 +215,8 @@ class CartFragment(private val listener: CartCallBack) :
                     cartDataVM.addDiscountUser(discount)
                 }
 
-                override fun onDiscountServerChoose(discount: DiscountResp) {
-                    cartDataVM.addDiscountServer(discount)
+                override fun onDiscountServerChoose(discount: DiscountResp ,discApplyTo: DiscApplyTo) {
+                    cartDataVM.addDiscountServer(discount,discApplyTo)
                 }
 
                 override fun onCompReasonChoose(reason: Reason) {
