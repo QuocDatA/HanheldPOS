@@ -45,6 +45,7 @@ object OrderConverter {
             discountServerList = toDiscountsServer(orderData.DiscountList).toMutableList(),
             discountUserList = toDiscountsUser(orderData.DiscountList).toMutableList(),
             productsList = toProductList(orderData.OrderProducts, order.MenuLocationGuid!!),
+            note = orderData.Order.Note,
         )
     }
 

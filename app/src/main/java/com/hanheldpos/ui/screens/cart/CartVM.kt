@@ -1,6 +1,7 @@
 package com.hanheldpos.ui.screens.cart
 
 import android.content.Context
+import android.graphics.Bitmap
 import androidx.lifecycle.viewModelScope
 import com.hanheldpos.R
 import com.hanheldpos.database.DatabaseMapper
@@ -14,9 +15,11 @@ import com.hanheldpos.model.home.table.TableStatusType
 import com.hanheldpos.model.order.OrderStatus
 import com.hanheldpos.ui.base.dialog.AppAlertDialog
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
-import com.hanheldpos.utils.time.DateTimeUtils
+import com.hanheldpos.ui.screens.printer.PrinterViewModel
+import com.hanheldpos.utils.DateTimeUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.io.File
 import java.util.*
 
 class CartVM : BaseUiViewModel<CartUV>() {
@@ -113,6 +116,11 @@ class CartVM : BaseUiViewModel<CartUV>() {
                 }
 
                 launch(Dispatchers.Main) {
+
+                    // Save order bill
+                    val filePath = File(context.getExternalFilesDir(null), "bitmap.png")
+                    filePath.writeBitmap(PrinterViewModel.getPrintOrderBill(context,orderReq), Bitmap.CompressFormat.JPEG, 85)
+
                     showLoading(false)
                     if (!onPaymentSelected)
                         uiCallback?.onBillSuccess()
@@ -129,6 +137,13 @@ class CartVM : BaseUiViewModel<CartUV>() {
                 )
         }
 
+    }
+
+    private fun File.writeBitmap(bitmap: Bitmap, format: Bitmap.CompressFormat, quality: Int) {
+        outputStream().use { out ->
+            bitmap.compress(format, quality, out)
+            out.flush()
+        }
     }
 
 

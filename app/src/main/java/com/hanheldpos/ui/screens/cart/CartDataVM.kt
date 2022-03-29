@@ -176,7 +176,6 @@ class CartDataVM : BaseViewModel() {
     }
 
     fun addCompReason(reason: Reason) {
-
         this.cartModelLD.value!!.addCompReason(reason)
         cartModelLD.notifyValueChange()
     }

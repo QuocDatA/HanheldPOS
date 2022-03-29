@@ -7,7 +7,7 @@ import com.hanheldpos.databinding.ItemCashDrawerPaidInOutBinding
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
 import com.hanheldpos.utils.PriceUtils
-import com.hanheldpos.utils.time.DateTimeUtils
+import com.hanheldpos.utils.DateTimeUtils
 
 class PaidInOutAdapter : BaseBindingListAdapter<PaidInOutListResp>(DiffCallback()) {
     override fun getItemViewType(position: Int): Int {

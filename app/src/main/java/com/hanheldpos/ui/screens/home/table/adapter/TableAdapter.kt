@@ -20,7 +20,7 @@ import com.hanheldpos.model.home.table.TableStatusType
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
-import com.hanheldpos.utils.time.DateTimeUtils
+import com.hanheldpos.utils.DateTimeUtils
 import java.util.*
 import java.util.concurrent.TimeUnit
 

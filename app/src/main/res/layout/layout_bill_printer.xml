@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="com.hanheldpos.utils.DateTimeUtils"/>
+        <variable
+            name="order"
+            type="com.hanheldpos.model.order.OrderReq" />
+    </data>
+
+    <LinearLayout
+        android:background="@color/color_2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingHorizontal="@dimen/_8sdp"
+        android:paddingVertical="@dimen/_6sdp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.diadiem.pos_components.PTextView
+                android:id="@+id/orderType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:useFontStyle="normal"
+                app:useTextColor="color4"
+                app:useTextHeader="h3"
+                android:text="Onl"
+                tools:text="Onl" />
+
+            <androidx.legacy.widget.Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <com.diadiem.pos_components.PTextView
+                android:id="@+id/orderDeliveryType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:useFontStyle="normal"
+                app:useTextColor="color4"
+                app:useTextHeader="h3"
+                android:text="Delivery"
+                tools:text="Delivery" />
+        </LinearLayout>
+
+        <androidx.legacy.widget.Space
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_3sdp" />
+
+        <ImageView
+            android:id="@+id/imageOrder"
+            android:layout_width="@dimen/_52sdp"
+            android:layout_height="@dimen/_32sdp"
+            android:src="@drawable/ic_note"
+            />
+
+        <androidx.legacy.widget.Space
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_7sdp" />
+
+        <com.diadiem.pos_components.PTextView
+            android:id="@+id/addressBill"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_44sdp"
+            android:textAlignment="center"
+            app:useFontStyle="normal"
+            app:useTextColor="color4"
+            app:useTextHeader="h5"
+            tools:text="36 Tong Huu Dinh Thao Dien Ward, District 2, HCMC Tel: 08 6253 2828" />
+
+        <LinearLayout
+            visibleObject="@{order.orderDetail.billing}"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="@dimen/_2sdp"
+            android:orientation="vertical">
+
+            <com.diadiem.pos_components.PTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:useFontStyle="normal"
+                app:useTextColor="color4"
+                app:useTextHeader="h4"
+                android:text="To:" />
+            <include
+                android:id="@+id/customerBill"
+                layout="@layout/item_bill_printer_customer"
+                app:customer="@{order.orderDetail.billing}"
+                />
+        </LinearLayout>
+        <com.diadiem.pos_components.PTextView
+            android:layout_gravity="start"
+            android:layout_marginVertical="@dimen/_2sdp"
+            visibleObject="@{order.orderDetail.order.note}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:useFontStyle="bold"
+            app:useTextColor="color4"
+            app:useTextHeader="h5"
+            android:text="@{`Note : ` + order.orderDetail.order.note}"
+            tools:text="Note"
+            />
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:src="@drawable/dotted"
+            android:layerType="software"
+            />
+
+        <LinearLayout
+            android:layout_marginVertical="@dimen/_2sdp"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+                <com.diadiem.pos_components.PTextView
+                    android:id="@+id/codeOrder"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:useTextHeader="h5"
+                    app:useTextColor="color4"
+                    app:useFontStyle="normal"
+                    tools:text="Order #: IP1102"
+                    />
+                <androidx.legacy.widget.Space
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    />
+                <com.diadiem.pos_components.PTextView
+                    android:id="@+id/platformDevice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:useTextHeader="h5"
+                    app:useTextColor="color4"
+                    app:useFontStyle="normal"
+                    tools:text="Handheld"
+                    android:text="@{`Order #: ` + order.order.code}"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+                <com.diadiem.pos_components.PTextView
+                    android:id="@+id/nameEmployee"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:useTextHeader="h5"
+                    app:useTextColor="color4"
+                    app:useFontStyle="normal"
+                    tools:text="Employee : Quan Nguyen"
+                    />
+                <androidx.legacy.widget.Space
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    />
+                <com.diadiem.pos_components.PTextView
+                    android:id="@+id/dateCreateOrder"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:useTextHeader="h5"
+                    app:useTextColor="color4"
+                    app:useFontStyle="normal"
+                    tools:text="02/28/2021  11:00"
+                    />
+            </LinearLayout>
+
+        </LinearLayout>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:src="@drawable/dotted"
+            android:layerType="software"
+            />
+    </LinearLayout>
+</layout>
