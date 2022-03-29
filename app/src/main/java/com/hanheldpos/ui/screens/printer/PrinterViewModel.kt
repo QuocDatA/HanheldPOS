@@ -11,9 +11,11 @@ import android.os.Build
 import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
+import com.hanheldpos.binding.setPriceView
 import com.hanheldpos.databinding.LayoutBillPrinterBinding
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.order.OrderReq
+import com.hanheldpos.model.payment.PaymentMethodType
 import com.hanheldpos.utils.DateTimeUtils
 
 object PrinterViewModel {
@@ -38,6 +40,15 @@ object PrinterViewModel {
                 DateTimeUtils.Format.FULL_DATE_UTC_TIMEZONE
             ), DateTimeUtils.Format.DD_MM_YYYY_HH_MM
         )
+
+        order.OrderDetail.PaymentList?.filter {
+            PaymentMethodType.fromInt(it.PaymentTypeId ?: 0) == PaymentMethodType.CASH
+        }?.let { list ->
+            val totalPay = list.sumOf { it.OverPay ?: 0.0 }
+            val needToPay = list.sumOf { it.Payable ?: 0.0 }
+            setPriceView(view.cashAmount, totalPay)
+            setPriceView(view.changeAmount, totalPay - needToPay)
+        }
 
 
 

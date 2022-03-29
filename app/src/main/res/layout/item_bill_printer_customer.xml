@@ -67,6 +67,16 @@
                 tools:text="Phone"
                 app:useTextHeader="h5" />
         </LinearLayout>
-
+        <com.diadiem.pos_components.PTextView
+            visibleObject="@{customer.note}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginVertical="@dimen/_2sdp"
+            android:text="@{`Note : ` + customer.note}"
+            app:useFontStyle="bold"
+            app:useTextColor="color4"
+            app:useTextHeader="h5"
+            tools:text="Note" />
     </LinearLayout>
 </layout>
