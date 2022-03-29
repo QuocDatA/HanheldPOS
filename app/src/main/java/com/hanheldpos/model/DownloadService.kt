@@ -16,14 +16,17 @@ import com.hanheldpos.data.api.pojo.resource.ResourceResp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.io.File
+import java.io.*
 import java.util.*
+import java.util.zip.ZipEntry
+import java.util.zip.ZipInputStream
 
 
 object DownloadService {
     private final var INTERNAL_PATH =
         Environment.getDataDirectory().path + "/data/com.hanheldpos/local/"
     private var downloadId: Int = 0
+    private var listFileToExtract: MutableList<String> = mutableListOf()
     lateinit var processDialog: ProgressDialog
 
     private fun initDownloadService(context: Context) {
@@ -63,6 +66,8 @@ object DownloadService {
         var currentDownloadPos = 0
         initDownloadService(context)
         listResources.forEach { item ->
+            if (item.Name.contains(".zip"))
+                listFileToExtract.add(item.Name)
             val downloadRequest = PRDownloader.download(item.Url, INTERNAL_PATH, item.Name)
                 .build()
                 .setOnStartOrResumeListener {
@@ -111,6 +116,11 @@ object DownloadService {
                     processDialog.dismiss()
                     CoroutineScope(Dispatchers.Main).launch {
                         listener.onComplete()
+                        CoroutineScope(Dispatchers.IO).launch {
+                            listFileToExtract.forEach { file ->
+                                unpackZip(INTERNAL_PATH, file)
+                            }
+                        }
                     }
                     return@launch
                 }
@@ -134,6 +144,43 @@ object DownloadService {
     private fun toMegaByte(bytes: Long): String {
         return String.format(Locale.ENGLISH, "%.2fMB", bytes / (1024.00 * 1024.00))
     }
+
+
+    private fun unpackZip(path: String, zipName: String): Boolean {
+        val inputStream: InputStream
+        val zipInputStream: ZipInputStream
+        try {
+            var filename: String
+            inputStream = FileInputStream(path + zipName)
+            zipInputStream = ZipInputStream(BufferedInputStream(inputStream))
+            var zipEntry: ZipEntry?
+            val buffer = ByteArray(1024)
+            var count: Int
+            while (zipInputStream.nextEntry.also { zipEntry = it } != null) {
+                filename = zipEntry!!.name
+
+                // create directories if not exists, or
+                // it will generate an Exception
+                if (zipEntry!!.isDirectory) {
+                    val fmd = File(path + filename)
+                    fmd.mkdirs()
+                    continue
+                }
+                val fileOutputStream = FileOutputStream(path + filename)
+                while (zipInputStream.read(buffer).also { count = it } != -1) {
+                    fileOutputStream.write(buffer, 0, count)
+                }
+                fileOutputStream.close()
+                zipInputStream.closeEntry()
+            }
+            zipInputStream.close()
+        } catch (e: IOException) {
+            e.printStackTrace()
+            return false
+        }
+        return true
+    }
+
 
     interface DownloadFileCallback {
         fun onDownloadStartOrResume()
