@@ -150,23 +150,25 @@ object DownloadService {
         val inputStream: InputStream
         val zipInputStream: ZipInputStream
         try {
-            var filename: String
+            var filePath: String
             inputStream = FileInputStream(path + zipName)
             zipInputStream = ZipInputStream(BufferedInputStream(inputStream))
             var zipEntry: ZipEntry?
             val buffer = ByteArray(1024)
             var count: Int
             while (zipInputStream.nextEntry.also { zipEntry = it } != null) {
-                filename = zipEntry!!.name
+                filePath = (zipEntry!!.name).replace("\\", "/")
 
-                // create directories if not exists, or
-                // it will generate an Exception
-                if (zipEntry!!.isDirectory) {
-                    val fmd = File(path + filename)
-                    fmd.mkdirs()
-                    continue
+                val fileName = filePath.split("/").last()
+
+                val fileDirs = filePath.substring(0,filePath.length - fileName.length)
+
+                File(path + fileDirs).run {
+                    if(!exists())
+                        mkdirs()
                 }
-                val fileOutputStream = FileOutputStream(path + filename)
+
+                val fileOutputStream = FileOutputStream(path + filePath)
                 while (zipInputStream.read(buffer).also { count = it } != -1) {
                     fileOutputStream.write(buffer, 0, count)
                 }
