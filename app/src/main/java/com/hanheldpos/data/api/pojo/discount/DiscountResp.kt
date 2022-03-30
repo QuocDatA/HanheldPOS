@@ -172,7 +172,7 @@ data class DiscountResp(
     }
 
     private fun isValidSchedule(curDateTime: Date): Boolean {
-        if (!ScheduleList?.any() ?: false) {
+        if (!(ScheduleList?.any() ?: false)) {
             return true;
         }
         val c = Calendar.getInstance()
@@ -309,7 +309,7 @@ data class DiscountResp(
         return !this.DiscountAutomatic
     }
 
-    fun isBuyXGetY() : Boolean {
+    fun isBuyXGetY(): Boolean {
         return this.DiscountType == DiscountTypeEnum.BUYX_GETY.value
     }
 
@@ -319,15 +319,16 @@ data class DiscountResp(
         } != null || triggerType == DiscountTriggerType.ALL
     }
 
-    fun isMaxNumberOfUsedPerOrder() : Boolean {
+    fun isMaxNumberOfUsedPerOrder(): Boolean {
         var totalQtyDiscUsed = 0;
-        when (DiscApplyTo.fromInt(DiscountApplyTo ?: 0) ) {
-            DiscApplyTo.ITEM->
-            totalQtyDiscUsed = CurCartData.cartModel?.productsList?.sumOf { pro -> pro.totalQtyDiscUsed(this._id)
-            } ?: 0;
+        when (DiscApplyTo.fromInt(DiscountApplyTo ?: 0)) {
+            DiscApplyTo.ITEM ->
+                totalQtyDiscUsed = CurCartData.cartModel?.productsList?.sumOf { pro ->
+                    pro.totalQtyDiscUsed(this._id)
+                } ?: 0;
 
             DiscApplyTo.ORDER ->
-            totalQtyDiscUsed = CurCartData.cartModel?.totalQtyDiscUsed(this._id) ?: 0;
+                totalQtyDiscUsed = CurCartData.cartModel?.totalQtyDiscUsed(this._id) ?: 0;
         }
 
         return MaximumNumberOfUsedPerOrder && totalQtyDiscUsed >= MaximumNumberOfUsedPerOrderValue;
