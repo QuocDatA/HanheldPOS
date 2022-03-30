@@ -16,43 +16,18 @@ import com.hanheldpos.databinding.LayoutBillPrinterBinding
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.order.OrderReq
 import com.hanheldpos.model.payment.PaymentMethodType
+import com.hanheldpos.ui.screens.printer.bill.ProductBillPrinterAdapter
 import com.hanheldpos.utils.DateTimeUtils
 
 object PrinterViewModel {
 
 
-    @SuppressLint("SetTextI18n")
     fun getPrintOrderBill(context: Context, order: OrderReq): Bitmap {
         val inflater = LayoutInflater.from(context);
         val view = LayoutBillPrinterBinding.inflate(inflater)
 
         // Setup view bill
-        view.order = order
-        view.addressBill.text = DataHelper.recentDeviceCodeLocalStorage?.first()?.LocationAddress
-
-        view.codeOrder.text = "Order #: ${order.Order.Code}"
-        view.platformDevice.text = DataHelper.recentDeviceCodeLocalStorage?.first()?.Nickname
-        view.nameEmployee.text =
-            "Employee : ${DataHelper.deviceCodeLocalStorage?.Employees?.find { it._id == order.Order.EmployeeGuid }?.FullName}"
-        view.dateCreateOrder.text = DateTimeUtils.dateToString(
-            DateTimeUtils.strToDate(
-                order.Order.CreateDate,
-                DateTimeUtils.Format.FULL_DATE_UTC_TIMEZONE
-            ), DateTimeUtils.Format.DD_MM_YYYY_HH_MM
-        )
-
-        order.OrderDetail.PaymentList?.filter {
-            PaymentMethodType.fromInt(it.PaymentTypeId ?: 0) == PaymentMethodType.CASH
-        }?.let { list ->
-            val totalPay = list.sumOf { it.OverPay ?: 0.0 }
-            val needToPay = list.sumOf { it.Payable ?: 0.0 }
-            setPriceView(view.cashAmount, totalPay)
-            setPriceView(view.changeAmount, totalPay - needToPay)
-        }
-
-
-
-        view.executePendingBindings()
+        setupViewOrderBill(view, order)
 
         //Fetch the dimensions of the viewport
         val displayMetrics = DisplayMetrics()
@@ -84,5 +59,37 @@ object PrinterViewModel {
         val canvas = Canvas(bitmap)
         view.root.draw(canvas)
         return bitmap
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun setupViewOrderBill(view: LayoutBillPrinterBinding, order: OrderReq) {
+        view.order = order
+        view.addressBill.text = DataHelper.recentDeviceCodeLocalStorage?.first()?.LocationAddress
+
+        view.codeOrder.text = "Order #: ${order.Order.Code}"
+        view.platformDevice.text = DataHelper.recentDeviceCodeLocalStorage?.first()?.Nickname
+        view.nameEmployee.text =
+            "Employee : ${DataHelper.deviceCodeLocalStorage?.Employees?.find { it._id == order.Order.EmployeeGuid }?.FullName}"
+        view.dateCreateOrder.text = DateTimeUtils.dateToString(
+            DateTimeUtils.strToDate(
+                order.Order.CreateDate,
+                DateTimeUtils.Format.FULL_DATE_UTC_TIMEZONE
+            ), DateTimeUtils.Format.DD_MM_YYYY_HH_MM
+        )
+
+        order.OrderDetail.PaymentList?.filter {
+            PaymentMethodType.fromInt(it.PaymentTypeId ?: 0) == PaymentMethodType.CASH
+        }?.let { list ->
+            val totalPay = list.sumOf { it.OverPay ?: 0.0 }
+            val needToPay = list.sumOf { it.Payable ?: 0.0 }
+            setPriceView(view.cashAmount, totalPay)
+            setPriceView(view.changeAmount, totalPay - needToPay)
+        }
+
+        val adapter = ProductBillPrinterAdapter()
+        adapter.submitList(order.OrderDetail.OrderProducts)
+        view.listProductBill.adapter = adapter
+
+        view.executePendingBindings()
     }
 }
