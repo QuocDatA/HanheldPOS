@@ -141,8 +141,8 @@ class MenuFragment : BaseFragment<FragmentMenuBinding, MenuVM>(), MenuUV {
                                 when (typeLogout) {
                                     LogoutType.LOGOUT_DEVICE -> {
                                         navigator.clearHistory()
+                                        navigator.rootFragment = WelcomeFragment()
                                         NetworkUtils.enableNetworkCheck()
-                                        navigator.goTo(WelcomeFragment())
                                     }
                                     LogoutType.RESET -> TODO()
                                 }
@@ -163,8 +163,8 @@ class MenuFragment : BaseFragment<FragmentMenuBinding, MenuVM>(), MenuUV {
             onClickListener = object : AppAlertDialog.AlertDialogOnClickListener {
                 override fun onPositiveClick() {
                     navigator.clearHistory()
+                    navigator.rootFragment = PinCodeFragment()
                     NetworkUtils.enableNetworkCheck()
-                    navigator.goTo(PinCodeFragment())
                 }
             })
     }

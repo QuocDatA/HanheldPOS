@@ -244,7 +244,7 @@ object DataHelper {
             discount.DiscountAutomatic && discount.isValid(
                 cart,
                 timeServer
-            )
+            ) && discount.isExistsTrigger(triggerType)
         }.toList()
     }
 }
