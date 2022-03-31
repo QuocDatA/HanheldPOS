@@ -57,7 +57,7 @@ data class DiscountResp(
     val OnlyApplyDiscountOncePerOrder: Int,
     val OnlyApplyDiscountProductOncePerOrder: Int,
     val OrderNo: Int,
-    val ScheduleList: List<ListScheduleItem>,
+    val ScheduleList: List<ListScheduleItem>?,
     val SetSchedules: Int,
     val Trigger: List<Trigger>,
     val Url: String,
@@ -155,12 +155,12 @@ data class DiscountResp(
             if (curDateTime <=
                 DateTimeUtils.strToDate(
                     DateOff,
-                    DateTimeUtils.Format.FULL_DATE_UTC_Z
+                    DateTimeUtils.Format.YYYY_MM_DD_HH_MM_SS
                 )
                 && curDateTime >=
                 DateTimeUtils.strToDate(
                     DateOn,
-                    DateTimeUtils.Format.FULL_DATE_UTC_Z
+                    DateTimeUtils.Format.YYYY_MM_DD_HH_MM_SS
                 )
             ) {
                 return isValidSchedule(curDateTime);
@@ -172,19 +172,19 @@ data class DiscountResp(
     }
 
     private fun isValidSchedule(curDateTime: Date): Boolean {
-        if (!(ScheduleList?.any() ?: false)) {
+        if (ScheduleList?.any() != true) {
             return true;
         }
         val c = Calendar.getInstance()
         c.time = curDateTime;
         return isValidTime(
-            ScheduleList?.first { schedule -> schedule.Id == c.get(Calendar.DAY_OF_WEEK) },
+            ScheduleList?.firstOrNull { schedule -> schedule.Id == c.get(Calendar.DAY_OF_WEEK) },
             curDateTime
         );
     }
 
-    private fun isValidTime(schedule: ListScheduleItem, curDateTime: Date): Boolean {
-        return schedule.ListSetTime.firstOrNull() { time ->
+    private fun isValidTime(schedule: ListScheduleItem?, curDateTime: Date): Boolean {
+        return schedule?.ListSetTime?.firstOrNull { time ->
             isValidTime(
                 time.TimeOff,
                 time.TimeOn,

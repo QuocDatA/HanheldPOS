@@ -26,6 +26,7 @@ import kotlin.reflect.jvm.internal.impl.load.java.structure.JavaClass
 
 class CartDataVM : BaseViewModel() {
 
+
     val cartModelLD: MutableLiveData<CartModel> = MutableLiveData()
     val currentTableFocus: MutableLiveData<FloorTable> = MutableLiveData()
 
@@ -43,6 +44,7 @@ class CartDataVM : BaseViewModel() {
     }
 
     fun initObserveData(owner: LifecycleOwner) {
+
         cartModelLD.observe(owner) {
             CurCartData.cartModel = it
         }
@@ -79,16 +81,17 @@ class CartDataVM : BaseViewModel() {
     fun initCart(cart: CartModel, table: FloorTable) {
         cartModelLD.value = cart
         currentTableFocus.value = table
+        notifyCartChange()
     }
 
     fun addCustomerToCart(customer: CustomerResp) {
         this.cartModelLD.value!!.customer = customer
-        this.cartModelLD.notifyValueChange()
+        this.notifyCartChange()
     }
 
     fun removeCustomerFromCart() {
         this.cartModelLD.value!!.customer = null
-        this.cartModelLD.notifyValueChange()
+        this.notifyCartChange()
     }
 
     fun addItemToCart(item: BaseProductInCart) {
@@ -99,12 +102,12 @@ class CartDataVM : BaseViewModel() {
                 addBundle(item)
             }
         }
-        this.cartModelLD.notifyValueChange()
+        this.notifyCartChange()
     }
 
     private fun updatePriceList(menuLocation_id: String?) {
         this.cartModelLD.value?.updatePriceList(menuLocation_id ?: UserHelper.getLocationGuid())
-        this.cartModelLD.notifyValueChange()
+        this.notifyCartChange()
     }
 
     fun updateItemInCart(index: Int, item: BaseProductInCart) {
@@ -113,12 +116,12 @@ class CartDataVM : BaseViewModel() {
         } else {
             cartModelLD.value!!.productsList.removeAt(index)
         }
-        cartModelLD.notifyValueChange()
+        notifyCartChange()
     }
 
     fun addPaymentOrder(payments: List<PaymentOrder>) {
         cartModelLD.value!!.addPayment(payments)
-        cartModelLD.notifyValueChange()
+        notifyCartChange()
     }
 
     fun deleteCart(
@@ -137,7 +140,7 @@ class CartDataVM : BaseViewModel() {
                 onClickListener = object : AppAlertDialog.AlertDialogOnClickListener {
                     override fun onPositiveClick() {
                         this@CartDataVM.cartModelLD.value!!.clearCart()
-                        this@CartDataVM.cartModelLD.notifyValueChange()
+                        this@CartDataVM.notifyCartChange()
                         callback()
                     }
                 }
@@ -167,31 +170,36 @@ class CartDataVM : BaseViewModel() {
                 }
             }
 
-        cartModelLD.notifyValueChange()
+        notifyCartChange()
     }
 
     fun removeCompReason() {
         cartModelLD.value!!.compReason = null
-        cartModelLD.notifyValueChange()
+        notifyCartChange()
     }
 
     fun addCompReason(reason: Reason) {
         this.cartModelLD.value!!.addCompReason(reason)
-        cartModelLD.notifyValueChange()
+        notifyCartChange()
     }
 
     fun addDiscountUser(discount: DiscountUser) {
         this.cartModelLD.value!!.addDiscountUser(discount)
-        cartModelLD.notifyValueChange()
+        notifyCartChange()
     }
 
     fun addDiscountServer(discount: DiscountResp, applyTo: DiscApplyTo) {
         this.cartModelLD.value!!.addDiscountServer(discount, applyTo)
-        cartModelLD.notifyValueChange()
+        notifyCartChange()
     }
 
     fun clearAllDiscountCoupon() {
         this.cartModelLD.value!!.clearAllDiscounts()
+        notifyCartChange()
+    }
+    
+    fun notifyCartChange() {
+        cartModelLD.value?.updateDiscount(true)
         cartModelLD.notifyValueChange()
     }
 
@@ -204,6 +212,4 @@ class CartDataVM : BaseViewModel() {
             diningOption?.SubDiningOption?.firstOrNull()?.LocationGuid
         )
     }
-
-
 }

@@ -72,8 +72,9 @@
         <include layout="@layout/divider_vertical" />
 
         <ScrollView
+            android:layout_weight="1"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="0dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -592,33 +593,26 @@
 
                 <include layout="@layout/divider_vertical" />
 
-                <androidx.legacy.widget.Space
-                    android:layout_width="0dp"
-                    android:layout_height="@dimen/_25sdp" />
-
-                <com.diadiem.pos_components.PMaterialButton
-                    android:id="@+id/btnApplyDiscount"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/_14sdp"
-                    android:background="@color/color_0"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:foreground="?attr/selectableItemBackground"
-                    android:gravity="center"
-                    android:text="@string/apply"
-                    android:paddingVertical="@dimen/_6sdp"
-                    app:pbtn_useBackgroundColor="true"
-                    app:pbtn_useFontStyle="bold"
-                    app:pbtn_useTextColor="color2"
-                    app:pbtn_useTextHeader="h5" />
-
-                <androidx.legacy.widget.Space
-                    android:layout_width="0dp"
-                    android:layout_height="@dimen/_25sdp" />
             </LinearLayout>
 
         </ScrollView>
+        <com.diadiem.pos_components.PMaterialButton
+            android:id="@+id/btnApplyDiscount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/_13sdp"
+            android:layout_marginHorizontal="@dimen/_9sdp"
+            android:background="@color/color_0"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
+            android:gravity="center"
+            android:text="@string/apply"
+            android:paddingVertical="@dimen/_6sdp"
+            app:pbtn_useBackgroundColor="true"
+            app:pbtn_useFontStyle="bold"
+            app:pbtn_useTextColor="color2"
+            app:pbtn_useTextHeader="h5" />
     </LinearLayout>
 
 </layout>

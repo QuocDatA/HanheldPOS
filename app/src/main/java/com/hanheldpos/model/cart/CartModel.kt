@@ -141,7 +141,13 @@ open class CartModel(
             addDiscountOnePerOrder(discount)
         }
         productsList?.forEach { baseProductInCart ->
-            if (discount.isValid(getSubTotal(), baseProductInCart, customer, Date()) && !baseProductInCart.isExistDiscount(discountId = discount?._id))
+            if (discount.isValid(
+                    getSubTotal(),
+                    baseProductInCart,
+                    customer,
+                    Date()
+                ) && !baseProductInCart.isExistDiscount(discountId = discount?._id)
+            )
                 baseProductInCart.addDiscountAutomatic(discount, productsList);
         }
     }
@@ -187,6 +193,7 @@ open class CartModel(
     }
 
     fun updateDiscountAutomatic(triggerType: DiscountTriggerType) {
+
         if (!anyProductList()) return
         var discountAutoList: List<DiscountResp> = listOf()
         when (triggerType) {
@@ -211,13 +218,14 @@ open class CartModel(
         // OnlyApplyDiscountProductOncePerOrder will tell us
         // if this discount has to be applied 1 time per order.
 
-        val discOnePerOrderList: List<DiscountResp> = listOf()
+        val discOnePerOrderList: MutableList<DiscountResp> = mutableListOf()
         this.productsList.forEach { baseProduct ->
-            baseProduct.getOnePerOrderAndUpdateDiscountAutomatic(
+            val discList = baseProduct.getOnePerOrderAndUpdateDiscountAutomatic(
                 triggerType,
                 this.customer,
                 this.productsList
             )
+            if (discList.isNotEmpty()) discOnePerOrderList.addAll(discList)
         }
 
         addRangeDiscountOnePerOrder(discOnePerOrderList)
@@ -232,36 +240,40 @@ open class CartModel(
 
     fun addDiscountOnePerOrder(discountOnePerOrder: DiscountResp) {
         val baseProductApplyDisc = getProductApplyOnePerOrderDisc(discountOnePerOrder)
-        baseProductApplyDisc.discountServersList?.add(discountOnePerOrder.clone())
+        baseProductApplyDisc?.discountServersList?.add(discountOnePerOrder.clone())
     }
 
-    fun getProductApplyOnePerOrderDisc(discOnePerOrder: DiscountResp): BaseProductInCart {
-        var applyToList = discOnePerOrder.Condition.CustomerBuys.ListApplyTo.toList()
-        var productApplyList = getProductListApplyToDiscount(applyToList)
-
+    fun getProductApplyOnePerOrderDisc(discOnePerOrder: DiscountResp): BaseProductInCart? {
+        val applyToList = discOnePerOrder.Condition.CustomerBuys.ListApplyTo.toList()
+        val productApplyList = getProductListApplyToDiscount(applyToList)
+        if (productApplyList.isEmpty()) return null
         var applyValue = 0.0
         when (discOnePerOrder.ApplyToPriceProduct) {
             DiscountPriceType.HIGHEST.value -> {
-                applyValue = productApplyList.maxOf { basePro -> basePro.compareValue(applyToList) }
+                applyValue =
+                    productApplyList.maxOfOrNull { basePro -> basePro.compareValue(applyToList) }
+                        ?: 0.0
             }
             DiscountPriceType.LOWEST.value -> {
-                applyValue = productApplyList.minOf { basePro -> basePro.compareValue(applyToList) }
+                applyValue =
+                    productApplyList.minOfOrNull { basePro -> basePro.compareValue(applyToList) }
+                        ?: 0.0
             }
         }
-        return productApplyList.first { basePro ->
+        return productApplyList.firstOrNull { basePro ->
             val subtotal = basePro.compareValue(applyToList)
-            return@first subtotal == applyValue
+            return@firstOrNull subtotal == applyValue
         }
     }
 
-    fun getProductListApplyToDiscount(productList: List<Product>): List<BaseProductInCart> {
-        var baseProductList: List<BaseProductInCart> = listOf()
-        productList.forEach { productDisc ->
+    fun getProductListApplyToDiscount(appliesTo: List<Product>): List<BaseProductInCart> {
+        val baseProductList: MutableList<BaseProductInCart> = mutableListOf()
+        appliesTo.forEach { productDisc ->
             val baseProduct = this.productsList.firstOrNull { p ->
                 p.proOriginal?._id == productDisc._id
             }
             if (baseProduct != null) {
-                baseProductList.toMutableList().add(baseProduct)
+                baseProductList.add(baseProduct)
             }
         }
         return baseProductList

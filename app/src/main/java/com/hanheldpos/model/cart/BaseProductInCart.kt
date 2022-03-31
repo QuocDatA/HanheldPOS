@@ -178,7 +178,7 @@ abstract class BaseProductInCart {
 
         // Check if the discount exists in quantity or amount.
         // The allowed amount of the discount must not exceed the allowable limit.
-        if (condition.CustomerBuys.IsDiscountLimit == 0 || discountAuto.maxAmountUsed!! > 0) {
+        if (condition.CustomerBuys.IsDiscountLimit == 0 || discountAuto.maxAmountUsed?: 0.0 > 0) {
             if (condition.CustomerBuys.IsMaxQuantity == 1) {
                 val totalQtyUsed = baseProductList.sumOf { product ->
                     product.totalQtyUsed(
