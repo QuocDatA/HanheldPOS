@@ -7,6 +7,9 @@
         <variable
             name="title"
             type="String" />
+        <variable
+            name="end"
+            type="String" />
     </data>
 
     <LinearLayout
@@ -22,6 +25,20 @@
             app:useTextColor="color4"
             tools:text="Monday"
             android:text="@{title}"
+            />
+        <androidx.legacy.widget.Space
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="1dp"/>
+        <com.diadiem.pos_components.PTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:useTextHeader="h5"
+            app:useFontStyle="normal"
+            app:useTextColor="color4"
+            android:textAlignment="textEnd"
+            tools:text="---------"
+            android:text="@{end}"
             />
     </LinearLayout>
 </layout>

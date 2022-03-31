@@ -418,8 +418,15 @@ data class ListScheduleItem(
     val Id: Int,
     val Date: String,
     val ListSetTime: List<ListSetTimeItem>,
-    val Active : Boolean,
-) : Parcelable
+    val Active: Boolean,
+) : Parcelable {
+    val listTimeString: String
+        get() {
+            if (!Active || ListSetTime?.isEmpty())
+                return "--:--"
+            return ListSetTime.joinToString("\n") { time -> "${time.TimeOn} to ${time.TimeOff}" }
+        }
+}
 
 @Parcelize
 

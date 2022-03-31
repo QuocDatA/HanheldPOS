@@ -63,6 +63,10 @@ class DiscountDetailFragment(
         binding.btnShowListRewardItem.setOnClickListener {
             viewModel.showListRewards(viewModel.discountDetail?.RewardProductList)
         }
+
+        binding.schedule.setOnClickListener {
+            viewModel.showListSchedules(viewModel.discountDetail?.ScheduleList)
+        }
     }
 
     override fun getBack() {
