@@ -11,7 +11,8 @@
             name="order"
             type="com.hanheldpos.model.order.OrderReq" />
     </data>
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/rootScrollView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <LinearLayout
@@ -446,6 +447,6 @@
                 android:text="@string/thank_you"
                 />
         </LinearLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
 </layout>

@@ -10,9 +10,9 @@ import com.hanheldpos.model.OrderHelper
 import com.hanheldpos.model.cart.CartConverter
 import com.hanheldpos.model.cart.CartModel
 import com.hanheldpos.model.cart.DiscountCart
-import com.hanheldpos.model.payment.PaymentStatus
 import com.hanheldpos.model.home.table.TableStatusType
 import com.hanheldpos.model.order.OrderStatus
+import com.hanheldpos.model.payment.PaymentStatus
 import com.hanheldpos.ui.base.dialog.AppAlertDialog
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
 import com.hanheldpos.ui.screens.printer.PrinterViewModel
@@ -119,8 +119,11 @@ class CartVM : BaseUiViewModel<CartUV>() {
 
                     // Save order bill
                     val filePath = File(context.getExternalFilesDir(null), "bitmap.png")
-                    filePath.writeBitmap(PrinterViewModel.getPrintOrderBill(context,orderReq), Bitmap.CompressFormat.JPEG, 85)
-
+                    filePath.writeBitmap(
+                        PrinterViewModel.getPrintOrderBill(context, orderReq),
+                        Bitmap.CompressFormat.JPEG,
+                        85
+                    )
                     showLoading(false)
                     if (!onPaymentSelected)
                         uiCallback?.onBillSuccess()
