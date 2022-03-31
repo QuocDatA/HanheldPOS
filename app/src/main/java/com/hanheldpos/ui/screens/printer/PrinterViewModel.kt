@@ -5,8 +5,6 @@ import android.app.Activity
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
-import android.graphics.ColorMatrix
-import android.graphics.ColorMatrixColorFilter
 import android.os.Build
 import android.util.DisplayMetrics
 import android.view.LayoutInflater
@@ -50,10 +48,11 @@ object PrinterViewModel {
 
         //Create a bitmap with the measured width and height. Attach the bitmap to a canvas object and draw the view inside the canvas
         view.root.layout(0, 0, displayMetrics.widthPixels, displayMetrics.heightPixels)
+
         val bitmap =
             Bitmap.createBitmap(
-                view.root.measuredWidth,
-                view.root.measuredHeight,
+                view.root.width,
+                view.rootScrollView.getChildAt(0).height,
                 Bitmap.Config.ARGB_8888
             )
         val canvas = Canvas(bitmap)
