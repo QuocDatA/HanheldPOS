@@ -156,8 +156,8 @@ class TableFragment : BaseFragment<FragmentTableBinding, TableVM>(), TableUV {
                     TableInputFragment.TableInputListener {
                     override fun onCompleteTable(numberCustomer: Int) {
                         // Init cart first time
-                        item.updateTableStatus(TableStatusType.Pending);
                         orderDataVM.onMenuChange(0)
+                        item.updateTableStatus(TableStatusType.Pending);
                         cartDataVM.initCart(numberCustomer, item);
                         screenViewModel.showOrderPage();
                     }
