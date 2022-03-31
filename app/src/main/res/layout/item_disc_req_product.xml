@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="title"
+            type="String" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:paddingVertical="@dimen/_12sdp"
+        android:paddingHorizontal="@dimen/_9sdp"
+        android:layout_height="wrap_content">
+        <com.diadiem.pos_components.PTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:useTextHeader="h5"
+            app:useFontStyle="normal"
+            app:useTextColor="color4"
+            tools:text="Monday"
+            android:text="@{title}"
+            />
+    </LinearLayout>
+</layout>

@@ -417,7 +417,8 @@ data class Trigger(
 data class ListScheduleItem(
     val Id: Int,
     val Date: String,
-    val ListSetTime: List<ListSetTimeItem>
+    val ListSetTime: List<ListSetTimeItem>,
+    val Active : Boolean,
 ) : Parcelable
 
 @Parcelize
