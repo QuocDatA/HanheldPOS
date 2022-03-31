@@ -11,7 +11,7 @@ import com.hanheldpos.model.cart.BaseProductInCart
 import com.hanheldpos.model.cart.CartModel
 import com.hanheldpos.model.discount.*
 import com.hanheldpos.ui.screens.cart.CurCartData
-import com.hanheldpos.utils.time.DateTimeUtils
+import com.hanheldpos.utils.DateTimeUtils
 import kotlinx.parcelize.Parcelize
 import java.util.*
 
@@ -172,7 +172,7 @@ data class DiscountResp(
     }
 
     private fun isValidSchedule(curDateTime: Date): Boolean {
-        if (!ScheduleList?.any() ?: false) {
+        if (!(ScheduleList?.any() ?: false)) {
             return true;
         }
         val c = Calendar.getInstance()
@@ -309,7 +309,7 @@ data class DiscountResp(
         return !this.DiscountAutomatic
     }
 
-    fun isBuyXGetY() : Boolean {
+    fun isBuyXGetY(): Boolean {
         return this.DiscountType == DiscountTypeEnum.BUYX_GETY.value
     }
 
@@ -319,15 +319,16 @@ data class DiscountResp(
         } != null || triggerType == DiscountTriggerType.ALL
     }
 
-    fun isMaxNumberOfUsedPerOrder() : Boolean {
+    fun isMaxNumberOfUsedPerOrder(): Boolean {
         var totalQtyDiscUsed = 0;
-        when (DiscApplyTo.fromInt(DiscountApplyTo ?: 0) ) {
-            DiscApplyTo.ITEM->
-            totalQtyDiscUsed = CurCartData.cartModel?.productsList?.sumOf { pro -> pro.totalQtyDiscUsed(this._id)
-            } ?: 0;
+        when (DiscApplyTo.fromInt(DiscountApplyTo ?: 0)) {
+            DiscApplyTo.ITEM ->
+                totalQtyDiscUsed = CurCartData.cartModel?.productsList?.sumOf { pro ->
+                    pro.totalQtyDiscUsed(this._id)
+                } ?: 0;
 
             DiscApplyTo.ORDER ->
-            totalQtyDiscUsed = CurCartData.cartModel?.totalQtyDiscUsed(this._id) ?: 0;
+                totalQtyDiscUsed = CurCartData.cartModel?.totalQtyDiscUsed(this._id) ?: 0;
         }
 
         return MaximumNumberOfUsedPerOrder && totalQtyDiscUsed >= MaximumNumberOfUsedPerOrderValue;
@@ -416,8 +417,16 @@ data class Trigger(
 data class ListScheduleItem(
     val Id: Int,
     val Date: String,
-    val ListSetTime: List<ListSetTimeItem>
-) : Parcelable
+    val ListSetTime: List<ListSetTimeItem>,
+    val Active: Boolean,
+) : Parcelable {
+    val listTimeString: String
+        get() {
+            if (!Active || ListSetTime?.isEmpty())
+                return "--:--"
+            return ListSetTime.joinToString("\n") { time -> "${time.TimeOn} to ${time.TimeOff}" }
+        }
+}
 
 @Parcelize
 

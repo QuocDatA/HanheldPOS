@@ -12,8 +12,8 @@ plugins {
 
 // ----- Apk info
 String APK_NAME = "[DEV]HanheldPos"
-int VERSION_CODE = 51
-String VERSION_NAME = "0.5.1"
+int VERSION_CODE = 52
+String VERSION_NAME = "0.5.2"
 
 static def getDate() {
     return new Date().format("yyyyMMdd")
@@ -158,4 +158,7 @@ dependencies {
 
     // download file lib
     implementation 'com.mindorks.android:prdownloader:0.6.0'
+
+    // printer
+    implementation 'com.github.DantSu:ESCPOS-ThermalPrinter-Android:3.1.2'
 }

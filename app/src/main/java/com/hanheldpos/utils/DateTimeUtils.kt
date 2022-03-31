@@ -1,4 +1,4 @@
-package com.hanheldpos.utils.time
+package com.hanheldpos.utils
 
 
 import android.text.TextUtils

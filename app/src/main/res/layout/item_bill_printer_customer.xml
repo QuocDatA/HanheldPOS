@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.text.TextUtils" />
+
+        <variable
+            name="customer"
+            type="com.hanheldpos.data.api.pojo.customer.CustomerResp" />
+    </data>
+
+    <LinearLayout
+        android:paddingVertical="@dimen/_2sdp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.diadiem.pos_components.PTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{customer.fullName}"
+            app:useFontStyle="bold"
+            app:useTextColor="color4"
+            tools:text="Name"
+            app:useTextHeader="h4" />
+
+        <com.diadiem.pos_components.PTextView
+            visibleObject="@{!TextUtils.isEmpty(customer.phone)}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{customer.fullAddressWithLineBreaker, default=`Tropic Garden Apartment\nBlock A2, Floor 5, Room 123\n215 Nguyen Van Huong\nThao Dien Ward, District 2, HCMC`}"
+            app:useFontStyle="normal"
+            app:useTextColor="color4"
+            app:useTextHeader="h5" />
+        <LinearLayout
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.diadiem.pos_components.PTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:gravity="center"
+                android:background="@drawable/bg_food_text"
+                android:paddingHorizontal="@dimen/_5sdp"
+                android:paddingVertical="@dimen/_2sdp"
+                android:text="Apartment"
+                app:useFontStyle="normal"
+                app:useTextColor="color2"
+                app:useTextHeader="h5"
+                tools:text="Apartment" />
+            <androidx.legacy.widget.Space
+                android:layout_width="@dimen/_4sdp"
+                android:layout_height="wrap_content"/>
+            <com.diadiem.pos_components.PTextView
+                visibleObject="@{customer.phone != null &amp;&amp; !TextUtils.isEmpty(customer.phone)}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{customer.phone}"
+                app:useFontStyle="normal"
+                app:useTextColor="color4"
+                tools:text="Phone"
+                app:useTextHeader="h5" />
+        </LinearLayout>
+        <com.diadiem.pos_components.PTextView
+            visibleObject="@{customer.note}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginVertical="@dimen/_2sdp"
+            android:text="@{`Note : ` + customer.note}"
+            app:useFontStyle="bold"
+            app:useTextColor="color4"
+            app:useTextHeader="h5"
+            tools:text="Note" />
+    </LinearLayout>
+</layout>

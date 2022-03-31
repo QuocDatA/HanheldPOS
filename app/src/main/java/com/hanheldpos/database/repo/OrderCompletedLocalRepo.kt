@@ -2,7 +2,7 @@ package com.hanheldpos.database.repo
 
 import com.hanheldpos.database.dao.OrderCompletedDao
 import com.hanheldpos.database.entities.OrderCompletedEntity
-import com.hanheldpos.utils.time.DateTimeUtils
+import com.hanheldpos.utils.DateTimeUtils
 import kotlinx.coroutines.flow.Flow
 import java.util.*
 

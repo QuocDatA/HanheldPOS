@@ -5,8 +5,7 @@ import com.hanheldpos.data.api.pojo.payment.PaymentMethodResp
 import com.hanheldpos.data.api.pojo.payment.Voucher
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.UserHelper
-import com.hanheldpos.ui.screens.cart.CurCartData
-import com.hanheldpos.utils.time.DateTimeUtils
+import com.hanheldpos.utils.DateTimeUtils
 import kotlinx.parcelize.Parcelize
 import java.util.*
 

@@ -81,7 +81,7 @@ class OrderProductAdapter(
             oldItem: ProductMenuItem,
             newItem: ProductMenuItem
         ): Boolean {
-            return false;
+            return oldItem == newItem && oldItem.uiType == newItem.uiType;
         }
 
     }

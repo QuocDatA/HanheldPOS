@@ -34,6 +34,7 @@ class DiscountDetailFragment(
                 discountDetailResp._id == discountResp._id
             }
         discountDetailResp?.let {
+            viewModel.discountDetail = it
             binding.discountDetail = it
             binding.discountDescription.text = removeHtml(it.Description)
             binding.discountTermCondition.text = removeHtml(it.TermsCondition)
@@ -54,9 +55,25 @@ class DiscountDetailFragment(
         binding.btnApplyDiscount.setOnClickListener {
             onApplyDiscountAuto(discountResp)
         }
+
+        binding.btnShowListAppliesItem.setOnClickListener {
+            viewModel.showListApplies(viewModel.discountDetail?.RequirementProductList)
+        }
+
+        binding.btnShowListRewardItem.setOnClickListener {
+            viewModel.showListRewards(viewModel.discountDetail?.RewardProductList)
+        }
+
+        binding.schedule.setOnClickListener {
+            viewModel.showListSchedules(viewModel.discountDetail?.ScheduleList)
+        }
     }
 
     override fun getBack() {
         onFragmentBackPressed()
+    }
+
+    override fun showReqProduct(title: String, list: List<Any>) {
+        navigator.goTo(DiscReqProductFragment(title,list))
     }
 }

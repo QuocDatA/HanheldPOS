@@ -32,7 +32,6 @@ fun setPricePlusView(view: TextView?, price: Double?) {
     view.text = "+$rs"
 }
 
-
 @BindingAdapter("basePriceView")
 fun setBasePriceView(view: TextView?, price: Double?) {
     if (view == null || price == null) return
