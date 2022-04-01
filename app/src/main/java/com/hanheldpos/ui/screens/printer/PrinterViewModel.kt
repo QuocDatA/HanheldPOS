@@ -16,6 +16,7 @@ import com.hanheldpos.model.order.OrderReq
 import com.hanheldpos.model.payment.PaymentMethodType
 import com.hanheldpos.ui.screens.printer.bill.ProductBillPrinterAdapter
 import com.hanheldpos.utils.DateTimeUtils
+import kotlinx.coroutines.delay
 
 object PrinterViewModel {
 
