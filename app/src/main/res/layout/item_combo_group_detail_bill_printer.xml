@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="com.hanheldpos.model.product.ExtraConverter" />
+        <import type="android.text.TextUtils"/>
+        <import type="com.hanheldpos.model.product.ProductType" />
+
+        <variable
+            name="item"
+            type="com.hanheldpos.model.order.ProductChosen" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/_2sdp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.diadiem.pos_components.PTextView
+                android:id="@+id/quantity"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="@dimen/_4sdp"
+                app:useTextColor="color5"
+                app:useTextHeader="h6"
+                tools:text="(1x)" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:baselineAligned="false">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <com.diadiem.pos_components.PTextView
+                            android:id="@+id/productName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:useTextColor="color5"
+                            app:useTextHeader="h6"
+                            tools:text="Pho Bo Tai" />
+
+
+                    </LinearLayout>
+
+                    <com.diadiem.pos_components.PTextView
+                        android:id="@+id/priceTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="textEnd"
+                        app:useTextColor="color5"
+                        app:useTextHeader="h6"
+                        tools:text="137.000" />
+
+                </LinearLayout>
+
+                <include
+                    android:id="@+id/variantList"
+                    layout="@layout/item_product_detail_bill_printer"
+                    visibleObject="@{item.variantList != null &amp;&amp; !item.variantList.empty,default=false}"
+                    app:lineText="@{ExtraConverter.INSTANCE.variantStr(item.variantList)}" />
+
+                <include
+                    android:id="@+id/modifierList"
+                    layout="@layout/item_product_detail_bill_printer"
+                    visibleObject="@{item.modifierList != null &amp;&amp; !item.modifierList.empty , default=false}"
+                    app:lineText="@{ExtraConverter.INSTANCE.modifierOrderStr(item.modifierList)}" />
+
+                <include
+                    android:id="@+id/note"
+                    layout="@layout/item_product_detail_bill_printer"
+                    visibleObject="@{item.note != null &amp;&amp; !item.note.empty  ,default=false}"
+                    app:isNote="@{true}"
+                    app:lineText="@{item.note}" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</layout>
