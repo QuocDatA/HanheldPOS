@@ -9,6 +9,7 @@ import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.databinding.FragmentDiscountCodeBinding
 import com.hanheldpos.model.discount.DiscApplyTo
+import com.hanheldpos.model.discount.DiscountTypeFor
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.discount.DiscountFragment
 import com.hanheldpos.ui.screens.discount.discount_detail.DiscountDetailFragment
@@ -67,9 +68,7 @@ class DiscountCodeFragment(
             )
         };
         binding.listDiscountCode.adapter = discountCodeAdapter;
-        binding.firstNameInput.doAfterTextChanged {
-            viewModel.searchDiscountCode(it.toString())
-        }
+
     }
 
     override fun initData() {
@@ -81,6 +80,10 @@ class DiscountCodeFragment(
     }
 
     override fun initAction() {
+        binding.discountCodeInput.doAfterTextChanged {
+            listener.validDiscount(it.toString().isNotEmpty())
+            viewModel.searchDiscountCode(it.toString())
+        }
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -89,5 +92,18 @@ class DiscountCodeFragment(
             discountCodeAdapter.submitList(list);
             discountCodeAdapter.notifyDataSetChanged();
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        requireActivity().supportFragmentManager.setFragmentResultListener(
+            "saveDiscount",
+            this
+        ) { _, bundle ->
+            if (bundle.getSerializable("DiscountTypeFor") == DiscountTypeFor.DISCOUNT_CODE) {
+
+            }
+        }
+        listener.validDiscount(binding.discountCodeInput.text.toString().isNotEmpty())
     }
 }
