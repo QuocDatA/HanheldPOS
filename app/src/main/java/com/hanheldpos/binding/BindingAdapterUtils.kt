@@ -145,6 +145,17 @@ fun setGroupSize(inputEditText: TextInputEditText?, groupSize: Int) {
     })
 }
 
+@BindingAdapter("textNumberAllCaps")
+fun textNumberAllCaps(inputEditText: TextInputEditText?, isAllCaps: Boolean) {
+    if (inputEditText == null) return
+    val inputFilter: InputFilter = getCustomInputFilter(
+        allowCharacters = true,
+        allowDigits = true,
+        allowSpaceChar = false
+    )
+    inputEditText.filters = arrayOf(InputFilter.AllCaps(),inputFilter)
+}
+
 private fun getCustomInputFilter(
     allowCharacters: Boolean,
     allowDigits: Boolean,

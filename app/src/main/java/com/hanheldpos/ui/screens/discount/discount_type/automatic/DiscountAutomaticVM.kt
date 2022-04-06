@@ -22,7 +22,7 @@ class DiscountAutomaticVM : BaseUiViewModel<DiscountAutomaticUV>() {
     fun loadDiscountAutomatic(keyword : String = "")  {
         val listDiscountAutoItem = DataHelper.findDiscountAutoList(DiscApplyTo.ITEM)
         val listDiscountAutoOrder = DataHelper.findDiscountAutoList(DiscApplyTo.ORDER)
-        uiCallback?.loadDataDiscountCode(concatenate(listDiscountAutoItem,listDiscountAutoOrder).sortedBy { it.DiscountName }.filter { it.DiscountCode.lowercase().contains(keyword.lowercase()) })
+        uiCallback?.loadDataDiscountCode(concatenate(listDiscountAutoItem,listDiscountAutoOrder).sortedBy { it.DiscountName }.filter { it.DiscountCode.uppercase().contains(keyword.uppercase()) })
     }
 
 
