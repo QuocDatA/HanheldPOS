@@ -5,13 +5,13 @@ enum class DiscApplyTo(val value : Int) {
     ITEM(1),
     ORDER(2);
     companion object {
-        fun fromInt(value: Int): DiscApplyTo? {
+        fun fromInt(value: Int): DiscApplyTo {
             DiscApplyTo.values().forEach {
                 if (it.value == value) {
                     return it
                 }
             }
-            return null
+            return UNKNOWN
         }
     }
 }

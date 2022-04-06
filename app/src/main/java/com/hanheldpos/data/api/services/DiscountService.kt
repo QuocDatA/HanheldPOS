@@ -26,7 +26,7 @@ interface DiscountService {
     @POST("cart/Discount/only")
     @Headers("Accept: text/plain",
         "Content-Type: application/json")
-    fun postNumberIncreamentAsync(
+    fun postDiscountCoupon(
         @Body body: String,
     ): Call<BaseResponse<CouponDiscountResp>?>
 }

@@ -4,7 +4,6 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import com.hanheldpos.PosApp
 import com.hanheldpos.data.api.pojo.customer.CustomerResp
 import com.hanheldpos.data.api.pojo.discount.CouponDiscountResp
 import com.hanheldpos.data.api.pojo.discount.DiscountCoupon
@@ -23,8 +22,6 @@ import com.hanheldpos.model.discount.DiscountUser
 import com.hanheldpos.model.home.table.TableSummary
 import com.hanheldpos.ui.base.dialog.AppAlertDialog
 import com.hanheldpos.ui.base.viewmodel.BaseViewModel
-import kotlin.coroutines.coroutineContext
-import kotlin.reflect.jvm.internal.impl.load.java.structure.JavaClass
 
 class CartDataVM : BaseViewModel() {
 
@@ -191,7 +188,7 @@ class CartDataVM : BaseViewModel() {
     }
 
     fun addDiscountServer(discount: DiscountResp, applyTo: DiscApplyTo) {
-        this.cartModelLD.value!!.addDiscountServer(discount, applyTo)
+        this.cartModelLD.value!!.addDiscountAutoServer(discount, applyTo)
         notifyCartChange()
     }
 
@@ -199,7 +196,7 @@ class CartDataVM : BaseViewModel() {
         this.cartModelLD.value!!.clearAllDiscounts()
         notifyCartChange()
     }
-    
+
     fun notifyCartChange(isRemoveCoupon: Boolean = true) {
         cartModelLD.value?.updateDiscount(isRemoveCoupon)
         cartModelLD.notifyValueChange()
@@ -216,34 +213,32 @@ class CartDataVM : BaseViewModel() {
     }
 
     fun updateDiscountCouponCode(discountCoupon: CouponDiscountResp) {
+
         // Find and append discounts for product list.
-        discountCoupon.OrderDiscountList
+        discountCoupon.ProductDiscountList
             .forEach { disc ->
-                CurCartData.cartModel?.productsList?.mapIndexed { index, value -> index + 1 to value }
-                    ?.forEach { baseProduct ->
-                        if (disc.DiscountType == baseProduct.first)
-                            addDiscountCouponCode(baseProduct.second.discountServersList, disc)
-                    }
+                CurCartData.cartModel?.productsList?.forEachIndexed { index, baseProduct ->
+                    if (disc.DiscountType == index + 1)
+                        this.cartModelLD.value?.addDiscountCouponServer(
+                            disc,
+                            DiscApplyTo.ITEM,
+                            baseProduct
+                        )
+                }
             }
-    }
-
-    private fun addDiscountCouponCode(
-        discountServerList: MutableList<DiscountResp>?,
-        disc: DiscountCoupon
-    ) {
-        val discountApply = DataHelper.findDiscount(discountId = disc.DiscountGuid)
-
-        //Update discount
-        if (discountApply != null) {
-            discountApply.maxAmountUsed = disc.DiscountLineTotalPrice;
-            discountApply.quantityUsed = disc.Quantity ?: 1;
-            discountApply.DiscountCode = disc.DiscountCode;
-            this.cartModelLD.value?.addDiscountServer(discountApply, DiscApplyTo.fromInt(discountApply.DiscountApplyTo)!!)
-            notifyCartChange(false)
+        // Find and append discounts for order.
+        discountCoupon.OrderDiscountList.forEach { disc ->
+            this.cartModelLD.value?.addDiscountCouponServer(
+                disc,
+                DiscApplyTo.ORDER
+            )
         }
+
+        notifyCartChange(false)
     }
 
-    fun updateNote(note : String?) {
+
+    fun updateNote(note: String?) {
         this.cartModelLD.value?.note = note
         notifyCartChange(false)
     }

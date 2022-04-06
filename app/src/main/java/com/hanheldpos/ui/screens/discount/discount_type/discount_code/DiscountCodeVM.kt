@@ -3,13 +3,11 @@ package com.hanheldpos.ui.screens.discount.discount_type.discount_code
 import androidx.lifecycle.MutableLiveData
 import com.hanheldpos.PosApp
 import com.hanheldpos.R
-import com.hanheldpos.data.api.pojo.discount.CouponDiscountReq
 import com.hanheldpos.data.api.pojo.discount.CouponDiscountResp
 import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.data.repository.BaseResponse
 import com.hanheldpos.data.repository.base.BaseRepoCallback
 import com.hanheldpos.data.repository.discount.DiscountRepo
-import com.hanheldpos.extension.notifyValueChange
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.cart.CartConverter
 import com.hanheldpos.model.discount.DiscountTypeEnum
@@ -22,19 +20,20 @@ class DiscountCodeVM : BaseUiViewModel<DiscountCodeUV>() {
     val isLoading = MutableLiveData<Boolean>(false);
     private val discountRepo = DiscountRepo()
     fun initData() {
-       searchDiscountCode()
+        searchDiscountCode()
     }
 
     fun searchDiscountCode(keyword: String = "") {
         val listDiscountCode = DataHelper.discountsLocalStorage?.filter { !it.DiscountAutomatic };
-        val searchList =  listDiscountCode?.sortedBy { it.DiscountName }?.filter { it.DiscountCode.lowercase().contains(keyword.lowercase()) }
+        val searchList = listDiscountCode?.sortedBy { it.DiscountName }
+            ?.filter { it.DiscountCode.lowercase().contains(keyword.lowercase()) }
         searchList?.let {
             uiCallback?.loadDataDiscountCode(searchList)
         }
     }
 
     fun onApplyDiscount(discSelected: DiscountResp) {
-        when(DiscountTypeEnum.fromInt(discSelected.DiscountType)) {
+        when (DiscountTypeEnum.fromInt(discSelected.DiscountType)) {
             DiscountTypeEnum.PERCENT -> {
                 onApplyCouponCode(discSelected.DiscountCode)
             }
@@ -49,26 +48,32 @@ class DiscountCodeVM : BaseUiViewModel<DiscountCodeUV>() {
     }
 
     private fun onApplyCouponCode(couponCode: String) {
-        val body = GSonUtils.toServerJson(CartConverter.toOrderCoupon(CurCartData.cartModel!!, couponCode))
+        val body =
+            GSonUtils.toServerJson(CartConverter.toOrderCoupon(CurCartData.cartModel!!, couponCode))
         showLoading(true)
-        discountRepo.postNumberIncreamentAsync( body, object : BaseRepoCallback<BaseResponse<CouponDiscountResp>?>{
-            override fun apiResponse(data: BaseResponse<CouponDiscountResp>?) {
-                showLoading(false)
-                if (data == null || data.DidError) {
-                    showError(data?.ErrorMessage ?: PosApp.instance.getString(R.string.invalid_discount));
-                } else {
-                    if(data.Model != null)
-                    uiCallback?.updateDiscountCouponCode(data.Model)
-                    else {
-                        showError(PosApp.instance.getString(R.string.already_apply_discount))
+        discountRepo.postDiscountCoupon(
+            body,
+            object : BaseRepoCallback<BaseResponse<CouponDiscountResp>?> {
+                override fun apiResponse(data: BaseResponse<CouponDiscountResp>?) {
+                    showLoading(false)
+                    if (data == null || data.DidError) {
+                        showError(
+                            data?.ErrorMessage
+                                ?: PosApp.instance.getString(R.string.invalid_discount)
+                        );
+                    } else {
+                        if (data.Model != null)
+                            uiCallback?.updateDiscountCouponCode(data.Model)
+                        else {
+                            showError(PosApp.instance.getString(R.string.already_apply_discount))
+                        }
                     }
                 }
-            }
 
-            override fun showMessage(message: String?) {
-                showLoading(false)
-                showError(message)
-            }
-        })
+                override fun showMessage(message: String?) {
+                    showLoading(false)
+                    showError(message)
+                }
+            })
     }
 }

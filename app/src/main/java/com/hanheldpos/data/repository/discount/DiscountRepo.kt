@@ -1,6 +1,5 @@
 package com.hanheldpos.data.repository.discount
 
-import com.hanheldpos.data.api.pojo.discount.CouponDiscountReq
 import com.hanheldpos.data.api.pojo.discount.CouponDiscountResp
 import com.hanheldpos.data.api.pojo.discount.CouponResp
 import com.hanheldpos.data.api.pojo.discount.DiscountResp
@@ -60,12 +59,12 @@ class DiscountRepo : BaseRepo() {
         });
     }
 
-    fun postNumberIncreamentAsync(
+    fun postDiscountCoupon(
         body: String,
         callback: BaseRepoCallback<BaseResponse<CouponDiscountResp>?>
     ) {
         callback.apiRequesting(true);
-        discountService.postNumberIncreamentAsync(body).enqueue(object :
+        discountService.postDiscountCoupon(body).enqueue(object :
             Callback<BaseResponse<CouponDiscountResp>?> {
             override fun onResponse(
                 call: Call<BaseResponse<CouponDiscountResp>?>,
