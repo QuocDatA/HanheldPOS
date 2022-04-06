@@ -12,6 +12,7 @@ import com.hanheldpos.data.repository.discount.DiscountRepo
 import com.hanheldpos.extension.notifyValueChange
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.cart.CartConverter
+import com.hanheldpos.model.discount.DiscountTypeEnum
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
 import com.hanheldpos.ui.screens.cart.CurCartData
 import com.hanheldpos.utils.GSonUtils
@@ -32,8 +33,22 @@ class DiscountCodeVM : BaseUiViewModel<DiscountCodeUV>() {
         }
     }
 
+    fun onApplyDiscount(discSelected: DiscountResp) {
+        when(DiscountTypeEnum.fromInt(discSelected.DiscountType)) {
+            DiscountTypeEnum.PERCENT -> {
+                onApplyCouponCode(discSelected.DiscountCode)
+            }
+            DiscountTypeEnum.AMOUNT -> {
+                onApplyCouponCode(discSelected.DiscountCode)
+            }
+            DiscountTypeEnum.BUYX_GETY -> {
 
-    fun onApplyCouponCode(couponCode: String) {
+            }
+            else -> {}
+        }
+    }
+
+    private fun onApplyCouponCode(couponCode: String) {
         val body = GSonUtils.toServerJson(CartConverter.toOrderCoupon(CurCartData.cartModel!!, couponCode))
         showLoading(true)
         discountRepo.postNumberIncreamentAsync( body, object : BaseRepoCallback<BaseResponse<CouponDiscountResp>?>{

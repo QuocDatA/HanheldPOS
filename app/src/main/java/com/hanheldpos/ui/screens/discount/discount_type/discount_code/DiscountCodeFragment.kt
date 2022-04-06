@@ -50,7 +50,7 @@ class DiscountCodeFragment(
                 }
 
                 override fun onItemClick(item : DiscountResp) {
-                    viewModel.onApplyCouponCode(item.DiscountCode ?: "")
+                    viewModel.onApplyDiscount(item)
                 }
 
             });
