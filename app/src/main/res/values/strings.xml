@@ -220,4 +220,5 @@
     <string name="clear_discount">Clear Discount</string>
     <string name="invalid_discount">Invalid discount !</string>
     <string name="maxium_usage_limited">Maxium usage limited</string>
+    <string name="already_apply_discount">Discount code already apply, please check or try again</string>
 </resources>

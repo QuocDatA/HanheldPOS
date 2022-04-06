@@ -1,6 +1,7 @@
 package com.hanheldpos.model.cart
 
 import com.hanheldpos.data.api.pojo.customer.CustomerResp
+import com.hanheldpos.data.api.pojo.discount.CouponDiscountReq
 import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.data.api.pojo.fee.Fee
 import com.hanheldpos.data.api.pojo.order.settings.DiningOption
@@ -290,9 +291,11 @@ open class CartModel(
     }
 
     fun totalQtyDiscUsed(discountId: String): Int {
-        val totalQty = discountServerList?.count { disc ->
+        val totalQty = discountServerList.count { disc ->
             disc._id == discountId
         };
         return totalQty ?: 0;
     }
+
+
 }

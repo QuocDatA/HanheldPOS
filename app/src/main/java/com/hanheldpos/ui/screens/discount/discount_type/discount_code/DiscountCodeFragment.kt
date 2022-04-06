@@ -6,6 +6,7 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hanheldpos.R
+import com.hanheldpos.data.api.pojo.discount.CouponDiscountResp
 import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.databinding.FragmentDiscountCodeBinding
 import com.hanheldpos.model.discount.DiscApplyTo
@@ -48,6 +49,7 @@ class DiscountCodeFragment(
                 }
 
                 override fun onItemClick(item : DiscountResp) {
+                    viewModel.onApplyCouponCode(item.DiscountCode ?: "")
                 }
 
             });
@@ -89,5 +91,9 @@ class DiscountCodeFragment(
             discountCodeAdapter.submitList(list);
             discountCodeAdapter.notifyDataSetChanged();
         }
+    }
+
+    override fun updateDiscountCouponCode(discount: CouponDiscountResp) {
+        listener.discountCodeChoose(discount)
     }
 }

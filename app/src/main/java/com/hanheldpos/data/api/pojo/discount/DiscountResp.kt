@@ -34,7 +34,6 @@ data class DiscountResp(
     val DiscountApplyTo: Int,
     val DiscountAutomatic: Boolean,
     val DiscountAutomaticText: String,
-    val DiscountCode: String,
     val DiscountName: String,
     val DiscountText: String,
     val DiscountType: Int,
@@ -69,6 +68,7 @@ data class DiscountResp(
 
     var quantityUsed: Int? = null
     var maxAmountUsed: Double? = null
+    var DiscountCode: String? = null
 
     val getQuantityUsed: Int
         get() = if (Condition.CustomerBuys.IsMaxQuantity == 1) quantityUsed ?: 0 else 1

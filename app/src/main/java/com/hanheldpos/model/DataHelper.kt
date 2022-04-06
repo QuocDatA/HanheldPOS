@@ -247,4 +247,8 @@ object DataHelper {
             ) && discount.isExistsTrigger(triggerType)
         }.toList()
     }
+
+    fun findDiscount(discountId: String): DiscountResp? {
+        return discountsLocalStorage?.firstOrNull{discount -> discount._id == discountId}?.clone()
+    }
 }

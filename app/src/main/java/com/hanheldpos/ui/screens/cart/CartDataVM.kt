@@ -6,6 +6,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.hanheldpos.PosApp
 import com.hanheldpos.data.api.pojo.customer.CustomerResp
+import com.hanheldpos.data.api.pojo.discount.CouponDiscountResp
+import com.hanheldpos.data.api.pojo.discount.DiscountCoupon
 import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.data.api.pojo.floor.FloorTable
 import com.hanheldpos.data.api.pojo.order.settings.DiningOption
@@ -198,8 +200,8 @@ class CartDataVM : BaseViewModel() {
         notifyCartChange()
     }
     
-    fun notifyCartChange() {
-        cartModelLD.value?.updateDiscount(true)
+    fun notifyCartChange(isRemoveCoupon: Boolean = true) {
+        cartModelLD.value?.updateDiscount(isRemoveCoupon)
         cartModelLD.notifyValueChange()
     }
 
@@ -211,5 +213,33 @@ class CartDataVM : BaseViewModel() {
         updatePriceList(
             diningOption?.SubDiningOption?.firstOrNull()?.LocationGuid
         )
+    }
+
+    fun updateDiscountCouponCode(discountCoupon: CouponDiscountResp) {
+        // Find and append discounts for product list.
+        discountCoupon.OrderDiscountList
+            .forEach { disc ->
+                CurCartData.cartModel?.productsList?.mapIndexed { index, value -> index + 1 to value }
+                    ?.forEach { baseProduct ->
+                        if (disc.DiscountType == baseProduct.first)
+                            addDiscountCouponCode(baseProduct.second.discountServersList, disc)
+                    }
+            }
+    }
+
+    private fun addDiscountCouponCode(
+        discountServerList: MutableList<DiscountResp>?,
+        disc: DiscountCoupon
+    ) {
+        val discountApply = DataHelper.findDiscount(discountId = disc.DiscountGuid)
+
+        //Update discount
+        if (discountApply != null) {
+            discountApply.maxAmountUsed = disc.DiscountLineTotalPrice;
+            discountApply.quantityUsed = disc.Quantity ?: 1;
+            discountApply.DiscountCode = disc.DiscountCode;
+            this.cartModelLD.value?.addDiscountServer(discountApply, DiscApplyTo.fromInt(discountApply.DiscountApplyTo)!!)
+            notifyCartChange(false)
+        }
     }
 }
