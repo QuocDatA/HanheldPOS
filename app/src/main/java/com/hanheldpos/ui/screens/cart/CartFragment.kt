@@ -2,6 +2,7 @@ package com.hanheldpos.ui.screens.cart
 
 import android.annotation.SuppressLint
 import androidx.core.content.ContextCompat
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -146,6 +147,11 @@ class CartFragment(private val listener: CartCallBack) :
 
         binding.btnBill.setOnClickListener {
             onBillCart()
+        }
+
+        // Listener note cart change
+        binding.noteCart.doAfterTextChanged {
+            cartDataVM.updateNote(it.toString())
         }
     }
 

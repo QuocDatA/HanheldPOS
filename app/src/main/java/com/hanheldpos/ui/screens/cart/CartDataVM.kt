@@ -123,7 +123,7 @@ class CartDataVM : BaseViewModel() {
 
     fun addPaymentOrder(payments: List<PaymentOrder>) {
         cartModelLD.value!!.addPayment(payments)
-        notifyCartChange()
+        notifyCartChange(false)
     }
 
     fun deleteCart(
@@ -241,5 +241,10 @@ class CartDataVM : BaseViewModel() {
             this.cartModelLD.value?.addDiscountServer(discountApply, DiscApplyTo.fromInt(discountApply.DiscountApplyTo)!!)
             notifyCartChange(false)
         }
+    }
+
+    fun updateNote(note : String?) {
+        this.cartModelLD.value?.note = note
+        notifyCartChange(false)
     }
 }

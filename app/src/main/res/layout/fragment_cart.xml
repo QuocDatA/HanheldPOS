@@ -246,13 +246,14 @@
                             app:tint="@color/color_0" />
 
                         <com.diadiem.pos_components.PTextInputEditText
+                            android:id="@+id/noteCart"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/_5sdp"
                             android:focusableInTouchMode="true"
                             android:hint="@string/special_instruction_for_order"
                             android:paddingVertical="@dimen/_11sdp"
-                            android:text="@={cartDataVM.cartModelLD.note}"
+                            android:text="@{cartDataVM.cartModelLD.note}"
                             android:textColorHint="@color/color_9"
                             app:ipt_useTextColor="color4"
                             app:ipt_useTextHeader="h5" />
