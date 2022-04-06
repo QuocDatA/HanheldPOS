@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import com.hanheldpos.R
+import com.hanheldpos.data.api.pojo.discount.CouponDiscountResp
 import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.data.api.pojo.order.settings.Reason
 import com.hanheldpos.databinding.FragmentDiscountBinding
@@ -36,11 +37,7 @@ class DiscountFragment(private val listener: DiscountCallback) :
 
     override fun initView() {
         viewModel.typeDiscountSelect.observe(this) {
-//            if (it in mutableListOf(DiscountTypeFor.DISCOUNT_CODE,DiscountTypeFor.AUTOMATIC)){
-//                binding.btnSave.visibility = View.GONE
-//            }else {
-//                binding.btnSave.visibility = View.VISIBLE
-//            }
+
 
         }
     }
@@ -61,6 +58,11 @@ class DiscountFragment(private val listener: DiscountCallback) :
 
                     override fun discountServerChoose(discount: DiscountResp, discApplyTo: DiscApplyTo) {
                         listener.onDiscountServerChoose(discount,discApplyTo)
+                        onFragmentBackPressed()
+                    }
+
+                    override fun discountCodeChoose(discount: CouponDiscountResp) {
+                        listener.onDiscountCodeChoose(discount)
                         onFragmentBackPressed()
                     }
 
@@ -104,6 +106,7 @@ class DiscountFragment(private val listener: DiscountCallback) :
     interface DiscountCallback {
         fun onDiscountUserChoose(discount: DiscountUser);
         fun onDiscountServerChoose(discount : DiscountResp,discApplyTo : DiscApplyTo)
+        fun onDiscountCodeChoose(discount: CouponDiscountResp)
         fun onCompReasonChoose(reason: Reason);
         fun onCompRemove();
         fun clearAllDiscountCoupon()
@@ -112,6 +115,7 @@ class DiscountFragment(private val listener: DiscountCallback) :
     interface DiscountTypeListener {
         fun discountUserChoose(discount: DiscountUser): Unit {}
         fun discountServerChoose(discount : DiscountResp,discApplyTo: DiscApplyTo) : Unit {}
+        fun discountCodeChoose(discount: CouponDiscountResp): Unit{}
         fun compReasonChoose(item: Reason): Unit {}
         fun compRemoveAll(): Unit {}
         fun clearAllDiscountCoupon() : Unit {}

@@ -4,8 +4,9 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import com.hanheldpos.PosApp
 import com.hanheldpos.data.api.pojo.customer.CustomerResp
+import com.hanheldpos.data.api.pojo.discount.CouponDiscountResp
+import com.hanheldpos.data.api.pojo.discount.DiscountCoupon
 import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.data.api.pojo.floor.FloorTable
 import com.hanheldpos.data.api.pojo.order.settings.DiningOption
@@ -21,8 +22,6 @@ import com.hanheldpos.model.discount.DiscountUser
 import com.hanheldpos.model.home.table.TableSummary
 import com.hanheldpos.ui.base.dialog.AppAlertDialog
 import com.hanheldpos.ui.base.viewmodel.BaseViewModel
-import kotlin.coroutines.coroutineContext
-import kotlin.reflect.jvm.internal.impl.load.java.structure.JavaClass
 
 class CartDataVM : BaseViewModel() {
 
@@ -121,7 +120,7 @@ class CartDataVM : BaseViewModel() {
 
     fun addPaymentOrder(payments: List<PaymentOrder>) {
         cartModelLD.value!!.addPayment(payments)
-        notifyCartChange()
+        notifyCartChange(false)
     }
 
     fun deleteCart(
@@ -189,7 +188,7 @@ class CartDataVM : BaseViewModel() {
     }
 
     fun addDiscountServer(discount: DiscountResp, applyTo: DiscApplyTo) {
-        this.cartModelLD.value!!.addDiscountServer(discount, applyTo)
+        this.cartModelLD.value!!.addDiscountAutoServer(discount, applyTo)
         notifyCartChange()
     }
 
@@ -197,9 +196,9 @@ class CartDataVM : BaseViewModel() {
         this.cartModelLD.value!!.clearAllDiscounts()
         notifyCartChange()
     }
-    
-    fun notifyCartChange() {
-        cartModelLD.value?.updateDiscount(true)
+
+    fun notifyCartChange(isRemoveCoupon: Boolean = true) {
+        cartModelLD.value?.updateDiscount(isRemoveCoupon)
         cartModelLD.notifyValueChange()
     }
 
@@ -211,5 +210,35 @@ class CartDataVM : BaseViewModel() {
         updatePriceList(
             diningOption?.SubDiningOption?.firstOrNull()?.LocationGuid
         )
+    }
+
+    fun updateDiscountCouponCode(discountCoupon: CouponDiscountResp) {
+        // Find and append discounts for product list.
+        discountCoupon.ProductDiscountList
+            .forEach { disc ->
+                cartModelLD.value?.productsList?.forEachIndexed { index, baseProduct ->
+                    if (disc.OrderDetailId == index + 1)
+                        this.cartModelLD.value?.addDiscountCouponServer(
+                            disc,
+                            DiscApplyTo.ITEM,
+                            baseProduct
+                        )
+                }
+            }
+        // Find and append discounts for order.
+        discountCoupon.OrderDiscountList.forEach { disc ->
+            this.cartModelLD.value?.addDiscountCouponServer(
+                disc,
+                DiscApplyTo.ORDER
+            )
+        }
+
+        notifyCartChange(false)
+    }
+
+
+    fun updateNote(note: String?) {
+        this.cartModelLD.value?.note = note
+        notifyCartChange(false)
     }
 }

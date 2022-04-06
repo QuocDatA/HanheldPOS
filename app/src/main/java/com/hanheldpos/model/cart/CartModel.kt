@@ -1,6 +1,8 @@
 package com.hanheldpos.model.cart
 
 import com.hanheldpos.data.api.pojo.customer.CustomerResp
+import com.hanheldpos.data.api.pojo.discount.CouponDiscountReq
+import com.hanheldpos.data.api.pojo.discount.DiscountCoupon
 import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.data.api.pojo.fee.Fee
 import com.hanheldpos.data.api.pojo.order.settings.DiningOption
@@ -123,32 +125,60 @@ open class CartModel(
         discountUserList = mutableListOf(discount);
     }
 
-    fun addDiscountServer(discount: DiscountResp, discApplyTo: DiscApplyTo) {
+    fun addDiscountAutoServer(discount: DiscountResp, discApplyTo: DiscApplyTo) {
         when (discApplyTo) {
             DiscApplyTo.UNKNOWN -> {}
             DiscApplyTo.ITEM -> {
                 addDiscountAutoOnClick(discount)
             }
             DiscApplyTo.ORDER -> {
-                discountServerList.add(discount)
+
             }
         }
-
     }
 
-    fun addDiscountAutoOnClick(discount: DiscountResp) {
+    private fun addDiscountAutoOnClick(discount: DiscountResp) {
         if (discount.OnlyApplyDiscountProductOncePerOrder == 1) {
             addDiscountOnePerOrder(discount)
         }
-        productsList?.forEach { baseProductInCart ->
+        productsList.forEach { baseProductInCart ->
             if (discount.isValid(
                     getSubTotal(),
                     baseProductInCart,
                     customer,
                     Date()
-                ) && !baseProductInCart.isExistDiscount(discountId = discount?._id)
+                ) && !baseProductInCart.isExistDiscount(discountId = discount._id)
             )
                 baseProductInCart.addDiscountAutomatic(discount, productsList);
+        }
+    }
+
+    fun addDiscountCouponServer(discount: DiscountCoupon, discApplyTo: DiscApplyTo , productApply : BaseProductInCart? = null) {
+        when(discApplyTo) {
+            DiscApplyTo.UNKNOWN -> TODO()
+            DiscApplyTo.ITEM -> {
+                if (productApply != null && productApply.discountServersList == null)
+                    productApply.discountServersList = mutableListOf()
+                addDiscountCouponCode(productApply?.discountServersList,discount)
+            }
+            DiscApplyTo.ORDER -> {
+                addDiscountCouponCode(discountServerList,discount)
+            }
+        }
+
+    }
+
+    private fun addDiscountCouponCode(
+        discountServerList : MutableList<DiscountResp>?,
+        disc: DiscountCoupon
+    ) {
+        val discountApply = DataHelper.findDiscount(discountId = disc.DiscountGuid)
+        //Update discount
+        if (discountApply != null) {
+            discountApply.maxAmountUsed = disc.DiscountLineTotalPrice;
+            discountApply.quantityUsed = disc.Quantity ?: 1;
+            discountApply.DiscountCode = disc.DiscountCode;
+            discountServerList?.add(discountApply)
         }
     }
 
@@ -290,9 +320,11 @@ open class CartModel(
     }
 
     fun totalQtyDiscUsed(discountId: String): Int {
-        val totalQty = discountServerList?.count { disc ->
+        val totalQty = discountServerList.count { disc ->
             disc._id == discountId
         };
         return totalQty ?: 0;
     }
+
+
 }

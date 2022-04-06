@@ -1,6 +1,7 @@
 package com.hanheldpos.ui.screens.discount.discount_type.automatic
 
 import android.annotation.SuppressLint
+import android.text.InputFilter
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -74,6 +75,7 @@ class DiscountAutomaticFragment(
             )
         };
         binding.listDiscountCode.adapter = discountAutoAdapter;
+
     }
 
     override fun initData() {
@@ -81,6 +83,7 @@ class DiscountAutomaticFragment(
     }
 
     override fun initAction() {
+
         binding.discountAutomaticInput.doAfterTextChanged {
             listener.validDiscount(it.toString().isNotEmpty())
             viewModel.loadDiscountAutomatic(it.toString())
@@ -110,7 +113,7 @@ class DiscountAutomaticFragment(
         ) { _, bundle ->
             if (bundle.getSerializable("DiscountTypeFor") == DiscountTypeFor.AUTOMATIC) {
                 val discountSelect = discountAutoAdapter.currentList.find {
-                    it.DiscountCode.lowercase() == binding.discountAutomaticInput.text.toString()
+                    it.DiscountCode.uppercase() == binding.discountAutomaticInput.text.toString()
                 }
                 if (discountSelect != null) {
                     viewModel.onApplyDiscountAuto(discountSelect)
