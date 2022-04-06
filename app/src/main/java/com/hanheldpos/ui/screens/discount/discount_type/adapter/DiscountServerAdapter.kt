@@ -1,16 +1,15 @@
-package com.hanheldpos.ui.screens.discount.discount_type.discount_code.adapter
+package com.hanheldpos.ui.screens.discount.discount_type.adapter
 
 import androidx.recyclerview.widget.DiffUtil
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.databinding.ItemDiscountCodeBinding
-import com.hanheldpos.databinding.ItemTabDiscountTypeBinding
-import com.hanheldpos.model.discount.DiscountTypeTab
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
-import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 
-class DiscountCodeAdapter(private val listener : DiscountItemCallBack)  : BaseBindingListAdapter<DiscountResp>(DiffCallBack()) {
+class DiscountServerAdapter(private val listener : DiscountItemCallBack)  : BaseBindingListAdapter<DiscountResp>(
+    DiffCallBack()
+) {
 
     override fun getItemViewType(position: Int): Int {
         return R.layout.item_discount_code;

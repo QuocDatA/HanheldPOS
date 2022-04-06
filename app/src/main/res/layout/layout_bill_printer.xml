@@ -11,18 +11,18 @@
             name="order"
             type="com.hanheldpos.model.order.OrderReq" />
     </data>
+
     <androidx.core.widget.NestedScrollView
         android:id="@+id/rootScrollView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/color_2"
             android:gravity="center_horizontal"
-            android:orientation="vertical"
-            android:paddingHorizontal="@dimen/_8sdp"
-            android:paddingVertical="@dimen/_6sdp">
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -66,13 +66,12 @@
                 android:src="@drawable/ic_note" />
 
 
-
             <com.diadiem.pos_components.PTextView
-                android:layout_marginVertical="@dimen/_7sdp"
                 android:id="@+id/addressBill"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_44sdp"
+                android:layout_marginVertical="@dimen/_7sdp"
                 android:textAlignment="center"
                 app:useFontStyle="normal"
                 app:useTextColor="color4"
@@ -193,7 +192,7 @@
                     <com.diadiem.pos_components.PTextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_weight="2"
                         android:text="Qty"
                         app:useFontStyle="bold"
                         app:useTextColor="color4"
@@ -202,7 +201,7 @@
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="8"
+                        android:layout_weight="10"
                         android:orientation="horizontal">
 
                         <com.diadiem.pos_components.PTextView
@@ -436,16 +435,16 @@
                     app:useTextHeader="h5"
                     tools:text="270,000" />
             </LinearLayout>
+
             <com.diadiem.pos_components.PTextView
-                android:layout_marginVertical="@dimen/_20sdp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:useTextHeader="h4"
+                android:layout_marginVertical="@dimen/_20sdp"
+                android:text="@string/thank_you"
+                android:textAllCaps="true"
                 app:useFontStyle="bold"
                 app:useTextColor="color4"
-                android:textAllCaps="true"
-                android:text="@string/thank_you"
-                />
+                app:useTextHeader="h4" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 

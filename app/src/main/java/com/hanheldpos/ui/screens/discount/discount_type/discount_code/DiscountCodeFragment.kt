@@ -13,7 +13,7 @@ import com.hanheldpos.model.discount.DiscountTypeFor
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.discount.DiscountFragment
 import com.hanheldpos.ui.screens.discount.discount_detail.DiscountDetailFragment
-import com.hanheldpos.ui.screens.discount.discount_type.discount_code.adapter.DiscountCodeAdapter
+import com.hanheldpos.ui.screens.discount.discount_type.adapter.DiscountServerAdapter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -24,7 +24,7 @@ class DiscountCodeFragment(
 ) : BaseFragment<FragmentDiscountCodeBinding, DiscountCodeVM>(), DiscountCodeUV {
     override fun layoutRes(): Int = R.layout.fragment_discount_code
 
-    private lateinit var discountCodeAdapter: DiscountCodeAdapter;
+    private lateinit var discountCodeAdapter: DiscountServerAdapter;
 
     override fun viewModelClass(): Class<DiscountCodeVM> {
         return DiscountCodeVM::class.java;
@@ -41,7 +41,7 @@ class DiscountCodeFragment(
     override fun initView() {
 
         discountCodeAdapter =
-            DiscountCodeAdapter(listener = object : DiscountCodeAdapter.DiscountItemCallBack {
+            DiscountServerAdapter(listener = object : DiscountServerAdapter.DiscountItemCallBack {
                 override fun onViewDetailClick(item: DiscountResp) {
                     navigator.goTo(DiscountDetailFragment(item, onApplyDiscountAuto = { discount ->
 
