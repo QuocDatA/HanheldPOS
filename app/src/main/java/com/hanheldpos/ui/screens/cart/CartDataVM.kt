@@ -213,12 +213,11 @@ class CartDataVM : BaseViewModel() {
     }
 
     fun updateDiscountCouponCode(discountCoupon: CouponDiscountResp) {
-
         // Find and append discounts for product list.
         discountCoupon.ProductDiscountList
             .forEach { disc ->
-                CurCartData.cartModel?.productsList?.forEachIndexed { index, baseProduct ->
-                    if (disc.DiscountType == index + 1)
+                cartModelLD.value?.productsList?.forEachIndexed { index, baseProduct ->
+                    if (disc.OrderDetailId == index + 1)
                         this.cartModelLD.value?.addDiscountCouponServer(
                             disc,
                             DiscApplyTo.ITEM,
