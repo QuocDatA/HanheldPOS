@@ -21,14 +21,15 @@ class DiscountCodeVM : BaseUiViewModel<DiscountCodeUV>() {
     val isLoading = MutableLiveData<Boolean>(false);
     private val discountRepo = DiscountRepo()
     fun initData() {
-        val listDiscountCode = DataHelper.discountsLocalStorage?.filter { !it.DiscountAutomatic };
-        if (listDiscountCode != null) uiCallback?.loadDataDiscountCode(listDiscountCode as List<DiscountResp>);
+       searchDiscountCode()
     }
 
-    fun searchDiscountCode(keyword: String) {
+    fun searchDiscountCode(keyword: String = "") {
         val listDiscountCode = DataHelper.discountsLocalStorage?.filter { !it.DiscountAutomatic };
-        val searchList =  listDiscountCode?.filter { it.DiscountCode?.lowercase()!!.contains(keyword.lowercase()) }
-        uiCallback?.loadDataDiscountCode(searchList as List<DiscountResp>);
+        val searchList =  listDiscountCode?.sortedBy { it.DiscountName }?.filter { it.DiscountCode.lowercase().contains(keyword.lowercase()) }
+        searchList?.let {
+            uiCallback?.loadDataDiscountCode(searchList)
+        }
     }
 
 

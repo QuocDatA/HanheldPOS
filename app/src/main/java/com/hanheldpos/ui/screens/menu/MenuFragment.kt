@@ -1,9 +1,13 @@
 package com.hanheldpos.ui.screens.menu
 
+import android.app.Activity
+import android.graphics.BitmapFactory
+import android.opengl.GLUtils
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hanheldpos.R
+import com.hanheldpos.database.DatabaseMapper
 import com.hanheldpos.databinding.FragmentMenuBinding
 import com.hanheldpos.extension.navigateTo
 import com.hanheldpos.model.DataHelper
@@ -11,6 +15,7 @@ import com.hanheldpos.model.DatabaseHelper
 import com.hanheldpos.model.OrderHelper
 import com.hanheldpos.model.menu_nav_opt.LogoutType
 import com.hanheldpos.model.menu_nav_opt.NavBarOptionType
+import com.hanheldpos.model.printer.PrinterHelper
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.dialog.AppAlertDialog
 import com.hanheldpos.ui.base.fragment.BaseFragment
@@ -19,6 +24,7 @@ import com.hanheldpos.ui.screens.menu.adapter.OptionNavAdapter
 import com.hanheldpos.ui.screens.menu.option.report.ReportFragment
 import com.hanheldpos.ui.screens.pincode.PinCodeFragment
 import com.hanheldpos.ui.screens.welcome.WelcomeFragment
+import com.hanheldpos.utils.GSonUtils
 import com.hanheldpos.utils.NetworkUtils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -27,6 +33,7 @@ import kotlinx.coroutines.flow.count
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
+import java.io.File
 
 class MenuFragment : BaseFragment<FragmentMenuBinding, MenuVM>(), MenuUV {
     override fun layoutRes() = R.layout.fragment_menu
@@ -95,6 +102,22 @@ class MenuFragment : BaseFragment<FragmentMenuBinding, MenuVM>(), MenuUV {
     fun onNavOptionClick(option: ItemOptionNav) {
         when (option.type as NavBarOptionType) {
             NavBarOptionType.ORDERS -> {
+//                val filePath = File(requireActivity().getExternalFilesDir(null), "bitmap.jpeg")
+//                val billImage = BitmapFactory.decodeFile(filePath.absolutePath)
+//                PrinterHelper.printBill(requireActivity(),billImage)
+                CoroutineScope(Dispatchers.IO).launch {
+                    DatabaseHelper.ordersCompleted.getAll().take(1).collectLatest {
+                        it.firstOrNull()?.let { completedEntity ->
+                            launch(Dispatchers.Main) {
+                                PrinterHelper.printBill(
+                                    requireActivity(),
+                                    DatabaseMapper.mappingOrderReqFromEntity(completedEntity)
+                                )
+                            }
+                        }
+
+                    }
+                }
 
             }
             NavBarOptionType.TRANSACTIONS -> {}

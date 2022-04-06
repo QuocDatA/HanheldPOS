@@ -2,6 +2,7 @@ package com.hanheldpos.ui.screens.discount.discount_type.automatic
 
 import android.annotation.SuppressLint
 import androidx.core.content.ContextCompat
+import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hanheldpos.R
@@ -14,7 +15,7 @@ import com.hanheldpos.model.discount.DiscountTypeFor
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.discount.DiscountFragment
 import com.hanheldpos.ui.screens.discount.discount_detail.DiscountDetailFragment
-import com.hanheldpos.ui.screens.discount.discount_type.discount_code.adapter.DiscountCodeAdapter
+import com.hanheldpos.ui.screens.discount.discount_type.adapter.DiscountServerAdapter
 
 
 class DiscountAutomaticFragment(
@@ -29,7 +30,7 @@ class DiscountAutomaticFragment(
         return R.layout.fragment_discount_automatic;
     }
 
-    private lateinit var discountCodeAdapter: DiscountCodeAdapter;
+    private lateinit var discountAutoAdapter: DiscountServerAdapter;
 
     override fun viewModelClass(): Class<DiscountAutomaticVM> {
         return DiscountAutomaticVM::class.java;
@@ -44,8 +45,8 @@ class DiscountAutomaticFragment(
 
     override fun initView() {
 
-        discountCodeAdapter =
-            DiscountCodeAdapter(listener = object : DiscountCodeAdapter.DiscountItemCallBack {
+        discountAutoAdapter =
+            DiscountServerAdapter(listener = object : DiscountServerAdapter.DiscountItemCallBack {
                 override fun onViewDetailClick(item: DiscountResp) {
                     navigator.goTo(DiscountDetailFragment(item, onApplyDiscountAuto = { discount ->
                         viewModel.onApplyDiscountAuto(discount)
@@ -72,28 +73,32 @@ class DiscountAutomaticFragment(
                 }
             )
         };
-        binding.listDiscountCode.adapter = discountCodeAdapter;
+        binding.listDiscountCode.adapter = discountAutoAdapter;
     }
 
     override fun initData() {
-        viewModel.loadDiscountAutomatic()
+        viewModel.initData()
     }
 
     override fun initAction() {
+        binding.discountAutomaticInput.doAfterTextChanged {
+            listener.validDiscount(it.toString().isNotEmpty())
+            viewModel.loadDiscountAutomatic(it.toString())
+        }
     }
 
     @SuppressLint("NotifyDataSetChanged")
     override fun loadDataDiscountCode(list: List<DiscountResp>) {
-        discountCodeAdapter.submitList(list);
-        discountCodeAdapter.notifyDataSetChanged();
+        discountAutoAdapter.submitList(list);
+        discountAutoAdapter.notifyDataSetChanged();
     }
 
     override fun onApplyDiscountForOrder(discount: DiscountResp) {
-        listener.discountServerChoose(discount,DiscApplyTo.ORDER)
+        listener.discountServerChoose(discount, DiscApplyTo.ORDER)
     }
 
     override fun onApplyDiscountForItem(discount: DiscountResp) {
-        listener.discountServerChoose(discount,DiscApplyTo.ITEM)
+        listener.discountServerChoose(discount, DiscApplyTo.ITEM)
     }
 
 
@@ -104,9 +109,17 @@ class DiscountAutomaticFragment(
             this
         ) { _, bundle ->
             if (bundle.getSerializable("DiscountTypeFor") == DiscountTypeFor.AUTOMATIC) {
+                val discountSelect = discountAutoAdapter.currentList.find {
+                    it.DiscountCode.lowercase() == binding.discountAutomaticInput.text.toString()
+                }
+                if (discountSelect != null) {
+                    viewModel.onApplyDiscountAuto(discountSelect)
+                }
+                else showMessage(getString(R.string.code_doesnt_exist))
 
             }
         }
+        listener.validDiscount(binding.discountAutomaticInput.text.toString().isNotEmpty())
     }
 
 }

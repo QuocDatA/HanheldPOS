@@ -1,7 +1,9 @@
 package com.hanheldpos.ui.screens.cart
 
+import android.app.Activity
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import androidx.lifecycle.viewModelScope
 import com.hanheldpos.R
 import com.hanheldpos.database.DatabaseMapper
@@ -15,8 +17,9 @@ import com.hanheldpos.model.order.OrderStatus
 import com.hanheldpos.model.payment.PaymentStatus
 import com.hanheldpos.ui.base.dialog.AppAlertDialog
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
-import com.hanheldpos.ui.screens.printer.PrinterViewModel
+import com.hanheldpos.model.printer.PrinterHelper
 import com.hanheldpos.utils.DateTimeUtils
+import com.hanheldpos.utils.writeBitmap
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.File
@@ -116,13 +119,12 @@ class CartVM : BaseUiViewModel<CartUV>() {
                 }
 
                 launch(Dispatchers.Main) {
-
                     // Save order bill
-                    val filePath = File(context.getExternalFilesDir(null), "bitmap.png")
+                    val filePath = File(context.getExternalFilesDir(null), "bitmap.jpeg")
                     filePath.writeBitmap(
-                        PrinterViewModel.getPrintOrderBill(context, orderReq),
+                        PrinterHelper.getPrintOrderBill(context, orderReq),
                         Bitmap.CompressFormat.JPEG,
-                        85
+                        100
                     )
                     showLoading(false)
                     if (!onPaymentSelected)
@@ -142,12 +144,6 @@ class CartVM : BaseUiViewModel<CartUV>() {
 
     }
 
-    private fun File.writeBitmap(bitmap: Bitmap, format: Bitmap.CompressFormat, quality: Int) {
-        outputStream().use { out ->
-            bitmap.compress(format, quality, out)
-            out.flush()
-        }
-    }
 
 
     fun processDataDiscount(cart: CartModel): List<DiscountCart> {

@@ -37,11 +37,11 @@ class DiscountFragment(private val listener: DiscountCallback) :
 
     override fun initView() {
         viewModel.typeDiscountSelect.observe(this) {
-            if (it in mutableListOf(DiscountTypeFor.DISCOUNT_CODE,DiscountTypeFor.AUTOMATIC)){
-                binding.btnSave.visibility = View.GONE
-            }else {
-                binding.btnSave.visibility = View.VISIBLE
-            }
+//            if (it in mutableListOf(DiscountTypeFor.DISCOUNT_CODE,DiscountTypeFor.AUTOMATIC)){
+//                binding.btnSave.visibility = View.GONE
+//            }else {
+//                binding.btnSave.visibility = View.VISIBLE
+//            }
 
         }
     }

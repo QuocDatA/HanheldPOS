@@ -27,7 +27,7 @@
                 android:orientation="horizontal"
                 android:layout_height="@dimen/_34sdp">
                 <com.diadiem.pos_components.PTextInputEditText
-                    android:id="@+id/firstNameInput"
+                    android:id="@+id/discountAutomaticInput"
                     style="@style/BaseTextInput"
                     android:layout_width="0dp"
                     android:gravity="center_vertical"
