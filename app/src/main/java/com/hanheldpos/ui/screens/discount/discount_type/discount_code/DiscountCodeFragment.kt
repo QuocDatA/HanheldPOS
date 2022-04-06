@@ -101,7 +101,13 @@ class DiscountCodeFragment(
             this
         ) { _, bundle ->
             if (bundle.getSerializable("DiscountTypeFor") == DiscountTypeFor.DISCOUNT_CODE) {
+                val discountSelect = discountCodeAdapter.currentList.find {
+                    it.DiscountCode.lowercase() == binding.discountCodeInput.text.toString()
+                }
+                if (discountSelect != null) {
 
+                }
+                else showMessage(getString(R.string.code_doesnt_exist))
             }
         }
         listener.validDiscount(binding.discountCodeInput.text.toString().isNotEmpty())
