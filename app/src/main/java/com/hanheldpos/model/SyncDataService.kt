@@ -252,8 +252,10 @@ class SyncDataService : BaseViewModel() {
                     }
 
 
-                    override fun onFail() {
+                    override fun onFail(errorMessage: String?) {
+                        if(errorMessage.isNullOrEmpty())
                         onDataFailure(context.getString(R.string.failed_to_load_data), listener)
+                        else onDataFailure(errorMessage, listener)
                     }
 
                     override fun onComplete() {

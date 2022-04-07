@@ -222,4 +222,5 @@
     <string name="maxium_usage_limited">Maxium usage limited</string>
     <string name="already_apply_discount">Discount code already apply, please check or try again</string>
     <string name="code_doesnt_exist">Code doesn\'t exist !</string>
+    <string name="date_and_time_of_the_device_are_out_of_sync">Date and time of the device are out of sync, Please check the device Date and time then try again</string>
 </resources>

@@ -232,7 +232,6 @@ class CartDataVM : BaseViewModel() {
                 DiscApplyTo.ORDER
             )
         }
-
         notifyCartChange(false)
     }
 
