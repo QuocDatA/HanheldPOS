@@ -115,7 +115,7 @@ class DiscountCodeFragment(
         listener.validDiscount(binding.discountCodeInput.text.toString().isNotEmpty())
     }
 
-    override fun updateDiscountCouponCode(discount: CouponDiscountResp) {
+    override fun updateDiscountCouponCode(discount: CouponDiscountResp?) {
         listener.discountCodeChoose(discount)
     }
 }

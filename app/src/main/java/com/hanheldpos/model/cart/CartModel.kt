@@ -172,7 +172,7 @@ open class CartModel(
         discountServerList : MutableList<DiscountResp>?,
         disc: DiscountCoupon
     ) {
-        val discountApply = DataHelper.findDiscount(discountId = disc.DiscountGuid)
+        val discountApply = DataHelper.findDiscount(discountId = disc.DiscountGuid)?.copy()
         //Update discount
         if (discountApply != null) {
             discountApply.maxAmountUsed = disc.DiscountLineTotalPrice;

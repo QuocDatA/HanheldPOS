@@ -62,11 +62,11 @@ class DiscountCodeVM : BaseUiViewModel<DiscountCodeUV>() {
                                 ?: PosApp.instance.getString(R.string.invalid_discount)
                         );
                     } else {
-                        if (data.Model != null)
+                        //if (data.Model != null)
                             uiCallback?.updateDiscountCouponCode(data.Model)
-                        else {
-                            showError(PosApp.instance.getString(R.string.already_apply_discount))
-                        }
+//                        else {
+//                            showError(PosApp.instance.getString(R.string.already_apply_discount))
+//                        }
                     }
                 }
 
