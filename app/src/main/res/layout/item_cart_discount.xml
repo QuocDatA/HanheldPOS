@@ -45,6 +45,8 @@
             </LinearLayout>
 
             <FrameLayout
+                android:clickable="true"
+                android:focusable="true"
                 android:id="@+id/btnRemove"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -54,8 +56,6 @@
                     android:layout_width="@dimen/_14sdp"
                     android:layout_height="@dimen/_14sdp"
                     android:layout_gravity="center"
-                    android:clickable="true"
-                    android:focusable="true"
                     android:src="@drawable/ic_delete" />
             </FrameLayout>
 

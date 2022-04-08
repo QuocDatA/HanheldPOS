@@ -163,6 +163,9 @@ class CartDataVM : BaseViewModel() {
                     DiscountResp::class.java -> {
                         cartModelLD.value!!.discountServerList.remove(it)
                     }
+                    Reason::class.java -> {
+                        removeCompReason()
+                    }
                     else -> {
 
                     }
@@ -172,11 +175,10 @@ class CartDataVM : BaseViewModel() {
         notifyCartChange()
     }
 
-    fun removeCompReason(item : BaseProductInCart ? = null) {
+    fun removeCompReason(item: BaseProductInCart? = null) {
         if (item != null) {
             item.clearCompReason()
-        }
-        else {
+        } else {
             cartModelLD.value!!.compReason = null
         }
 
