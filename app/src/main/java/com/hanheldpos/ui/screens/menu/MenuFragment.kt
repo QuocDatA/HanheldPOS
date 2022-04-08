@@ -107,7 +107,7 @@ class MenuFragment : BaseFragment<FragmentMenuBinding, MenuVM>(), MenuUV {
 //                PrinterHelper.printBill(requireActivity(),billImage)
                 CoroutineScope(Dispatchers.IO).launch {
                     DatabaseHelper.ordersCompleted.getAll().take(1).collectLatest {
-                        it.firstOrNull()?.let { completedEntity ->
+                        it.lastOrNull()?.let { completedEntity ->
                             launch(Dispatchers.Main) {
                                 PrinterHelper.printBill(
                                     requireActivity(),

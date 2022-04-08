@@ -25,6 +25,9 @@ import com.hanheldpos.model.payment.PaymentMethodType
 import com.hanheldpos.model.printer.bill.BillOrderConverter
 import com.hanheldpos.ui.screens.printer.bill.ProductBillPrinterAdapter
 import com.hanheldpos.utils.DateTimeUtils
+import com.hanheldpos.utils.StringUtils
+import java.nio.charset.Charset
+import java.nio.charset.StandardCharsets
 import kotlin.math.roundToInt
 
 
@@ -235,18 +238,24 @@ object PrinterHelper {
         } else {
             // Your code HERE
             val printer =
-                EscPosPrinter(BluetoothPrintersConnections.selectFirstPaired(), 203, 58f, 34,
-                    EscPosCharsetEncoding("Windows-1258", 16))
+                EscPosPrinter(
+                    BluetoothPrintersConnections.selectFirstPaired(), 203, 48f, 34,
+                    EscPosCharsetEncoding("windows-1258", 16)
+                )
 
             try {
-
-                printer.printFormattedText(
-                    BillOrderConverter.orderToBillString(
-                        context,
-                        printer,
-                        order
+                BillOrderConverter.orderToBillString(
+                    context,
+                    printer,
+                    order
+                ).split("\n").map { StringUtils.removeAccent(it) }.forEach {
+                    printer.printFormattedText(
+                        it,
+                        1
                     )
-                )
+                }
+                printer.printFormattedText("")
+                printer.disconnectPrinter()
 
             } catch (e: EscPosConnectionException) {
                 e.printStackTrace()

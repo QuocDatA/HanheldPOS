@@ -172,8 +172,14 @@ class CartDataVM : BaseViewModel() {
         notifyCartChange()
     }
 
-    fun removeCompReason() {
-        cartModelLD.value!!.compReason = null
+    fun removeCompReason(item : BaseProductInCart ? = null) {
+        if (item != null) {
+            item.clearCompReason()
+        }
+        else {
+            cartModelLD.value!!.compReason = null
+        }
+
         notifyCartChange()
     }
 

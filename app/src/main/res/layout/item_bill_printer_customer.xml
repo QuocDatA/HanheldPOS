@@ -28,7 +28,6 @@
             app:useTextHeader="h4" />
 
         <com.diadiem.pos_components.PTextView
-            visibleObject="@{!TextUtils.isEmpty(customer.phone)}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{customer.fullAddressWithLineBreaker, default=`Tropic Garden Apartment\nBlock A2, Floor 5, Room 123\n215 Nguyen Van Huong\nThao Dien Ward, District 2, HCMC`}"
