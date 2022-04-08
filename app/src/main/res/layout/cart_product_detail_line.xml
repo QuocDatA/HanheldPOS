@@ -43,8 +43,10 @@
 
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_marginEnd="@dimen/_40sdp"
+        android:clickable="true"
+        android:focusable="true"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
@@ -93,26 +95,33 @@
         <LinearLayout
             visibleObject="@{isDiscount || isOtherFee,default=false}"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="horizontal">
+
             <com.diadiem.pos_components.PTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:useTextColor="color5"
+                android:layout_gravity="center"
                 app:useTextHeader="h6"
                 priceDisc="@{priceDisc}"
-                priceDiscMinusRound="@{priceDiscMinus}"/>
-            <ImageView
-                android:focusable="true"
-                android:clickable="true"
-                android:onClick="@{clickListener}"
-                android:layout_width="@dimen/_14sdp"
-                android:layout_height="@dimen/_14sdp"
-                android:layout_gravity="center"
-                android:layout_marginStart="@dimen/_7sdp"
-                android:scaleType="fitXY"
-                android:src="@{isDiscount?@drawable/ic_delete: @drawable/ic_info,default=@drawable/ic_info}" />
+                priceDiscMinusRound="@{priceDiscMinus}" />
 
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:onClick="@{clickListener}"
+                android:clickable="true"
+                android:focusable="true"
+                android:paddingHorizontal="@dimen/_9sdp">
+
+                <ImageView
+                    android:layout_width="@dimen/_14sdp"
+                    android:layout_height="@dimen/_14sdp"
+                    android:layout_gravity="center"
+                    android:scaleType="fitXY"
+                    android:src="@{isDiscount?@drawable/ic_delete: @drawable/ic_info,default=@drawable/ic_info}" />
+            </FrameLayout>
 
         </LinearLayout>
 

@@ -263,7 +263,7 @@ object CartConverter {
         val discUsedList: MutableList<DiscountUsed> = mutableListOf()
         discServerList.filter { disc -> !disc.DiscountAutomatic }.toList().forEach { coupon ->
             discUsedList.add(
-                DiscountUsed(DiscountGuid = coupon._id, DiscountCode = coupon.DiscountCode!!)
+                DiscountUsed(DiscountGuid = coupon._id, DiscountCode = coupon.DiscountCode)
             )
         }
         return discUsedList.toList()
@@ -271,13 +271,12 @@ object CartConverter {
 
     private fun toOrderDetailCoupon(productList: List<BaseProductInCart>): List<OrderDetailPostCoupon> {
         val detailList: MutableList<OrderDetailPostCoupon> = mutableListOf()
-        productList.mapIndexed{ index, value -> index + 1 to value }
-            .toList()
-            .forEach { baseProduct ->
-                var baseExtraGuid = "Extra/${baseProduct.first + 1}"
-                when (baseProduct.second.productType) {
+        productList
+            .forEachIndexed { index,baseProduct ->
+                var baseExtraGuid = "Extra/${index + 1}"
+                when (baseProduct.productType) {
                     ProductType.BUNDLE -> {
-                        val bundle = baseProduct.second as Combo
+                        val bundle = baseProduct as Combo
                         detailList.add(
                             OrderDetailPostCoupon(
                                 ProductsBuy = toProductBuyCouponList(
@@ -289,7 +288,7 @@ object CartConverter {
                         )
                     }
                     ProductType.REGULAR -> {
-                        val regular = baseProduct.second as Regular
+                        val regular = baseProduct as Regular
                         baseExtraGuid =
                             if (regular.modifierList.isNullOrEmpty() || !regular.modifierList.any()) "" else baseExtraGuid
                         detailList.add(

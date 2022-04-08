@@ -229,7 +229,7 @@ class CartFragment(private val listener: CartCallBack) :
                     cartDataVM.addDiscountServer(discount,discApplyTo)
                 }
 
-                override fun onDiscountCodeChoose(discount: CouponDiscountResp) {
+                override fun onDiscountCodeChoose(discount: CouponDiscountResp?) {
                     cartDataVM.updateDiscountCouponCode(discount)
                 }
 

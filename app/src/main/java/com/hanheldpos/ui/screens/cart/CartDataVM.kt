@@ -218,10 +218,10 @@ class CartDataVM : BaseViewModel() {
         )
     }
 
-    fun updateDiscountCouponCode(discountCoupon: CouponDiscountResp) {
+    fun updateDiscountCouponCode(discountCoupon: CouponDiscountResp?) {
         // Find and append discounts for product list.
-        discountCoupon.ProductDiscountList
-            .forEach { disc ->
+        discountCoupon?.ProductDiscountList
+            ?.forEach { disc ->
                 cartModelLD.value?.productsList?.forEachIndexed { index, baseProduct ->
                     if (disc.OrderDetailId == index + 1)
                         this.cartModelLD.value?.addDiscountCouponServer(
@@ -232,13 +232,12 @@ class CartDataVM : BaseViewModel() {
                 }
             }
         // Find and append discounts for order.
-        discountCoupon.OrderDiscountList.forEach { disc ->
+        discountCoupon?.OrderDiscountList?.forEach { disc ->
             this.cartModelLD.value?.addDiscountCouponServer(
                 disc,
                 DiscApplyTo.ORDER
             )
         }
-
         notifyCartChange(false)
     }
 

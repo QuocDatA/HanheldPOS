@@ -1,6 +1,5 @@
 package com.hanheldpos.ui.screens.discount.discount_detail
 
-import android.text.Html
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.databinding.FragmentDiscountDetailBinding
@@ -9,7 +8,8 @@ import com.hanheldpos.ui.base.fragment.BaseFragment
 
 class DiscountDetailFragment(
     private val discountResp: DiscountResp,
-    private val onApplyDiscountAuto: (discount: DiscountResp) -> Unit
+    private val onApplyDiscountAuto: (discount: DiscountResp) -> Unit,
+    private val onApplyDiscountCode: (discount: DiscountResp) -> Unit
 ) : BaseFragment<FragmentDiscountDetailBinding, DiscountDetailVM>(), DiscountDetailUV {
     override fun layoutRes(): Int = R.layout.fragment_discount_detail
 
@@ -53,7 +53,11 @@ class DiscountDetailFragment(
 
     override fun initAction() {
         binding.btnApplyDiscount.setOnClickListener {
-            onApplyDiscountAuto(discountResp)
+            onFragmentBackPressed()
+            if (discountResp.DiscountAutomatic)
+                onApplyDiscountAuto(discountResp)
+            else
+                onApplyDiscountCode(discountResp)
         }
 
         binding.btnShowListAppliesItem.setOnClickListener {

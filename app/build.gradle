@@ -12,8 +12,8 @@ plugins {
 
 // ----- Apk info
 String APK_NAME = "[DEV]HanheldPos"
-int VERSION_CODE = 54
-String VERSION_NAME = "0.5.4"
+int VERSION_CODE = 55
+String VERSION_NAME = "0.5.5"
 
 static def getDate() {
     return new Date().format("yyyyMMdd")
@@ -162,5 +162,4 @@ dependencies {
     // printer
     implementation 'com.github.DantSu:ESCPOS-ThermalPrinter-Android:3.2.0'
 
-    implementation 'com.itextpdf:itextpdf:5.0.6'
 }

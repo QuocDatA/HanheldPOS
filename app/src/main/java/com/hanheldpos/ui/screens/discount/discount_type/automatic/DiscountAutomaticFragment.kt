@@ -51,7 +51,7 @@ class DiscountAutomaticFragment(
                 override fun onViewDetailClick(item: DiscountResp) {
                     navigator.goTo(DiscountDetailFragment(item, onApplyDiscountAuto = { discount ->
                         viewModel.onApplyDiscountAuto(discount)
-                    }))
+                    }, onApplyDiscountCode = {}))
                 }
 
                 override fun onItemClick(item: DiscountResp) {

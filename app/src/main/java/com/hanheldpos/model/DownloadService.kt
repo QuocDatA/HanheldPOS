@@ -5,12 +5,14 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.pm.PackageManager
 import android.os.Environment
+import android.util.Log
 import androidx.core.content.ContextCompat
 import com.downloader.OnDownloadListener
 import com.downloader.PRDownloader
 import com.downloader.PRDownloaderConfig
 import com.downloader.Status
 import com.downloader.request.DownloadRequest
+import com.hanheldpos.PosApp
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.resource.ResourceResp
 import kotlinx.coroutines.CoroutineScope
@@ -101,10 +103,13 @@ object DownloadService {
                         }
 
                         override fun onError(error: com.downloader.Error?) {
-                            CoroutineScope(Dispatchers.Main).launch {
-                                listener.onFail()
+                            if(error?.connectionException?.message!!.contains("Unacceptable certificate")){
+                                listener.onFail(PosApp.instance.getString(R.string.date_and_time_of_the_device_are_out_of_sync))
+                            } else {
+                                CoroutineScope(Dispatchers.Main).launch {
+                                    listener.onFail()
+                                }
                             }
-
                         }
 
                     })
@@ -188,7 +193,7 @@ object DownloadService {
         fun onDownloadStartOrResume()
         fun onPause()
         fun onCancel()
-        fun onFail()
+        fun onFail(errorMessage: String? = null)
         fun onComplete()
     }
 }

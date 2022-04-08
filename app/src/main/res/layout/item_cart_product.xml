@@ -164,12 +164,13 @@
 
                         <include
                             android:id="@+id/compDetail"
+                            android:clickable="true"
                             layout="@layout/cart_product_detail_line"
                             app:isDiscount="@{true}"
                             visibleObject="@{item.compReason != null }"
                             app:lineText="@{`Comp Reason : `}"
                             app:priceDiscMinus="@{item.totalCompValue}"
-                            />
+                            android:focusable="true" />
 
                         <include
                             layout="@layout/cart_product_detail_line"
