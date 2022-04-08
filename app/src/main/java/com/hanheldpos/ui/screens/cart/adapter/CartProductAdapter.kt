@@ -29,12 +29,12 @@ class CartProductAdapter(
             if (!item.discountUsersList.isNullOrEmpty() || !item.discountServersList.isNullOrEmpty())
             listener.onDiscountDelete(
                 position,
-
                 item
             )
         }
         binding.compDetail.setClickListener {
-            if (item.compReason != null) listener.onCompDelete(
+            if (item.compReason != null)
+                listener.onCompDelete(
                 position,
                 item
             )

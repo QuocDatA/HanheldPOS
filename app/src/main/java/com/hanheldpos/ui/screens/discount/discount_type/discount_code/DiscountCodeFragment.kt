@@ -44,9 +44,12 @@ class DiscountCodeFragment(
         discountCodeAdapter =
             DiscountServerAdapter(listener = object : DiscountServerAdapter.DiscountItemCallBack {
                 override fun onViewDetailClick(item: DiscountResp) {
-                    navigator.goTo(DiscountDetailFragment(item, onApplyDiscountAuto = { discount ->
-
-                    }))
+                    navigator.goTo(
+                        DiscountDetailFragment(
+                            item,
+                            onApplyDiscountAuto = {},
+                            onApplyDiscountCode = { discount -> viewModel.onApplyDiscount(discount) })
+                    )
                 }
 
                 override fun onItemClick(item : DiscountResp) {
