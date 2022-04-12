@@ -23,8 +23,8 @@ import com.hanheldpos.model.setting.SettingDevicePut
 import com.hanheldpos.ui.base.dialog.AppAlertDialog
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
 import com.hanheldpos.ui.screens.menu.option.report.sale.reports.adapter.NumberDayReportItem
-import com.hanheldpos.utils.GSonUtils
 import com.hanheldpos.utils.DateTimeUtils
+import com.hanheldpos.utils.GSonUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.take
@@ -116,21 +116,24 @@ class SalesReportVM : BaseUiViewModel<SalesReportUV>() {
                                     countOrderPush += 1
                                     if (data == null || data.Message?.contains("exist") == true || data.DidError) {
                                         Log.d("Sync Order", "Post order failed!")
-                                        DatabaseHelper.ordersCompleted.update(
-                                        orderEntity.apply {
-                                            requestLogJson = GSonUtils.toJson(data)
-                                        })
-                                } else {
-                                    viewModelScope.launch(Dispatchers.IO) {
-                                        DatabaseHelper.ordersCompleted.update(
-                                            orderEntity.apply {
-                                                isSync = true; requestLogJson =
-                                                GSonUtils.toJson(data)
-                                            })
+                                        viewModelScope.launch(Dispatchers.IO) {
+                                            DatabaseHelper.ordersCompleted.update(
+                                                orderEntity.apply {
+                                                    requestLogJson = GSonUtils.toJson(data)
+                                                }
+                                            )
+                                        }
+                                    } else {
+                                        viewModelScope.launch(Dispatchers.IO) {
+                                            DatabaseHelper.ordersCompleted.update(
+                                                orderEntity.apply {
+                                                    isSync = true; requestLogJson =
+                                                    GSonUtils.toJson(data)
+                                                })
+                                        }
                                     }
-                                }
-                                if (countOrderPush >= listNeedPush.size) {
-                                    viewModelScope.launch(Dispatchers.IO) {
+                                    if (countOrderPush >= listNeedPush.size) {
+                                        viewModelScope.launch(Dispatchers.IO) {
                                         launch(Dispatchers.Main) {
                                             isSyncOrderToServer = false
                                             showLoading(false)
