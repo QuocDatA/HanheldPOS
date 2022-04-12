@@ -1,6 +1,7 @@
 package com.hanheldpos.model.cart
 
-import com.hanheldpos.data.api.pojo.discount.*
+import com.hanheldpos.data.api.pojo.discount.DiscountResp
+import com.hanheldpos.data.api.pojo.discount.DiscountUsed
 import com.hanheldpos.data.api.pojo.fee.Fee
 import com.hanheldpos.data.api.pojo.order.settings.Reason
 import com.hanheldpos.model.DataHelper
@@ -10,11 +11,19 @@ import com.hanheldpos.model.cart.fee.FeeType
 import com.hanheldpos.model.discount.DiscountUser
 import com.hanheldpos.model.order.*
 import com.hanheldpos.model.payment.PaymentOrder
+import com.hanheldpos.model.payment.PaymentStatus
 import com.hanheldpos.model.product.ProductType
+import com.hanheldpos.utils.DateTimeUtils
+import java.util.*
 
 object CartConverter {
 
-    fun toOrder(cart: CartModel, orderStatus: Int, paymentStatus: Int): OrderReq {
+    fun toOrder(
+        cart: CartModel,
+        couponCode: String? = null,
+        orderStatus: Int = OrderStatus.ORDER.value,
+        paymentStatus: Int = PaymentStatus.UNPAID.value
+    ): OrderReq {
         val subTotal = cart.getSubTotal()
         val total = cart.total()
         val totalCompVoid = cart.totalComp()
@@ -34,6 +43,9 @@ object CartConverter {
 
         val description =
             cart.productsList.map { baseProductInCart -> baseProductInCart.name }.joinToString(",")
+
+        cart.createDate =
+            DateTimeUtils.dateToString(Date(), DateTimeUtils.Format.FULL_DATE_UTC_TIMEZONE)
 
         return OrderReq(
             Order = Order(
@@ -68,6 +80,11 @@ object CartConverter {
                     cart.discountUserList,
                     subTotal,
                     0.0
+                ),
+                DiscountUsedList = if (couponCode.isNullOrEmpty()) null else listOf(
+                    DiscountUsed(
+                        DiscountCode = couponCode
+                    )
                 ),
                 ServiceFeeList = toOrderFeeList(
                     cart.fees,
@@ -104,7 +121,7 @@ object CartConverter {
                 )
             ),
             OrderSummary = OrderSummaryPrimary(
-                OrderCode = cart.orderCode!!,
+                OrderCode = cart.orderCode,
                 OrderStatusId = orderStatus,
                 PaymentStatusId = paymentStatus,
                 Description = description,
@@ -244,119 +261,5 @@ object CartConverter {
         val compVoid = CompVoid(reason, parentId, totalPrice)
         compVoids.add(compVoid)
         return compVoids
-    }
-
-    fun toOrderCoupon(cart: CartModel, coupon_code: String): CouponDiscountReq {
-        return CouponDiscountReq(
-            CouponCode = coupon_code,
-            UserGuid = DataHelper.deviceCodeLocalStorage?.Device?.firstOrNull()?.UserGuid ?: "",
-            LocationGuid = DataHelper.deviceCodeLocalStorage?.Device?.firstOrNull()?.Location!!,
-            DeviceGuid = DataHelper.deviceCodeLocalStorage?.Device?.firstOrNull()?._Id!!,
-            DeliveryTypeId = cart.diningOption.Id,
-            CustomerGuestGuid = cart.customer?._Id,
-            DiscountUsed = toDiscountUsedList(cart.discountServerList),
-            OrderDetail = toOrderDetailCoupon(cart.productsList),
-        )
-    }
-
-    private fun toDiscountUsedList(discServerList: List<DiscountResp>): List<DiscountUsed> {
-        val discUsedList: MutableList<DiscountUsed> = mutableListOf()
-        discServerList.filter { disc -> !disc.DiscountAutomatic }.toList().forEach { coupon ->
-            discUsedList.add(
-                DiscountUsed(DiscountGuid = coupon._id, DiscountCode = coupon.DiscountCode)
-            )
-        }
-        return discUsedList.toList()
-    }
-
-    private fun toOrderDetailCoupon(productList: List<BaseProductInCart>): List<OrderDetailPostCoupon> {
-        val detailList: MutableList<OrderDetailPostCoupon> = mutableListOf()
-        productList
-            .forEachIndexed { index,baseProduct ->
-                var baseExtraGuid = "Extra/${index + 1}"
-                when (baseProduct.productType) {
-                    ProductType.BUNDLE -> {
-                        val bundle = baseProduct as Combo
-                        detailList.add(
-                            OrderDetailPostCoupon(
-                                ProductsBuy = toProductBuyCouponList(
-                                    bundle,
-                                    baseExtraGuid,
-                                    bundle.productType
-                                )
-                            )
-                        )
-                    }
-                    ProductType.REGULAR -> {
-                        val regular = baseProduct as Regular
-                        baseExtraGuid =
-                            if (regular.modifierList.isNullOrEmpty() || !regular.modifierList.any()) "" else baseExtraGuid
-                        detailList.add(
-                            OrderDetailPostCoupon(
-                                ListLineExtra = toExtraList(
-                                    regular.modifierList,
-                                    baseExtraGuid
-                                ),
-                                ProductsBuy = toProductBuyCouponList(
-                                    regular,
-                                    baseExtraGuid,
-                                    regular.productType
-                                )
-                            )
-                        )
-
-                    }
-                    else -> {}
-                }
-            }
-        return detailList
-    }
-
-    private fun toExtraList(
-        modifier: List<ModifierCart>,
-        extraGuid: String
-    ): List<ListLineExtraPostCoupon> {
-        return modifier.map { v ->
-            ListLineExtraPostCoupon(
-                ModifierGuid = v.modifierId,
-                Quantity = v.quantity,
-                ExtraId = extraGuid
-            )
-        }.toList()
-    }
-
-    private fun toProductBuyCouponList(
-        baseProduct: BaseProductInCart,
-        extraGuid: String,
-        type: ProductType
-    ): List<ProductsBuyPostCoupon> {
-        return listOf(toProductCoupon(baseProduct, extraGuid, type))
-    }
-
-    private fun toProductCoupon(
-        baseProduct: BaseProductInCart,
-        extraGuid: String,
-        type: ProductType
-    ): ProductsBuyPostCoupon {
-        return ProductsBuyPostCoupon(
-            ExtraId = extraGuid,
-            Active = 0,
-            ProductGuid = baseProduct.proOriginal!!._id,
-            Note = baseProduct.note,
-            Quantity = baseProduct.quantity,
-            OrderDetailType = type.value,
-            DiscountUsed = codesUsedDiscountCoupon(baseProduct.discountServersList),
-            Variants = baseProduct.variants!!,
-        )
-    }
-
-    private fun codesUsedDiscountCoupon(discountServer: List<DiscountResp>?): List<DiscountUsed> {
-        return discountServer?.filter { disc -> !disc.DiscountAutomatic }?.toList()
-            ?.map { discCoupon ->
-                DiscountUsed(
-                    DiscountGuid = discCoupon._id,
-                    DiscountCode = discCoupon.DiscountCode!!
-                )
-            }?.toList() ?: listOf()
     }
 }
