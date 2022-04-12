@@ -224,7 +224,7 @@ class CartDataVM : BaseViewModel() {
         discountCouponList?.filter { disc -> disc.DiscountApplyTo == DiscApplyTo.ITEM.value }
             ?.forEach { disc ->
                 cartModelLD.value?.productsList?.forEachIndexed { index, baseProduct ->
-                    if (disc.OrderDetailId == index + 1)
+                    if (disc.OrderDetailId == index)
                         this.cartModelLD.value?.addDiscountCouponServer(
                             disc.toDiscount(),
                             DiscApplyTo.ITEM,
