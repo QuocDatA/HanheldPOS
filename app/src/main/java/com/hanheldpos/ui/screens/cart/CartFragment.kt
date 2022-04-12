@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.customer.CustomerResp
-import com.hanheldpos.data.api.pojo.discount.CouponDiscountResp
+import com.hanheldpos.data.api.pojo.discount.DiscountCoupon
 import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.data.api.pojo.order.settings.DiningOption
 import com.hanheldpos.data.api.pojo.order.settings.Reason
@@ -25,7 +25,6 @@ import com.hanheldpos.model.payment.PaymentOrder
 import com.hanheldpos.model.combo.ItemActionType
 import com.hanheldpos.model.discount.DiscApplyTo
 import com.hanheldpos.model.discount.DiscountUser
-import com.hanheldpos.model.order.OrderReq
 import com.hanheldpos.model.product.ProductType
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
@@ -229,7 +228,7 @@ class CartFragment(private val listener: CartCallBack) :
                     cartDataVM.addDiscountServer(discount,discApplyTo)
                 }
 
-                override fun onDiscountCodeChoose(discount: CouponDiscountResp?) {
+                override fun onDiscountCodeChoose(discount: List<DiscountCoupon>?) {
                     cartDataVM.updateDiscountCouponCode(discount)
                 }
 

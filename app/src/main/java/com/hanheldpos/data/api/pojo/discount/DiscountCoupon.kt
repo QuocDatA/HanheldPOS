@@ -1,32 +1,62 @@
 package com.hanheldpos.data.api.pojo.discount
 
 import android.os.Parcelable
+import com.google.gson.annotations.SerializedName
+import com.hanheldpos.model.DataHelper
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class DiscountCoupon(
-    val ProductGuid: String,
+ @SerializedName("_id")
+ val Id: String,
 
-    val Variants: String,
+ @SerializedName("DiscountName")
+ val DiscountName: String,
 
-    val OrderDetailId: Int?,
+ @SerializedName("DiscountCode")
+ val DiscountCode: String,
 
-    val OrderDetailType: Int?,
+ @SerializedName("DiscountAutomatic")
+ val DiscountAutomatic: Boolean,
 
-    val DiscountGuid: String,
+ @SerializedName("OnlyApplyDiscountOncePerOrder")
+ val OnlyApplyDiscountOncePerOrder: Int?,
 
-    val DiscountName: String,
+ @SerializedName("DiscountTotalPrice")
+ val DiscountTotalPrice: Double?,
 
-    val DiscountCode: String,
+ @SerializedName("DiscountQuantity")
+ val DiscountQuantity: Int?,
 
-    val DiscountType: Int?,
+ @SerializedName("DiscountLineTotalPrice")
+ val DiscountLineTotalPrice: Double?,
 
-    val DiscountValue: Double?,
+ @SerializedName("DiscountType")
+ val DiscountType: Int?,
 
-    val DiscountTotalPrice: Double?,
+ @SerializedName("DiscountValue")
+ val DiscountValue: Double?,
 
-    val Quantity: Int?,
+ @SerializedName("DiscountLineTotalPriceFormatter")
+ val DiscountLineTotalPriceFormatter: String,
 
-    val DiscountLineTotalPrice: Double?
+ @SerializedName("DiscountApplyTo")
+ val DiscountApplyTo: Int?,
+
+ @SerializedName("OrderDetailId")
+ val OrderDetailId: Int?,
+
+ @SerializedName("Product_id")
+ val ProductId: String,
 ) : Parcelable {
+
+ fun toDiscount(): DiscountResp? {
+  val discApply = DataHelper.findDiscount(Id)
+  if (discApply != null) {
+   discApply.maxAmountUsed = DiscountLineTotalPrice
+   discApply.quantityUsed = DiscountQuantity
+   discApply.DiscountCode = DiscountCode
+  }
+  return discApply
+ }
 }

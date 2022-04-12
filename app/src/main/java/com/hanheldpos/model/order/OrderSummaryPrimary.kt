@@ -5,7 +5,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class OrderSummaryPrimary(
-    val OrderCode: String,
+    val OrderCode: String? = null,
     val OrderStatusId: Int,
     val PaymentStatusId: Int,
     val Description: String,

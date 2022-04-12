@@ -2,6 +2,7 @@ package com.hanheldpos.model.order
 
 import android.os.Parcelable
 import com.hanheldpos.data.api.pojo.customer.CustomerResp
+import com.hanheldpos.data.api.pojo.discount.DiscountUsed
 import com.hanheldpos.model.payment.PaymentOrder
 import com.hanheldpos.model.home.table.TableSummary
 import kotlinx.parcelize.Parcelize
@@ -17,6 +18,7 @@ data class OrderDetail(
     var TableList: List<TableSummary>,
     var PaymentList: List<PaymentOrder>?,
     var DiscountList: List<DiscountOrder>,
+    var DiscountUsedList: List<DiscountUsed>? = null,
     var ServiceFeeList: List<OrderFee>,
     var SurchargeFeeList: List<OrderFee>,
     var ShippingFeeList: List<OrderFee>?= null,

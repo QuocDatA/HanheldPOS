@@ -1,8 +1,6 @@
 package com.hanheldpos.model.cart
 
 import com.hanheldpos.data.api.pojo.customer.CustomerResp
-import com.hanheldpos.data.api.pojo.discount.CouponDiscountReq
-import com.hanheldpos.data.api.pojo.discount.DiscountCoupon
 import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.data.api.pojo.fee.Fee
 import com.hanheldpos.data.api.pojo.order.settings.DiningOption
@@ -153,33 +151,23 @@ open class CartModel(
         }
     }
 
-    fun addDiscountCouponServer(discount: DiscountCoupon, discApplyTo: DiscApplyTo , productApply : BaseProductInCart? = null) {
+    fun addDiscountCouponServer(discount: DiscountResp?, discApplyTo: DiscApplyTo , productApply : BaseProductInCart? = null) {
         when(discApplyTo) {
             DiscApplyTo.UNKNOWN -> TODO()
             DiscApplyTo.ITEM -> {
                 if (productApply != null && productApply.discountServersList == null)
                     productApply.discountServersList = mutableListOf()
-                addDiscountCouponCode(productApply?.discountServersList,discount)
+                if (discount != null) {
+                    productApply?.discountServersList?.add(discount)
+                }
             }
             DiscApplyTo.ORDER -> {
-                addDiscountCouponCode(discountServerList,discount)
+                if (discount != null) {
+                    discountServerList.add(discount)
+                }
             }
         }
 
-    }
-
-    private fun addDiscountCouponCode(
-        discountServerList : MutableList<DiscountResp>?,
-        disc: DiscountCoupon
-    ) {
-        val discountApply = DataHelper.findDiscount(discountId = disc.DiscountGuid)?.copy()
-        //Update discount
-        if (discountApply != null) {
-            discountApply.maxAmountUsed = disc.DiscountLineTotalPrice;
-            discountApply.quantityUsed = disc.Quantity ?: 1;
-            discountApply.DiscountCode = disc.DiscountCode;
-            discountServerList?.add(discountApply)
-        }
     }
 
     fun addPayment(payment: List<PaymentOrder>) {

@@ -88,8 +88,8 @@ class CartVM : BaseUiViewModel<CartUV>() {
                 if (OrderHelper.isPaymentSuccess(cart)) PaymentStatus.PAID.value else PaymentStatus.UNPAID.value
             val orderReq = CartConverter.toOrder(
                 cart,
-                orderStatus,
-                paymentStatus,
+                orderStatus =  orderStatus,
+                paymentStatus = paymentStatus,
             )
 
             // Table

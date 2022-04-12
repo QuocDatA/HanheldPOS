@@ -1,8 +1,7 @@
 package com.hanheldpos.data.api.services
 
-import com.hanheldpos.data.api.pojo.discount.CouponDiscountReq
-import com.hanheldpos.data.api.pojo.discount.CouponDiscountResp
 import com.hanheldpos.data.api.pojo.discount.CouponResp
+import com.hanheldpos.data.api.pojo.discount.DiscountCoupon
 import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.data.repository.BaseResponse
 import retrofit2.Call
@@ -23,10 +22,10 @@ interface DiscountService {
         @Query("language") language: String? = "en",
     ): Call<BaseResponse<List<CouponResp>>>
 
-    @POST("cart/Discount/only")
+    @POST("cart/discount/only/v2")
     @Headers("Accept: text/plain",
         "Content-Type: application/json")
     fun postDiscountCoupon(
         @Body body: String,
-    ): Call<BaseResponse<CouponDiscountResp>?>
+    ): Call<BaseResponse<List<DiscountCoupon>>?>
 }
