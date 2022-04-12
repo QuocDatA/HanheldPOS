@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="com.hanheldpos.utils.PriceUtils"/>
         <import type="android.text.TextUtils"/>
         <import type="com.hanheldpos.model.product.ExtraConverter"/>
         <variable
@@ -110,8 +111,9 @@
                                 tools:text="60.000" />
                         </LinearLayout>
 
+
                         <com.diadiem.pos_components.PTextView
-                            basePriceView="@{item.priceOverride}"
+                            android:text="@{ `(Base price :` + PriceUtils.INSTANCE.formatStringPrice(item.priceOverride) + `)` }"
                             visibleObject="@{item.proOriginal.bundle}"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -177,7 +179,7 @@
                             app:isOtherFee="@{true}"
                             visibleObject="@{!item.fees.empty}"
                             app:lineText="@{`Other fees `}"
-                            app:priceDisc="@{item.totalFee()}"/>
+                            app:priceDiscMinus="@{item.totalFee()}"/>
 
                         <include
                             layout="@layout/cart_product_detail_line"

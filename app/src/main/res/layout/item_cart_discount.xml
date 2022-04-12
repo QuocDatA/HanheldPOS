@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="com.hanheldpos.utils.PriceUtils"/>
         <variable
             name="item"
             type="com.hanheldpos.model.cart.DiscountCart" />
@@ -62,7 +63,7 @@
         </LinearLayout>
 
         <com.diadiem.pos_components.PTextView
-            priceDiscMinus="@{item.amount}"
+            android:text="@{ `-` + PriceUtils.INSTANCE.formatStringPrice(item.amount) }"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"

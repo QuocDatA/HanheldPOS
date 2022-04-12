@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="com.hanheldpos.utils.PriceUtils" />
+
         <import type="com.hanheldpos.utils.DateTimeUtils" />
 
         <variable
@@ -34,8 +36,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Onl"
+                    android:textColor="@android:color/black"
                     app:useFontStyle="normal"
-                    app:useTextColor="color4"
                     app:useTextHeader="h3"
                     tools:text="Onl" />
 
@@ -49,8 +51,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Delivery"
+                    android:textColor="@android:color/black"
                     app:useFontStyle="normal"
-                    app:useTextColor="color4"
                     app:useTextHeader="h3"
                     tools:text="Delivery" />
             </LinearLayout>
@@ -73,8 +75,8 @@
                 android:layout_marginHorizontal="@dimen/_44sdp"
                 android:layout_marginVertical="@dimen/_7sdp"
                 android:textAlignment="center"
+                android:textColor="@android:color/black"
                 app:useFontStyle="normal"
-                app:useTextColor="color4"
                 app:useTextHeader="h5"
                 tools:text="36 Tong Huu Dinh Thao Dien Ward, District 2, HCMC Tel: 08 6253 2828" />
 
@@ -89,8 +91,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="To:"
+                    android:textColor="@android:color/black"
                     app:useFontStyle="normal"
-                    app:useTextColor="color4"
                     app:useTextHeader="h4" />
 
                 <include
@@ -120,8 +122,8 @@
                         android:id="@+id/codeOrder"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textColor="@android:color/black"
                         app:useFontStyle="normal"
-                        app:useTextColor="color4"
                         app:useTextHeader="h5"
                         tools:text="Order #: IP1102" />
 
@@ -135,8 +137,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@{`Order #: ` + order.order.code}"
+                        android:textColor="@android:color/black"
                         app:useFontStyle="normal"
-                        app:useTextColor="color4"
                         app:useTextHeader="h5"
                         tools:text="Handheld" />
                 </LinearLayout>
@@ -150,8 +152,8 @@
                         android:id="@+id/nameEmployee"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textColor="@android:color/black"
                         app:useFontStyle="normal"
-                        app:useTextColor="color4"
                         app:useTextHeader="h5"
                         tools:text="Employee : Quan Nguyen" />
 
@@ -164,8 +166,8 @@
                         android:id="@+id/dateCreateOrder"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textColor="@android:color/black"
                         app:useFontStyle="normal"
-                        app:useTextColor="color4"
                         app:useTextHeader="h5"
                         tools:text="02/28/2021  11:00" />
                 </LinearLayout>
@@ -194,8 +196,8 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
                         android:text="Qty"
+                        android:textColor="@android:color/black"
                         app:useFontStyle="bold"
-                        app:useTextColor="color4"
                         app:useTextHeader="h5" />
 
                     <LinearLayout
@@ -209,16 +211,16 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="Items"
+                            android:textColor="@android:color/black"
                             app:useFontStyle="bold"
-                            app:useTextColor="color4"
                             app:useTextHeader="h5" />
 
                         <com.diadiem.pos_components.PTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/amount"
+                            android:textColor="@android:color/black"
                             app:useFontStyle="bold"
-                            app:useTextColor="color4"
                             app:useTextHeader="h5" />
                     </LinearLayout>
 
@@ -247,8 +249,8 @@
                 android:layout_gravity="start"
                 android:layout_marginVertical="@dimen/_2sdp"
                 android:text="@{`Notes : ` + order.orderDetail.order.note}"
+                android:textColor="@android:color/black"
                 app:useFontStyle="normal"
-                app:useTextColor="color4"
                 app:useTextHeader="h5"
                 tools:text="Notes" />
 
@@ -270,8 +272,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
                     android:text="Subtotal"
+                    android:textColor="@android:color/black"
                     app:useFontStyle="normal"
-                    app:useTextColor="color4"
                     app:useTextHeader="h5" />
 
                 <androidx.legacy.widget.Space
@@ -284,8 +286,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
+                    android:textColor="@android:color/black"
                     app:useFontStyle="normal"
-                    app:useTextColor="color4"
                     app:useTextHeader="h5"
                     tools:text="270,000" />
             </LinearLayout>
@@ -308,8 +310,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
                     android:text="Discount"
+                    android:textColor="@android:color/black"
                     app:useFontStyle="normal"
-                    app:useTextColor="color4"
                     app:useTextHeader="h5" />
 
                 <androidx.legacy.widget.Space
@@ -318,12 +320,12 @@
                     android:layout_weight="1" />
 
                 <com.diadiem.pos_components.PTextView
-                    priceDiscMinus="@{order.orderDetail.order.discount}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
+                    android:text="@{ `-` + PriceUtils.INSTANCE.formatStringPrice(order.orderDetail.order.discount) }"
+                    android:textColor="@android:color/black"
                     app:useFontStyle="normal"
-                    app:useTextColor="color4"
                     app:useTextHeader="h5"
                     tools:text="270,000" />
             </LinearLayout>
@@ -346,8 +348,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
                     android:text="Total"
+                    android:textColor="@android:color/black"
                     app:useFontStyle="bold"
-                    app:useTextColor="color4"
                     app:useTextHeader="h4" />
 
                 <androidx.legacy.widget.Space
@@ -360,8 +362,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
+                    android:textColor="@android:color/black"
                     app:useFontStyle="bold"
-                    app:useTextColor="color4"
                     app:useTextHeader="h4"
                     tools:text="270,000" />
             </LinearLayout>
@@ -384,8 +386,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
                     android:text="Cash"
+                    android:textColor="@android:color/black"
                     app:useFontStyle="normal"
-                    app:useTextColor="color4"
                     app:useTextHeader="h5" />
 
                 <androidx.legacy.widget.Space
@@ -398,8 +400,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
+                    android:textColor="@android:color/black"
                     app:useFontStyle="normal"
-                    app:useTextColor="color4"
                     app:useTextHeader="h5"
                     tools:text="270,000" />
             </LinearLayout>
@@ -416,8 +418,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
                     android:text="Change"
+                    android:textColor="@android:color/black"
                     app:useFontStyle="normal"
-                    app:useTextColor="color4"
                     app:useTextHeader="h5" />
 
                 <androidx.legacy.widget.Space
@@ -430,8 +432,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
+                    android:textColor="@android:color/black"
                     app:useFontStyle="normal"
-                    app:useTextColor="color4"
                     app:useTextHeader="h5"
                     tools:text="270,000" />
             </LinearLayout>
@@ -442,8 +444,8 @@
                 android:layout_marginVertical="@dimen/_20sdp"
                 android:text="@string/thank_you"
                 android:textAllCaps="true"
+                android:textColor="@android:color/black"
                 app:useFontStyle="bold"
-                app:useTextColor="color4"
                 app:useTextHeader="h4" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
