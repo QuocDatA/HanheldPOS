@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:text="@{customer.fullName}"
             app:useFontStyle="bold"
-            app:useTextColor="color4"
+            android:textColor="@android:color/black"
             tools:text="Name"
             app:useTextHeader="h4" />
 
@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:text="@{customer.fullAddressWithLineBreaker, default=`Tropic Garden Apartment\nBlock A2, Floor 5, Room 123\n215 Nguyen Van Huong\nThao Dien Ward, District 2, HCMC`}"
             app:useFontStyle="normal"
-            app:useTextColor="color4"
+            android:textColor="@android:color/black"
             app:useTextHeader="h5" />
         <LinearLayout
             android:gravity="center"
@@ -62,7 +62,7 @@
                 android:layout_height="wrap_content"
                 android:text="@{customer.phone}"
                 app:useFontStyle="normal"
-                app:useTextColor="color4"
+                android:textColor="@android:color/black"
                 tools:text="Phone"
                 app:useTextHeader="h5" />
         </LinearLayout>
@@ -74,7 +74,7 @@
             android:layout_marginVertical="@dimen/_2sdp"
             android:text="@{`Note : ` + customer.note}"
             app:useFontStyle="bold"
-            app:useTextColor="color4"
+            android:textColor="@android:color/black"
             app:useTextHeader="h5"
             tools:text="Note" />
     </LinearLayout>

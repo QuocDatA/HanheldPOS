@@ -4,6 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
+        <import type="com.hanheldpos.utils.PriceUtils" />
+
         <variable
             name="isDiscount"
             type="Boolean" />
@@ -19,10 +22,6 @@
         <variable
             name="lineText"
             type="String" />
-
-        <variable
-            name="priceDisc"
-            type="Double" />
 
         <variable
             name="priceDiscMinus"
@@ -68,18 +67,19 @@
             app:tint="@color/color_0" />
 
         <com.diadiem.pos_components.PTextView
+            visibleObject="@{isHeaderH6==true,default=true}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{lineText}"
             app:useTextColor="color5"
-            visibleObject="@{isHeaderH6==true,default=true}"
             app:useTextHeader="h6"
             tools:text="Variant 1" />
+
         <com.diadiem.pos_components.PTextView
+            visibleObject="@{isHeaderH6==false,default=false}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{lineText}"
-            visibleObject="@{isHeaderH6==false,default=false}"
             app:useTextColor="color5"
             app:useTextHeader="h7"
             tools:text="Variant 1" />
@@ -92,6 +92,7 @@
             app:useTextColor="color5"
             app:useTextHeader="h6"
             tools:text="Variant 1" />
+
         <LinearLayout
             visibleObject="@{isDiscount || isOtherFee,default=false}"
             android:layout_width="wrap_content"
@@ -101,18 +102,17 @@
             <com.diadiem.pos_components.PTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:useTextColor="color5"
                 android:layout_gravity="center"
-                app:useTextHeader="h6"
-                priceDisc="@{priceDisc}"
-                priceDiscMinusRound="@{priceDiscMinus}" />
+                android:text="@{`(-` + PriceUtils.INSTANCE.formatStringPrice(priceDiscMinus) + `)` }"
+                app:useTextColor="color5"
+                app:useTextHeader="h6" />
 
             <FrameLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:onClick="@{clickListener}"
                 android:clickable="true"
                 android:focusable="true"
+                android:onClick="@{clickListener}"
                 android:paddingHorizontal="@dimen/_9sdp">
 
                 <ImageView

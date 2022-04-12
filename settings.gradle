@@ -9,3 +9,4 @@ dependencyResolutionManagement {
 }
 rootProject.name = "Hanheld POS"
 include ':app', ':utils', ':pos_config', ':pos_components'
+include ':pos_printer'

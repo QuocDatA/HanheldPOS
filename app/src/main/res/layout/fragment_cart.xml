@@ -716,7 +716,7 @@
                     android:layout_height="wrap_content" />
 
                 <com.diadiem.pos_components.PTextView
-                    priceDisc="@{cartDataVM.cartModelLD.total()}"
+                    android:text="@{ `(` + cartDataVM.cartModelLD.total() + `)`}"
                     visibleObject="@{cartDataVM.cartModelLD.total() > 0}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
