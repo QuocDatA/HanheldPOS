@@ -25,7 +25,7 @@
             app:useFontStyle="bold"
             android:textColor="@android:color/black"
             tools:text="Name"
-            app:useTextHeader="h4" />
+            android:textSize="18px" />
 
         <com.diadiem.pos_components.PTextView
             android:layout_width="wrap_content"
@@ -33,7 +33,7 @@
             android:text="@{customer.fullAddressWithLineBreaker, default=`Tropic Garden Apartment\nBlock A2, Floor 5, Room 123\n215 Nguyen Van Huong\nThao Dien Ward, District 2, HCMC`}"
             app:useFontStyle="normal"
             android:textColor="@android:color/black"
-            app:useTextHeader="h5" />
+            android:textSize="15px" />
         <LinearLayout
             android:gravity="center"
             android:layout_width="wrap_content"
@@ -51,7 +51,7 @@
                 android:text="Apartment"
                 app:useFontStyle="normal"
                 app:useTextColor="color2"
-                app:useTextHeader="h5"
+                android:textSize="15px"
                 tools:text="Apartment" />
             <androidx.legacy.widget.Space
                 android:layout_width="@dimen/_4sdp"
@@ -64,7 +64,7 @@
                 app:useFontStyle="normal"
                 android:textColor="@android:color/black"
                 tools:text="Phone"
-                app:useTextHeader="h5" />
+                android:textSize="15px" />
         </LinearLayout>
         <com.diadiem.pos_components.PTextView
             visibleObject="@{customer.note}"
@@ -75,7 +75,7 @@
             android:text="@{`Note : ` + customer.note}"
             app:useFontStyle="bold"
             android:textColor="@android:color/black"
-            app:useTextHeader="h5"
+            android:textSize="15px"
             tools:text="Note" />
     </LinearLayout>
 </layout>
