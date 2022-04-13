@@ -10,22 +10,32 @@ import com.dantsu.escposprinter.EscPosCharsetEncoding
 import com.dantsu.escposprinter.EscPosPrinter
 import com.dantsu.escposprinter.EscPosPrinterCommands
 import com.dantsu.escposprinter.connection.bluetooth.BluetoothPrintersConnections
+import com.dantsu.escposprinter.connection.usb.UsbPrintersConnections
 import com.dantsu.escposprinter.exceptions.EscPosConnectionException
 import kotlin.math.roundToInt
 
 
 object PrinterHelper {
 
+    /*==============================================================================================
+    ======================================UROVO PART============================================
+    ==============================================================================================*/
+    //region Urovo
+    fun printBillUrovo(context: Activity, content: String) {
+
+    }
+    //endregion
 
     /*==============================================================================================
     ======================================BLUETOOTH PART============================================
     ==============================================================================================*/
+    //region Bluetooth
     private const val PERMISSION_BLUETOOTH = 1
     private const val PERMISSION_BLUETOOTH_ADMIN = 2
     private const val PERMISSION_BLUETOOTH_CONNECT = 3
     private const val PERMISSION_BLUETOOTH_SCAN = 4
 
-    fun printBill(context: Activity, originalBitmap: Bitmap) {
+    fun printBillBluetooth(context: Activity, originalBitmap: Bitmap) {
         if (ContextCompat.checkSelfPermission(
                 context,
                 Manifest.permission.BLUETOOTH
@@ -104,7 +114,7 @@ object PrinterHelper {
         }
     }
 
-    fun printBill(context: Activity, text : String) {
+    fun printBillBluetooth(context: Activity, content : String) {
         if (ContextCompat.checkSelfPermission(
                 context,
                 Manifest.permission.BLUETOOTH
@@ -144,7 +154,6 @@ object PrinterHelper {
                 listOf(Manifest.permission.BLUETOOTH_SCAN).toTypedArray(), PERMISSION_BLUETOOTH_SCAN
             );
         } else {
-
             // Your code HERE
             val printer =
                 EscPosPrinter(
@@ -153,7 +162,7 @@ object PrinterHelper {
                 )
 
             try {
-                text.split("\n").forEach {
+                content.split("\n").forEach {
                     printer.printFormattedText(
                         it,
                         1
@@ -167,6 +176,8 @@ object PrinterHelper {
             }
         }
     }
+    //endregion
+
 
 
 }

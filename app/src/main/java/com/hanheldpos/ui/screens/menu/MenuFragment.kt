@@ -102,10 +102,10 @@ class MenuFragment : BaseFragment<FragmentMenuBinding, MenuVM>(), MenuUV {
                     DatabaseHelper.ordersCompleted.getAll().take(1).collectLatest {
                         it.lastOrNull()?.let { completedEntity ->
                             launch(Dispatchers.Main) {
-                                PrinterHelper.printBill(
+                                /*PrinterHelper.printBill(
                                     requireActivity(),
                                     BillOrderHelper.orderToBillString(requireContext(),34,DatabaseMapper.mappingOrderReqFromEntity(completedEntity))
-                                )
+                                )*/
                             }
                         }
 

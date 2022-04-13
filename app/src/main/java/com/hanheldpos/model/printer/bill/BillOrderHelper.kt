@@ -139,8 +139,8 @@ object BillOrderHelper {
         val displayMetrics = DisplayMetrics()
         displayMetrics.densityDpi = 203
         displayMetrics.density = 48f
-        displayMetrics.widthPixels = 383
-        displayMetrics.heightPixels = 800
+        displayMetrics.widthPixels = 384
+        displayMetrics.heightPixels = 0
 
         (view.root).measure(
             View.MeasureSpec.makeMeasureSpec(
