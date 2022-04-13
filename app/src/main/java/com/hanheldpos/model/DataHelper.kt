@@ -251,4 +251,16 @@ object DataHelper {
     fun findDiscount(discountId: String): DiscountResp? {
         return discountsLocalStorage?.firstOrNull{discount -> discount._id == discountId}?.clone()
     }
+
+    fun userGuid(): String {
+        return deviceCodeLocalStorage?.Device?.firstOrNull()?.UserGuid ?: ""
+    }
+
+    fun locationGuid(): String {
+        return deviceCodeLocalStorage?.Device?.firstOrNull()?.Location!!
+    }
+
+    fun deviceGuid(): String{
+        return deviceCodeLocalStorage?.Device?.firstOrNull()?._Id!!
+    }
 }

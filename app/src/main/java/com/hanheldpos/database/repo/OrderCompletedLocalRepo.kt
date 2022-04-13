@@ -24,7 +24,7 @@ class OrderCompletedLocalRepo(private val orderCompletedDao: OrderCompletedDao) 
 
     fun deleteAll() = orderCompletedDao.deleteAll();
 
-    fun get(id: String): OrderCompletedEntity? = orderCompletedDao.get(id);
+    fun get(id: String?): OrderCompletedEntity? = orderCompletedDao.get(id);
 
     fun getAll(): Flow<MutableList<OrderCompletedEntity>> = orderCompletedDao.getAll();
 

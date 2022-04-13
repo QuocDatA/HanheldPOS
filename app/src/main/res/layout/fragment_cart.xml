@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <import type="com.hanheldpos.utils.PriceUtils"/>
         <variable
             name="viewModel"
             type="com.hanheldpos.ui.screens.cart.CartVM" />
@@ -716,7 +716,7 @@
                     android:layout_height="wrap_content" />
 
                 <com.diadiem.pos_components.PTextView
-                    priceDisc="@{cartDataVM.cartModelLD.total()}"
+                    android:text="@{ `(` + PriceUtils.INSTANCE.formatStringPrice(cartDataVM.cartModelLD.total()) + `)`}"
                     visibleObject="@{cartDataVM.cartModelLD.total() > 0}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

@@ -5,7 +5,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.hanheldpos.data.api.pojo.customer.CustomerResp
-import com.hanheldpos.data.api.pojo.discount.CouponDiscountResp
 import com.hanheldpos.data.api.pojo.discount.DiscountCoupon
 import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.data.api.pojo.floor.FloorTable
@@ -17,9 +16,9 @@ import com.hanheldpos.model.OrderHelper
 import com.hanheldpos.model.UserHelper
 import com.hanheldpos.model.cart.*
 import com.hanheldpos.model.discount.DiscApplyTo
-import com.hanheldpos.model.payment.PaymentOrder
 import com.hanheldpos.model.discount.DiscountUser
 import com.hanheldpos.model.home.table.TableSummary
+import com.hanheldpos.model.payment.PaymentOrder
 import com.hanheldpos.ui.base.dialog.AppAlertDialog
 import com.hanheldpos.ui.base.viewmodel.BaseViewModel
 
@@ -220,26 +219,27 @@ class CartDataVM : BaseViewModel() {
         )
     }
 
-    fun updateDiscountCouponCode(discountCoupon: CouponDiscountResp?) {
+    fun updateDiscountCouponCode(discountCouponList: List<DiscountCoupon>?) {
         // Find and append discounts for product list.
-        discountCoupon?.ProductDiscountList
+        discountCouponList?.filter { disc -> disc.DiscountApplyTo == DiscApplyTo.ITEM.value }
             ?.forEach { disc ->
                 cartModelLD.value?.productsList?.forEachIndexed { index, baseProduct ->
-                    if (disc.OrderDetailId == index + 1)
+                    if (disc.OrderDetailId == index)
                         this.cartModelLD.value?.addDiscountCouponServer(
-                            disc,
+                            disc.toDiscount(),
                             DiscApplyTo.ITEM,
                             baseProduct
                         )
                 }
             }
         // Find and append discounts for order.
-        discountCoupon?.OrderDiscountList?.forEach { disc ->
-            this.cartModelLD.value?.addDiscountCouponServer(
-                disc,
-                DiscApplyTo.ORDER
-            )
-        }
+        discountCouponList?.filter { disc -> disc.DiscountApplyTo == DiscApplyTo.ORDER.value }
+            ?.forEach { disc ->
+                this.cartModelLD.value?.addDiscountCouponServer(
+                    disc.toDiscount(),
+                    DiscApplyTo.ORDER
+                )
+            }
         notifyCartChange(false)
     }
 

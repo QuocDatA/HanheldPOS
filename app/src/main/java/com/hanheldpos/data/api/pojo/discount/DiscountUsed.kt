@@ -1,12 +1,18 @@
 package com.hanheldpos.data.api.pojo.discount
 
 import android.os.Parcelable
+import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class DiscountUsed(
-val DiscountCode: String ,
+    @SerializedName("_id")
+    val Id: String? = null,
 
-val DiscountGuid: String
+    val DiscountName: String? = null,
+
+    val DiscountCode: String,
+
+    val DiscountQuantity: Int? = null,
 ) : Parcelable {
 }

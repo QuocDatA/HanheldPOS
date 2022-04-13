@@ -6,7 +6,7 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hanheldpos.R
-import com.hanheldpos.data.api.pojo.discount.CouponDiscountResp
+import com.hanheldpos.data.api.pojo.discount.DiscountCoupon
 import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.databinding.FragmentDiscountCodeBinding
 import com.hanheldpos.model.discount.DiscApplyTo
@@ -118,7 +118,7 @@ class DiscountCodeFragment(
         listener.validDiscount(binding.discountCodeInput.text.toString().isNotEmpty())
     }
 
-    override fun updateDiscountCouponCode(discount: CouponDiscountResp?) {
+    override fun updateDiscountCouponCode(discount: List<DiscountCoupon>?) {
         listener.discountCodeChoose(discount)
     }
 }

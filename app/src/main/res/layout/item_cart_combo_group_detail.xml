@@ -68,7 +68,7 @@
 
                     <com.diadiem.pos_components.PTextView
                         android:id="@+id/priceTextView"
-                        addPriceView="@{productBundle != null ? item.total(groupBundle,productBundle) : 0.0}"
+                        pricePlusView="@{productBundle != null ? item.total(groupBundle,productBundle) : 0.0}"
                         visibleObject="@{(productBundle != null ? item.total(groupBundle,productBundle) : 0.0) != 0}"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

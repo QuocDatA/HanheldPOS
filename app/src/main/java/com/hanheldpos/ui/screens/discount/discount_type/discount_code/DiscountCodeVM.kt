@@ -3,7 +3,7 @@ package com.hanheldpos.ui.screens.discount.discount_type.discount_code
 import androidx.lifecycle.MutableLiveData
 import com.hanheldpos.PosApp
 import com.hanheldpos.R
-import com.hanheldpos.data.api.pojo.discount.CouponDiscountResp
+import com.hanheldpos.data.api.pojo.discount.DiscountCoupon
 import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.data.repository.BaseResponse
 import com.hanheldpos.data.repository.base.BaseRepoCallback
@@ -49,12 +49,12 @@ class DiscountCodeVM : BaseUiViewModel<DiscountCodeUV>() {
 
     private fun onApplyCouponCode(couponCode: String) {
         val body =
-            GSonUtils.toServerJson(CartConverter.toOrderCoupon(CurCartData.cartModel!!, couponCode))
+            GSonUtils.toServerJson(CartConverter.toOrder(CurCartData.cartModel!!, couponCode))
         showLoading(true)
         discountRepo.postDiscountCoupon(
             body,
-            object : BaseRepoCallback<BaseResponse<CouponDiscountResp>?> {
-                override fun apiResponse(data: BaseResponse<CouponDiscountResp>?) {
+            object : BaseRepoCallback<BaseResponse<List<DiscountCoupon>>?> {
+                override fun apiResponse(data: BaseResponse<List<DiscountCoupon>>?) {
                     showLoading(false)
                     if (data == null || data.DidError) {
                         showError(
@@ -62,11 +62,7 @@ class DiscountCodeVM : BaseUiViewModel<DiscountCodeUV>() {
                                 ?: PosApp.instance.getString(R.string.invalid_discount)
                         );
                     } else {
-                        //if (data.Model != null)
                             uiCallback?.updateDiscountCouponCode(data.Model)
-//                        else {
-//                            showError(PosApp.instance.getString(R.string.already_apply_discount))
-//                        }
                     }
                 }
 
