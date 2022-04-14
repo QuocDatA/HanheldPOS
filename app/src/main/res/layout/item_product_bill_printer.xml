@@ -26,7 +26,7 @@
             android:text="@{String.valueOf(item.quantity)}"
             app:useFontStyle="bold"
             android:textColor="@android:color/black"
-            app:useTextHeader="h5"
+            android:textSize="24px"
             tools:text="2" />
 
         <LinearLayout
@@ -47,7 +47,7 @@
                     android:text="@{item.name1}"
                     app:useFontStyle="normal"
                     android:textColor="@android:color/black"
-                    app:useTextHeader="h5"
+                    android:textSize="24px"
                     tools:text="Combo Sang Tiet Kiem" />
 
                 <com.diadiem.pos_components.PTextView
@@ -56,7 +56,7 @@
                     android:layout_height="wrap_content"
                     app:useFontStyle="normal"
                     android:textColor="@android:color/black"
-                    app:useTextHeader="h5"
+                    android:textSize="24px"
                     tools:text="100.000" />
             </LinearLayout>
 
@@ -71,16 +71,16 @@
                     android:layout_weight="1"
                     android:text="@string/base_price"
                     app:useFontStyle="normal"
-                    app:useTextColor="color6"
-                    app:useTextHeader="h6" />
+                    android:textColor="@android:color/black"
+                    android:textSize="20px" />
 
                 <com.diadiem.pos_components.PTextView
                     priceView="@{item.price}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:useFontStyle="normal"
-                    app:useTextColor="color6"
-                    app:useTextHeader="h6"
+                    android:textColor="@android:color/black"
+                    android:textSize="20px"
                     tools:text="100.000" />
             </LinearLayout>
 

@@ -15,6 +15,7 @@
 
     <LinearLayout
         android:orientation="horizontal"
+        android:gravity="center_vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <com.diadiem.pos_components.PTextView
@@ -22,8 +23,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="•  "
-            app:useTextColor="color5"
-            app:useTextHeader="h6" />
+            android:textColor="@android:color/black"
+            android:textSize="20px" />
         <ImageView
             visibleObject="@{isNote,default=false}"
             android:layout_width="@dimen/_12sdp"
@@ -31,14 +32,14 @@
             android:layout_gravity="center"
             android:layout_marginEnd="@dimen/_2sdp"
             android:src="@drawable/ic_note"
-            app:tint="@color/color_4" />
+            app:tint="@android:color/black" />
 
         <com.diadiem.pos_components.PTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{lineText}"
-            app:useTextColor="color5"
-            app:useTextHeader="h6"
+            android:textColor="@android:color/black"
+            android:textSize="20px"
             tools:text="Variant 1" />
     </LinearLayout>
 </layout>

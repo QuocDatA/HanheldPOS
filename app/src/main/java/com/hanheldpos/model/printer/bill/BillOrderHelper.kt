@@ -171,6 +171,15 @@ object BillOrderHelper {
     private fun setupViewOrderBill(view: LayoutBillPrinterBinding, order: OrderReq) {
         view.order = order
         view.addressBill.text = DataHelper.recentDeviceCodeLocalStorage?.first()?.LocationAddress
+        order.OrderDetail.Billing?.let {
+            view.customerBill.customer = it
+            DataHelper.addressTypesLocalStorage?.find { addressTypeResp -> addressTypeResp.AddressTypeId == it.AddressTypeId }
+                ?.let { address ->
+                    view.customerBill.placeCustomer = address.AddressTypeEn
+                }
+        }
+
+
 
         view.codeOrder.text = "Order #: ${order.Order.Code}"
         view.platformDevice.text = DataHelper.recentDeviceCodeLocalStorage?.first()?.Nickname

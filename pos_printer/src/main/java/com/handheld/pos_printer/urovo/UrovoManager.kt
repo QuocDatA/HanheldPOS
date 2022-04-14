@@ -24,7 +24,7 @@ class UrovoManager() : BasePrintManager() {
         var height: Int = 0;
         val fontSize = when (size) {
             FontSize.Small -> 20
-            FontSize.Medium -> 28
+            FontSize.Medium -> 24
             FontSize.Large -> 35
         }
         val fontName = "arial"
@@ -35,10 +35,6 @@ class UrovoManager() : BasePrintManager() {
     }
 
     override fun drawBitmap(bitmap: Bitmap, align: BitmapAlign) {
-
-    }
-
-    override fun drawBarcode() {
 
     }
 

@@ -8,7 +8,6 @@ abstract class BasePrintManager {
     abstract fun setupPage(width : Int, height : Int)
     abstract fun drawText(data: String, bold: Boolean = false, size : FontSize = FontSize.Small)
     abstract fun drawBitmap(bitmap : Bitmap, align : BitmapAlign)
-    abstract fun drawBarcode()
 
     enum class FontSize {
         Small,

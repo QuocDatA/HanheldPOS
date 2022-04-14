@@ -26,8 +26,7 @@
             <LinearLayout
                 android:layout_width="@dimen/_11sdp"
                 android:layout_height="@dimen/_11sdp"
-                android:background="@drawable/bg_cart_number"
-                android:backgroundTint="@android:color/black"
+                android:orientation="horizontal"
                 android:gravity="center">
 
                 <com.diadiem.pos_components.PTextView
@@ -35,9 +34,17 @@
                     android:includeFontPadding="false"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:useTextColor="color2"
-                    app:useTextHeader="h7"
+                    android:textColor="@android:color/black"
+                    android:textSize="17px"
                     tools:text="1" />
+                <com.diadiem.pos_components.PTextView
+                    android:includeFontPadding="false"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/black"
+                    android:textSize="17px"
+                    android:text="."
+                    />
             </LinearLayout>
 
             <com.diadiem.pos_components.PTextView
@@ -45,8 +52,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_3sdp"
-                app:useTextColor="color4"
-                app:useTextHeader="h6"
+                android:textColor="@android:color/black"
+                android:textSize="20px"
                 tools:text="Group Pho" />
         </LinearLayout>
 

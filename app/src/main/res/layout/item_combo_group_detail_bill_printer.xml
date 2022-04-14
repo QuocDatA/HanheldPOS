@@ -30,8 +30,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="@dimen/_4sdp"
-                app:useTextColor="color5"
-                app:useTextHeader="h6"
+                android:textColor="@android:color/black"
+                android:textSize="20px"
                 tools:text="(1x)" />
 
 
@@ -55,8 +55,8 @@
                             android:id="@+id/productName"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            app:useTextColor="color5"
-                            app:useTextHeader="h6"
+                            android:textColor="@android:color/black"
+                            android:textSize="20px"
                             tools:text="Pho Bo Tai" />
 
 
@@ -67,8 +67,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textAlignment="textEnd"
-                        app:useTextColor="color5"
-                        app:useTextHeader="h6"
+                        android:textColor="@android:color/black"
+                        android:textSize="20px"
                         tools:text="137.000" />
 
                 </LinearLayout>
