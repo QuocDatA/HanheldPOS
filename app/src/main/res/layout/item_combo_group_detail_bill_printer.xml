@@ -86,6 +86,34 @@
                     app:lineText="@{ExtraConverter.INSTANCE.modifierOrderStr(item.modifierList)}" />
 
                 <include
+                    layout="@layout/item_product_detail_bill_printer"
+                    app:isTax="@{true}"
+                    visibleObject="@{(item.taxFeeList != null &amp;&amp; !item.taxFeeList.empty)}"
+                    app:lineText="@{`Discount : ` }"
+                    app:priceTax="@{item.taxTotalPrice}" />
+
+                <include
+                    layout="@layout/item_product_detail_bill_printer"
+                    app:isService="@{true}"
+                    visibleObject="@{(item.serviceFeeList != null &amp;&amp; !item.serviceFeeList.empty)}"
+                    app:lineText="@{`Discount : ` }"
+                    app:priceService="@{item.serviceTotalPrice}" />
+
+                <include
+                    layout="@layout/item_product_detail_bill_printer"
+                    app:isSurcharge="@{true}"
+                    visibleObject="@{(item.surchargeFeeList != null &amp;&amp; !item.surchargeFeeList.empty)}"
+                    app:lineText="@{`Discount : ` }"
+                    app:priceSurcharge="@{item.surchargeTotalPrice}" />
+
+                <include
+                    layout="@layout/item_product_detail_bill_printer"
+                    app:isDiscount="@{true}"
+                    visibleObject="@{(item.discountList != null &amp;&amp; !item.discountList.empty)}"
+                    app:lineText="@{`Discount : ` }"
+                    app:priceDiscMinus="@{item.discountTotalPrice}" />
+
+                <include
                     android:id="@+id/note"
                     layout="@layout/item_product_detail_bill_printer"
                     visibleObject="@{item.note != null &amp;&amp; !item.note.empty  ,default=false}"
