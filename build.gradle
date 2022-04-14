@@ -15,7 +15,7 @@ buildscript {
         classpath 'com.android.tools.build:gradle:7.0.3'
 
         // Kotlin
-        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.10'
+        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.20'
         classpath "org.jetbrains.kotlin:kotlin-android-extensions:$kotlin_version"
 
         //TODO enable it for Google Services

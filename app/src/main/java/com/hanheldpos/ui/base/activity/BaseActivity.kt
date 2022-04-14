@@ -108,7 +108,6 @@ abstract class BaseActivity<T : ViewDataBinding, VM : BaseViewModel> : AppCompat
                     val outRect = Rect()
                     currFocus.getGlobalVisibleRect(outRect)
                     if (!outRect.contains(ev.rawX.toInt(), ev.rawY.toInt())) {
-                        currFocus.clearFocus()
                         (getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
                             .hideSoftInputFromWindow(currFocus.windowToken, 0)
                     }

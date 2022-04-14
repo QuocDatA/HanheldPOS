@@ -1,6 +1,7 @@
 package com.hanheldpos.data.repository.discount
 
 import com.hanheldpos.data.api.pojo.discount.CouponResp
+import com.hanheldpos.data.api.pojo.discount.DiscountCoupon
 import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.data.repository.BaseResponse
 import com.hanheldpos.data.repository.base.BaseRepo
@@ -56,5 +57,32 @@ class DiscountRepo : BaseRepo() {
                 callback.showMessage(t.message);
             }
         });
+    }
+
+    fun postDiscountCoupon(
+        body: String,
+        callback: BaseRepoCallback<BaseResponse<List<DiscountCoupon>>?>
+    ) {
+        callback.apiRequesting(true);
+        discountService.postDiscountCoupon(body).enqueue(object :
+            Callback<BaseResponse<List<DiscountCoupon>>?> {
+            override fun onResponse(
+                call: Call<BaseResponse<List<DiscountCoupon>>?>,
+                response: Response<BaseResponse<List<DiscountCoupon>>?>
+            ) {
+                callback.apiRequesting(false);
+                callback.apiResponse(getBodyResponse(response));
+            }
+
+            override fun onFailure(
+                call: Call<BaseResponse<List<DiscountCoupon>>?>,
+                t: Throwable
+            ) {
+                callback.apiRequesting(false);
+                t.printStackTrace();
+                callback.showMessage(t.message);
+            }
+
+        })
     }
 }

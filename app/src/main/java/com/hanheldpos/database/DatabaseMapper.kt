@@ -5,7 +5,7 @@ import com.hanheldpos.database.entities.*
 import com.hanheldpos.model.order.OrderReq
 import com.hanheldpos.model.order.OrderStatus
 import com.hanheldpos.utils.GSonUtils
-import com.hanheldpos.utils.time.DateTimeUtils
+import com.hanheldpos.utils.DateTimeUtils
 import java.util.*
 
 object DatabaseMapper {
@@ -19,7 +19,7 @@ object DatabaseMapper {
             orderReq.Order.CashDrawer_id!!,
             statusId = OrderStatus.fromInt(orderReq.Order.OrderStatusId!!)!!,
             createAt = orderReq.Order.CreateDate!!,
-            modifierAt = DateTimeUtils.dateToString(Date(),DateTimeUtils.Format.FULL_DATE_UTC_TIMEZONE),
+            modifierAt = DateTimeUtils.dateToString(Date(), DateTimeUtils.Format.FULL_DATE_UTC_TIMEZONE),
         )
     }
 

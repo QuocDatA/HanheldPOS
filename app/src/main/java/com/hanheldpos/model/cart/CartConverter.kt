@@ -1,21 +1,29 @@
 package com.hanheldpos.model.cart
 
 import com.hanheldpos.data.api.pojo.discount.DiscountResp
-import com.hanheldpos.data.api.pojo.fee.Discount
+import com.hanheldpos.data.api.pojo.discount.DiscountUsed
 import com.hanheldpos.data.api.pojo.fee.Fee
 import com.hanheldpos.data.api.pojo.order.settings.Reason
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.OrderHelper
 import com.hanheldpos.model.UserHelper
 import com.hanheldpos.model.cart.fee.FeeType
-import com.hanheldpos.model.payment.PaymentOrder
 import com.hanheldpos.model.discount.DiscountUser
 import com.hanheldpos.model.order.*
+import com.hanheldpos.model.payment.PaymentOrder
+import com.hanheldpos.model.payment.PaymentStatus
 import com.hanheldpos.model.product.ProductType
+import com.hanheldpos.utils.DateTimeUtils
+import java.util.*
 
 object CartConverter {
 
-    fun toOrder(cart: CartModel, orderStatus: Int, paymentStatus: Int): OrderReq {
+    fun toOrder(
+        cart: CartModel,
+        couponCode: String? = null,
+        orderStatus: Int = OrderStatus.ORDER.value,
+        paymentStatus: Int = PaymentStatus.UNPAID.value
+    ): OrderReq {
         val subTotal = cart.getSubTotal()
         val total = cart.total()
         val totalCompVoid = cart.totalComp()
@@ -35,6 +43,9 @@ object CartConverter {
 
         val description =
             cart.productsList.map { baseProductInCart -> baseProductInCart.name }.joinToString(",")
+
+        cart.createDate =
+            DateTimeUtils.dateToString(Date(), DateTimeUtils.Format.FULL_DATE_UTC_TIMEZONE)
 
         return OrderReq(
             Order = Order(
@@ -69,6 +80,11 @@ object CartConverter {
                     cart.discountUserList,
                     subTotal,
                     0.0
+                ),
+                DiscountUsedList = if (couponCode.isNullOrEmpty()) null else listOf(
+                    DiscountUsed(
+                        DiscountCode = couponCode
+                    )
                 ),
                 ServiceFeeList = toOrderFeeList(
                     cart.fees,
@@ -105,7 +121,7 @@ object CartConverter {
                 )
             ),
             OrderSummary = OrderSummaryPrimary(
-                OrderCode = cart.orderCode!!,
+                OrderCode = cart.orderCode,
                 OrderStatusId = orderStatus,
                 PaymentStatusId = paymentStatus,
                 Description = description,

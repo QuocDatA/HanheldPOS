@@ -27,17 +27,17 @@ class CartProductAdapter(
         binding.layoutRoot.setOnClickListener { listener.onItemClick(position, item) }
         binding.discountDetail.setClickListener {
             if (!item.discountUsersList.isNullOrEmpty() || !item.discountServersList.isNullOrEmpty())
-            listener.onDiscountDelete(
-                position,
-
-                item
-            )
+                listener.onDiscountDelete(
+                    position,
+                    item
+                )
         }
         binding.compDetail.setClickListener {
-            if (item.compReason != null) listener.onCompDelete(
-                position,
-                item
-            )
+            if (item.compReason != null)
+                listener.onCompDelete(
+                    position,
+                    item
+                )
         }
         if (item is Combo) {
             binding.isShownDetail = item.isShowDetail
@@ -77,6 +77,6 @@ class CartProductAdapter(
     interface CartProductListener {
         fun onItemClick(adapterPosition: Int, item: BaseProductInCart)
         fun onDiscountDelete(adapterPosition: Int, item: BaseProductInCart)
-        fun onCompDelete(adapterPosition: Int,item: BaseProductInCart)
+        fun onCompDelete(adapterPosition: Int, item: BaseProductInCart)
     }
 }

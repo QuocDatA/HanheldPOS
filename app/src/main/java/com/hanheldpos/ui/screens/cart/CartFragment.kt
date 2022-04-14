@@ -2,11 +2,13 @@ package com.hanheldpos.ui.screens.cart
 
 import android.annotation.SuppressLint
 import androidx.core.content.ContextCompat
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.customer.CustomerResp
+import com.hanheldpos.data.api.pojo.discount.DiscountCoupon
 import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.data.api.pojo.order.settings.DiningOption
 import com.hanheldpos.data.api.pojo.order.settings.Reason
@@ -23,7 +25,6 @@ import com.hanheldpos.model.payment.PaymentOrder
 import com.hanheldpos.model.combo.ItemActionType
 import com.hanheldpos.model.discount.DiscApplyTo
 import com.hanheldpos.model.discount.DiscountUser
-import com.hanheldpos.model.order.OrderReq
 import com.hanheldpos.model.product.ProductType
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
@@ -96,7 +97,7 @@ class CartFragment(private val listener: CartCallBack) :
                 }
 
                 override fun onCompDelete(adapterPosition: Int, item: BaseProductInCart) {
-                    cartDataVM.removeCompReason()
+                    cartDataVM.removeCompReason(item)
                 }
 
 
@@ -145,6 +146,11 @@ class CartFragment(private val listener: CartCallBack) :
 
         binding.btnBill.setOnClickListener {
             onBillCart()
+        }
+
+        // Listener note cart change
+        binding.noteCart.doAfterTextChanged {
+            cartDataVM.updateNote(it.toString())
         }
     }
 
@@ -220,6 +226,10 @@ class CartFragment(private val listener: CartCallBack) :
 
                 override fun onDiscountServerChoose(discount: DiscountResp ,discApplyTo: DiscApplyTo) {
                     cartDataVM.addDiscountServer(discount,discApplyTo)
+                }
+
+                override fun onDiscountCodeChoose(discount: List<DiscountCoupon>?) {
+                    cartDataVM.updateDiscountCouponCode(discount)
                 }
 
                 override fun onCompReasonChoose(reason: Reason) {

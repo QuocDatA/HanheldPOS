@@ -15,11 +15,17 @@ class DiscountAutomaticVM : BaseUiViewModel<DiscountAutomaticUV>() {
 
     val isLoading = MutableLiveData<Boolean>(false);
 
-    fun loadDiscountAutomatic()  {
+    fun initData() {
+        loadDiscountAutomatic()
+    }
+
+    fun loadDiscountAutomatic(keyword : String = "")  {
         val listDiscountAutoItem = DataHelper.findDiscountAutoList(DiscApplyTo.ITEM)
         val listDiscountAutoOrder = DataHelper.findDiscountAutoList(DiscApplyTo.ORDER)
-        uiCallback?.loadDataDiscountCode(concatenate(listDiscountAutoItem,listDiscountAutoOrder))
+        uiCallback?.loadDataDiscountCode(concatenate(listDiscountAutoItem,listDiscountAutoOrder).sortedBy { it.DiscountName }.filter { it.DiscountCode.uppercase().contains(keyword.uppercase()) })
     }
+
+
 
     fun onApplyDiscountAuto(discount : DiscountResp) {
         // Re-check the validity of the discount.

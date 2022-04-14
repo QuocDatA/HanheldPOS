@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <import type="com.hanheldpos.utils.PriceUtils"/>
         <variable
             name="viewModel"
             type="com.hanheldpos.ui.screens.cart.CartVM" />
@@ -36,39 +36,53 @@
                 android:layout_height="@dimen/_42sdp"
                 android:background="@color/color_2">
 
-                <ImageButton
-                    style="@style/MaterialButton.Icon"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_gravity="center|start"
-                    android:adjustViewBounds="true"
-                    android:backgroundTint="@color/textPrimary"
-                    android:onClick="@{v -> viewModel.backPress()}"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/ic_baseline_arrow_back_ios_13"
-                    tools:ignore="ContentDescription" />
+                    android:orientation="horizontal">
 
-                <com.diadiem.pos_components.PTextView
-                    style="@style/CartTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/cart" />
+                    <FrameLayout
+                        android:layout_width="0dp"
+                        android:onClick="@{v -> viewModel.backPress()}"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
 
-                <FrameLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center|end"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:onClick="@{v->viewModel.deleteCart()}"
-                    android:paddingHorizontal="@dimen/_10sdp">
+                        <ImageButton
+                            style="@style/MaterialButton.Icon"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center|start"
+                            android:adjustViewBounds="true"
+                            android:onClick="@{v -> viewModel.backPress()}"
+                            android:backgroundTint="@color/textPrimary"
+
+                            android:scaleType="centerInside"
+                            android:src="@drawable/ic_baseline_arrow_back_ios_13"
+                            tools:ignore="ContentDescription" />
+                    </FrameLayout>
 
                     <com.diadiem.pos_components.PTextView
-                        style="@style/CartDelete"
+                        style="@style/CartTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="@string/delete_cart" />
-                </FrameLayout>
+                        android:text="@string/cart" />
+
+                    <FrameLayout
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:onClick="@{v->viewModel.deleteCart()}">
+
+                        <com.diadiem.pos_components.PTextView
+                            style="@style/CartDelete"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end|center"
+                            android:layout_marginEnd="@dimen/_10sdp"
+                            android:text="@string/delete_cart" />
+                    </FrameLayout>
+                </LinearLayout>
 
                 <include
                     layout="@layout/divider_vertical"
@@ -246,13 +260,14 @@
                             app:tint="@color/color_0" />
 
                         <com.diadiem.pos_components.PTextInputEditText
+                            android:id="@+id/noteCart"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/_5sdp"
                             android:focusableInTouchMode="true"
                             android:hint="@string/special_instruction_for_order"
                             android:paddingVertical="@dimen/_11sdp"
-                            android:text="@={cartDataVM.cartModelLD.note}"
+                            android:text="@{cartDataVM.cartModelLD.note}"
                             android:textColorHint="@color/color_9"
                             app:ipt_useTextColor="color4"
                             app:ipt_useTextHeader="h5" />
@@ -701,7 +716,7 @@
                     android:layout_height="wrap_content" />
 
                 <com.diadiem.pos_components.PTextView
-                    priceDisc="@{cartDataVM.cartModelLD.total()}"
+                    android:text="@{ `(` + PriceUtils.INSTANCE.formatStringPrice(cartDataVM.cartModelLD.total()) + `)`}"
                     visibleObject="@{cartDataVM.cartModelLD.total() > 0}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

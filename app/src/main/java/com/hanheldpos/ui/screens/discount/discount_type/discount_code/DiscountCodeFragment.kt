@@ -6,13 +6,15 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hanheldpos.R
+import com.hanheldpos.data.api.pojo.discount.DiscountCoupon
 import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.databinding.FragmentDiscountCodeBinding
 import com.hanheldpos.model.discount.DiscApplyTo
+import com.hanheldpos.model.discount.DiscountTypeFor
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.discount.DiscountFragment
 import com.hanheldpos.ui.screens.discount.discount_detail.DiscountDetailFragment
-import com.hanheldpos.ui.screens.discount.discount_type.discount_code.adapter.DiscountCodeAdapter
+import com.hanheldpos.ui.screens.discount.discount_type.adapter.DiscountServerAdapter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -23,7 +25,7 @@ class DiscountCodeFragment(
 ) : BaseFragment<FragmentDiscountCodeBinding, DiscountCodeVM>(), DiscountCodeUV {
     override fun layoutRes(): Int = R.layout.fragment_discount_code
 
-    private lateinit var discountCodeAdapter: DiscountCodeAdapter;
+    private lateinit var discountCodeAdapter: DiscountServerAdapter;
 
     override fun viewModelClass(): Class<DiscountCodeVM> {
         return DiscountCodeVM::class.java;
@@ -40,14 +42,18 @@ class DiscountCodeFragment(
     override fun initView() {
 
         discountCodeAdapter =
-            DiscountCodeAdapter(listener = object : DiscountCodeAdapter.DiscountItemCallBack {
+            DiscountServerAdapter(listener = object : DiscountServerAdapter.DiscountItemCallBack {
                 override fun onViewDetailClick(item: DiscountResp) {
-                    navigator.goTo(DiscountDetailFragment(item, onApplyDiscountAuto = { discount ->
-
-                    }))
+                    navigator.goTo(
+                        DiscountDetailFragment(
+                            item,
+                            onApplyDiscountAuto = {},
+                            onApplyDiscountCode = { discount -> viewModel.onApplyDiscount(discount) })
+                    )
                 }
 
                 override fun onItemClick(item : DiscountResp) {
+                    viewModel.onApplyDiscount(item)
                 }
 
             });
@@ -67,9 +73,7 @@ class DiscountCodeFragment(
             )
         };
         binding.listDiscountCode.adapter = discountCodeAdapter;
-        binding.firstNameInput.doAfterTextChanged {
-            viewModel.searchDiscountCode(it.toString())
-        }
+
     }
 
     override fun initData() {
@@ -81,6 +85,10 @@ class DiscountCodeFragment(
     }
 
     override fun initAction() {
+        binding.discountCodeInput.doAfterTextChanged {
+            listener.validDiscount(it.toString().isNotEmpty())
+            viewModel.searchDiscountCode(it.toString())
+        }
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -89,5 +97,28 @@ class DiscountCodeFragment(
             discountCodeAdapter.submitList(list);
             discountCodeAdapter.notifyDataSetChanged();
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        requireActivity().supportFragmentManager.setFragmentResultListener(
+            "saveDiscount",
+            this
+        ) { _, bundle ->
+            if (bundle.getSerializable("DiscountTypeFor") == DiscountTypeFor.DISCOUNT_CODE) {
+                val discountSelect = discountCodeAdapter.currentList.find {
+                    it.DiscountCode.uppercase() == binding.discountCodeInput.text.toString()
+                }
+                if (discountSelect != null) {
+                    viewModel.onApplyDiscount(discountSelect)
+                }
+                else showMessage(getString(R.string.code_doesnt_exist))
+            }
+        }
+        listener.validDiscount(binding.discountCodeInput.text.toString().isNotEmpty())
+    }
+
+    override fun updateDiscountCouponCode(discount: List<DiscountCoupon>?) {
+        listener.discountCodeChoose(discount)
     }
 }

@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.hanheldpos.ui.screens.discount.discount_type.automatic.DiscountAutomaticVM" />
@@ -16,69 +17,75 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/_20sdp"
             android:layout_marginHorizontal="@dimen/_9sdp"
+            android:layout_marginBottom="@dimen/_20sdp"
             android:orientation="horizontal">
+
             <LinearLayout
-                android:background="@drawable/bg_outline"
                 android:layout_width="0dp"
+                android:layout_height="@dimen/_34sdp"
                 android:layout_weight="1"
+                android:background="@drawable/bg_outline"
                 android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:layout_height="@dimen/_34sdp">
+                android:orientation="horizontal">
+
                 <com.diadiem.pos_components.PTextInputEditText
-                    android:id="@+id/firstNameInput"
+                    android:id="@+id/discountAutomaticInput"
                     style="@style/BaseTextInput"
                     android:layout_width="0dp"
-                    android:gravity="center_vertical"
-                    android:paddingHorizontal="@dimen/_10sdp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
                     android:layout_margin="0dp"
+                    android:layout_weight="1"
                     android:focusableInTouchMode="true"
+                    android:gravity="center_vertical"
                     android:hint="@string/search"
-                    android:inputType="text"
+                    textNumberAllCaps="@{true}"
+                    android:inputType="textCapWords"
+                    android:textAllCaps="true"
+                    android:paddingHorizontal="@dimen/_10sdp"
                     app:ipt_useFontStyle="normal"
                     app:ipt_useHintTextColor="color8"
                     app:ipt_useTextColor="color4"
                     app:ipt_useTextHeader="h5" />
+
                 <FrameLayout
-                    android:background="@color/color_10"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:background="@color/color_10">
+
                     <ImageView
-                        android:background="@drawable/bg_outline"
-                        android:padding="@dimen/_10sdp"
                         android:layout_width="@dimen/_34sdp"
                         android:layout_height="match_parent"
-                        android:src="@drawable/ic_discount_automatic_1"
-                        android:contentDescription="TODO" />
+                        android:background="@drawable/bg_outline"
+                        android:contentDescription="TODO"
+                        android:padding="@dimen/_10sdp"
+                        android:src="@drawable/ic_discount_automatic_1" />
                 </FrameLayout>
-            </LinearLayout>  
+            </LinearLayout>
+
             <androidx.legacy.widget.Space
                 android:layout_width="@dimen/_6sdp"
-                android:layout_height="wrap_content"
-                />
+                android:layout_height="wrap_content" />
+
             <ImageView
-                android:background="@drawable/bg_outline"
                 android:layout_width="@dimen/_34sdp"
                 android:layout_height="@dimen/_34sdp"
+                android:background="@drawable/bg_outline"
+                android:contentDescription="TODO"
                 android:padding="@dimen/_10sdp"
-                android:src="@drawable/ic_discount_automatic_sort"
-                android:contentDescription="TODO" />
+                android:src="@drawable/ic_discount_automatic_sort" />
         </LinearLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            >
+            android:layout_height="match_parent">
+
             <ProgressBar
                 visibleObject="@{viewModel.isLoading()}"
-                android:indeterminateTint="@color/color_0"
-                android:layout_centerInParent="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                />
+                android:layout_centerInParent="true"
+                android:indeterminateTint="@color/color_0" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/listDiscountCode"

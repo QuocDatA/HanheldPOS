@@ -11,7 +11,7 @@ import com.hanheldpos.model.cart.BaseProductInCart
 import com.hanheldpos.model.cart.CartModel
 import com.hanheldpos.model.discount.*
 import com.hanheldpos.ui.screens.cart.CurCartData
-import com.hanheldpos.utils.time.DateTimeUtils
+import com.hanheldpos.utils.DateTimeUtils
 import kotlinx.parcelize.Parcelize
 import java.util.*
 
@@ -34,8 +34,8 @@ data class DiscountResp(
     val DiscountApplyTo: Int,
     val DiscountAutomatic: Boolean,
     val DiscountAutomaticText: String,
-    val DiscountCode: String,
     val DiscountName: String,
+    var DiscountCode: String,
     val DiscountText: String,
     val DiscountType: Int,
     val DiscountTypeText: String,
@@ -57,7 +57,7 @@ data class DiscountResp(
     val OnlyApplyDiscountOncePerOrder: Int,
     val OnlyApplyDiscountProductOncePerOrder: Int,
     val OrderNo: Int,
-    val ScheduleList: List<ListScheduleItem>,
+    val ScheduleList: List<ListScheduleItem>?,
     val SetSchedules: Int,
     val Trigger: List<Trigger>,
     val Url: String,
@@ -69,6 +69,7 @@ data class DiscountResp(
 
     var quantityUsed: Int? = null
     var maxAmountUsed: Double? = null
+
 
     val getQuantityUsed: Int
         get() = if (Condition.CustomerBuys.IsMaxQuantity == 1) quantityUsed ?: 0 else 1
@@ -155,12 +156,12 @@ data class DiscountResp(
             if (curDateTime <=
                 DateTimeUtils.strToDate(
                     DateOff,
-                    DateTimeUtils.Format.FULL_DATE_UTC_Z
+                    DateTimeUtils.Format.YYYY_MM_DD_HH_MM_SS
                 )
                 && curDateTime >=
                 DateTimeUtils.strToDate(
                     DateOn,
-                    DateTimeUtils.Format.FULL_DATE_UTC_Z
+                    DateTimeUtils.Format.YYYY_MM_DD_HH_MM_SS
                 )
             ) {
                 return isValidSchedule(curDateTime);
@@ -172,19 +173,19 @@ data class DiscountResp(
     }
 
     private fun isValidSchedule(curDateTime: Date): Boolean {
-        if (!ScheduleList?.any() ?: false) {
+        if (ScheduleList?.any() != true) {
             return true;
         }
         val c = Calendar.getInstance()
         c.time = curDateTime;
         return isValidTime(
-            ScheduleList?.first { schedule -> schedule.Id == c.get(Calendar.DAY_OF_WEEK) },
+            ScheduleList?.firstOrNull { schedule -> schedule.Id == c.get(Calendar.DAY_OF_WEEK) },
             curDateTime
         );
     }
 
-    private fun isValidTime(schedule: ListScheduleItem, curDateTime: Date): Boolean {
-        return schedule.ListSetTime.firstOrNull() { time ->
+    private fun isValidTime(schedule: ListScheduleItem?, curDateTime: Date): Boolean {
+        return schedule?.ListSetTime?.firstOrNull { time ->
             isValidTime(
                 time.TimeOff,
                 time.TimeOn,
@@ -309,7 +310,7 @@ data class DiscountResp(
         return !this.DiscountAutomatic
     }
 
-    fun isBuyXGetY() : Boolean {
+    fun isBuyXGetY(): Boolean {
         return this.DiscountType == DiscountTypeEnum.BUYX_GETY.value
     }
 
@@ -319,15 +320,16 @@ data class DiscountResp(
         } != null || triggerType == DiscountTriggerType.ALL
     }
 
-    fun isMaxNumberOfUsedPerOrder() : Boolean {
+    fun isMaxNumberOfUsedPerOrder(): Boolean {
         var totalQtyDiscUsed = 0;
-        when (DiscApplyTo.fromInt(DiscountApplyTo ?: 0) ) {
-            DiscApplyTo.ITEM->
-            totalQtyDiscUsed = CurCartData.cartModel?.productsList?.sumOf { pro -> pro.totalQtyDiscUsed(this._id)
-            } ?: 0;
+        when (DiscApplyTo.fromInt(DiscountApplyTo ?: 0)) {
+            DiscApplyTo.ITEM ->
+                totalQtyDiscUsed = CurCartData.cartModel?.productsList?.sumOf { pro ->
+                    pro.totalQtyDiscUsed(this._id)
+                } ?: 0;
 
             DiscApplyTo.ORDER ->
-            totalQtyDiscUsed = CurCartData.cartModel?.totalQtyDiscUsed(this._id) ?: 0;
+                totalQtyDiscUsed = CurCartData.cartModel?.totalQtyDiscUsed(this._id) ?: 0;
         }
 
         return MaximumNumberOfUsedPerOrder && totalQtyDiscUsed >= MaximumNumberOfUsedPerOrderValue;
@@ -416,8 +418,16 @@ data class Trigger(
 data class ListScheduleItem(
     val Id: Int,
     val Date: String,
-    val ListSetTime: List<ListSetTimeItem>
-) : Parcelable
+    val ListSetTime: List<ListSetTimeItem>,
+    val Active: Boolean,
+) : Parcelable {
+    val listTimeString: String
+        get() {
+            if (!Active || ListSetTime?.isEmpty())
+                return "--:--"
+            return ListSetTime.joinToString("\n") { time -> "${time.TimeOn} to ${time.TimeOff}" }
+        }
+}
 
 @Parcelize
 

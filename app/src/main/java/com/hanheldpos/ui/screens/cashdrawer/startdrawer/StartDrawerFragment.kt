@@ -43,7 +43,7 @@ class StartDrawerFragment : BaseFragment<FragmentStartDrawerBinding, StartDrawer
                     return
                 }
                 binding.startingCash.removeTextChangedListener(this)
-                viewModel.amount = s.replace(Regex("[,]"), "").toDouble()
+                viewModel.amount =  s.replace(Regex("[,]"), "").toDouble()
                 binding.startingCash.setText(PriceUtils.formatStringPrice(viewModel.amount))
                 binding.startingCash.addTextChangedListener(this)
             }
@@ -60,7 +60,7 @@ class StartDrawerFragment : BaseFragment<FragmentStartDrawerBinding, StartDrawer
         keyBoardVM.onListener(
             this,
             binding.startingCash,
-            initInput = viewModel.amount.toString(),
+            initInput = PriceUtils.formatStringPrice(viewModel.amount),
             listener = object : KeyBoardVM.KeyBoardCallBack {
                 override fun onComplete() {
                     viewModel.startDrawer(requireContext())

@@ -8,7 +8,7 @@
         <variable
             name="viewModel"
             type="com.hanheldpos.ui.screens.cart.customer.detail_customer.CustomerDetailVM" />
-        <import type="com.hanheldpos.utils.time.DateTimeUtils"/>
+        <import type="com.hanheldpos.utils.DateTimeUtils"/>
         <import type="com.hanheldpos.model.DataHelper"/>
 
     </data>
