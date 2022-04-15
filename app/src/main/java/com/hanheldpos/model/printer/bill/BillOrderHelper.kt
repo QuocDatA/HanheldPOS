@@ -334,11 +334,11 @@ object BillOrderHelper {
                 }
         }
 
-        view.codeOrder.text = "Order #: ${order.Order.Code}"
-        view.platformDevice.text = DataHelper.recentDeviceCodeLocalStorage?.first()?.Nickname
+        view.codeOrder.text = "${order.Order.Code}"
+        view.location.text = DataHelper.locationGuid()
         view.nameEmployee.text =
-            "Employee : ${DataHelper.deviceCodeLocalStorage?.Employees?.find { it._id == order.Order.EmployeeGuid }?.FullName}"
-        view.dateCreateOrder.text = DateTimeUtils.dateToString(
+            "${DataHelper.deviceCodeLocalStorage?.Employees?.find { it._id == order.Order.EmployeeGuid }?.FullName}"
+        view.createDate.text = DateTimeUtils.dateToString(
             DateTimeUtils.strToDate(
                 order.Order.CreateDate,
                 DateTimeUtils.Format.FULL_DATE_UTC_TIMEZONE

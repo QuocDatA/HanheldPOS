@@ -110,29 +110,23 @@
                     android:orientation="horizontal">
 
                     <com.diadiem.pos_components.PTextView
+                        android:layout_weight="1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@android:color/black"
+                        app:useFontStyle="normal"
+                        android:text="@string/order_printer_layout"
+                        android:textSize="24px"
+                        tools:text="Order #:" />
+
+                    <com.diadiem.pos_components.PTextView
                         android:id="@+id/codeOrder"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@android:color/black"
                         app:useFontStyle="normal"
                         android:textSize="24px"
-                        tools:text="Order #: IP1102" />
-
-                    <androidx.legacy.widget.Space
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1" />
-
-                    <com.diadiem.pos_components.PTextView
-                        android:id="@+id/platformDevice"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-
-                        android:text="@{`Order #: ` + order.order.code}"
-                        android:textColor="@android:color/black"
-                        app:useFontStyle="normal"
-                        android:textSize="24px"
-                        tools:text="Handheld" />
+                        tools:text="IP1102" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -141,27 +135,71 @@
                     android:orientation="horizontal">
 
                     <com.diadiem.pos_components.PTextView
+                        android:layout_weight="1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@android:color/black"
+                        app:useFontStyle="normal"
+                        android:text="@string/location"
+                        android:textSize="24px" />
+
+                    <com.diadiem.pos_components.PTextView
+                        android:id="@+id/location"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@android:color/black"
+                        app:useFontStyle="normal"
+                        android:textSize="24px"
+                        tools:text="DQM" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <com.diadiem.pos_components.PTextView
+                        android:layout_weight="1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@android:color/black"
+                        app:useFontStyle="normal"
+                        android:text="@string/employee_printer_layout"
+                        android:textSize="24px"
+                        tools:text="Employee :" />
+
+                    <com.diadiem.pos_components.PTextView
                         android:id="@+id/nameEmployee"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@android:color/black"
                         app:useFontStyle="normal"
                         android:textSize="24px"
-                        tools:text="Employee : Quan Nguyen" />
+                        tools:text="Quan Nguyen" />
+                </LinearLayout>
 
-                    <androidx.legacy.widget.Space
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
                     <com.diadiem.pos_components.PTextView
-                        android:id="@+id/dateCreateOrder"
+                        android:layout_weight="1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@android:color/black"
+                        app:useFontStyle="normal"
+                        android:text="@string/create_date"
+                        android:textSize="24px" />
+
+                    <com.diadiem.pos_components.PTextView
+                        android:id="@+id/create_date"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@android:color/black"
                         app:useFontStyle="normal"
                         android:textSize="24px"
-                        tools:text="02/28/2021  11:00" />
+                        tools:text="28/02/2021 11:00" />
                 </LinearLayout>
 
             </LinearLayout>

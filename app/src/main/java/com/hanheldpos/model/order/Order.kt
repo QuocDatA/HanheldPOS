@@ -13,6 +13,7 @@ data class Order(
     val DeviceGuid: String,
     val DiningOptionId : Int?,
     val Code : String?,
+    val Checksum: String,
     val CreateDate: String?,
     val MenuLocationGuid: String?,
     val CashDrawer_id: String?,
