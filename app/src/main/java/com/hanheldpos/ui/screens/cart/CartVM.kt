@@ -15,7 +15,6 @@ import com.hanheldpos.model.order.OrderStatus
 import com.hanheldpos.model.payment.PaymentStatus
 import com.hanheldpos.ui.base.dialog.AppAlertDialog
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
-import com.handheld.pos_printer.PrinterHelper
 import com.hanheldpos.model.printer.bill.BillOrderHelper
 import com.hanheldpos.utils.DateTimeUtils
 import com.hanheldpos.utils.writeBitmap

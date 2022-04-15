@@ -11,7 +11,6 @@ import com.hanheldpos.model.DatabaseHelper
 import com.hanheldpos.model.OrderHelper
 import com.hanheldpos.model.menu_nav_opt.LogoutType
 import com.hanheldpos.model.menu_nav_opt.NavBarOptionType
-import com.handheld.pos_printer.PrinterHelper
 import com.hanheldpos.model.printer.bill.BillOrderHelper
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.dialog.AppAlertDialog
@@ -102,10 +101,11 @@ class MenuFragment : BaseFragment<FragmentMenuBinding, MenuVM>(), MenuUV {
                     DatabaseHelper.ordersCompleted.getAll().take(1).collectLatest {
                         it.lastOrNull()?.let { completedEntity ->
                             launch(Dispatchers.Main) {
-                                /*PrinterHelper.printBill(
-                                    requireActivity(),
-                                    BillOrderHelper.orderToBillString(requireContext(),34,DatabaseMapper.mappingOrderReqFromEntity(completedEntity))
-                                )*/
+                                BillOrderHelper.printBillWithUrovo(requireActivity(),34,
+                                    DatabaseMapper.mappingOrderReqFromEntity(completedEntity))
+
+                                BillOrderHelper.printBillWithBluetooth(requireActivity(),34,
+                                    DatabaseMapper.mappingOrderReqFromEntity(completedEntity))
                             }
                         }
 
