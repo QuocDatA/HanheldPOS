@@ -14,6 +14,9 @@ import com.hanheldpos.model.payment.PaymentOrder
 import com.hanheldpos.model.payment.PaymentStatus
 import com.hanheldpos.model.product.ProductType
 import com.hanheldpos.utils.DateTimeUtils
+import com.hanheldpos.utils.EncryptUtils
+import java.security.MessageDigest
+import java.security.NoSuchAlgorithmException
 import java.util.*
 
 object CartConverter {
@@ -61,7 +64,8 @@ object CartConverter {
                 MenuLocationGuid = cart.menuLocationGuid,
                 CurrencySymbol = OrderHelper.getCurrencySymbol()!!,
                 CashDrawer_id = DataHelper.currentDrawerId,
-                CustomerGuestGuid = cart.customer?._Id
+                CustomerGuestGuid = cart.customer?._Id,
+                Checksum = EncryptUtils.getHash(CheckSum(cart.createDate!!,DataHelper.deviceGuid()))
             ),
             OrderDetail = OrderDetail(
                 DiningOption = OrderDiningOption(

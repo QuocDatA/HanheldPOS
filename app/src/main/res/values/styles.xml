@@ -160,4 +160,8 @@
         <item name="android:spinnerMode">dropdown</item>
     </style>
 
+    <style name="WideDialog" parent="Base.Theme.AppCompat.Dialog">
+        <item name="android:windowMinWidthMajor">96%</item>
+        <item name="android:windowMinWidthMinor">96%</item>
+    </style>
 </resources>

@@ -1,11 +1,13 @@
 package com.hanheldpos.model
 
-import android.app.ProgressDialog
+import android.annotation.SuppressLint
+import android.app.Dialog
 import android.content.Context
-import android.content.DialogInterface
 import android.content.pm.PackageManager
 import android.os.Environment
 import android.util.Log
+import android.view.LayoutInflater
+import android.view.Window
 import androidx.core.content.ContextCompat
 import com.downloader.OnDownloadListener
 import com.downloader.PRDownloader
@@ -15,8 +17,10 @@ import com.downloader.request.DownloadRequest
 import com.hanheldpos.PosApp
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.resource.ResourceResp
+import com.hanheldpos.databinding.DialogProcessDownloadResourceBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.io.*
 import java.util.*
@@ -29,7 +33,9 @@ object DownloadService {
         Environment.getDataDirectory().path + "/data/com.hanheldpos/local/"
     private var downloadId: Int = 0
     private var listFileToExtract: MutableList<String> = mutableListOf()
-    lateinit var processDialog: ProgressDialog
+    lateinit var processDialog: Dialog
+    lateinit var binding: DialogProcessDownloadResourceBinding
+    var currentByte: Long = 0L
 
     private fun initDownloadService(context: Context) {
         val config = PRDownloaderConfig.newBuilder()
@@ -42,22 +48,28 @@ object DownloadService {
     }
 
     private fun initDialog(context: Context) {
-        processDialog = ProgressDialog(context)
-        with(processDialog) {
-            setTitle("Downloading...")
-            setCancelable(false)
-            setProgressStyle(ProgressDialog.STYLE_HORIZONTAL)
-            setButton(
-                DialogInterface.BUTTON_NEGATIVE,
-                context.getString(R.string.cancel)
-            ) { dialog, _ ->
-                PRDownloader.cancel(downloadId)
-                dialog.dismiss()
-            }
-            show()
-        }
+        processDialog = Dialog(context, R.style.WideDialog)
+        processDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        processDialog.setCancelable(false)
+        processDialog.setContentView(R.layout.dialog_process_download_resource)
+        binding = DialogProcessDownloadResourceBinding.inflate(LayoutInflater.from(context))
+        processDialog.setContentView(binding.root)
+        processDialog.show()
+
+//        with(processDialog) {
+//            setCancelable(false)
+//            setButton(
+//                DialogInterface.BUTTON_NEGATIVE,
+//                context.getString(R.string.cancel)
+//            ) { dialog, _ ->
+//                PRDownloader.cancel(downloadId)
+//                dialog.dismiss()
+//            }
+//            show()
+//        }
     }
 
+    @SuppressLint("SetTextI18n")
     fun downloadFile(
         context: Context,
         listResources: List<ResourceResp>,
@@ -73,7 +85,11 @@ object DownloadService {
             val downloadRequest = PRDownloader.download(item.Url, INTERNAL_PATH, item.Name)
                 .build()
                 .setOnStartOrResumeListener {
-                    processDialog.setTitle("Downloading \n${item.Name}")
+                    binding.downloadTitle.text = "Downloading"
+                    val splitString = item.Name.split(".")
+                    binding.itemName.text = splitString[0]
+                    binding.itemType.text = "." + splitString[1]
+                    currentByte = 0L
                 }
                 .setOnPauseListener {
                     isDownloading = false
@@ -85,12 +101,17 @@ object DownloadService {
                 }
                 .setOnProgressListener { progress ->
                     val progressPercent: Long = progress.currentBytes * 100 / progress.totalBytes
-                    processDialog.progress = progressPercent.toInt()
-                    processDialog.setMessage(
-                        progress.currentBytes.toString() + "/" +
-                                progress.totalBytes.toString()
-
-                    )
+                    if(progressPercent.toInt() == 0) currentByte = 0L
+                    binding.processBar.progress = progressPercent.toInt()
+                    binding.tvProgressCount.text = "$progressPercent%"
+                    val tempByte : Long = progress.currentBytes
+                    binding.tvDownloadSpeed.text =
+                        toMegaByte(tempByte.minus(currentByte)) + "/s | " +
+                                toMegaByte(progress.currentBytes) + " / " + toMegaByte(progress.totalBytes)
+                    CoroutineScope(Dispatchers.IO).launch{
+                        delay(1000)
+                        currentByte = progress.currentBytes
+                    }
                 }
             downloadRequestList.add(downloadRequest)
         }
@@ -99,7 +120,6 @@ object DownloadService {
                 downloadId =
                     downloadRequestList[currentDownloadPos].start(object : OnDownloadListener {
                         override fun onDownloadComplete() {
-
                         }
 
                         override fun onError(error: com.downloader.Error?) {
