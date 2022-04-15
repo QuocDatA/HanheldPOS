@@ -93,8 +93,16 @@ object BillOrderHelper {
             try {
                 val printer: BluetoothManager = BluetoothManager()
                 printer.connect()
-                //printBill(context, printer, printerSize, order)
-                printImageBill(context, printer, printerSize, order)
+                try {
+                    printBill(context, printer, printerSize, order)
+                }
+                catch (e : Exception) {
+                    Log.d("Error print", e.message.toString())
+                }
+                //printImageBill(context, printer, printerSize, order)
+                // Finish Print
+                Thread.sleep(1500)
+                printer.disconnect()
             } catch (e: Exception) {
                 Log.d("Error print", e.message.toString())
             }
@@ -114,7 +122,15 @@ object BillOrderHelper {
             try {
                 val printer: UrovoManager = UrovoManager()
                 printer.connect()
-                printBill(context, printer, printerSize, order)
+                try{
+                    printBill(context, printer, printerSize, order)
+                }
+                catch (e :Exception) {
+                    Log.d("Error print", e.message.toString())
+                }
+                // Finish Print
+                Thread.sleep(1500)
+                printer.disconnect()
             } catch (e: Exception) {
                 Log.d("Error print", e.message.toString())
             }
@@ -269,9 +285,7 @@ object BillOrderHelper {
 
         printer.drawLine(charPerLinerText)
 
-        // Finish Print
-        Thread.sleep(1500)
-        printer.disconnect()
+
     }
 
     private fun printImageBill(

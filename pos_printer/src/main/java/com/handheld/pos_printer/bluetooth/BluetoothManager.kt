@@ -26,7 +26,7 @@ class BluetoothManager : BasePrintManager() {
     override fun drawText(data: String?, bold: Boolean, size: FontSize) {
         var content = data?.replace(Regex("[\n\r]$"), "")
         if (bold) {
-            content = ""
+            content = "<b>$content</b>"
         }
         content = when (size) {
             FontSize.Small -> "<font size='normal'>$content</font>"

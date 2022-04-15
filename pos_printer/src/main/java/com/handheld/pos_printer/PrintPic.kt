@@ -16,7 +16,7 @@ class PrintPic {
     private var bitbuf: ByteArray? = null
 
     fun getLength(): Int {
-        return length.toInt() + 20
+        return length.toInt()
     }
 
     fun init(bitmap: Bitmap?) {
