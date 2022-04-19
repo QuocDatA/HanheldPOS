@@ -43,20 +43,12 @@
                     android:id="@+id/itemName"
                     android:layout_width="wrap_content"
                     android:ellipsize="end"
+                    android:maxLines="1"
                     android:layout_height="wrap_content"
                     android:textStyle="bold"
                     app:useFontStyle="normal"
                     app:useTextHeader="h4"
                     tools:text="Downloading..." />
-
-                <com.diadiem.pos_components.PTextView
-                    android:id="@+id/itemType"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    app:useFontStyle="normal"
-                    app:useTextHeader="h4"
-                    tools:text=".zip" />
             </LinearLayout>
 
             <ProgressBar
@@ -71,14 +63,27 @@
                 android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-                <com.diadiem.pos_components.PTextView
-                    android:id="@+id/tvDownloadSpeed"
-                    style="@style/TextAppearance.Primary"
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="center|start"
-                    app:useTextHeader="h5"
-                    tools:text="1/100"
-                    android:layout_width="0dp" />
+                    android:orientation="horizontal">
+
+                    <com.diadiem.pos_components.PTextView
+                        android:id="@+id/tvDownloadSpeed"
+                        style="@style/TextAppearance.Primary"
+                        android:gravity="center|start"
+                        app:useTextHeader="h5"
+                        tools:text="1/100"
+                        android:layout_width="wrap_content" />
+
+                    <com.diadiem.pos_components.PTextView
+                        android:id="@+id/tvStoreCount"
+                        style="@style/TextAppearance.Primary"
+                        android:gravity="center|end"
+                        app:useTextHeader="h5"
+                        tools:text="10%" />
+                </LinearLayout>
 
                 <com.diadiem.pos_components.PTextView
                     android:id="@+id/tvProgressCount"

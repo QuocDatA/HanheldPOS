@@ -1,5 +1,6 @@
 package com.hanheldpos.ui.screens.menu
 
+import android.graphics.BitmapFactory
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -11,6 +12,7 @@ import com.hanheldpos.model.DatabaseHelper
 import com.hanheldpos.model.OrderHelper
 import com.hanheldpos.model.menu_nav_opt.LogoutType
 import com.hanheldpos.model.menu_nav_opt.NavBarOptionType
+import com.hanheldpos.model.printer.PrinterHelper
 import com.hanheldpos.model.printer.bill.BillOrderHelper
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.dialog.AppAlertDialog
@@ -26,6 +28,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
+import java.io.File
 
 class MenuFragment : BaseFragment<FragmentMenuBinding, MenuVM>(), MenuUV {
     override fun layoutRes() = R.layout.fragment_menu
@@ -96,7 +99,7 @@ class MenuFragment : BaseFragment<FragmentMenuBinding, MenuVM>(), MenuUV {
             NavBarOptionType.ORDERS -> {
 //                val filePath = File(requireActivity().getExternalFilesDir(null), "bitmap.jpeg")
 //                val billImage = BitmapFactory.decodeFile(filePath.absolutePath)
-//                PrinterHelper.printBill(requireActivity(),billImage)
+//                PrinterHelper.printBillBluetooth(requireActivity(),billImage)
                 CoroutineScope(Dispatchers.IO).launch {
                     DatabaseHelper.ordersCompleted.getAll().take(1).collectLatest {
                         it.lastOrNull()?.let { completedEntity ->

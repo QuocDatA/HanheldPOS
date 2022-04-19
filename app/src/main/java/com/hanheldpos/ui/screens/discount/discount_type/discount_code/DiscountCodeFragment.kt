@@ -10,6 +10,7 @@ import com.hanheldpos.data.api.pojo.discount.DiscountCoupon
 import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.databinding.FragmentDiscountCodeBinding
 import com.hanheldpos.model.discount.DiscApplyTo
+import com.hanheldpos.model.discount.DiscountTriggerType
 import com.hanheldpos.model.discount.DiscountTypeFor
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.discount.DiscountFragment
@@ -53,7 +54,8 @@ class DiscountCodeFragment(
                 }
 
                 override fun onItemClick(item : DiscountResp) {
-                    viewModel.onApplyDiscount(item)
+                    if (item.isExistsTrigger(DiscountTriggerType.ON_CLICK))
+                        viewModel.onApplyDiscount(item)
                 }
 
             });

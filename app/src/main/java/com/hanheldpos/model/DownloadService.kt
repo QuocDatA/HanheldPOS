@@ -5,7 +5,6 @@ import android.app.Dialog
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Environment
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.Window
 import androidx.core.content.ContextCompat
@@ -78,6 +77,7 @@ object DownloadService {
         var isDownloading = true
         val downloadRequestList: MutableList<DownloadRequest> = mutableListOf()
         var currentDownloadPos = 0
+        var isGettingSpeed = false
         initDownloadService(context)
         listResources.forEach { item ->
             if (item.Name.contains(".zip"))
@@ -86,9 +86,7 @@ object DownloadService {
                 .build()
                 .setOnStartOrResumeListener {
                     binding.downloadTitle.text = "Downloading"
-                    val splitString = item.Name.split(".")
-                    binding.itemName.text = splitString[0]
-                    binding.itemType.text = "." + splitString[1]
+                    binding.itemName.text = item.Name
                     currentByte = 0L
                 }
                 .setOnPauseListener {
@@ -101,19 +99,29 @@ object DownloadService {
                 }
                 .setOnProgressListener { progress ->
                     val progressPercent: Long = progress.currentBytes * 100 / progress.totalBytes
-                    if(progressPercent.toInt() == 0) currentByte = 0L
+                    if (progressPercent.toInt() == 0) currentByte = 0L
                     binding.processBar.progress = progressPercent.toInt()
                     binding.tvProgressCount.text = "$progressPercent%"
-                    val tempByte : Long = progress.currentBytes
+                    val tempByte: Long = progress.currentBytes
                     binding.tvDownloadSpeed.text =
-                        toMegaByte(tempByte.minus(currentByte)) + "/s | " +
-                                toMegaByte(progress.currentBytes) + " / " + toMegaByte(progress.totalBytes)
-                    CoroutineScope(Dispatchers.IO).launch{
-                        delay(1000)
+                        toMegaByte(tempByte.minus(currentByte)) + "/s | "
+                    binding.tvStoreCount.text =
+                        toMegaByte(progress.currentBytes) + " / " + toMegaByte(progress.totalBytes)
+                    CoroutineScope(Dispatchers.IO).launch {
+                        delay(300)
                         currentByte = progress.currentBytes
+                        isGettingSpeed = true
                     }
                 }
             downloadRequestList.add(downloadRequest)
+        }
+        CoroutineScope(Dispatchers.IO).launch{
+            delay(300)
+            if(!isGettingSpeed) {
+                currentByte = 0L
+                noDownloadSpeed()
+            }
+            else isGettingSpeed = false
         }
         CoroutineScope(Dispatchers.IO).launch {
             while (isDownloading) {
@@ -168,6 +176,11 @@ object DownloadService {
 
     private fun toMegaByte(bytes: Long): String {
         return String.format(Locale.ENGLISH, "%.2fMB", bytes / (1024.00 * 1024.00))
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun noDownloadSpeed() {
+        binding.tvDownloadSpeed.text = toMegaByte(currentByte) + "/s | "
     }
 
 
