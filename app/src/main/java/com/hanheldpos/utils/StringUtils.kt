@@ -9,5 +9,5 @@ object StringUtils {
         val pattern: Pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+")
         return pattern.matcher(temp).replaceAll("")
     }
-
+    
 }

@@ -9,6 +9,7 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.drawable.Drawable
+import android.os.StrictMode
 import android.util.DisplayMetrics
 import android.util.Log
 import android.view.LayoutInflater
@@ -18,6 +19,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import com.handheld.pos_printer.BasePrintManager
 import com.handheld.pos_printer.bluetooth.BluetoothManager
+import com.handheld.pos_printer.tcp.TcpManager
 import com.handheld.pos_printer.urovo.UrovoManager
 import com.hanheldpos.R
 import com.hanheldpos.binding.setPriceView
@@ -25,17 +27,15 @@ import com.hanheldpos.databinding.LayoutBillPrinterBinding
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.order.OrderReq
 import com.hanheldpos.model.payment.PaymentMethodType
-import com.hanheldpos.model.printer.PrinterHelper
 import com.hanheldpos.ui.screens.printer.bill.ProductBillPrinterAdapter
 import com.hanheldpos.utils.DateTimeUtils
+import com.hanheldpos.utils.PriceUtils
 import com.hanheldpos.utils.StringUtils
 import com.hanheldpos.utils.drawableToBitmap
 import com.utils.wagu.Block
 import com.utils.wagu.Board
-import com.utils.wagu.Table
 import com.utils.wagu.WaguUtils
 import java.lang.StringBuilder
-import kotlin.math.log
 
 object BillOrderHelper {
 
@@ -90,26 +90,26 @@ object BillOrderHelper {
                 PERMISSION_BLUETOOTH_SCAN
             );
         } else {
-            try {
-                val printer: BluetoothManager = BluetoothManager()
-                printer.connect()
+            Thread {
                 try {
+                    val printer: BluetoothManager = BluetoothManager()
+                    printer.connect()
+                    try {
                     printBill(context, printer, printerSize, order)
-                }
-                catch (e : Exception) {
+//                        printImageBill(context, printer, printerSize, order)
+                    } catch (e: Exception) {
+                        Log.d("Error print", e.message.toString())
+                    }
+
+                    // Finish Print
+                    Thread.sleep(1500)
+                    printer.disconnect()
+                } catch (e: Exception) {
                     Log.d("Error print", e.message.toString())
                 }
-                //printImageBill(context, printer, printerSize, order)
-                // Finish Print
-                Thread.sleep(1500)
-                printer.disconnect()
-            } catch (e: Exception) {
-                Log.d("Error print", e.message.toString())
-            }
+            }.start()
 
         }
-
-
     }
     //endregion
 
@@ -122,10 +122,9 @@ object BillOrderHelper {
             try {
                 val printer: UrovoManager = UrovoManager()
                 printer.connect()
-                try{
+                try {
                     printBill(context, printer, printerSize, order)
-                }
-                catch (e :Exception) {
+                } catch (e: Exception) {
                     Log.d("Error print", e.message.toString())
                 }
                 // Finish Print
@@ -138,15 +137,52 @@ object BillOrderHelper {
     }
     //endregion
 
+    /*==============================================================================================
+   ======================================TCP PART============================================
+   ==============================================================================================*/
+    //region Tcp
+    fun printBillWithTcp(context: Context, printerSize: Int, order: OrderReq) {
+
+        try {
+            val policy: StrictMode.ThreadPolicy =
+                StrictMode
+                    .ThreadPolicy
+                    .Builder()
+                    .permitAll()
+                    .build()
+
+            StrictMode.setThreadPolicy(policy)
+            val printer: TcpManager = TcpManager()
+            printer.connect()
+            try {
+                    printBill(context, printer, printerSize, order)
+
+//                printImageBill(context, printer, printerSize, order)
+
+
+            } catch (e: Exception) {
+                Log.d("Error print", e.message.toString())
+            }
+
+            // Finish Print
+            Thread.sleep(1500)
+            printer.disconnect()
+        } catch (e: Exception) {
+            Log.d("Error print", e.message.toString())
+        }
+
+
+    }
+    //endregion
+
     private fun printBill(
         context: Context,
         printer: BasePrintManager,
-        printerSize: Int,
+        charTextPerLine: Int,
         order: OrderReq
     ) {
-        val paddingExtend = if (printer is UrovoManager) 4 else 0
-        val charPerLineHeader = printerSize - 2 - paddingExtend
-        val charPerLinerText = printerSize - 2 + paddingExtend * 2
+        val charPerLineHeader = charTextPerLine - 2
+        val charPerLinerText = charTextPerLine - 2
 
         printer.setupPage(384, -1)
         // Bill Status
@@ -186,11 +222,11 @@ object BillOrderHelper {
         )
 
         // Address
-        Board(charPerLinerText - paddingExtend).let { b ->
+        Board(charPerLinerText).let { b ->
             val textContext = StringBuilder()
             val blockAddress = Block(
                 b,
-                charPerLinerText - paddingExtend - 6,
+                charPerLinerText - 6,
                 6,
                 DataHelper.recentDeviceCodeLocalStorage?.first()?.LocationAddress?.trim()
             ).allowGrid(false).setBlockAlign(Block.BLOCK_CENTRE)
@@ -241,47 +277,30 @@ object BillOrderHelper {
                 charPerLineHeader, mutableListOf(orderCode, employee, dateCreate),
                 mutableListOf(Block.DATA_MIDDLE_LEFT, Block.DATA_MIDDLE_RIGHT)
             )
-            // Order Code
-            /*val blockHeaderLeft =
-                Block(
-                    b,
-                    (charPerLineHeader) / 2,
-                    1,
-                    orderCode.first()
-                ).setDataAlign(Block.DATA_MIDDLE_LEFT)
-                    .allowGrid(false)
-            b.setInitialBlock(blockHeaderLeft)
-            val blockHeaderRight =
-                Block(
-                    b,
-                    (charPerLineHeader ) / 2,
-                    1,
-                    orderCode.last()
-                ).setDataAlign(Block.DATA_MIDDLE_RIGHT)
-                    .allowGrid(false)
-            blockHeaderLeft.rightBlock = blockHeaderRight
-            // Employee
-            val blockHeaderLeft2 =
-                Block(
-                    b,
-                    (charPerLineHeader) / 2,
-                    1,
-                    employee.first()
-                ).setDataAlign(Block.DATA_MIDDLE_LEFT)
-                    .allowGrid(false)
-            blockHeaderLeft.belowBlock = blockHeaderLeft2
-            val blockHeaderRight2 =
-                Block(
-                    b,
-                    (charPerLineHeader ) / 2,
-                    1,
-                    employee.last()
-                ).setDataAlign(Block.DATA_MIDDLE_RIGHT)
-                    .allowGrid(false)
-            blockHeaderLeft2.rightBlock = blockHeaderRight2*/
-
             printer.drawText(content)
         }
+
+        printer.drawLine(charPerLinerText)
+
+        // Order detail
+        val title = mutableListOf("Qty","Items","Amount")
+        val columnOrderDetailAlign = mutableListOf(Block.DATA_MIDDLE_LEFT, Block.DATA_MIDDLE_LEFT,Block.DATA_MIDDLE_RIGHT)
+        val columnSize = mutableListOf(6,17,9)
+        val listItems = order.OrderDetail.OrderProducts.map { productChosen ->
+            val quantity = "${productChosen.Quantity}x"
+            val amount = PriceUtils.formatStringPrice(productChosen.LineTotal ?: 0.0)
+            val name = productChosen.Name1
+            mutableListOf(quantity,name,amount)
+        }.toMutableList()
+
+        val contentTitle = WaguUtils.columnListDataBlock(charPerLineHeader, mutableListOf(title),columnOrderDetailAlign,
+            columnSize)
+        printer.drawText(contentTitle,true)
+        val contentProduct = WaguUtils.columnListDataBlock(charPerLineHeader, listItems,columnOrderDetailAlign,
+            columnSize)
+        printer.drawText(contentProduct)
+
+        // End Print
 
         printer.drawLine(charPerLinerText)
 
