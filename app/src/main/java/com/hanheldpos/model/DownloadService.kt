@@ -78,6 +78,7 @@ object DownloadService {
         var isDownloading = true
         val downloadRequestList: MutableList<DownloadRequest> = mutableListOf()
         var currentDownloadPos = 0
+        var isGettingSpeed = false
         initDownloadService(context)
         listResources.forEach { item ->
             if (item.Name.contains(".zip"))
@@ -109,11 +110,18 @@ object DownloadService {
                         toMegaByte(tempByte.minus(currentByte)) + "/s | " +
                                 toMegaByte(progress.currentBytes) + " / " + toMegaByte(progress.totalBytes)
                     CoroutineScope(Dispatchers.IO).launch{
-                        delay(1000)
+                        delay(300)
                         currentByte = progress.currentBytes
+                        isGettingSpeed = true
                     }
                 }
             downloadRequestList.add(downloadRequest)
+        }
+        CoroutineScope(Dispatchers.IO).launch{
+            delay(300)
+            if(!isGettingSpeed)
+                currentByte = 0L
+            else isGettingSpeed = false
         }
         CoroutineScope(Dispatchers.IO).launch {
             while (isDownloading) {
