@@ -118,12 +118,13 @@ object BillOrderHelper {
     ==============================================================================================*/
     //region Urovo
     fun printBillWithUrovo(context: Context, printerSize: Int, order: OrderReq) {
-        Thread {
+
             try {
                 val printer: UrovoManager = UrovoManager()
                 printer.connect()
                 try{
-                    printBill(context, printer, printerSize, order)
+                    //printBill(context, printer, printerSize, order)
+                    printImageBill(context, printer, printerSize, order)
                 }
                 catch (e :Exception) {
                     Log.d("Error print", e.message.toString())
@@ -134,7 +135,7 @@ object BillOrderHelper {
             } catch (e: Exception) {
                 Log.d("Error print", e.message.toString())
             }
-        }.start()
+
     }
     //endregion
 
