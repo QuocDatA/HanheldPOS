@@ -58,25 +58,29 @@ object WaguUtils {
 
     private fun wrapWord(s: String, width: Int): String {
         val content = StringBuilder()
-        val line = mutableListOf<String>()
-        val listWord = s.split(' ')
-        listWord.forEachIndexed { index, it ->
-            if ((if (line.size - 1 > 0) line.size - 1 else 0) + 1 + line.sumOf { word -> word.length } + it.length >= width) {
-                content.append(line.joinToString(" ") + "\n")
-                line.clear()
+        s.split("\n").forEach { st->
+            val line = mutableListOf<String>()
+            val listWord = st.split(' ')
+            listWord.forEachIndexed { index, it ->
+                if ((if (line.size - 1 > 0) line.size - 1 else 0) + 1 + line.sumOf { word -> word.length } + it.length > width) {
+                    content.append(line.joinToString(" ") + "\n")
+                    line.clear()
+                }
+                if (it.length >= width && line.isEmpty()) {
+                    content.append(
+                        it.chunked(width)
+                            .joinToString("\n") { t -> t.trim() } + if (index >= listWord.size - 1) "\n" else "")
+                    return@forEachIndexed
+                } else
+                    line.add(it.trim())
+                if (index >= listWord.size - 1) {
+                    content.append(line.joinToString(" "))
+                }
             }
-            if (it.length >= width && line.isEmpty()) {
-                content.append(
-                    it.chunked(width)
-                        .joinToString("\n") { t -> t.trim() } + if (index >= listWord.size - 1) "\n" else "")
-                return@forEachIndexed
-            } else
-                line.add(it.trim())
-            if (index >= listWord.size - 1) {
-                content.append(line.joinToString(" "))
-            }
+            content.append("\n")
         }
-        Log.d("Test Wrap", content.toString())
-        return content.toString()
+
+        Log.d("Test Wrap", content.toString().trim())
+        return content.toString().trim()
     }
 }

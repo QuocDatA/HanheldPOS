@@ -27,6 +27,7 @@ import com.hanheldpos.databinding.LayoutBillPrinterBinding
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.order.OrderReq
 import com.hanheldpos.model.payment.PaymentMethodType
+import com.hanheldpos.model.product.ExtraConverter
 import com.hanheldpos.ui.screens.printer.bill.ProductBillPrinterAdapter
 import com.hanheldpos.utils.DateTimeUtils
 import com.hanheldpos.utils.PriceUtils
@@ -95,7 +96,7 @@ object BillOrderHelper {
                     val printer: BluetoothManager = BluetoothManager()
                     printer.connect()
                     try {
-                    printBill(context, printer, printerSize, order)
+                        printBill(context, printer, printerSize, order)
 //                        printImageBill(context, printer, printerSize, order)
                     } catch (e: Exception) {
                         Log.d("Error print", e.message.toString())
@@ -119,20 +120,20 @@ object BillOrderHelper {
     //region Urovo
     fun printBillWithUrovo(context: Context, printerSize: Int, order: OrderReq) {
 
+        try {
+            val printer: UrovoManager = UrovoManager()
+            printer.connect()
             try {
-                val printer: UrovoManager = UrovoManager()
-                printer.connect()
-                try {
-                    printBill(context, printer, printerSize, order)
-                } catch (e: Exception) {
-                    Log.d("Error print", e.message.toString())
-                }
-                // Finish Print
-                Thread.sleep(1500)
-                printer.disconnect()
+                printBill(context, printer, printerSize, order)
             } catch (e: Exception) {
                 Log.d("Error print", e.message.toString())
             }
+            // Finish Print
+            Thread.sleep(1500)
+            printer.disconnect()
+        } catch (e: Exception) {
+            Log.d("Error print", e.message.toString())
+        }
 
     }
     //endregion
@@ -155,7 +156,7 @@ object BillOrderHelper {
             val printer: TcpManager = TcpManager()
             printer.connect()
             try {
-                    printBill(context, printer, printerSize, order)
+                printBill(context, printer, printerSize, order)
 
 //                printImageBill(context, printer, printerSize, order)
 
@@ -283,27 +284,124 @@ object BillOrderHelper {
         printer.drawLine(charPerLinerText)
 
         // Order detail
-        val title = mutableListOf("Qty","Items","Amount")
-        val columnOrderDetailAlign = mutableListOf(Block.DATA_MIDDLE_LEFT, Block.DATA_MIDDLE_LEFT,Block.DATA_MIDDLE_RIGHT)
-        val columnSize = mutableListOf(6,17,9)
+        val title = mutableListOf("Qty", "Items", "Amount")
+        val columnOrderDetailAlign =
+            mutableListOf(Block.DATA_MIDDLE_LEFT, Block.DATA_MIDDLE_LEFT, Block.DATA_MIDDLE_RIGHT)
+        val columnSize = mutableListOf(6, 17, 9)
         val listItems = order.OrderDetail.OrderProducts.map { productChosen ->
             val quantity = "${productChosen.Quantity}x"
             val amount = PriceUtils.formatStringPrice(productChosen.LineTotal ?: 0.0)
-            val name = productChosen.Name1
-            mutableListOf(quantity,name,amount)
+            val pro = StringUtils.removeAccent(StringBuilder().apply {
+                append("${productChosen.Name1}\n")
+                productChosen.VariantList?.let {
+                    append("• ${ExtraConverter.variantStr(it)}\n")
+                }
+                productChosen.ModifierList?.let {
+                    append("• ${ExtraConverter.modifierOrderStr(it)}\n")
+                }
+                productChosen.TaxFeeList?.takeIf { it.isNotEmpty() }?.let {
+                    append("• Tax (${PriceUtils.formatStringPrice(it.sumOf { tax -> tax.TotalPrice })})\n")
+                }
+                productChosen.ServiceFeeList?.takeIf { it.isNotEmpty() }?.let {
+                    append("• Service (${PriceUtils.formatStringPrice(it.sumOf { ser -> ser.TotalPrice })})\n")
+                }
+                productChosen.SurchargeFeeList?.takeIf { it.isNotEmpty() }?.let {
+                    append("• Surcharge (${PriceUtils.formatStringPrice(it.sumOf { sur -> sur.TotalPrice })})\n")
+                }
+                productChosen.DiscountList?.takeIf { it.isNotEmpty() }?.let {
+                    append("• Discount (-${PriceUtils.formatStringPrice(it.sumOf { dis -> dis.DiscountTotalPrice })})\n")
+                }
+                productChosen.Note?.let {
+                    append("(Note : ${it.trim()})\n")
+                }
+            }.toString())!!.trim()
+            mutableListOf(quantity, pro, amount)
         }.toMutableList()
 
-        val contentTitle = WaguUtils.columnListDataBlock(charPerLineHeader, mutableListOf(title),columnOrderDetailAlign,
-            columnSize)
-        printer.drawText(contentTitle,true)
-        val contentProduct = WaguUtils.columnListDataBlock(charPerLineHeader, listItems,columnOrderDetailAlign,
-            columnSize)
-        printer.drawText(contentProduct)
-
-        // End Print
+        val contentTitle = WaguUtils.columnListDataBlock(
+            charPerLineHeader, mutableListOf(title), columnOrderDetailAlign,
+            columnSize
+        )
+        printer.drawText(StringUtils.removeAccent(contentTitle), true)
+        val contentProduct = WaguUtils.columnListDataBlock(
+            charPerLineHeader, listItems, columnOrderDetailAlign,
+            columnSize
+        )
+        printer.drawText(StringUtils.removeAccent(contentProduct))
 
         printer.drawLine(charPerLinerText)
 
+        // Note
+        order.OrderDetail.Order.Note?.let {
+            printer.drawText(StringUtils.removeAccent("Note : $it"))
+            printer.drawLine(charPerLinerText)
+        }
+
+        // Subtotal
+        order.OrderDetail.Order.Subtotal.let {
+            val content = WaguUtils.columnListDataBlock(
+                charPerLineHeader,
+                mutableListOf(mutableListOf("Subtotal", PriceUtils.formatStringPrice(it))),
+                mutableListOf(Block.DATA_MIDDLE_LEFT, Block.DATA_MIDDLE_RIGHT)
+            )
+            printer.drawText(content)
+        }
+        printer.drawLine(charPerLinerText)
+
+        // Discount
+        order.OrderDetail.Order.Discount.let {
+            val content = WaguUtils.columnListDataBlock(
+                charPerLineHeader,
+                mutableListOf(mutableListOf("Discount", "-${PriceUtils.formatStringPrice(it)}")),
+                mutableListOf(Block.DATA_MIDDLE_LEFT, Block.DATA_MIDDLE_RIGHT)
+            )
+            printer.drawText(content)
+        }
+        printer.drawLine(charPerLinerText)
+
+        // Total
+        order.OrderDetail.Order.Grandtotal.let {
+            val content = WaguUtils.columnListDataBlock(
+                charPerLineHeader,
+                mutableListOf(mutableListOf("Total", "-${PriceUtils.formatStringPrice(it)}")),
+                mutableListOf(Block.DATA_MIDDLE_LEFT, Block.DATA_MIDDLE_RIGHT)
+            )
+            printer.drawText(content, true)
+        }
+        printer.drawLine(charPerLinerText)
+
+        // Cash - Change
+        order.OrderDetail.PaymentList?.filter {
+            PaymentMethodType.fromInt(it.PaymentTypeId ?: 0) == PaymentMethodType.CASH
+        }?.let { list ->
+            val totalPay = list.sumOf { it.OverPay ?: 0.0 }
+            val needToPay = list.sumOf { it.Payable ?: 0.0 }
+            val content = WaguUtils.columnListDataBlock(
+                charPerLineHeader, mutableListOf(
+                    mutableListOf(
+                        "Cash",
+                        PriceUtils.formatStringPrice(totalPay)
+                    ), mutableListOf(
+                        "Change",
+                        PriceUtils.formatStringPrice(totalPay - needToPay)
+                    )
+                ),
+                mutableListOf(Block.DATA_MIDDLE_LEFT, Block.DATA_MIDDLE_RIGHT)
+            )
+            printer.drawText(content, )
+        }
+
+
+        printer.drawText(
+            WaguUtils.columnListDataBlock(
+                charPerLineHeader,
+                mutableListOf(mutableListOf("THANK YOU")),
+                mutableListOf(Block.DATA_CENTER)),
+                true,
+                BasePrintManager.FontSize.Medium
+            )
+
+        // End Print
 
     }
 
