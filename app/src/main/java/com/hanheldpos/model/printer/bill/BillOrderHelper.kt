@@ -266,7 +266,7 @@ object BillOrderHelper {
                     DataHelper.deviceCodeLocalStorage?.Employees?.find { it._id == order.Order.EmployeeGuid }?.FullName.toString()
                 )
             val dateCreate = mutableListOf(
-                "Create Date", DateTimeUtils.dateToString(
+                "Create Date :", DateTimeUtils.dateToString(
                     DateTimeUtils.strToDate(
                         order.Order.CreateDate,
                         DateTimeUtils.Format.FULL_DATE_UTC_TIMEZONE
