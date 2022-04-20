@@ -5,6 +5,8 @@ import android.app.Dialog
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Environment
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.Window
 import androidx.core.content.ContextCompat
@@ -115,13 +117,18 @@ object DownloadService {
                 }
             downloadRequestList.add(downloadRequest)
         }
-        CoroutineScope(Dispatchers.IO).launch{
-            delay(300)
-            if(!isGettingSpeed) {
-                currentByte = 0L
-                noDownloadSpeed()
+        CoroutineScope(Dispatchers.IO).launch {
+            while (isDownloading) {
+                delay(700)
+                if (!isGettingSpeed) {
+                    currentByte = 0L
+                    val mainHandler = Handler(Looper.getMainLooper())
+                    val runnable = Runnable {
+                        binding.tvDownloadSpeed.text = toMegaByte(currentByte) + "/s | "
+                    }
+                    mainHandler.post(runnable);
+                } else isGettingSpeed = false
             }
-            else isGettingSpeed = false
         }
         CoroutineScope(Dispatchers.IO).launch {
             while (isDownloading) {
@@ -177,12 +184,6 @@ object DownloadService {
     private fun toMegaByte(bytes: Long): String {
         return String.format(Locale.ENGLISH, "%.2fMB", bytes / (1024.00 * 1024.00))
     }
-
-    @SuppressLint("SetTextI18n")
-    private fun noDownloadSpeed() {
-        binding.tvDownloadSpeed.text = toMegaByte(currentByte) + "/s | "
-    }
-
 
     private fun unpackZip(path: String, zipName: String): Boolean {
         val inputStream: InputStream
