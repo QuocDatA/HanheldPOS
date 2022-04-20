@@ -13,6 +13,7 @@ import com.hanheldpos.data.repository.device.DeviceRepo
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.SyncDataService
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
+import com.hanheldpos.utils.StringUtils
 import java.util.*
 
 class DeviceCodeVM : BaseUiViewModel<DeviceCodeUV>() {
@@ -42,7 +43,7 @@ class DeviceCodeVM : BaseUiViewModel<DeviceCodeUV>() {
         } else {
             getPinWithSymbol(pinTextLD.value.toString())
         }
-        repo.getDataByAppCode(result, object : BaseRepoCallback<BaseResponse<List<DeviceCodeResp>>> {
+        repo.getDataByAppCode(result,StringUtils.getAndroidDeviceId(context = view.context) ,object : BaseRepoCallback<BaseResponse<List<DeviceCodeResp>>> {
             override fun apiResponse(data: BaseResponse<List<DeviceCodeResp>>?) {
                 if (data == null || data.DidError) {
                     showError(view.context?.getString(R.string.failed_to_load_data))

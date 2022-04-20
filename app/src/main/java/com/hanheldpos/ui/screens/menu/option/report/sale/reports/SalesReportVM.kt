@@ -25,6 +25,7 @@ import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
 import com.hanheldpos.ui.screens.menu.option.report.sale.reports.adapter.NumberDayReportItem
 import com.hanheldpos.utils.DateTimeUtils
 import com.hanheldpos.utils.GSonUtils
+import com.hanheldpos.utils.StringUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.take
@@ -66,7 +67,8 @@ class SalesReportVM : BaseUiViewModel<SalesReportUV>() {
                 UserGuid = UserHelper.getUserGuid(),
                 LocationGuid = UserHelper.getLocationGuid(),
                 DeviceGuid = UserHelper.getDeviceGuid(),
-                Device_key = DataHelper.deviceCodeLocalStorage?.Device?.firstOrNull()?._key!!.toString()
+                Device_key = DataHelper.deviceCodeLocalStorage?.Device?.firstOrNull()?._key!!.toString(),
+                uuid = StringUtils.getAndroidDeviceId(context = view.context)
             )
         );
         settingRepo.putSettingDeviceIds(

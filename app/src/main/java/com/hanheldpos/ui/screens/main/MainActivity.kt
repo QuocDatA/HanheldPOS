@@ -19,6 +19,7 @@ import com.hanheldpos.ui.screens.pincode.PinCodeFragment
 import com.hanheldpos.ui.screens.root.RootFragment
 import com.hanheldpos.ui.screens.welcome.WelcomeFragment
 import com.hanheldpos.utils.NetworkUtils
+import com.hanheldpos.utils.StringUtils
 import com.utils.helper.SystemHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -46,7 +47,9 @@ class MainActivity : BaseFragmentBindingActivity<ActivityMainBinding, MainVM>(),
         binding.root.viewTreeObserver.addOnGlobalLayoutListener {
             SystemHelper.hideSystemUI(window);
         }
-
+        print("Device Code Local")
+        print(StringUtils.getAndroidDeviceId(this.context))
+        print("Device Local Code")
         viewModel.initView()
     }
 

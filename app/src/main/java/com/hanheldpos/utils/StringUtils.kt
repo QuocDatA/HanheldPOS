@@ -1,5 +1,9 @@
 package com.hanheldpos.utils
 
+import android.annotation.SuppressLint
+import android.content.Context
+import android.provider.Settings
+import java.security.AccessController.getContext
 import java.lang.StringBuilder
 import java.text.Normalizer
 import java.util.regex.Pattern
@@ -11,4 +15,8 @@ object StringUtils {
         return pattern.matcher(temp).replaceAll("")
     }
 
+    @SuppressLint("HardwareIds")
+    fun getAndroidDeviceId(context: Context): String {
+        return Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID);
+    }
 }
