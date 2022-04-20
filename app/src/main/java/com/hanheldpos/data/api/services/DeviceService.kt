@@ -9,6 +9,7 @@ import retrofit2.http.Query
 interface DeviceService {
     @GET("Device")
     fun getDataByDeviceCode(
-        @Query("AppCode") appCode: String?
+        @Query("AppCode") appCode: String?,
+        @Query("uuid") uuid: String?
     ): Call<BaseResponse<List<DeviceCodeResp>>>
 }

@@ -42,7 +42,7 @@ class DeviceCodeVM : BaseUiViewModel<DeviceCodeUV>() {
         } else {
             getPinWithSymbol(pinTextLD.value.toString())
         }
-        repo.getDataByAppCode(result, object : BaseRepoCallback<BaseResponse<List<DeviceCodeResp>>> {
+        repo.getDataByAppCode(result,"uuid" ,object : BaseRepoCallback<BaseResponse<List<DeviceCodeResp>>> {
             override fun apiResponse(data: BaseResponse<List<DeviceCodeResp>>?) {
                 if (data == null || data.DidError) {
                     showError(view.context?.getString(R.string.failed_to_load_data))
