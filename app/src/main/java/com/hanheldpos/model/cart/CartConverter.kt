@@ -1,21 +1,32 @@
 package com.hanheldpos.model.cart
 
 import com.hanheldpos.data.api.pojo.discount.DiscountResp
-import com.hanheldpos.data.api.pojo.fee.Discount
+import com.hanheldpos.data.api.pojo.discount.DiscountUsed
 import com.hanheldpos.data.api.pojo.fee.Fee
 import com.hanheldpos.data.api.pojo.order.settings.Reason
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.OrderHelper
 import com.hanheldpos.model.UserHelper
 import com.hanheldpos.model.cart.fee.FeeType
-import com.hanheldpos.model.payment.PaymentOrder
 import com.hanheldpos.model.discount.DiscountUser
 import com.hanheldpos.model.order.*
+import com.hanheldpos.model.payment.PaymentOrder
+import com.hanheldpos.model.payment.PaymentStatus
 import com.hanheldpos.model.product.ProductType
+import com.hanheldpos.utils.DateTimeUtils
+import com.hanheldpos.utils.EncryptUtils
+import java.security.MessageDigest
+import java.security.NoSuchAlgorithmException
+import java.util.*
 
 object CartConverter {
 
-    fun toOrder(cart: CartModel, orderStatus: Int, paymentStatus: Int): OrderReq {
+    fun toOrder(
+        cart: CartModel,
+        couponCode: String? = null,
+        orderStatus: Int = OrderStatus.ORDER.value,
+        paymentStatus: Int = PaymentStatus.UNPAID.value
+    ): OrderReq {
         val subTotal = cart.getSubTotal()
         val total = cart.total()
         val totalCompVoid = cart.totalComp()
@@ -36,6 +47,9 @@ object CartConverter {
         val description =
             cart.productsList.map { baseProductInCart -> baseProductInCart.name }.joinToString(",")
 
+        cart.createDate =
+            DateTimeUtils.dateToString(Date(), DateTimeUtils.Format.FULL_DATE_UTC_TIMEZONE)
+
         return OrderReq(
             Order = Order(
                 OrderStatusId = orderStatus,
@@ -50,7 +64,8 @@ object CartConverter {
                 MenuLocationGuid = cart.menuLocationGuid,
                 CurrencySymbol = OrderHelper.getCurrencySymbol()!!,
                 CashDrawer_id = DataHelper.currentDrawerId,
-                CustomerGuestGuid = cart.customer?._Id
+                CustomerGuestGuid = cart.customer?._Id,
+                Checksum = EncryptUtils.getHash(CheckSum(cart.createDate!!,DataHelper.deviceGuid()))
             ),
             OrderDetail = OrderDetail(
                 DiningOption = OrderDiningOption(
@@ -69,6 +84,11 @@ object CartConverter {
                     cart.discountUserList,
                     subTotal,
                     0.0
+                ),
+                DiscountUsedList = if (couponCode.isNullOrEmpty()) null else listOf(
+                    DiscountUsed(
+                        DiscountCode = couponCode
+                    )
                 ),
                 ServiceFeeList = toOrderFeeList(
                     cart.fees,
@@ -105,7 +125,7 @@ object CartConverter {
                 )
             ),
             OrderSummary = OrderSummaryPrimary(
-                OrderCode = cart.orderCode!!,
+                OrderCode = cart.orderCode,
                 OrderStatusId = orderStatus,
                 PaymentStatusId = paymentStatus,
                 Description = description,
@@ -213,7 +233,7 @@ object CartConverter {
         }
 
         // Mapping discount form client.
-        val disServers = discountUsers?.map { disc ->
+        val disServers = discountServers?.map { disc ->
             DiscountOrder(
                 disc,
                 proSubtotal,

@@ -7,13 +7,11 @@ import com.hanheldpos.data.api.pojo.customer.CustomerGroup
 import com.hanheldpos.data.api.pojo.customer.CustomerResp
 import com.hanheldpos.data.api.pojo.fee.CustomerGets
 import com.hanheldpos.data.api.pojo.product.Product
-import com.hanheldpos.model.cart.CartModel
-import com.hanheldpos.model.discount.CtmEligibilityType
-import com.hanheldpos.model.discount.DiscMinRequiredType
 import com.hanheldpos.model.cart.BaseProductInCart
-import com.hanheldpos.model.discount.DiscountEntireType
-import com.hanheldpos.model.discount.DiscountTypeEnum
-import com.hanheldpos.utils.time.DateTimeUtils
+import com.hanheldpos.model.cart.CartModel
+import com.hanheldpos.model.discount.*
+import com.hanheldpos.ui.screens.cart.CurCartData
+import com.hanheldpos.utils.DateTimeUtils
 import kotlinx.parcelize.Parcelize
 import java.util.*
 
@@ -36,8 +34,8 @@ data class DiscountResp(
     val DiscountApplyTo: Int,
     val DiscountAutomatic: Boolean,
     val DiscountAutomaticText: String,
-    val DiscountCode: String,
     val DiscountName: String,
+    var DiscountCode: String,
     val DiscountText: String,
     val DiscountType: Int,
     val DiscountTypeText: String,
@@ -59,7 +57,7 @@ data class DiscountResp(
     val OnlyApplyDiscountOncePerOrder: Int,
     val OnlyApplyDiscountProductOncePerOrder: Int,
     val OrderNo: Int,
-    val ScheduleList: List<ListScheduleItem>,
+    val ScheduleList: List<ListScheduleItem>?,
     val SetSchedules: Int,
     val Trigger: List<Trigger>,
     val Url: String,
@@ -67,10 +65,11 @@ data class DiscountResp(
     val UseForOrder: Int,
     val _id: String,
     val jsaction: String
-) : Parcelable {
+) : Parcelable, Cloneable {
 
     var quantityUsed: Int? = null
     var maxAmountUsed: Double? = null
+
 
     val getQuantityUsed: Int
         get() = if (Condition.CustomerBuys.IsMaxQuantity == 1) quantityUsed ?: 0 else 1
@@ -83,42 +82,32 @@ data class DiscountResp(
     fun isValid(cart: CartModel, curDateTime: Date): Boolean {
         val subTotal = cart.getSubTotal();
         val diningOptionList =
-            cart.productsList.map { baseProductInCart -> "${baseProductInCart.diningOption?.Id}" }
+            cart.productsList.map { baseProductInCart -> baseProductInCart.diningOption?.Id ?: 0 }
                 .distinct().toList();
-        if (isValidDiningOption(diningOptionList)) {
-            if (DateRange == 0 || isValidDate(curDateTime)) {
-                if (isValidMinRequired(
-                        subTotal,
-                        cart?.getTotalQuantity() ?: 0
-                    ) && isValidCtmEligibility(cart.customer)
-                ) {
-                    return true;
-                }
-            }
-        }
-        return false;
+        return isValidDiningOption(diningOptionList) &&
+                (DateRange == 0 || isValidDate(curDateTime)) &&
+                isValidMinRequired(
+                    subTotal, cart?.getTotalQuantity() ?: 0
+                ) && isValidCtmEligibility(cart.customer)
     }
 
     fun isValid(
+        subtotal: Double,
         baseProduct: BaseProductInCart,
-        customer: CustomerResp,
+        customer: CustomerResp?,
         curDateTime: Date
     ): Boolean {
-        if (isValidDiningOption(mutableListOf(baseProduct?.diningOption?.Id.toString()))) {
-            if (DateRange == 0 || isValidDate(curDateTime)) {
-                if (isValidProduct(baseProduct)) {
-                    if (isValidMinRequired(
-                            baseProduct.total(),
-                            baseProduct.quantity!!
-                        ) && isValidCtmEligibility(customer)
-                    ) {
-                        return true;
-                    }
-                }
+        return isValidDiningOption(
+            mutableListOf(
+                baseProduct?.diningOption?.Id ?: 0
+            )
+        ) && (DateRange == 0 || isValidDate(curDateTime)) &&
+                isValidProduct(baseProduct) &&
+                isValidMinRequired(
+                    subtotal,
+                    baseProduct.quantity!!
+                ) && isValidCtmEligibility(customer)
 
-            }
-        }
-        return false;
     }
 
     private fun isValidProduct(baseProduct: BaseProductInCart): Boolean {
@@ -138,10 +127,11 @@ data class DiscountResp(
             CtmEligibilityType.SPECIFIC_GROUP_CUSTOMERS ->
                 ((Gson().fromJson(
                     customer?.ListGroups,
-                    object : TypeToken<List<CustomerGroup>>() {}.type
-                )) as List<CustomerGroup>).map { gr ->
+                    object : TypeToken<List<CustomerGroup>?>() {}.type
+                )) as List<CustomerGroup>?)?.map { gr ->
                     gr.CustomerGuestGroupGuid
-                }.intersect(CustomerEligibilityList.map { cus -> cus._id }.toSet()).isNotEmpty()
+                }?.intersect(CustomerEligibilityList.map { cus -> cus._id }.toSet())
+                    ?.isNotEmpty() == true
 
             CtmEligibilityType.SPECIFIC_CUSTOMER ->
                 CustomerEligibilityList.firstOrNull { c -> c._id == customer?._Id } != null;
@@ -151,7 +141,7 @@ data class DiscountResp(
         }
     }
 
-    private fun isValidDiningOption(diningOptionIdList: List<String>): Boolean {
+    private fun isValidDiningOption(diningOptionIdList: List<Int>): Boolean {
         val isValidDiningOption =
             diningOptionIdList.intersect(DiningOption?.map { d -> d.Id }.toSet())?.size > 0;
         return isValidDiningOption;
@@ -159,21 +149,20 @@ data class DiscountResp(
 
     private fun isValidDate(curDateTime: Date): Boolean {
         try {
-            if (DateOn.isNullOrEmpty() && DateOff.isNullOrEmpty()) {
-                return false;
+            if (DateOn?.isNullOrEmpty() && DateOff?.isNullOrEmpty()) {
+                return true;
             }
 
-            if (curDateTime.compareTo(
-                    DateTimeUtils.strToDate(
-                        DateOff,
-                        DateTimeUtils.Format.FULL_DATE_UTC_Z
-                    )
-                ) <= 0 && curDateTime.compareTo(
-                    DateTimeUtils.strToDate(
-                        DateOn,
-                        DateTimeUtils.Format.FULL_DATE_UTC_Z
-                    )
-                ) >= 0
+            if (curDateTime <=
+                DateTimeUtils.strToDate(
+                    DateOff,
+                    DateTimeUtils.Format.YYYY_MM_DD_HH_MM_SS
+                )
+                && curDateTime >=
+                DateTimeUtils.strToDate(
+                    DateOn,
+                    DateTimeUtils.Format.YYYY_MM_DD_HH_MM_SS
+                )
             ) {
                 return isValidSchedule(curDateTime);
             }
@@ -184,18 +173,19 @@ data class DiscountResp(
     }
 
     private fun isValidSchedule(curDateTime: Date): Boolean {
-        if (!ScheduleList?.any() ?: false) {
-            return true; }
+        if (ScheduleList?.any() != true) {
+            return true;
+        }
         val c = Calendar.getInstance()
         c.time = curDateTime;
         return isValidTime(
-            ScheduleList?.first { schedule -> schedule.Id == c.get(Calendar.DAY_OF_WEEK) },
+            ScheduleList?.firstOrNull { schedule -> schedule.Id == c.get(Calendar.DAY_OF_WEEK) },
             curDateTime
         );
     }
 
-    private fun isValidTime(schedule: ListScheduleItem, curDateTime: Date): Boolean {
-        return schedule.ListSetTime.firstOrNull() { time ->
+    private fun isValidTime(schedule: ListScheduleItem?, curDateTime: Date): Boolean {
+        return schedule?.ListSetTime?.firstOrNull { time ->
             isValidTime(
                 time.TimeOff,
                 time.TimeOn,
@@ -243,7 +233,7 @@ data class DiscountResp(
         quantity: Int? = 1
     ): Double? {
         val subtotal =
-            if (Condition?.CustomerBuys.IsApplyModifier(productOriginal_id ?: "")) totalPrice?.plus(
+            if (Condition?.CustomerBuys.isApplyModifier(productOriginal_id ?: "")) totalPrice?.plus(
                 totalModifier ?: 0.0
             ) else totalPrice
 
@@ -307,6 +297,47 @@ data class DiscountResp(
         }
         return discPrice;
     }
+
+    fun isAutoOnClick(): Boolean {
+        return (this.DiscountAutomatic) && isExistsTrigger(DiscountTriggerType.ON_CLICK)
+    }
+
+    fun isAutoInCart(): Boolean {
+        return (this.DiscountAutomatic) && isExistsTrigger(DiscountTriggerType.IN_CART)
+    }
+
+    fun isCoupon(): Boolean {
+        return !this.DiscountAutomatic
+    }
+
+    fun isBuyXGetY(): Boolean {
+        return this.DiscountType == DiscountTypeEnum.BUYX_GETY.value
+    }
+
+    fun isExistsTrigger(triggerType: DiscountTriggerType): Boolean {
+        return this.Trigger.firstOrNull { trigger ->
+            trigger.Id == triggerType.value
+        } != null || triggerType == DiscountTriggerType.ALL
+    }
+
+    fun isMaxNumberOfUsedPerOrder(): Boolean {
+        var totalQtyDiscUsed = 0;
+        when (DiscApplyTo.fromInt(DiscountApplyTo ?: 0)) {
+            DiscApplyTo.ITEM ->
+                totalQtyDiscUsed = CurCartData.cartModel?.productsList?.sumOf { pro ->
+                    pro.totalQtyDiscUsed(this._id)
+                } ?: 0;
+
+            DiscApplyTo.ORDER ->
+                totalQtyDiscUsed = CurCartData.cartModel?.totalQtyDiscUsed(this._id) ?: 0;
+        }
+
+        return MaximumNumberOfUsedPerOrder && totalQtyDiscUsed >= MaximumNumberOfUsedPerOrderValue;
+    }
+
+    public override fun clone(): DiscountResp {
+        return copy()
+    }
 }
 
 @Parcelize
@@ -343,8 +374,23 @@ data class CustomerBuys(
         return amountUsed
     }
 
-    fun IsApplyModifier(productId: String?): Boolean {
-        return ListApplyTo?.firstOrNull { p -> p._id == productId }?.ApplyToModifier == 1;
+    fun getMaxQuantity(quantityUsed: Int, quantity: Int, product_id: String): Int? {
+        val productApply = this.ListApplyTo.firstOrNull { product -> product._id == product_id }
+        if (productApply != null) {
+            if (productApply.MaxQuantity == 0) {
+                return quantity
+            }
+            val maxQuantity = productApply.MaxQuantity - quantityUsed
+            return if (maxQuantity > 0) {
+                if (quantity >= maxQuantity) maxQuantity
+                else quantity
+            } else 0
+        }
+        return 0
+    }
+
+    fun isApplyModifier(productId: String?): Boolean {
+        return ListApplyTo.firstOrNull { p -> p._id == productId }?.ApplyToModifier == 1;
     }
 }
 
@@ -372,8 +418,16 @@ data class Trigger(
 data class ListScheduleItem(
     val Id: Int,
     val Date: String,
-    val ListSetTime: List<ListSetTimeItem>
-) : Parcelable
+    val ListSetTime: List<ListSetTimeItem>,
+    val Active: Boolean,
+) : Parcelable {
+    val listTimeString: String
+        get() {
+            if (!Active || ListSetTime?.isEmpty())
+                return "--:--"
+            return ListSetTime.joinToString("\n") { time -> "${time.TimeOn} to ${time.TimeOff}" }
+        }
+}
 
 @Parcelize
 

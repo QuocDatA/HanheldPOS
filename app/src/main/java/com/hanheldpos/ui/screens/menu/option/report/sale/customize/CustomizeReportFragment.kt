@@ -4,8 +4,7 @@ import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentCustomizeReportBinding
 import com.hanheldpos.model.report.SaleReportCustomData
 import com.hanheldpos.ui.base.fragment.BaseFragment
-import com.hanheldpos.utils.time.DateTimeUtils
-import java.util.*
+import com.hanheldpos.utils.DateTimeUtils
 
 class CustomizeReportFragment(
     private val saleReportCustomData: SaleReportCustomData,

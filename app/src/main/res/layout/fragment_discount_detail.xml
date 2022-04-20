@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="android.text.TextUtils" />
         <variable
             name="viewModel"
             type="com.hanheldpos.ui.screens.discount.discount_detail.DiscountDetailVM" />
@@ -71,8 +72,9 @@
         <include layout="@layout/divider_vertical" />
 
         <ScrollView
+            android:layout_weight="1"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="0dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -257,12 +259,14 @@
                     <com.diadiem.pos_components.PTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/applies_to"
+                        android:text="@{TextUtils.isEmpty(discountDetail.requirementTitle) ? @string/applies_to : discountDetail.requirementTitle}"
                         app:useFontStyle="normal"
+                        tools:text="Requirements"
                         app:useTextColor="color6"
                         app:useTextHeader="h6" />
 
                     <ImageView
+                        android:id="@+id/btnShowListAppliesItem"
                         visibleObject="@{discountDetail.requirementProductList.size() > 0}"
                         android:layout_width="@dimen/_14sdp"
                         android:layout_height="@dimen/_14sdp"
@@ -279,6 +283,8 @@
                     android:layout_width="0dp"
                     android:layout_height="@dimen/_6sdp" />
 
+
+
                 <com.diadiem.pos_components.PTextView
                     android:id="@+id/appliesTo"
                     android:layout_width="wrap_content"
@@ -292,6 +298,68 @@
                 <androidx.legacy.widget.Space
                     android:layout_width="0dp"
                     android:layout_height="@dimen/_12sdp" />
+
+                <LinearLayout
+                    visibleObject="@{!TextUtils.isEmpty(discountDetail.rewardTitle)}"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <include layout="@layout/divider_vertical" />
+
+                    <androidx.legacy.widget.Space
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/_12sdp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <com.diadiem.pos_components.PTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{discountDetail.rewardTitle}"
+                            app:useFontStyle="normal"
+                            tools:text="Rewards"
+                            app:useTextColor="color6"
+                            app:useTextHeader="h6" />
+
+                        <ImageView
+                            android:id="@+id/btnShowListRewardItem"
+                            visibleObject="@{discountDetail.rewardProductList.size() > 0}"
+                            android:layout_width="@dimen/_14sdp"
+                            android:layout_height="@dimen/_14sdp"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="@dimen/_7sdp"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/ic_info" />
+                    </LinearLayout>
+
+
+                    <androidx.legacy.widget.Space
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/_6sdp" />
+
+
+
+                    <com.diadiem.pos_components.PTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{discountDetail.rewardValue}"
+                        app:useFontStyle="normal"
+                        app:useTextColor="color5"
+                        app:useTextHeader="h5"
+                        tools:text="Description Text" />
+
+                    <androidx.legacy.widget.Space
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/_12sdp" />
+                </LinearLayout>
+
+
+
 
                 <include layout="@layout/divider_vertical" />
 
@@ -525,33 +593,26 @@
 
                 <include layout="@layout/divider_vertical" />
 
-                <androidx.legacy.widget.Space
-                    android:layout_width="0dp"
-                    android:layout_height="@dimen/_25sdp" />
-
-                <com.diadiem.pos_components.PMaterialButton
-                    android:id="@+id/btnApplyDiscount"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/_14sdp"
-                    android:background="@color/color_0"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:foreground="?attr/selectableItemBackground"
-                    android:gravity="center"
-                    android:text="@string/apply"
-                    android:paddingVertical="@dimen/_6sdp"
-                    app:pbtn_useBackgroundColor="true"
-                    app:pbtn_useFontStyle="bold"
-                    app:pbtn_useTextColor="color2"
-                    app:pbtn_useTextHeader="h5" />
-
-                <androidx.legacy.widget.Space
-                    android:layout_width="0dp"
-                    android:layout_height="@dimen/_25sdp" />
             </LinearLayout>
 
         </ScrollView>
+        <com.diadiem.pos_components.PMaterialButton
+            android:id="@+id/btnApplyDiscount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/_13sdp"
+            android:layout_marginHorizontal="@dimen/_9sdp"
+            android:background="@color/color_0"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
+            android:gravity="center"
+            android:text="@string/apply"
+            android:paddingVertical="@dimen/_6sdp"
+            app:pbtn_useBackgroundColor="true"
+            app:pbtn_useFontStyle="bold"
+            app:pbtn_useTextColor="color2"
+            app:pbtn_useTextHeader="h5" />
     </LinearLayout>
 
 </layout>

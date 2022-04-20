@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.core.content.ContextCompat
 import com.hanheldpos.R
+import kotlin.system.exitProcess
 
 object CashDrawerHelper {
     var isStartDrawer : Boolean = false;
@@ -46,7 +47,9 @@ object CashDrawerHelper {
         } else {
             val quit = notificationView.findViewById<View>(R.id.btn_close_app)
             quit.setOnClickListener {
-                activity.finishAndRemoveTask()
+                alert.dismiss()
+                activity.finishAffinity()
+                exitProcess(0);
             }
         }
 

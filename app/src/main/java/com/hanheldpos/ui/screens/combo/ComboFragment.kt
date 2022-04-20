@@ -16,10 +16,10 @@ import com.hanheldpos.model.cart.Combo
 import com.hanheldpos.model.cart.Regular
 import com.hanheldpos.model.combo.ItemActionType
 import com.hanheldpos.model.combo.ItemComboGroup
-import com.hanheldpos.model.discount.DiscountApplyToType
 import com.hanheldpos.model.discount.DiscountTypeFor
 import com.hanheldpos.model.discount.DiscountUser
 import com.hanheldpos.model.cart.BaseProductInCart
+import com.hanheldpos.model.discount.DiscApplyTo
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.cart.CartDataVM
 import com.hanheldpos.ui.screens.combo.adapter.ComboGroupAdapter
@@ -90,24 +90,23 @@ class ComboFragment(
                 R.id.fragment_container_discount,
                 DiscountTypeItemFragment(
                     product = combo,
-                    applyToType = DiscountApplyToType.ITEM_DISCOUNT_APPLY_TO,
+                    applyToType = DiscApplyTo.ITEM,
                     cart = cartDataVM.cartModelLD.value!!,
                     listener = object : DiscountFragment.DiscountTypeListener {
                         override fun discountUserChoose(discount: DiscountUser) {
                             if (viewModel.isValidDiscount.value != true) return;
-                            viewModel.bundleInCart.value?.discountUsersList =
-                                mutableListOf(discount);
+                            viewModel.bundleInCart.value?.addDiscountUser(discount)
                             viewModel.bundleInCart.notifyValueChange();
                         }
 
                         override fun compReasonChoose(item: Reason) {
                             if (viewModel.isValidDiscount.value != true) return;
-                            viewModel.bundleInCart.value?.compReason = item;
+                            viewModel.bundleInCart.value?.addCompReason(item)
                             viewModel.bundleInCart.notifyValueChange();
                         }
 
                         override fun compRemoveAll() {
-                            viewModel.bundleInCart.value?.compReason = null;
+                            viewModel.bundleInCart.value?.clearCompReason()
                             viewModel.bundleInCart.notifyValueChange();
                         }
 
@@ -118,6 +117,12 @@ class ComboFragment(
                         override fun validDiscount(isValid: Boolean) {
                             viewModel.isValidDiscount.postValue(isValid);
                         }
+
+                        override fun clearAllDiscountCoupon() {
+                            viewModel.bundleInCart.value?.clearAllDiscountCoupon()
+                            viewModel.bundleInCart.notifyValueChange()
+                        }
+
                     })
             ).commit();
     }

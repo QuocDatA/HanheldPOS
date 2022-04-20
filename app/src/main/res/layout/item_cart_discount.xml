@@ -4,62 +4,76 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="com.hanheldpos.utils.PriceUtils"/>
         <variable
             name="item"
             type="com.hanheldpos.model.cart.DiscountCart" />
     </data>
 
     <RelativeLayout
-        android:padding="@dimen/_9sdp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <LinearLayout
             android:layout_alignParentStart="true"
             android:gravity="center"
+            android:paddingHorizontal="@dimen/_9sdp"
             android:orientation="horizontal"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            >
-            <ImageView
-                android:layout_width="@dimen/_14sdp"
-                android:layout_height="@dimen/_14sdp"
-                android:src="@drawable/ic_discount_tag"
-                />
-            <androidx.legacy.widget.Space
-                android:layout_width="@dimen/_7sdp"
-                android:layout_height="wrap_content"/>
+            android:layout_height="match_parent">
 
-            <com.diadiem.pos_components.PTextView
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:useTextColor="color4"
-                app:useTextHeader="h5"
-                app:useFontStyle="normal"
-                android:text="@{item.title, default=`10% Off Order`}"
-                />
+                android:paddingVertical="@dimen/_9sdp"
+                android:orientation="horizontal">
 
-            <androidx.legacy.widget.Space
-                android:layout_width="@dimen/_7sdp"
-                android:layout_height="wrap_content"/>
-            <ImageView
-                android:id="@+id/btnRemove"
-                android:focusable="true"
+                <ImageView
+                    android:layout_width="@dimen/_14sdp"
+                    android:layout_height="@dimen/_14sdp"
+                    android:src="@drawable/ic_discount_tag" />
+
+                <androidx.legacy.widget.Space
+                    android:layout_width="@dimen/_7sdp"
+                    android:layout_height="wrap_content" />
+
+                <com.diadiem.pos_components.PTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:useTextColor="color4"
+                    app:useTextHeader="h5"
+                    app:useFontStyle="normal"
+                    android:text="@{item.title, default=`10% Off Order`}" />
+            </LinearLayout>
+
+            <FrameLayout
                 android:clickable="true"
-                android:layout_width="@dimen/_14sdp"
-                android:layout_height="@dimen/_14sdp"
-                android:src="@drawable/ic_delete"
-                />
+                android:focusable="true"
+                android:id="@+id/btnRemove"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:paddingHorizontal="@dimen/_9sdp">
+
+                <ImageView
+                    android:layout_width="@dimen/_14sdp"
+                    android:layout_height="@dimen/_14sdp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_delete" />
+            </FrameLayout>
+
         </LinearLayout>
+
         <com.diadiem.pos_components.PTextView
-            android:layout_alignParentEnd="true"
+            android:text="@{ `-` + PriceUtils.INSTANCE.formatStringPrice(item.amount) }"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:useTextHeader="h6"
-            app:useTextColor="color0"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:gravity="center"
+            android:padding="@dimen/_9sdp"
             app:useFontStyle="normal"
-            priceDiscMinus="@{item.amount}"
-            tools:text="-5,000"
-            />
+            app:useTextColor="color0"
+            app:useTextHeader="h6"
+            tools:text="-5,000" />
     </RelativeLayout>
 
 

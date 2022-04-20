@@ -1,6 +1,7 @@
 package com.hanheldpos.ui.screens.cart
 
 import android.content.Context
+import android.graphics.Bitmap
 import androidx.lifecycle.viewModelScope
 import com.hanheldpos.R
 import com.hanheldpos.database.DatabaseMapper
@@ -9,14 +10,17 @@ import com.hanheldpos.model.OrderHelper
 import com.hanheldpos.model.cart.CartConverter
 import com.hanheldpos.model.cart.CartModel
 import com.hanheldpos.model.cart.DiscountCart
-import com.hanheldpos.model.payment.PaymentStatus
 import com.hanheldpos.model.home.table.TableStatusType
 import com.hanheldpos.model.order.OrderStatus
+import com.hanheldpos.model.payment.PaymentStatus
 import com.hanheldpos.ui.base.dialog.AppAlertDialog
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
-import com.hanheldpos.utils.time.DateTimeUtils
+import com.hanheldpos.model.printer.bill.BillOrderHelper
+import com.hanheldpos.utils.DateTimeUtils
+import com.hanheldpos.utils.writeBitmap
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.io.File
 import java.util.*
 
 class CartVM : BaseUiViewModel<CartUV>() {
@@ -83,8 +87,8 @@ class CartVM : BaseUiViewModel<CartUV>() {
                 if (OrderHelper.isPaymentSuccess(cart)) PaymentStatus.PAID.value else PaymentStatus.UNPAID.value
             val orderReq = CartConverter.toOrder(
                 cart,
-                orderStatus,
-                paymentStatus,
+                orderStatus =  orderStatus,
+                paymentStatus = paymentStatus,
             )
 
             // Table
@@ -113,6 +117,13 @@ class CartVM : BaseUiViewModel<CartUV>() {
                 }
 
                 launch(Dispatchers.Main) {
+                    // Save order bill
+                    val filePath = File(context.getExternalFilesDir(null), "bitmap.jpeg")
+                    filePath.writeBitmap(
+                        BillOrderHelper.getPrintOrderBill(context, orderReq),
+                        Bitmap.CompressFormat.JPEG,
+                        100
+                    )
                     showLoading(false)
                     if (!onPaymentSelected)
                         uiCallback?.onBillSuccess()
@@ -132,12 +143,18 @@ class CartVM : BaseUiViewModel<CartUV>() {
     }
 
 
+
     fun processDataDiscount(cart: CartModel): List<DiscountCart> {
         val list = mutableListOf<DiscountCart>()
 
         cart.discountUserList.forEach {
             list.add(DiscountCart(it, it.DiscountName, it.total(cart.getSubTotal())))
         }
+
+        cart.discountServerList.forEach {
+            list.add(DiscountCart(it, it.DiscountName, it.total(cart.getSubTotal(), 0.0) ?: 0.0))
+        }
+
         cart.compReason?.let {
             list.add(DiscountCart(it, it.Title!!, cart.totalComp(cart.totalTemp())))
         }

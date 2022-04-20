@@ -18,7 +18,7 @@ import com.hanheldpos.model.product.ProductType
 
 object OrderConverter {
 
-    fun toCart(orderModel: OrderReq, orderGuid: String): CartModel {
+    fun toCart(orderModel: OrderReq, orderGuid: String?): CartModel {
         val orderPayment = orderModel.OrderDetail.PaymentList;
         val orderData = orderModel.OrderDetail;
         val order = orderModel.Order;
@@ -45,6 +45,7 @@ object OrderConverter {
             discountServerList = toDiscountsServer(orderData.DiscountList).toMutableList(),
             discountUserList = toDiscountsUser(orderData.DiscountList).toMutableList(),
             productsList = toProductList(orderData.OrderProducts, order.MenuLocationGuid!!),
+            note = orderData.Order.Note,
         )
     }
 

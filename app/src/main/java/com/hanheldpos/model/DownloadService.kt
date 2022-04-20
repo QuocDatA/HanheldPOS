@@ -1,30 +1,42 @@
 package com.hanheldpos.model
 
-import android.app.ProgressDialog
+import android.annotation.SuppressLint
+import android.app.Dialog
 import android.content.Context
-import android.content.DialogInterface
 import android.content.pm.PackageManager
 import android.os.Environment
+import android.os.Handler
+import android.os.Looper
+import android.view.LayoutInflater
+import android.view.Window
 import androidx.core.content.ContextCompat
 import com.downloader.OnDownloadListener
 import com.downloader.PRDownloader
 import com.downloader.PRDownloaderConfig
 import com.downloader.Status
 import com.downloader.request.DownloadRequest
+import com.hanheldpos.PosApp
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.resource.ResourceResp
+import com.hanheldpos.databinding.DialogProcessDownloadResourceBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import java.io.File
+import java.io.*
 import java.util.*
+import java.util.zip.ZipEntry
+import java.util.zip.ZipInputStream
 
 
 object DownloadService {
     private final var INTERNAL_PATH =
         Environment.getDataDirectory().path + "/data/com.hanheldpos/local/"
     private var downloadId: Int = 0
-    lateinit var processDialog: ProgressDialog
+    private var listFileToExtract: MutableList<String> = mutableListOf()
+    lateinit var processDialog: Dialog
+    lateinit var binding: DialogProcessDownloadResourceBinding
+    var currentByte: Long = 0L
 
     private fun initDownloadService(context: Context) {
         val config = PRDownloaderConfig.newBuilder()
@@ -37,22 +49,28 @@ object DownloadService {
     }
 
     private fun initDialog(context: Context) {
-        processDialog = ProgressDialog(context)
-        with(processDialog) {
-            setTitle("Downloading...")
-            setCancelable(false)
-            setProgressStyle(ProgressDialog.STYLE_HORIZONTAL)
-            setButton(
-                DialogInterface.BUTTON_NEGATIVE,
-                context.getString(R.string.cancel)
-            ) { dialog, _ ->
-                PRDownloader.cancel(downloadId)
-                dialog.dismiss()
-            }
-            show()
-        }
+        processDialog = Dialog(context, R.style.WideDialog)
+        processDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        processDialog.setCancelable(false)
+        processDialog.setContentView(R.layout.dialog_process_download_resource)
+        binding = DialogProcessDownloadResourceBinding.inflate(LayoutInflater.from(context))
+        processDialog.setContentView(binding.root)
+        processDialog.show()
+
+//        with(processDialog) {
+//            setCancelable(false)
+//            setButton(
+//                DialogInterface.BUTTON_NEGATIVE,
+//                context.getString(R.string.cancel)
+//            ) { dialog, _ ->
+//                PRDownloader.cancel(downloadId)
+//                dialog.dismiss()
+//            }
+//            show()
+//        }
     }
 
+    @SuppressLint("SetTextI18n")
     fun downloadFile(
         context: Context,
         listResources: List<ResourceResp>,
@@ -61,12 +79,17 @@ object DownloadService {
         var isDownloading = true
         val downloadRequestList: MutableList<DownloadRequest> = mutableListOf()
         var currentDownloadPos = 0
+        var isGettingSpeed = false
         initDownloadService(context)
         listResources.forEach { item ->
+            if (item.Name.contains(".zip"))
+                listFileToExtract.add(item.Name)
             val downloadRequest = PRDownloader.download(item.Url, INTERNAL_PATH, item.Name)
                 .build()
                 .setOnStartOrResumeListener {
-                    processDialog.setTitle("Downloading \n${item.Name}")
+                    binding.downloadTitle.text = "Downloading"
+                    binding.itemName.text = item.Name
+                    currentByte = 0L
                 }
                 .setOnPauseListener {
                     isDownloading = false
@@ -78,28 +101,50 @@ object DownloadService {
                 }
                 .setOnProgressListener { progress ->
                     val progressPercent: Long = progress.currentBytes * 100 / progress.totalBytes
-                    processDialog.progress = progressPercent.toInt()
-                    processDialog.setMessage(
-                        progress.currentBytes.toString() + "/" +
-                                progress.totalBytes.toString()
-
-                    )
+                    if (progressPercent.toInt() == 0) currentByte = 0L
+                    binding.processBar.progress = progressPercent.toInt()
+                    binding.tvProgressCount.text = "$progressPercent%"
+                    val tempByte: Long = progress.currentBytes
+                    binding.tvDownloadSpeed.text =
+                        toMegaByte(tempByte.minus(currentByte)) + "/s | "
+                    binding.tvStoreCount.text =
+                        toMegaByte(progress.currentBytes) + " / " + toMegaByte(progress.totalBytes)
+                    CoroutineScope(Dispatchers.IO).launch {
+                        delay(300)
+                        currentByte = progress.currentBytes
+                        isGettingSpeed = true
+                    }
                 }
             downloadRequestList.add(downloadRequest)
+        }
+        CoroutineScope(Dispatchers.IO).launch {
+            while (isDownloading) {
+                delay(700)
+                if (!isGettingSpeed) {
+                    currentByte = 0L
+                    val mainHandler = Handler(Looper.getMainLooper())
+                    val runnable = Runnable {
+                        binding.tvDownloadSpeed.text = toMegaByte(currentByte) + "/s | "
+                    }
+                    mainHandler.post(runnable);
+                } else isGettingSpeed = false
+            }
         }
         CoroutineScope(Dispatchers.IO).launch {
             while (isDownloading) {
                 downloadId =
                     downloadRequestList[currentDownloadPos].start(object : OnDownloadListener {
                         override fun onDownloadComplete() {
-
                         }
 
                         override fun onError(error: com.downloader.Error?) {
-                            CoroutineScope(Dispatchers.Main).launch {
-                                listener.onFail()
+                            if(error?.connectionException?.message!!.contains("Unacceptable certificate")){
+                                listener.onFail(PosApp.instance.getString(R.string.date_and_time_of_the_device_are_out_of_sync))
+                            } else {
+                                CoroutineScope(Dispatchers.Main).launch {
+                                    listener.onFail()
+                                }
                             }
-
                         }
 
                     })
@@ -111,6 +156,11 @@ object DownloadService {
                     processDialog.dismiss()
                     CoroutineScope(Dispatchers.Main).launch {
                         listener.onComplete()
+                        CoroutineScope(Dispatchers.IO).launch {
+                            listFileToExtract.forEach { file ->
+                                unpackZip(INTERNAL_PATH, file)
+                            }
+                        }
                     }
                     return@launch
                 }
@@ -135,11 +185,49 @@ object DownloadService {
         return String.format(Locale.ENGLISH, "%.2fMB", bytes / (1024.00 * 1024.00))
     }
 
+    private fun unpackZip(path: String, zipName: String): Boolean {
+        val inputStream: InputStream
+        val zipInputStream: ZipInputStream
+        try {
+            var filePath: String
+            inputStream = FileInputStream(path + zipName)
+            zipInputStream = ZipInputStream(BufferedInputStream(inputStream))
+            var zipEntry: ZipEntry?
+            val buffer = ByteArray(1024)
+            var count: Int
+            while (zipInputStream.nextEntry.also { zipEntry = it } != null) {
+                filePath = (zipEntry!!.name).replace("\\", "/")
+
+                val fileName = filePath.split("/").last()
+
+                val fileDirs = filePath.substring(0,filePath.length - fileName.length)
+
+                File(path + fileDirs).run {
+                    if(!exists())
+                        mkdirs()
+                }
+
+                val fileOutputStream = FileOutputStream(path + filePath)
+                while (zipInputStream.read(buffer).also { count = it } != -1) {
+                    fileOutputStream.write(buffer, 0, count)
+                }
+                fileOutputStream.close()
+                zipInputStream.closeEntry()
+            }
+            zipInputStream.close()
+        } catch (e: IOException) {
+            e.printStackTrace()
+            return false
+        }
+        return true
+    }
+
+
     interface DownloadFileCallback {
         fun onDownloadStartOrResume()
         fun onPause()
         fun onCancel()
-        fun onFail()
+        fun onFail(errorMessage: String? = null)
         fun onComplete()
     }
 }

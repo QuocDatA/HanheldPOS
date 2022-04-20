@@ -1,6 +1,7 @@
 package com.hanheldpos.model.cart
 
 import android.os.Parcelable
+import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.data.api.pojo.fee.Fee
 import com.hanheldpos.data.api.pojo.order.settings.DiningOption
 import com.hanheldpos.data.api.pojo.product.Product
@@ -86,6 +87,32 @@ class Regular() : BaseProductInCart(), Parcelable, Cloneable {
         return totalComp(proOriginal!!)
     }
 
+    override fun totalPriceUsed(discount: DiscountResp): Double {
+        val totalPrice = this.totalPrice()
+        val totalModifierPrice = this.totalModifier(this.proOriginal!!)
+        return this.discountServersList?.filter { disc -> disc._id == discount._id }!!.toList()
+            .sumOf { disc ->
+                disc.total(
+                    totalPrice,
+                    totalModifierPrice,
+                    this.proOriginal?._id,
+                    this.quantity
+                )!!
+            }
+    }
+
+    override fun totalQtyUsed(discount: DiscountResp, product_id: String): Int {
+        return if (this.proOriginal?._id != product_id) 0 else this.discountServersList!!.filter { disc -> disc._id == discount._id }
+            .sumOf { disc -> disc.quantityUsed ?: 0 }
+    }
+
+    override fun compareValue(productDiscList: List<Product>): Double {
+        val totalMod = modSubTotal(proOriginal!!)
+        val isApplyToMod =
+            productDiscList.firstOrNull { p -> p._id == proOriginal?._id }?.ApplyToModifier == 1
+        return if (isApplyToMod) (priceOverride + totalMod) else priceOverride
+    }
+
     override fun isCompleted(): Boolean {
         return true
     }
@@ -140,10 +167,9 @@ class Regular() : BaseProductInCart(), Parcelable, Cloneable {
 
         val subtotal = totalPrice + totalModifierPrice
         val totalDiscUser = discountUsersList?.sumOf { disc -> disc.total(subtotal) } ?: 0.0
-        // TODO : un comment when apply discount server
-        /*var totalDiscServer = discountServersList?.Sum(disc => disc.Total(totalPrice, totalModifierPrice, ProOriginal?.Id, Quantity)) ?? 0*/
+        var totalDiscServer = discountServersList?.sumOf { disc -> disc.total(totalPrice, totalModifierPrice, proOriginal?._id, quantity) ?: 0.0 } ?: 0.0
 
-        val total = totalDiscUser //+ totalDiscServer
+        val total = totalDiscUser + totalDiscServer
         return total
     }
 

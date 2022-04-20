@@ -1,16 +1,19 @@
 package com.hanheldpos.ui.screens.menu
 
+import android.graphics.BitmapFactory
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hanheldpos.R
+import com.hanheldpos.database.DatabaseMapper
 import com.hanheldpos.databinding.FragmentMenuBinding
-import com.hanheldpos.extension.navigateTo
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.DatabaseHelper
 import com.hanheldpos.model.OrderHelper
 import com.hanheldpos.model.menu_nav_opt.LogoutType
 import com.hanheldpos.model.menu_nav_opt.NavBarOptionType
+import com.hanheldpos.model.printer.PrinterHelper
+import com.hanheldpos.model.printer.bill.BillOrderHelper
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.dialog.AppAlertDialog
 import com.hanheldpos.ui.base.fragment.BaseFragment
@@ -23,10 +26,9 @@ import com.hanheldpos.utils.NetworkUtils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.count
-import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
+import java.io.File
 
 class MenuFragment : BaseFragment<FragmentMenuBinding, MenuVM>(), MenuUV {
     override fun layoutRes() = R.layout.fragment_menu
@@ -95,6 +97,23 @@ class MenuFragment : BaseFragment<FragmentMenuBinding, MenuVM>(), MenuUV {
     fun onNavOptionClick(option: ItemOptionNav) {
         when (option.type as NavBarOptionType) {
             NavBarOptionType.ORDERS -> {
+//                val filePath = File(requireActivity().getExternalFilesDir(null), "bitmap.jpeg")
+//                val billImage = BitmapFactory.decodeFile(filePath.absolutePath)
+//                PrinterHelper.printBillBluetooth(requireActivity(),billImage)
+                CoroutineScope(Dispatchers.IO).launch {
+                    DatabaseHelper.ordersCompleted.getAll().take(1).collectLatest {
+                        it.lastOrNull()?.let { completedEntity ->
+                            launch(Dispatchers.Main) {
+                                BillOrderHelper.printBillWithUrovo(requireActivity(),34,
+                                    DatabaseMapper.mappingOrderReqFromEntity(completedEntity))
+
+                                BillOrderHelper.printBillWithBluetooth(requireActivity(),34,
+                                    DatabaseMapper.mappingOrderReqFromEntity(completedEntity))
+                            }
+                        }
+
+                    }
+                }
 
             }
             NavBarOptionType.TRANSACTIONS -> {}
@@ -141,8 +160,8 @@ class MenuFragment : BaseFragment<FragmentMenuBinding, MenuVM>(), MenuUV {
                                 when (typeLogout) {
                                     LogoutType.LOGOUT_DEVICE -> {
                                         navigator.clearHistory()
+                                        navigator.rootFragment = WelcomeFragment()
                                         NetworkUtils.enableNetworkCheck()
-                                        navigator.goTo(WelcomeFragment())
                                     }
                                     LogoutType.RESET -> TODO()
                                 }
@@ -163,8 +182,8 @@ class MenuFragment : BaseFragment<FragmentMenuBinding, MenuVM>(), MenuUV {
             onClickListener = object : AppAlertDialog.AlertDialogOnClickListener {
                 override fun onPositiveClick() {
                     navigator.clearHistory()
+                    navigator.rootFragment = PinCodeFragment()
                     NetworkUtils.enableNetworkCheck()
-                    navigator.goTo(PinCodeFragment())
                 }
             })
     }

@@ -1,19 +1,19 @@
 package com.hanheldpos.ui.screens.discount.discount_type.percentage
 
+import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentDiscountPercentageBinding
-import com.hanheldpos.model.discount.DiscountApplyToType
+import com.hanheldpos.model.discount.DiscApplyTo
 import com.hanheldpos.model.discount.DiscountTypeEnum
 import com.hanheldpos.model.discount.DiscountTypeFor
 import com.hanheldpos.model.discount.DiscountUser
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.discount.DiscountFragment
-import com.hanheldpos.ui.screens.discount.discount_type.DiscountTypeItemFragment
 
 
 class DiscountPercentageFragment(
-    private val applyToType: DiscountApplyToType,
+    private val applyToType: DiscApplyTo,
     private val listener: DiscountFragment.DiscountTypeListener
 ) :
     BaseFragment<FragmentDiscountPercentageBinding, DiscountPercentageVM>(), DiscountPercentageUV {
@@ -50,7 +50,6 @@ class DiscountPercentageFragment(
     }
 
     override fun initData() {
-
     }
 
     override fun initAction() {
@@ -64,7 +63,10 @@ class DiscountPercentageFragment(
 
     override fun onResume() {
         super.onResume()
-        requireActivity().supportFragmentManager.setFragmentResultListener("saveDiscount",this) { _, bundle ->
+        requireActivity().supportFragmentManager.setFragmentResultListener(
+            "saveDiscount",
+            this
+        ) { _, bundle ->
             if (bundle.getSerializable("DiscountTypeFor") == DiscountTypeFor.PERCENTAGE && validChooseDiscount()) {
                 listener.discountUserChoose(
                     DiscountUser(
@@ -78,18 +80,19 @@ class DiscountPercentageFragment(
         listener.validDiscount(validDiscount());
     }
 
-    private fun validChooseDiscount() : Boolean {
+    private fun validChooseDiscount(): Boolean {
         return (viewModel.percentValue > 0.0 && !viewModel.title.value.isNullOrEmpty())
     }
 
-    private fun validDiscount() : Boolean {
+    private fun validDiscount(): Boolean {
         return when (applyToType) {
-            DiscountApplyToType.ITEM_DISCOUNT_APPLY_TO -> {
+            DiscApplyTo.ITEM -> {
                 (viewModel.percentValue == 0.0 && viewModel.title.value.isNullOrEmpty()) || validChooseDiscount()
             }
-            DiscountApplyToType.ORDER_DISCOUNT_APPLY_TO -> {
+            DiscApplyTo.ORDER -> {
                 validChooseDiscount()
             }
+            else -> false
         }
     }
 }

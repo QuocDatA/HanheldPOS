@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="com.hanheldpos.utils.PriceUtils" />
+
+        <variable
+            name="isNote"
+            type="Boolean" />
+
+        <variable
+            name="priceDiscMinus"
+            type="Double" />
+
+        <variable
+            name="priceTax"
+            type="Double"/>
+
+        <variable
+            name="priceService"
+            type="Double"/>
+
+        <variable
+            name="priceSurcharge"
+            type="Double"/>
+
+        <variable
+            name="isDiscount"
+            type="Boolean" />
+        
+        <variable
+            name="isTax"
+            type="Boolean" />
+
+        <variable
+            name="isService"
+            type="Boolean"/>
+
+        <variable
+            name="isSurcharge"
+            type="Boolean"/>
+
+        <variable
+            name="lineText"
+            type="String" />
+    </data>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.diadiem.pos_components.PTextView
+            visibleObject="@{isNote==false || isNote==null,default=true}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="•  "
+            android:textColor="@android:color/black"
+            android:textSize="20px" />
+        <ImageView
+            visibleObject="@{isNote,default=false}"
+            android:layout_width="@dimen/_12sdp"
+            android:layout_height="@dimen/_13sdp"
+            android:layout_gravity="center"
+            android:layout_marginEnd="@dimen/_2sdp"
+            android:src="@drawable/ic_note"
+            app:tint="@android:color/black" />
+
+        <com.diadiem.pos_components.PTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{lineText}"
+            android:layout_gravity="center"
+            android:gravity="start"
+            android:textColor="@android:color/black"
+            android:textSize="20px"
+            tools:text="Variant 1" />
+
+
+        <com.diadiem.pos_components.PTextView
+            visibleObject="@{isTax,default=false}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@{`(` + PriceUtils.INSTANCE.formatStringPrice(priceTax) + `)` }"
+            android:textSize="20px"
+            android:textColor="@android:color/black"
+            tools:text = " Tax 1"/>
+
+        <com.diadiem.pos_components.PTextView
+            visibleObject="@{isService,default=false}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@{`(` + PriceUtils.INSTANCE.formatStringPrice(priceService) + `)` }"
+            android:textSize="20px"
+            android:textColor="@android:color/black"
+            tools:text = " Service 1"/>
+
+        <com.diadiem.pos_components.PTextView
+            visibleObject="@{isSurcharge,default=false}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@{`(` + PriceUtils.INSTANCE.formatStringPrice(priceSurcharge) + `)` }"
+            android:textSize="20px"
+            android:textColor="@android:color/black"
+            tools:text = " Surchange 1"/>
+
+        <com.diadiem.pos_components.PTextView
+            visibleObject="@{isDiscount,default=false}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@{`(-` + PriceUtils.INSTANCE.formatStringPrice(priceDiscMinus) + `)` }"
+            android:textSize="20px"
+            android:textColor="@android:color/black"
+            tools:text = " Discount 1"/>
+
+    </LinearLayout>
+</layout>

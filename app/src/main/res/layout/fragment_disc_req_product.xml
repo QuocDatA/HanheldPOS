@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.hanheldpos.ui.screens.discount.discount_detail.DiscReqProductVM" />
+    </data>
+
+    <LinearLayout
+        style="@style/RootLayout"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <com.diadiem.pos_components.PTextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/_14sdp"
+            app:useFontStyle="bold"
+            app:useTextColor="color4"
+            app:useTextHeader="h4" />
+
+        <include
+            layout="@layout/divider_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="1dp" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/listReqProduct"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            />
+        <com.diadiem.pos_components.PMaterialButton
+            android:id="@+id/btnOk"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/_10sdp"
+            android:layout_marginHorizontal="@dimen/_9sdp"
+            android:background="@color/color_0"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
+            android:gravity="center"
+            android:text="@string/ok"
+            android:paddingVertical="@dimen/_6sdp"
+            app:pbtn_useBackgroundColor="true"
+            app:pbtn_useFontStyle="bold"
+            app:pbtn_useTextColor="color2"
+            app:pbtn_useTextHeader="h5" />
+    </LinearLayout>
+</layout>

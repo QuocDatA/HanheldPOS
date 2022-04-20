@@ -10,7 +10,7 @@ import com.hanheldpos.ui.screens.menu.option.report.sale.customize.CustomizeRepo
 import com.hanheldpos.ui.screens.menu.option.report.sale.reports.adapter.NumberDayReportAdapter
 import com.hanheldpos.ui.screens.menu.option.report.sale.reports.adapter.NumberDayReportItem
 import com.hanheldpos.ui.screens.menu.option.report.sale.reports.adapter.ReportOptionPageAdapter
-import com.hanheldpos.utils.time.DateTimeUtils
+import com.hanheldpos.utils.DateTimeUtils
 import java.time.temporal.ChronoUnit
 import java.util.*
 

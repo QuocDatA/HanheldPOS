@@ -38,12 +38,9 @@ class IntroActivity : BaseActivity<ActivityIntroBinding, IntroVM>(), IntroUV {
     }
 
     override fun finishIntro() {
-        navigateTo(MainActivity::class.java, true)
+        navigateTo(MainActivity::class.java, true,true);
     }
     private fun hideSystem(){
         SystemHelper.hideSystemUI(window);
-        window.setFlags(
-            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
-            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
     }
 }

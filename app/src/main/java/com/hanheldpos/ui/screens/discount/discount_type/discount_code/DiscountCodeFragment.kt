@@ -1,33 +1,32 @@
 package com.hanheldpos.ui.screens.discount.discount_type.discount_code
 
 import android.annotation.SuppressLint
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hanheldpos.R
+import com.hanheldpos.data.api.pojo.discount.DiscountCoupon
 import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.databinding.FragmentDiscountCodeBinding
-import com.hanheldpos.databinding.FragmentDiscountCompBinding
-import com.hanheldpos.model.discount.DiscountApplyToType
-import com.hanheldpos.ui.base.adapter.BaseItemClickListener
-import com.hanheldpos.ui.base.adapter.GridSpacingItemDecoration
+import com.hanheldpos.model.discount.DiscApplyTo
+import com.hanheldpos.model.discount.DiscountTriggerType
+import com.hanheldpos.model.discount.DiscountTypeFor
 import com.hanheldpos.ui.base.fragment.BaseFragment
+import com.hanheldpos.ui.screens.discount.DiscountFragment
 import com.hanheldpos.ui.screens.discount.discount_detail.DiscountDetailFragment
-import com.hanheldpos.ui.screens.discount.discount_type.discount_code.adapter.DiscountCodeAdapter
+import com.hanheldpos.ui.screens.discount.discount_type.adapter.DiscountServerAdapter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class DiscountCodeFragment(private val applyToType : DiscountApplyToType) : BaseFragment<FragmentDiscountCodeBinding,DiscountCodeVM>() , DiscountCodeUV {
-    override fun layoutRes(): Int =  R.layout.fragment_discount_code
+class DiscountCodeFragment(
+    private val applyToType: DiscApplyTo,
+    private val listener: DiscountFragment.DiscountTypeListener
+) : BaseFragment<FragmentDiscountCodeBinding, DiscountCodeVM>(), DiscountCodeUV {
+    override fun layoutRes(): Int = R.layout.fragment_discount_code
 
-    private lateinit var discountCodeAdapter: DiscountCodeAdapter;
+    private lateinit var discountCodeAdapter: DiscountServerAdapter;
 
     override fun viewModelClass(): Class<DiscountCodeVM> {
         return DiscountCodeVM::class.java;
@@ -43,12 +42,22 @@ class DiscountCodeFragment(private val applyToType : DiscountApplyToType) : Base
 
     override fun initView() {
 
-
         discountCodeAdapter =
-            DiscountCodeAdapter(listener = object : BaseItemClickListener<DiscountResp> {
-                override fun onItemClick(adapterPosition: Int, item: DiscountResp) {
-                    navigator.goTo(DiscountDetailFragment(item))
+            DiscountServerAdapter(listener = object : DiscountServerAdapter.DiscountItemCallBack {
+                override fun onViewDetailClick(item: DiscountResp) {
+                    navigator.goTo(
+                        DiscountDetailFragment(
+                            item,
+                            onApplyDiscountAuto = {},
+                            onApplyDiscountCode = { discount -> viewModel.onApplyDiscount(discount) })
+                    )
                 }
+
+                override fun onItemClick(item : DiscountResp) {
+                    if (item.isExistsTrigger(DiscountTriggerType.ON_CLICK))
+                        viewModel.onApplyDiscount(item)
+                }
+
             });
         binding.listDiscountCode.apply {
             addItemDecoration(
@@ -66,13 +75,11 @@ class DiscountCodeFragment(private val applyToType : DiscountApplyToType) : Base
             )
         };
         binding.listDiscountCode.adapter = discountCodeAdapter;
-        binding.firstNameInput.doAfterTextChanged {
-            viewModel.searchDiscountCode(it.toString())
-        }
+
     }
 
     override fun initData() {
-        if (applyToType == DiscountApplyToType.ORDER_DISCOUNT_APPLY_TO)
+        if (applyToType == DiscApplyTo.ORDER)
             CoroutineScope(Dispatchers.IO).launch {
                 viewModel.initData();
             }
@@ -80,7 +87,10 @@ class DiscountCodeFragment(private val applyToType : DiscountApplyToType) : Base
     }
 
     override fun initAction() {
-
+        binding.discountCodeInput.doAfterTextChanged {
+            listener.validDiscount(it.toString().isNotEmpty())
+            viewModel.searchDiscountCode(it.toString())
+        }
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -89,5 +99,28 @@ class DiscountCodeFragment(private val applyToType : DiscountApplyToType) : Base
             discountCodeAdapter.submitList(list);
             discountCodeAdapter.notifyDataSetChanged();
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        requireActivity().supportFragmentManager.setFragmentResultListener(
+            "saveDiscount",
+            this
+        ) { _, bundle ->
+            if (bundle.getSerializable("DiscountTypeFor") == DiscountTypeFor.DISCOUNT_CODE) {
+                val discountSelect = discountCodeAdapter.currentList.find {
+                    it.DiscountCode.uppercase() == binding.discountCodeInput.text.toString()
+                }
+                if (discountSelect != null) {
+                    viewModel.onApplyDiscount(discountSelect)
+                }
+                else showMessage(getString(R.string.code_doesnt_exist))
+            }
+        }
+        listener.validDiscount(binding.discountCodeInput.text.toString().isNotEmpty())
+    }
+
+    override fun updateDiscountCouponCode(discount: List<DiscountCoupon>?) {
+        listener.discountCodeChoose(discount)
     }
 }

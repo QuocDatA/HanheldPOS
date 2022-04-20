@@ -95,6 +95,7 @@
                     android:layout_marginEnd="@dimen/_5sdp"
                     android:layout_weight="1"
                     android:minWidth="@dimen/_100sdp"
+                    android:dropDownWidth="@dimen/_130sdp"
                     tools:listitem="@layout/item_dropdown_spinner" />
 
                 <androidx.appcompat.widget.AppCompatSpinner
@@ -106,6 +107,7 @@
                     android:layout_marginStart="@dimen/_5sdp"
                     android:layout_weight="1"
                     android:minWidth="@dimen/_100sdp"
+                    android:dropDownWidth="@dimen/_130sdp"
                     tools:listitem="@layout/item_dropdown_spinner" />
             </LinearLayout>
 

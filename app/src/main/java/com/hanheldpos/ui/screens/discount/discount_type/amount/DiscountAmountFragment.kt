@@ -1,20 +1,21 @@
 package com.hanheldpos.ui.screens.discount.discount_type.amount
 
+import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentDiscountAmountBinding
-import com.hanheldpos.model.discount.DiscountApplyToType
+import com.hanheldpos.model.discount.DiscApplyTo
 import com.hanheldpos.model.discount.DiscountTypeEnum
 import com.hanheldpos.model.discount.DiscountTypeFor
 import com.hanheldpos.model.discount.DiscountUser
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.discount.DiscountFragment
-import com.hanheldpos.ui.screens.discount.discount_type.DiscountTypeItemFragment
 import com.hanheldpos.utils.PriceUtils
-import java.text.DecimalFormat
-import java.text.DecimalFormatSymbols
 
-class DiscountAmountFragment(private val applyToType: DiscountApplyToType, private val listener: DiscountFragment.DiscountTypeListener) :
+class DiscountAmountFragment(
+    private val applyToType: DiscApplyTo,
+    private val listener: DiscountFragment.DiscountTypeListener
+) :
     BaseFragment<FragmentDiscountAmountBinding, DiscountAmountVM>(),
     DiscountAmountUV {
     override fun layoutRes(): Int = R.layout.fragment_discount_amount
@@ -34,7 +35,6 @@ class DiscountAmountFragment(private val applyToType: DiscountApplyToType, priva
 
     override fun initView() {
 
-
         binding.amountDiscount.let { input ->
             var isEditing = false
             input.doAfterTextChanged {
@@ -50,12 +50,9 @@ class DiscountAmountFragment(private val applyToType: DiscountApplyToType, priva
         }
 
 
-
-
     }
 
     override fun initData() {
-
     }
 
     override fun initAction() {
@@ -69,7 +66,10 @@ class DiscountAmountFragment(private val applyToType: DiscountApplyToType, priva
 
     override fun onResume() {
         super.onResume()
-        requireActivity().supportFragmentManager.setFragmentResultListener("saveDiscount",this) { _, bundle ->
+        requireActivity().supportFragmentManager.setFragmentResultListener(
+            "saveDiscount",
+            this
+        ) { _, bundle ->
             if (bundle.getSerializable("DiscountTypeFor") == DiscountTypeFor.AMOUNT && validChooseDiscount()) {
                 listener.discountUserChoose(
                     DiscountUser(
@@ -83,18 +83,19 @@ class DiscountAmountFragment(private val applyToType: DiscountApplyToType, priva
         listener.validDiscount(validDiscount());
     }
 
-    private fun validChooseDiscount() : Boolean {
+    private fun validChooseDiscount(): Boolean {
         return (viewModel.amountValue > 0.0 && !viewModel.title.value.isNullOrEmpty())
     }
 
     private fun validDiscount(): Boolean {
         return when (applyToType) {
-            DiscountApplyToType.ITEM_DISCOUNT_APPLY_TO -> {
+            DiscApplyTo.ITEM -> {
                 (viewModel.amountValue == 0.0 && viewModel.title.value.isNullOrEmpty()) || validChooseDiscount()
             }
-            DiscountApplyToType.ORDER_DISCOUNT_APPLY_TO -> {
+            DiscApplyTo.ORDER -> {
                 validChooseDiscount()
             }
+            else -> false
         }
     }
 }

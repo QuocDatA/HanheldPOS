@@ -1,0 +1,484 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="com.hanheldpos.utils.PriceUtils" />
+
+        <import type="com.hanheldpos.utils.DateTimeUtils" />
+
+        <variable
+            name="order"
+            type="com.hanheldpos.model.order.OrderReq" />
+    </data>
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/rootScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/color_2"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.diadiem.pos_components.PTextView
+                    android:id="@+id/orderType"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Onl"
+                    android:textColor="@android:color/black"
+                    android:textSize="35px"
+                    app:useFontStyle="normal"
+                    tools:text="Onl" />
+
+                <androidx.legacy.widget.Space
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <com.diadiem.pos_components.PTextView
+                    android:id="@+id/orderDeliveryType"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Delivery"
+                    android:textColor="@android:color/black"
+                    android:textSize="35px"
+                    app:useFontStyle="normal"
+                    tools:text="Delivery" />
+            </LinearLayout>
+
+            <androidx.legacy.widget.Space
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/_3sdp" />
+
+            <ImageView
+                android:id="@+id/imageOrder"
+                android:layout_width="@dimen/_52sdp"
+                android:layout_height="@dimen/_32sdp"
+                android:src="@drawable/ic_note" />
+
+
+            <com.diadiem.pos_components.PTextView
+                android:id="@+id/addressBill"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_24sdp"
+                android:layout_marginVertical="@dimen/_7sdp"
+                android:textAlignment="center"
+                android:textColor="@android:color/black"
+                android:textSize="24px"
+                app:useFontStyle="normal"
+                tools:text="36 Tong Huu Dinh Thao Dien Ward, District 2, HCMC Tel: 08 6253 2828" />
+
+            <LinearLayout
+                visibleObject="@{order.orderDetail.billing}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingVertical="@dimen/_2sdp">
+
+                <include
+                    android:id="@+id/customerBill"
+                    layout="@layout/item_bill_printer_customer" />
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:layerType="software"
+                android:src="@drawable/dotted" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/_2sdp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <com.diadiem.pos_components.PTextView
+                        android:layout_weight="1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@android:color/black"
+                        app:useFontStyle="normal"
+                        android:text="@string/order_printer_layout"
+                        android:textSize="24px"
+                        tools:text="Order #:" />
+
+                    <com.diadiem.pos_components.PTextView
+                        android:id="@+id/codeOrder"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@android:color/black"
+                        app:useFontStyle="normal"
+                        android:textSize="24px"
+                        tools:text="IP1102" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <com.diadiem.pos_components.PTextView
+                        android:layout_weight="1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@android:color/black"
+                        app:useFontStyle="normal"
+                        android:text="@string/location"
+                        android:textSize="24px" />
+
+                    <com.diadiem.pos_components.PTextView
+                        android:id="@+id/location"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@android:color/black"
+                        app:useFontStyle="normal"
+                        android:textSize="24px"
+                        tools:text="DQM" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <com.diadiem.pos_components.PTextView
+                        android:layout_weight="1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@android:color/black"
+                        app:useFontStyle="normal"
+                        android:text="@string/employee_printer_layout"
+                        android:textSize="24px"
+                        tools:text="Employee :" />
+
+                    <com.diadiem.pos_components.PTextView
+                        android:id="@+id/nameEmployee"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@android:color/black"
+                        app:useFontStyle="normal"
+                        android:textSize="24px"
+                        tools:text="Quan Nguyen" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <com.diadiem.pos_components.PTextView
+                        android:layout_weight="1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@android:color/black"
+                        app:useFontStyle="normal"
+                        android:text="@string/create_date"
+                        android:textSize="24px" />
+
+                    <com.diadiem.pos_components.PTextView
+                        android:id="@+id/create_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@android:color/black"
+                        app:useFontStyle="normal"
+                        android:textSize="24px"
+                        tools:text="28/02/2021 11:00" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:layerType="software"
+                android:src="@drawable/dotted" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/_2sdp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <com.diadiem.pos_components.PTextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:text="Qty"
+                        android:textSize="24px"
+                        android:textColor="@android:color/black"
+                        app:useFontStyle="bold"
+                        />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="10"
+                        android:orientation="horizontal">
+
+                        <com.diadiem.pos_components.PTextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Items"
+                            android:textColor="@android:color/black"
+                            app:useFontStyle="bold"
+                            android:textSize="24px" />
+
+                        <com.diadiem.pos_components.PTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/amount"
+                            android:textColor="@android:color/black"
+                            app:useFontStyle="bold"
+                            android:textSize="24px" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/listProductBill"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:itemCount="1"
+                    tools:listitem="@layout/item_product_bill_printer" />
+            </LinearLayout>
+
+            <ImageView
+                visibleObject="@{order.orderDetail.order.note != null &amp;&amp; !order.orderDetail.order.note.empty}"
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:layerType="software"
+                android:src="@drawable/dotted" />
+
+            <com.diadiem.pos_components.PTextView
+                visibleObject="@{order.orderDetail.order.note != null &amp;&amp; !order.orderDetail.order.note.empty}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginVertical="@dimen/_2sdp"
+                android:text="@{`Notes : ` + order.orderDetail.order.note}"
+                android:textColor="@android:color/black"
+                app:useFontStyle="normal"
+                app:useTextHeader="h5"
+                tools:text="Notes" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:layerType="software"
+                android:src="@drawable/dotted" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/_2sdp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <com.diadiem.pos_components.PTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:text="Subtotal"
+                    android:textColor="@android:color/black"
+                    app:useFontStyle="normal"
+                    app:useTextHeader="h5" />
+
+                <androidx.legacy.widget.Space
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <com.diadiem.pos_components.PTextView
+                    priceView="@{order.orderDetail.order.subtotal}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:textColor="@android:color/black"
+                    app:useFontStyle="normal"
+                    app:useTextHeader="h5"
+                    tools:text="270,000" />
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:layerType="software"
+                android:src="@drawable/dotted" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/_2sdp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <com.diadiem.pos_components.PTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:text="Discount"
+                    android:textColor="@android:color/black"
+                    app:useFontStyle="normal"
+                    app:useTextHeader="h5" />
+
+                <androidx.legacy.widget.Space
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <com.diadiem.pos_components.PTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:text="@{ `-` + PriceUtils.INSTANCE.formatStringPrice(order.orderDetail.order.discount) }"
+                    android:textColor="@android:color/black"
+                    app:useFontStyle="normal"
+                    app:useTextHeader="h5"
+                    tools:text="270,000" />
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:layerType="software"
+                android:src="@drawable/dotted" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/_2sdp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <com.diadiem.pos_components.PTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:text="Total"
+                    android:textColor="@android:color/black"
+                    app:useFontStyle="bold"
+                    app:useTextHeader="h4" />
+
+                <androidx.legacy.widget.Space
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <com.diadiem.pos_components.PTextView
+                    priceView="@{order.orderDetail.order.grandtotal}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:textColor="@android:color/black"
+                    app:useFontStyle="bold"
+                    app:useTextHeader="h4"
+                    tools:text="270,000" />
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:layerType="software"
+                android:src="@drawable/dotted" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/_2sdp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <com.diadiem.pos_components.PTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:text="Cash"
+                    android:textColor="@android:color/black"
+                    app:useFontStyle="normal"
+                    app:useTextHeader="h5" />
+
+                <androidx.legacy.widget.Space
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <com.diadiem.pos_components.PTextView
+                    android:id="@+id/cashAmount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:textColor="@android:color/black"
+                    app:useFontStyle="normal"
+                    app:useTextHeader="h5"
+                    tools:text="270,000" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/_2sdp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <com.diadiem.pos_components.PTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:text="Change"
+                    android:textColor="@android:color/black"
+                    app:useFontStyle="normal"
+                    app:useTextHeader="h5" />
+
+                <androidx.legacy.widget.Space
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <com.diadiem.pos_components.PTextView
+                    android:id="@+id/changeAmount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:textColor="@android:color/black"
+                    app:useFontStyle="normal"
+                    app:useTextHeader="h5"
+                    tools:text="270,000" />
+            </LinearLayout>
+
+            <com.diadiem.pos_components.PTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/_20sdp"
+                android:text="@string/thank_you"
+                android:textAllCaps="true"
+                android:textColor="@android:color/black"
+                app:useFontStyle="bold"
+                app:useTextHeader="h4" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</layout>

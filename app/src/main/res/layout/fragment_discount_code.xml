@@ -11,16 +11,19 @@
     </data>
 
     <LinearLayout style="@style/RootLayout">
+
         <com.diadiem.pos_components.PTextInputEditText
-            android:id="@+id/firstNameInput"
+            android:id="@+id/discountCodeInput"
             style="@style/BaseTextInput"
             android:layout_marginHorizontal="@dimen/_9sdp"
             android:layout_marginTop="0dp"
             android:layout_marginBottom="@dimen/_18sdp"
             android:background="@drawable/bg_outline"
+            textNumberAllCaps="@{true}"
+            android:inputType="textCapWords"
+            android:textAllCaps="true"
             android:focusableInTouchMode="true"
             android:hint="@string/discount_code"
-            android:inputType="text"
             android:padding="@dimen/_10sdp"
             app:ipt_useFontStyle="normal"
             app:ipt_useHintTextColor="color8"

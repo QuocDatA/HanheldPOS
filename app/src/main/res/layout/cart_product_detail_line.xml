@@ -4,6 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
+        <import type="com.hanheldpos.utils.PriceUtils" />
+
         <variable
             name="isDiscount"
             type="Boolean" />
@@ -19,10 +22,6 @@
         <variable
             name="lineText"
             type="String" />
-
-        <variable
-            name="priceDisc"
-            type="Double" />
 
         <variable
             name="priceDiscMinus"
@@ -43,8 +42,10 @@
 
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_marginEnd="@dimen/_40sdp"
+        android:clickable="true"
+        android:focusable="true"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
@@ -66,18 +67,19 @@
             app:tint="@color/color_0" />
 
         <com.diadiem.pos_components.PTextView
+            visibleObject="@{isHeaderH6==true,default=true}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{lineText}"
             app:useTextColor="color5"
-            visibleObject="@{isHeaderH6==true,default=true}"
             app:useTextHeader="h6"
             tools:text="Variant 1" />
+
         <com.diadiem.pos_components.PTextView
+            visibleObject="@{isHeaderH6==false,default=false}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{lineText}"
-            visibleObject="@{isHeaderH6==false,default=false}"
             app:useTextColor="color5"
             app:useTextHeader="h7"
             tools:text="Variant 1" />
@@ -90,29 +92,36 @@
             app:useTextColor="color5"
             app:useTextHeader="h6"
             tools:text="Variant 1" />
+
         <LinearLayout
             visibleObject="@{isDiscount || isOtherFee,default=false}"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="horizontal">
+
             <com.diadiem.pos_components.PTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:useTextColor="color5"
-                app:useTextHeader="h6"
-                priceDisc="@{priceDisc}"
-                priceDiscMinusRound="@{priceDiscMinus}"/>
-            <ImageView
-                android:focusable="true"
-                android:clickable="true"
-                android:onClick="@{clickListener}"
-                android:layout_width="@dimen/_14sdp"
-                android:layout_height="@dimen/_14sdp"
                 android:layout_gravity="center"
-                android:layout_marginStart="@dimen/_7sdp"
-                android:scaleType="fitXY"
-                android:src="@{isDiscount?@drawable/ic_delete: @drawable/ic_info,default=@drawable/ic_info}" />
+                android:text="@{`(-` + PriceUtils.INSTANCE.formatStringPrice(priceDiscMinus) + `)` }"
+                app:useTextColor="color5"
+                app:useTextHeader="h6" />
 
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="@{clickListener}"
+                android:paddingHorizontal="@dimen/_9sdp">
+
+                <ImageView
+                    android:layout_width="@dimen/_14sdp"
+                    android:layout_height="@dimen/_14sdp"
+                    android:layout_gravity="center"
+                    android:scaleType="fitXY"
+                    android:src="@{isDiscount?@drawable/ic_delete: @drawable/ic_info,default=@drawable/ic_info}" />
+            </FrameLayout>
 
         </LinearLayout>
 

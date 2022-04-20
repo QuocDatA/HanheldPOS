@@ -1,8 +1,12 @@
 package com.hanheldpos.ui.screens.home.order.adapter
 
+import android.content.res.ColorStateList
+import android.graphics.Color
 import androidx.recyclerview.widget.DiffUtil
 import com.hanheldpos.R
 import com.hanheldpos.databinding.ItemOrderMenuBinding
+import com.hanheldpos.databinding.ItemOrderMenuDirectionButtonBinding
+import com.hanheldpos.databinding.ItemTableDirectionButtonBinding
 import com.hanheldpos.model.home.order.menu.MenuModeViewType
 import com.hanheldpos.model.home.order.menu.OrderMenuItem
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
@@ -17,7 +21,9 @@ class OrderMenuAdapter(
         return when(getItem(position).uiType) {
             MenuModeViewType.Menu -> R.layout.item_order_menu
             MenuModeViewType.Empty -> R.layout.item_order_menu_empty
-            else -> { 0 }
+            else -> {
+                R.layout.item_order_menu_direction_button
+            }
         }
     }
 
@@ -34,6 +40,11 @@ class OrderMenuAdapter(
                 }
             }
             MenuModeViewType.Empty -> {
+            }
+            else -> {
+                (holder.binding as ItemOrderMenuDirectionButtonBinding).layoutMain.setOnClickListener {
+                    listener.onItemClick(position, item);
+                }
             }
         }
         holder.bindItem(item);

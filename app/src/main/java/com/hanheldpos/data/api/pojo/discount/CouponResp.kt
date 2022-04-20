@@ -23,7 +23,7 @@ data class CouponResp(
     val RewardProductList: List<RewardProduct>,
     val RewardTitle: String,
     val RewardValue: String,
-//    val ScheduleList: List<Any>,
+    val ScheduleList: List<ListScheduleItem>,
     val ScheduleValue: String,
     val TermsCondition: String,
     val Url: String,

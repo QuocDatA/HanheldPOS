@@ -4,8 +4,9 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import com.hanheldpos.PosApp
 import com.hanheldpos.data.api.pojo.customer.CustomerResp
+import com.hanheldpos.data.api.pojo.discount.DiscountCoupon
+import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.data.api.pojo.floor.FloorTable
 import com.hanheldpos.data.api.pojo.order.settings.DiningOption
 import com.hanheldpos.data.api.pojo.order.settings.Reason
@@ -14,17 +15,18 @@ import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.OrderHelper
 import com.hanheldpos.model.UserHelper
 import com.hanheldpos.model.cart.*
-import com.hanheldpos.model.payment.PaymentOrder
+import com.hanheldpos.model.discount.DiscApplyTo
 import com.hanheldpos.model.discount.DiscountUser
 import com.hanheldpos.model.home.table.TableSummary
+import com.hanheldpos.model.payment.PaymentOrder
 import com.hanheldpos.ui.base.dialog.AppAlertDialog
 import com.hanheldpos.ui.base.viewmodel.BaseViewModel
-import kotlin.coroutines.coroutineContext
 
 class CartDataVM : BaseViewModel() {
 
+
     val cartModelLD: MutableLiveData<CartModel> = MutableLiveData()
-    val currentTableFocus : MutableLiveData<FloorTable> = MutableLiveData()
+    val currentTableFocus: MutableLiveData<FloorTable> = MutableLiveData()
 
     val diningOptionLD: LiveData<DiningOption> = Transformations.map(cartModelLD) {
         return@map it?.diningOption
@@ -39,7 +41,8 @@ class CartDataVM : BaseViewModel() {
         return@map it?.table?.PeopleQuantity
     }
 
-    fun initObserveData(owner: LifecycleOwner){
+    fun initObserveData(owner: LifecycleOwner) {
+
         cartModelLD.observe(owner) {
             CurCartData.cartModel = it
         }
@@ -73,19 +76,20 @@ class CartDataVM : BaseViewModel() {
 
     }
 
-    fun initCart(cart : CartModel , table: FloorTable) {
+    fun initCart(cart: CartModel, table: FloorTable) {
         cartModelLD.value = cart
         currentTableFocus.value = table
+        notifyCartChange()
     }
 
     fun addCustomerToCart(customer: CustomerResp) {
         this.cartModelLD.value!!.customer = customer
-        this.cartModelLD.notifyValueChange()
+        this.notifyCartChange()
     }
 
     fun removeCustomerFromCart() {
         this.cartModelLD.value!!.customer = null
-        this.cartModelLD.notifyValueChange()
+        this.notifyCartChange()
     }
 
     fun addItemToCart(item: BaseProductInCart) {
@@ -96,12 +100,12 @@ class CartDataVM : BaseViewModel() {
                 addBundle(item)
             }
         }
-        this.cartModelLD.notifyValueChange()
+        this.notifyCartChange()
     }
 
     private fun updatePriceList(menuLocation_id: String?) {
         this.cartModelLD.value?.updatePriceList(menuLocation_id ?: UserHelper.getLocationGuid())
-        this.cartModelLD.notifyValueChange()
+        this.notifyCartChange()
     }
 
     fun updateItemInCart(index: Int, item: BaseProductInCart) {
@@ -110,12 +114,12 @@ class CartDataVM : BaseViewModel() {
         } else {
             cartModelLD.value!!.productsList.removeAt(index)
         }
-        cartModelLD.notifyValueChange()
+        notifyCartChange()
     }
 
     fun addPaymentOrder(payments: List<PaymentOrder>) {
         cartModelLD.value!!.addPayment(payments)
-        cartModelLD.notifyValueChange()
+        notifyCartChange(false)
     }
 
     fun deleteCart(
@@ -134,7 +138,7 @@ class CartDataVM : BaseViewModel() {
                 onClickListener = object : AppAlertDialog.AlertDialogOnClickListener {
                     override fun onPositiveClick() {
                         this@CartDataVM.cartModelLD.value!!.clearCart()
-                        this@CartDataVM.cartModelLD.notifyValueChange()
+                        this@CartDataVM.notifyCartChange()
                         callback()
                     }
                 }
@@ -146,41 +150,65 @@ class CartDataVM : BaseViewModel() {
         this.currentTableFocus.postValue(null)
     }
 
-    fun deleteDiscountCart(discount: DiscountCart, productInCart: BaseProductInCart?) {
+    fun deleteDiscountCart(discount: DiscountCart?, productInCart: BaseProductInCart?) {
         if (productInCart != null) {
-            discount.disOriginal.let {
-                if (it is Reason) {
-                    productInCart.compReason = null
-                } else if (it is DiscountUser) {
-                    productInCart.discountUsersList?.remove(it)
-                }
-            }
+            productInCart.clearAllDiscountCoupon()
         } else
-            discount.disOriginal.let {
-                if (it is Reason) {
-                    cartModelLD.value!!.compReason = null
-                } else if (it is DiscountUser) {
-                    cartModelLD.value!!.discountUserList.remove(it)
+            discount?.disOriginal?.let {
+                when (it.javaClass) {
+                    DiscountUser::class.java -> {
+                        cartModelLD.value!!.discountUserList.remove(it)
+                    }
+                    DiscountResp::class.java -> {
+                        cartModelLD.value!!.discountServerList.remove(it)
+                    }
+                    Reason::class.java -> {
+                        removeCompReason()
+                    }
+                    else -> {
+
+                    }
                 }
             }
-        cartModelLD.notifyValueChange()
+
+        notifyCartChange()
     }
 
-    fun removeCompReason() {
-        cartModelLD.value!!.compReason = null
-        cartModelLD.notifyValueChange()
+    fun removeCompReason(item: BaseProductInCart? = null) {
+        if (item != null) {
+            item.clearCompReason()
+        } else {
+            cartModelLD.value!!.compReason = null
+        }
+
+        notifyCartChange()
     }
 
     fun addCompReason(reason: Reason) {
-
         this.cartModelLD.value!!.addCompReason(reason)
-        cartModelLD.notifyValueChange()
+        notifyCartChange()
     }
 
     fun addDiscountUser(discount: DiscountUser) {
         this.cartModelLD.value!!.addDiscountUser(discount)
+        notifyCartChange()
+    }
+
+    fun addDiscountServer(discount: DiscountResp, applyTo: DiscApplyTo) {
+        this.cartModelLD.value!!.addDiscountAutoServer(discount, applyTo)
+        notifyCartChange()
+    }
+
+    fun clearAllDiscountCoupon() {
+        this.cartModelLD.value!!.clearAllDiscounts()
+        notifyCartChange()
+    }
+
+    fun notifyCartChange(isRemoveCoupon: Boolean = true) {
+        cartModelLD.value?.updateDiscount(isRemoveCoupon)
         cartModelLD.notifyValueChange()
     }
+
 
     fun diningOptionChange(diningOption: DiningOption?) {
         diningOption?.let {
@@ -191,5 +219,33 @@ class CartDataVM : BaseViewModel() {
         )
     }
 
+    fun updateDiscountCouponCode(discountCouponList: List<DiscountCoupon>?) {
+        // Find and append discounts for product list.
+        discountCouponList?.filter { disc -> disc.DiscountApplyTo == DiscApplyTo.ITEM.value }
+            ?.forEach { disc ->
+                cartModelLD.value?.productsList?.forEachIndexed { index, baseProduct ->
+                    if (disc.OrderDetailId == index)
+                        this.cartModelLD.value?.addDiscountCouponServer(
+                            disc.toDiscount(),
+                            DiscApplyTo.ITEM,
+                            baseProduct
+                        )
+                }
+            }
+        // Find and append discounts for order.
+        discountCouponList?.filter { disc -> disc.DiscountApplyTo == DiscApplyTo.ORDER.value }
+            ?.forEach { disc ->
+                this.cartModelLD.value?.addDiscountCouponServer(
+                    disc.toDiscount(),
+                    DiscApplyTo.ORDER
+                )
+            }
+        notifyCartChange(false)
+    }
 
+
+    fun updateNote(note: String?) {
+        this.cartModelLD.value?.note = note
+        notifyCartChange(false)
+    }
 }

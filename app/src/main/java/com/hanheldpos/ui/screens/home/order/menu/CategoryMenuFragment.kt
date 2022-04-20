@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import androidx.fragment.app.activityViewModels
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentCategoryMenuBinding
+import com.hanheldpos.model.home.order.menu.MenuModeViewType
 import com.hanheldpos.model.home.order.menu.OrderMenuItem
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.adapter.GridSpacingItemDecoration
@@ -55,8 +56,20 @@ class CategoryMenuFragment(
         menuAdapter = OrderMenuAdapter(
             listener = object : BaseItemClickListener<OrderMenuItem> {
                 override fun onItemClick(adapterPosition: Int, item: OrderMenuItem) {
-                    menuItemSelected(item);
-                    getBack()
+                    when(item.uiType) {
+                        MenuModeViewType.Menu -> {
+                            menuItemSelected(item);
+                            getBack()
+                        }
+                        MenuModeViewType.NextButton -> {
+                            menuAdapHelper.next()
+                        }
+                        MenuModeViewType.PrevButton -> {
+                            menuAdapHelper.previous()
+                        }
+                        else -> {}
+                    }
+
                 }
 
             },
@@ -81,11 +94,10 @@ class CategoryMenuFragment(
 
     override fun getBack(isSelected: Boolean) {
         if (isBackToTable == true && !isSelected) {
-            onFragmentBackPressed()
             listener.onMenuClose()
-        } else {
-            onFragmentBackPressed()
         }
+        onFragmentBackPressed()
+
     }
 
     private fun menuItemSelected(menuItem: OrderMenuItem) {

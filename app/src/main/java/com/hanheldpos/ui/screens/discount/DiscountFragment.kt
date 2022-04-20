@@ -1,12 +1,13 @@
 package com.hanheldpos.ui.screens.discount
 
 import android.os.Bundle
-import android.view.View
 import androidx.fragment.app.activityViewModels
 import com.hanheldpos.R
+import com.hanheldpos.data.api.pojo.discount.DiscountCoupon
+import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.data.api.pojo.order.settings.Reason
 import com.hanheldpos.databinding.FragmentDiscountBinding
-import com.hanheldpos.model.discount.DiscountApplyToType
+import com.hanheldpos.model.discount.DiscApplyTo
 import com.hanheldpos.model.discount.DiscountTypeFor
 import com.hanheldpos.model.discount.DiscountUser
 import com.hanheldpos.ui.base.fragment.BaseFragment
@@ -35,11 +36,7 @@ class DiscountFragment(private val listener: DiscountCallback) :
 
     override fun initView() {
         viewModel.typeDiscountSelect.observe(this) {
-            if (it in mutableListOf(DiscountTypeFor.DISCOUNT_CODE,DiscountTypeFor.AUTOMATIC)){
-                binding.btnSave.visibility = View.GONE
-            }else {
-                binding.btnSave.visibility = View.VISIBLE
-            }
+
 
         }
     }
@@ -50,12 +47,22 @@ class DiscountFragment(private val listener: DiscountCallback) :
         childFragmentManager.beginTransaction().replace(
             R.id.fragment_container,
             DiscountTypeOrderFragment(
-                applyToType = DiscountApplyToType.ORDER_DISCOUNT_APPLY_TO,
+                applyToType = DiscApplyTo.ORDER,
                 cart = cartDataVM.cartModelLD.value!!,
                 listener = object : DiscountTypeListener {
                     override fun discountUserChoose(discount: DiscountUser) {
                         listener.onDiscountUserChoose(discount);
-                        backPress();
+                        onFragmentBackPressed()
+                    }
+
+                    override fun discountServerChoose(discount: DiscountResp, discApplyTo: DiscApplyTo) {
+                        listener.onDiscountServerChoose(discount,discApplyTo)
+                        onFragmentBackPressed()
+                    }
+
+                    override fun discountCodeChoose(discount: List<DiscountCoupon>?) {
+                        listener.onDiscountCodeChoose(discount)
+                        onFragmentBackPressed()
                     }
 
                     override fun compReasonChoose(item: Reason) {
@@ -75,6 +82,11 @@ class DiscountFragment(private val listener: DiscountCallback) :
                     override fun validDiscount(isValid: Boolean) {
                         binding.btnSave.isEnabled = isValid;
                     }
+
+                    override fun clearAllDiscountCoupon() {
+                        listener.clearAllDiscountCoupon()
+                    }
+
                 }
             )
         ).commit();
@@ -92,16 +104,22 @@ class DiscountFragment(private val listener: DiscountCallback) :
 
     interface DiscountCallback {
         fun onDiscountUserChoose(discount: DiscountUser);
+        fun onDiscountServerChoose(discount : DiscountResp,discApplyTo : DiscApplyTo)
+        fun onDiscountCodeChoose(discount: List<DiscountCoupon>?)
         fun onCompReasonChoose(reason: Reason);
         fun onCompRemove();
+        fun clearAllDiscountCoupon()
     }
 
     interface DiscountTypeListener {
-        fun discountUserChoose(discount: DiscountUser): Unit {};
-        fun compReasonChoose(item: Reason): Unit {};
-        fun compRemoveAll(): Unit {};
+        fun discountUserChoose(discount: DiscountUser): Unit {}
+        fun discountServerChoose(discount : DiscountResp,discApplyTo: DiscApplyTo) : Unit {}
+        fun discountCodeChoose(discount: List<DiscountCoupon>?): Unit{}
+        fun compReasonChoose(item: Reason): Unit {}
+        fun compRemoveAll(): Unit {}
+        fun clearAllDiscountCoupon() : Unit {}
         fun discountFocus(type : DiscountTypeFor) : Unit{}
-        fun validDiscount(isValid : Boolean);
+        fun validDiscount(isValid : Boolean)
     }
 
     override fun backPress() {

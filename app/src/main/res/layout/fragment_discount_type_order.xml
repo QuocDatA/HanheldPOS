@@ -11,11 +11,11 @@
 
         <import type="android.view.View" />
 
-        <import type="com.hanheldpos.model.discount.DiscountApplyToType" />
+        <import type="com.hanheldpos.model.discount.DiscApplyTo" />
 
         <variable
             name="discountType"
-            type="com.hanheldpos.model.discount.DiscountApplyToType" />
+            type="com.hanheldpos.model.discount.DiscApplyTo" />
     </data>
 
     <LinearLayout
@@ -29,8 +29,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/_8sdp"
-            android:layout_marginVertical="@dimen/_19sdp"
+            android:layout_marginTop="@dimen/_19sdp"
             android:orientation="vertical"
+            android:layout_marginBottom="@dimen/_14sdp"
             app:layout_constraintTop_toTopOf="parent">
 
             <com.diadiem.pos_components.PTextView
@@ -54,12 +55,25 @@
             <include layout="@layout/divider_vertical" />
         </LinearLayout>
 
+        <com.diadiem.pos_components.PTextView
+            android:id="@+id/btnClearDiscount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/clear_discount"
+            android:layout_gravity="end"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_marginEnd="@dimen/_9sdp"
+            android:layout_marginBottom="@dimen/_14sdp"
+            app:useFontStyle="normal"
+            app:useTextColor="color8"
+            app:useTextHeader="h6" />
+
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/discountFragmentContainer"
             useInputEnable="@{false}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_18sdp"
             app:layout_constrainedHeight="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintHeight_min="wrap"

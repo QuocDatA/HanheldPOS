@@ -3,7 +3,7 @@ package com.hanheldpos.ui.screens.menu.option.report.sale.customize
 import androidx.lifecycle.MutableLiveData
 import com.hanheldpos.model.report.SaleReportCustomData
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
-import com.hanheldpos.utils.time.DateTimeUtils
+import com.hanheldpos.utils.DateTimeUtils
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import java.util.*
 

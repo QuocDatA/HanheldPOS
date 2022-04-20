@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="com.hanheldpos.model.product.ExtraConverter" />
+
+        <import type="com.hanheldpos.model.product.ProductType" />
+
+        <variable
+            name="item"
+            type="com.hanheldpos.model.order.ProductChosen" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <com.diadiem.pos_components.PTextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:text="@{String.valueOf(item.quantity)}"
+            app:useFontStyle="bold"
+            android:textColor="@android:color/black"
+            android:textSize="24px"
+            tools:text="2" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="10"
+            android:orientation="vertical">
+
+            <LinearLayout
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.diadiem.pos_components.PTextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@{item.name1}"
+                    app:useFontStyle="normal"
+                    android:textColor="@android:color/black"
+                    android:textSize="24px"
+                    tools:text="Combo Sang Tiet Kiem" />
+
+                <com.diadiem.pos_components.PTextView
+                    priceView="@{item.lineTotal}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:useFontStyle="normal"
+                    android:textColor="@android:color/black"
+                    android:textSize="24px"
+                    tools:text="100.000" />
+            </LinearLayout>
+
+            <LinearLayout
+                visibleObject="@{item.productTypeId == ProductType.BUNDLE.value}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.diadiem.pos_components.PTextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/base_price"
+                    app:useFontStyle="normal"
+                    android:textColor="@android:color/black"
+                    android:textSize="20px" />
+
+                <com.diadiem.pos_components.PTextView
+                    priceView="@{item.price}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:useFontStyle="normal"
+                    android:textColor="@android:color/black"
+                    android:textSize="20px"
+                    tools:text="100.000" />
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/listChildProduct"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:itemCount="1"
+                tools:listitem="@layout/item_combo_group_bill_printer" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/_40sdp"
+                android:orientation="vertical">
+
+                <include
+                    layout="@layout/item_product_detail_bill_printer"
+                    visibleObject="@{item.variantList != null &amp;&amp; !item.variantList.empty,default=false}"
+                    app:lineText="@{ExtraConverter.INSTANCE.variantStr(item.variantList)}" />
+
+                <include
+                    layout="@layout/item_product_detail_bill_printer"
+                    visibleObject="@{item.modifierList != null &amp;&amp; !item.modifierList.empty , default=false}"
+                    app:lineText="@{ExtraConverter.INSTANCE.modifierOrderStr(item.modifierList)}" />
+
+                <include
+                    layout="@layout/item_product_detail_bill_printer"
+                    app:isTax="@{true}"
+                    visibleObject="@{(item.taxFeeList != null &amp;&amp; !item.taxFeeList.empty)}"
+                    app:lineText="@{`Discount : ` }"
+                    app:priceTax="@{item.taxTotalPrice}" />
+
+                <include
+                    layout="@layout/item_product_detail_bill_printer"
+                    app:isService="@{true}"
+                    visibleObject="@{(item.serviceFeeList != null &amp;&amp; !item.serviceFeeList.empty)}"
+                    app:lineText="@{`Discount : ` }"
+                    app:priceService="@{item.serviceTotalPrice}" />
+
+                <include
+                    layout="@layout/item_product_detail_bill_printer"
+                    app:isSurcharge="@{true}"
+                    visibleObject="@{(item.surchargeFeeList != null &amp;&amp; !item.surchargeFeeList.empty)}"
+                    app:lineText="@{`Discount : ` }"
+                    app:priceSurcharge="@{item.surchargeTotalPrice}" />
+
+                <include
+                    layout="@layout/item_product_detail_bill_printer"
+                    app:isDiscount="@{true}"
+                    visibleObject="@{(item.discountList != null &amp;&amp; !item.discountList.empty)}"
+                    app:lineText="@{`Discount : ` }"
+                    app:priceDiscMinus="@{item.discountTotalPrice}" />
+
+                <include
+                    layout="@layout/item_product_detail_bill_printer"
+                    visibleObject="@{item.note != null &amp;&amp; !item.note.empty  ,default=false}"
+                    app:isNote="@{true}"
+                    app:lineText="@{item.note}" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+</layout>
