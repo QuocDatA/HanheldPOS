@@ -10,5 +10,6 @@ data class SettingDevicePut(
     val UserGuid: String,
     val LocationGuid: String,
     val DeviceGuid : String,
-    val Device_key : String
+    val Device_key : String,
+    val uuid : String,
 ) : Parcelable

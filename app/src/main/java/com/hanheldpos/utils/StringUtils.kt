@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.provider.Settings
 import java.security.AccessController.getContext
+import java.lang.StringBuilder
 import java.text.Normalizer
 import java.util.regex.Pattern
 

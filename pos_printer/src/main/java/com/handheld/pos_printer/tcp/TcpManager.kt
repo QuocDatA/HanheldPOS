@@ -1,16 +1,16 @@
-package com.handheld.pos_printer.bluetooth
+package com.handheld.pos_printer.tcp
 
 import android.graphics.Bitmap
 import com.dantsu.escposprinter.EscPosCharsetEncoding
 import com.dantsu.escposprinter.EscPosPrinter
-import com.dantsu.escposprinter.EscPosPrinterCommands
 import com.dantsu.escposprinter.connection.bluetooth.BluetoothPrintersConnections
+import com.dantsu.escposprinter.connection.tcp.TcpConnection
 import com.dantsu.escposprinter.textparser.PrinterTextParserImg
 import com.handheld.pos_printer.BasePrintManager
 import com.handheld.pos_printer.PrintPic
 import java.lang.StringBuilder
 
-class BluetoothManager : BasePrintManager() {
+class TcpManager : BasePrintManager() {
     private lateinit var printer: EscPosPrinter
     override fun connect() {
     }
@@ -81,7 +81,7 @@ class BluetoothManager : BasePrintManager() {
     init {
         if (!this::printer.isInitialized)
             printer = EscPosPrinter(
-                BluetoothPrintersConnections.selectFirstPaired(), 203, 48f, 34,
+                TcpConnection("192.168.0.87",9100), 203, 80f, 70,
                 EscPosCharsetEncoding("windows-1258", 16)
             )
     }

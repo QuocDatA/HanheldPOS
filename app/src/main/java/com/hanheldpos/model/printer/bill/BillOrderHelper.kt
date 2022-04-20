@@ -9,6 +9,7 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.drawable.Drawable
+import android.os.StrictMode
 import android.util.DisplayMetrics
 import android.util.Log
 import android.view.LayoutInflater
@@ -18,6 +19,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import com.handheld.pos_printer.BasePrintManager
 import com.handheld.pos_printer.bluetooth.BluetoothManager
+import com.handheld.pos_printer.tcp.TcpManager
 import com.handheld.pos_printer.urovo.UrovoManager
 import com.hanheldpos.R
 import com.hanheldpos.binding.setPriceView
@@ -25,17 +27,16 @@ import com.hanheldpos.databinding.LayoutBillPrinterBinding
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.order.OrderReq
 import com.hanheldpos.model.payment.PaymentMethodType
-import com.hanheldpos.model.printer.PrinterHelper
+import com.hanheldpos.model.product.ExtraConverter
 import com.hanheldpos.ui.screens.printer.bill.ProductBillPrinterAdapter
 import com.hanheldpos.utils.DateTimeUtils
+import com.hanheldpos.utils.PriceUtils
 import com.hanheldpos.utils.StringUtils
 import com.hanheldpos.utils.drawableToBitmap
 import com.utils.wagu.Block
 import com.utils.wagu.Board
-import com.utils.wagu.Table
 import com.utils.wagu.WaguUtils
 import java.lang.StringBuilder
-import kotlin.math.log
 
 object BillOrderHelper {
 
@@ -90,26 +91,26 @@ object BillOrderHelper {
                 PERMISSION_BLUETOOTH_SCAN
             );
         } else {
-            try {
-                val printer: BluetoothManager = BluetoothManager()
-                printer.connect()
+            Thread {
                 try {
-                    printBill(context, printer, printerSize, order)
-                }
-                catch (e : Exception) {
+                    val printer: BluetoothManager = BluetoothManager()
+                    printer.connect()
+                    try {
+                        printBill(context, printer, printerSize, order)
+//                        printImageBill(context, printer, printerSize, order)
+                    } catch (e: Exception) {
+                        Log.d("Error print", e.message.toString())
+                    }
+
+                    // Finish Print
+                    Thread.sleep(1500)
+                    printer.disconnect()
+                } catch (e: Exception) {
                     Log.d("Error print", e.message.toString())
                 }
-                //printImageBill(context, printer, printerSize, order)
-                // Finish Print
-                Thread.sleep(1500)
-                printer.disconnect()
-            } catch (e: Exception) {
-                Log.d("Error print", e.message.toString())
-            }
+            }.start()
 
         }
-
-
     }
     //endregion
 
@@ -119,22 +120,58 @@ object BillOrderHelper {
     //region Urovo
     fun printBillWithUrovo(context: Context, printerSize: Int, order: OrderReq) {
 
+        try {
+            val printer: UrovoManager = UrovoManager()
+            printer.connect()
             try {
-                val printer: UrovoManager = UrovoManager()
-                printer.connect()
-                try{
-                    //printBill(context, printer, printerSize, order)
-                    printImageBill(context, printer, printerSize, order)
-                }
-                catch (e :Exception) {
-                    Log.d("Error print", e.message.toString())
-                }
-                // Finish Print
-                Thread.sleep(1500)
-                printer.disconnect()
+                printBill(context, printer, printerSize, order)
             } catch (e: Exception) {
                 Log.d("Error print", e.message.toString())
             }
+            // Finish Print
+            Thread.sleep(1500)
+            printer.disconnect()
+        } catch (e: Exception) {
+            Log.d("Error print", e.message.toString())
+        }
+
+    }
+    //endregion
+
+    /*==============================================================================================
+   ======================================TCP PART============================================
+   ==============================================================================================*/
+    //region Tcp
+    fun printBillWithTcp(context: Context, printerSize: Int, order: OrderReq) {
+
+        try {
+            val policy: StrictMode.ThreadPolicy =
+                StrictMode
+                    .ThreadPolicy
+                    .Builder()
+                    .permitAll()
+                    .build()
+
+            StrictMode.setThreadPolicy(policy)
+            val printer: TcpManager = TcpManager()
+            printer.connect()
+            try {
+                printBill(context, printer, printerSize, order)
+
+//                printImageBill(context, printer, printerSize, order)
+
+
+            } catch (e: Exception) {
+                Log.d("Error print", e.message.toString())
+            }
+
+            // Finish Print
+            Thread.sleep(1500)
+            printer.disconnect()
+        } catch (e: Exception) {
+            Log.d("Error print", e.message.toString())
+        }
+
 
     }
     //endregion
@@ -142,12 +179,11 @@ object BillOrderHelper {
     private fun printBill(
         context: Context,
         printer: BasePrintManager,
-        printerSize: Int,
+        charTextPerLine: Int,
         order: OrderReq
     ) {
-        val paddingExtend = if (printer is UrovoManager) 4 else 0
-        val charPerLineHeader = printerSize - 2 - paddingExtend
-        val charPerLinerText = printerSize - 2 + paddingExtend * 2
+        val charPerLineHeader = charTextPerLine - 2
+        val charPerLinerText = charTextPerLine - 2
 
         printer.setupPage(384, -1)
         // Bill Status
@@ -187,11 +223,11 @@ object BillOrderHelper {
         )
 
         // Address
-        Board(charPerLinerText - paddingExtend).let { b ->
+        Board(charPerLinerText).let { b ->
             val textContext = StringBuilder()
             val blockAddress = Block(
                 b,
-                charPerLinerText - paddingExtend - 6,
+                charPerLinerText - 6,
                 6,
                 DataHelper.recentDeviceCodeLocalStorage?.first()?.LocationAddress?.trim()
             ).allowGrid(false).setBlockAlign(Block.BLOCK_CENTRE)
@@ -231,7 +267,7 @@ object BillOrderHelper {
                     DataHelper.deviceCodeLocalStorage?.Employees?.find { it._id == order.Order.EmployeeGuid }?.FullName.toString()
                 )
             val dateCreate = mutableListOf(
-                "Create Date", DateTimeUtils.dateToString(
+                "Create Date :", DateTimeUtils.dateToString(
                     DateTimeUtils.strToDate(
                         order.Order.CreateDate,
                         DateTimeUtils.Format.FULL_DATE_UTC_TIMEZONE
@@ -242,50 +278,130 @@ object BillOrderHelper {
                 charPerLineHeader, mutableListOf(orderCode, employee, dateCreate),
                 mutableListOf(Block.DATA_MIDDLE_LEFT, Block.DATA_MIDDLE_RIGHT)
             )
-            // Order Code
-            /*val blockHeaderLeft =
-                Block(
-                    b,
-                    (charPerLineHeader) / 2,
-                    1,
-                    orderCode.first()
-                ).setDataAlign(Block.DATA_MIDDLE_LEFT)
-                    .allowGrid(false)
-            b.setInitialBlock(blockHeaderLeft)
-            val blockHeaderRight =
-                Block(
-                    b,
-                    (charPerLineHeader ) / 2,
-                    1,
-                    orderCode.last()
-                ).setDataAlign(Block.DATA_MIDDLE_RIGHT)
-                    .allowGrid(false)
-            blockHeaderLeft.rightBlock = blockHeaderRight
-            // Employee
-            val blockHeaderLeft2 =
-                Block(
-                    b,
-                    (charPerLineHeader) / 2,
-                    1,
-                    employee.first()
-                ).setDataAlign(Block.DATA_MIDDLE_LEFT)
-                    .allowGrid(false)
-            blockHeaderLeft.belowBlock = blockHeaderLeft2
-            val blockHeaderRight2 =
-                Block(
-                    b,
-                    (charPerLineHeader ) / 2,
-                    1,
-                    employee.last()
-                ).setDataAlign(Block.DATA_MIDDLE_RIGHT)
-                    .allowGrid(false)
-            blockHeaderLeft2.rightBlock = blockHeaderRight2*/
-
             printer.drawText(content)
         }
 
         printer.drawLine(charPerLinerText)
 
+        // Order detail
+        val title = mutableListOf("Qty", "Items", "Amount")
+        val columnOrderDetailAlign =
+            mutableListOf(Block.DATA_MIDDLE_LEFT, Block.DATA_MIDDLE_LEFT, Block.DATA_MIDDLE_RIGHT)
+        val columnSize = mutableListOf(6, 17, 9)
+        val listItems = order.OrderDetail.OrderProducts.map { productChosen ->
+            val quantity = "${productChosen.Quantity}x"
+            val amount = PriceUtils.formatStringPrice(productChosen.LineTotal ?: 0.0)
+            val pro = StringUtils.removeAccent(StringBuilder().apply {
+                append("${productChosen.Name1}\n")
+                productChosen.VariantList?.let {
+                    append("• ${ExtraConverter.variantStr(it)}\n")
+                }
+                productChosen.ModifierList?.let {
+                    append("• ${ExtraConverter.modifierOrderStr(it)}\n")
+                }
+                productChosen.TaxFeeList?.takeIf { it.isNotEmpty() }?.let {
+                    append("• Tax (${PriceUtils.formatStringPrice(it.sumOf { tax -> tax.TotalPrice })})\n")
+                }
+                productChosen.ServiceFeeList?.takeIf { it.isNotEmpty() }?.let {
+                    append("• Service (${PriceUtils.formatStringPrice(it.sumOf { ser -> ser.TotalPrice })})\n")
+                }
+                productChosen.SurchargeFeeList?.takeIf { it.isNotEmpty() }?.let {
+                    append("• Surcharge (${PriceUtils.formatStringPrice(it.sumOf { sur -> sur.TotalPrice })})\n")
+                }
+                productChosen.DiscountList?.takeIf { it.isNotEmpty() }?.let {
+                    append("• Discount (-${PriceUtils.formatStringPrice(it.sumOf { dis -> dis.DiscountTotalPrice })})\n")
+                }
+                productChosen.Note?.let {
+                    append("(Note : ${it.trim()})\n")
+                }
+            }.toString())!!.trim()
+            mutableListOf(quantity, pro, amount)
+        }.toMutableList()
+
+        val contentTitle = WaguUtils.columnListDataBlock(
+            charPerLineHeader, mutableListOf(title), columnOrderDetailAlign,
+            columnSize
+        )
+        printer.drawText(StringUtils.removeAccent(contentTitle), true)
+        val contentProduct = WaguUtils.columnListDataBlock(
+            charPerLineHeader, listItems, columnOrderDetailAlign,
+            columnSize
+        )
+        printer.drawText(StringUtils.removeAccent(contentProduct))
+
+        printer.drawLine(charPerLinerText)
+
+        // Note
+        order.OrderDetail.Order.Note?.let {
+            printer.drawText(StringUtils.removeAccent("Note : $it"))
+            printer.drawLine(charPerLinerText)
+        }
+
+        // Subtotal
+        order.OrderDetail.Order.Subtotal.let {
+            val content = WaguUtils.columnListDataBlock(
+                charPerLineHeader,
+                mutableListOf(mutableListOf("Subtotal", PriceUtils.formatStringPrice(it))),
+                mutableListOf(Block.DATA_MIDDLE_LEFT, Block.DATA_MIDDLE_RIGHT)
+            )
+            printer.drawText(content)
+        }
+        printer.drawLine(charPerLinerText)
+
+        // Discount
+        order.OrderDetail.Order.Discount.let {
+            val content = WaguUtils.columnListDataBlock(
+                charPerLineHeader,
+                mutableListOf(mutableListOf("Discount", "-${PriceUtils.formatStringPrice(it)}")),
+                mutableListOf(Block.DATA_MIDDLE_LEFT, Block.DATA_MIDDLE_RIGHT)
+            )
+            printer.drawText(content)
+        }
+        printer.drawLine(charPerLinerText)
+
+        // Total
+        order.OrderDetail.Order.Grandtotal.let {
+            val content = WaguUtils.columnListDataBlock(
+                charPerLineHeader,
+                mutableListOf(mutableListOf("Total", "-${PriceUtils.formatStringPrice(it)}")),
+                mutableListOf(Block.DATA_MIDDLE_LEFT, Block.DATA_MIDDLE_RIGHT)
+            )
+            printer.drawText(content, true)
+        }
+        printer.drawLine(charPerLinerText)
+
+        // Cash - Change
+        order.OrderDetail.PaymentList?.filter {
+            PaymentMethodType.fromInt(it.PaymentTypeId ?: 0) == PaymentMethodType.CASH
+        }?.let { list ->
+            val totalPay = list.sumOf { it.OverPay ?: 0.0 }
+            val needToPay = list.sumOf { it.Payable ?: 0.0 }
+            val content = WaguUtils.columnListDataBlock(
+                charPerLineHeader, mutableListOf(
+                    mutableListOf(
+                        "Cash",
+                        PriceUtils.formatStringPrice(totalPay)
+                    ), mutableListOf(
+                        "Change",
+                        PriceUtils.formatStringPrice(totalPay - needToPay)
+                    )
+                ),
+                mutableListOf(Block.DATA_MIDDLE_LEFT, Block.DATA_MIDDLE_RIGHT)
+            )
+            printer.drawText(content, )
+        }
+
+
+        printer.drawText(
+            WaguUtils.columnListDataBlock(
+                charPerLineHeader,
+                mutableListOf(mutableListOf("THANK YOU")),
+                mutableListOf(Block.DATA_CENTER)),
+                true,
+                BasePrintManager.FontSize.Medium
+            )
+
+        // End Print
 
     }
 
