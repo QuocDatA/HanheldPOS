@@ -1,4 +1,4 @@
-package com.handheld.pos_printer
+package com.handheld.printer
 
 import org.junit.Test
 

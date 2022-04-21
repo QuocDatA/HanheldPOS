@@ -1,193 +1,91 @@
-package com.hanheldpos.model.printer.bill
+package com.hanheldpos.model.printer
 
-import android.Manifest
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
-import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.drawable.Drawable
-import android.media.AudioMetadata
-import android.os.StrictMode
-import android.util.DisplayMetrics
-import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
-import com.handheld.pos_printer.BasePrintManager
-import com.handheld.pos_printer.bluetooth.BluetoothManager
-import com.handheld.pos_printer.tcp.TcpManager
-import com.handheld.pos_printer.urovo.UrovoManager
+import com.handheld.printer.printer_manager.BasePrinterManager
 import com.hanheldpos.R
-import com.hanheldpos.binding.setPriceView
-import com.hanheldpos.databinding.LayoutBillPrinterBinding
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.order.OrderReq
-import com.hanheldpos.model.order.ProductChosen
 import com.hanheldpos.model.payment.PaymentMethodType
-import com.hanheldpos.model.printer.GroupBundlePrinter
 import com.hanheldpos.model.product.ExtraConverter
 import com.hanheldpos.model.product.ProductType
-import com.hanheldpos.ui.screens.printer.bill.ProductBillPrinterAdapter
-import com.hanheldpos.utils.DateTimeUtils
-import com.hanheldpos.utils.PriceUtils
-import com.hanheldpos.utils.StringUtils
-import com.hanheldpos.utils.drawableToBitmap
+import com.hanheldpos.utils.*
 import com.utils.wagu.Block
 import com.utils.wagu.Board
 import com.utils.wagu.WaguUtils
 import java.lang.StringBuilder
-import java.util.*
 
-object BillOrderHelper {
+class LayoutBillPrinter(
+    private val context: Context,
+    private val order: OrderReq,
+    private val printer: BasePrinterManager,
+    private val printOptions: BillPrinterManager.PrintOptions
+) {
+    private val charPerLineHeader = printOptions.deviceInfo.charsPerLine()
+    private val charPerLineText = printOptions.deviceInfo.charsPerLine()
 
-    /*==============================================================================================
-    ======================================BLUETOOTH PART============================================
-    ==============================================================================================*/
-    //region Bluetooth
-    private const val PERMISSION_BLUETOOTH = 1
-    private const val PERMISSION_BLUETOOTH_ADMIN = 2
-    private const val PERMISSION_BLUETOOTH_CONNECT = 3
-    private const val PERMISSION_BLUETOOTH_SCAN = 4
-    fun printBillWithBluetooth(context: Context, printerSize: Int, order: OrderReq) {
+    fun print() {
+        setUpPage()
 
-        if (ContextCompat.checkSelfPermission(
-                context,
-                Manifest.permission.BLUETOOTH
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            ActivityCompat.requestPermissions(
-                context as Activity,
-                listOf(Manifest.permission.BLUETOOTH).toTypedArray(),
-                PERMISSION_BLUETOOTH
-            );
-        } else if (ContextCompat.checkSelfPermission(
-                context,
-                Manifest.permission.BLUETOOTH_ADMIN
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            ActivityCompat.requestPermissions(
-                context as Activity,
-                listOf(Manifest.permission.BLUETOOTH_ADMIN).toTypedArray(),
-                PERMISSION_BLUETOOTH_ADMIN
-            );
-        } else if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S && ContextCompat.checkSelfPermission(
-                context,
-                Manifest.permission.BLUETOOTH_CONNECT
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            ActivityCompat.requestPermissions(
-                context as Activity,
-                listOf(Manifest.permission.BLUETOOTH_CONNECT).toTypedArray(),
-                PERMISSION_BLUETOOTH_CONNECT
-            );
-        } else if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S && ContextCompat.checkSelfPermission(
-                context,
-                Manifest.permission.BLUETOOTH_SCAN
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            ActivityCompat.requestPermissions(
-                context as Activity,
-                listOf(Manifest.permission.BLUETOOTH_SCAN).toTypedArray(),
-                PERMISSION_BLUETOOTH_SCAN
-            );
-        } else {
-            Thread {
-                try {
-                    val printer: BluetoothManager = BluetoothManager()
-                    printer.connect()
-                    try {
-                        printBill(context, printer, printerSize, order)
-//                        printImageBill(context, printer, printerSize, order)
-                    } catch (e: Exception) {
-                        Log.d("Error print", e.message.toString())
-                    }
+        // Order Meta Data
+        printBillStatus()
+        printBrandIcon()
+        printAddress()
+        printDeliveryAddress()
+        printDivider()
 
-                    // Finish Print
-                    Thread.sleep(1500)
-                    printer.disconnect()
-                } catch (e: Exception) {
-                    Log.d("Error print", e.message.toString())
-                }
-            }.start()
+        // Order Info
+        printOrderInfo()
+        printDivider()
 
-        }
+        // Order Detail
+        printOrderDetail()
+        printDivider()
+
+        // Note
+        printNote()
+
+        // Subtotal
+        printSubtotal()
+        printDivider()
+
+        // Discount
+        printDiscounts()
+        printDivider()
+
+        // Total
+        printTotal()
+        printDivider()
+
+        // Cash - Change
+        printCashChange()
+
+        // Thank you
+        printThankYou()
+
+        // End Print
+
+        printFeedLine(3)
+        cutPaper()
     }
-    //endregion
 
-    /*==============================================================================================
-    ======================================UROVO PART============================================
-    ==============================================================================================*/
-    //region Urovo
-    fun printBillWithUrovo(context: Context, printerSize: Int, order: OrderReq) {
 
-        try {
-            val printer: UrovoManager = UrovoManager()
-            printer.connect()
-            try {
-                printBill(context, printer, printerSize, order)
-            } catch (e: Exception) {
-                Log.d("Error print", e.message.toString())
-            }
-            // Finish Print
-            Thread.sleep(1500)
-            printer.disconnect()
-        } catch (e: Exception) {
-            Log.d("Error print", e.message.toString())
-        }
-
+    private fun setUpPage() {
+        printer.setupPage(printOptions.deviceInfo.paperWidth(), -1f)
     }
-    //endregion
-
-    /*==============================================================================================
-   ======================================TCP PART============================================
-   ==============================================================================================*/
-    //region Tcp
-    fun printBillWithTcp(context: Context, printerSize: Int, order: OrderReq) {
-
-        try {
-            val policy: StrictMode.ThreadPolicy =
-                StrictMode
-                    .ThreadPolicy
-                    .Builder()
-                    .permitAll()
-                    .build()
-
-            StrictMode.setThreadPolicy(policy)
-            val printer: TcpManager = TcpManager()
-            printer.connect()
-            try {
-                printBill(context, printer, printerSize, order)
-            } catch (e: Exception) {
-                Log.d("Error print", e.message.toString())
-            }
-
-            // Finish Print
-            Thread.sleep(1500)
-            printer.disconnect()
-        } catch (e: Exception) {
-            Log.d("Error print", e.message.toString())
-        }
 
 
+    // region print sections
+
+    private fun printDivider() {
+        printer.drawLine(charPerLineText)
     }
-    //endregion
 
-    private fun printBill(
-        context: Context,
-        printer: BasePrintManager,
-        charTextPerLine: Int,
-        order: OrderReq
-    ) {
-        val charPerLineHeader = charTextPerLine
-        val charPerLinerText = charTextPerLine
-
-        printer.setupPage(384, -1)
-        // Bill Status
+    private fun printBillStatus() {
         printer.drawText(
             StringUtils.removeAccent(
                 WaguUtils.columnListDataBlock(
@@ -202,25 +100,26 @@ object BillOrderHelper {
                 )
             ).toString(),
             false,
-            BasePrintManager.FontSize.Medium
+            BasePrinterManager.FontSize.Medium
         )
+    }
 
-
-        // Icon
+    private fun printBrandIcon() {
         val drawable = ContextCompat.getDrawable(context as Activity, R.drawable.ic_note)
         val wrappedDrawable: Drawable = DrawableCompat.wrap(drawable!!)
         DrawableCompat.setTint(wrappedDrawable, Color.BLACK)
         printer.drawBitmap(
-            drawableToBitmap(wrappedDrawable),
-            BasePrintManager.BitmapAlign.Center
+            DrawableHelper.drawableToBitmap(wrappedDrawable),
+            BasePrinterManager.BitmapAlign.Center
         )
+    }
 
-        // Address
-        Board(charPerLinerText).let { b ->
+    private fun printAddress() {
+        Board(charPerLineText).let { b ->
             val textContext = StringBuilder()
             val blockAddress = Block(
                 b,
-                charPerLinerText - 6,
+                charPerLineText - 6,
                 6,
                 DataHelper.recentDeviceCodeLocalStorage?.first()?.LocationAddress?.trim()
             ).allowGrid(false).setBlockAlign(Block.BLOCK_CENTRE)
@@ -233,7 +132,9 @@ object BillOrderHelper {
             printer.drawText(StringUtils.removeAccent(textContext.toString()))
         }
 
-        // Delivery Address
+    }
+
+    private fun printDeliveryAddress() {
         order.OrderDetail.Billing?.let {
             printer.drawText(StringUtils.removeAccent(it.FullName), true)
             printer.drawText(StringUtils.removeAccent(it.getFullAddressWithLineBreaker()))
@@ -248,10 +149,9 @@ object BillOrderHelper {
                 printer.drawText(note, true)
             }
         }
+    }
 
-        printer.drawLine(charPerLinerText)
-
-        // Info Order
+    private fun printOrderInfo() {
         val orderCode = mutableListOf("Order #:", order.Order.Code.toString())
         val employee =
             mutableListOf(
@@ -271,15 +171,14 @@ object BillOrderHelper {
             mutableListOf(Block.DATA_MIDDLE_LEFT, Block.DATA_MIDDLE_RIGHT), isWrapWord = true
         )
         printer.drawText(content)
+    }
 
-        printer.drawLine(charPerLinerText)
-
-        // Order detail
+    private fun printOrderDetail() {
         val columnOrderDetailAlign =
             mutableListOf(Block.DATA_MIDDLE_LEFT, Block.DATA_MIDDLE_LEFT, Block.DATA_MIDDLE_RIGHT)
         val col1 = 4
         val col3 = 9
-        val col2 = charPerLinerText - col1 - col3
+        val col2 = charPerLineText - col1 - col3
         val columnSize = mutableListOf(col1, col2, col3)
         val columnExtraSize = mutableListOf(2, col2 - 2)
         val columnGroupBundle = mutableListOf(4, col2 - 4)
@@ -304,20 +203,7 @@ object BillOrderHelper {
             )
             printer.drawText(StringUtils.removeAccent(contentName), true)
 
-            if (productChosen.ProductTypeId == ProductType.BUNDLE.value) {
-                /*val contentBase = WaguUtils.columnListDataBlock(
-                    charPerLineHeader, mutableListOf(
-                        mutableListOf(
-                            "",
-                            "Base Price",
-                            PriceUtils.formatStringPrice(productChosen.Price ?: 0.0)
-                        )
-                    ), columnOrderDetailAlign,
-                    columnSize
-                )
-                printer.drawText(StringUtils.removeAccent(contentBase))*/
-
-
+            if (productChosen.ProductTypeId == ProductType.BUNDLE.value)
                 productChosen.ProductChoosedList?.forEach { pro ->
                     StringUtils.removeAccent(
                         WaguUtils.columnListDataBlock(
@@ -333,7 +219,7 @@ object BillOrderHelper {
                         )
                     ).toString().trim().let {
                         WaguUtils.columnListDataBlock(
-                            charPerLinerText,
+                            charPerLineText,
                             mutableListOf(
                                 mutableListOf(
                                     "",
@@ -347,7 +233,7 @@ object BillOrderHelper {
                             ),
                             columnOrderDetailAlign,
                             columnSize,
-                        ).let { line->
+                        ).let { line ->
                             printer.drawText(
                                 line
                             )
@@ -398,7 +284,7 @@ object BillOrderHelper {
                     ).toString().let {
                         printer.drawText(
                             WaguUtils.columnListDataBlock(
-                                charPerLinerText,
+                                charPerLineText,
                                 mutableListOf(
                                     mutableListOf(
                                         "",
@@ -412,7 +298,7 @@ object BillOrderHelper {
                     }
 
                 }
-            }
+
 
             val listExtraInfo = mutableListOf<MutableList<String>>()
             productChosen.VariantList?.takeIf { it.isNotEmpty() }?.let {
@@ -472,7 +358,7 @@ object BillOrderHelper {
             ).toString()
             contentExtra.takeIf { it.isNotBlank() }?.let {
                 WaguUtils.columnListDataBlock(
-                    charPerLinerText,
+                    charPerLineText,
                     mutableListOf(mutableListOf("", contentExtra.trim())),
                     columnOrderDetailAlign,
                     columnSize,
@@ -484,18 +370,18 @@ object BillOrderHelper {
 
             }
 
+
         }
+    }
 
-
-        printer.drawLine(charPerLinerText)
-
-        // Note
+    private fun printNote() {
         order.OrderDetail.Order.Note?.let {
             printer.drawText(StringUtils.removeAccent("Note : $it"))
-            printer.drawLine(charPerLinerText)
+            printer.drawLine(charPerLineText)
         }
+    }
 
-        // Subtotal
+    private fun printSubtotal() {
         order.OrderDetail.Order.Subtotal.let {
             val content = WaguUtils.columnListDataBlock(
                 charPerLineHeader,
@@ -504,9 +390,9 @@ object BillOrderHelper {
             )
             printer.drawText(content)
         }
-        printer.drawLine(charPerLinerText)
+    }
 
-        // Discount
+    private fun printDiscounts() {
         order.OrderDetail.Order.Discount.let {
             val content = WaguUtils.columnListDataBlock(
                 charPerLineHeader,
@@ -515,9 +401,9 @@ object BillOrderHelper {
             )
             printer.drawText(content)
         }
-        printer.drawLine(charPerLinerText)
+    }
 
-        // Total
+    private fun printTotal() {
         order.OrderDetail.Order.Grandtotal.let {
             val content = WaguUtils.columnListDataBlock(
                 charPerLineHeader,
@@ -526,9 +412,9 @@ object BillOrderHelper {
             )
             printer.drawText(content, true)
         }
-        printer.drawLine(charPerLinerText)
+    }
 
-        // Cash - Change
+    private fun printCashChange() {
         order.OrderDetail.PaymentList?.filter {
             PaymentMethodType.fromInt(it.PaymentTypeId ?: 0) == PaymentMethodType.CASH
         }?.let { list ->
@@ -548,8 +434,9 @@ object BillOrderHelper {
             )
             printer.drawText(content)
         }
+    }
 
-
+    private fun printThankYou() {
         printer.drawText(
             WaguUtils.columnListDataBlock(
                 charPerLineHeader,
@@ -557,99 +444,15 @@ object BillOrderHelper {
                 mutableListOf(Block.DATA_CENTER)
             ),
             true,
-            BasePrintManager.FontSize.Medium
+            BasePrinterManager.FontSize.Medium
         )
-
-        // End Print
-
     }
 
-    private fun printImageBill(
-        context: Context,
-        printer: BasePrintManager,
-        printerSize: Int,
-        order: OrderReq
-    ) {
-        printer.drawBitmap(getPrintOrderBill(context, order))
+    private fun printFeedLine(line : Int) {
+        printer.feedLine(line)
     }
 
-    fun getPrintOrderBill(context: Context, order: OrderReq): Bitmap {
-        val inflater = LayoutInflater.from(context);
-        val view = LayoutBillPrinterBinding.inflate(inflater)
-
-        // Setup view bill
-        setupViewOrderBill(view, order)
-
-        //Fetch the dimensions of the viewport
-        val displayMetrics = DisplayMetrics()
-        displayMetrics.densityDpi = 203
-        displayMetrics.density = 48f
-        displayMetrics.widthPixels = 384
-        displayMetrics.heightPixels = 0
-
-        (view.root).measure(
-            View.MeasureSpec.makeMeasureSpec(
-                displayMetrics.widthPixels, View.MeasureSpec.EXACTLY
-            ),
-            View.MeasureSpec.makeMeasureSpec(
-                displayMetrics.heightPixels, View.MeasureSpec.EXACTLY
-            )
-        )
-
-        //Create a bitmap with the measured width and height. Attach the bitmap to a canvas object and draw the view inside the canvas
-        view.root.layout(0, 0, displayMetrics.widthPixels, displayMetrics.heightPixels)
-        view.root.requestLayout()
-
-
-        val bitmap =
-            Bitmap.createBitmap(
-                view.root.width,
-                view.rootScrollView.getChildAt(0).height,
-                Bitmap.Config.ARGB_8888
-            )
-        val canvas = Canvas(bitmap)
-        view.root.draw(canvas)
-        return bitmap
+    private fun cutPaper(){
+        printer.cutPaper()
     }
-
-    @SuppressLint("SetTextI18n")
-    private fun setupViewOrderBill(view: LayoutBillPrinterBinding, order: OrderReq) {
-        view.order = order
-        view.addressBill.text = DataHelper.recentDeviceCodeLocalStorage?.first()?.LocationAddress
-        order.OrderDetail.Billing?.let {
-            view.customerBill.customer = it
-            DataHelper.addressTypesLocalStorage?.find { addressTypeResp -> addressTypeResp.AddressTypeId == it.AddressTypeId }
-                ?.let { address ->
-                    view.customerBill.placeCustomer = address.AddressTypeEn
-                }
-        }
-
-        view.codeOrder.text = "${order.Order.Code}"
-        view.location.text = DataHelper.locationGuid()
-        view.nameEmployee.text =
-            "${DataHelper.deviceCodeLocalStorage?.Employees?.find { it._id == order.Order.EmployeeGuid }?.FullName}"
-        view.createDate.text = DateTimeUtils.dateToString(
-            DateTimeUtils.strToDate(
-                order.Order.CreateDate,
-                DateTimeUtils.Format.FULL_DATE_UTC_TIMEZONE
-            ), DateTimeUtils.Format.DD_MM_YYYY_HH_MM
-        )
-
-        order.OrderDetail.PaymentList?.filter {
-            PaymentMethodType.fromInt(it.PaymentTypeId ?: 0) == PaymentMethodType.CASH
-        }?.let { list ->
-            val totalPay = list.sumOf { it.OverPay ?: 0.0 }
-            val needToPay = list.sumOf { it.Payable ?: 0.0 }
-            setPriceView(view.cashAmount, totalPay)
-            setPriceView(view.changeAmount, totalPay - needToPay)
-        }
-
-        val adapter = ProductBillPrinterAdapter()
-        adapter.submitList(order.OrderDetail.OrderProducts)
-        view.listProductBill.adapter = adapter
-
-        view.executePendingBindings()
-    }
-
 }
-

@@ -11,7 +11,7 @@ import com.hanheldpos.model.DatabaseHelper
 import com.hanheldpos.model.OrderHelper
 import com.hanheldpos.model.menu_nav_opt.LogoutType
 import com.hanheldpos.model.menu_nav_opt.NavBarOptionType
-import com.hanheldpos.model.printer.bill.BillOrderHelper
+import com.hanheldpos.model.printer.BillPrinterManager
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.dialog.AppAlertDialog
 import com.hanheldpos.ui.base.fragment.BaseFragment
@@ -94,16 +94,34 @@ class MenuFragment : BaseFragment<FragmentMenuBinding, MenuVM>(), MenuUV {
     fun onNavOptionClick(option: ItemOptionNav) {
         when (option.type as NavBarOptionType) {
             NavBarOptionType.ORDERS -> {
-//                val filePath = File(requireActivity().getExternalFilesDir(null), "bitmap.jpeg")
-//                val billImage = BitmapFactory.decodeFile(filePath.absolutePath)
-//                PrinterHelper.printBillBluetooth(requireActivity(),billImage)
+
                 CoroutineScope(Dispatchers.IO).launch {
                     DatabaseHelper.ordersCompleted.getAll().take(1).collectLatest {
                         it.lastOrNull()?.let { completedEntity ->
                             launch(Dispatchers.Main) {
 
-                                BillOrderHelper.printBillWithBluetooth(requireActivity(),32,
-                                    DatabaseMapper.mappingOrderReqFromEntity(completedEntity))
+                                try {
+                                    BillPrinterManager.init(
+                                        fragmentContext.applicationContext,
+                                        BillPrinterManager.PrintOptions(
+                                            connectionType = BillPrinterManager.PrintConnectionType.BLUETOOTH,
+                                            deviceType = BillPrinterManager.PrinterDeviceInfo.DeviceType.HANDHELD
+                                        )
+                                    )
+
+
+                                } catch (e: Exception) {
+                                    e.printStackTrace()
+                                }
+
+                                BillPrinterManager.get().print(
+                                    fragmentContext,
+                                    DatabaseMapper.mappingOrderReqFromEntity(completedEntity)
+                                )
+/*                                BillPrinterManager.get().print(
+                                    requireActivity(),
+                                    DatabaseMapper.mappingOrderReqFromEntity(completedEntity)
+                                )*/
 
                             }
                         }
