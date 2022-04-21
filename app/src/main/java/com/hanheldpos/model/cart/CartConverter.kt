@@ -15,8 +15,6 @@ import com.hanheldpos.model.payment.PaymentStatus
 import com.hanheldpos.model.product.ProductType
 import com.hanheldpos.utils.DateTimeUtils
 import com.hanheldpos.utils.EncryptUtils
-import java.security.MessageDigest
-import java.security.NoSuchAlgorithmException
 import java.util.*
 
 object CartConverter {
