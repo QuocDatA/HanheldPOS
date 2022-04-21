@@ -9,7 +9,8 @@ object WaguUtils {
         width: Int,
         list: MutableList<MutableList<String>>,
         aligns: MutableList<Int>,
-        columnSize: MutableList<Int>? = null
+        columnSize: MutableList<Int>? = null,
+        isWrapWord: Boolean = false,
     ): String {
         aligns.forEach { dataAlign ->
             if (dataAlign == Block.DATA_TOP_LEFT || dataAlign == Block.DATA_TOP_MIDDLE || dataAlign == Block.DATA_TOP_RIGHT || dataAlign == Block.DATA_MIDDLE_LEFT || dataAlign == Block.DATA_CENTER || dataAlign == Block.DATA_MIDDLE_RIGHT || dataAlign == Block.DATA_BOTTOM_LEFT || dataAlign == Block.DATA_BOTTOM_MIDDLE || dataAlign == Block.DATA_BOTTOM_RIGHT) {
@@ -26,7 +27,7 @@ object WaguUtils {
                 if (columnSize?.isNullOrEmpty() != false) mutableListOf(width / listSize) else columnSize
             Board(width).let { b ->
                 val columnItem = columns.first()
-                val textF = wrapWord(items.first(), columnItem)
+                val textF = if (isWrapWord) wrapWord(items.first(), columnItem) else items.first()
                 val blockFirst =
                     Block(
                         b,
@@ -42,7 +43,7 @@ object WaguUtils {
                     val i = index + 1
                     val sizeItem =
                         (if (columns.size <= i) width - columns.sumOf { size -> size } else columns[i])
-                    val textS = wrapWord(it, sizeItem)
+                    val textS =if (isWrapWord) wrapWord(it, sizeItem) else it
                     val blockTemp =
                         Block(b, sizeItem, textS.split("\n").size, textS).setDataAlign(
                             if (aligns.isEmpty() || aligns.size <= i) Block.DATA_MIDDLE_LEFT else aligns[i]
@@ -53,12 +54,12 @@ object WaguUtils {
                 content.append(b.invalidate().build().preview)
             }
         }
-        return content.toString()
+        return content.replace(Regex("[\\n\\r]\$"),"")
     }
 
     private fun wrapWord(s: String, width: Int): String {
         val content = StringBuilder()
-        s.split("\n").forEach { st->
+        s.split("\n").forEach { st ->
             val line = mutableListOf<String>()
             val listWord = st.split(' ')
             listWord.forEachIndexed { index, it ->

@@ -20,23 +20,27 @@ class ProductBillPrinterAdapter : BaseBindingListAdapter<ProductChosen>(DiffCall
         val binding = (holder.binding as ItemProductBillPrinterBinding)
 
         val listGroupBundlePrinter: MutableList<GroupBundlePrinter> = mutableListOf()
-        val listGroupParent: MutableList<String> = mutableListOf()
+        val listGroupParent: MutableMap<String?,String?> = mutableMapOf()
 
         item.ProductChoosedList?.forEach { productChosen ->
-            if (!listGroupParent.contains(productChosen.Parent_id))
-                listGroupParent.add(productChosen.Parent_id!!)
+            if (!listGroupParent.containsKey(productChosen.Parent_id))
+                listGroupParent[productChosen.Parent_id] = productChosen.ParentName
         }
 
         listGroupParent.forEach { groupParent ->
-            listGroupBundlePrinter.add(
-                GroupBundlePrinter(
-                    item.ProductChoosedList?.filter { product ->
-                        product.Parent_id.equals(
-                            groupParent
-                        )
-                    }!!.toMutableList()
+            item.ProductChoosedList?.filter { product ->
+                product.Parent_id?.equals(
+                    groupParent.key
+                ) == true
+            }?.takeIf { it.isNotEmpty() }?.let {
+                listGroupBundlePrinter.add(
+                    GroupBundlePrinter(
+                        groupParent.value,
+                        it.toMutableList()
+                    )
                 )
-            )
+            }
+
         }
 
         if (item.ProductTypeId == ProductType.BUNDLE.value) {

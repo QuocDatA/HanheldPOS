@@ -9,6 +9,7 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.drawable.Drawable
+import android.media.AudioMetadata
 import android.os.StrictMode
 import android.util.DisplayMetrics
 import android.util.Log
@@ -26,8 +27,11 @@ import com.hanheldpos.binding.setPriceView
 import com.hanheldpos.databinding.LayoutBillPrinterBinding
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.order.OrderReq
+import com.hanheldpos.model.order.ProductChosen
 import com.hanheldpos.model.payment.PaymentMethodType
+import com.hanheldpos.model.printer.GroupBundlePrinter
 import com.hanheldpos.model.product.ExtraConverter
+import com.hanheldpos.model.product.ProductType
 import com.hanheldpos.ui.screens.printer.bill.ProductBillPrinterAdapter
 import com.hanheldpos.utils.DateTimeUtils
 import com.hanheldpos.utils.PriceUtils
@@ -37,6 +41,7 @@ import com.utils.wagu.Block
 import com.utils.wagu.Board
 import com.utils.wagu.WaguUtils
 import java.lang.StringBuilder
+import java.util.*
 
 object BillOrderHelper {
 
@@ -157,10 +162,6 @@ object BillOrderHelper {
             printer.connect()
             try {
                 printBill(context, printer, printerSize, order)
-
-//                printImageBill(context, printer, printerSize, order)
-
-
             } catch (e: Exception) {
                 Log.d("Error print", e.message.toString())
             }
@@ -182,36 +183,28 @@ object BillOrderHelper {
         charTextPerLine: Int,
         order: OrderReq
     ) {
-        val charPerLineHeader = charTextPerLine - 2
-        val charPerLinerText = charTextPerLine - 2
+        val charPerLineHeader = charTextPerLine
+        val charPerLinerText = charTextPerLine
 
         printer.setupPage(384, -1)
         // Bill Status
-        Board(charPerLineHeader).let { b ->
-            val blockHeaderLeft =
-                Block(
-                    b,
-                    (charPerLineHeader) / 2,
-                    1,
-                    "Onl"
-                ).setDataAlign(Block.DATA_MIDDLE_LEFT)
-                    .allowGrid(false)
-            b.setInitialBlock(blockHeaderLeft)
-            val blockHeaderRight =
-                Block(
-                    b,
-                    (charPerLineHeader) / 2,
-                    1,
-                    "Delivery"
-                ).setDataAlign(Block.DATA_MIDDLE_RIGHT)
-                    .allowGrid(false)
-            blockHeaderLeft.rightBlock = blockHeaderRight
-            printer.drawText(
-                StringUtils.removeAccent(b.invalidate().build().preview.trim()).toString(),
-                false,
-                BasePrintManager.FontSize.Medium
-            )
-        }
+        printer.drawText(
+            StringUtils.removeAccent(
+                WaguUtils.columnListDataBlock(
+                    charPerLineHeader,
+                    mutableListOf(
+                        mutableListOf(
+                            order.OrderSummary.TableName.toString(),
+                            order.OrderSummary.DiningOptionName.toString()
+                        )
+                    ),
+                    mutableListOf(Block.DATA_MIDDLE_LEFT, Block.DATA_MIDDLE_RIGHT)
+                )
+            ).toString(),
+            false,
+            BasePrintManager.FontSize.Medium
+        )
+
 
         // Icon
         val drawable = ContextCompat.getDrawable(context as Activity, R.drawable.ic_note)
@@ -259,75 +252,240 @@ object BillOrderHelper {
         printer.drawLine(charPerLinerText)
 
         // Info Order
-        Board(charPerLinerText).let { b ->
-            val orderCode = mutableListOf("Order #:", order.Order.Code.toString())
-            val employee =
-                mutableListOf(
-                    "Employee :",
-                    DataHelper.deviceCodeLocalStorage?.Employees?.find { it._id == order.Order.EmployeeGuid }?.FullName.toString()
-                )
-            val dateCreate = mutableListOf(
-                "Create Date :", DateTimeUtils.dateToString(
-                    DateTimeUtils.strToDate(
-                        order.Order.CreateDate,
-                        DateTimeUtils.Format.FULL_DATE_UTC_TIMEZONE
-                    ), DateTimeUtils.Format.DD_MM_YYYY_HH_MM
-                )
+        val orderCode = mutableListOf("Order #:", order.Order.Code.toString())
+        val employee =
+            mutableListOf(
+                "Employee :",
+                DataHelper.deviceCodeLocalStorage?.Employees?.find { it._id == order.Order.EmployeeGuid }?.FullName.toString()
             )
-            val content = WaguUtils.columnListDataBlock(
-                charPerLineHeader, mutableListOf(orderCode, employee, dateCreate),
-                mutableListOf(Block.DATA_MIDDLE_LEFT, Block.DATA_MIDDLE_RIGHT)
+        val dateCreate = mutableListOf(
+            "Create Date :", DateTimeUtils.dateToString(
+                DateTimeUtils.strToDate(
+                    order.Order.CreateDate,
+                    DateTimeUtils.Format.FULL_DATE_UTC_TIMEZONE
+                ), DateTimeUtils.Format.DD_MM_YYYY_HH_MM
             )
-            printer.drawText(content)
-        }
+        )
+        val content = WaguUtils.columnListDataBlock(
+            charPerLineHeader, mutableListOf(orderCode, employee, dateCreate),
+            mutableListOf(Block.DATA_MIDDLE_LEFT, Block.DATA_MIDDLE_RIGHT), isWrapWord = true
+        )
+        printer.drawText(content)
 
         printer.drawLine(charPerLinerText)
 
         // Order detail
-        val title = mutableListOf("Qty", "Items", "Amount")
         val columnOrderDetailAlign =
             mutableListOf(Block.DATA_MIDDLE_LEFT, Block.DATA_MIDDLE_LEFT, Block.DATA_MIDDLE_RIGHT)
-        val columnSize = mutableListOf(6, 17, 9)
-        val listItems = order.OrderDetail.OrderProducts.map { productChosen ->
-            val quantity = "${productChosen.Quantity}x"
-            val amount = PriceUtils.formatStringPrice(productChosen.LineTotal ?: 0.0)
-            val pro = StringUtils.removeAccent(StringBuilder().apply {
-                append("${productChosen.Name1}\n")
-                productChosen.VariantList?.let {
-                    append("• ${ExtraConverter.variantStr(it)}\n")
-                }
-                productChosen.ModifierList?.let {
-                    append("• ${ExtraConverter.modifierOrderStr(it)}\n")
-                }
-                productChosen.TaxFeeList?.takeIf { it.isNotEmpty() }?.let {
-                    append("• Tax (${PriceUtils.formatStringPrice(it.sumOf { tax -> tax.TotalPrice })})\n")
-                }
-                productChosen.ServiceFeeList?.takeIf { it.isNotEmpty() }?.let {
-                    append("• Service (${PriceUtils.formatStringPrice(it.sumOf { ser -> ser.TotalPrice })})\n")
-                }
-                productChosen.SurchargeFeeList?.takeIf { it.isNotEmpty() }?.let {
-                    append("• Surcharge (${PriceUtils.formatStringPrice(it.sumOf { sur -> sur.TotalPrice })})\n")
-                }
-                productChosen.DiscountList?.takeIf { it.isNotEmpty() }?.let {
-                    append("• Discount (-${PriceUtils.formatStringPrice(it.sumOf { dis -> dis.DiscountTotalPrice })})\n")
-                }
-                productChosen.Note?.let {
-                    append("(Note : ${it.trim()})\n")
-                }
-            }.toString())!!.trim()
-            mutableListOf(quantity, pro, amount)
-        }.toMutableList()
+        val col1 = 4
+        val col3 = 9
+        val col2 = charPerLinerText - col1 - col3
+        val columnSize = mutableListOf(col1, col2, col3)
+        val columnExtraSize = mutableListOf(2, col2 - 2)
+        val columnGroupBundle = mutableListOf(4, col2 - 4)
+        val columnGroupBundleExtra = mutableListOf(2, col2 - 6)
 
+        val title = mutableListOf("Qty", "Items", "Amount")
         val contentTitle = WaguUtils.columnListDataBlock(
             charPerLineHeader, mutableListOf(title), columnOrderDetailAlign,
             columnSize
         )
         printer.drawText(StringUtils.removeAccent(contentTitle), true)
-        val contentProduct = WaguUtils.columnListDataBlock(
-            charPerLineHeader, listItems, columnOrderDetailAlign,
-            columnSize
-        )
-        printer.drawText(StringUtils.removeAccent(contentProduct))
+        order.OrderDetail.OrderProducts.forEach { productChosen ->
+            val quantity = "${productChosen.Quantity}x"
+            val amount = PriceUtils.formatStringPrice(productChosen.LineTotal ?: 0.0)
+            val proName = productChosen.Name1
+            val contentName = WaguUtils.columnListDataBlock(
+                charPerLineHeader,
+                mutableListOf(mutableListOf(quantity, proName, amount)),
+                columnOrderDetailAlign,
+                columnSize,
+                isWrapWord = true
+            )
+            printer.drawText(StringUtils.removeAccent(contentName), true)
+
+            if (productChosen.ProductTypeId == ProductType.BUNDLE.value) {
+                /*val contentBase = WaguUtils.columnListDataBlock(
+                    charPerLineHeader, mutableListOf(
+                        mutableListOf(
+                            "",
+                            "Base Price",
+                            PriceUtils.formatStringPrice(productChosen.Price ?: 0.0)
+                        )
+                    ), columnOrderDetailAlign,
+                    columnSize
+                )
+                printer.drawText(StringUtils.removeAccent(contentBase))*/
+
+
+                productChosen.ProductChoosedList?.forEach { pro ->
+                    StringUtils.removeAccent(
+                        WaguUtils.columnListDataBlock(
+                            col2,
+                            mutableListOf(
+                                mutableListOf(
+                                    "(${pro.Quantity})",
+                                    pro.Name1
+                                )
+                            ),
+                            columnOrderDetailAlign,
+                            columnGroupBundle,
+                        )
+                    ).toString().trim().let {
+                        WaguUtils.columnListDataBlock(
+                            charPerLinerText,
+                            mutableListOf(
+                                mutableListOf(
+                                    "",
+                                    it,
+                                    if (pro.LineTotal ?: 0.0 <= 0) "" else "+${
+                                        PriceUtils.formatStringPrice(
+                                            pro.LineTotal ?: 0.0
+                                        )
+                                    }"
+                                )
+                            ),
+                            columnOrderDetailAlign,
+                            columnSize,
+                        ).let { line->
+                            printer.drawText(
+                                line
+                            )
+                        }
+
+                    }
+                    val listInfoGroupExtra = mutableListOf<MutableList<String>>()
+                    pro.VariantList?.takeIf { it.isNotEmpty() }?.let {
+                        listInfoGroupExtra.add(
+                            mutableListOf(
+                                "•",
+                                ExtraConverter.variantStr(it).toString()
+                            )
+                        )
+                    }
+                    pro.ModifierList?.takeIf { it.isNotEmpty() }?.let {
+                        listInfoGroupExtra.add(
+                            mutableListOf(
+                                "•",
+                                ExtraConverter.modifierOrderStr(it).toString()
+                            )
+                        )
+                    }
+                    pro.Note?.let {
+                        listInfoGroupExtra.add(mutableListOf("+", "Note : ${it.trim()}"))
+                    }
+                    val contentExtraPro = StringUtils.removeAccent(
+                        WaguUtils.columnListDataBlock(
+                            col2 - 4,
+                            listInfoGroupExtra,
+                            columnOrderDetailAlign,
+                            columnGroupBundleExtra,
+                            isWrapWord = true
+                        )
+                    ).toString()
+                    StringUtils.removeAccent(
+                        WaguUtils.columnListDataBlock(
+                            col2,
+                            mutableListOf(
+                                mutableListOf(
+                                    "",
+                                    contentExtraPro.trim()
+                                )
+                            ),
+                            columnOrderDetailAlign,
+                            columnGroupBundle,
+                        )
+                    ).toString().let {
+                        printer.drawText(
+                            WaguUtils.columnListDataBlock(
+                                charPerLinerText,
+                                mutableListOf(
+                                    mutableListOf(
+                                        "",
+                                        it,
+                                    )
+                                ),
+                                columnOrderDetailAlign,
+                                columnSize,
+                            )
+                        )
+                    }
+
+                }
+            }
+
+            val listExtraInfo = mutableListOf<MutableList<String>>()
+            productChosen.VariantList?.takeIf { it.isNotEmpty() }?.let {
+                listExtraInfo.add(mutableListOf("•", ExtraConverter.variantStr(it).toString()))
+            }
+            productChosen.ModifierList?.takeIf { it.isNotEmpty() }?.let {
+                listExtraInfo.add(
+                    mutableListOf(
+                        "•",
+                        ExtraConverter.modifierOrderStr(it).toString()
+                    )
+                )
+            }
+            productChosen.TaxFeeList?.takeIf { it.isNotEmpty() }?.let {
+                listExtraInfo.add(
+                    mutableListOf(
+                        "•",
+                        "Tax (${PriceUtils.formatStringPrice(it.sumOf { tax -> tax.TotalPrice })})"
+                    )
+                )
+            }
+            productChosen.ServiceFeeList?.takeIf { it.isNotEmpty() }?.let {
+                listExtraInfo.add(
+                    mutableListOf(
+                        "•",
+                        "Service (${PriceUtils.formatStringPrice(it.sumOf { ser -> ser.TotalPrice })})"
+                    )
+                )
+            }
+            productChosen.SurchargeFeeList?.takeIf { it.isNotEmpty() }?.let {
+                listExtraInfo.add(
+                    mutableListOf(
+                        "•",
+                        "Surcharge (${PriceUtils.formatStringPrice(it.sumOf { sur -> sur.TotalPrice })})"
+                    )
+                )
+            }
+            productChosen.DiscountList?.takeIf { it.isNotEmpty() }?.let {
+                listExtraInfo.add(
+                    mutableListOf(
+                        "•",
+                        "Discount (-${PriceUtils.formatStringPrice(it.sumOf { dis -> dis.DiscountTotalPrice })})"
+                    )
+                )
+            }
+            productChosen.Note?.let {
+                listExtraInfo.add(mutableListOf("+", "Note : ${it.trim()}"))
+            }
+            val contentExtra = StringUtils.removeAccent(
+                WaguUtils.columnListDataBlock(
+                    col2,
+                    listExtraInfo,
+                    columnOrderDetailAlign,
+                    columnExtraSize,
+                    isWrapWord = true
+                )
+            ).toString()
+            contentExtra.takeIf { it.isNotBlank() }?.let {
+                WaguUtils.columnListDataBlock(
+                    charPerLinerText,
+                    mutableListOf(mutableListOf("", contentExtra.trim())),
+                    columnOrderDetailAlign,
+                    columnSize,
+                ).let {
+                    printer.drawText(
+                        it
+                    )
+                }
+
+            }
+
+        }
+
 
         printer.drawLine(charPerLinerText)
 
@@ -352,7 +510,7 @@ object BillOrderHelper {
         order.OrderDetail.Order.Discount.let {
             val content = WaguUtils.columnListDataBlock(
                 charPerLineHeader,
-                mutableListOf(mutableListOf("Discount", "-${PriceUtils.formatStringPrice(it)}")),
+                mutableListOf(mutableListOf("Discount", PriceUtils.formatStringPrice(-it))),
                 mutableListOf(Block.DATA_MIDDLE_LEFT, Block.DATA_MIDDLE_RIGHT)
             )
             printer.drawText(content)
@@ -363,7 +521,7 @@ object BillOrderHelper {
         order.OrderDetail.Order.Grandtotal.let {
             val content = WaguUtils.columnListDataBlock(
                 charPerLineHeader,
-                mutableListOf(mutableListOf("Total", "-${PriceUtils.formatStringPrice(it)}")),
+                mutableListOf(mutableListOf("Total", PriceUtils.formatStringPrice(it))),
                 mutableListOf(Block.DATA_MIDDLE_LEFT, Block.DATA_MIDDLE_RIGHT)
             )
             printer.drawText(content, true)
@@ -388,7 +546,7 @@ object BillOrderHelper {
                 ),
                 mutableListOf(Block.DATA_MIDDLE_LEFT, Block.DATA_MIDDLE_RIGHT)
             )
-            printer.drawText(content, )
+            printer.drawText(content)
         }
 
 
@@ -396,10 +554,11 @@ object BillOrderHelper {
             WaguUtils.columnListDataBlock(
                 charPerLineHeader,
                 mutableListOf(mutableListOf("THANK YOU")),
-                mutableListOf(Block.DATA_CENTER)),
-                true,
-                BasePrintManager.FontSize.Medium
-            )
+                mutableListOf(Block.DATA_CENTER)
+            ),
+            true,
+            BasePrintManager.FontSize.Medium
+        )
 
         // End Print
 
