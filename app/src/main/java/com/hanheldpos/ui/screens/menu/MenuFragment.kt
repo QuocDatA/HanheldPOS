@@ -1,6 +1,5 @@
 package com.hanheldpos.ui.screens.menu
 
-import android.graphics.BitmapFactory
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,7 +11,6 @@ import com.hanheldpos.model.DatabaseHelper
 import com.hanheldpos.model.OrderHelper
 import com.hanheldpos.model.menu_nav_opt.LogoutType
 import com.hanheldpos.model.menu_nav_opt.NavBarOptionType
-import com.hanheldpos.model.printer.PrinterHelper
 import com.hanheldpos.model.printer.bill.BillOrderHelper
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.dialog.AppAlertDialog
@@ -28,7 +26,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
-import java.io.File
 
 class MenuFragment : BaseFragment<FragmentMenuBinding, MenuVM>(), MenuUV {
     override fun layoutRes() = R.layout.fragment_menu
@@ -105,7 +102,7 @@ class MenuFragment : BaseFragment<FragmentMenuBinding, MenuVM>(), MenuUV {
                         it.lastOrNull()?.let { completedEntity ->
                             launch(Dispatchers.Main) {
 
-                                BillOrderHelper.printBillWithBluetooth(requireActivity(),34,
+                                BillOrderHelper.printBillWithBluetooth(requireActivity(),32,
                                     DatabaseMapper.mappingOrderReqFromEntity(completedEntity))
 
                             }
