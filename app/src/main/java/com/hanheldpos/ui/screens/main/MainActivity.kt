@@ -47,9 +47,6 @@ class MainActivity : BaseFragmentBindingActivity<ActivityMainBinding, MainVM>(),
         binding.root.viewTreeObserver.addOnGlobalLayoutListener {
             SystemHelper.hideSystemUI(window);
         }
-        print("Device Code Local")
-        print(StringUtils.getAndroidDeviceId(this.context))
-        print("Device Local Code")
         viewModel.initView()
     }
 
