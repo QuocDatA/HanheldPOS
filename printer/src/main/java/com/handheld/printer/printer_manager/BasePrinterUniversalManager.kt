@@ -1,27 +1,41 @@
-package com.handheld.pos_printer.bluetooth
+package com.handheld.printer.printer_manager
 
 import android.graphics.Bitmap
 import com.dantsu.escposprinter.EscPosCharsetEncoding
 import com.dantsu.escposprinter.EscPosPrinter
-import com.dantsu.escposprinter.EscPosPrinterCommands
-import com.dantsu.escposprinter.connection.bluetooth.BluetoothPrintersConnections
+import com.dantsu.escposprinter.connection.DeviceConnection
 import com.dantsu.escposprinter.textparser.PrinterTextParserImg
-import com.handheld.pos_printer.BasePrintManager
-import com.handheld.pos_printer.PrintPic
-import java.lang.StringBuilder
+import com.handheld.printer.ImagePrinterHelper
 
-class BluetoothManager : BasePrintManager() {
-    private lateinit var printer: EscPosPrinter
-    override fun connect() {
+/**
+ * This is the base print manager for universal method
+ * Which they are usable for all device not limited to the type
+ * Hence this base does not use the device's SDK
+ * */
+abstract class BasePrinterUniversalManager(
+    deviceConnection: DeviceConnection?,
+    printerDPI: Int,
+    printerPaperWidth: Float,
+    charsPerLine: Int,
+) : BasePrinterManager() {
+    private val printer: EscPosPrinter = EscPosPrinter(
+        deviceConnection,
+        printerDPI,
+        printerPaperWidth,
+        charsPerLine,
+        EscPosCharsetEncoding("windows-1258",16)
+    )
+
+    override fun cutPaper() {
+        printer.printFormattedTextAndCut("")
+    }
+
+    override fun feedLine(line: Int) {
+        printer.printFormattedText("", line)
     }
 
     override fun disconnect() {
         printer.disconnectPrinter()
-    }
-
-    override fun setupPage(width: Int, height: Int) {
-        this.width = width
-        this.height = height
     }
 
     override fun drawText(data: String?, bold: Boolean, size: FontSize) {
@@ -31,8 +45,9 @@ class BluetoothManager : BasePrintManager() {
         }
         content = when (size) {
             FontSize.Small -> "<font size='normal'>$content</font>"
-            FontSize.Medium ->"<font size='tall'>$content</font>"
+            FontSize.Medium -> "<font size='tall'>$content</font>"
             FontSize.Large -> "<font size='big'>$content</font>"
+            FontSize.Wide -> "<font size='wide'>$content</font>"
         }
         printer.printFormattedText(
             content + "\n",
@@ -52,8 +67,7 @@ class BluetoothManager : BasePrintManager() {
                 bitmap.width,
                 if (y + 250 >= bitmap.height) bitmap.height - y else 250
             )
-            val printPic = PrintPic()
-            printPic.init(bitmapScale)
+            val printPic = ImagePrinterHelper(bitmapScale)
             var imagePrint = "<img>${
                 PrinterTextParserImg.bytesToHexadecimalString(
                     printPic.printDraw()
@@ -69,7 +83,6 @@ class BluetoothManager : BasePrintManager() {
             y += 250
         }
         printer.printFormattedText(content.toString(), 1);
-
     }
 
     override fun drawLine(widthLine: Int) {
@@ -77,12 +90,11 @@ class BluetoothManager : BasePrintManager() {
         printer.printFormattedText(dataContent + "\n", 1)
     }
 
+    override fun connect() {
 
-    init {
-        if (!this::printer.isInitialized)
-            printer = EscPosPrinter(
-                BluetoothPrintersConnections.selectFirstPaired(), 203, 48f, 34,
-                EscPosCharsetEncoding("windows-1258", 16)
-            )
+    }
+
+    override fun setupPage(width: Float, height: Float) {
+
     }
 }

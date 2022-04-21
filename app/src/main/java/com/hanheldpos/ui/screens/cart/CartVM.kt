@@ -15,7 +15,6 @@ import com.hanheldpos.model.order.OrderStatus
 import com.hanheldpos.model.payment.PaymentStatus
 import com.hanheldpos.ui.base.dialog.AppAlertDialog
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
-import com.hanheldpos.model.printer.bill.BillOrderHelper
 import com.hanheldpos.utils.DateTimeUtils
 import com.hanheldpos.utils.writeBitmap
 import kotlinx.coroutines.Dispatchers
@@ -118,12 +117,12 @@ class CartVM : BaseUiViewModel<CartUV>() {
 
                 launch(Dispatchers.Main) {
                     // Save order bill
-                    val filePath = File(context.getExternalFilesDir(null), "bitmap.jpeg")
+                    /*val filePath = File(context.getExternalFilesDir(null), "bitmap.jpeg")
                     filePath.writeBitmap(
                         BillOrderHelper.getPrintOrderBill(context, orderReq),
                         Bitmap.CompressFormat.JPEG,
                         100
-                    )
+                    )*/
                     showLoading(false)
                     if (!onPaymentSelected)
                         uiCallback?.onBillSuccess()

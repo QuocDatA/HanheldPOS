@@ -1,10 +1,15 @@
-package com.handheld.pos_printer
+package com.handheld.printer
 
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Paint
 
-class PrintPic {
+class ImagePrinterHelper(bitmap: Bitmap?) {
+
+    init {
+        init(bitmap)
+    }
+
     private var canvas: Canvas? = null
 
     private var paint: Paint? = null
