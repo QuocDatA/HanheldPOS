@@ -16,6 +16,7 @@ import com.hanheldpos.model.payment.PaymentStatus
 import com.hanheldpos.ui.base.dialog.AppAlertDialog
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
 import com.hanheldpos.utils.DateTimeUtils
+import com.hanheldpos.utils.GSonUtils
 import com.hanheldpos.utils.writeBitmap
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

@@ -1,20 +1,16 @@
 package com.hanheldpos.ui.screens.home.order.adapter
 
-import android.content.res.ColorStateList
-import android.graphics.Color
 import androidx.recyclerview.widget.DiffUtil
 import com.hanheldpos.R
 import com.hanheldpos.databinding.ItemOrderMenuBinding
 import com.hanheldpos.databinding.ItemOrderMenuDirectionButtonBinding
-import com.hanheldpos.databinding.ItemTableDirectionButtonBinding
 import com.hanheldpos.model.home.order.menu.MenuModeViewType
 import com.hanheldpos.model.home.order.menu.OrderMenuItem
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
-import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 
 class OrderMenuAdapter(
-    private val listener: BaseItemClickListener<OrderMenuItem>
+    private val listener: OrderMenuCallBack<OrderMenuItem>
 ) : BaseBindingListAdapter<OrderMenuItem>(DiffCallBack()) {
 
     override fun getItemViewType(position: Int): Int {
@@ -42,9 +38,25 @@ class OrderMenuAdapter(
             MenuModeViewType.Empty -> {
             }
             else -> {
-                (holder.binding as ItemOrderMenuDirectionButtonBinding).layoutMain.setOnClickListener {
-                    listener.onItemClick(position, item);
+                val view = (holder.binding as ItemOrderMenuDirectionButtonBinding)
+                view.ivNextPage.setImageResource(R.drawable.ic_direction_down)
+                view.ivPrevPage.setImageResource(R.drawable.ic_direction_up)
+                if (item.uiType == MenuModeViewType.PrevButtonEnable) {
+                    view.ivNextPage.setImageResource(R.drawable.ic_direction_down_disable)
+                    view.btnNextPage.isClickable = false
+                    view.btnPrevPage.isClickable = true
+                } else if (item.uiType == MenuModeViewType.NextButtonEnable) {
+                    view.ivPrevPage.setImageResource(R.drawable.ic_direction_up_disable)
+                    view.btnNextPage.isCheckable = true
+                    view.btnPrevPage.isClickable = false
+                } else {
+                    view.ivPrevPage.setImageResource(R.drawable.ic_direction_up_disable)
+                    view.ivNextPage.setImageResource(R.drawable.ic_direction_down_disable)
+                    view.btnPrevPage.isClickable = false
+                    view.btnNextPage.isClickable = false
                 }
+                view.btnPrevPage.setOnClickListener { listener.onBtnPrevClick() }
+                view.btnNextPage.setOnClickListener { listener.onBtnNextClick() }
             }
         }
         holder.bindItem(item);
@@ -66,5 +78,11 @@ class OrderMenuAdapter(
             return oldItem == newItem && (oldItem.uiType == MenuModeViewType.Menu || oldItem.uiType == MenuModeViewType.Empty);
         }
 
+    }
+
+    interface OrderMenuCallBack<T> {
+        fun onItemClick(adapterPosition: Int, item: OrderMenuItem)
+        fun onBtnPrevClick()
+        fun onBtnNextClick()
     }
 }

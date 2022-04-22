@@ -1,5 +1,6 @@
 package com.hanheldpos.model.cart
 
+import android.util.Log
 import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.data.api.pojo.discount.DiscountUsed
 import com.hanheldpos.data.api.pojo.fee.Fee

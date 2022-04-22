@@ -1,13 +1,16 @@
 package com.hanheldpos.ui.screens.home.order.menu
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.os.Build
+import android.util.DisplayMetrics
+import androidx.core.view.ViewCompat
 import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.GridLayoutManager
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentCategoryMenuBinding
 import com.hanheldpos.model.home.order.menu.MenuModeViewType
 import com.hanheldpos.model.home.order.menu.OrderMenuItem
-import com.hanheldpos.ui.base.adapter.BaseItemClickListener
-import com.hanheldpos.ui.base.adapter.GridSpacingItemDecoration
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.home.order.OrderDataVM
 import com.hanheldpos.ui.screens.home.order.adapter.OrderMenuAdapter
@@ -43,45 +46,48 @@ class CategoryMenuFragment(
     }
 
     override fun initView() {
+        // menu layout measure
+        val height = getScreenHeight(this.requireContext())
+        val itemPerCol = height/(height / 10)
+
         // category adapter vs listener
         menuAdapHelper = OrderMenuAdapterHelper(callBack = object :
             OrderMenuAdapterHelper.AdapterCallBack {
             @SuppressLint("NotifyDataSetChanged")
             override fun onListSplitCallBack(list: List<OrderMenuItem?>) {
                 menuAdapter.submitList(list);
-                menuAdapter.notifyDataSetChanged();
+                menuAdapter.notifyDataSetChanged()
             }
-        });
+        }, itemPerCol = itemPerCol);
 
         menuAdapter = OrderMenuAdapter(
-            listener = object : BaseItemClickListener<OrderMenuItem> {
+            listener = object : OrderMenuAdapter.OrderMenuCallBack<OrderMenuItem> {
                 override fun onItemClick(adapterPosition: Int, item: OrderMenuItem) {
-                    when(item.uiType) {
+                    when (item.uiType) {
                         MenuModeViewType.Menu -> {
                             menuItemSelected(item);
                             getBack()
                         }
-                        MenuModeViewType.NextButton -> {
-                            menuAdapHelper.next()
-                        }
-                        MenuModeViewType.PrevButton -> {
-                            menuAdapHelper.previous()
-                        }
                         else -> {}
                     }
+                }
 
+                override fun onBtnPrevClick() {
+                    menuAdapHelper.previous()
+                }
+
+                override fun onBtnNextClick() {
+                    menuAdapHelper.next()
                 }
 
             },
         ).also {
             binding.categoryList.adapter = it
-            binding.categoryList.addItemDecoration(
-                GridSpacingItemDecoration(
-                    spanCount = 2,
-                    includeEdge = true,
-                    spacing = resources.getDimensionPixelSize(R.dimen._13sdp)
-                )
-            )
+        }
+        binding.categoryList.layoutManager = object: GridLayoutManager(this.requireContext(), 2) {
+            override fun canScrollVertically(): Boolean {
+                return false
+            }
         }
     }
 
@@ -102,6 +108,21 @@ class CategoryMenuFragment(
 
     private fun menuItemSelected(menuItem: OrderMenuItem) {
         dataVM.selectedMenu.postValue(menuItem)
+    }
+
+    private fun getScreenHeight(context: Context): Int {
+        var height: Int = 0
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            val displayMetrics = DisplayMetrics()
+            val display = context.display
+            display!!.getRealMetrics(displayMetrics)
+            displayMetrics.heightPixels
+        } else {
+            val displayMetrics = DisplayMetrics()
+            activity?.windowManager?.defaultDisplay?.getMetrics(displayMetrics)
+            height = displayMetrics.heightPixels
+            height
+        }
     }
 
     interface CategoryMenuCallBack {
