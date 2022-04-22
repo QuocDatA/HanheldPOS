@@ -118,10 +118,6 @@ class MenuFragment : BaseFragment<FragmentMenuBinding, MenuVM>(), MenuUV {
                                     fragmentContext,
                                     DatabaseMapper.mappingOrderReqFromEntity(completedEntity)
                                 )
-/*                                BillPrinterManager.get().print(
-                                    requireActivity(),
-                                    DatabaseMapper.mappingOrderReqFromEntity(completedEntity)
-                                )*/
 
                             }
                         }
