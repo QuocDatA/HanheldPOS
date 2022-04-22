@@ -53,16 +53,16 @@
             </LinearLayout>
 
             <com.google.android.material.card.MaterialCardView
-                android:focusable="true"
-                android:clickable="true"
-                android:onClick="@{v-> viewModel.showCategoryDialog()}"
                 android:layout_width="@dimen/_42sdp"
                 android:layout_height="@dimen/_42sdp"
                 android:layout_alignParentBottom="true"
                 android:layout_marginHorizontal="@dimen/_9sdp"
                 android:layout_marginVertical="@dimen/_4sdp"
                 android:backgroundTint="@color/color_1"
+                android:clickable="true"
                 android:elevation="3dp"
+                android:focusable="true"
+                android:onClick="@{v-> viewModel.showCategoryDialog()}"
                 app:cardCornerRadius="@dimen/_3sdp"
                 app:cardElevation="3dp">
 
