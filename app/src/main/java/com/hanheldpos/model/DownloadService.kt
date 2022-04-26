@@ -7,6 +7,7 @@ import android.content.pm.PackageManager
 import android.os.Environment
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.Window
 import androidx.core.content.ContextCompat
@@ -138,19 +139,22 @@ object DownloadService {
                         }
 
                         override fun onError(error: com.downloader.Error?) {
-                            if(error?.connectionException?.message!!.contains("Unacceptable certificate")){
-                                listener.onFail(PosApp.instance.getString(R.string.date_and_time_of_the_device_are_out_of_sync))
-                            } else {
-                                CoroutineScope(Dispatchers.Main).launch {
-                                    listener.onFail()
-                                }
-                            }
+//                            CoroutineScope(Dispatchers.Main).launch {
+//                                if(error?.connectionException?.message?.contains("Unacceptable certificate") == true){
+//                                    listener.onFail(PosApp.instance.getString(R.string.date_and_time_of_the_device_are_out_of_sync))
+//                                } else {
+//                                    listener.onFail()
+//                                }
+//
+//                            }
+
                         }
 
                     })
                 while (PRDownloader.getStatus(downloadId) in mutableListOf(Status.QUEUED,Status.RUNNING)) { }
                 currentDownloadPos++
-                if (PRDownloader.getStatus(downloadId) in mutableListOf(Status.CANCELLED,Status.FAILED,Status.PAUSED)) return@launch
+                if (PRDownloader.getStatus(downloadId) in mutableListOf(Status.CANCELLED,Status.PAUSED)) return@launch
+                if (PRDownloader.getStatus(downloadId) == Status.FAILED) Log.d("Download Resources","Failed")
                 if (isDownloading && currentDownloadPos >= listResources.size) {
                     isDownloading = false
                     processDialog.dismiss()

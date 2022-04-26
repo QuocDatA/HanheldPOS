@@ -104,20 +104,20 @@ class MenuFragment : BaseFragment<FragmentMenuBinding, MenuVM>(), MenuUV {
                                     BillPrinterManager.init(
                                         fragmentContext.applicationContext,
                                         BillPrinterManager.PrintOptions(
-                                            connectionType = BillPrinterManager.PrintConnectionType.BLUETOOTH,
+                                            connectionType = BillPrinterManager.PrintConnectionType.LAN,
                                             deviceType = BillPrinterManager.PrinterDeviceInfo.DeviceType.HANDHELD
-                                        )
+                                        ).setUpLan(BillPrinterManager.PrintOptions.LanConfig(port = 9100, ipAddress = "192.168.1.92"))
                                     )
 
-
+                                    BillPrinterManager.get().print(
+                                        fragmentContext,
+                                        DatabaseMapper.mappingOrderReqFromEntity(completedEntity)
+                                    )
                                 } catch (e: Exception) {
                                     e.printStackTrace()
                                 }
 
-                                BillPrinterManager.get().print(
-                                    fragmentContext,
-                                    DatabaseMapper.mappingOrderReqFromEntity(completedEntity)
-                                )
+
 
                             }
                         }

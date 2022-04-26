@@ -137,14 +137,21 @@ class LayoutBillPrinter(
     private fun printDeliveryAddress() {
         order.OrderDetail.Billing?.let {
             printer.drawText(StringUtils.removeAccent(it.FullName), true)
-            printer.drawText(StringUtils.removeAccent(it.getFullAddressWithLineBreaker()))
+            it.getFullAddressWithLineBreaker().takeIf { address-> address.isNotEmpty() }?.let { address->
+                printer.drawText(StringUtils.removeAccent(address))
+            }
             var addressType: String? = ""
             val phoneNumber = it.Phone
             DataHelper.addressTypesLocalStorage?.find { addressTypeResp -> addressTypeResp.AddressTypeId == it.AddressTypeId }
                 ?.let { address ->
                     addressType = address.AddressTypeEn
                 }
-            printer.drawText("$addressType | $phoneNumber", true)
+
+            if (!addressType.isNullOrEmpty() || !phoneNumber.isNullOrEmpty())
+                printer.drawText(
+                    "$addressType${if (addressType.isNullOrEmpty() && phoneNumber.isNullOrEmpty()) "" else " | "}$phoneNumber",
+                    true
+                )
             it.Note?.let { note ->
                 printer.drawText(note, true)
             }
@@ -244,7 +251,7 @@ class LayoutBillPrinter(
                     pro.VariantList?.takeIf { it.isNotEmpty() }?.let {
                         listInfoGroupExtra.add(
                             mutableListOf(
-                                "•",
+                                "*",
                                 ExtraConverter.variantStr(it).toString()
                             )
                         )
@@ -252,7 +259,7 @@ class LayoutBillPrinter(
                     pro.ModifierList?.takeIf { it.isNotEmpty() }?.let {
                         listInfoGroupExtra.add(
                             mutableListOf(
-                                "•",
+                                "*",
                                 ExtraConverter.modifierOrderStr(it).toString()
                             )
                         )
@@ -302,12 +309,12 @@ class LayoutBillPrinter(
 
             val listExtraInfo = mutableListOf<MutableList<String>>()
             productChosen.VariantList?.takeIf { it.isNotEmpty() }?.let {
-                listExtraInfo.add(mutableListOf("•", ExtraConverter.variantStr(it).toString()))
+                listExtraInfo.add(mutableListOf("*", ExtraConverter.variantStr(it).toString()))
             }
             productChosen.ModifierList?.takeIf { it.isNotEmpty() }?.let {
                 listExtraInfo.add(
                     mutableListOf(
-                        "•",
+                        "*",
                         ExtraConverter.modifierOrderStr(it).toString()
                     )
                 )
@@ -315,7 +322,7 @@ class LayoutBillPrinter(
             productChosen.TaxFeeList?.takeIf { it.isNotEmpty() }?.let {
                 listExtraInfo.add(
                     mutableListOf(
-                        "•",
+                        "*",
                         "Tax (${PriceUtils.formatStringPrice(it.sumOf { tax -> tax.TotalPrice })})"
                     )
                 )
@@ -323,7 +330,7 @@ class LayoutBillPrinter(
             productChosen.ServiceFeeList?.takeIf { it.isNotEmpty() }?.let {
                 listExtraInfo.add(
                     mutableListOf(
-                        "•",
+                        "*",
                         "Service (${PriceUtils.formatStringPrice(it.sumOf { ser -> ser.TotalPrice })})"
                     )
                 )
@@ -331,7 +338,7 @@ class LayoutBillPrinter(
             productChosen.SurchargeFeeList?.takeIf { it.isNotEmpty() }?.let {
                 listExtraInfo.add(
                     mutableListOf(
-                        "•",
+                        "*",
                         "Surcharge (${PriceUtils.formatStringPrice(it.sumOf { sur -> sur.TotalPrice })})"
                     )
                 )
@@ -339,7 +346,7 @@ class LayoutBillPrinter(
             productChosen.DiscountList?.takeIf { it.isNotEmpty() }?.let {
                 listExtraInfo.add(
                     mutableListOf(
-                        "•",
+                        "*",
                         "Discount (-${PriceUtils.formatStringPrice(it.sumOf { dis -> dis.DiscountTotalPrice })})"
                     )
                 )
@@ -448,11 +455,11 @@ class LayoutBillPrinter(
         )
     }
 
-    private fun printFeedLine(line : Int) {
+    private fun printFeedLine(line: Int) {
         printer.feedLine(line)
     }
 
-    private fun cutPaper(){
+    private fun cutPaper() {
         printer.cutPaper()
     }
 }
