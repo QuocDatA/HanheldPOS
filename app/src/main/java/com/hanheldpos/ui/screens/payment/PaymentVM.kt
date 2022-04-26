@@ -107,6 +107,12 @@ class PaymentVM : BaseUiViewModel<PaymentUV>() {
             })
     }
 
+    fun processPaymentSodexoCard(payment: BaseCardPayment, cardNumber: String, balance: Double) {
+        showLoading(true)
+        uiCallback?.onValidCardNumber(payment, cardNumber, balance)
+        showLoading(false)
+    }
+
     fun syncPaymentCard(
         base: BaseCardPayment,
         orderGuid: String,

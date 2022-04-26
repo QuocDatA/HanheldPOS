@@ -6,13 +6,11 @@ import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.payment.PaymentSuggestionItem
 import com.hanheldpos.databinding.FragmentPaymentBinding
 import com.hanheldpos.model.keyboard.KeyBoardType
+import com.hanheldpos.model.payment.PaymentApplyTo
 import com.hanheldpos.model.payment.PaymentFactory
 import com.hanheldpos.model.payment.PaymentMethodType
 import com.hanheldpos.model.payment.PaymentOrder
-import com.hanheldpos.model.payment.method.BaseCardPayment
-import com.hanheldpos.model.payment.method.BasePayment
-import com.hanheldpos.model.payment.method.GiftCartPayment
-import com.hanheldpos.model.payment.method.WalletPayment
+import com.hanheldpos.model.payment.method.*
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.adapter.GridSpacingItemDecoration
 import com.hanheldpos.ui.base.fragment.BaseFragment
@@ -134,7 +132,10 @@ class PaymentFragment(
                                 listener = object : PaymentInputFragment.PaymentInputListener {
                                     override fun onSave(amount: Double, balance: Double?) {
                                         if (amount <= 0) return
-                                        if (balance != null && cardCode != null) {
+                                        if (balance != null && cardCode != null && PaymentApplyTo.fromInt(
+                                                payment.ApplyToId
+                                            ) != PaymentApplyTo.SODEXO
+                                        ) {
                                             viewModel.syncPaymentCard(
                                                 base as BaseCardPayment,
                                                 CurCartData.cartModel?.orderGuid!!,
@@ -172,8 +173,14 @@ class PaymentFragment(
                                             WalletPayment::class.java -> {
                                                 viewModel.processPaymentWalletCard(base, cardNumber)
                                             }
+                                            SodexoPayment::class.java -> {
+                                                viewModel.processPaymentSodexoCard(
+                                                    base,
+                                                    cardNumber,
+                                                    balance
+                                                )
+                                            }
                                         }
-
                                     }
                                 }
                             )
