@@ -264,7 +264,7 @@ class LayoutBillPrinter(
                             )
                         )
                     }
-                    pro.Note?.let {
+                    pro.Note?.takeIf { it.isNotEmpty() }?.let {
                         listInfoGroupExtra.add(mutableListOf("+", "Note : ${it.trim()}"))
                     }
                     val contentExtraPro = StringUtils.removeAccent(
@@ -351,7 +351,7 @@ class LayoutBillPrinter(
                     )
                 )
             }
-            productChosen.Note?.let {
+            productChosen.Note?.takeIf { it.isNotEmpty() }?.let {
                 listExtraInfo.add(mutableListOf("+", "Note : ${it.trim()}"))
             }
             val contentExtra = StringUtils.removeAccent(
