@@ -36,25 +36,24 @@ class UrovoPrinterManager : BasePrinterManager() {
         override fun run() {
             //To create a message loop
             Looper.prepare()
-            mPrintHandler = @SuppressLint("HandlerLeak")
-            object : Handler() {
-                //2.Bind handler to looper object of customthread instance
-                override fun handleMessage(msg: Message) {   //3.Define how messages are processed
-                    when (msg.what) {
-                        PrintType.PRINT_TEXT.value,
-                        PrintType.PRINT_BITMAP.value,
-                        PrintType.PRINT_BARCOD.value -> doPrint(
-                            printer,
-                            msg.what,
-                            msg.obj
-                        ) //Print
-                        PrintType.PRINT_FORWARD.value -> {
-                            printer.paperFeed(20)
+            mPrintHandler =
+                @SuppressLint("HandlerLeak")
+                object : Handler() {
+                    //2.Bind handler to looper object of customthread instance
+                    override fun handleMessage(msg: Message) {   //3.Define how messages are processed
+                        when (msg.what) {
+                            PrintType.PRINT_TEXT.value,
+                            PrintType.PRINT_BITMAP.value,
+                            PrintType.PRINT_FORWARD.value,
+                            PrintType.PRINT_BARCOD.value -> doPrint(
+                                printer,
+                                msg.what,
+                                msg.obj
+                            ) //Print
+                            else -> {}
                         }
-                        else -> {}
                     }
                 }
-            }
             /*mPrintHandler = Looper.myLooper()?.let { looper ->
                 Handler(looper) {
 
@@ -70,6 +69,7 @@ class UrovoPrinterManager : BasePrinterManager() {
         val bold: Boolean,
         val size: FontSize
     )
+
 
     private data class BitmapValuePrint(
         val bitmap: Bitmap?,
@@ -113,9 +113,8 @@ class UrovoPrinterManager : BasePrinterManager() {
     }
 
     override fun drawText(data: String?, bold: Boolean, size: FontSize) {
-        val dataContent = data?.replace(" ", "  ")
         val msg = mPrintHandler!!.obtainMessage(PrintType.PRINT_TEXT.value)
-        msg.obj = TextValuePrint(dataContent, bold, size)
+        msg.obj = TextValuePrint(data, bold, size)
         msg.sendToTarget()
     }
 
@@ -126,14 +125,16 @@ class UrovoPrinterManager : BasePrinterManager() {
     }
 
     override fun drawLine(widthLine: Int) {
-        val dataContent = "".padEnd(widthLine * 2, '-')
+        val dataContent = "".padEnd(widthLine, '-')
         val msg = mPrintHandler!!.obtainMessage(PrintType.PRINT_TEXT.value)
         msg.obj = TextValuePrint(dataContent, false, FontSize.Small)
         msg.sendToTarget()
     }
 
     override fun feedLine(line: Int) {
-
+        val msg = mPrintHandler!!.obtainMessage(PrintType.PRINT_FORWARD.value)
+        msg.obj = line
+        msg.sendToTarget()
     }
 
     override fun cutPaper() {
@@ -153,7 +154,7 @@ class UrovoPrinterManager : BasePrinterManager() {
                         FontSize.Large -> 35
                         FontSize.Wide -> 35
                     }
-                    val fontName = "nunito"
+                    val fontName = "monospace" // simsun , arial , serif
                     val texts = value.data?.split("\n", "\n\r");
                     if (texts != null) {
                         for (text in texts) {
@@ -181,6 +182,11 @@ class UrovoPrinterManager : BasePrinterManager() {
                         BitmapAlign.Center -> (this.width / 2 - value.bitmap.width / 2).toInt()
                     }
                     printerManager.drawBitmap(value.bitmap, x, y)
+                }
+                PrintType.PRINT_FORWARD.value -> {
+                    val value = content as Int
+                    printer.paperFeed(value)
+                    printer.paperFeed(value)
                 }
             }
             printerManager.printPage(0);

@@ -1,20 +1,13 @@
 package com.hanheldpos.model.printer
 
-import android.app.Activity
 import android.content.Context
-import android.graphics.Color
-import android.graphics.drawable.Drawable
 import android.os.StrictMode
 import android.util.Log
-import androidx.core.content.ContextCompat
-import androidx.core.graphics.drawable.DrawableCompat
 import com.handheld.printer.interfaces.BluetoothPrinterManager
 import com.handheld.printer.interfaces.LanPrinterManager
 import com.handheld.printer.interfaces.UrovoPrinterManager
 import com.handheld.printer.printer_manager.BasePrinterManager
-import com.hanheldpos.R
 import com.hanheldpos.model.order.OrderReq
-import com.hanheldpos.utils.DrawableHelper
 import java.net.ConnectException
 import java.util.concurrent.TimeoutException
 
@@ -38,21 +31,39 @@ class BillPrinterManager private constructor() {
         enum class DeviceType {
             HANDHELD,
             POS,
+            UROVO
         }
 
         fun printerDPI(): Int = 203
         fun paperWidth(): Float {
             return when (deviceType) {
                 DeviceType.POS -> 72f
-
                 DeviceType.HANDHELD -> 48f
+                DeviceType.UROVO -> 383f
             }
         }
 
-        fun charsPerLine(): Int {
+        fun charsPerLineText(): Int {
             return when (deviceType) {
                 DeviceType.POS -> 48
                 DeviceType.HANDHELD -> 32
+                DeviceType.UROVO -> 32
+            }
+        }
+
+        fun charsPerLineHeader(): Int {
+            return when (deviceType) {
+                DeviceType.POS -> 48
+                DeviceType.HANDHELD -> 32
+                DeviceType.UROVO -> 22
+            }
+        }
+
+        fun lineFeed() : Int {
+            return when (deviceType) {
+                DeviceType.POS -> 5
+                DeviceType.HANDHELD -> 5
+                DeviceType.UROVO -> 300
             }
         }
     }
@@ -69,7 +80,7 @@ class BillPrinterManager private constructor() {
         class LanConfig(
             var port: Int? = null,
             var ipAddress: String? = null,
-            var timeOut: Int? = 30
+            var timeOut: Int? = 30000
         )
 
         fun setUpLan(lanConfig: LanConfig): PrintOptions {
@@ -90,6 +101,7 @@ class BillPrinterManager private constructor() {
             this.instance = BillPrinterManager().apply {
                 if (printOptions.useSDK)
                     printer = UrovoPrinterManager()
+
                 else
                     when (printOptions.connectionType) {
                         PrintConnectionType.LAN -> {
@@ -108,7 +120,7 @@ class BillPrinterManager private constructor() {
                                 timeout = printOptions.lanConfig?.timeOut,
                                 printerDPI = printOptions.deviceInfo.printerDPI(),
                                 printerPaperWidth = printOptions.deviceInfo.paperWidth(),
-                                charsPerLine = printOptions.deviceInfo.charsPerLine()
+                                charsPerLine = printOptions.deviceInfo.charsPerLineText()
                             )
                         }
                         PrintConnectionType.BLUETOOTH -> {
@@ -116,15 +128,15 @@ class BillPrinterManager private constructor() {
                                 context,
                                 printerDPI = printOptions.deviceInfo.printerDPI(),
                                 printerPaperWidth = printOptions.deviceInfo.paperWidth(),
-                                charsPerLine = printOptions.deviceInfo.charsPerLine()
+                                charsPerLine = printOptions.deviceInfo.charsPerLineText()
                             )
                         }
                     }
-
                 this.printOptions = printOptions
                 if (!this::printer.isInitialized) {
                     throw ConnectException("Unable to initialize printer")
                 }
+                printer.connect()
 
             }
             Log.d("Check Initial", this::instance.isInitialized.toString())

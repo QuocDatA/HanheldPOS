@@ -25,8 +25,8 @@ class LayoutBillPrinter(
     private val printer: BasePrinterManager,
     private val printOptions: BillPrinterManager.PrintOptions
 ) {
-    private val charPerLineHeader = printOptions.deviceInfo.charsPerLine()
-    private val charPerLineText = printOptions.deviceInfo.charsPerLine()
+    private val charPerLineHeader = printOptions.deviceInfo.charsPerLineHeader()
+    private val charPerLineText = printOptions.deviceInfo.charsPerLineText()
 
     fun print() {
         setUpPage()
@@ -69,7 +69,7 @@ class LayoutBillPrinter(
 
         // End Print
 
-        printFeedLine(3)
+        printFeedLine(printOptions.deviceInfo.lineFeed())
         cutPaper()
     }
 
@@ -174,7 +174,7 @@ class LayoutBillPrinter(
             )
         )
         val content = WaguUtils.columnListDataBlock(
-            charPerLineHeader, mutableListOf(orderCode, employee, dateCreate),
+            charPerLineText, mutableListOf(orderCode, employee, dateCreate),
             mutableListOf(Block.DATA_MIDDLE_LEFT, Block.DATA_MIDDLE_RIGHT), isWrapWord = true
         )
         printer.drawText(content)
@@ -193,7 +193,7 @@ class LayoutBillPrinter(
 
         val title = mutableListOf("Qty", "Items", "Amount")
         val contentTitle = WaguUtils.columnListDataBlock(
-            charPerLineHeader, mutableListOf(title), columnOrderDetailAlign,
+            charPerLineText, mutableListOf(title), columnOrderDetailAlign,
             columnSize
         )
         printer.drawText(StringUtils.removeAccent(contentTitle), true)
@@ -202,7 +202,7 @@ class LayoutBillPrinter(
             val amount = PriceUtils.formatStringPrice(productChosen.LineTotal ?: 0.0)
             val proName = productChosen.Name1
             val contentName = WaguUtils.columnListDataBlock(
-                charPerLineHeader,
+                charPerLineText,
                 mutableListOf(mutableListOf(quantity, proName, amount)),
                 columnOrderDetailAlign,
                 columnSize,
@@ -391,7 +391,7 @@ class LayoutBillPrinter(
     private fun printSubtotal() {
         order.OrderDetail.Order.Subtotal.let {
             val content = WaguUtils.columnListDataBlock(
-                charPerLineHeader,
+                charPerLineText,
                 mutableListOf(mutableListOf("Subtotal", PriceUtils.formatStringPrice(it))),
                 mutableListOf(Block.DATA_MIDDLE_LEFT, Block.DATA_MIDDLE_RIGHT)
             )
@@ -402,7 +402,7 @@ class LayoutBillPrinter(
     private fun printDiscounts() {
         order.OrderDetail.Order.Discount.let {
             val content = WaguUtils.columnListDataBlock(
-                charPerLineHeader,
+                charPerLineText,
                 mutableListOf(mutableListOf("Discount", PriceUtils.formatStringPrice(-it))),
                 mutableListOf(Block.DATA_MIDDLE_LEFT, Block.DATA_MIDDLE_RIGHT)
             )
@@ -413,7 +413,7 @@ class LayoutBillPrinter(
     private fun printTotal() {
         order.OrderDetail.Order.Grandtotal.let {
             val content = WaguUtils.columnListDataBlock(
-                charPerLineHeader,
+                charPerLineText,
                 mutableListOf(mutableListOf("Total", PriceUtils.formatStringPrice(it))),
                 mutableListOf(Block.DATA_MIDDLE_LEFT, Block.DATA_MIDDLE_RIGHT)
             )
@@ -428,7 +428,7 @@ class LayoutBillPrinter(
             val totalPay = list.sumOf { it.OverPay ?: 0.0 }
             val needToPay = list.sumOf { it.Payable ?: 0.0 }
             val content = WaguUtils.columnListDataBlock(
-                charPerLineHeader, mutableListOf(
+                charPerLineText, mutableListOf(
                     mutableListOf(
                         "Cash",
                         PriceUtils.formatStringPrice(totalPay)
