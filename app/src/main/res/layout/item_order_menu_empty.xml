@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <FrameLayout
+        android:id="@+id/layoutMain"
         android:layout_margin="@dimen/_6sdp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
