@@ -1,7 +1,6 @@
 package com.hanheldpos.ui.screens.cart
 
 import android.content.Context
-import android.graphics.Bitmap
 import androidx.lifecycle.viewModelScope
 import com.hanheldpos.R
 import com.hanheldpos.database.DatabaseMapper
@@ -16,11 +15,8 @@ import com.hanheldpos.model.payment.PaymentStatus
 import com.hanheldpos.ui.base.dialog.AppAlertDialog
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
 import com.hanheldpos.utils.DateTimeUtils
-import com.hanheldpos.utils.GSonUtils
-import com.hanheldpos.utils.writeBitmap
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.io.File
 import java.util.*
 
 class CartVM : BaseUiViewModel<CartUV>() {
@@ -34,7 +30,8 @@ class CartVM : BaseUiViewModel<CartUV>() {
     }
 
     fun openDiscount() {
-        uiCallback?.onOpenDiscount()
+        if (!CurCartData.cartModel?.productsList.isNullOrEmpty())
+            uiCallback?.onOpenDiscount()
     }
 
     fun onOpenAddCustomer() {
