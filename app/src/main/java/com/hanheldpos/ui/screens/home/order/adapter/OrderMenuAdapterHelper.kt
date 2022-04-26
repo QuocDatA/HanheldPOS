@@ -3,7 +3,7 @@ package com.hanheldpos.ui.screens.home.order.adapter
 import com.hanheldpos.model.home.order.menu.MenuModeViewType
 import com.hanheldpos.model.home.order.menu.OrderMenuItem
 
-class OrderMenuAdapterHelper(private val itemPerCol: Int, private val callBack: AdapterCallBack) {
+class OrderMenuAdapterHelper( private val callBack: AdapterCallBack) {
 
     private var currentIndex: Int = 1
     private var list: MutableList<OrderMenuItem?> = mutableListOf();
@@ -102,5 +102,10 @@ class OrderMenuAdapterHelper(private val itemPerCol: Int, private val callBack: 
 
     interface AdapterCallBack {
         fun onListSplitCallBack(list: List<OrderMenuItem?>)
+    }
+
+    companion object {
+        @JvmStatic
+        val itemPerCol: Int = 10;
     }
 }

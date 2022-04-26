@@ -4,13 +4,13 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Build
 import android.util.DisplayMetrics
-import androidx.core.view.ViewCompat
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentCategoryMenuBinding
 import com.hanheldpos.model.home.order.menu.MenuModeViewType
 import com.hanheldpos.model.home.order.menu.OrderMenuItem
+import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.home.order.OrderDataVM
 import com.hanheldpos.ui.screens.home.order.adapter.OrderMenuAdapter
@@ -46,9 +46,6 @@ class CategoryMenuFragment(
     }
 
     override fun initView() {
-        // menu layout measure
-        val height = getScreenHeight(this.requireContext())
-        val itemPerCol = height/(height / 10)
 
         // category adapter vs listener
         menuAdapHelper = OrderMenuAdapterHelper(callBack = object :
@@ -58,19 +55,10 @@ class CategoryMenuFragment(
                 menuAdapter.submitList(list);
                 menuAdapter.notifyDataSetChanged()
             }
-        }, itemPerCol = itemPerCol);
+        });
 
         menuAdapter = OrderMenuAdapter(
             listener = object : OrderMenuAdapter.OrderMenuCallBack<OrderMenuItem> {
-                override fun onItemClick(adapterPosition: Int, item: OrderMenuItem) {
-                    when (item.uiType) {
-                        MenuModeViewType.Menu -> {
-                            menuItemSelected(item);
-                            getBack()
-                        }
-                        else -> {}
-                    }
-                }
 
                 override fun onBtnPrevClick() {
                     menuAdapHelper.previous()
@@ -80,8 +68,17 @@ class CategoryMenuFragment(
                     menuAdapHelper.next()
                 }
 
-            },
-        ).also {
+            }, baseListener = object : BaseItemClickListener<OrderMenuItem> {
+                override fun onItemClick(adapterPosition: Int, item: OrderMenuItem) {
+                    when (item.uiType) {
+                        MenuModeViewType.Menu -> {
+                            menuItemSelected(item);
+                            getBack()
+                        }
+                        else -> {}
+                    }
+                }
+            }).also {
             binding.categoryList.adapter = it
         }
         binding.categoryList.layoutManager = object: GridLayoutManager(this.requireContext(), 2) {
