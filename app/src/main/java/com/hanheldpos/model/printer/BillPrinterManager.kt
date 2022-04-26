@@ -34,7 +34,11 @@ class BillPrinterManager private constructor() {
             UROVO
         }
 
-        fun printerDPI(): Int = 203
+        fun printerDPI(): Int = when (deviceType) {
+            DeviceType.POS -> 203
+            DeviceType.HANDHELD -> 203
+            DeviceType.UROVO -> 203
+        }
         fun paperWidth(): Float {
             return when (deviceType) {
                 DeviceType.POS -> 72f

@@ -288,7 +288,7 @@ class LayoutBillPrinter(
                             columnOrderDetailAlign,
                             columnGroupBundle,
                         )
-                    ).toString().let {
+                    ).toString().takeIf { it.isNotEmpty() }?.let {
                         printer.drawText(
                             WaguUtils.columnListDataBlock(
                                 charPerLineText,
@@ -363,7 +363,7 @@ class LayoutBillPrinter(
                     isWrapWord = true
                 )
             ).toString()
-            contentExtra.takeIf { it.isNotBlank() }?.let {
+            contentExtra.takeIf { it.isNotEmpty() }?.let {
                 WaguUtils.columnListDataBlock(
                     charPerLineText,
                     mutableListOf(mutableListOf("", contentExtra.trim())),

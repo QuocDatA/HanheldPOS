@@ -104,10 +104,9 @@ class MenuFragment : BaseFragment<FragmentMenuBinding, MenuVM>(), MenuUV {
                                     BillPrinterManager.init(
                                         fragmentContext.applicationContext,
                                         BillPrinterManager.PrintOptions(
-                                            useSDK = true,
-                                            connectionType = BillPrinterManager.PrintConnectionType.BLUETOOTH,
-                                            deviceType = BillPrinterManager.PrinterDeviceInfo.DeviceType.UROVO
-                                        ).setUpLan(BillPrinterManager.PrintOptions.LanConfig(port = 9100, ipAddress = "192.168.1.92"))
+                                            connectionType = BillPrinterManager.PrintConnectionType.LAN,
+                                            deviceType = BillPrinterManager.PrinterDeviceInfo.DeviceType.POS
+                                        ).setUpLan(BillPrinterManager.PrintOptions.LanConfig(port = 9100, ipAddress = "192.168.1.87"))
                                     )
 
                                     BillPrinterManager.get().print(
