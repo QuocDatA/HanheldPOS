@@ -55,6 +55,7 @@ object DownloadService {
         processDialog.setCancelable(false)
         processDialog.setContentView(R.layout.dialog_process_download_resource)
         binding = DialogProcessDownloadResourceBinding.inflate(LayoutInflater.from(context))
+        binding.isLoading = true
         processDialog.setContentView(binding.root)
         processDialog.show()
 
@@ -101,6 +102,7 @@ object DownloadService {
                     listener.onCancel()
                 }
                 .setOnProgressListener { progress ->
+                    binding.isLoading = false
                     val progressPercent: Long = progress.currentBytes * 100 / progress.totalBytes
                     if (progressPercent.toInt() == 0) currentByte = 0L
                     binding.processBar.progress = progressPercent.toInt()
@@ -154,7 +156,7 @@ object DownloadService {
                 while (PRDownloader.getStatus(downloadId) in mutableListOf(Status.QUEUED,Status.RUNNING)) { }
                 currentDownloadPos++
                 if (PRDownloader.getStatus(downloadId) in mutableListOf(Status.CANCELLED,Status.PAUSED)) return@launch
-                if (PRDownloader.getStatus(downloadId) == Status.FAILED) Log.d("Download Resources","Failed")
+                if (PRDownloader.getStatus(downloadId) in mutableListOf(Status.FAILED,Status.UNKNOWN)) Log.d("Download Resources","Failed")
                 if (isDownloading && currentDownloadPos >= listResources.size) {
                     isDownloading = false
                     processDialog.dismiss()

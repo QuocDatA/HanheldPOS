@@ -58,7 +58,7 @@ class BillPrinterManager private constructor() {
         fun charsPerLineHeader(): Int {
             return when (deviceType) {
                 DeviceType.POS -> 48
-                DeviceType.HANDHELD -> 32
+                DeviceType.HANDHELD -> 16
                 DeviceType.UROVO -> 22
             }
         }
@@ -69,6 +69,23 @@ class BillPrinterManager private constructor() {
                 DeviceType.HANDHELD -> 5
                 DeviceType.UROVO -> 300
             }
+        }
+
+        // Number of characters per left column
+        fun leftColumnWidth(): Int = when (deviceType) {
+            DeviceType.HANDHELD -> 4
+            DeviceType.POS -> 6
+            DeviceType.UROVO -> 4
+        }
+
+        // Number of characters per center column
+        fun centerColumnWidth(): Int = charsPerLineText() - leftColumnWidth() - rightColumnWidth()
+
+        // Number of characters per right column
+        fun rightColumnWidth(): Int = when (deviceType) {
+            DeviceType.HANDHELD -> 9
+            DeviceType.POS -> 9
+            DeviceType.UROVO -> 9
         }
     }
 

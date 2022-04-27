@@ -45,7 +45,7 @@ abstract class BasePrinterUniversalManager(
         }
         content = when (size) {
             FontSize.Small -> "<font size='normal'>$content</font>"
-            FontSize.Medium -> "<font size='tall'>$content</font>"
+            FontSize.Medium -> "<font size='big'>$content</font>"
             FontSize.Large -> "<font size='big'>$content</font>"
             FontSize.Wide -> "<font size='wide'>$content</font>"
         }
