@@ -17,7 +17,7 @@ import com.hanheldpos.ui.base.dialog.AppAlertDialog
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.menu.adapter.ItemOptionNav
 import com.hanheldpos.ui.screens.menu.adapter.OptionNavAdapter
-import com.hanheldpos.ui.screens.menu.option.report.ReportFragment
+import com.hanheldpos.ui.screens.menu.report.ReportFragment
 import com.hanheldpos.ui.screens.pincode.PinCodeFragment
 import com.hanheldpos.ui.screens.welcome.WelcomeFragment
 import com.hanheldpos.utils.NetworkUtils
@@ -128,7 +128,7 @@ class MenuFragment : BaseFragment<FragmentMenuBinding, MenuVM>(), MenuUV {
 
             }
             NavBarOptionType.TRANSACTIONS -> {}
-            NavBarOptionType.REPORTS -> navigator.goToWithCustomAnimation(ReportFragment());
+            NavBarOptionType.REPORTS -> navigator.goToWithCustomAnimation(com.hanheldpos.ui.screens.menu.report.ReportFragment());
             NavBarOptionType.CUSTOMER -> {}
             NavBarOptionType.ORDER_HISTORY -> {}
             NavBarOptionType.SETTINGS -> {}
