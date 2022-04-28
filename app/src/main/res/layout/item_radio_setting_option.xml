@@ -5,8 +5,7 @@
     <data>
         <variable
             name="item"
-            type="com.hanheldpos.data.api.pojo.order.settings.Reason" />
-
+            type="com.hanheldpos.model.menu.ItemRadioSettingOption" />
     </data>
 
     <LinearLayout

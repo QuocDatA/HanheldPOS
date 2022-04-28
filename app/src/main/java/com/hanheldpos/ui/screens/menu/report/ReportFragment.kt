@@ -6,9 +6,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentReportBinding
-import com.hanheldpos.model.menu_nav_opt.LogoutType
-import com.hanheldpos.model.menu_nav_opt.NavBarOptionType
-import com.hanheldpos.model.menu_nav_opt.ReportOptionType
+import com.hanheldpos.model.menu.report.ReportOptionType
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.menu.adapter.ItemOptionNav

@@ -69,12 +69,16 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
         productAdapter = OrderProductAdapter(
             listener = object : BaseItemClickListener<ProductMenuItem> {
                 override fun onItemClick(adapterPosition: Int, item: ProductMenuItem) {
-                    Log.d("OrderFragment", "Product Selected");
+                    Log.d("OrderFragment",  "Product Selected");
                     onProductMenuSelected(item)
                 }
             }
         ).also {
-            binding.productList.adapter = it;
+            binding.productList.apply {
+                adapter = it
+                itemAnimator = null
+            }
+
         }
 
     }

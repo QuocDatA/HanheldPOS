@@ -1,25 +1,27 @@
 package com.hanheldpos.ui.screens.discount.discount_type
 
-import android.view.View
+import android.widget.Button
+import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
+import com.diadiem.pos_components.PTextView
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.order.settings.Reason
-import com.hanheldpos.databinding.FragmentDiscountTypeItemBinding
+import com.hanheldpos.databinding.*
 import com.hanheldpos.model.cart.BaseProductInCart
 import com.hanheldpos.model.cart.CartModel
 import com.hanheldpos.model.discount.DiscApplyTo
 import com.hanheldpos.model.discount.DiscountTypeFor
 import com.hanheldpos.model.discount.DiscountTypeTab
-import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.discount.DiscountFragment
 import com.hanheldpos.ui.screens.discount.adapter.OptionsPagerAdapter
-import com.hanheldpos.ui.screens.discount.discount_type.adapter.DiscountTabAdapter
 import com.hanheldpos.ui.screens.discount.discount_type.amount.DiscountAmountFragment
-import com.hanheldpos.ui.screens.discount.discount_type.automatic.DiscountAutomaticFragment
 import com.hanheldpos.ui.screens.discount.discount_type.comp.DiscountCompFragment
-import com.hanheldpos.ui.screens.discount.discount_type.discount_code.DiscountCodeFragment
 import com.hanheldpos.ui.screens.discount.discount_type.percentage.DiscountPercentageFragment
 
 
@@ -32,11 +34,11 @@ class DiscountTypeItemFragment(
     BaseFragment<FragmentDiscountTypeItemBinding, DiscountTypeVM>(),
     DiscountTypeUV {
     // Adapter
-    private lateinit var adapter: DiscountTabAdapter;
     private lateinit var optionsPagerAdapter: OptionsPagerAdapter;
 
-    // Frament child
+    // Fragment child
     private val fragmentMap: MutableMap<DiscountTypeFor, Fragment> = mutableMapOf()
+    private val listTab: MutableList<DiscountTypeTab> = mutableListOf()
 
     override fun layoutRes(): Int = R.layout.fragment_discount_type_item;
 
@@ -54,35 +56,15 @@ class DiscountTypeItemFragment(
 
     override fun initView() {
         viewModel.isAlreadyExistDiscountSelect.observe(this) {
-            binding.btnClearDiscount.setTextColor(
-                ContextCompat.getColor(
-                    requireContext(),
-                    if (it) R.color.color_0 else R.color.color_8
+            viewModel.typeDiscountSelect.value?.let { type ->
+                fragmentMap[type]?.view?.findViewById<PTextView>(R.id.btnClearDiscount)?.setTextColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        if (it) R.color.color_0 else R.color.color_8
+                    )
                 )
-            )
-        }
-
-        // Discount Tab Adapter
-        adapter = DiscountTabAdapter(listener = object : BaseItemClickListener<DiscountTypeTab> {
-            override fun onItemClick(adapterPosition: Int, item: DiscountTypeTab) {
-                binding.discountFragmentContainer.currentItem = item.type.value;
-
-                if (item.type == DiscountTypeFor.COMP)
-                    binding.btnClearDiscount.visibility = View.GONE
-                else binding.btnClearDiscount.visibility = View.VISIBLE
-
-                viewModel.isAlreadyExistDiscountSelect.postValue(
-                    !product?.discountUsersList.isNullOrEmpty() ||
-                            !product?.discountServersList.isNullOrEmpty()
-                )
-
-                viewModel.typeDiscountSelect.postValue(item.type);
-                listener.discountFocus(item.type);
             }
-        })
-        binding.tabDiscountType.apply {
-            adapter = this@DiscountTypeItemFragment.adapter;
-            setHasFixedSize(true);
+
         }
 
         // Container Fragment Type For Adapter
@@ -91,53 +73,31 @@ class DiscountTypeItemFragment(
             adapter = optionsPagerAdapter;
         }
 
+
+
+
+
+
     }
 
     override fun initData() {
-
-        // Data Discount Tab Adapter
-        val listTab = mutableListOf(
-            DiscountTypeTab(title = "Amount (đ)", type = DiscountTypeFor.AMOUNT),
-            DiscountTypeTab(title = "Percentage (%)", type = DiscountTypeFor.PERCENTAGE),
-
-            DiscountTypeTab(title = "Comp", type = DiscountTypeFor.COMP),
-        )
-        if (applyToType == DiscApplyTo.ORDER) {
-            listTab.add(2, DiscountTypeTab(title = "Automatic", type = DiscountTypeFor.AUTOMATIC));
-            listTab.add(
-                2,
-                DiscountTypeTab(title = "Discount Code", type = DiscountTypeFor.DISCOUNT_CODE)
-            );
-        }
-
-        adapter.submitList(listTab);
-
         // Data Container Fragment Type
         fragmentMap[DiscountTypeFor.AMOUNT] =
             DiscountAmountFragment(
                 listener = listener,
                 applyToType = applyToType
-            );
+            )
         fragmentMap[DiscountTypeFor.PERCENTAGE] =
             DiscountPercentageFragment(
                 applyToType,
                 listener = listener
-            );
-        fragmentMap[DiscountTypeFor.DISCOUNT_CODE] = DiscountCodeFragment(
-            applyToType,
-            listener
-        );
-        fragmentMap[DiscountTypeFor.AUTOMATIC] = DiscountAutomaticFragment(
-            applyToType,
-            cart,
-            product,
-            listener
-        );
+            )
+
         fragmentMap[DiscountTypeFor.COMP] =
             DiscountCompFragment(
                 comp = when (applyToType) {
-                    DiscApplyTo.ITEM -> product?.compReason;
-                    DiscApplyTo.ORDER -> cart.compReason;
+                    DiscApplyTo.ITEM -> product?.compReason
+                    DiscApplyTo.ORDER -> cart.compReason
                     else -> null
                 },
                 listener = object : DiscountFragment.DiscountTypeListener {
@@ -155,16 +115,59 @@ class DiscountTypeItemFragment(
                 }, applyToType = applyToType
             )
 
-        optionsPagerAdapter.submitList(fragmentMap.values);
+        optionsPagerAdapter.submitList(fragmentMap.values)
 
+        // Tab
+        listTab.addAll(
+            mutableListOf(
+                DiscountTypeTab(title = "Amount (đ)", type = DiscountTypeFor.AMOUNT),
+                DiscountTypeTab(title = "Percentage (%)", type = DiscountTypeFor.PERCENTAGE),
+                DiscountTypeTab(title = "Comp", type = DiscountTypeFor.COMP),
+            )
+        )
+
+        TabLayoutMediator(
+            binding.tabDiscountType, binding.discountFragmentContainer
+        ) { tab, position ->
+            tab.text = listTab[position].title
+        }.attach()
     }
 
     override fun initAction() {
-        binding.btnClearDiscount.setOnClickListener {
-            if (!product?.discountUsersList.isNullOrEmpty() || !product?.discountServersList.isNullOrEmpty()) {
-                listener.clearAllDiscountCoupon()
-                viewModel.isAlreadyExistDiscountSelect.postValue(false)
-            }
+        viewModel.typeDiscountSelect.observe(this) { type ->
+            fragmentMap[type]?.view?.findViewById<TextView>(R.id.btnClearDiscount)
+                ?.setOnClickListener {
+                    if (!product?.discountUsersList.isNullOrEmpty() || !product?.discountServersList.isNullOrEmpty()) {
+                        listener.clearAllDiscountCoupon()
+                        viewModel.isAlreadyExistDiscountSelect.postValue(false)
+                    }
+                }
         }
+
+        binding.tabDiscountType.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                tabSelected(tab)
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+                tabSelected(tab)
+            }
+
+        })
+        binding.tabDiscountType.getTabAt(0)?.select()
+    }
+
+    private fun tabSelected(tab : TabLayout.Tab?){
+        tab?: return
+        viewModel.typeDiscountSelect.postValue(listTab[tab.position].type)
+        viewModel.isAlreadyExistDiscountSelect.postValue(
+            !product?.discountUsersList.isNullOrEmpty() ||
+                    !product?.discountServersList.isNullOrEmpty()
+        )
+        listener.discountFocus(listTab[tab.position].type)
     }
 }

@@ -1,4 +1,4 @@
-package com.hanheldpos.model.menu_nav_opt
+package com.hanheldpos.model.menu
 
 enum class LogoutType {
     LOGOUT_DEVICE, RESET
