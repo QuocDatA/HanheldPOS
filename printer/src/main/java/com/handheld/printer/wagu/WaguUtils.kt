@@ -1,8 +1,7 @@
-package com.utils.wagu
+package com.handheld.printer.wagu
 
 import android.util.Log
 import java.lang.StringBuilder
-import kotlin.math.log
 
 object WaguUtils {
     fun columnListDataBlock(

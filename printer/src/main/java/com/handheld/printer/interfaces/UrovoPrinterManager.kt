@@ -95,9 +95,14 @@ class UrovoPrinterManager : BasePrinterManager() {
     }
 
     override fun connect() {
-        printer.open()
-        if (thread?.isAlive != true) {
-            thread?.start()
+        try {
+            printer.open()
+            if (thread?.isAlive != true) {
+                thread?.start()
+            }
+        } catch (e: Exception) {
+            thread?.interrupt()
+            throw e
         }
     }
 
@@ -193,4 +198,6 @@ class UrovoPrinterManager : BasePrinterManager() {
         }
 
     }
+
+
 }

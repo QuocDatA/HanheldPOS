@@ -13,8 +13,8 @@ import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.menu.adapter.ItemOptionNav
 import com.hanheldpos.ui.screens.menu.adapter.OptionNavAdapter
-import com.hanheldpos.ui.screens.menu.option.report.current_drawer.CurrentDrawerFragment
-import com.hanheldpos.ui.screens.menu.option.report.sale.reports.SalesReportFragment
+import com.hanheldpos.ui.screens.menu.report.current_drawer.CurrentDrawerFragment
+import com.hanheldpos.ui.screens.menu.report.sale.reports.SalesReportFragment
 
 class ReportFragment : BaseFragment<FragmentReportBinding, com.hanheldpos.ui.screens.menu.report.ReportVM>(),
     com.hanheldpos.ui.screens.menu.report.ReportUV {

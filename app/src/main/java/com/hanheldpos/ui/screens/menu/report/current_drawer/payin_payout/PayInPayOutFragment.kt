@@ -9,7 +9,7 @@ import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.cashdrawer.pay_in_out.PaidInOutListResp
 import com.hanheldpos.databinding.FragmentPayInPayOutBinding
 import com.hanheldpos.ui.base.fragment.BaseFragment
-import com.hanheldpos.ui.screens.menu.option.report.current_drawer.payin_payout.adapter.PaidInOutAdapter
+import com.hanheldpos.ui.screens.menu.report.current_drawer.payin_payout.adapter.PaidInOutAdapter
 import com.hanheldpos.utils.PriceUtils
 
 class PayInPayOutFragment(private val listener : PayInOutCallback) : BaseFragment<FragmentPayInPayOutBinding, PayInPayOutVM>(),

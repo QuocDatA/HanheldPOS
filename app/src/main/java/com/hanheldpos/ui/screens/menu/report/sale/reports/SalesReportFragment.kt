@@ -6,10 +6,10 @@ import com.hanheldpos.databinding.FragmentSalesReportBinding
 import com.hanheldpos.model.report.SaleReportCustomData
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
-import com.hanheldpos.ui.screens.menu.option.report.sale.customize.CustomizeReportFragment
-import com.hanheldpos.ui.screens.menu.option.report.sale.reports.adapter.NumberDayReportAdapter
-import com.hanheldpos.ui.screens.menu.option.report.sale.reports.adapter.NumberDayReportItem
-import com.hanheldpos.ui.screens.menu.option.report.sale.reports.adapter.ReportOptionPageAdapter
+import com.hanheldpos.ui.screens.menu.report.sale.customize.CustomizeReportFragment
+import com.hanheldpos.ui.screens.menu.report.sale.reports.adapter.NumberDayReportAdapter
+import com.hanheldpos.ui.screens.menu.report.sale.reports.adapter.NumberDayReportItem
+import com.hanheldpos.ui.screens.menu.report.sale.reports.adapter.ReportOptionPageAdapter
 import com.hanheldpos.utils.DateTimeUtils
 import java.time.temporal.ChronoUnit
 import java.util.*

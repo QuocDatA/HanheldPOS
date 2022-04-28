@@ -9,7 +9,7 @@ import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.cashdrawer.report.ReportCashDrawerResp
 import com.hanheldpos.databinding.FragmentEndDrawerBinding
 import com.hanheldpos.ui.base.fragment.BaseFragment
-import com.hanheldpos.ui.screens.menu.option.report.current_drawer.adapter.ReportDrawerInfoAdapter
+import com.hanheldpos.ui.screens.menu.report.current_drawer.adapter.ReportDrawerInfoAdapter
 import com.hanheldpos.ui.screens.pincode.PinCodeFragment
 import com.hanheldpos.utils.PriceUtils
 

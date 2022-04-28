@@ -95,37 +95,6 @@ class MenuFragment : BaseFragment<FragmentMenuBinding, MenuVM>(), MenuUV {
         when (option.type as NavBarOptionType) {
             NavBarOptionType.ORDERS -> {
 
-                CoroutineScope(Dispatchers.IO).launch {
-                    DatabaseHelper.ordersCompleted.getAll().take(1).collectLatest {
-                        it.lastOrNull()?.let { completedEntity ->
-                            launch(Dispatchers.Main) {
-
-                                try {
-                                    BillPrinterManager.init(
-                                        fragmentContext.applicationContext,
-                                        BillPrinterManager.PrintOptions(
-                                            useSDK = true,
-                                            connectionType = BillPrinterManager.PrintConnectionType.LAN,
-                                            deviceType = BillPrinterManager.PrinterDeviceInfo.DeviceType.UROVO
-                                        ).setUpLan(BillPrinterManager.PrintOptions.LanConfig(port = 9100, ipAddress = "192.168.1.87"))
-                                    )
-
-                                    BillPrinterManager.get().print(
-                                        fragmentContext,
-                                        DatabaseMapper.mappingOrderReqFromEntity(completedEntity)
-                                    )
-                                } catch (e: Exception) {
-                                    e.printStackTrace()
-                                }
-
-
-
-                            }
-                        }
-
-                    }
-                }
-
             }
             NavBarOptionType.TRANSACTIONS -> {}
             NavBarOptionType.REPORTS -> navigator.goToWithCustomAnimation(com.hanheldpos.ui.screens.menu.report.ReportFragment());

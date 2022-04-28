@@ -22,7 +22,7 @@ import com.hanheldpos.model.report.SaleReportCustomData
 import com.hanheldpos.model.setting.SettingDevicePut
 import com.hanheldpos.ui.base.dialog.AppAlertDialog
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
-import com.hanheldpos.ui.screens.menu.option.report.sale.reports.adapter.NumberDayReportItem
+import com.hanheldpos.ui.screens.menu.report.sale.reports.adapter.NumberDayReportItem
 import com.hanheldpos.utils.DateTimeUtils
 import com.hanheldpos.utils.GSonUtils
 import com.hanheldpos.utils.StringUtils

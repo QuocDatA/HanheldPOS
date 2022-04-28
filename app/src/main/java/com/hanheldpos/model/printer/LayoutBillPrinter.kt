@@ -17,8 +17,8 @@ import com.hanheldpos.model.payment.PaymentMethodType
 import com.hanheldpos.model.product.ExtraConverter
 import com.hanheldpos.model.product.ProductType
 import com.hanheldpos.utils.*
-import com.utils.wagu.Block
-import com.utils.wagu.WaguUtils
+import com.handheld.printer.wagu.Block
+import com.handheld.printer.wagu.WaguUtils
 
 class LayoutBillPrinter(
     private val context: Context,
