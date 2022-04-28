@@ -44,15 +44,18 @@ class PaymentCompletedFragment(
                             BillPrinterManager.init(
                                 fragmentContext.applicationContext,
                                 BillPrinterManager.PrintOptions(
-                                    useSDK = true,
-                                    connectionType = BillPrinterManager.PrintConnectionType.LAN,
-                                    deviceType = BillPrinterManager.PrinterDeviceInfo.DeviceType.UROVO
+                                    connectionType = BillPrinterManager.PrintConnectionType.BLUETOOTH,
+                                    deviceType = BillPrinterManager.PrinterDeviceInfo.DeviceType.HANDHELD
                                 )
                             )
-                            BillPrinterManager.get().print(
-                                fragmentContext,
-                                DatabaseMapper.mappingOrderReqFromEntity(completedEntity)
-                            )
+                            BillPrinterManager.get().apply {
+                                print(
+                                    fragmentContext,
+                                    DatabaseMapper.mappingOrderReqFromEntity(completedEntity)
+                                )
+                                disconnect()
+                            }
+
                         } catch (e: Exception) {
                             e.printStackTrace()
                         }

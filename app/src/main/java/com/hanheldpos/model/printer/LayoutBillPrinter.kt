@@ -68,13 +68,14 @@ class LayoutBillPrinter(
         // Cash - Change
         printCashChange()
 
+        printFeedLine(printOptions.deviceInfo.lineFeed() * 2)
 
         // Thank you
         printThankYou()
 
         // End Print
 
-        printFeedLine(printOptions.deviceInfo.lineFeed())
+        printFeedLine(printOptions.deviceInfo.lineFeed() * 3)
         cutPaper()
     }
 
@@ -217,9 +218,10 @@ class LayoutBillPrinter(
         val quantity = "${productChosen.Quantity}x"
         val amount = PriceUtils.formatStringPrice(productChosen.LineTotal ?: 0.0)
         val proName = productChosen.Name1
+        val subtotal = productChosen.Subtotal
         val contentName = WaguUtils.columnListDataBlock(
             charPerLineText,
-            mutableListOf(mutableListOf(quantity, proName, amount)),
+            mutableListOf(mutableListOf(quantity, "$proName (${PriceUtils.formatStringPrice(subtotal?:0.0)})", amount)),
             columnOrderDetailAlign,
             columnSize,
             isWrapWord = true
