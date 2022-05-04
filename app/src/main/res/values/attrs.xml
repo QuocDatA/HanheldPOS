@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="FullWidthTabLayoutTheme">
+        <attr name="fullWidthTabLayoutStyle" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="FullWidthTabLayout">
+        <attr name="marginAmongTabs" format="dimension" />
+    </declare-styleable>
+
+    <declare-styleable name="CustomWidthTabLayoutTheme">
+        <attr name="customWidthTabLayoutStyle" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="CustomWidthTabLayout">
+        <attr name="tabWidth" format="dimension" />
+    </declare-styleable>
+</resources>

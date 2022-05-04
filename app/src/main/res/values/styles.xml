@@ -130,6 +130,11 @@
         <item name="android:gravity">center_vertical</item>
     </style>
 
+    <style name="BoxCustom">
+        <item name="android:background">@drawable/bg_box_selector</item>
+        <item name="android:gravity">center</item>
+    </style>
+
     <style name="CheckBoxCustom">
         <item name="android:background">@drawable/bg_checkbox_selector</item>
     </style>
@@ -163,5 +168,10 @@
     <style name="WideDialog" parent="Base.Theme.AppCompat.Dialog">
         <item name="android:windowMinWidthMajor">96%</item>
         <item name="android:windowMinWidthMinor">96%</item>
+    </style>
+
+    <style name="TextAppearance.Tablayout" parent="TextAppearance">
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">@dimen/_10ssp</item>
     </style>
 </resources>

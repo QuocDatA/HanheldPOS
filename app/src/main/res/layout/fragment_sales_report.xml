@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="com.hanheldpos.ui.screens.menu.option.report.sale.reports.SalesReportVM" />
+            type="com.hanheldpos.ui.screens.menu.report.sale.reports.SalesReportVM" />
 
         <import type="com.hanheldpos.model.DataHelper" />
 

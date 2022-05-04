@@ -227,4 +227,14 @@
     <string name="employee_printer_layout">Employee :</string>
     <string name="location">Location</string>
     <string name="create_date">Create Date</string>
+    <string name="general">General</string>
+    <string name="hardware">Hardware</string>
+    <string name="time_automatically_push_orders">Time Automatically Push Orders</string>
+    <string name="forever">Forever</string>
+    <string name="default_m">Default</string>
+    <string name="manual">Manual</string>
+    <string name="bill_language">Bill Language</string>
+    <string name="printer_status">Printer Status</string>
+    <string name="see_printer_log">See printer log</string>
+    <string name="other_device_status">Other Device Status</string>
 </resources>

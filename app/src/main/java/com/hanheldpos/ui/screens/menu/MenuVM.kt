@@ -3,7 +3,7 @@ package com.hanheldpos.ui.screens.menu
 import android.content.Context
 import com.hanheldpos.R
 import com.hanheldpos.ui.screens.menu.adapter.ItemOptionNav
-import com.hanheldpos.model.menu_nav_opt.NavBarOptionType
+import com.hanheldpos.model.menu.NavBarOptionType
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
 
 class MenuVM : BaseUiViewModel<MenuUV>() {

@@ -65,9 +65,9 @@ class BillPrinterManager private constructor() {
 
         fun lineFeed() : Int {
             return when (deviceType) {
-                DeviceType.POS -> 5
-                DeviceType.HANDHELD -> 5
-                DeviceType.UROVO -> 300
+                DeviceType.POS -> 1
+                DeviceType.HANDHELD -> 1
+                DeviceType.UROVO -> 60
             }
         }
 
@@ -91,12 +91,12 @@ class BillPrinterManager private constructor() {
 
     class PrintOptions(
         val printMethod: PrintMethod = PrintMethod.TEXT,
-        val useSDK: Boolean = false,
         val connectionType: PrintConnectionType,
         deviceType: PrinterDeviceInfo.DeviceType,
     ) {
         val deviceInfo = PrinterDeviceInfo(deviceType)
         var lanConfig: LanConfig? = null
+        var useSDK: Boolean = false
 
         class LanConfig(
             var port: Int? = null,
@@ -106,6 +106,11 @@ class BillPrinterManager private constructor() {
 
         fun setUpLan(lanConfig: LanConfig): PrintOptions {
             this.lanConfig = lanConfig
+            return this
+        }
+
+        fun setUrovo(useSDK : Boolean) : PrintOptions {
+            this.useSDK = useSDK
             return this
         }
     }
@@ -219,4 +224,12 @@ class BillPrinterManager private constructor() {
     }
 
     // endregion
+
+    fun isConnected() : Boolean {
+        return true
+    }
+
+    fun disconnect() {
+        printer.disconnect()
+    }
 }

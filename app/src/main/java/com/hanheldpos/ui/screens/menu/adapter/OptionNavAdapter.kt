@@ -15,6 +15,8 @@ class OptionNavAdapter(
         return R.layout.item_menu
     }
 
+
+
     private class DiffCallback : DiffUtil.ItemCallback<ItemOptionNav>() {
         override fun areItemsTheSame(
             oldItem: ItemOptionNav,

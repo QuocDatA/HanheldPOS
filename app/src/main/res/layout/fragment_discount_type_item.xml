@@ -37,39 +37,27 @@
             <com.diadiem.pos_components.PTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/discount"
                 android:layout_marginBottom="@dimen/_8sdp"
+                android:text="@string/discount"
                 app:useFontStyle="bold"
                 app:useTextColor="color4"
                 app:useTextHeader="h5" />
-
-            <androidx.recyclerview.widget.RecyclerView
+            <com.hanheldpos.ui.widgets.CustomWidthTabLayout
                 android:id="@+id/tabDiscountType"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:itemCount="3"
-                tools:listitem="@layout/item_tab_discount_type" />
+                android:layout_height="@dimen/_30sdp"
+                app:tabTextAppearance="@style/TextAppearance.Tablayout"
+                app:tabIndicatorFullWidth="false"
+                app:marginAmongTabs="@dimen/_3sdp"
+                app:tabRippleColor="@{null}"
+                app:tabTextColor="@color/color_2"
+                app:tabBackground="@drawable/bg_tab_discount_type"
+                app:tabIndicator="@null"
+                />
 
             <include layout="@layout/divider_vertical" />
         </LinearLayout>
 
-        <com.diadiem.pos_components.PTextView
-            android:id="@+id/btnClearDiscount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/clear_discount"
-            android:layout_gravity="end"
-            android:clickable="true"
-            android:focusable="true"
-            android:layout_marginEnd="@dimen/_8sdp"
-            android:layout_marginTop="@dimen/_14sdp"
-            app:layout_constraintTop_toBottomOf="@id/tabLayout"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:useFontStyle="normal"
-            app:useTextColor="color8"
-            app:useTextHeader="h6" />
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/discountFragmentContainer"
@@ -80,7 +68,7 @@
             app:layout_constrainedHeight="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintHeight_min="wrap"
-            app:layout_constraintTop_toBottomOf="@id/btnClearDiscount" />
+            app:layout_constraintTop_toBottomOf="@id/tabLayout" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

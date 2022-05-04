@@ -114,13 +114,7 @@ class CartVM : BaseUiViewModel<CartUV>() {
                 }
 
                 launch(Dispatchers.Main) {
-                    // Save order bill
-                    /*val filePath = File(context.getExternalFilesDir(null), "bitmap.jpeg")
-                    filePath.writeBitmap(
-                        BillOrderHelper.getPrintOrderBill(context, orderReq),
-                        Bitmap.CompressFormat.JPEG,
-                        100
-                    )*/
+
                     showLoading(false)
                     if (!onPaymentSelected)
                         uiCallback?.onBillSuccess()

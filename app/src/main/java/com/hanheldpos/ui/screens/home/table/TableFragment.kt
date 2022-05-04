@@ -91,6 +91,7 @@ class TableFragment : BaseFragment<FragmentTableBinding, TableVM>(), TableUV {
         ).also {
             binding.recyclerTable.apply {
                 adapter = it;
+                itemAnimator = null
             }
         }
 
