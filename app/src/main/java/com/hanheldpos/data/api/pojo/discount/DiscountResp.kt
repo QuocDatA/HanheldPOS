@@ -179,7 +179,7 @@ data class DiscountResp(
         val c = Calendar.getInstance()
         c.time = curDateTime;
         return isValidTime(
-            ScheduleList?.firstOrNull { schedule -> schedule.Id == c.get(Calendar.DAY_OF_WEEK) },
+            ScheduleList.firstOrNull { schedule -> schedule.Id == c.get(Calendar.DAY_OF_WEEK) },
             curDateTime
         );
     }
@@ -199,13 +199,13 @@ data class DiscountResp(
         timeOnString: String,
         curDateTime: Date
     ): Boolean {
-        try {
+        return try {
             val timeOff = DateTimeUtils.strToDate(timeOffString, DateTimeUtils.Format.HH_mm);
             val timeOn = DateTimeUtils.strToDate(timeOnString, DateTimeUtils.Format.HH_mm);
 
-            return curDateTime.compareTo(timeOff) <= 0 && curDateTime.compareTo(timeOn) >= 0;
+            curDateTime <= timeOff && curDateTime >= timeOn;
         } catch (error: Exception) {
-            return false; }
+            false; }
     }
 
     private fun isValidMinRequired(subtotal: Double, quantity: Int): Boolean {

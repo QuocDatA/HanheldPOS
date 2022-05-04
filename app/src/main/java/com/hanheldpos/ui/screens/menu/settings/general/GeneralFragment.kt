@@ -6,16 +6,21 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentGeneralBinding
-import com.hanheldpos.model.menu.ItemRadioSettingOption
+import com.hanheldpos.model.menu.settings.ItemSettingOption
+import com.hanheldpos.model.menu.settings.BillLanguageOption
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
-import com.hanheldpos.ui.screens.menu.settings.RadioSettingsOptionAdapter
+import com.hanheldpos.ui.screens.home.DropDownItem
+import com.hanheldpos.ui.screens.menu.settings.adapter.BillLanguageOptionSpinner
+import com.hanheldpos.ui.screens.menu.settings.adapter.SettingOptionType
+import com.hanheldpos.ui.screens.menu.settings.adapter.SettingsOptionAdapter
 
 
 class GeneralFragment : BaseFragment<FragmentGeneralBinding, GeneralVM>(), GeneralUV {
 
-    private lateinit var notificationAdapter: RadioSettingsOptionAdapter
-    private lateinit var pushAdapter: RadioSettingsOptionAdapter
+    private lateinit var notificationAdapter: SettingsOptionAdapter
+    private lateinit var pushAdapter: SettingsOptionAdapter
+    private lateinit var billLanguageOptionSpinner: BillLanguageOptionSpinner
 
     override fun layoutRes(): Int {
         return R.layout.fragment_general
@@ -34,8 +39,8 @@ class GeneralFragment : BaseFragment<FragmentGeneralBinding, GeneralVM>(), Gener
 
     override fun initView() {
         notificationAdapter =
-            RadioSettingsOptionAdapter(object : BaseItemClickListener<ItemRadioSettingOption> {
-                override fun onItemClick(adapterPosition: Int, item: ItemRadioSettingOption) {
+            SettingsOptionAdapter(style = SettingOptionType.RADIO,object : BaseItemClickListener<ItemSettingOption> {
+                override fun onItemClick(adapterPosition: Int, item: ItemSettingOption) {
 
                 }
             })
@@ -59,11 +64,12 @@ class GeneralFragment : BaseFragment<FragmentGeneralBinding, GeneralVM>(), Gener
         }
 
         pushAdapter =
-            RadioSettingsOptionAdapter(object : BaseItemClickListener<ItemRadioSettingOption> {
-                override fun onItemClick(adapterPosition: Int, item: ItemRadioSettingOption) {
+            SettingsOptionAdapter(
+                style = SettingOptionType.RADIO, object : BaseItemClickListener<ItemSettingOption> {
+                    override fun onItemClick(adapterPosition: Int, item: ItemSettingOption) {
 
-                }
-            })
+                    }
+                })
 
         pushAdapter.let {
             binding.pushOption.listOption.apply {
@@ -84,7 +90,8 @@ class GeneralFragment : BaseFragment<FragmentGeneralBinding, GeneralVM>(), Gener
             }
         }
 
-
+        billLanguageOptionSpinner = BillLanguageOptionSpinner(requireContext())
+        binding.billLanguageOptions.adapter = billLanguageOptionSpinner
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -96,6 +103,16 @@ class GeneralFragment : BaseFragment<FragmentGeneralBinding, GeneralVM>(), Gener
         viewModel.getPushOptions(requireContext()).let {
             pushAdapter.submitList(it)
             pushAdapter.notifyDataSetChanged()
+        }
+        BillLanguageOption.values().mapIndexed { index, billLanguageOption ->
+            DropDownItem(
+                name = billLanguageOption.name,
+                realItem = billLanguageOption,
+                position = index
+            )
+        }.let {
+            billLanguageOptionSpinner.submitList(it)
+            billLanguageOptionSpinner.notifyDataSetChanged()
         }
     }
 

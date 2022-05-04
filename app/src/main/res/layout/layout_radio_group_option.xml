@@ -25,6 +25,8 @@
             tools:text="Title" />
 
         <androidx.recyclerview.widget.RecyclerView
+            android:nestedScrollingEnabled="false"
+            android:overScrollMode="never"
             android:id="@+id/listOption"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

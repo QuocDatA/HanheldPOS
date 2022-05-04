@@ -45,8 +45,8 @@ class PaymentCompletedFragment(
                                 fragmentContext.applicationContext,
                                 BillPrinterManager.PrintOptions(
                                     connectionType = BillPrinterManager.PrintConnectionType.BLUETOOTH,
-                                    deviceType = BillPrinterManager.PrinterDeviceInfo.DeviceType.HANDHELD
-                                )
+                                    deviceType = BillPrinterManager.PrinterDeviceInfo.DeviceType.UROVO
+                                ).setUrovo(true)
                             )
                             BillPrinterManager.get().apply {
                                 print(

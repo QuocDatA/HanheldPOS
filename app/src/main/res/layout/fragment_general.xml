@@ -46,23 +46,56 @@
                 android:layout_gravity="bottom" />
         </FrameLayout>
 
-        <LinearLayout
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingHorizontal="@dimen/_8sdp"
-            android:paddingVertical="@dimen/_18sdp">
+            android:layout_height="wrap_content">
 
-            <include
-                android:id="@+id/notificationOption"
-                layout="@layout/layout_group_option"
-                app:title="@string/notification" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="@dimen/_8sdp"
+                android:paddingVertical="@dimen/_18sdp">
 
-            <include
-                android:id="@+id/pushOption"
-                layout="@layout/layout_group_option"
-                app:title="@string/time_automatically_push_orders" />
-        </LinearLayout>
+                <include
+                    android:id="@+id/notificationOption"
+                    layout="@layout/layout_radio_group_option"
+                    app:title="@{@string/notification}" />
+
+                <androidx.legacy.widget.Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_18sdp" />
+
+                <include
+                    android:id="@+id/pushOption"
+                    layout="@layout/layout_radio_group_option"
+                    app:title="@{@string/time_automatically_push_orders}" />
+
+                <androidx.legacy.widget.Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_18sdp" />
+
+                <com.diadiem.pos_components.PTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/bill_language"
+                    app:useFontStyle="bold"
+                    app:useTextColor="color4"
+                    app:useTextHeader="h5" />
+
+                <androidx.appcompat.widget.AppCompatSpinner
+
+                    android:id="@+id/billLanguageOptions"
+                    style="@style/Spinner.dropdown.notOverLap"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:layout_marginVertical="@dimen/_8sdp"
+                    tools:listitem="@layout/item_dropdown_spinner" />
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
 
     </LinearLayout>
 

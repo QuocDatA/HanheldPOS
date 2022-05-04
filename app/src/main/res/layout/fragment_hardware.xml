@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.hanheldpos.ui.screens.menu.settings.hardware.HardwareVM" />
@@ -44,5 +45,43 @@
                 android:layout_height="0.5dp"
                 android:layout_gravity="bottom" />
         </FrameLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="@dimen/_8sdp"
+                android:paddingVertical="@dimen/_18sdp">
+
+                <include
+                    android:id="@+id/printerStatus"
+                    layout="@layout/layout_select_box_group_option"
+                    app:subTitle="@{@string/see_printer_log}"
+                    app:title="@{@string/printer_status}" />
+
+                <androidx.legacy.widget.Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_18sdp" />
+
+                <include
+                    android:id="@+id/orderDeviceStatus"
+                    layout="@layout/layout_select_box_group_option"
+                    app:title="@{@string/other_device_status}" />
+
+                <androidx.legacy.widget.Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_18sdp" />
+
+                <include
+                    android:id="@+id/selectPrinter"
+                    layout="@layout/layout_radio_group_option"
+                    app:title="@{@string/other_device_status}" />
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
     </LinearLayout>
 </layout>

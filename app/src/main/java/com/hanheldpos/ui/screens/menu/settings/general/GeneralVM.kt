@@ -1,9 +1,8 @@
 package com.hanheldpos.ui.screens.menu.settings.general
 
 import android.content.Context
-import com.hanheldpos.PosApp
 import com.hanheldpos.R
-import com.hanheldpos.model.menu.ItemRadioSettingOption
+import com.hanheldpos.model.menu.settings.ItemSettingOption
 import com.hanheldpos.model.menu.settings.GeneralNotificationType
 import com.hanheldpos.model.menu.settings.GeneralPushType
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
@@ -13,50 +12,50 @@ class GeneralVM : BaseUiViewModel<GeneralUV>() {
         uiCallback?.onFragmentBackPressed()
     }
 
-    fun getNotificationOptions(context : Context): List<ItemRadioSettingOption> {
+    fun getNotificationOptions(context : Context): List<ItemSettingOption> {
         return mutableListOf(
-            ItemRadioSettingOption(
+            ItemSettingOption(
                 title = context.getString(R.string.default_m),
                 value = GeneralNotificationType.DEFAULT
             ),
-            ItemRadioSettingOption(
+            ItemSettingOption(
                 title = "1 Minute",
                 value = GeneralNotificationType.TIME.apply { amount = 60 }
             ),
-            ItemRadioSettingOption(
+            ItemSettingOption(
                 title = "5 Minutes",
                 value = GeneralNotificationType.TIME.apply { amount = 300 }
             ),
-            ItemRadioSettingOption(
+            ItemSettingOption(
                 title = context.getString(R.string.forever),
                 value = GeneralNotificationType.FOREVER
             ),
         )
     }
 
-    fun getPushOptions(context: Context) : List<ItemRadioSettingOption> {
+    fun getPushOptions(context: Context) : List<ItemSettingOption> {
         return mutableListOf(
-            ItemRadioSettingOption(
+            ItemSettingOption(
                 title = context.getString(R.string.manual),
                 value = GeneralPushType.MANUAL
             ),
-            ItemRadioSettingOption(
+            ItemSettingOption(
                 title = "5 Minute",
                 value = GeneralPushType.TIME.apply { amount = 300 }
             ),
-            ItemRadioSettingOption(
+            ItemSettingOption(
                 title = "15 Minutes",
                 value = GeneralPushType.TIME.apply { amount = 15*60 }
             ),
-            ItemRadioSettingOption(
+            ItemSettingOption(
                 title = "30 Minutes",
                 value = GeneralPushType.TIME.apply { amount = 30 * 60 }
             ),
-            ItemRadioSettingOption(
+            ItemSettingOption(
                 title = "1 Hour",
                 value = GeneralPushType.TIME.apply { amount = 60 * 60 }
             ),
-            ItemRadioSettingOption(
+            ItemSettingOption(
                 title = "2 Hours",
                 value = GeneralPushType.TIME.apply { amount = 120 * 60 }
             ),
