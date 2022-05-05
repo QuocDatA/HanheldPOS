@@ -15,12 +15,9 @@ import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.UserHelper
 import com.hanheldpos.model.cashdrawer.CashDrawerStatusReq
 import com.hanheldpos.model.cashdrawer.DrawerStatus
-
 import com.hanheldpos.ui.base.viewmodel.BaseRepoViewModel
 import com.hanheldpos.utils.GSonUtils
-import com.hanheldpos.utils.NetworkUtils
 import java.util.*
-import kotlin.coroutines.coroutineContext
 
 class PinCodeVM : BaseRepoViewModel<EmployeeRepo, PinCodeUV>() {
 
@@ -108,7 +105,10 @@ class PinCodeVM : BaseRepoViewModel<EmployeeRepo, PinCodeUV>() {
             object : BaseRepoCallback<BaseResponse<List<EmployeeResp>>> {
                 override fun apiResponse(data: BaseResponse<List<EmployeeResp>>?) {
                     if (data == null || data.DidError || data.Model.isNullOrEmpty()) {
-                        showError(data?.Message ?: data?.ErrorMessage ?: PosApp.instance.getString(R.string.passcode_does_not_exist_please_try_again));
+                        showError(
+                            data?.Message ?: data?.ErrorMessage
+                            ?: PosApp.instance.getString(R.string.an_error_occur)
+                        );
                         onEmployeeError()
                     } else {
                         onEmployeeSuccess(data.Model.first())

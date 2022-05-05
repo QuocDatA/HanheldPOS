@@ -41,7 +41,11 @@ class DiscountCodeVM : BaseUiViewModel<DiscountCodeUV>() {
                 onApplyCouponCode(discSelected.DiscountCode)
             }
             DiscountTypeEnum.BUYX_GETY -> {
-
+                if(discSelected.isMaxNumberOfUsedPerOrder()) {
+                    showError(PosApp.instance.getString(R.string.msg_error_maximum_selection_is_))
+                    return
+                }
+                uiCallback?.openBuyXGetY(discSelected)
             }
             else -> {}
         }

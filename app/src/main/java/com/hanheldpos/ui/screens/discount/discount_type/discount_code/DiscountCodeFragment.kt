@@ -13,6 +13,7 @@ import com.hanheldpos.model.discount.DiscApplyTo
 import com.hanheldpos.model.discount.DiscountTriggerType
 import com.hanheldpos.model.discount.DiscountTypeFor
 import com.hanheldpos.ui.base.fragment.BaseFragment
+import com.hanheldpos.ui.screens.buy_x_get_y.BuyXGetYFragment
 import com.hanheldpos.ui.screens.discount.DiscountFragment
 import com.hanheldpos.ui.screens.discount.discount_detail.DiscountDetailFragment
 import com.hanheldpos.ui.screens.discount.discount_type.adapter.DiscountServerAdapter
@@ -84,6 +85,11 @@ class DiscountCodeFragment(
                 viewModel.initData();
             }
 
+    }
+
+    override fun openBuyXGetY(discount: DiscountResp) {
+        listener.addDiscountBuyXGetY(discount)
+        navigator.goTo(BuyXGetYFragment(discount))
     }
 
     override fun initAction() {
