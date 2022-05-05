@@ -79,7 +79,10 @@ class CategoryMenuFragment(
                     }
                 }
             }).also {
-            binding.categoryList.adapter = it
+            binding.categoryList.apply {
+                adapter = it
+                itemAnimator = null
+            }
         }
         binding.categoryList.layoutManager = object: GridLayoutManager(this.requireContext(), 2) {
             override fun canScrollVertically(): Boolean {

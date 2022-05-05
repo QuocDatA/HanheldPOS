@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="com.hanheldpos.ui.screens.menu.option.report.current_drawer.payin_payout.PayInPayOutVM" />
+            type="com.hanheldpos.ui.screens.menu.report.current_drawer.payin_payout.PayInPayOutVM" />
     </data>
 
 

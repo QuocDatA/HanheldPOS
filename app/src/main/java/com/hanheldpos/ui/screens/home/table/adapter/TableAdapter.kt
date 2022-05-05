@@ -44,6 +44,7 @@ class TableAdapter(
         parent: ViewGroup,
         viewType: Int
     ): BaseBindingViewHolder<FloorTable> {
+
         DataBindingUtil.inflate<ViewDataBinding>(
             LayoutInflater.from(parent.context),
             viewType,

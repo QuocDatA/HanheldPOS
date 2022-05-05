@@ -15,11 +15,11 @@ abstract class BasePrinterManager {
     abstract fun cutPaper()
 
 
-    enum class FontSize(val charsPerLine: Int) {
-        Small(48),
-        Medium(48),
-        Large(24),
-        Wide(24)
+    enum class FontSize {
+        Small,
+        Medium,
+        Large,
+        Wide
     }
 
     enum class BitmapAlign {

@@ -4,20 +4,19 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hanheldpos.R
-import com.hanheldpos.database.DatabaseMapper
 import com.hanheldpos.databinding.FragmentMenuBinding
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.DatabaseHelper
 import com.hanheldpos.model.OrderHelper
-import com.hanheldpos.model.menu_nav_opt.LogoutType
-import com.hanheldpos.model.menu_nav_opt.NavBarOptionType
-import com.hanheldpos.model.printer.BillPrinterManager
+import com.hanheldpos.model.menu.LogoutType
+import com.hanheldpos.model.menu.NavBarOptionType
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.dialog.AppAlertDialog
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.menu.adapter.ItemOptionNav
 import com.hanheldpos.ui.screens.menu.adapter.OptionNavAdapter
-import com.hanheldpos.ui.screens.menu.option.report.ReportFragment
+import com.hanheldpos.ui.screens.menu.report.ReportFragment
+import com.hanheldpos.ui.screens.menu.settings.SettingsFragment
 import com.hanheldpos.ui.screens.pincode.PinCodeFragment
 import com.hanheldpos.ui.screens.welcome.WelcomeFragment
 import com.hanheldpos.utils.NetworkUtils
@@ -95,42 +94,12 @@ class MenuFragment : BaseFragment<FragmentMenuBinding, MenuVM>(), MenuUV {
         when (option.type as NavBarOptionType) {
             NavBarOptionType.ORDERS -> {
 
-                CoroutineScope(Dispatchers.IO).launch {
-                    DatabaseHelper.ordersCompleted.getAll().take(1).collectLatest {
-                        it.lastOrNull()?.let { completedEntity ->
-                            launch(Dispatchers.Main) {
-
-                                try {
-                                    BillPrinterManager.init(
-                                        fragmentContext.applicationContext,
-                                        BillPrinterManager.PrintOptions(
-                                            connectionType = BillPrinterManager.PrintConnectionType.BLUETOOTH,
-                                            deviceType = BillPrinterManager.PrinterDeviceInfo.DeviceType.HANDHELD
-                                        )
-                                    )
-
-
-                                } catch (e: Exception) {
-                                    e.printStackTrace()
-                                }
-
-                                BillPrinterManager.get().print(
-                                    fragmentContext,
-                                    DatabaseMapper.mappingOrderReqFromEntity(completedEntity)
-                                )
-
-                            }
-                        }
-
-                    }
-                }
-
             }
             NavBarOptionType.TRANSACTIONS -> {}
             NavBarOptionType.REPORTS -> navigator.goToWithCustomAnimation(ReportFragment());
             NavBarOptionType.CUSTOMER -> {}
             NavBarOptionType.ORDER_HISTORY -> {}
-            NavBarOptionType.SETTINGS -> {}
+            NavBarOptionType.SETTINGS -> navigator.goToWithCustomAnimation(SettingsFragment());
             NavBarOptionType.SUPPORT -> {}
             NavBarOptionType.LOGOUT_DEVICE -> onLogoutOption(
                 LogoutType.LOGOUT_DEVICE,

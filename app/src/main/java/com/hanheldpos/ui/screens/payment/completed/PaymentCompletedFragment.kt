@@ -2,8 +2,16 @@ package com.hanheldpos.ui.screens.payment.completed
 
 import com.hanheldpos.R
 import com.hanheldpos.binding.setPriceView
+import com.hanheldpos.database.DatabaseMapper
 import com.hanheldpos.databinding.FragmentPaymentCompletedBinding
+import com.hanheldpos.model.DatabaseHelper
+import com.hanheldpos.model.printer.BillPrinterManager
 import com.hanheldpos.ui.base.fragment.BaseFragment
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.take
+import kotlinx.coroutines.launch
 
 class PaymentCompletedFragment(
     private val isHasEmployee: Boolean,
@@ -27,6 +35,36 @@ class PaymentCompletedFragment(
     }
 
     override fun initView() {
+        showLoading(true)
+        CoroutineScope(Dispatchers.IO).launch {
+            DatabaseHelper.ordersCompleted.getAll().take(1).collectLatest {
+                it.lastOrNull()?.let { completedEntity ->
+                    launch(Dispatchers.Main) {
+                        try {
+                            BillPrinterManager.init(
+                                fragmentContext.applicationContext,
+                                BillPrinterManager.PrintOptions(
+                                    connectionType = BillPrinterManager.PrintConnectionType.BLUETOOTH,
+                                    deviceType = BillPrinterManager.PrinterDeviceInfo.DeviceType.UROVO
+                                ).setUrovo(true)
+                            )
+                            BillPrinterManager.get().apply {
+                                print(
+                                    fragmentContext,
+                                    DatabaseMapper.mappingOrderReqFromEntity(completedEntity)
+                                )
+                                disconnect()
+                            }
+
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                        showLoading(false)
+                    }
+                }
+            }
+        }
+
         setPriceView(binding.textChangeValue, overPay - payable)
         setPriceView(binding.textReceived, overPay)
     }

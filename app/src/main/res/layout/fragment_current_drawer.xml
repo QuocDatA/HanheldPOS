@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="com.hanheldpos.ui.screens.menu.option.report.current_drawer.CurrentDrawerVM" />
+            type="com.hanheldpos.ui.screens.menu.report.current_drawer.CurrentDrawerVM" />
 
         <import type="android.view.View" />
     </data>

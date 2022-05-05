@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="com.hanheldpos.ui.screens.menu.option.report.ReportVM" />
+            type="com.hanheldpos.ui.screens.menu.report.ReportVM" />
     </data>
 
     <LinearLayout

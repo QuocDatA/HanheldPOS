@@ -255,6 +255,7 @@ class CartDataVM : BaseViewModel() {
                         )
                 }
             }
+
         // Find and append discounts for order.
         discountCouponList?.filter { disc -> disc.DiscountApplyTo == DiscApplyTo.ORDER.value }
             ?.forEach { disc ->

@@ -8,7 +8,7 @@
 
         <variable
             name="viewModel"
-            type="com.hanheldpos.ui.screens.menu.option.report.sale.customize.CustomizeReportVM" />
+            type="com.hanheldpos.ui.screens.menu.report.sale.customize.CustomizeReportVM" />
     </data>
 
 

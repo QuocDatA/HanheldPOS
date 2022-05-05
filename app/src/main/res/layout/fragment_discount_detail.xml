@@ -69,9 +69,10 @@
             </LinearLayout>
 
         </FrameLayout>
+
         <include layout="@layout/divider_vertical" />
 
-        <ScrollView
+        <androidx.core.widget.NestedScrollView
             android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="0dp">
@@ -80,8 +81,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_marginHorizontal="@dimen/_12sdp"
-                android:layout_marginTop="@dimen/_14sdp">
+                android:paddingHorizontal="@dimen/_12sdp"
+                android:paddingVertical="@dimen/_14sdp">
 
                 <com.diadiem.pos_components.PTextView
                     android:layout_width="wrap_content"
@@ -595,7 +596,7 @@
 
             </LinearLayout>
 
-        </ScrollView>
+        </androidx.core.widget.NestedScrollView>
         <com.diadiem.pos_components.PMaterialButton
             android:id="@+id/btnApplyDiscount"
             android:layout_width="match_parent"
