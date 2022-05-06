@@ -243,6 +243,10 @@ class CartFragment(private val listener: CartCallBack) :
                 override fun clearAllDiscountCoupon() {
                     cartDataVM.clearAllDiscountCoupon()
                 }
+
+                override fun addDiscountBuyXGetYToCart(discount: DiscountResp) {
+                    cartDataVM.addBuyXGetY(discount)
+                }
             }))
     }
 

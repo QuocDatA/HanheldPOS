@@ -314,5 +314,10 @@ open class CartModel(
         return totalQty ?: 0;
     }
 
-
+    fun addBuyXGetYEntireOrderDisc(discount : DiscountResp) {
+        if(discountServerList.isNullOrEmpty()) return
+        val isDiscExists = discountServerList.firstOrNull{d -> d._id == discount._id} != null
+        if(!isDiscExists)
+            discountServerList.add(discount)
+    }
 }

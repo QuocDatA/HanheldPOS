@@ -184,7 +184,7 @@
     <string name="base_price">Base Price</string>
     <string name="special_instructions">Special Instructions</string>
     <string name="no_network_connection">No Network Connection</string>
-    <string name="passcode_does_not_exist_please_try_again">Passcode does not exist!. Please try again</string>
+    <string name="an_error_occur">An error has occurred, Please try again!</string>
     <string name="customize_report">Customize Report</string>
     <string name="discount_type">Discount type</string>
     <string name="minimum_requirements">Minimum requirements</string>
@@ -227,6 +227,7 @@
     <string name="employee_printer_layout">Employee :</string>
     <string name="location">Location</string>
     <string name="create_date">Create Date</string>
+    <string name="msg_error_maximum_selection_is_">Maximum selection is Maximum Number Of Used Per Order Value</string>
     <string name="general">General</string>
     <string name="hardware">Hardware</string>
     <string name="time_automatically_push_orders">Time Automatically Push Orders</string>

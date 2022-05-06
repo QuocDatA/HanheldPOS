@@ -7,7 +7,7 @@
 
         <variable
             name="item"
-            type="com.hanheldpos.model.combo.ItemComboGroup" />
+            type="com.hanheldpos.model.buy_x_get_y.ItemBuyXGetYGroup" />
 
         <variable
             name="name"
@@ -58,7 +58,6 @@
                     android:orientation="vertical">
 
                     <LinearLayout
-                        visibleObject="@{item.groupBundle.totalQuantity &lt;= 0}"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_2sdp"
@@ -66,18 +65,21 @@
                         android:orientation="horizontal">
 
                         <com.diadiem.pos_components.PTextView
+                            android:id="@+id/tvGroupParent"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@{name,default=`Group PHO`}"
+                            android:text="@{name}"
                             app:useFontStyle="normal"
                             app:useTextColor="color4"
-                            app:useTextHeader="h6" />
+                            app:useTextHeader="h6"
+                            tools:text = "Group Pho"/>
 
                         <com.diadiem.pos_components.PTextView
+                            android:id="@+id/tvMinimalValue"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/_7sdp"
-                            android:text="@{`( ` + item.requireQuantity() + ` item required )`,default=`(1 items required)`}"
+                            android:text="@{`( ` + item.minimumValueFormat + `)`,default=`(1 items required)`}"
                             app:useFontStyle="normal"
                             app:useTextColor="color6"
                             app:useTextHeader="h6" />
@@ -85,7 +87,7 @@
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/itemSelectedAdapter"
-                        visibleObject="@{item.groupBundle.totalQuantity > 0}"
+                        visibleObject="@{item.containProduct}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:overScrollMode="never"
@@ -93,10 +95,8 @@
                         tools:listitem="@layout/item_combo_picked" />
 
                     <com.diadiem.pos_components.PTextView
-                        visibleObject="@{!item.maxItemSelected &amp;&amp; item.groupBundle.totalQuantity > 0}"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{item.requireQuantity() + ` selection required`,default=`1 items required`}"
                         android:textColor="#FF0000"
                         app:useFontStyle="normal"
                         app:useTextHeader="h7" />
@@ -104,14 +104,12 @@
 
             </LinearLayout>
 
-
             <androidx.recyclerview.widget.RecyclerView
-                android:visibility="gone"
                 android:id="@+id/itemForSelectAdapter"
-                visibleObject="@{item.isFocused}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_10sdp"
+                visibleObject="@{item.isFocused}"
                 android:overScrollMode="never"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                 app:spanCount="4"
@@ -120,7 +118,7 @@
         </LinearLayout>
 
         <FrameLayout
-            visibleObject="@{item.groupBundle.totalQuantity &lt;= 0 &amp;&amp; !item.isFocused}"
+            visibleObject="@{!item.isFocused}"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="#99FFFFFF" />

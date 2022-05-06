@@ -2,13 +2,16 @@ package com.hanheldpos.data.api.pojo.discount
 
 import android.os.Parcelable
 import com.google.gson.Gson
+import com.google.gson.annotations.SerializedName
 import com.google.gson.reflect.TypeToken
 import com.hanheldpos.data.api.pojo.customer.CustomerGroup
 import com.hanheldpos.data.api.pojo.customer.CustomerResp
 import com.hanheldpos.data.api.pojo.fee.CustomerGets
 import com.hanheldpos.data.api.pojo.product.Product
+import com.hanheldpos.data.api.pojo.product.VariantsGroup
 import com.hanheldpos.model.cart.BaseProductInCart
 import com.hanheldpos.model.cart.CartModel
+import com.hanheldpos.model.cart.buy_x_get_y.BuyXGetYApplyTo
 import com.hanheldpos.model.discount.*
 import com.hanheldpos.ui.screens.cart.CurCartData
 import com.hanheldpos.utils.DateTimeUtils
@@ -364,7 +367,11 @@ data class CustomerBuys(
     val IsMaxAmount: Int,
     val IsMaxQuantity: Int,
     val ListApplyTo: List<Product>,
-    val MaximumDiscount: Double
+    val MaximumDiscount: Double,
+    val CustomerName: String,
+    val MinimumTypeId: Int?,
+    val MinimumValue: Double?,
+    val MinimumValueFormat: String,
 ) : Parcelable {
     fun getMaxAmount(amountUsed: Double, productId: String?): Double {
         val productApply = ListApplyTo.firstOrNull { p -> p._id == productId }
@@ -391,6 +398,39 @@ data class CustomerBuys(
 
     fun isApplyModifier(productId: String?): Boolean {
         return ListApplyTo.firstOrNull { p -> p._id == productId }?.ApplyToModifier == 1;
+    }
+
+    fun isBuyCompleted(totalOrder: Double, totalQuantityOrder: Int): Boolean {
+        when(DiscMinRequiredType.fromInt(MinimumTypeId ?: 1)) {
+            DiscMinRequiredType.AMOUNT -> {
+                return totalOrder > MinimumValue ?: 0.0
+            }
+            DiscMinRequiredType.QUANTITY -> {
+                return totalQuantityOrder > MinimumValue ?: 0.0
+            }
+            else -> {
+                return false
+            }
+        }
+    }
+
+    fun findVariantGroup(product_id: String): VariantsGroup? {
+        when (BuyXGetYApplyTo.fromInt(ApplyTo)) {
+            BuyXGetYApplyTo.PRODUCT -> {
+                return ListApplyTo.firstOrNull { p -> p._id == product_id }?.VariantsGroup
+            }
+            BuyXGetYApplyTo.GROUP -> {
+                return ListApplyTo.map { p -> p.ProductList }.flatten()
+                    .firstOrNull { p -> p._id == product_id }?.VariantsGroup
+            }
+            BuyXGetYApplyTo.CATEGORY -> {
+                return ListApplyTo.map { p -> p.ProductList }.flatten()
+                    .firstOrNull { p -> p._id == product_id }?.VariantsGroup
+            }
+            else -> {
+                return null
+            }
+        }
     }
 }
 
