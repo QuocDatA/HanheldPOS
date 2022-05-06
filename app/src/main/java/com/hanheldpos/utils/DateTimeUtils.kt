@@ -187,6 +187,7 @@ object DateTimeUtils {
         const val yy_MMMMM_dd = "yyyy MMMM dd"
         const val MM_DD_YYYY = "MM/dd/yyyy"
         const val YYYY_MM_DD = "yyyy-MM-dd"
+        const val YYYY_MM_DD_18 = "yyyy/MM/dd"
         const val REPORT_TIME = "MMM dd, yyyy, hh:mm aa"
         const val HH_MM = "HH:mm"
         const val DD_MMM_YYYY = "MMM dd YYYY"

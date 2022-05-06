@@ -237,4 +237,11 @@
     <string name="printer_status">Printer Status</string>
     <string name="see_printer_log">See printer log</string>
     <string name="other_device_status">Other Device Status</string>
+    <string name="item_sales">Item Sales</string>
+    <string name="inventory_sales">Inventory Sales</string>
+    <string name="discounts">Discounts</string>
+    <string name="comps">Comps</string>
+    <string name="service">Service</string>
+    <string name="show_detail">Show detail</string>
+    <string name="hide_detail">Hide Detail</string>
 </resources>

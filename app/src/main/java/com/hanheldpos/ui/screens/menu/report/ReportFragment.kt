@@ -12,20 +12,21 @@ import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.menu.adapter.ItemOptionNav
 import com.hanheldpos.ui.screens.menu.adapter.OptionNavAdapter
 import com.hanheldpos.ui.screens.menu.report.current_drawer.CurrentDrawerFragment
-import com.hanheldpos.ui.screens.menu.report.sale.reports.SalesReportFragment
+import com.hanheldpos.ui.screens.menu.report.sale.SaleReportsMenuFragment
+import com.hanheldpos.ui.screens.menu.report.sale.SalesReportFragment
 
-class ReportFragment : BaseFragment<FragmentReportBinding, com.hanheldpos.ui.screens.menu.report.ReportVM>(),
-    com.hanheldpos.ui.screens.menu.report.ReportUV {
+class ReportFragment : BaseFragment<FragmentReportBinding, ReportVM>(),
+    ReportUV {
 
     private lateinit var menuAdapter: OptionNavAdapter
 
     override fun layoutRes() = R.layout.fragment_report
 
-    override fun viewModelClass(): Class<com.hanheldpos.ui.screens.menu.report.ReportVM> {
-        return com.hanheldpos.ui.screens.menu.report.ReportVM::class.java
+    override fun viewModelClass(): Class<ReportVM> {
+        return ReportVM::class.java
     }
 
-    override fun initViewModel(viewModel: com.hanheldpos.ui.screens.menu.report.ReportVM) {
+    override fun initViewModel(viewModel: ReportVM) {
         viewModel.run {
             init(this@ReportFragment);
             binding.viewModel = this;
@@ -77,7 +78,9 @@ class ReportFragment : BaseFragment<FragmentReportBinding, com.hanheldpos.ui.scr
     fun onNavOptionClick(option: ItemOptionNav) {
         when (option.type as ReportOptionType) {
             ReportOptionType.CURRENT_DRAWER -> navigator.goToWithAnimationEnterFromRight(CurrentDrawerFragment());
-            ReportOptionType.SALES_REPORT -> navigator.goToWithAnimationEnterFromRight(SalesReportFragment());
+            ReportOptionType.SALES_REPORT -> navigator.goToWithAnimationEnterFromRight(
+                SaleReportsMenuFragment()
+            );
         }
     }
 }

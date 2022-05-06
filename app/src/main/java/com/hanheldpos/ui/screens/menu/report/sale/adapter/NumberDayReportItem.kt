@@ -1,4 +1,4 @@
-package com.hanheldpos.ui.screens.menu.report.sale.reports.adapter
+package com.hanheldpos.ui.screens.menu.report.sale.adapter
 
 
 data class NumberDayReportItem(

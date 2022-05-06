@@ -1,11 +1,10 @@
-package com.hanheldpos.ui.screens.menu.report.sale.reports.adapter
+package com.hanheldpos.ui.screens.menu.report.sale.adapter
 
 import android.annotation.SuppressLint
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.hanheldpos.ui.base.adapter.BaseFragmentPagerAdapter
 
 class ReportOptionPageAdapter(fragmentManager: FragmentManager,
                               lifecycle: Lifecycle

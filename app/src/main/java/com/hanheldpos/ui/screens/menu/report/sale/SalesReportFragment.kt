@@ -1,23 +1,24 @@
-package com.hanheldpos.ui.screens.menu.report.sale.reports
+package com.hanheldpos.ui.screens.menu.report.sale
 
-import com.google.android.material.tabs.TabLayoutMediator
+import android.os.Build
+import androidx.annotation.RequiresApi
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentSalesReportBinding
 import com.hanheldpos.model.report.SaleReportCustomData
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
+import com.hanheldpos.ui.screens.menu.report.sale.adapter.NumberDayReportAdapter
+import com.hanheldpos.ui.screens.menu.report.sale.adapter.NumberDayReportItem
 import com.hanheldpos.ui.screens.menu.report.sale.customize.CustomizeReportFragment
-import com.hanheldpos.ui.screens.menu.report.sale.reports.adapter.NumberDayReportAdapter
-import com.hanheldpos.ui.screens.menu.report.sale.reports.adapter.NumberDayReportItem
-import com.hanheldpos.ui.screens.menu.report.sale.reports.adapter.ReportOptionPageAdapter
 import com.hanheldpos.utils.DateTimeUtils
 import java.time.temporal.ChronoUnit
 import java.util.*
 
-class SalesReportFragment : BaseFragment<FragmentSalesReportBinding, SalesReportVM>(),
+class SalesReportFragment(private val fragment : Fragment) : BaseFragment<FragmentSalesReportBinding, SalesReportVM>(),
     SalesReportUV {
-
-    private lateinit var reportOptionPageAdapter: ReportOptionPageAdapter;
     private lateinit var numberDayReportAdapter: NumberDayReportAdapter;
 
     override fun layoutRes(): Int {
@@ -37,38 +38,12 @@ class SalesReportFragment : BaseFragment<FragmentSalesReportBinding, SalesReport
 
     override fun initView() {
 
-        // Layout
-        reportOptionPageAdapter = ReportOptionPageAdapter(childFragmentManager, lifecycle);
-
-        binding.layoutReportOptions.adapter = reportOptionPageAdapter;
-
-        // Tab View
-        TabLayoutMediator(binding.tabReportOptions, binding.layoutReportOptions) { tab, position ->
-            run {
-                when (ReportOptionPage.fromInt(position)) {
-                    ReportOptionPage.Overview -> {
-                        tab.text = getString(R.string.overview);
-                    }
-                    ReportOptionPage.PaymentSummary -> {
-                        tab.text = getString(R.string.payment_summary);
-                    }
-                    ReportOptionPage.DiningOptions -> {
-                        tab.text = getString(R.string.dining_options);
-                    }
-                    ReportOptionPage.SectionSales -> {
-                        tab.text = getString(R.string.section_sales)
-                    }
-                    null -> {
-
-                    }
-                }
-            }
-        }.attach()
 
         // Number day select
         numberDayReportAdapter =
             NumberDayReportAdapter(
                 listener = object : BaseItemClickListener<NumberDayReportItem> {
+                    @RequiresApi(Build.VERSION_CODES.O)
                     override fun onItemClick(adapterPosition: Int, item: NumberDayReportItem) {
                         viewModel.saleReportCustomData.postValue(viewModel.saleReportCustomData.value!!.apply {
                             startDay = Date.from(endDay?.toInstant()?.minus(item.value.toLong(), ChronoUnit.DAYS));
@@ -83,17 +58,18 @@ class SalesReportFragment : BaseFragment<FragmentSalesReportBinding, SalesReport
     override fun initData() {
         numberDayReportAdapter.submitList(viewModel.initNumberDaySelected());
 
-        reportOptionPageAdapter.submitList(
-            mutableListOf(
-                // TODO: Sale Report
-               /* OverviewReportFragment()*/
-            )
-        );
-
         viewModel.saleReportCustomData.observe(this) {
             setUpDateTitle(it);
         };
 
+        val transaction: FragmentTransaction = childFragmentManager.beginTransaction()
+        transaction.add(R.id.fragmentContainer,fragment )
+        transaction.commit()
+
+        showLoading(true)
+        viewModel.fetchDataSaleReport{
+            showLoading(false)
+        }
 
     }
 

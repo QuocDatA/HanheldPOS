@@ -1,4 +1,4 @@
-package com.hanheldpos.ui.screens.menu.report.sale.reports.adapter
+package com.hanheldpos.ui.screens.menu.report.sale.adapter
 
 import android.annotation.SuppressLint
 import androidx.recyclerview.widget.DiffUtil
@@ -8,7 +8,9 @@ import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 
-class NumberDayReportAdapter(private val listener : BaseItemClickListener<NumberDayReportItem>) : BaseBindingListAdapter<NumberDayReportItem>(DiffCallback()) {
+class NumberDayReportAdapter(private val listener : BaseItemClickListener<NumberDayReportItem>) : BaseBindingListAdapter<NumberDayReportItem>(
+    DiffCallback()
+) {
 
     private var selectedItem : Int = -1;
 

@@ -1,4 +1,4 @@
-package com.hanheldpos.ui.screens.menu.report.sale.reports
+package com.hanheldpos.ui.screens.menu.report.sale
 
 import com.hanheldpos.ui.base.BaseUserView
 

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="item"
+            type="com.hanheldpos.model.menu.report.ReportItem" />
+    </data>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+        <com.diadiem.pos_components.PTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:useTextHeader="h2"
+            app:useTextColor="color4"
+            app:useFontStyle="normal"
+            android:text="@{item.title}"
+            tools:text="18,135,000"
+            />
+        <androidx.legacy.widget.Space
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_4sdp"/>
+        <com.diadiem.pos_components.PTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:useTextHeader="h5"
+            app:useTextColor="color5"
+            app:useFontStyle="normal"
+            android:text="@{item.sub}"
+            tools:text="Gross Sales"
+            />
+    </LinearLayout>
+</layout>

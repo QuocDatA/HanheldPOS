@@ -6,7 +6,7 @@
     <data>
         <variable
             name="item"
-            type="com.hanheldpos.ui.screens.menu.report.sale.reports.adapter.NumberDayReportItem" />
+            type="com.hanheldpos.ui.screens.menu.report.sale.adapter.NumberDayReportItem" />
     </data>
     <FrameLayout
         android:layout_width="match_parent"

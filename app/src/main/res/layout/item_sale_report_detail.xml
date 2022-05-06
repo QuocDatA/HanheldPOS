@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:paddingVertical="@dimen/_10sdp"
+        android:paddingHorizontal="@dimen/_8sdp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+        <com.diadiem.pos_components.PTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:useFontStyle="bold"
+            app:useTextColor="color4"
+            app:useTextHeader="h5"
+            android:text="@string/name"
+            />
+        <com.diadiem.pos_components.PTextView
+            android:textAlignment="center"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:useFontStyle="bold"
+            app:useTextColor="color4"
+            app:useTextHeader="h5"
+            android:text="@string/qty"
+            />
+        <com.diadiem.pos_components.PTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:useFontStyle="bold"
+            app:useTextColor="color4"
+            app:useTextHeader="h5"
+            android:text="@string/amount"
+            />
+    </LinearLayout>
+</layout>
