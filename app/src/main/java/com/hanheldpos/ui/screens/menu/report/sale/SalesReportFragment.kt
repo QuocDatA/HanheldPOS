@@ -83,6 +83,20 @@ class SalesReportFragment(private val fragment: Fragment) :
                 showLoading(false)
             })
         }
+
+        var firstObserver : Boolean = true
+        saleReportCommon.saleReportCustomData.observe(this) {
+            if (firstObserver) {
+                firstObserver = false
+                return@observe
+            }
+            showLoading(true)
+            saleReportCommon.fetchDataSaleReport(succeed = {
+                showLoading(false)
+            }, failed = {
+                showLoading(false)
+            })
+        }
     }
 
     override fun onOpenCustomizeReport() {
