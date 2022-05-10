@@ -11,7 +11,6 @@ import com.hanheldpos.model.cart.BaseProductInCart
 import com.hanheldpos.model.cart.Combo
 import com.hanheldpos.model.cart.GroupBundle
 import com.hanheldpos.model.cart.Regular
-import com.hanheldpos.model.discount.DiscMinRequiredType
 import com.hanheldpos.model.product.ProductComboItem
 import com.hanheldpos.ui.screens.cart.CurCartData
 import com.hanheldpos.utils.GSonUtils
@@ -36,9 +35,9 @@ data class GroupBuyXGetY(
     val isCompleted get() = getIsCompleted()
 
     private val isGetEntire
-        get() = GroupType.fromInt(type.value) == GroupType.GET && BuyXGetYApplyTo.fromInt((condition as CustomerGets).ApplyTo) == BuyXGetYApplyTo.ENTIRE_ORDER
+        get() = GroupType.fromInt(type.value) == GroupType.GET && CustomerDiscApplyTo.fromInt((condition as CustomerGets).ApplyTo) == CustomerDiscApplyTo.ENTIRE_ORDER
     private val isBuyEntire
-        get() = GroupType.fromInt(type.value) == GroupType.BUY && BuyXGetYApplyTo.fromInt((condition as CustomerBuys).ApplyTo) == BuyXGetYApplyTo.ENTIRE_ORDER
+        get() = GroupType.fromInt(type.value) == GroupType.BUY && CustomerDiscApplyTo.fromInt((condition as CustomerBuys).ApplyTo) == CustomerDiscApplyTo.ENTIRE_ORDER
 
     private fun getIsCompleted(): Boolean {
         val result =  productList.firstOrNull { p -> !p.isCompleted() } == null && isConditionCompleted()

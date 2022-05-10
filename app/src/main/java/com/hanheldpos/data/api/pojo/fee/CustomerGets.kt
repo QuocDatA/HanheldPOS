@@ -3,7 +3,7 @@ package com.hanheldpos.data.api.pojo.fee
 import android.os.Parcelable
 import com.hanheldpos.data.api.pojo.product.Product
 import com.hanheldpos.data.api.pojo.product.VariantsGroup
-import com.hanheldpos.model.buy_x_get_y.BuyXGetYApplyTo
+import com.hanheldpos.model.buy_x_get_y.CustomerDiscApplyTo
 import com.hanheldpos.model.fee.ChooseProductApplyTo
 import kotlinx.parcelize.Parcelize
 
@@ -19,15 +19,15 @@ data class CustomerGets(
     val Quantity: Int
 ) : Parcelable {
     fun findVariantGroup(product_id: String): VariantsGroup? {
-        when (BuyXGetYApplyTo.fromInt(ApplyTo)) {
-            BuyXGetYApplyTo.PRODUCT -> {
+        when (CustomerDiscApplyTo.fromInt(ApplyTo)) {
+            CustomerDiscApplyTo.PRODUCT -> {
                 return ListApplyTo.firstOrNull { p -> p._id == product_id }?.VariantsGroup
             }
-            BuyXGetYApplyTo.GROUP -> {
+            CustomerDiscApplyTo.GROUP -> {
                 return ListApplyTo.map { p -> p.ProductList }.flatten()
                     .firstOrNull { p -> p._id == product_id }?.VariantsGroup
             }
-            BuyXGetYApplyTo.CATEGORY -> {
+            CustomerDiscApplyTo.CATEGORY -> {
                 return ListApplyTo.map { p -> p.ProductList }.flatten()
                     .firstOrNull { p -> p._id == product_id }?.VariantsGroup
             }

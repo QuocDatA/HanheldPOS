@@ -127,12 +127,20 @@ open class CartModel(
         when (discApplyTo) {
             DiscApplyTo.UNKNOWN -> {}
             DiscApplyTo.ITEM -> {
-                addDiscountAutoOnClick(discount)
+                addDiscountForItems(discount)
             }
             DiscApplyTo.ORDER -> {
-
+                addDiscountForOrder(discount)
             }
         }
+    }
+
+    private fun addDiscountForItems(discount: DiscountResp) {
+        addDiscountAutoOnClick(discount)
+    }
+
+    private fun addDiscountForOrder(discount: DiscountResp) {
+        this.discountServerList.add(discount)
     }
 
     private fun addDiscountAutoOnClick(discount: DiscountResp) {

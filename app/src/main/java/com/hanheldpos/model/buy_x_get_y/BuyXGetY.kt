@@ -13,13 +13,11 @@ import com.hanheldpos.model.product.ProductType
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 
-@Parcelize
-class BuyXGetY() : BaseProductInCart(), Parcelable,Cloneable {
 
-    @IgnoredOnParcel
+class BuyXGetY() : BaseProductInCart(),Cloneable {
+
     var groupList: MutableList<GroupBuyXGetY>? = null
 
-    @IgnoredOnParcel
     var disc: DiscountResp? = null
 
     constructor(

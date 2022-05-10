@@ -10,7 +10,7 @@ import com.hanheldpos.data.api.pojo.product.Product
 import com.hanheldpos.data.api.pojo.product.VariantsGroup
 import com.hanheldpos.model.cart.BaseProductInCart
 import com.hanheldpos.model.cart.CartModel
-import com.hanheldpos.model.buy_x_get_y.BuyXGetYApplyTo
+import com.hanheldpos.model.buy_x_get_y.CustomerDiscApplyTo
 import com.hanheldpos.model.discount.*
 import com.hanheldpos.ui.screens.cart.CurCartData
 import com.hanheldpos.utils.DateTimeUtils
@@ -114,7 +114,7 @@ data class DiscountResp(
 
     private fun isValidProduct(baseProduct: BaseProductInCart): Boolean {
         val productApply =
-            Condition.CustomerBuys.ListApplyTo.firstOrNull { p -> p._id == baseProduct.proOriginal?._id };
+            Condition.CustomerBuys.getProductApply(baseProduct.proOriginal?._id);
 
         return if (Excluding == 1) productApply == null
         else productApply != null && (productApply.VariantsGroup?.isExistsVariant(baseProduct.variantList)
@@ -347,7 +347,9 @@ data class Condition(
     val CustomerBuys: CustomerBuys,
     val CustomerGets: CustomerGets,
     val DiscountValue: Double
-) : Parcelable
+) : Parcelable {
+
+}
 
 @Parcelize
 data class DiningOptionDiscount(
@@ -414,15 +416,15 @@ data class CustomerBuys(
     }
 
     fun findVariantGroup(product_id: String): VariantsGroup? {
-        when (BuyXGetYApplyTo.fromInt(ApplyTo)) {
-            BuyXGetYApplyTo.PRODUCT -> {
+        when (CustomerDiscApplyTo.fromInt(ApplyTo)) {
+            CustomerDiscApplyTo.PRODUCT -> {
                 return ListApplyTo.firstOrNull { p -> p._id == product_id }?.VariantsGroup
             }
-            BuyXGetYApplyTo.GROUP -> {
+            CustomerDiscApplyTo.GROUP -> {
                 return ListApplyTo.map { p -> p.ProductList }.flatten()
                     .firstOrNull { p -> p._id == product_id }?.VariantsGroup
             }
-            BuyXGetYApplyTo.CATEGORY -> {
+            CustomerDiscApplyTo.CATEGORY -> {
                 return ListApplyTo.map { p -> p.ProductList }.flatten()
                     .firstOrNull { p -> p._id == product_id }?.VariantsGroup
             }
@@ -430,6 +432,10 @@ data class CustomerBuys(
                 return null
             }
         }
+    }
+    fun getProductApply(productId: String?) : Product? {
+        val productApplyList = if (ApplyTo == CustomerDiscApplyTo.PRODUCT.value)  ListApplyTo else ListApplyTo.map { pro-> pro?.ProductList ?: emptyList()}.flatten()
+        return  productApplyList?.firstOrNull { p-> p._id == productId }
     }
 }
 
