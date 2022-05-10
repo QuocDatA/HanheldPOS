@@ -12,14 +12,13 @@
 
     <LinearLayout
         style="@style/RootLayout"
-        android:paddingVertical="@dimen/_13sdp">
-
-
+        >
         <LinearLayout
-            android:paddingHorizontal="@dimen/_8sdp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical">
+            android:paddingVertical="@dimen/_10sdp"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="@dimen/_8sdp">
 
             <com.diadiem.pos_components.PTextView
                 android:layout_width="wrap_content"
@@ -46,18 +45,18 @@
         </LinearLayout>
 
         <FrameLayout
-            android:layout_marginVertical="@dimen/_15sdp"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            >
 
             <androidx.recyclerview.widget.RecyclerView
-                android:paddingHorizontal="@dimen/_8sdp"
                 android:id="@+id/consum"
                 visibleObject="@{!viewModel.isShowDetail()}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="@dimen/_15sdp"
                 android:overScrollMode="never"
+                android:paddingHorizontal="@dimen/_8sdp"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                 app:spanCount="2"
                 tools:itemCount="6"
@@ -66,50 +65,54 @@
             <LinearLayout
                 visibleObject="@{viewModel.isShowDetail()}"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:orientation="vertical">
+
                 <LinearLayout
-                    android:background="@color/color_11"
-                    android:paddingVertical="@dimen/_10sdp"
-                    android:paddingHorizontal="@dimen/_8sdp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    >
+                    android:background="@color/color_11"
+                    android:paddingHorizontal="@dimen/_8sdp"
+                    android:paddingVertical="@dimen/_10sdp">
+
                     <com.diadiem.pos_components.PTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:useFontStyle="bold"
-                        app:useTextColor="color4"
-                        app:useTextHeader="h5"
-                        android:text="@string/name"
-                        />
-                    <com.diadiem.pos_components.PTextView
-                        android:textAlignment="center"
-                        android:layout_weight="1"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:text="@string/name"
                         app:useFontStyle="bold"
                         app:useTextColor="color4"
-                        app:useTextHeader="h5"
-                        android:text="@string/qty"
-                        />
+                        app:useTextHeader="h5" />
+
                     <com.diadiem.pos_components.PTextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/qty"
+                        android:textAlignment="center"
                         app:useFontStyle="bold"
                         app:useTextColor="color4"
-                        app:useTextHeader="h5"
+                        app:useTextHeader="h5" />
+
+                    <com.diadiem.pos_components.PTextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
                         android:text="@string/amount"
-                        />
+                        android:textAlignment="textEnd"
+                        app:useFontStyle="bold"
+                        app:useTextColor="color4"
+                        app:useTextHeader="h5" />
                 </LinearLayout>
+
                 <androidx.recyclerview.widget.RecyclerView
-                    android:paddingHorizontal="@dimen/_8sdp"
                     android:id="@+id/detail"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:overScrollMode="never"
-                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                    app:spanCount="2"
+                    android:paddingHorizontal="@dimen/_8sdp"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+
                     tools:itemCount="6"
                     tools:listitem="@layout/item_sale_report" />
             </LinearLayout>

@@ -6,8 +6,8 @@ data class SaleReportCustomData(
     var startDay: Date?,
     var endDay: Date?,
     var isAllDay: Boolean,
-    var startTime: String,
-    var endTime: String,
+    var startTime: String?,
+    var endTime: String?,
     var isAllDevice: Boolean,
     var isCurrentDrawer: Boolean
 ) {

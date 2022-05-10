@@ -7,19 +7,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hanheldpos.R
+import com.hanheldpos.data.api.pojo.report.SalesSummary
 import com.hanheldpos.databinding.FragmentSaleOverviewBinding
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.GridSpacingItemDecoration
 import com.hanheldpos.ui.base.fragment.BaseFragment
+import com.hanheldpos.ui.screens.menu.report.sale.SaleReportCommonVM
 import com.hanheldpos.ui.screens.menu.report.sale.adapter.SaleReportAdapter
+import com.hanheldpos.ui.screens.menu.report.sale.adapter.SaleReportDetailAdapter
 
 
-class SaleOverviewFragment : BaseFragment<FragmentSaleOverviewBinding, SaleOverviewVM>(),
+class SaleOverviewFragment(private val salesSummary : SalesSummary?) : BaseFragment<FragmentSaleOverviewBinding, SaleOverviewVM>(),
     SaleOverviewUV {
     private lateinit var saleReportAdapter: SaleReportAdapter
+    private lateinit var saleReportDetailAdapter : SaleReportDetailAdapter
+    private val saleReportCommon by activityViewModels<SaleReportCommonVM>()
     override fun layoutRes(): Int {
         return R.layout.fragment_sale_overview
     }
@@ -48,12 +54,38 @@ class SaleOverviewFragment : BaseFragment<FragmentSaleOverviewBinding, SaleOverv
             )
 
         }
+
+        saleReportDetailAdapter = SaleReportDetailAdapter()
+        binding.detail.apply {
+            adapter = saleReportDetailAdapter
+            addItemDecoration(
+                DividerItemDecoration(
+                    context,
+                    LinearLayoutManager.VERTICAL
+                ).apply {
+                    setDrawable(
+                        ContextCompat.getDrawable(
+                            context,
+                            R.drawable.divider_vertical
+                        )!!
+                    )
+                }
+            )
+
+        }
+
     }
 
     @SuppressLint("NotifyDataSetChanged")
     override fun initData() {
-        viewModel.getReportItems().let {
+        viewModel.getReportItems(salesSummary).let {
             with(saleReportAdapter) {
+                submitList(it)
+                notifyDataSetChanged()
+            }
+        }
+        viewModel.getReportItemsDetail(salesSummary).let {
+            with(saleReportDetailAdapter) {
                 submitList(it)
                 notifyDataSetChanged()
             }

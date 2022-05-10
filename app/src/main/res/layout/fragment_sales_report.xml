@@ -8,7 +8,9 @@
         <variable
             name="viewModel"
             type="com.hanheldpos.ui.screens.menu.report.sale.SalesReportVM" />
-
+        <variable
+            name="saleReportCommonVM"
+            type="com.hanheldpos.ui.screens.menu.report.sale.SaleReportCommonVM" />
         <import type="com.hanheldpos.model.DataHelper" />
 
     </data>
@@ -59,20 +61,20 @@
                     android:layout_height="wrap_content">
 
                     <ImageButton
+                        android:id="@+id/btnSyncOrders"
                         style="@style/MaterialButton.Icon"
                         android:layout_height="match_parent"
                         android:adjustViewBounds="true"
                         android:backgroundTint="@color/textPrimary"
                         android:clickable="true"
                         android:focusable="true"
-                        android:onClick="@{v->viewModel.onSyncOrders(v)}"
                         android:padding="@dimen/_11sdp"
                         android:scaleType="centerInside"
                         android:src="@drawable/ic_push_synce"
                         tools:ignore="ContentDescription" />
 
                     <com.diadiem.pos_components.PTextView
-                        visibleObject="@{viewModel.numberOrder != null &amp;&amp; viewModel.numberOrder > 0}"
+                        visibleObject="@{saleReportCommonVM.numberOrder != null &amp;&amp; saleReportCommonVM.numberOrder > 0}"
                         android:layout_width="@dimen/_13sdp"
                         android:layout_height="@dimen/_13sdp"
                         android:layout_gravity="center"
@@ -80,7 +82,7 @@
                         android:layout_marginBottom="@dimen/_7sdp"
                         android:background="@drawable/bg_badge_counter"
                         android:gravity="center"
-                        android:text="@{String.valueOf(viewModel.numberOrder)}"
+                        android:text="@{String.valueOf(saleReportCommonVM.numberOrder)}"
                         app:useFontStyle="normal"
                         app:useTextColor="color2"
                         app:useTextHeader="h7" />

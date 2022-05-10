@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hanheldpos.R
@@ -24,6 +25,7 @@ import com.hanheldpos.ui.screens.menu.report.sale.menu.overview.SaleOverviewFrag
 class SaleReportsMenuFragment : BaseFragment<FragmentSaleReportsMenuBinding, SaleReportsMenuVM>(),
     SaleReportsMenuUV {
     private lateinit var saleReportMenuAdapter: OptionNavAdapter
+    private val saleReportCommon by activityViewModels<SaleReportCommonVM>()
     override fun layoutRes(): Int {
         return R.layout.fragment_sale_reports_menu
     }
@@ -71,6 +73,12 @@ class SaleReportsMenuFragment : BaseFragment<FragmentSaleReportsMenuBinding, Sal
             saleReportMenuAdapter.notifyDataSetChanged()
         }
 
+        showLoading(true)
+        saleReportCommon.fetchDataSaleReport(succeed = {
+            showLoading(false)
+        }, failed = {
+            showLoading(false)
+        })
     }
 
     override fun initAction() {
@@ -81,7 +89,7 @@ class SaleReportsMenuFragment : BaseFragment<FragmentSaleReportsMenuBinding, Sal
         when (option.type as SaleOptionPage) {
             SaleOptionPage.Overview -> navigator.goToWithAnimationEnterFromRight(
                 SalesReportFragment(
-                    fragment = SaleOverviewFragment()
+                    fragment = SaleOverviewFragment(saleReportCommon.saleReport?.SalesSummary?.firstOrNull())
                 )
             )
         }

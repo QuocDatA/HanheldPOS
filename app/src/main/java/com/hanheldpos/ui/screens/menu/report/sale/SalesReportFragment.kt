@@ -5,6 +5,7 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
+import androidx.fragment.app.activityViewModels
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentSalesReportBinding
 import com.hanheldpos.model.report.SaleReportCustomData
@@ -17,9 +18,11 @@ import com.hanheldpos.utils.DateTimeUtils
 import java.time.temporal.ChronoUnit
 import java.util.*
 
-class SalesReportFragment(private val fragment : Fragment) : BaseFragment<FragmentSalesReportBinding, SalesReportVM>(),
+class SalesReportFragment(private val fragment: Fragment) :
+    BaseFragment<FragmentSalesReportBinding, SalesReportVM>(),
     SalesReportUV {
     private lateinit var numberDayReportAdapter: NumberDayReportAdapter;
+    private val saleReportCommon by activityViewModels<SaleReportCommonVM>()
 
     override fun layoutRes(): Int {
         return R.layout.fragment_sales_report;
@@ -34,10 +37,10 @@ class SalesReportFragment(private val fragment : Fragment) : BaseFragment<Fragme
             init(this@SalesReportFragment);
             binding.viewModel = this;
         }
+        binding.saleReportCommonVM = saleReportCommon
     }
 
     override fun initView() {
-
 
         // Number day select
         numberDayReportAdapter =
@@ -45,8 +48,10 @@ class SalesReportFragment(private val fragment : Fragment) : BaseFragment<Fragme
                 listener = object : BaseItemClickListener<NumberDayReportItem> {
                     @RequiresApi(Build.VERSION_CODES.O)
                     override fun onItemClick(adapterPosition: Int, item: NumberDayReportItem) {
-                        viewModel.saleReportCustomData.postValue(viewModel.saleReportCustomData.value!!.apply {
-                            startDay = Date.from(endDay?.toInstant()?.minus(item.value.toLong(), ChronoUnit.DAYS));
+                        saleReportCommon.saleReportCustomData.postValue(saleReportCommon.saleReportCustomData.value!!.apply {
+                            startDay = Date.from(
+                                endDay?.toInstant()?.minus(item.value.toLong(), ChronoUnit.DAYS)
+                            );
                         });
                     }
                 },
@@ -58,23 +63,26 @@ class SalesReportFragment(private val fragment : Fragment) : BaseFragment<Fragme
     override fun initData() {
         numberDayReportAdapter.submitList(viewModel.initNumberDaySelected());
 
-        viewModel.saleReportCustomData.observe(this) {
+        saleReportCommon.saleReportCustomData.observe(this) {
             setUpDateTitle(it);
         };
 
         val transaction: FragmentTransaction = childFragmentManager.beginTransaction()
-        transaction.add(R.id.fragmentContainer,fragment )
+        transaction.add(R.id.fragmentContainer, fragment)
         transaction.commit()
-
-        showLoading(true)
-        viewModel.fetchDataSaleReport{
-            showLoading(false)
-        }
 
     }
 
     override fun initAction() {
 
+        binding.btnSyncOrders.setOnClickListener {
+            showLoading(true)
+            saleReportCommon.onSyncOrders(this.requireView(), succeed = {
+                showLoading(false)
+            }, failed = {
+                showLoading(false)
+            })
+        }
     }
 
     override fun onOpenCustomizeReport() {
@@ -84,10 +92,10 @@ class SalesReportFragment(private val fragment : Fragment) : BaseFragment<Fragme
                 saleReportCustomData: SaleReportCustomData
             ) {
                 numberDayReportAdapter.clearSelected();
-                viewModel.saleReportCustomData.postValue(saleReportCustomData);
+                saleReportCommon.saleReportCustomData.postValue(saleReportCustomData);
             }
 
-        }, saleReportCustomData = viewModel.saleReportCustomData.value!!));
+        }, saleReportCustomData = saleReportCommon.saleReportCustomData.value!!));
     }
 
     override fun backPress() {
@@ -127,7 +135,7 @@ class SalesReportFragment(private val fragment : Fragment) : BaseFragment<Fragme
 
         companion object {
             fun fromInt(value: Int): ReportOptionPage? {
-                ReportOptionPage.values().forEach {
+                values().forEach {
                     if (it.pos == value) {
                         return it
                     }

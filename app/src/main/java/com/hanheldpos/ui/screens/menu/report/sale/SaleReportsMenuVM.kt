@@ -19,7 +19,6 @@ class SaleReportsMenuVM : BaseUiViewModel<SaleReportsMenuUV>() {
         uiCallback?.onFragmentBackPressed()
     }
 
-
     fun getListOptionPages(context: Context): List<ItemOptionNav> {
         return mutableListOf(
             ItemOptionNav(
