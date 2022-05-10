@@ -26,8 +26,8 @@ object StringUtils {
         result = result.replace(Regex("Đ"), "D");
         result = result.replace(Regex("đ") , "d");
         // Some system encode vietnamese combining accent as individual utf-8 characters
-        result = result.replace(Regex("\\u0300|\\u0301|\\u0303|\\u0309|\\u0323"), ""); // Huyền sắc hỏi ngã nặng
-        result = result.replace(Regex("\\u02C6|\\u0306|\\u031B") , ""); // Â, Ê, Ă, Ơ, Ư
+        result = result.replace(Regex("[\\u0300\\u0301\\u0303\\u0309\\u0323]"), ""); // Huyền sắc hỏi ngã nặng
+        result = result.replace(Regex("[\\u02C6\\u0306\\u031B]") , ""); // Â, Ê, Ă, Ơ, Ư
         return result;
     }
 

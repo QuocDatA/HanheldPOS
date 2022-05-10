@@ -34,8 +34,10 @@ class LayoutBillPrinter(
 
         // Order Meta Data
         printBillStatus()
+        feedLines(printOptions.deviceInfo.linesFeed(1))
         printBrandIcon()
         printAddress()
+        feedLines(printOptions.deviceInfo.linesFeed(1))
         printDeliveryAddress()
         printDivider()
 
@@ -66,16 +68,15 @@ class LayoutBillPrinter(
         printDivider()
 
         // Cash - Change
-        printCashChange()
-
-        printFeedLine(printOptions.deviceInfo.lineFeed() * 2)
+        printPayments()
+        feedLines(printOptions.deviceInfo.linesFeed(1))
 
         // Thank you
         printThankYou()
 
         // End Print
 
-        printFeedLine(printOptions.deviceInfo.lineFeed() * 3)
+        feedLines(printOptions.deviceInfo.linesFeed(3))
         cutPaper()
     }
 
@@ -98,8 +99,8 @@ class LayoutBillPrinter(
                     charPerLineHeader,
                     mutableListOf(
                         mutableListOf(
-                            order.OrderSummary.TableName.toString(),
-                            order.OrderSummary.DiningOptionName.toString()
+                            order.OrderDetail.TableList.firstOrNull()?.TableName.toString(),
+                            order.OrderDetail.DiningOption.Title.toString()
                         )
                     ),
                     mutableListOf(Block.DATA_MIDDLE_LEFT, Block.DATA_MIDDLE_RIGHT)
@@ -221,7 +222,13 @@ class LayoutBillPrinter(
         val subtotal = productChosen.Subtotal
         val contentName = WaguUtils.columnListDataBlock(
             charPerLineText,
-            mutableListOf(mutableListOf(quantity, "$proName (${PriceUtils.formatStringPrice(subtotal?:0.0)})", amount)),
+            mutableListOf(
+                mutableListOf(
+                    quantity,
+                    "$proName (${PriceUtils.formatStringPrice(subtotal ?: 0.0)})",
+                    amount
+                )
+            ),
             columnOrderDetailAlign,
             columnSize,
             isWrapWord = true
@@ -465,6 +472,10 @@ class LayoutBillPrinter(
         printDivider()
     }
 
+    private fun feedLines(line: Int) {
+        printer.feedLines(line)
+    }
+
     private fun printTotal() {
         order.OrderDetail.Order.Grandtotal.let {
             val content = WaguUtils.columnListDataBlock(
@@ -476,22 +487,24 @@ class LayoutBillPrinter(
         }
     }
 
-    private fun printCashChange() {
-        order.OrderDetail.PaymentList?.filter {
-            PaymentMethodType.fromInt(it.PaymentTypeId ?: 0) == PaymentMethodType.CASH
-        }?.let { list ->
+    private fun printPayments() {
+        order.OrderDetail.PaymentList?.let { list ->
             val totalPay = list.sumOf { it.OverPay ?: 0.0 }
             val needToPay = list.sumOf { it.Payable ?: 0.0 }
+            val lines = list.map { paymentOrder ->
+                mutableListOf(
+                    paymentOrder.Title.toString(),
+                    PriceUtils.formatStringPrice(paymentOrder.OverPay ?: 0.0)
+                )
+            }.toMutableList()
+            lines.add(
+                mutableListOf(
+                    "Change",
+                    PriceUtils.formatStringPrice(totalPay - needToPay)
+                )
+            )
             val content = WaguUtils.columnListDataBlock(
-                charPerLineText, mutableListOf(
-                    mutableListOf(
-                        "Cash",
-                        PriceUtils.formatStringPrice(totalPay)
-                    ), mutableListOf(
-                        "Change",
-                        PriceUtils.formatStringPrice(totalPay - needToPay)
-                    )
-                ),
+                charPerLineText, lines,
                 mutableListOf(Block.DATA_MIDDLE_LEFT, Block.DATA_MIDDLE_RIGHT)
             )
             printer.drawText(content)
@@ -508,10 +521,6 @@ class LayoutBillPrinter(
             true,
             BasePrinterManager.FontSize.Medium
         )
-    }
-
-    private fun printFeedLine(line: Int) {
-        printer.feedLine(line)
     }
 
     private fun cutPaper() {

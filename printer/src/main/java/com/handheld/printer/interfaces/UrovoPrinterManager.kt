@@ -106,6 +106,11 @@ class UrovoPrinterManager : BasePrinterManager() {
         }
     }
 
+    override fun isConnected(): Boolean {
+        // TODO check connection
+        return true
+    }
+
     override fun disconnect() {
         printer.close()
         thread?.interrupt()
@@ -136,13 +141,17 @@ class UrovoPrinterManager : BasePrinterManager() {
         msg.sendToTarget()
     }
 
-    override fun feedLine(line: Int) {
+    override fun cutPaper() {
+
+    }
+
+    override fun feedLines(line: Int) {
         val msg = mPrintHandler!!.obtainMessage(PrintType.PRINT_FORWARD.value)
         msg.obj = line
         msg.sendToTarget()
     }
 
-    override fun cutPaper() {
+    override fun openCashDrawer() {
 
     }
 
@@ -199,5 +208,7 @@ class UrovoPrinterManager : BasePrinterManager() {
 
     }
 
-
+    override fun performPrinterAction(printerAction: () -> Unit) {
+        printerAction.invoke()
+    }
 }

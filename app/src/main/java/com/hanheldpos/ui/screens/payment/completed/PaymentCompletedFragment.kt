@@ -1,5 +1,6 @@
 package com.hanheldpos.ui.screens.payment.completed
 
+import com.handheld.printer.PrintConstants
 import com.hanheldpos.R
 import com.hanheldpos.binding.setPriceView
 import com.hanheldpos.database.DatabaseMapper
@@ -45,8 +46,8 @@ class PaymentCompletedFragment(
                                 fragmentContext.applicationContext,
                                 BillPrinterManager.PrintOptions(
                                     connectionType = BillPrinterManager.PrintConnectionType.BLUETOOTH,
-                                    deviceType = BillPrinterManager.PrinterDeviceInfo.DeviceType.UROVO
-                                ).setUrovo(true)
+                                    deviceType = BillPrinterManager.PrinterDeviceInfo.DeviceType.HANDHELD
+                                ).setUpLan(BillPrinterManager.PrintOptions.LanConfig(PrintConstants.LAN_PORT,PrintConstants.LAN_ADDRESS))
                             )
                             BillPrinterManager.get().apply {
                                 print(

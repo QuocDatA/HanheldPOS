@@ -1,11 +1,13 @@
 package com.handheld.printer.printer_manager
 
 import android.graphics.Bitmap
+import android.util.Log
 import com.dantsu.escposprinter.EscPosCharsetEncoding
 import com.dantsu.escposprinter.EscPosPrinter
 import com.dantsu.escposprinter.connection.DeviceConnection
 import com.dantsu.escposprinter.textparser.PrinterTextParserImg
 import com.handheld.printer.ImagePrinterHelper
+import com.handheld.printer.PrintConstants
 
 /**
  * This is the base print manager for universal method
@@ -13,7 +15,7 @@ import com.handheld.printer.ImagePrinterHelper
  * Hence this base does not use the device's SDK
  * */
 abstract class BasePrinterUniversalManager(
-    deviceConnection: DeviceConnection?,
+    private val deviceConnection: DeviceConnection?,
     printerDPI: Int,
     printerPaperWidth: Float,
     charsPerLine: Int,
@@ -23,19 +25,30 @@ abstract class BasePrinterUniversalManager(
         printerDPI,
         printerPaperWidth,
         charsPerLine,
-        EscPosCharsetEncoding("windows-1258",16)
+        EscPosCharsetEncoding("windows-1258", 16)
     )
 
     override fun cutPaper() {
         printer.printFormattedTextAndCut("")
     }
 
-    override fun feedLine(line: Int) {
+    override fun feedLines(line: Int) {
         printer.printFormattedText("", line)
     }
 
+    override fun isConnected(): Boolean {
+        return deviceConnection?.isConnected == true
+    }
+
+    override fun connect() {
+        if (!isConnected())
+            deviceConnection?.connect()
+        Log.d(PrintConstants.TAG, "Printer connected")
+    }
+
     override fun disconnect() {
-        printer.disconnectPrinter()
+        deviceConnection?.disconnect()
+        Log.d(PrintConstants.TAG, "Printer disconnected")
     }
 
     override fun drawText(data: String?, bold: Boolean, size: FontSize) {
@@ -90,11 +103,26 @@ abstract class BasePrinterUniversalManager(
         printer.printFormattedText(dataContent + "\n", 1)
     }
 
-    override fun connect() {
+    override fun setupPage(width: Float, height: Float) {
 
     }
 
-    override fun setupPage(width: Float, height: Float) {
+    override fun openCashDrawer() {
+        deviceConnection?.write(byteArrayOf(27, 112, 0, 60, -1))
+        deviceConnection?.send(100)
+        Log.d(PrintConstants.TAG, "Drawer opened")
+    }
+
+    override fun performPrinterAction(printerAction: () -> Unit) {
+        try {
+            disconnect()
+            connect()
+            printerAction.invoke()
+        } catch (e: Exception) {
+            Log.d(PrintConstants.TAG, e.toString())
+        } finally {
+            disconnect()
+        }
 
     }
 }
