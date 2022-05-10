@@ -79,7 +79,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/_7sdp"
-                            android:text="@{`( ` + item.minimumValueFormat + `)`,default=`(1 items required)`}"
+                            android:text="@{`(` + item.minimumValueFormat + `)`,default=`(1 items required)`}"
                             app:useFontStyle="normal"
                             app:useTextColor="color6"
                             app:useTextHeader="h6" />
@@ -118,7 +118,7 @@
         </LinearLayout>
 
         <FrameLayout
-            visibleObject="@{!item.isFocused}"
+            visibleObject="@{!item.isFocused &amp;&amp; !item.containProduct}"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="#99FFFFFF" />

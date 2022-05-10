@@ -3,7 +3,7 @@ package com.hanheldpos.data.api.pojo.fee
 import android.os.Parcelable
 import com.hanheldpos.data.api.pojo.product.Product
 import com.hanheldpos.data.api.pojo.product.VariantsGroup
-import com.hanheldpos.model.cart.buy_x_get_y.BuyXGetYApplyTo
+import com.hanheldpos.model.buy_x_get_y.BuyXGetYApplyTo
 import com.hanheldpos.model.fee.ChooseProductApplyTo
 import kotlinx.parcelize.Parcelize
 

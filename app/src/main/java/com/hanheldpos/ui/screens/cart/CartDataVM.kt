@@ -15,8 +15,8 @@ import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.OrderHelper
 import com.hanheldpos.model.UserHelper
 import com.hanheldpos.model.cart.*
-import com.hanheldpos.model.cart.buy_x_get_y.GroupBuyXGetY
-import com.hanheldpos.model.cart.buy_x_get_y.GroupType
+import com.hanheldpos.model.buy_x_get_y.GroupBuyXGetY
+import com.hanheldpos.model.buy_x_get_y.GroupType
 import com.hanheldpos.model.discount.DiscApplyTo
 import com.hanheldpos.model.discount.DiscountUser
 import com.hanheldpos.model.home.table.TableSummary
@@ -203,7 +203,7 @@ class CartDataVM : BaseViewModel() {
 
     fun addBuyXGetY(disc: DiscountResp) {
         val groupList: MutableList<GroupBuyXGetY> = mutableListOf(
-            GroupBuyXGetY(disc._id, disc.Condition.CustomerBuys,GroupType.BUY, ),
+            GroupBuyXGetY(disc._id, disc.Condition.CustomerBuys, GroupType.BUY, ),
             GroupBuyXGetY(disc._id, disc.Condition.CustomerGets, GroupType.GET)
         )
 //        this.cartModelLD.value?.productsList?.add(

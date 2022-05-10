@@ -2,7 +2,6 @@ package com.hanheldpos.data.api.pojo.discount
 
 import android.os.Parcelable
 import com.google.gson.Gson
-import com.google.gson.annotations.SerializedName
 import com.google.gson.reflect.TypeToken
 import com.hanheldpos.data.api.pojo.customer.CustomerGroup
 import com.hanheldpos.data.api.pojo.customer.CustomerResp
@@ -11,7 +10,7 @@ import com.hanheldpos.data.api.pojo.product.Product
 import com.hanheldpos.data.api.pojo.product.VariantsGroup
 import com.hanheldpos.model.cart.BaseProductInCart
 import com.hanheldpos.model.cart.CartModel
-import com.hanheldpos.model.cart.buy_x_get_y.BuyXGetYApplyTo
+import com.hanheldpos.model.buy_x_get_y.BuyXGetYApplyTo
 import com.hanheldpos.model.discount.*
 import com.hanheldpos.ui.screens.cart.CurCartData
 import com.hanheldpos.utils.DateTimeUtils

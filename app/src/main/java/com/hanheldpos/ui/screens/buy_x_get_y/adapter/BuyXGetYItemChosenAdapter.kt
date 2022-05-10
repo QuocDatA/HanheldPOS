@@ -9,7 +9,7 @@ import com.hanheldpos.model.combo.ItemActionType
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
 
-class BuyXGetYItemChosenAdapter(private val customerGets: CustomerGets? = null) : BaseBindingListAdapter<Regular>(DiffCallback()) {
+class BuyXGetYItemChosenAdapter() : BaseBindingListAdapter<Regular>(DiffCallback()) {
     override fun getItemViewType(position: Int): Int {
         return R.layout.item_combo_picked
     }
