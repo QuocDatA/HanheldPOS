@@ -7,11 +7,14 @@ import com.hanheldpos.data.api.pojo.fee.CustomerGets
 import com.hanheldpos.databinding.ItemBuyXGetYGroupBinding
 import com.hanheldpos.model.buy_x_get_y.ItemBuyXGetYGroup
 import com.hanheldpos.model.cart.Regular
+import com.hanheldpos.model.buy_x_get_y.GroupBuyXGetY
+import com.hanheldpos.model.combo.ItemActionType
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
+import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.screens.cart.CurCartData
 
-class BuyXGetYGroupAdapter() : BaseBindingListAdapter<ItemBuyXGetYGroup>(DiffCallback()) {
+class BuyXGetYGroupAdapter(private val listener: BuyXGetYItemListener) : BaseBindingListAdapter<ItemBuyXGetYGroup>(DiffCallback()) {
 
     override fun getItemViewType(position: Int): Int {
         return R.layout.item_buy_x_get_y_group
@@ -52,7 +55,9 @@ class BuyXGetYGroupAdapter() : BaseBindingListAdapter<ItemBuyXGetYGroup>(DiffCal
         binding.item = itemBuyXGetYGroup
 
         val groupRegular: MutableList<Regular> = mutableListOf()
-        itemBuyXGetYGroup.groupBuyXGetY.productList.forEach { basePro -> groupRegular.add(basePro as Regular) }
+        val groupChosen : MutableList<Regular> = mutableListOf()
+        itemBuyXGetYGroup.groupBuyXGetY.productList.forEach { basePro -> groupChosen.add(basePro as Regular) }
+
 
         val conditionCustomer: Any
         if (itemBuyXGetYGroup.groupBuyXGetY.condition is CustomerBuys) {
@@ -63,6 +68,7 @@ class BuyXGetYGroupAdapter() : BaseBindingListAdapter<ItemBuyXGetYGroup>(DiffCal
                     CurCartData.cartModel?.diningOption!!
                 ).toMutableList()
             )
+
         } else {
             conditionCustomer = itemBuyXGetYGroup.groupBuyXGetY.condition as CustomerGets
             groupRegular.addAll(
@@ -75,28 +81,21 @@ class BuyXGetYGroupAdapter() : BaseBindingListAdapter<ItemBuyXGetYGroup>(DiffCal
 
         binding.itemForSelectAdapter.apply {
             adapter = BuyXGetYItemPickerAdapter(
-                customerBuys = if(conditionCustomer is CustomerBuys) conditionCustomer else null
 //                proOriginal = itemBuyXGetYGroup.groupBuyXGetY.productList.first(),
 //                groupBundle = itemComboGroup.groupBundle,
 //                productChosen = groupRegular,
-//                listener = object : BaseItemClickListener<Regular> {
-//                    override fun onItemClick(adapterPosition: Int, item: Regular) {
-//                        listener.onProductSelect(
-//                            itemComboGroup.requireQuantity(),
-//                            itemComboGroup,
-//                            item,
-//                            ItemActionType.Add
-//                        )
-//                    }
-//
-//                }
+                listener = object: BaseItemClickListener<Regular> {
+                    override fun onItemClick(adapterPosition: Int, item: Regular) {
+                        item.quantity = 1
+                        listener.onProductSelect(1, itemBuyXGetYGroup.groupBuyXGetY, item, ItemActionType.Add,)
+                    }
+                }
             ).apply {
                 submitList(groupRegular)
             }
         }
         binding.itemSelectedAdapter.apply {
             adapter = BuyXGetYItemChosenAdapter(
-                customerGets = if(conditionCustomer is CustomerGets) conditionCustomer else null
 //                listener = object : ComboItemChosenAdapter.ComboItemChosenListener {
 //                    override fun onComboItemChoose(
 //                        action: ItemActionType,
@@ -111,9 +110,18 @@ class BuyXGetYGroupAdapter() : BaseBindingListAdapter<ItemBuyXGetYGroup>(DiffCal
 //                    }
 //                }
             ).apply {
-                submitList(groupRegular)
+                submitList(groupChosen)
             }
         }
+    }
+
+    interface BuyXGetYItemListener {
+        fun onProductSelect(
+            maxQuantity: Int,
+            group: GroupBuyXGetY,
+            item: Regular,
+            actionType: ItemActionType,
+        )
     }
 
     private class DiffCallback : DiffUtil.ItemCallback<ItemBuyXGetYGroup>() {

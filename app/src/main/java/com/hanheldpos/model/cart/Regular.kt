@@ -192,11 +192,11 @@ class Regular() : BaseProductInCart(), Parcelable, Cloneable {
     }
 
     fun totalPrice(): Double {
-        return priceOverride.times(quantity!!)
+        return priceOverride.times(quantity ?: 0)
     }
 
     fun subTotal(productPricing: Product): Double {
-        val subtotal = proModSubTotal(productPricing) * quantity!!
+        val subtotal = proModSubTotal(productPricing) * (quantity ?: 0)
         return subtotal
     }
 

@@ -1,4 +1,4 @@
-package com.hanheldpos.model.cart.buy_x_get_y
+package com.hanheldpos.model.buy_x_get_y
 
 import android.os.Parcelable
 import com.hanheldpos.data.api.pojo.discount.DiscountResp
@@ -14,7 +14,7 @@ import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-class BuyXGetY() : BaseProductInCart(), Parcelable {
+class BuyXGetY() : BaseProductInCart(), Parcelable,Cloneable {
 
     @IgnoredOnParcel
     var groupList: MutableList<GroupBuyXGetY>? = null
@@ -97,15 +97,38 @@ class BuyXGetY() : BaseProductInCart(), Parcelable {
     }
 
     override fun isCompleted(): Boolean {
-        return groupList?.firstOrNull { gr -> !gr.isCompleted } == null
+        if(groupList != null) {
+            return groupList?.firstOrNull { gr -> !gr.isCompleted } == null
+        }
+        return false
     }
 
     override fun isMatching(productItem: Product): Boolean {
         return false
     }
 
-    override fun clone(): BaseProductInCart {
-        return this.clone()
+    override fun clone(): BuyXGetY {
+        val cloneValue = BuyXGetY(this.disc!!,
+            this.note ,
+            this.sku ,
+            this.diningOption!! ,
+            this.quantity,
+            this.variants ,
+            this.compReason,
+            this.discountUsersList ,
+            this.discountServersList ,
+            this.fees?.toMutableList(),
+            this.groupList )
+
+        cloneValue.variantList = this.variantList?.map { it.copy() }?.toMutableList()
+        cloneValue.modifierList.addAll(this.modifierList.map { it.copy() }.toMutableList())
+        cloneValue.compReason = this.compReason
+        cloneValue.discountUsersList = this.discountUsersList?.map { it.copy() }?.toMutableList()
+        cloneValue.discountServersList =
+            this.discountServersList?.map { it.copy() }?.toMutableList()
+        cloneValue.note = this.note
+
+        return cloneValue
     }
 
     private fun proModSubtotal(): Double {

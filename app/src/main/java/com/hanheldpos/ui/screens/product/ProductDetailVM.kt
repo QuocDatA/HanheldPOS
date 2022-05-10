@@ -55,7 +55,7 @@ class ProductDetailVM : BaseUiViewModel<ProductDetailUV>() {
     }
 
     fun onQuantityAdded() {
-        if (numberQuantity.value!! < maxQuantity)
+        if (numberQuantity.value ?: 0 < maxQuantity)
             regularInCart.value?.plusOrderQuantity(1);
         regularInCart.notifyValueChange();
     }

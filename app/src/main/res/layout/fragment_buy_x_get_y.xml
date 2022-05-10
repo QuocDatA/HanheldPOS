@@ -6,6 +6,10 @@
     <data>
 
         <variable
+            name="isComplete"
+            type="Boolean" />
+
+        <variable
             name="discount"
             type="com.hanheldpos.data.api.pojo.discount.DiscountResp" />
 
@@ -99,6 +103,7 @@
 
         <RelativeLayout
             android:id="@+id/actionBar"
+            visibleObject="@{viewModel.selectedComplete}"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_40sdp"
             android:layout_alignParentBottom="true">

@@ -6,7 +6,6 @@ import com.hanheldpos.data.api.pojo.order.settings.DiningOption
 import com.hanheldpos.data.api.pojo.product.Product
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.cart.Regular
-import com.hanheldpos.model.cart.buy_x_get_y.GroupBuyXGetY
 
 data class ItemBuyXGetYGroup(
 
@@ -15,7 +14,8 @@ data class ItemBuyXGetYGroup(
     var isFocused: Boolean = false,
 ) {
     fun isMaxItemSelected(): Boolean {
-        return groupBuyXGetY.isCompleted
+        val result = groupBuyXGetY.isCompleted
+        return result
     }
 
     fun getGroupName(): String {

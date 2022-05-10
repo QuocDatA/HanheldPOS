@@ -1,4 +1,4 @@
-package com.hanheldpos.model.cart.buy_x_get_y
+package com.hanheldpos.model.buy_x_get_y
 
 
 enum class BuyXGetYApplyTo(val value: Int) {

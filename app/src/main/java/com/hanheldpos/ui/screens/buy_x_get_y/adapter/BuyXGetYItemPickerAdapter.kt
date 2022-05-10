@@ -2,21 +2,22 @@ package com.hanheldpos.ui.screens.buy_x_get_y.adapter
 
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.DiffUtil
 import com.hanheldpos.R
-import com.hanheldpos.binding.setPricePlusView
 import com.hanheldpos.data.api.pojo.discount.CustomerBuys
 import com.hanheldpos.databinding.ItemComboRegularBinding
 import com.hanheldpos.model.cart.Regular
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
+import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 
-class BuyXGetYItemPickerAdapter(private val customerBuys: CustomerBuys? = null): BaseBindingListAdapter<Regular>(DiffCallBack()) {
+class BuyXGetYItemPickerAdapter(
+    private val listener: BaseItemClickListener<Regular>
+) : BaseBindingListAdapter<Regular>(DiffCallBack()) {
 
     override fun getItemViewType(position: Int): Int {
         return R.layout.item_combo_regular;
@@ -54,9 +55,9 @@ class BuyXGetYItemPickerAdapter(private val customerBuys: CustomerBuys? = null):
 //            setPricePlusView(binding.priceProduct,price)
 //        }
 //        else binding.priceProduct.visibility = View.GONE
-//        (holder.binding as ItemComboRegularBinding).root.setOnClickListener {
-//            listener.onItemClick(position,item);
-//        }
+        (holder.binding as ItemComboRegularBinding).root.setOnClickListener {
+            listener.onItemClick(position,item);
+        }
     }
 
     private class DiffCallBack : DiffUtil.ItemCallback<Regular>() {

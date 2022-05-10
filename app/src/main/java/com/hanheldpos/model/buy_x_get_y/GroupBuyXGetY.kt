@@ -1,7 +1,6 @@
-package com.hanheldpos.model.cart.buy_x_get_y
+package com.hanheldpos.model.buy_x_get_y
 
 import android.os.Parcelable
-import com.hanheldpos.data.api.pojo.discount.Condition
 import com.hanheldpos.data.api.pojo.discount.CustomerBuys
 import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.data.api.pojo.fee.CustomerGets
@@ -29,7 +28,7 @@ data class GroupBuyXGetY(
 
     ) : Parcelable {
 
-    var productList: List<BaseProductInCart> = mutableListOf()
+    var productList: MutableList<BaseProductInCart> = mutableListOf()
 
     val totalQuantity get() = productList.sumOf { basePro -> basePro.quantity ?: 0 }
     val totalPrice get() = productList.sumOf { basePro -> basePro.lineTotalValue }
@@ -42,7 +41,8 @@ data class GroupBuyXGetY(
         get() = GroupType.fromInt(type.value) == GroupType.BUY && BuyXGetYApplyTo.fromInt((condition as CustomerBuys).ApplyTo) == BuyXGetYApplyTo.ENTIRE_ORDER
 
     private fun getIsCompleted(): Boolean {
-        return productList.firstOrNull { p -> !p.isCompleted() } == null && isConditionCompleted()
+        val result =  productList.firstOrNull { p -> !p.isCompleted() } == null && isConditionCompleted()
+        return result
     }
 
     private fun isConditionCompleted(): Boolean {
@@ -57,19 +57,19 @@ data class GroupBuyXGetY(
         }
 
         val minType =
-            if (GroupType.fromInt(type.value) == GroupType.BUY) DiscMinRequiredType.fromInt(
+            if (GroupType.fromInt(type.value) == GroupType.BUY) MinimumType.fromInt(
                 (condition as CustomerBuys).MinimumTypeId ?: 1
-            ) else DiscMinRequiredType.QUANTITY
+            ) else MinimumType.QUANTITY
         val minValue =
             if (GroupType.fromInt(type.value) == GroupType.BUY) ((condition as CustomerBuys).MinimumValue
                 ?: 0) else ((condition as CustomerGets).Quantity)
 
         return when (minType) {
-            DiscMinRequiredType.QUANTITY -> {
-                totalQuantity >= minValue as Int
+            MinimumType.QUANTITY -> {
+                totalQuantity >= (minValue.toInt())
             }
-            DiscMinRequiredType.AMOUNT -> {
-                totalPrice >= minValue as Double
+            MinimumType.AMOUNT -> {
+                totalPrice >= (minValue as Double)
             }
             else -> {
                 false
@@ -144,7 +144,11 @@ data class GroupBuyXGetY(
         val regular =
             Regular(product, diningOption, 1, product.skuDefault, product.variantDefault, null)
         regular.discountServersList?.add(discount)
-        productList.toMutableList().add(regular)
+        productList.add(regular)
+    }
+
+    fun clone(): GroupBuyXGetY {
+        return this.copy()
     }
 }
 
