@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.hanheldpos.ui.screens.menu.report.sale.menu.payment_summary.PaymentReportVM" />
+    </data>
+
+    <LinearLayout
+        style="@style/RootLayout"
+        >
+        <com.hanheldpos.ui.widgets.TableLayoutFixedHeader
+            android:id="@+id/tableLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+</layout>

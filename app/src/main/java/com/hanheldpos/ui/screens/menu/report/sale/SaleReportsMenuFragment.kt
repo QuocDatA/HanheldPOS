@@ -21,6 +21,8 @@ import com.hanheldpos.ui.screens.menu.adapter.ItemOptionNav
 import com.hanheldpos.ui.screens.menu.adapter.OptionNavAdapter
 import com.hanheldpos.ui.screens.menu.report.current_drawer.CurrentDrawerFragment
 import com.hanheldpos.ui.screens.menu.report.sale.menu.overview.SaleOverviewFragment
+import com.hanheldpos.ui.screens.menu.report.sale.menu.payment_summary.PaymentReportFragment
+import com.hanheldpos.ui.widgets.TableLayoutFixedHeader
 import com.hanheldpos.utils.DateTimeUtils
 
 
@@ -106,6 +108,11 @@ class SaleReportsMenuFragment : BaseFragment<FragmentSaleReportsMenuBinding, Sal
                     fragment = SaleOverviewFragment()
                 )
             )
+//            SaleOptionPage.PaymentSummary ->navigator.goToWithAnimationEnterFromRight(
+//                SalesReportFragment(
+//                    fragment = PaymentReportFragment()
+//                )
+//            )
         }
     }
 
