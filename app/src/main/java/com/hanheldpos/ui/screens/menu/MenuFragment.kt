@@ -1,8 +1,10 @@
 package com.hanheldpos.ui.screens.menu
 
+import android.annotation.SuppressLint
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.hanheldpos.BuildConfig
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentMenuBinding
 import com.hanheldpos.model.DataHelper
@@ -43,8 +45,9 @@ class MenuFragment : BaseFragment<FragmentMenuBinding, MenuVM>(), MenuUV {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     override fun initView() {
-
+        binding.versionName.text = "Version ${BuildConfig.VERSION_NAME}"
         //region setup payment suggestion pay in cash recycler view
         menuAdapter = OptionNavAdapter(
             onMenuItemClickListener = object : BaseItemClickListener<ItemOptionNav> {

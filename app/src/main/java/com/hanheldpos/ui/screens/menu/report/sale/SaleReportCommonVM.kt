@@ -48,7 +48,7 @@ class SaleReportCommonVM : BaseViewModel() {
     )
 
     var isSyncOrderToServer: Boolean = false
-    var saleReport: ReportSalesResp? = null
+    var saleReport = MutableLiveData<ReportSalesResp?>()
 
     private val settingRepo = SettingRepo();
     private val orderAlterRepo = OrderAsyncRepo();
@@ -207,9 +207,10 @@ class SaleReportCommonVM : BaseViewModel() {
                 override fun apiResponse(data: BaseResponse<ReportSalesResp>?) {
 
                     if (data == null || data.DidError) {
+                        saleReport.postValue(null)
                         failed()
                     } else {
-                        saleReport = data.Model
+                        saleReport.postValue(data.Model)
                         succeed()
                     }
                 }

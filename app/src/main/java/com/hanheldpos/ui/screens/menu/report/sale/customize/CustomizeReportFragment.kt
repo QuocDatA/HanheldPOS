@@ -77,8 +77,8 @@ class CustomizeReportFragment(
                 isAllDay = viewModel.isAllDay.value!!,
                 isAllDevice = viewModel.isAllDevice.value!!,
                 isCurrentDrawer = viewModel.isCurrentDrawer.value!!,
-                startTime = "",
-                endTime = ""
+                startTime = null,
+                endTime = null
             )
         )
     }

@@ -14,12 +14,14 @@ import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentSaleReportsMenuBinding
 import com.hanheldpos.model.menu.report.ReportOptionType
 import com.hanheldpos.model.menu.report.SaleOptionPage
+import com.hanheldpos.model.report.SaleReportCustomData
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.menu.adapter.ItemOptionNav
 import com.hanheldpos.ui.screens.menu.adapter.OptionNavAdapter
 import com.hanheldpos.ui.screens.menu.report.current_drawer.CurrentDrawerFragment
 import com.hanheldpos.ui.screens.menu.report.sale.menu.overview.SaleOverviewFragment
+import com.hanheldpos.utils.DateTimeUtils
 
 
 class SaleReportsMenuFragment : BaseFragment<FragmentSaleReportsMenuBinding, SaleReportsMenuVM>(),
@@ -68,6 +70,18 @@ class SaleReportsMenuFragment : BaseFragment<FragmentSaleReportsMenuBinding, Sal
 
     @SuppressLint("NotifyDataSetChanged")
     override fun initData() {
+        saleReportCommon.saleReportCustomData.postValue(
+            SaleReportCustomData(
+                startDay = DateTimeUtils.curDate,
+                endDay = DateTimeUtils.curDate,
+                isCurrentDrawer = false,
+                isAllDevice = false,
+                isAllDay = true,
+                startTime = null,
+                endTime = null
+            )
+        )
+
         viewModel.getListOptionPages(requireContext()).let {
             saleReportMenuAdapter.submitList(it)
             saleReportMenuAdapter.notifyDataSetChanged()
@@ -89,7 +103,7 @@ class SaleReportsMenuFragment : BaseFragment<FragmentSaleReportsMenuBinding, Sal
         when (option.type as SaleOptionPage) {
             SaleOptionPage.Overview -> navigator.goToWithAnimationEnterFromRight(
                 SalesReportFragment(
-                    fragment = SaleOverviewFragment(saleReportCommon.saleReport?.SalesSummary?.firstOrNull())
+                    fragment = SaleOverviewFragment()
                 )
             )
         }

@@ -21,10 +21,10 @@ import com.hanheldpos.ui.screens.menu.report.sale.adapter.SaleReportAdapter
 import com.hanheldpos.ui.screens.menu.report.sale.adapter.SaleReportDetailAdapter
 
 
-class SaleOverviewFragment(private val salesSummary : SalesSummary?) : BaseFragment<FragmentSaleOverviewBinding, SaleOverviewVM>(),
+class SaleOverviewFragment : BaseFragment<FragmentSaleOverviewBinding, SaleOverviewVM>(),
     SaleOverviewUV {
     private lateinit var saleReportAdapter: SaleReportAdapter
-    private lateinit var saleReportDetailAdapter : SaleReportDetailAdapter
+    private lateinit var saleReportDetailAdapter: SaleReportDetailAdapter
     private val saleReportCommon by activityViewModels<SaleReportCommonVM>()
     override fun layoutRes(): Int {
         return R.layout.fragment_sale_overview
@@ -78,18 +78,37 @@ class SaleOverviewFragment(private val salesSummary : SalesSummary?) : BaseFragm
 
     @SuppressLint("NotifyDataSetChanged")
     override fun initData() {
-        viewModel.getReportItems(salesSummary).let {
-            with(saleReportAdapter) {
-                submitList(it)
-                notifyDataSetChanged()
+        saleReportCommon.saleReport.observe(this) {
+            val salesSummary = it?.SalesSummary?.firstOrNull()
+            if (salesSummary != null) {
+                viewModel.getReportItems(salesSummary).let {
+                    with(saleReportAdapter) {
+                        submitList(it)
+                        notifyDataSetChanged()
+                    }
+                }
+                viewModel.getReportItemsDetail(salesSummary).let {
+                    with(saleReportDetailAdapter) {
+                        submitList(it)
+                        notifyDataSetChanged()
+                    }
+                }
+
             }
-        }
-        viewModel.getReportItemsDetail(salesSummary).let {
-            with(saleReportDetailAdapter) {
-                submitList(it)
-                notifyDataSetChanged()
+            else {
+                with(saleReportAdapter) {
+                    submitList(emptyList())
+                    notifyDataSetChanged()
+                }
+                with(saleReportDetailAdapter) {
+                    submitList(emptyList())
+                    notifyDataSetChanged()
+                }
             }
+
+
         }
+
     }
 
     override fun initAction() {
