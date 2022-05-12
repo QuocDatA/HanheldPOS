@@ -11,7 +11,8 @@ import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.widgets.TableLayoutFixedHeader
 
 
-class PaymentReportFragment : BaseFragment<FragmentPaymentReportBinding, PaymentReportVM>() , PaymentReportUV {
+class PaymentReportFragment : BaseFragment<FragmentPaymentReportBinding, PaymentReportVM>(),
+    PaymentReportUV {
     override fun layoutRes(): Int {
         return R.layout.fragment_payment_report
     }
@@ -32,8 +33,68 @@ class PaymentReportFragment : BaseFragment<FragmentPaymentReportBinding, Payment
     }
 
     override fun initData() {
-        binding.tableLayout.addRangeHeaders(mutableListOf("11111","22222","33333","44444","55555","66666","77777","88888","99999","100000","110000"))
-        binding.tableLayout.addRangeRows(mutableListOf(mutableListOf("test","test","test","test","test","test","test","test"),mutableListOf("test","test","test","test","test","test","test","test"),mutableListOf("test","test","test","test","test","test","test","test"),mutableListOf("test","test","test","test","test","test","test","test")))
+        binding.tableLayout.addRangeHeaders(
+            mutableListOf(
+                "11111",
+                "22222",
+                "33333",
+                "44444",
+                "55555",
+                "66666",
+                "77777",
+                "88888",
+                "99999",
+                "100000",
+                "110000"
+            )
+        )
+        binding.tableLayout.addRangeRows(
+            mutableListOf(
+                mutableListOf(
+                    "test",
+                    "test",
+                    "test",
+                    "test",
+                    "test",
+                    "test",
+                    "test",
+                    "test"
+                ),
+                mutableListOf("test", "test", "test", "test", "test", "test", "test", "test"),
+                mutableListOf("test", "test", "test", "test", "test", "test", "test", "test"),
+                mutableListOf("test", "test", "test", "test", "test", "test", "test", "test"),
+                mutableListOf("test", "test", "test", "test", "test", "test", "test", "test"),
+                mutableListOf("test", "test", "test", "test", "test", "test", "test", "test"),
+                mutableListOf("test", "test", "test", "test", "test", "test", "test", "test"),
+                mutableListOf("test", "test", "test", "test", "test", "test", "test", "test"),
+                mutableListOf("test", "test", "test", "test", "test", "test", "test", "test"),
+                mutableListOf("test", "test", "test", "test", "test", "test", "test", "test"),
+                mutableListOf("test", "test", "test", "test", "test", "test", "test", "test"),
+                mutableListOf("test", "test", "test", "test", "test", "test", "test", "test"),
+                mutableListOf("test", "test", "test", "test", "test", "test", "test", "test"),
+                mutableListOf("test", "test", "test", "test", "test", "test", "test", "test"),
+                mutableListOf("test", "test", "test", "test", "test", "test", "test", "test"),
+                mutableListOf("test", "test", "test", "test", "test", "test", "test", "test"),
+                mutableListOf("test", "test", "test", "test", "test", "test", "test", "test"),
+                mutableListOf("test", "test", "test", "test", "test", "test", "test", "test"),
+                mutableListOf("test", "test", "test", "test", "test", "test", "test", "test"),
+                mutableListOf("test", "test", "test", "test", "test", "test", "test", "test"),
+                mutableListOf("test", "test", "test", "test", "test", "test", "test", "test"),
+                mutableListOf("test", "test", "test", "test", "test", "test", "test", "test"),
+                mutableListOf("test", "test", "test", "test", "test", "test", "test", "test"),
+                mutableListOf("test", "test", "test", "test", "test", "test", "test", "test"),
+                mutableListOf("test", "test", "test", "test", "test", "test", "test", "test"),
+                mutableListOf("test", "test", "test", "test", "test", "test", "test", "test"),
+                mutableListOf("test", "test", "test", "test", "test", "test", "test", "test"),
+                mutableListOf("test", "test", "test", "test", "test", "test", "test", "test"),
+                mutableListOf("test", "test", "test", "test", "test", "test", "test", "test"),
+                mutableListOf("test", "test", "test", "test", "test", "test", "test", "test"),
+                mutableListOf("test", "test", "test", "test", "test", "test", "test", "test"),
+                mutableListOf("test", "test", "test", "test", "test", "test", "test", "test"),
+                mutableListOf("test", "test", "test", "test", "test", "test", "test", "test"),
+
+                )
+        )
     }
 
     override fun initAction() {

@@ -108,11 +108,11 @@ class SaleReportsMenuFragment : BaseFragment<FragmentSaleReportsMenuBinding, Sal
                     fragment = SaleOverviewFragment()
                 )
             )
-//            SaleOptionPage.PaymentSummary ->navigator.goToWithAnimationEnterFromRight(
-//                SalesReportFragment(
-//                    fragment = PaymentReportFragment()
-//                )
-//            )
+            SaleOptionPage.PaymentSummary -> navigator.goToWithAnimationEnterFromRight(
+                SalesReportFragment(
+                    fragment = PaymentReportFragment()
+                )
+            )
         }
     }
 

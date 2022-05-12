@@ -185,6 +185,139 @@ class PTextView @JvmOverloads constructor(
         }
     }
 
+    fun setTextSize(type : TextHeaderEnum) {
+        when (type) {
+
+            TextHeaderEnum.H1 -> {
+                setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(getDimenSize(appConfig?.styles?.fonts?.sizes?.h1?.toInt() ?: 0)));
+            }
+            TextHeaderEnum.H2 -> {
+                setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(getDimenSize(appConfig?.styles?.fonts?.sizes?.h2?.toInt() ?: 0)));
+            }
+            TextHeaderEnum.H3 -> {
+                setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(getDimenSize(appConfig?.styles?.fonts?.sizes?.h3?.toInt() ?: 0)));
+            }
+            TextHeaderEnum.H4 -> {
+                setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(getDimenSize(appConfig?.styles?.fonts?.sizes?.h4?.toInt() ?: 0)));
+            }
+            TextHeaderEnum.H5 -> {
+                setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(getDimenSize(appConfig?.styles?.fonts?.sizes?.h5?.toInt() ?: 0)));
+            }
+            TextHeaderEnum.H6 -> {
+                setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(getDimenSize(appConfig?.styles?.fonts?.sizes?.h6?.toInt() ?: 0)));
+            }
+            TextHeaderEnum.H7 -> {
+                setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(getDimenSize(appConfig?.styles?.fonts?.sizes?.h7?.toInt() ?: 0)));
+            }
+            TextHeaderEnum.H8 -> {
+                setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(getDimenSize(appConfig?.styles?.fonts?.sizes?.h8?.toInt() ?: 0)));
+            }
+            else -> {
+            }
+        }
+    }
+
+    fun setTextStyle(style : FontStyleEnum) {
+        when (style) {
+            FontStyleEnum.NORMAL -> {
+                typeface = FontManagement.getFontFromAssets(
+                    context,
+                    appConfig?.styles?.fonts?.families?.normal.plus(appConfig?.styles?.fonts?.families?.fileType)
+                )
+            }
+            FontStyleEnum.ITALIC -> {
+                typeface = FontManagement.getFontFromAssets(
+                    context,
+                    appConfig?.styles?.fonts?.families?.italic.plus(appConfig?.styles?.fonts?.families?.fileType)
+                )
+            }
+            FontStyleEnum.BOLD -> {
+                typeface = FontManagement.getFontFromAssets(
+                    context,
+                    appConfig?.styles?.fonts?.families?.bold.plus(appConfig?.styles?.fonts?.families?.fileType)
+                )
+            }
+            FontStyleEnum.SEMI_BOLD->{
+                typeface = FontManagement.getFontFromAssets(
+                    context,
+                    appConfig?.styles?.fonts?.families?.semibold.plus(appConfig?.styles?.fonts?.families?.fileType)
+                )
+            }
+            else -> {
+            }
+        }
+    }
+
+    fun setTextColor(color : TextColorEnum){
+        when (color){
+            TextColorEnum.Color0 ->{
+                setTextColor(Color.parseColor(appConfig?.styles?.colors?.color0))
+                setHintTextColor(Color.parseColor(appConfig?.styles?.colors?.color0))
+            }
+            TextColorEnum.Color1 ->{
+                setTextColor(Color.parseColor(appConfig?.styles?.colors?.color1))
+                setHintTextColor(Color.parseColor(appConfig?.styles?.colors?.color1))
+            }
+            TextColorEnum.Color2 ->{
+                setTextColor(Color.parseColor(appConfig?.styles?.colors?.color2))
+                setHintTextColor(Color.parseColor(appConfig?.styles?.colors?.color2))
+            }
+            TextColorEnum.Color3 ->{
+                setTextColor(Color.parseColor(appConfig?.styles?.colors?.color3))
+                setHintTextColor(Color.parseColor(appConfig?.styles?.colors?.color3))
+            }
+            TextColorEnum.Color4 ->{
+                setTextColor(Color.parseColor(appConfig?.styles?.colors?.color4))
+                setHintTextColor(Color.parseColor(appConfig?.styles?.colors?.color4))
+            }
+            TextColorEnum.Color5 ->{
+                setTextColor(Color.parseColor(appConfig?.styles?.colors?.color5))
+                setHintTextColor(Color.parseColor(appConfig?.styles?.colors?.color5))
+            }
+            TextColorEnum.Color6 ->{
+                setTextColor(Color.parseColor(appConfig?.styles?.colors?.color6))
+                setHintTextColor(Color.parseColor(appConfig?.styles?.colors?.color6))
+            }
+            TextColorEnum.Color7 ->{
+                setTextColor(Color.parseColor(appConfig?.styles?.colors?.color7))
+                setHintTextColor(Color.parseColor(appConfig?.styles?.colors?.color7))
+            }
+            TextColorEnum.Color8 ->{
+                setTextColor(Color.parseColor(appConfig?.styles?.colors?.color8))
+                setHintTextColor(Color.parseColor(appConfig?.styles?.colors?.color8))
+            }
+            TextColorEnum.Color9 ->{
+                setTextColor(Color.parseColor(appConfig?.styles?.colors?.color9))
+                setHintTextColor(Color.parseColor(appConfig?.styles?.colors?.color9))
+            }
+            TextColorEnum.Color10 ->{
+                setTextColor(Color.parseColor(appConfig?.styles?.colors?.color10))
+                setHintTextColor(Color.parseColor(appConfig?.styles?.colors?.color10))
+            }
+            TextColorEnum.Color11 ->{
+                setTextColor(Color.parseColor(appConfig?.styles?.colors?.color11))
+                setHintTextColor(Color.parseColor(appConfig?.styles?.colors?.color11))
+            }
+            TextColorEnum.Color12 ->{
+                setTextColor(Color.parseColor(appConfig?.styles?.colors?.color12))
+                setHintTextColor(Color.parseColor(appConfig?.styles?.colors?.color12))
+            }
+            TextColorEnum.Color13 ->{
+                setTextColor(Color.parseColor(appConfig?.styles?.colors?.color13))
+                setHintTextColor(Color.parseColor(appConfig?.styles?.colors?.color13))
+            }
+            TextColorEnum.Color14 ->{
+                setTextColor(Color.parseColor(appConfig?.styles?.colors?.color14))
+                setHintTextColor(Color.parseColor(appConfig?.styles?.colors?.color14))
+            }
+            TextColorEnum.Color15 ->{
+                setTextColor(Color.parseColor(appConfig?.styles?.colors?.color15))
+                setHintTextColor(Color.parseColor(appConfig?.styles?.colors?.color15))
+            }
+            else -> {}
+        }
+    }
+
     private fun getDimenSize(i: Int) : Int{
         val result = when(i){
             1-> R.dimen._1ssp

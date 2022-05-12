@@ -3,16 +3,26 @@ package com.hanheldpos.ui.widgets;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+
+import com.diadiem.pos_components.PTextView;
+import com.diadiem.pos_components.enumtypes.FontStyleEnum;
+import com.diadiem.pos_components.enumtypes.TextColorEnum;
+import com.diadiem.pos_components.enumtypes.TextHeaderEnum;
+import com.hanheldpos.R;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -39,8 +49,9 @@ public class TableLayoutFixedHeader extends RelativeLayout {
 
     private final List<List<String>> rows = new ArrayList<>();
 
-    List<Integer> headerCellsWidth = new ArrayList<>();
+    private int headerCellWidth = 0;
 
+    private int numberColumns = 3;
 
     public TableLayoutFixedHeader(Context context) {
         super(context);
@@ -66,14 +77,7 @@ public class TableLayoutFixedHeader extends RelativeLayout {
         // add the components to be part of the main layout
         this.addComponentToMainLayout();
 
-        setupHeader();
-        this.getTableRowHeaderCellWidth();
-        setupRow();
-        this.resizeHeaderHeight();
 
-
-
-        this.resizeBodyTableRowHeight();
     }
 
     public TableLayoutFixedHeader(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
@@ -82,6 +86,21 @@ public class TableLayoutFixedHeader extends RelativeLayout {
 
     public TableLayoutFixedHeader(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        DisplayMetrics displayMetrics = getContext().getResources().getDisplayMetrics();
+        this.headerCellWidth = displayMetrics.widthPixels / numberColumns;
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        setupHeader();
+        setupRow();
+    }
+
+    @Override
+    public void requestLayout() {
+
+        super.requestLayout();
     }
 
     public void addHeader(String header) {
@@ -114,9 +133,8 @@ public class TableLayoutFixedHeader extends RelativeLayout {
         setupRow();
     }
 
-    @Override
-    public void requestLayout() {
-        super.requestLayout();
+    public void setNumberColumns(Integer numberColumns) {
+        this.numberColumns = numberColumns;
     }
 
     public void setHeaderBackground(int color) {
@@ -131,6 +149,7 @@ public class TableLayoutFixedHeader extends RelativeLayout {
         // add some table rows
         this.addTableRowToTableA();
         this.addTableRowToTableB();
+        this.resizeHeaderHeight();
     }
 
     void setupRow() {
@@ -139,6 +158,7 @@ public class TableLayoutFixedHeader extends RelativeLayout {
         this.tableD.removeAllViews();
 
         this.generateTableC_AndTable_D();
+        this.resizeBodyTableRowHeight();
     }
 
     // initalized components
@@ -150,15 +170,18 @@ public class TableLayoutFixedHeader extends RelativeLayout {
         this.tableD = new TableLayout(this.context);
 
         this.horizontalScrollViewB = new CustomHorizontalScrollView(this.context);
+        this.horizontalScrollViewB.setOverScrollMode(OVER_SCROLL_NEVER);
         this.horizontalScrollViewD = new CustomHorizontalScrollView(this.context);
-
         this.scrollViewC = new CustomScrollView(this.context);
+        this.scrollViewC.setVerticalScrollBarEnabled(false);
         this.scrollViewD = new CustomScrollView(this.context);
+        this.scrollViewD.setOverScrollMode(OVER_SCROLL_NEVER);
 
         this.tableA.setBackgroundColor(Color.GRAY);
         this.tableB.setBackgroundColor(Color.GRAY);
 
     }
+
 
 
     // resizing TableRow height starts here
@@ -197,21 +220,6 @@ public class TableLayoutFixedHeader extends RelativeLayout {
 
     }
 
-    void getTableRowHeaderCellWidth() {
-
-        int tableAChildCount = ((TableRow) this.tableA.getChildAt(0)).getChildCount();
-        int tableBChildCount = ((TableRow) this.tableB.getChildAt(0)).getChildCount();
-
-        for (int x = 0; x < (tableAChildCount + tableBChildCount); x++) {
-
-            if (x == 0) {
-                this.headerCellsWidth.set(x, this.viewWidth(((TableRow) this.tableA.getChildAt(0)).getChildAt(x)));
-            } else {
-                this.headerCellsWidth.set(x, this.viewWidth(((TableRow) this.tableB.getChildAt(0)).getChildAt(x - 1)));
-            }
-
-        }
-    }
 
     // we add the components here in our TableMainLayout
     private void addComponentToMainLayout() {
@@ -243,6 +251,7 @@ public class TableLayoutFixedHeader extends RelativeLayout {
 
     private void addTableRowToTableB() {
         this.tableB.addView(this.componentBTableRow());
+
     }
 
     // set essential component IDs
@@ -267,9 +276,10 @@ public class TableLayoutFixedHeader extends RelativeLayout {
     // generate table row of table A
     TableRow componentATableRow() {
         TableRow componentATableRow = new TableRow(this.context);
+        TableRow.LayoutParams params = new TableRow.LayoutParams(headerCellWidth, TableRow.LayoutParams.MATCH_PARENT);
         if (!this.headers.isEmpty()) {
             TextView textView = this.headerTextView(this.headers.get(0));
-            componentATableRow.addView(textView);
+            componentATableRow.addView(textView,params);
         }
         return componentATableRow;
     }
@@ -280,20 +290,22 @@ public class TableLayoutFixedHeader extends RelativeLayout {
         TableRow componentBTableRow = new TableRow(this.context);
         int headerFieldCount = this.headers.size();
 
-        TableRow.LayoutParams params = new TableRow.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT);
-        params.setMargins(2, 0, 0, 0);
-        for (int x = 0; x < (headerFieldCount - 1); x++) {
-            TextView textView = this.headerTextView(this.headers.get(x + 1));
-            textView.setLayoutParams(params);
-            componentBTableRow.addView(textView);
+        TableRow.LayoutParams params = new TableRow.LayoutParams(headerCellWidth, TableRow.LayoutParams.MATCH_PARENT);
+        for (int x = 1; x < (headerFieldCount); x++) {
+            TextView textView = this.headerTextView(this.headers.get(x));
+            textView.setWidth(headerCellWidth);
+            componentBTableRow.addView(textView,params);
         }
         return componentBTableRow;
     }
 
     // header standard TextView
     TextView headerTextView(String label) {
-        TextView headerTextView = new TextView(this.context);
+        PTextView headerTextView = new PTextView(this.context);
         headerTextView.setText(label);
+        headerTextView.setTextSize(TextHeaderEnum.H5);
+        headerTextView.setTextStyle(FontStyleEnum.BOLD);
+        headerTextView.setTextColor(TextColorEnum.Color4);
         headerTextView.setGravity(Gravity.CENTER);
         headerTextView.setPadding(5, 5, 5, 5);
 
@@ -302,12 +314,13 @@ public class TableLayoutFixedHeader extends RelativeLayout {
 
     // table cell standard TextView
     TextView bodyTextView(String label) {
-
-        TextView bodyTextView = new TextView(this.context);
+        PTextView bodyTextView = new PTextView(this.context);
+        bodyTextView.setTextSize(TextHeaderEnum.H5);
+        bodyTextView.setTextStyle(FontStyleEnum.NORMAL);
+        bodyTextView.setTextColor(TextColorEnum.Color4);
         bodyTextView.setText(label);
         bodyTextView.setGravity(Gravity.CENTER);
         bodyTextView.setPadding(5, 5, 5, 5);
-
         return bodyTextView;
     }
 
@@ -315,17 +328,11 @@ public class TableLayoutFixedHeader extends RelativeLayout {
     // generate table row of table C and table D
     private void generateTableC_AndTable_D() {
 
-        // just seeing some header cell width
-        for (int x = 0; x < this.headerCellsWidth.size(); x++) {
-            Log.v("TableMainLayout.java", this.headerCellsWidth.get(x) + "");
-        }
-
         for (List<String> row : this.rows) {
-            String rowHeader = row.get(0);
-            List<String> rowInfo = row.subList(1, row.size());
+            String rowHeader = row.size() > 0 ? row.get(0) : "";
+            List<String> rowInfo = row.size() > 1 ? row.subList(1, row.size()) : new ArrayList<>();
             TableRow tableRowForTableC = this.tableRowForTableC(rowHeader);
             TableRow taleRowForTableD = this.taleRowForTableD(rowInfo);
-
             this.tableC.addView(tableRowForTableC);
             this.tableD.addView(taleRowForTableD);
 
@@ -335,12 +342,11 @@ public class TableLayoutFixedHeader extends RelativeLayout {
     // a TableRow for table C
     TableRow tableRowForTableC(String rowHeader) {
 
-        TableRow.LayoutParams params = new TableRow.LayoutParams(this.headerCellsWidth.get(0), LayoutParams.MATCH_PARENT);
-        params.setMargins(0, 2, 0, 0);
-
+        TableRow.LayoutParams params = new TableRow.LayoutParams(headerCellWidth, TableRow.LayoutParams.MATCH_PARENT);
         TableRow tableRowForTableC = new TableRow(this.context);
         TextView textView = this.bodyTextView(rowHeader);
-        tableRowForTableC.addView(textView, params);
+        textView.setLayoutParams(params);
+        tableRowForTableC.addView(textView);
 
         return tableRowForTableC;
     }
@@ -348,15 +354,13 @@ public class TableLayoutFixedHeader extends RelativeLayout {
     TableRow taleRowForTableD(List<String> row) {
 
         TableRow taleRowForTableD = new TableRow(this.context);
-
         int loopCount = ((TableRow) this.tableB.getChildAt(0)).getChildCount();
 
+        TableRow.LayoutParams params = new TableRow.LayoutParams( headerCellWidth, TableRow.LayoutParams.MATCH_PARENT);
         for (int x = 0; x < loopCount; x++) {
-            TableRow.LayoutParams params = new TableRow.LayoutParams(headerCellsWidth.get(x + 1), LayoutParams.MATCH_PARENT);
-            params.setMargins(2, 2, 0, 0);
-
-            TextView textViewB = this.bodyTextView(row.get(x));
-            taleRowForTableD.addView(textViewB, params);
+            TextView textViewD = this.bodyTextView(x >= row.size() ? "" : row.get(x));
+            textViewD.setWidth(headerCellWidth);
+            taleRowForTableD.addView(textViewD,params);
         }
 
         return taleRowForTableD;
