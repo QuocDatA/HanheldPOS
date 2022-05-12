@@ -6,7 +6,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentPaymentReportBinding
 import com.hanheldpos.model.menu.report.ReportItem
@@ -48,6 +51,19 @@ class PaymentReportFragment : BaseFragment<FragmentPaymentReportBinding, Payment
                     resources.getDimension(R.dimen._30sdp).toInt(),
                     false
                 )
+            )
+            addItemDecoration(
+                DividerItemDecoration(
+                    context,
+                    LinearLayoutManager.VERTICAL
+                ).apply {
+                    setDrawable(
+                        ContextCompat.getDrawable(
+                            context,
+                            R.drawable.divider_vertical
+                        )!!
+                    )
+                }
             )
 
         }

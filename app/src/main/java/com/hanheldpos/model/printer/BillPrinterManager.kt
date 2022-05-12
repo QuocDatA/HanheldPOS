@@ -1,5 +1,6 @@
 package com.hanheldpos.model.printer
 
+import android.app.Activity
 import android.content.Context
 import android.os.StrictMode
 import android.util.Log
@@ -14,6 +15,7 @@ import java.net.ConnectException
 import java.util.concurrent.TimeoutException
 
 class BillPrinterManager private constructor() {
+
 
     // region classes
 
@@ -53,8 +55,8 @@ class BillPrinterManager private constructor() {
 
         fun charsPerLineHeader(): Int = when (deviceType) {
             DeviceType.POS -> 24
-            DeviceType.HANDHELD -> 16
-            DeviceType.UROVO -> 22
+            DeviceType.HANDHELD -> 32
+            DeviceType.UROVO -> 32
         }
 
         // Number of characters per left column
