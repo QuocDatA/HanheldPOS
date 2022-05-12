@@ -1,18 +1,28 @@
 package com.hanheldpos.ui.screens.menu.report.sale.menu.payment_summary
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentPaymentReportBinding
+import com.hanheldpos.model.menu.report.ReportItem
+import com.hanheldpos.ui.base.adapter.GridSpacingItemDecoration
 import com.hanheldpos.ui.base.fragment.BaseFragment
+import com.hanheldpos.ui.screens.menu.report.sale.SaleReportCommonVM
+import com.hanheldpos.ui.screens.menu.report.sale.adapter.SaleReportAdapter
 import com.hanheldpos.ui.widgets.TableLayoutFixedHeader
+import com.hanheldpos.utils.PriceUtils
 
 
 class PaymentReportFragment : BaseFragment<FragmentPaymentReportBinding, PaymentReportVM>(),
     PaymentReportUV {
+    private lateinit var saleReportAdapter: SaleReportAdapter
+    private val saleReportCommon by activityViewModels<SaleReportCommonVM>()
+
     override fun layoutRes(): Int {
         return R.layout.fragment_payment_report
     }
@@ -29,76 +39,52 @@ class PaymentReportFragment : BaseFragment<FragmentPaymentReportBinding, Payment
     }
 
     override fun initView() {
+        saleReportAdapter = SaleReportAdapter()
+        binding.consum.apply {
+            adapter = saleReportAdapter
+            addItemDecoration(
+                GridSpacingItemDecoration(
+                    2,
+                    resources.getDimension(R.dimen._30sdp).toInt(),
+                    false
+                )
+            )
 
+        }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun initData() {
-        binding.tableLayout.addRangeHeaders(
-            mutableListOf(
-                "11111",
-                "22222",
-                "33333",
-                "44444",
-                "55555",
-                "66666",
-                "77777",
-                "88888",
-                "99999",
-                "100000",
-                "110000"
-            )
-        )
-        binding.tableLayout.addRangeRows(
-            mutableListOf(
-                mutableListOf(
-                    "test",
-                    "test",
-                    "test",
-                    "test",
-                    "test",
-                    "test",
-                    "test",
-                    "test"
-                ),
-                mutableListOf("test", "test", "test", "test", "test", "test", "test", "test"),
-                mutableListOf("test", "test", "test", "test", "test", "test", "test", "test"),
-                mutableListOf("test", "test", "test", "test", "test", "test", "test", "test"),
-                mutableListOf("test", "test", "test", "test", "test", "test", "test", "test"),
-                mutableListOf("test", "test", "test", "test", "test", "test", "test", "test"),
-                mutableListOf("test", "test", "test", "test", "test", "test", "test", "test"),
-                mutableListOf("test", "test", "test", "test", "test", "test", "test", "test"),
-                mutableListOf("test", "test", "test", "test", "test", "test", "test", "test"),
-                mutableListOf("test", "test", "test", "test", "test", "test", "test", "test"),
-                mutableListOf("test", "test", "test", "test", "test", "test", "test", "test"),
-                mutableListOf("test", "test", "test", "test", "test", "test", "test", "test"),
-                mutableListOf("test", "test", "test", "test", "test", "test", "test", "test"),
-                mutableListOf("test", "test", "test", "test", "test", "test", "test", "test"),
-                mutableListOf("test", "test", "test", "test", "test", "test", "test", "test"),
-                mutableListOf("test", "test", "test", "test", "test", "test", "test", "test"),
-                mutableListOf("test", "test", "test", "test", "test", "test", "test", "test"),
-                mutableListOf("test", "test", "test", "test", "test", "test", "test", "test"),
-                mutableListOf("test", "test", "test", "test", "test", "test", "test", "test"),
-                mutableListOf("test", "test", "test", "test", "test", "test", "test", "test"),
-                mutableListOf("test", "test", "test", "test", "test", "test", "test", "test"),
-                mutableListOf("test", "test", "test", "test", "test", "test", "test", "test"),
-                mutableListOf("test", "test", "test", "test", "test", "test", "test", "test"),
-                mutableListOf("test", "test", "test", "test", "test", "test", "test", "test"),
-                mutableListOf("test", "test", "test", "test", "test", "test", "test", "test"),
-                mutableListOf("test", "test", "test", "test", "test", "test", "test", "test"),
-                mutableListOf("test", "test", "test", "test", "test", "test", "test", "test"),
-                mutableListOf("test", "test", "test", "test", "test", "test", "test", "test"),
-                mutableListOf("test", "test", "test", "test", "test", "test", "test", "test"),
-                mutableListOf("test", "test", "test", "test", "test", "test", "test", "test"),
-                mutableListOf("test", "test", "test", "test", "test", "test", "test", "test"),
-                mutableListOf("test", "test", "test", "test", "test", "test", "test", "test"),
-                mutableListOf("test", "test", "test", "test", "test", "test", "test", "test"),
 
-                )
-        )
+        saleReportCommon.saleReport.observe(this) { reportSalesResp ->
+            val orderPayment = reportSalesResp?.OrderPayment
+            viewModel.getHeaders(requireContext()).let {
+                binding.tableLayout.clearHeader()
+                binding.tableLayout.addRangeHeaders(it.toMutableList())
+            }
+            viewModel.getRows(requireContext(), orderPayment).let {
+                binding.tableLayout.clearRow()
+                binding.tableLayout.addRangeRows(it.map { p -> p.toMutableList() })
+            }
+            viewModel.getPaymentSummary(requireContext(), orderPayment).let {
+
+                binding.totalPayment.text = PriceUtils.formatStringPrice(it[0] as Double)
+
+                saleReportAdapter.submitList((it[1] as List<ReportItem>) .toMutableList())
+                saleReportAdapter.notifyDataSetChanged()
+            }
+        }
     }
 
     override fun initAction() {
-
+        binding.btnShowDetail.setOnClickListener {
+            viewModel.isShowDetail.postValue(!viewModel.isShowDetail.value!!)
+        }
+        viewModel.isShowDetail.observe(this) {
+            binding.btnShowDetail.text = if (!it) getString(R.string.show_detail) else getString(
+                R.string.hide_detail
+            )
+        }
     }
 
 

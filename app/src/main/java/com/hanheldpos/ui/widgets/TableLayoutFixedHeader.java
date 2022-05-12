@@ -92,9 +92,9 @@ public class TableLayoutFixedHeader extends RelativeLayout {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         DisplayMetrics displayMetrics = getContext().getResources().getDisplayMetrics();
         this.headerCellWidth = displayMetrics.widthPixels / numberColumns;
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         setupHeader();
         setupRow();
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
     @Override
@@ -145,7 +145,9 @@ public class TableLayoutFixedHeader extends RelativeLayout {
     void setupHeader() {
         if (tableA == null || tableB == null) return;
         this.tableA.removeAllViews();
+        this.tableA.removeAllViewsInLayout();
         this.tableB.removeAllViews();
+        this.tableB.removeAllViewsInLayout();
         // add some table rows
         this.addTableRowToTableA();
         this.addTableRowToTableB();
@@ -155,7 +157,9 @@ public class TableLayoutFixedHeader extends RelativeLayout {
     void setupRow() {
         if (tableC == null || tableD == null) return;
         this.tableC.removeAllViews();
+        this.tableC.removeAllViewsInLayout();
         this.tableD.removeAllViews();
+        this.tableD.removeAllViewsInLayout();
 
         this.generateTableC_AndTable_D();
         this.resizeBodyTableRowHeight();
@@ -171,14 +175,16 @@ public class TableLayoutFixedHeader extends RelativeLayout {
 
         this.horizontalScrollViewB = new CustomHorizontalScrollView(this.context);
         this.horizontalScrollViewB.setOverScrollMode(OVER_SCROLL_NEVER);
+        this.horizontalScrollViewB.setHorizontalScrollBarEnabled(false);
         this.horizontalScrollViewD = new CustomHorizontalScrollView(this.context);
+        this.horizontalScrollViewD.setOverScrollMode(OVER_SCROLL_NEVER);
         this.scrollViewC = new CustomScrollView(this.context);
         this.scrollViewC.setVerticalScrollBarEnabled(false);
         this.scrollViewD = new CustomScrollView(this.context);
         this.scrollViewD.setOverScrollMode(OVER_SCROLL_NEVER);
 
-        this.tableA.setBackgroundColor(Color.GRAY);
-        this.tableB.setBackgroundColor(Color.GRAY);
+        this.tableA.setBackgroundColor(getResources().getColor(R.color.color_11));
+        this.tableB.setBackgroundColor(getResources().getColor(R.color.color_11));
 
     }
 
@@ -307,7 +313,7 @@ public class TableLayoutFixedHeader extends RelativeLayout {
         headerTextView.setTextStyle(FontStyleEnum.BOLD);
         headerTextView.setTextColor(TextColorEnum.Color4);
         headerTextView.setGravity(Gravity.CENTER);
-        headerTextView.setPadding(5, 5, 5, 5);
+        headerTextView.setPadding(5, getResources().getDimensionPixelSize(R.dimen._10sdp), 5, getResources().getDimensionPixelSize(R.dimen._13sdp));
 
         return headerTextView;
     }
@@ -320,7 +326,7 @@ public class TableLayoutFixedHeader extends RelativeLayout {
         bodyTextView.setTextColor(TextColorEnum.Color4);
         bodyTextView.setText(label);
         bodyTextView.setGravity(Gravity.CENTER);
-        bodyTextView.setPadding(5, 5, 5, 5);
+        bodyTextView.setPadding(5, getResources().getDimensionPixelSize(R.dimen._10sdp), 5, getResources().getDimensionPixelSize(R.dimen._13sdp));
         return bodyTextView;
     }
 
