@@ -4,7 +4,10 @@ import android.os.Parcelable
 import com.hanheldpos.data.api.pojo.product.Product
 import com.hanheldpos.data.api.pojo.product.VariantsGroup
 import com.hanheldpos.model.buy_x_get_y.BuyXGetYApplyTo
+import com.hanheldpos.model.buy_x_get_y.ItemBuyXGetYGroup
+import com.hanheldpos.model.cart.Regular
 import com.hanheldpos.model.fee.ChooseProductApplyTo
+import com.hanheldpos.ui.screens.cart.CurCartData
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -18,22 +21,60 @@ data class CustomerGets(
     val ProductApplyTo: ChooseProductApplyTo?,
     val Quantity: Int
 ) : Parcelable {
+    val requireQuantity get() = ListApplyTo.sumOf { basePro -> basePro.MaxQuantity ?: 0 }
     fun findVariantGroup(product_id: String): VariantsGroup? {
-        when (BuyXGetYApplyTo.fromInt(ApplyTo)) {
+        return when (BuyXGetYApplyTo.fromInt(ApplyTo)) {
             BuyXGetYApplyTo.PRODUCT -> {
-                return ListApplyTo.firstOrNull { p -> p._id == product_id }?.VariantsGroup
+                ListApplyTo.firstOrNull { p -> p._id == product_id }?.VariantsGroup
             }
             BuyXGetYApplyTo.GROUP -> {
-                return ListApplyTo.map { p -> p.ProductList }.flatten()
-                    .firstOrNull { p -> p._id == product_id }?.VariantsGroup
+                ListApplyTo.firstOrNull()?.ProductList?.firstOrNull { p -> p._id == product_id }?.VariantsGroup
             }
             BuyXGetYApplyTo.CATEGORY -> {
-                return ListApplyTo.map { p -> p.ProductList }.flatten()
-                    .firstOrNull { p -> p._id == product_id }?.VariantsGroup
+                ListApplyTo.firstOrNull()?.ProductList?.firstOrNull { p -> p._id == product_id }?.VariantsGroup
             }
             else -> {
-                return null
+                null
             }
         }
+    }
+
+    fun filterListApplyTo(item: ItemBuyXGetYGroup): MutableList<List<Regular>> {
+        val listRegularFilter: MutableList<List<Regular>> = mutableListOf()
+        when (BuyXGetYApplyTo.fromInt(ApplyTo)) {
+            BuyXGetYApplyTo.ENTIRE_ORDER -> {
+
+            }
+            BuyXGetYApplyTo.PRODUCT -> {
+                listRegularFilter.add(
+                    item.getProductListApplyToBuyXGetY(
+                        ListApplyTo,
+                        CurCartData.cartModel?.diningOption!!
+                    ).toMutableList()
+                )
+            }
+            BuyXGetYApplyTo.GROUP -> {
+                ListApplyTo.forEach { list ->
+                    listRegularFilter.add(
+                        item.getProductListApplyToBuyXGetY(
+                            list.ProductList ?: listOf(),
+                            CurCartData.cartModel?.diningOption!!
+                        )
+                    )
+                }
+            }
+            BuyXGetYApplyTo.CATEGORY -> {
+                ListApplyTo.forEach { list ->
+                    listRegularFilter.add(
+                        item.getProductListApplyToBuyXGetY(
+                            list.ProductList ?: listOf(),
+                            CurCartData.cartModel?.diningOption!!
+                        )
+                    )
+                }
+            }
+            else -> {}
+        }
+        return listRegularFilter
     }
 }

@@ -32,7 +32,6 @@ class BuyXGetYItemPickerAdapter(
             viewType,
             parent, false
         ).also {
-            Log.d("OrderProductAdapter", "RecycleView Height:" + parent.height);
             val height = parent.resources.getDimension(R.dimen._75sdp);
             val params: FrameLayout.LayoutParams = FrameLayout.LayoutParams(
                 FrameLayout.LayoutParams.MATCH_PARENT,

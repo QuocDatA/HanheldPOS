@@ -11,7 +11,6 @@ import com.hanheldpos.model.cart.BaseProductInCart
 import com.hanheldpos.model.cart.Combo
 import com.hanheldpos.model.cart.GroupBundle
 import com.hanheldpos.model.cart.Regular
-import com.hanheldpos.model.discount.DiscMinRequiredType
 import com.hanheldpos.model.product.ProductComboItem
 import com.hanheldpos.ui.screens.cart.CurCartData
 import com.hanheldpos.utils.GSonUtils
@@ -31,6 +30,10 @@ data class GroupBuyXGetY(
     var productList: MutableList<BaseProductInCart> = mutableListOf()
 
     val totalQuantity get() = productList.sumOf { basePro -> basePro.quantity ?: 0 }
+    val requireQuantity
+        get() = if (condition is CustomerBuys) (condition as CustomerBuys).requireQuantity.minus(
+            totalQuantity
+        ) else (condition as CustomerGets).requireQuantity.minus(totalQuantity);
     val totalPrice get() = productList.sumOf { basePro -> basePro.lineTotalValue }
     val groupName get() = getGroupName(type)
     val isCompleted get() = getIsCompleted()
@@ -41,7 +44,10 @@ data class GroupBuyXGetY(
         get() = GroupType.fromInt(type.value) == GroupType.BUY && BuyXGetYApplyTo.fromInt((condition as CustomerBuys).ApplyTo) == BuyXGetYApplyTo.ENTIRE_ORDER
 
     private fun getIsCompleted(): Boolean {
-        val result =  productList.firstOrNull { p -> !p.isCompleted() } == null && isConditionCompleted()
+        val result = productList.firstOrNull { p ->
+            !p.isCompleted()
+        } == null &&
+                isConditionCompleted()
         return result
     }
 

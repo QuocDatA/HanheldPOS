@@ -5,13 +5,15 @@
 
     <data>
 
-        <variable
-            name="isComplete"
-            type="Boolean" />
+        <import type="com.hanheldpos.model.combo.ItemActionType"/>
 
         <variable
             name="discount"
             type="com.hanheldpos.data.api.pojo.discount.DiscountResp" />
+
+        <variable
+            name="item"
+            type="com.hanheldpos.model.buy_x_get_y.BuyXGetY" />
 
         <variable
             name="viewModel"
@@ -78,32 +80,27 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_above="@+id/actionBar"
             android:layout_below="@+id/toolbarContainer"
             android:fadeScrollbars="false"
+            android:fillViewport="true"
             android:scrollbarSize="@dimen/_4sdp">
 
-            <LinearLayout
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvBuyXGetYGroup"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/buyXGetYGroupAdapter"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:overScrollMode="never"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    tools:itemCount="1"
-                    tools:listitem="@layout/item_buy_x_get_y_group" />
-
-            </LinearLayout>
+                android:layout_height="match_parent"
+                android:nestedScrollingEnabled="false"
+                android:overScrollMode="never"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:itemCount="1"
+                tools:listitem="@layout/item_buy_x_get_y_group" />
         </ScrollView>
 
         <RelativeLayout
             android:id="@+id/actionBar"
-            visibleObject="@{viewModel.selectedComplete}"
+            visibleObject="@{viewModel.isSelectedComplete()}"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_40sdp"
             android:layout_alignParentBottom="true">
@@ -127,13 +124,15 @@
                     style="@style/ProductDetailBtnQuantity"
                     android:layout_width="@dimen/_25sdp"
                     android:layout_height="@dimen/_25sdp"
-                    android:src="@drawable/ic_remove_primary"
+                    android:onClick="@{v -> viewModel.onRemoveQuantity()}"
+                    android:src="@{viewModel.minQuantity &lt; viewModel.numberQuantity? @drawable/ic_remove_primary : @drawable/ic_remove_disable}"
                     tools:ignore="ContentDescription" />
 
                 <com.diadiem.pos_components.PTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/_13sdp"
+                    android:text="@{String.valueOf(viewModel.numberQuantity)}"
                     app:useFontStyle="normal"
                     app:useTextColor="color5"
                     app:useTextHeader="h3" />
@@ -143,7 +142,8 @@
                     style="@style/ProductDetailBtnQuantity"
                     android:layout_width="@dimen/_25sdp"
                     android:layout_height="@dimen/_25sdp"
-                    android:src="@drawable/ic_add_primary"
+                    android:onClick="@{v -> viewModel.onAddQuantity()}"
+                    android:src="@{viewModel.numberQuantity &lt; viewModel.maxQuantity ? @drawable/ic_add_primary : @drawable/ic_add_disable}"
                     tools:ignore="ContentDescription" />
             </LinearLayout>
 
@@ -172,6 +172,7 @@
                         style="@style/ProductDetailText"
                         android:textAllCaps="true"
                         app:useFontStyle="bold"
+                        android:text="@{viewModel.numberQuantity > 0 ? ( viewModel.actionType == ItemActionType.Add ? `Add` : `Update` ) : `Remove`}"
                         app:useTextColor="color2"
                         app:useTextHeader="h5" />
 
@@ -179,6 +180,8 @@
                         style="@style/ProductDetailText"
                         android:layout_marginStart="@dimen/_25sdp"
                         app:useFontStyle="bold"
+                        priceView="@{viewModel.totalPriceLD}"
+                        visibleObject="@{viewModel.totalPriceLD > 0}"
                         app:useTextColor="color2"
                         app:useTextHeader="h5" />
                 </LinearLayout>

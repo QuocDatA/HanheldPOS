@@ -8,16 +8,21 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.databinding.FragmentBuyXGetYBinding
+import com.hanheldpos.extension.notifyValueChange
+import com.hanheldpos.model.buy_x_get_y.GroupBuyXGetY
 import com.hanheldpos.model.cart.BaseProductInCart
 import com.hanheldpos.model.cart.Regular
-import com.hanheldpos.model.buy_x_get_y.GroupBuyXGetY
 import com.hanheldpos.model.combo.ItemActionType
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.buy_x_get_y.adapter.BuyXGetYGroupAdapter
 import com.hanheldpos.ui.screens.home.order.OrderFragment
 import com.hanheldpos.ui.screens.product.ProductDetailFragment
 
-class BuyXGetYFragment(private val discount: DiscountResp) :
+class BuyXGetYFragment(
+    private val discount: DiscountResp,
+    private val actionType: ItemActionType,
+    private val quantityCanChoose: Int = -1
+) :
     BaseFragment<FragmentBuyXGetYBinding, BuyXGetYVM>(), BuyXGetYUV {
     override fun layoutRes(): Int = R.layout.fragment_buy_x_get_y
 
@@ -30,8 +35,10 @@ class BuyXGetYFragment(private val discount: DiscountResp) :
     override fun initViewModel(viewModel: BuyXGetYVM) {
         viewModel.run {
             init(this@BuyXGetYFragment)
+            initLifeCycle(this@BuyXGetYFragment)
             binding.viewModel = this
             binding.discount = discount
+            binding
         }
     }
 
@@ -43,11 +50,11 @@ class BuyXGetYFragment(private val discount: DiscountResp) :
                 item: Regular,
                 actionType: ItemActionType
             ) {
-                openProductDetail(maxQuantity, group, item, actionType, discount)
+                openProductDetail(maxQuantity, group, item, actionType)
             }
 
         })
-        binding.buyXGetYGroupAdapter.apply {
+        binding.rvBuyXGetYGroup.apply {
             adapter = buyXGetYGroupAdapter;
             addItemDecoration(
                 DividerItemDecoration(
@@ -66,8 +73,9 @@ class BuyXGetYFragment(private val discount: DiscountResp) :
     }
 
     override fun initData() {
+        viewModel.actionType.value = actionType
+        viewModel.maxQuantity = quantityCanChoose
         val listItemBuyXGetYGroup = viewModel.initDefaultList(discount)
-        binding.isComplete = viewModel.isSelectedComplete()
         buyXGetYGroupAdapter.submitList(listItemBuyXGetYGroup)
     }
 
@@ -80,14 +88,14 @@ class BuyXGetYFragment(private val discount: DiscountResp) :
         group: GroupBuyXGetY,
         item: Regular,
         action: ItemActionType,
-        discount: DiscountResp
     ) {
         if (SystemClock.elapsedRealtime() - viewModel.mLastTimeClick <= 500) return;
         viewModel.mLastTimeClick = SystemClock.elapsedRealtime();
         when (action) {
             ItemActionType.Remove -> {
-                viewModel.onRegularSelect(group, item, item, action, discount)
+                viewModel.onRegularSelect(group, item, item, action)
                 buyXGetYGroupAdapter.notifyDataSetChanged()
+                viewModel.listGroupBuyXGetY.notifyValueChange()
             }
             else -> {
                 navigator.goTo(ProductDetailFragment(
@@ -106,11 +114,10 @@ class BuyXGetYFragment(private val discount: DiscountResp) :
                                 group,
                                 item,
                                 itemAfter as Regular,
-                                action,
-                                discount
+                                action
                             )
                             buyXGetYGroupAdapter.notifyDataSetChanged()
-                            binding.isComplete = viewModel.isSelectedComplete()
+                            viewModel.listGroupBuyXGetY.notifyValueChange()
                         }
                     }
                 ))

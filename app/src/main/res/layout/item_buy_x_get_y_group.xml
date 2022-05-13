@@ -33,7 +33,6 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
                 android:orientation="horizontal">
 
                 <FrameLayout
@@ -72,7 +71,7 @@
                             app:useFontStyle="normal"
                             app:useTextColor="color4"
                             app:useTextHeader="h6"
-                            tools:text = "Group Pho"/>
+                            tools:text="Group Pho" />
 
                         <com.diadiem.pos_components.PTextView
                             android:id="@+id/tvMinimalValue"
@@ -95,8 +94,10 @@
                         tools:listitem="@layout/item_combo_picked" />
 
                     <com.diadiem.pos_components.PTextView
+                        visibleObject="@{!item.maxItemSelected &amp;&amp; item.groupBuyXGetY.totalQuantity > 0}"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:text="@{item.requireQuantity() + ` selection required`,default=`1 items required`}"
                         android:textColor="#FF0000"
                         app:useFontStyle="normal"
                         app:useTextHeader="h7" />
@@ -104,7 +105,22 @@
 
             </LinearLayout>
 
+            <!--<com.hanheldpos.ui.widgets.CustomWidthTabLayout
+                android:id="@+id/tabDiscountType"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                app:tabTextAppearance="@style/TextAppearance.Tablayout"
+                app:tabIndicatorFullWidth="false"
+                app:marginAmongTabs="@dimen/_3sdp"
+                app:tabRippleColor="@{null}"
+                app:tabTextColor="@color/color_2"
+                app:tabBackground="@drawable/bg_tab_discount_type"
+                app:tabIndicator="@null"
+                />-->
+
             <androidx.recyclerview.widget.RecyclerView
+                android:visibility="gone"
                 android:id="@+id/itemForSelectAdapter"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -123,8 +139,6 @@
             android:layout_height="match_parent"
             android:background="#99FFFFFF" />
 
-
     </FrameLayout>
-
 
 </layout>

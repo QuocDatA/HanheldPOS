@@ -9,7 +9,7 @@ import com.hanheldpos.model.combo.ItemActionType
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
 
-class BuyXGetYItemChosenAdapter() : BaseBindingListAdapter<Regular>(DiffCallback()) {
+class BuyXGetYItemChosenAdapter(private val listener: ComboItemChosenListener) : BaseBindingListAdapter<Regular>(DiffCallback()) {
     override fun getItemViewType(position: Int): Int {
         return R.layout.item_combo_picked
     }
@@ -22,10 +22,10 @@ class BuyXGetYItemChosenAdapter() : BaseBindingListAdapter<Regular>(DiffCallback
         val binding = holder.binding as ItemComboPickedBinding;
         binding.item = item;
         binding.itemComboModify.setOnClickListener {
-            //listener.onComboItemChoose(action = ItemActionType.Modify, item);
+            listener.onComboItemChoose(action = ItemActionType.Modify, item);
         }
         binding.itemComboRemove.setOnClickListener {
-            //listener.onComboItemChoose(action = ItemActionType.Remove, item);
+            listener.onComboItemChoose(action = ItemActionType.Remove, item);
         }
     }
 

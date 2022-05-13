@@ -282,7 +282,7 @@ class Combo() : BaseProductInCart() {
         return ProductChosen(
             OrderDetailId = indexOfList,
             _id = proOriginal!!._id,
-            Name1 = proOriginal!!.Name,
+            Name1 = proOriginal!!.Name ?: "",
             Name2 = proOriginal!!.Name3,
             Sku = sku,
             Price = priceOverride,

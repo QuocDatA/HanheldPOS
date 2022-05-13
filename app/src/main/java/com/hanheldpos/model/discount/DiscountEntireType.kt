@@ -8,7 +8,7 @@ enum class DiscountEntireType(val value : Int) {
     SPECIFIC(5);
     companion object {
         fun fromInt(value: Int): DiscountEntireType? {
-            DiscountEntireType.values().forEach {
+            values().forEach {
                 if (it.value == value) {
                     return it
                 }
