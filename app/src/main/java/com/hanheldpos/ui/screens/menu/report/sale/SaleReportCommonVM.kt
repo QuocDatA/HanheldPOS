@@ -39,7 +39,7 @@ class SaleReportCommonVM : BaseViewModel() {
         SaleReportCustomData(
             startDay = DateTimeUtils.curDate,
             endDay = DateTimeUtils.curDate,
-            isCurrentDrawer = false,
+            isCurrentDrawer = true,
             isAllDevice = false,
             isAllDay = true,
             startTime = null,

@@ -51,7 +51,7 @@ class SaleReportsMenuVM : BaseUiViewModel<SaleReportsMenuUV>() {
             ),
             ItemOptionNav(
                 SaleOptionPage.CategorySales,
-                name = context.getString(R.string.overview)
+                name = context.getString(R.string.category_sales)
             ),
             ItemOptionNav(
                 SaleOptionPage.Discounts,

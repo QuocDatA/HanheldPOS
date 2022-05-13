@@ -46,8 +46,8 @@ class PaymentCompletedFragment(
                                 fragmentContext.applicationContext,
                                 BillPrinterManager.PrintOptions(
                                     connectionType = BillPrinterManager.PrintConnectionType.BLUETOOTH,
-                                    deviceType = BillPrinterManager.PrinterDeviceInfo.DeviceType.HANDHELD
-                                ).setUpLan(BillPrinterManager.PrintOptions.LanConfig(PrintConstants.LAN_PORT,PrintConstants.LAN_ADDRESS))
+                                    deviceType = BillPrinterManager.PrinterDeviceInfo.DeviceType.UROVO
+                                )
                             )
                             BillPrinterManager.get().apply {
                                 print(

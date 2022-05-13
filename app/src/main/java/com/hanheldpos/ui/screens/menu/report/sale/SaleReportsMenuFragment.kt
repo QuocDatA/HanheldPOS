@@ -20,6 +20,10 @@ import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.menu.adapter.ItemOptionNav
 import com.hanheldpos.ui.screens.menu.adapter.OptionNavAdapter
 import com.hanheldpos.ui.screens.menu.report.current_drawer.CurrentDrawerFragment
+import com.hanheldpos.ui.screens.menu.report.sale.menu.cash_voucher.CashVoucherReportFragment
+import com.hanheldpos.ui.screens.menu.report.sale.menu.dining_options.DiningOptionsFragment
+import com.hanheldpos.ui.screens.menu.report.sale.menu.discounts.DiscountsReportFragment
+import com.hanheldpos.ui.screens.menu.report.sale.menu.item_sales.ItemSalesReportFragment
 import com.hanheldpos.ui.screens.menu.report.sale.menu.overview.SaleOverviewFragment
 import com.hanheldpos.ui.screens.menu.report.sale.menu.payment_summary.PaymentReportFragment
 import com.hanheldpos.ui.widgets.TableLayoutFixedHeader
@@ -76,7 +80,7 @@ class SaleReportsMenuFragment : BaseFragment<FragmentSaleReportsMenuBinding, Sal
             SaleReportCustomData(
                 startDay = DateTimeUtils.curDate,
                 endDay = DateTimeUtils.curDate,
-                isCurrentDrawer = false,
+                isCurrentDrawer = true,
                 isAllDevice = false,
                 isAllDay = true,
                 startTime = null,
@@ -111,6 +115,26 @@ class SaleReportsMenuFragment : BaseFragment<FragmentSaleReportsMenuBinding, Sal
             SaleOptionPage.PaymentSummary -> navigator.goToWithAnimationEnterFromRight(
                 SalesReportFragment(
                     fragment = PaymentReportFragment()
+                )
+            )
+            SaleOptionPage.DiningOptions -> navigator.goToWithAnimationEnterFromRight(
+                SalesReportFragment(
+                    fragment = DiningOptionsFragment()
+                )
+            )
+            SaleOptionPage.CashVoucher -> navigator.goToWithAnimationEnterFromRight(
+                SalesReportFragment(
+                    fragment = CashVoucherReportFragment()
+                )
+            )
+            SaleOptionPage.ItemSales -> navigator.goToWithAnimationEnterFromRight(
+                SalesReportFragment(
+                    fragment = ItemSalesReportFragment()
+                )
+            )
+            SaleOptionPage.Discounts -> navigator.goToWithAnimationEnterFromRight(
+                SalesReportFragment(
+                    fragment = DiscountsReportFragment()
                 )
             )
         }

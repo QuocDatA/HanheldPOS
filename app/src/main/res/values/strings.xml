@@ -247,4 +247,5 @@
     <string name="hide_detail">Hide Detail</string>
     <string name="r_qty">R.Qty</string>
     <string name="r_amount">R.Amount</string>
+    <string name="category_sales">Category Sales</string>
 </resources>
