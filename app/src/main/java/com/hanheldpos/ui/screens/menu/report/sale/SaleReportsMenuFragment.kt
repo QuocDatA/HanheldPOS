@@ -21,11 +21,15 @@ import com.hanheldpos.ui.screens.menu.adapter.ItemOptionNav
 import com.hanheldpos.ui.screens.menu.adapter.OptionNavAdapter
 import com.hanheldpos.ui.screens.menu.report.current_drawer.CurrentDrawerFragment
 import com.hanheldpos.ui.screens.menu.report.sale.menu.cash_voucher.CashVoucherReportFragment
+import com.hanheldpos.ui.screens.menu.report.sale.menu.comps.CompsReportFragment
 import com.hanheldpos.ui.screens.menu.report.sale.menu.dining_options.DiningOptionsFragment
 import com.hanheldpos.ui.screens.menu.report.sale.menu.discounts.DiscountsReportFragment
 import com.hanheldpos.ui.screens.menu.report.sale.menu.item_sales.ItemSalesReportFragment
 import com.hanheldpos.ui.screens.menu.report.sale.menu.overview.SaleOverviewFragment
 import com.hanheldpos.ui.screens.menu.report.sale.menu.payment_summary.PaymentReportFragment
+import com.hanheldpos.ui.screens.menu.report.sale.menu.services.ServicesReportFragment
+import com.hanheldpos.ui.screens.menu.report.sale.menu.surcharges.SurchargesReportFragment
+import com.hanheldpos.ui.screens.menu.report.sale.menu.taxes.TaxesReportFragment
 import com.hanheldpos.ui.widgets.TableLayoutFixedHeader
 import com.hanheldpos.utils.DateTimeUtils
 
@@ -135,6 +139,30 @@ class SaleReportsMenuFragment : BaseFragment<FragmentSaleReportsMenuBinding, Sal
             SaleOptionPage.Discounts -> navigator.goToWithAnimationEnterFromRight(
                 SalesReportFragment(
                     fragment = DiscountsReportFragment()
+                )
+            )
+            SaleOptionPage.Comps -> navigator.goToWithAnimationEnterFromRight(
+                SalesReportFragment(
+                    fragment = CompsReportFragment()
+                )
+            )
+            SaleOptionPage.SectionSales -> TODO()
+            SaleOptionPage.InventorySales -> TODO()
+            SaleOptionPage.CategorySales -> TODO()
+            SaleOptionPage.Refund -> TODO()
+            SaleOptionPage.Taxes -> navigator.goToWithAnimationEnterFromRight(
+                SalesReportFragment(
+                    fragment = TaxesReportFragment()
+                )
+            )
+            SaleOptionPage.Service -> navigator.goToWithAnimationEnterFromRight(
+                SalesReportFragment(
+                    fragment = ServicesReportFragment()
+                )
+            )
+            SaleOptionPage.Surcharge -> navigator.goToWithAnimationEnterFromRight(
+                SalesReportFragment(
+                    fragment = SurchargesReportFragment()
                 )
             )
         }

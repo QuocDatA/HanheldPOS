@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.hanheldpos.ui.screens.menu.report.sale.menu.surcharges.SurchargesReportVM" />
+    </data>
+
+    <LinearLayout style="@style/RootLayout">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="@dimen/_8sdp"
+            android:paddingVertical="@dimen/_10sdp">
+
+            <com.diadiem.pos_components.PTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/surcharge"
+                app:useFontStyle="bold"
+                app:useTextColor="color4"
+                app:useTextHeader="h4" />
+
+            <androidx.legacy.widget.Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <com.diadiem.pos_components.PTextView
+                android:id="@+id/btnShowDetail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="true"
+                android:text="@string/show_detail"
+                app:useTextColor="color0"
+                app:useTextHeader="h5" />
+        </LinearLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                visibleObject="@{!viewModel.isShowDetail()}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="@dimen/_8sdp">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="#E5F2FF"
+                    android:elevation="0dp"
+                    app:cardElevation="0dp">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_margin="@dimen/_15sdp"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <com.diadiem.pos_components.PTextView
+                            android:id="@+id/totalPayment"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{`0`}"
+                            app:useFontStyle="bold"
+                            app:useTextColor="color1"
+                            app:useTextHeader="h2" />
+
+                        <com.diadiem.pos_components.PTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/total"
+                            app:useFontStyle="bold"
+                            app:useTextColor="color1"
+                            app:useTextHeader="h5" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/consum"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="@dimen/_15sdp"
+                    android:overScrollMode="never"
+                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                    app:spanCount="2"
+                    tools:itemCount="6"
+                    tools:listitem="@layout/item_sale_report" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                visibleObject="@{viewModel.isShowDetail()}"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/color_11"
+                    android:paddingHorizontal="@dimen/_8sdp"
+                    android:paddingVertical="@dimen/_10sdp">
+
+                    <com.diadiem.pos_components.PTextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:text="@string/name"
+                        app:useFontStyle="bold"
+                        app:useTextColor="color4"
+                        app:useTextHeader="h5" />
+
+                    <com.diadiem.pos_components.PTextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/qty"
+                        android:textAlignment="center"
+                        app:useFontStyle="bold"
+                        app:useTextColor="color4"
+                        app:useTextHeader="h5" />
+
+                    <com.diadiem.pos_components.PTextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:text="@string/amount"
+                        android:textAlignment="textEnd"
+                        app:useFontStyle="bold"
+                        app:useTextColor="color4"
+                        app:useTextHeader="h5" />
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/detail"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:overScrollMode="never"
+                    android:paddingHorizontal="@dimen/_8sdp"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:itemCount="6"
+                    tools:listitem="@layout/item_sale_report" />
+            </LinearLayout>
+
+        </FrameLayout>
+
+    </LinearLayout>
+</layout>
