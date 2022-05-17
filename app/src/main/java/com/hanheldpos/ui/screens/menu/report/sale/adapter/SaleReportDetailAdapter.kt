@@ -24,6 +24,11 @@ class SaleReportDetailAdapter : BaseBindingListAdapter<ReportItemDetail>(DiffCal
             binding.amountLine.setTypeface(null,Typeface.BOLD)
             binding.nameLine.setTypeface(null,Typeface.BOLD)
         }
+        if (item.isGray == true){
+            binding.quantityLine.setTextColor(binding.root.context.getColor(R.color.color_5))
+            binding.amountLine.setTextColor(binding.root.context.getColor(R.color.color_5))
+            binding.nameLine.setTextColor(binding.root.context.getColor(R.color.color_5))
+        }
     }
 
     private class DiffCallBack : DiffUtil.ItemCallback<ReportItemDetail>() {

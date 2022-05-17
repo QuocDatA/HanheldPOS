@@ -7,7 +7,7 @@ import kotlinx.parcelize.Parcelize
 data class ReportSalesResp(
     val Cash: List<Cash>,
     val CashVoucher: List<CashVoucherReport>,
-    val Category: List<Category>,
+    val Category: List<CategoryReport>,
     val Comp: List<CompReport>,
     val Device: List<DeviceReport>,
     val DinningOption: List<DinningOptionReport>,

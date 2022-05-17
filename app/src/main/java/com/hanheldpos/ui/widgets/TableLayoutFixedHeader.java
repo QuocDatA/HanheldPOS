@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -60,6 +61,8 @@ public class TableLayoutFixedHeader extends RelativeLayout {
 
     private int numberColumns = 3;
 
+    private boolean wrapText = false;
+
     public TableLayoutFixedHeader(Context context) {
         super(context);
 
@@ -106,7 +109,6 @@ public class TableLayoutFixedHeader extends RelativeLayout {
 
     @Override
     public void requestLayout() {
-
         super.requestLayout();
     }
 
@@ -149,6 +151,11 @@ public class TableLayoutFixedHeader extends RelativeLayout {
 
     public void setNumberColumns(Integer numberColumns) {
         this.numberColumns = numberColumns;
+    }
+
+    public void setWrapText(boolean isWrapText) {
+        this.wrapText = isWrapText;
+        this.requestLayout();
     }
 
     public void setHeaderBackground(int color) {
@@ -356,6 +363,10 @@ public class TableLayoutFixedHeader extends RelativeLayout {
         headerTextView.setTextStyle(FontStyleEnum.BOLD);
         headerTextView.setTextColor(TextColorEnum.Color4);
         headerTextView.setGravity(gravity);
+        if (!this.wrapText){
+            headerTextView.setMaxLines(1);
+            headerTextView.setEllipsize(TextUtils.TruncateAt.END);
+        }
         headerTextView.setPadding(getResources().getDimensionPixelSize(R.dimen._7sdp), getResources().getDimensionPixelSize(R.dimen._10sdp), getResources().getDimensionPixelSize(R.dimen._7sdp), getResources().getDimensionPixelSize(R.dimen._10sdp));
 
         return headerTextView;
@@ -369,6 +380,10 @@ public class TableLayoutFixedHeader extends RelativeLayout {
         bodyTextView.setTextColor(TextColorEnum.Color4);
         bodyTextView.setText(label);
         bodyTextView.setGravity(gravity);
+        if (!this.wrapText){
+            bodyTextView.setMaxLines(1);
+            bodyTextView.setEllipsize(TextUtils.TruncateAt.END);
+        }
         bodyTextView.setPadding(getResources().getDimensionPixelSize(R.dimen._7sdp), getResources().getDimensionPixelSize(R.dimen._10sdp), getResources().getDimensionPixelSize(R.dimen._7sdp), getResources().getDimensionPixelSize(R.dimen._10sdp));
         return bodyTextView;
     }
