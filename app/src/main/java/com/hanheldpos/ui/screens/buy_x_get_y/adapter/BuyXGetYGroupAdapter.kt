@@ -1,7 +1,10 @@
 package com.hanheldpos.ui.screens.buy_x_get_y.adapter
 
+import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.DiffUtil
 import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.product.Product
 import com.hanheldpos.databinding.ItemBuyXGetYGroupBinding
@@ -13,8 +16,11 @@ import com.hanheldpos.model.combo.ItemActionType
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
+import com.hanheldpos.ui.screens.discount.adapter.OptionsPagerAdapter
 
-class BuyXGetYGroupAdapter(private val listener: BuyXGetYItemListener) : BaseBindingListAdapter<ItemBuyXGetYGroup>(DiffCallback()) {
+class BuyXGetYGroupAdapter(
+    private val listener: BuyXGetYItemListener,
+) : BaseBindingListAdapter<ItemBuyXGetYGroup>(DiffCallback()) {
 
     override fun getItemViewType(position: Int): Int {
         return R.layout.item_buy_x_get_y_group
@@ -23,7 +29,6 @@ class BuyXGetYGroupAdapter(private val listener: BuyXGetYItemListener) : BaseBin
     data class SelectedItem(var value: Int = 0)
 
     private val selectedItem: SelectedItem = SelectedItem(0)
-    private var listProductTypeTab: List<ProductTypeTab> = listOf()
 
     override fun submitList(list: MutableList<ItemBuyXGetYGroup>?) {
         super.submitList(list)
@@ -56,40 +61,12 @@ class BuyXGetYGroupAdapter(private val listener: BuyXGetYItemListener) : BaseBin
         binding.name = itemBuyXGetYGroup.getGroupName()
         binding.item = itemBuyXGetYGroup
 
-        //Set up tab layout
-//        listProductTypeTab =
-//            getProductTypeTab(itemBuyXGetYGroup.listApplyTo?.toList())?.toList() ?: listOf()
-
-//        if(!itemBuyXGetYGroup.groupListRegular.isNullOrEmpty()) {
-//            val productTypePagerAdapter = ProductTypePagerAdapter(
-//                PosApp.instance.baseContext,
-//                itemBuyXGetYGroup.groupListRegular?.first() ?: listOf()
-//            )
-//        }
-
-//        binding.tabDiscountType.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-//            override fun onTabSelected(tab: TabLayout.Tab?) {
-//                tabSelected(tab)
-//            }
-//
-//            override fun onTabUnselected(tab: TabLayout.Tab?) {
-//
-//            }
-//
-//            override fun onTabReselected(tab: TabLayout.Tab?) {
-//                tabSelected(tab)
-//            }
-//
-//        })
-//        binding.tabDiscountType.getTabAt(0)?.select()
-
         // Set group that had already been selected
         val groupChosen: MutableList<Regular> = mutableListOf()
         itemBuyXGetYGroup.groupBuyXGetY.productList.forEach { basePro -> groupChosen.add(basePro as Regular) }
 
-        // Setup adapter for item for select and item already selected
-        binding.itemForSelectAdapter.apply {
-            adapter = BuyXGetYItemPickerAdapter(
+        if(itemBuyXGetYGroup.isApplyToEntireOrder == false) {
+            val buyXGetYItemPickerAdapter = BuyXGetYItemPickerAdapter(
                 listener = object : BaseItemClickListener<Regular> {
                     override fun onItemClick(adapterPosition: Int, item: Regular) {
                         item.quantity = 1
@@ -101,30 +78,64 @@ class BuyXGetYGroupAdapter(private val listener: BuyXGetYItemListener) : BaseBin
                         )
                     }
                 }
-            ).apply {
-                submitList(itemBuyXGetYGroup.groupListRegular?.first())
+            )
+            binding.itemForSelectAdapter.apply {
+                adapter = buyXGetYItemPickerAdapter
             }
-        }
-        binding.itemSelectedAdapter.apply {
-            adapter = BuyXGetYItemChosenAdapter(
+
+            val buyXGetYItemChosenAdapter = BuyXGetYItemChosenAdapter(
                 listener = object : BuyXGetYItemChosenAdapter.ComboItemChosenListener {
                     override fun onComboItemChoose(action: ItemActionType, item: Regular) {
                         listener.onProductSelect(
                             itemBuyXGetYGroup.requireQuantity(),
                             itemBuyXGetYGroup.groupBuyXGetY,
                             item,
-                            action
+                            action,
                         )
                     }
                 }
-            ).apply {
-                submitList(groupChosen)
+            ).also { it.submitList(groupChosen) }
+            binding.itemSelectedAdapter.apply {
+                adapter = buyXGetYItemChosenAdapter
             }
-        }
-    }
 
-    private fun tabSelected(tab: TabLayout.Tab?) {
-        tab ?: return
+            //Set up tab layout
+            val listTemp = getProductTypeTab(itemBuyXGetYGroup.listApplyTo?.toList())?.toList()
+                ?: listOf()
+            binding.tabDiscountType.removeAllTabs()
+            listTemp.forEach { tab ->
+                binding.tabDiscountType.addTab(
+                    binding.tabDiscountType.newTab().setText(tab.title)
+                )
+            }
+
+            val tabSelected = fun(tab: TabLayout.Tab?) {
+                tab ?: return
+                buyXGetYItemPickerAdapter.submitList(
+                    itemBuyXGetYGroup.groupListRegular?.get(
+                        tab.position
+                    )
+                )
+            }
+
+            binding.tabDiscountType.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+                override fun onTabSelected(tab: TabLayout.Tab?) {
+                    tabSelected(tab)
+                }
+
+                override fun onTabUnselected(tab: TabLayout.Tab?) {
+
+                }
+
+                override fun onTabReselected(tab: TabLayout.Tab?) {
+                    tabSelected(tab)
+                }
+            })
+
+            binding.tabDiscountType.getTabAt(0)?.select()
+        } else {
+
+        }
 
     }
 

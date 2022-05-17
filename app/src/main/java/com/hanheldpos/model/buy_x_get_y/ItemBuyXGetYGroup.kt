@@ -17,6 +17,7 @@ data class ItemBuyXGetYGroup(
     var groupListRegular: MutableList<List<Regular>>? = null,
     // only show buy x get y  list when item in cart is focused by user
     var isFocused: Boolean = false,
+    var isApplyToEntireOrder: Boolean? = false,
 ) {
     fun requireQuantity(): Int = groupBuyXGetY.requireQuantity
 
@@ -26,6 +27,12 @@ data class ItemBuyXGetYGroup(
 
     fun getGroupName(): String {
         return groupBuyXGetY.groupName
+    }
+
+    fun isMutableTab(): Boolean {
+        if(groupListRegular.isNullOrEmpty())
+            return false
+        return groupListRegular?.size!! > 1
     }
 
     fun getProductListApplyToBuyXGetY(

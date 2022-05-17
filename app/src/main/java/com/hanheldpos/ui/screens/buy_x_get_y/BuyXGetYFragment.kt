@@ -43,7 +43,8 @@ class BuyXGetYFragment(
     }
 
     override fun initView() {
-        buyXGetYGroupAdapter = BuyXGetYGroupAdapter(listener = object: BuyXGetYGroupAdapter.BuyXGetYItemListener {
+        buyXGetYGroupAdapter = BuyXGetYGroupAdapter(listener = object :
+            BuyXGetYGroupAdapter.BuyXGetYItemListener {
             override fun onProductSelect(
                 maxQuantity: Int,
                 group: GroupBuyXGetY,
@@ -104,6 +105,7 @@ class BuyXGetYFragment(
                     productBundle = null,
                     quantityCanChoose = maxQuantity,
                     action = action,
+                    isDiscountBuyXGetY = true,
                     listener = object : OrderFragment.OrderMenuListener {
                         @SuppressLint("NotifyDataSetChanged")
                         override fun onCartAdded(

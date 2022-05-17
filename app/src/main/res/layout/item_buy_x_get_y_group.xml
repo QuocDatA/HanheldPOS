@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="android.view.View"/>
 
         <variable
             name="item"
@@ -85,6 +86,7 @@
                     </LinearLayout>
 
                     <androidx.recyclerview.widget.RecyclerView
+                        android:visibility="gone"
                         android:id="@+id/itemSelectedAdapter"
                         visibleObject="@{item.containProduct}"
                         android:layout_width="match_parent"
@@ -93,7 +95,16 @@
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         tools:listitem="@layout/item_combo_picked" />
 
+                    <include
+                        android:visibility="@{item.isApplyToEntireOrder() ? View.VISIBLE : View.GONE}"
+                        layout="@layout/layout_linear_process"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_marginEnd="@dimen/_40sdp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
                     <com.diadiem.pos_components.PTextView
+                        android:visibility="gone"
                         visibleObject="@{!item.maxItemSelected &amp;&amp; item.groupBuyXGetY.totalQuantity > 0}"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -105,19 +116,31 @@
 
             </LinearLayout>
 
-            <!--<com.hanheldpos.ui.widgets.CustomWidthTabLayout
-                android:id="@+id/tabDiscountType"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_30sdp"
-                android:layout_marginTop="@dimen/_10sdp"
-                app:tabTextAppearance="@style/TextAppearance.Tablayout"
-                app:tabIndicatorFullWidth="false"
-                app:marginAmongTabs="@dimen/_3sdp"
-                app:tabRippleColor="@{null}"
-                app:tabTextColor="@color/color_2"
-                app:tabBackground="@drawable/bg_tab_discount_type"
-                app:tabIndicator="@null"
-                />-->
+            <LinearLayout
+                visibleObject="@{item.isFocused &amp;&amp; item.mutableTab}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <com.hanheldpos.ui.widgets.CustomWidthTabLayout
+                    android:id="@+id/tabDiscountType"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_20sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:theme="@style/TabLayout_Theme"
+                    app:marginAmongTabs="@dimen/_3sdp"
+                    app:tabBackground="@drawable/bg_tab_buy_x_get_y"
+                    app:tabIndicator="@null"
+                    app:tabIndicatorFullWidth="false"
+                    app:tabMode="scrollable"
+                    app:tabRippleColor="@{null}"
+                    app:tabSelectedTextColor="@color/color_2"
+                    app:tabTextAppearance="@style/TextAppearance.TablayoutBuyXGetY"
+                    app:tabTextColor="@color/color_8" />
+
+                <include layout="@layout/divider_horizontal" />
+            </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:visibility="gone"

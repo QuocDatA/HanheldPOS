@@ -8,10 +8,7 @@ import com.hanheldpos.data.api.pojo.discount.CustomerBuys
 import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.data.api.pojo.fee.CustomerGets
 import com.hanheldpos.extension.notifyValueChange
-import com.hanheldpos.model.buy_x_get_y.BuyXGetY
-import com.hanheldpos.model.buy_x_get_y.GroupBuyXGetY
-import com.hanheldpos.model.buy_x_get_y.GroupType
-import com.hanheldpos.model.buy_x_get_y.ItemBuyXGetYGroup
+import com.hanheldpos.model.buy_x_get_y.*
 import com.hanheldpos.model.cart.Regular
 import com.hanheldpos.model.combo.ItemActionType
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
@@ -108,7 +105,6 @@ class BuyXGetYVM : BaseUiViewModel<BuyXGetYUV>() {
                 group.productList.remove(itemPrev);
             }
         }
-        buyXGetY.notifyValueChange();
     }
 
     val isSelectedComplete: MutableLiveData<Boolean> = Transformations.map(listGroupBuyXGetY) {
@@ -142,11 +138,13 @@ class BuyXGetYVM : BaseUiViewModel<BuyXGetYUV>() {
             itemBuyXGetYGroup.groupListRegular =
                 conditionCustomer.filterListApplyTo(itemBuyXGetYGroup)
             itemBuyXGetYGroup.listApplyTo = conditionCustomer.ListApplyTo.toMutableList()
+            itemBuyXGetYGroup.isApplyToEntireOrder = BuyXGetYApplyTo.fromInt(conditionCustomer.ApplyTo) == BuyXGetYApplyTo.ENTIRE_ORDER
         } else {
             conditionCustomer as CustomerGets
             itemBuyXGetYGroup.groupListRegular =
                 conditionCustomer.filterListApplyTo(itemBuyXGetYGroup)
             itemBuyXGetYGroup.listApplyTo = conditionCustomer.ListApplyTo.toMutableList()
+            itemBuyXGetYGroup.isApplyToEntireOrder = BuyXGetYApplyTo.fromInt(conditionCustomer.ApplyTo) == BuyXGetYApplyTo.ENTIRE_ORDER
         }
         return itemBuyXGetYGroup
     }

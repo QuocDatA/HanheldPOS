@@ -1,14 +1,14 @@
 package com.hanheldpos.ui.screens.buy_x_get_y.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.DiffUtil
 import com.hanheldpos.R
-import com.hanheldpos.data.api.pojo.discount.CustomerBuys
+import com.hanheldpos.binding.setPricePlusView
 import com.hanheldpos.databinding.ItemComboRegularBinding
 import com.hanheldpos.model.cart.Regular
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
@@ -48,14 +48,13 @@ class BuyXGetYItemPickerAdapter(
 //            (holder.binding as ItemComboRegularBinding).isChosen = true;
 //        }
         holder.bindItem(item);
-//        val binding = holder.binding as ItemComboRegularBinding;
-//        val price = item.groupPrice(groupBundle,proOriginal);
-//        if(price > 0){
-//            setPricePlusView(binding.priceProduct,price)
-//        }
-//        else binding.priceProduct.visibility = View.GONE
-        (holder.binding as ItemComboRegularBinding).root.setOnClickListener {
-            listener.onItemClick(position,item);
+        val binding = holder.binding as ItemComboRegularBinding;
+        val price = item.proOriginal?.Price ?: 0.0
+        if (price > 0) {
+            setPricePlusView(binding.priceProduct, price)
+        } else binding.priceProduct.visibility = View.GONE
+        holder.binding.root.setOnClickListener {
+            listener.onItemClick(position, item);
         }
     }
 
