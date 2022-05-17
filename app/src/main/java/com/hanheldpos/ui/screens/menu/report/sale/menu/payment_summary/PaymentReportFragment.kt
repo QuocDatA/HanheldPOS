@@ -1,6 +1,7 @@
 package com.hanheldpos.ui.screens.menu.report.sale.menu.payment_summary
 
 import android.annotation.SuppressLint
+import android.view.Gravity
 import androidx.fragment.app.activityViewModels
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentPaymentReportBinding
@@ -44,6 +45,14 @@ class PaymentReportFragment : BaseFragment<FragmentPaymentReportBinding, Payment
                 )
             )
         }
+        binding.tableLayout.setColumnAligns(mutableListOf(
+            Gravity.START,
+            Gravity.CENTER,
+            Gravity.CENTER,
+            Gravity.CENTER,
+            Gravity.CENTER,
+            Gravity.END,
+        ))
     }
 
     @SuppressLint("NotifyDataSetChanged")
