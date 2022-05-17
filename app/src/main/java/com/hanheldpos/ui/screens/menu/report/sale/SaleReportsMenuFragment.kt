@@ -27,6 +27,8 @@ import com.hanheldpos.ui.screens.menu.report.sale.menu.discounts.DiscountsReport
 import com.hanheldpos.ui.screens.menu.report.sale.menu.item_sales.ItemSalesReportFragment
 import com.hanheldpos.ui.screens.menu.report.sale.menu.overview.SaleOverviewFragment
 import com.hanheldpos.ui.screens.menu.report.sale.menu.payment_summary.PaymentReportFragment
+import com.hanheldpos.ui.screens.menu.report.sale.menu.refund.RefundReportFragment
+import com.hanheldpos.ui.screens.menu.report.sale.menu.section_sales.SectionSalesReportFragment
 import com.hanheldpos.ui.screens.menu.report.sale.menu.services.ServicesReportFragment
 import com.hanheldpos.ui.screens.menu.report.sale.menu.surcharges.SurchargesReportFragment
 import com.hanheldpos.ui.screens.menu.report.sale.menu.taxes.TaxesReportFragment
@@ -146,10 +148,18 @@ class SaleReportsMenuFragment : BaseFragment<FragmentSaleReportsMenuBinding, Sal
                     fragment = CompsReportFragment()
                 )
             )
-            SaleOptionPage.SectionSales -> TODO()
+            SaleOptionPage.SectionSales -> navigator.goToWithAnimationEnterFromRight(
+                SalesReportFragment(
+                    fragment = SectionSalesReportFragment()
+                )
+            )
             SaleOptionPage.InventorySales -> TODO()
             SaleOptionPage.CategorySales -> TODO()
-            SaleOptionPage.Refund -> TODO()
+            SaleOptionPage.Refund -> navigator.goToWithAnimationEnterFromRight(
+                SalesReportFragment(
+                    fragment = RefundReportFragment()
+                )
+            )
             SaleOptionPage.Taxes -> navigator.goToWithAnimationEnterFromRight(
                 SalesReportFragment(
                     fragment = TaxesReportFragment()

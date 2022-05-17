@@ -28,7 +28,7 @@ class PaymentReportVM : BaseUiViewModel<PaymentReportUV>() {
     }
 
 
-    fun getHeaders(context: Context): Collection<String> {
+    fun getPaymentHeaders(context: Context): Collection<String> {
         return mutableListOf(
             context.getString(R.string.name),
             context.getString(R.string.qty),
@@ -39,7 +39,7 @@ class PaymentReportVM : BaseUiViewModel<PaymentReportUV>() {
         )
     }
 
-    fun getRows(context: Context, payments: List<OrderPayment>?): Collection<Collection<String>> {
+    fun getPaymentRows(context: Context, payments: List<OrderPayment>?): Collection<Collection<String>> {
         var totalQty = 0
         var totalAmount = 0.0
         var totalRQty = 0

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -11,7 +12,9 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
@@ -43,11 +46,15 @@ public class TableLayoutFixedHeader extends RelativeLayout {
     ScrollView scrollViewC;
     ScrollView scrollViewD;
 
+    View dividerHorizontal;
+
     Context context;
 
     private final List<String> headers = new ArrayList<>();
 
     private final List<List<String>> rows = new ArrayList<>();
+
+    private final List<Integer> columnAligns = new ArrayList<>();
 
     private int headerCellWidth = 0;
 
@@ -128,6 +135,13 @@ public class TableLayoutFixedHeader extends RelativeLayout {
         setupRow();
     }
 
+    public void setColumnAligns(List<Integer> columnAligns){
+        this.columnAligns.clear();
+        this.columnAligns.addAll(columnAligns);
+        setupHeader();
+        setupRow();
+    }
+
     public void clearRow() {
         rows.clear();
         setupRow();
@@ -152,6 +166,7 @@ public class TableLayoutFixedHeader extends RelativeLayout {
         this.addTableRowToTableA();
         this.addTableRowToTableB();
         this.resizeHeaderHeight();
+        this.resizeDividerHorizontalHeight();
     }
 
     void setupRow() {
@@ -163,6 +178,7 @@ public class TableLayoutFixedHeader extends RelativeLayout {
 
         this.generateTableC_AndTable_D();
         this.resizeBodyTableRowHeight();
+        this.resizeDividerHorizontalHeight();
     }
 
     // initalized components
@@ -186,8 +202,9 @@ public class TableLayoutFixedHeader extends RelativeLayout {
         this.tableA.setBackgroundColor(getResources().getColor(R.color.color_11));
         this.tableB.setBackgroundColor(getResources().getColor(R.color.color_11));
 
-    }
+        this.dividerHorizontal = new View(this.context);
 
+    }
 
 
     // resizing TableRow height starts here
@@ -211,7 +228,7 @@ public class TableLayoutFixedHeader extends RelativeLayout {
         int tableC_ChildCount = this.tableC.getChildCount();
 
         for (int x = 0; x < tableC_ChildCount; x++) {
-
+            if(!(this.tableC.getChildAt(x) instanceof TableRow) && !(this.tableD.getChildAt(x) instanceof TableRow)) continue;
             TableRow productNameHeaderTableRow = (TableRow) this.tableC.getChildAt(x);
             TableRow productInfoTableRow = (TableRow) this.tableD.getChildAt(x);
 
@@ -226,10 +243,28 @@ public class TableLayoutFixedHeader extends RelativeLayout {
 
     }
 
+    void resizeDividerHorizontalHeight() {
+        int totalHeight = 0;
+        int tableA_ChildCount = this.tableA.getChildCount();
+        int tableC_ChildCount = this.tableC.getChildCount();
+        for (int x = 0; x < tableA_ChildCount; x++) {
+            TableRow productNameHeaderTableRow = (TableRow) this.tableA.getChildAt(x);
+            int rowAHeight = this.viewHeight(productNameHeaderTableRow);
+            totalHeight += rowAHeight;
+        }
+        for (int x = 0; x < tableC_ChildCount; x++) {
+
+            View productNameBodyTableRow =  this.tableC.getChildAt(x);
+            int rowAHeight = this.viewHeight(productNameBodyTableRow);
+            totalHeight += rowAHeight;
+        }
+        LayoutParams params = (RelativeLayout.LayoutParams) this.dividerHorizontal.getLayoutParams();
+        params.height = totalHeight - (params.bottomMargin + params.topMargin);
+    }
+
 
     // we add the components here in our TableMainLayout
     private void addComponentToMainLayout() {
-
         // RelativeLayout params were very useful here
         // the addRule method is the key to arrange the components properly
         RelativeLayout.LayoutParams componentB_Params = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
@@ -242,10 +277,18 @@ public class TableLayoutFixedHeader extends RelativeLayout {
         componentD_Params.addRule(RelativeLayout.RIGHT_OF, this.scrollViewC.getId());
         componentD_Params.addRule(RelativeLayout.BELOW, this.horizontalScrollViewB.getId());
 
+        RelativeLayout.LayoutParams componentDividerHorizontal = new RelativeLayout.LayoutParams(
+                (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 0.5f, getResources().getDisplayMetrics()),
+                LayoutParams.WRAP_CONTENT
+        );
+        componentDividerHorizontal.addRule(RelativeLayout.START_OF,this.horizontalScrollViewB.getId());
+        this.dividerHorizontal.setBackgroundColor(getResources().getColor(R.color.color_10));
+
         // 'this' is a relative layout,
         // we extend this table layout as relative layout as seen during the creation of this class
         this.addView(this.tableA);
         this.addView(this.horizontalScrollViewB, componentB_Params);
+        this.addView(this.dividerHorizontal,componentDividerHorizontal);
         this.addView(this.scrollViewC, componentC_Params);
         this.addView(this.scrollViewD, componentD_Params);
 
@@ -284,8 +327,8 @@ public class TableLayoutFixedHeader extends RelativeLayout {
         TableRow componentATableRow = new TableRow(this.context);
         TableRow.LayoutParams params = new TableRow.LayoutParams(headerCellWidth, TableRow.LayoutParams.MATCH_PARENT);
         if (!this.headers.isEmpty()) {
-            TextView textView = this.headerTextView(this.headers.get(0));
-            componentATableRow.addView(textView,params);
+            TextView textView = this.headerTextView(this.headers.get(0), columnAligns.size() <= 0 ? Gravity.CENTER : columnAligns.get(0));
+            componentATableRow.addView(textView, params);
         }
         return componentATableRow;
     }
@@ -298,35 +341,35 @@ public class TableLayoutFixedHeader extends RelativeLayout {
 
         TableRow.LayoutParams params = new TableRow.LayoutParams(headerCellWidth, TableRow.LayoutParams.MATCH_PARENT);
         for (int x = 1; x < (headerFieldCount); x++) {
-            TextView textView = this.headerTextView(this.headers.get(x));
+            TextView textView = this.headerTextView(this.headers.get(x), x >= columnAligns.size() - 1 ? Gravity.CENTER : columnAligns.get(x));
             textView.setWidth(headerCellWidth);
-            componentBTableRow.addView(textView,params);
+            componentBTableRow.addView(textView, params);
         }
         return componentBTableRow;
     }
 
     // header standard TextView
-    TextView headerTextView(String label) {
+    TextView headerTextView(String label, int gravity) {
         PTextView headerTextView = new PTextView(this.context);
         headerTextView.setText(label);
         headerTextView.setTextSize(TextHeaderEnum.H5);
         headerTextView.setTextStyle(FontStyleEnum.BOLD);
         headerTextView.setTextColor(TextColorEnum.Color4);
-        headerTextView.setGravity(Gravity.CENTER);
-        headerTextView.setPadding(5, getResources().getDimensionPixelSize(R.dimen._10sdp), 5, getResources().getDimensionPixelSize(R.dimen._13sdp));
+        headerTextView.setGravity(gravity);
+        headerTextView.setPadding(getResources().getDimensionPixelSize(R.dimen._7sdp), getResources().getDimensionPixelSize(R.dimen._10sdp), getResources().getDimensionPixelSize(R.dimen._7sdp), getResources().getDimensionPixelSize(R.dimen._10sdp));
 
         return headerTextView;
     }
 
     // table cell standard TextView
-    TextView bodyTextView(String label) {
+    TextView bodyTextView(String label, int gravity) {
         PTextView bodyTextView = new PTextView(this.context);
         bodyTextView.setTextSize(TextHeaderEnum.H5);
         bodyTextView.setTextStyle(FontStyleEnum.NORMAL);
         bodyTextView.setTextColor(TextColorEnum.Color4);
         bodyTextView.setText(label);
-        bodyTextView.setGravity(Gravity.CENTER);
-        bodyTextView.setPadding(5, getResources().getDimensionPixelSize(R.dimen._10sdp), 5, getResources().getDimensionPixelSize(R.dimen._13sdp));
+        bodyTextView.setGravity(gravity);
+        bodyTextView.setPadding(getResources().getDimensionPixelSize(R.dimen._7sdp), getResources().getDimensionPixelSize(R.dimen._10sdp), getResources().getDimensionPixelSize(R.dimen._7sdp), getResources().getDimensionPixelSize(R.dimen._10sdp));
         return bodyTextView;
     }
 
@@ -341,34 +384,56 @@ public class TableLayoutFixedHeader extends RelativeLayout {
             TableRow taleRowForTableD = this.taleRowForTableD(rowInfo);
             this.tableC.addView(tableRowForTableC);
             this.tableD.addView(taleRowForTableD);
-
         }
     }
 
     // a TableRow for table C
     TableRow tableRowForTableC(String rowHeader) {
-
+        View dividerVertical1 = new View(this.context);
+        RelativeLayout.LayoutParams componentDividerVertical = new RelativeLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 0.5f, getResources().getDisplayMetrics())
+        );
+        dividerVertical1.setLayoutParams(componentDividerVertical);
+        dividerVertical1.setBackgroundColor(getResources().getColor(R.color.color_10));
         TableRow.LayoutParams params = new TableRow.LayoutParams(headerCellWidth, TableRow.LayoutParams.MATCH_PARENT);
         TableRow tableRowForTableC = new TableRow(this.context);
-        TextView textView = this.bodyTextView(rowHeader);
+        TextView textView = this.bodyTextView(rowHeader, columnAligns.size() <= 0 ? Gravity.CENTER : columnAligns.get(0));
         textView.setLayoutParams(params);
-        tableRowForTableC.addView(textView);
+        LinearLayout linearLayout = new LinearLayout(this.context);
+        linearLayout.setOrientation(LinearLayout.VERTICAL);
+        linearLayout.addView(textView);
+        linearLayout.addView(dividerVertical1);
+        tableRowForTableC.addView(linearLayout);
 
         return tableRowForTableC;
     }
 
     TableRow taleRowForTableD(List<String> row) {
-
+        RelativeLayout.LayoutParams componentDividerVertical = new RelativeLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 0.5f, getResources().getDisplayMetrics())
+        );
+        View dividerVertical2 = new View(this.context);
+        dividerVertical2.setLayoutParams(componentDividerVertical);
+        dividerVertical2.setBackgroundColor(getResources().getColor(R.color.color_10));
         TableRow taleRowForTableD = new TableRow(this.context);
         int loopCount = ((TableRow) this.tableB.getChildAt(0)).getChildCount();
 
-        TableRow.LayoutParams params = new TableRow.LayoutParams( headerCellWidth, TableRow.LayoutParams.MATCH_PARENT);
+        TableRow.LayoutParams params = new TableRow.LayoutParams(headerCellWidth, TableRow.LayoutParams.MATCH_PARENT);
+        LinearLayout linearLayout1 = new LinearLayout(this.context);
+        linearLayout1.setOrientation(LinearLayout.HORIZONTAL);
+        LinearLayout linearLayout2 = new LinearLayout(this.context);
+        linearLayout2.setOrientation(LinearLayout.VERTICAL);
         for (int x = 0; x < loopCount; x++) {
-            TextView textViewD = this.bodyTextView(x >= row.size() ? "" : row.get(x));
+            TextView textViewD = this.bodyTextView(x >= row.size() ? "" : row.get(x), x+1 >= columnAligns.size() - 1 ? Gravity.CENTER : columnAligns.get(x+1));
             textViewD.setWidth(headerCellWidth);
-            taleRowForTableD.addView(textViewD,params);
-        }
+            linearLayout1.addView(textViewD, params);
 
+        }
+        linearLayout2.addView(linearLayout1);
+        linearLayout2.addView(dividerVertical2);
+        taleRowForTableD.addView(linearLayout2);
         return taleRowForTableD;
 
     }

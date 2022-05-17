@@ -4,7 +4,7 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class Section(
+data class SectionReport(
     val AverageGrossSale: Double,
     val AverageNetSale: Double,
     val Bill: Double,

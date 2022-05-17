@@ -15,7 +15,7 @@ data class ReportSalesResp(
     val Item: List<ItemSale>,
     val ListCombo: List<ListComboReport>,
     val ListInventory: List<Inventory>,
-    val ListSection: List<Section>,
+    val ListSection: List<SectionReport>,
     val ListServiceFee: List<FeeReport>,
     val ListSurchargeFee: List<FeeReport>,
     val ListTaxFee: List<FeeReport>,

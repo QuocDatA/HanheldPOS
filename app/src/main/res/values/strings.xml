@@ -248,4 +248,11 @@
     <string name="r_qty">R.Qty</string>
     <string name="r_amount">R.Amount</string>
     <string name="category_sales">Category Sales</string>
+    <string name="covers">Covers</string>
+    <string name="gross_sales">Gross Sales</string>
+    <string name="net_sales">Net Sales</string>
+    <string name="tips">Tips</string>
+    <string name="sections">Sections</string>
+    <string name="total_gross_sales">Total Gross Sales</string>
+    <string name="total_net_sales">Total Net Sales</string>
 </resources>
