@@ -4,7 +4,7 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class Inventory(
+data class InventoryReport(
     val CategoryGuid: String,
     val CategoryName: String,
     val NetQty: Int,

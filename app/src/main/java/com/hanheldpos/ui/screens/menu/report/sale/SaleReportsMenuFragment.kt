@@ -25,6 +25,7 @@ import com.hanheldpos.ui.screens.menu.report.sale.menu.category_sales.CategorySa
 import com.hanheldpos.ui.screens.menu.report.sale.menu.comps.CompsReportFragment
 import com.hanheldpos.ui.screens.menu.report.sale.menu.dining_options.DiningOptionsFragment
 import com.hanheldpos.ui.screens.menu.report.sale.menu.discounts.DiscountsReportFragment
+import com.hanheldpos.ui.screens.menu.report.sale.menu.inventory_sales.InventorySalesReportFragment
 import com.hanheldpos.ui.screens.menu.report.sale.menu.item_sales.ItemSalesReportFragment
 import com.hanheldpos.ui.screens.menu.report.sale.menu.overview.SaleOverviewFragment
 import com.hanheldpos.ui.screens.menu.report.sale.menu.payment_summary.PaymentReportFragment
@@ -154,7 +155,11 @@ class SaleReportsMenuFragment : BaseFragment<FragmentSaleReportsMenuBinding, Sal
                     fragment = SectionSalesReportFragment()
                 )
             )
-            SaleOptionPage.InventorySales -> TODO()
+            SaleOptionPage.InventorySales -> navigator.goToWithAnimationEnterFromRight(
+                SalesReportFragment(
+                    fragment = InventorySalesReportFragment()
+                )
+            )
             SaleOptionPage.CategorySales -> navigator.goToWithAnimationEnterFromRight(
                 SalesReportFragment(
                     fragment = CategorySalesReportFragment()

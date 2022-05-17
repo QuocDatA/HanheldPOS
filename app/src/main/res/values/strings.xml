@@ -255,4 +255,9 @@
     <string name="sections">Sections</string>
     <string name="total_gross_sales">Total Gross Sales</string>
     <string name="total_net_sales">Total Net Sales</string>
+    <string name="gross_qty">Gross Qty</string>
+    <string name="returns">Returns</string>
+    <string name="net_qty">Net Qty</string>
+    <string name="total_gross_qty">Total Gross Qty</string>
+    <string name="total_net_qty">Total Net Qty</string>
 </resources>

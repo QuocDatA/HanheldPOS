@@ -21,7 +21,7 @@
             <com.diadiem.pos_components.PTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/payment_summary"
+                android:text="@string/section_sales"
                 app:useFontStyle="bold"
                 app:useTextColor="color4"
                 app:useTextHeader="h4" />
