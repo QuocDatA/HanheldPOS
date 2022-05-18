@@ -2,19 +2,15 @@ package com.hanheldpos.ui.widgets;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.Typeface;
-import android.graphics.drawable.BitmapDrawable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
@@ -31,8 +27,6 @@ import com.hanheldpos.R;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class TableLayoutFixedHeader extends RelativeLayout {
@@ -40,6 +34,9 @@ public class TableLayoutFixedHeader extends RelativeLayout {
     TableLayout tableB;
     TableLayout tableC;
     TableLayout tableD;
+
+    ImageView directionLeft;
+    ImageView directionRight;
 
     HorizontalScrollView horizontalScrollViewB;
     HorizontalScrollView horizontalScrollViewD;
@@ -137,7 +134,7 @@ public class TableLayoutFixedHeader extends RelativeLayout {
         setupRow();
     }
 
-    public void setColumnAligns(List<Integer> columnAligns){
+    public void setColumnAligns(List<Integer> columnAligns) {
         this.columnAligns.clear();
         this.columnAligns.addAll(columnAligns);
         setupHeader();
@@ -210,6 +207,8 @@ public class TableLayoutFixedHeader extends RelativeLayout {
         this.tableB.setBackgroundColor(getResources().getColor(R.color.color_11));
 
         this.dividerHorizontal = new View(this.context);
+        this.directionLeft = new ImageView(this.context);
+        this.directionRight = new ImageView(this.context);
 
     }
 
@@ -235,7 +234,8 @@ public class TableLayoutFixedHeader extends RelativeLayout {
         int tableC_ChildCount = this.tableC.getChildCount();
 
         for (int x = 0; x < tableC_ChildCount; x++) {
-            if(!(this.tableC.getChildAt(x) instanceof TableRow) && !(this.tableD.getChildAt(x) instanceof TableRow)) continue;
+            if (!(this.tableC.getChildAt(x) instanceof TableRow) && !(this.tableD.getChildAt(x) instanceof TableRow))
+                continue;
             TableRow productNameHeaderTableRow = (TableRow) this.tableC.getChildAt(x);
             TableRow productInfoTableRow = (TableRow) this.tableD.getChildAt(x);
 
@@ -261,7 +261,7 @@ public class TableLayoutFixedHeader extends RelativeLayout {
         }
         for (int x = 0; x < tableC_ChildCount; x++) {
 
-            View productNameBodyTableRow =  this.tableC.getChildAt(x);
+            View productNameBodyTableRow = this.tableC.getChildAt(x);
             int rowAHeight = this.viewHeight(productNameBodyTableRow);
             totalHeight += rowAHeight;
         }
@@ -271,6 +271,7 @@ public class TableLayoutFixedHeader extends RelativeLayout {
 
 
     // we add the components here in our TableMainLayout
+    @SuppressLint({"UseCompatLoadingForDrawables", "ClickableViewAccessibility"})
     private void addComponentToMainLayout() {
         // RelativeLayout params were very useful here
         // the addRule method is the key to arrange the components properly
@@ -288,16 +289,35 @@ public class TableLayoutFixedHeader extends RelativeLayout {
                 (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 0.5f, getResources().getDisplayMetrics()),
                 LayoutParams.WRAP_CONTENT
         );
-        componentDividerHorizontal.addRule(RelativeLayout.START_OF,this.horizontalScrollViewB.getId());
+        componentDividerHorizontal.addRule(RelativeLayout.START_OF, this.horizontalScrollViewB.getId());
         this.dividerHorizontal.setBackgroundColor(getResources().getColor(R.color.color_10));
 
-        // 'this' is a relative layout,
-        // we extend this table layout as relative layout as seen during the creation of this class
+        RelativeLayout.LayoutParams directionLeftParams = new RelativeLayout.LayoutParams(
+                getResources().getDimensionPixelSize(R.dimen._13sdp),
+                getResources().getDimensionPixelSize(R.dimen._13sdp)
+        );
+        directionLeftParams.setMargins(0, getResources().getDimensionPixelSize(R.dimen._10sdp), 0, 0);
+        directionLeftParams.addRule(RelativeLayout.ALIGN_END, this.tableA.getId());
+        RelativeLayout.LayoutParams directionRightParams = new RelativeLayout.LayoutParams(
+                getResources().getDimensionPixelSize(R.dimen._13sdp),
+                getResources().getDimensionPixelSize(R.dimen._13sdp)
+        );
+        directionRightParams.setMargins(0, getResources().getDimensionPixelSize(R.dimen._10sdp), 0, 0);
+        directionRightParams.addRule(RelativeLayout.ALIGN_END, this.horizontalScrollViewB.getId());
+
+        directionLeft.setImageDrawable(getResources().getDrawable(R.drawable.ic_direction_left_disable));
+        directionRight.setImageDrawable(getResources().getDrawable(R.drawable.ic_direction_right_disable));
+
+
         this.addView(this.tableA);
         this.addView(this.horizontalScrollViewB, componentB_Params);
-        this.addView(this.dividerHorizontal,componentDividerHorizontal);
+        this.addView(directionLeft, directionLeftParams);
+        this.addView(directionRight, directionRightParams);
+        this.addView(this.dividerHorizontal, componentDividerHorizontal);
         this.addView(this.scrollViewC, componentC_Params);
         this.addView(this.scrollViewD, componentD_Params);
+
+
 
     }
 
@@ -363,7 +383,7 @@ public class TableLayoutFixedHeader extends RelativeLayout {
         headerTextView.setTextStyle(FontStyleEnum.BOLD);
         headerTextView.setTextColor(TextColorEnum.Color4);
         headerTextView.setGravity(gravity);
-        if (!this.wrapText){
+        if (!this.wrapText) {
             headerTextView.setMaxLines(1);
             headerTextView.setEllipsize(TextUtils.TruncateAt.END);
         }
@@ -380,7 +400,7 @@ public class TableLayoutFixedHeader extends RelativeLayout {
         bodyTextView.setTextColor(TextColorEnum.Color4);
         bodyTextView.setText(label);
         bodyTextView.setGravity(gravity);
-        if (!this.wrapText){
+        if (!this.wrapText) {
             bodyTextView.setMaxLines(1);
             bodyTextView.setEllipsize(TextUtils.TruncateAt.END);
         }
@@ -441,7 +461,7 @@ public class TableLayoutFixedHeader extends RelativeLayout {
         LinearLayout linearLayout2 = new LinearLayout(this.context);
         linearLayout2.setOrientation(LinearLayout.VERTICAL);
         for (int x = 0; x < loopCount; x++) {
-            TextView textViewD = this.bodyTextView(x >= row.size() ? "" : row.get(x), x+1 >= columnAligns.size() - 1 ? Gravity.CENTER : columnAligns.get(x+1));
+            TextView textViewD = this.bodyTextView(x >= row.size() ? "" : row.get(x), x + 1 >= columnAligns.size() - 1 ? Gravity.CENTER : columnAligns.get(x + 1));
             textViewD.setWidth(headerCellWidth);
             linearLayout1.addView(textViewD, params);
 
@@ -524,14 +544,29 @@ public class TableLayoutFixedHeader extends RelativeLayout {
             super(context);
         }
 
+        @SuppressLint("UseCompatLoadingForDrawables")
         @Override
         protected void onScrollChanged(int l, int t, int oldl, int oldt) {
             String tag = (String) this.getTag();
+
+            if (horizontalScrollViewB.getChildAt(0).getBottom() <= l) {
+                //scroll view is at bottom
+                directionRight.setImageDrawable(getResources().getDrawable(R.drawable.ic_direction_right_disable));
+            } else {
+                directionRight.setImageDrawable(getResources().getDrawable(R.drawable.ic_direction_right));
+            }
+            if (l == 0) {
+                //scroll view is not at bottom
+                directionLeft.setImageDrawable(getResources().getDrawable(R.drawable.ic_direction_left_disable));
+            } else {
+                directionLeft.setImageDrawable(getResources().getDrawable(R.drawable.ic_direction_left));
+            }
 
             if (tag.equalsIgnoreCase("horizontal scroll view b")) {
                 horizontalScrollViewD.scrollTo(l, 0);
             } else {
                 horizontalScrollViewB.scrollTo(l, 0);
+
             }
         }
     }
