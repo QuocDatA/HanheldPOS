@@ -16,9 +16,9 @@ class ItemSalesReportVM : BaseUiViewModel<ItemSalesReportUV>() {
     fun getItemSalesSummary(itemSales : List<ItemSale>?) : List<Any> {
         var total = 0.0
         val list = itemSales?.map { itemSale ->
-            total += itemSale.TotalSales ?: 0.0
+            total += itemSale.SubTotal ?: 0.0
             ReportItem(
-                PriceUtils.formatStringPrice(itemSale.TotalSales ?: 0.0),
+                PriceUtils.formatStringPrice(itemSale.SubTotal ?: 0.0),
                 itemSale.ProductName
             )
         }
@@ -34,11 +34,11 @@ class ItemSalesReportVM : BaseUiViewModel<ItemSalesReportUV>() {
         val rows = mutableListOf<ReportItemDetail>()
         itemSales?.map { itemSale ->
             totalQty += itemSale.Quantity ?: 0
-            totalAmount += itemSale.TotalSales ?: 0.0
+            totalAmount += itemSale.SubTotal ?: 0.0
             ReportItemDetail(
                 itemSale.ProductName,
                 itemSale.Quantity.toString() ?: "",
-                PriceUtils.formatStringPrice(itemSale.TotalSales)
+                PriceUtils.formatStringPrice(itemSale.SubTotal)
             )
         }?.toMutableList()?.let {
             rows.addAll(it)
