@@ -1,5 +1,6 @@
 package com.hanheldpos.ui.screens.cart.customer.add_customer
 
+import android.annotation.SuppressLint
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -76,17 +77,17 @@ class AddCustomerFragment(
 
         adapterCustomerHelper = CustomerAdapterHelper(listener = object :
             CustomerAdapterHelper.SearchCallBack {
-            override fun onSearch(keyword: String, pageNo: Int?) {
-
+            @SuppressLint("NotifyDataSetChanged")
+            override fun onSearch(keyword: String, pageNo: Int?, keyRequest: Int) {
                 if (pageNo == 1) {
                     binding.customerContainer.smoothScrollToPosition(0)
                     adapterCustomer.apply {
-                        submitList(listOf())
+                        submitList(mutableListOf())
                         notifyDataSetChanged()
                     }
                     if (keyword.trim().isBlank()) return
                 }
-                viewModel.searchCustomer(keyword, pageNo)
+                viewModel.searchCustomer(keyword, pageNo,keyRequest)
             }
 
             override fun onLoadingNextPage(customers: List<CustomerResp?>) {
@@ -98,6 +99,7 @@ class AddCustomerFragment(
                 }
             }
 
+            @SuppressLint("NotifyDataSetChanged")
             override fun onLoadedNextPage(startIndex: Int, customers: List<CustomerResp?>) {
                 adapterCustomer.apply {
                     submitList(customers)
@@ -121,8 +123,8 @@ class AddCustomerFragment(
         navigator.goOneBack()
     }
 
-    override fun loadCustomer(list: List<CustomerResp>, isSuccess: Boolean) {
-        adapterCustomerHelper.loaded(list.toMutableList(), isSuccess)
+    override fun loadCustomer(list: List<CustomerResp>, isSuccess: Boolean, keyRequest: Int) {
+        adapterCustomerHelper.loaded(list.toMutableList(), isSuccess,keyRequest)
     }
 
     override fun onAddNewCustomer() {

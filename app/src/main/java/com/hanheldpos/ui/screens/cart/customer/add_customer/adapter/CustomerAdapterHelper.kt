@@ -4,9 +4,11 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.MutableLiveData
 import com.hanheldpos.data.api.pojo.customer.CustomerResp
+import kotlin.random.Random
 
 class CustomerAdapterHelper(private val listener: SearchCallBack) {
     private val listCustomer: MutableList<CustomerResp?> = mutableListOf()
+    private var keyRequest : Int = 0
     private var isLoadingMore = false
     private var currentPage = 1
     private var currentKeyword = ""
@@ -17,21 +19,24 @@ class CustomerAdapterHelper(private val listener: SearchCallBack) {
 
     fun nextPage() {
         if (isLoadingMore || currentKeyword.trim().isBlank()) return
+        keyRequest = Random.nextInt(100000,999999)
         isLoadingMore = true
         currentPage = currentPage.plus(1)
-        listener.onSearch(currentKeyword, currentPage)
+        listener.onSearch(currentKeyword, currentPage,keyRequest)
         listCustomer.add(null)
         listener.onLoadingNextPage(listCustomer)
     }
 
     fun search(keyword: String) {
         init()
+        keyRequest = Random.nextInt(100000,999999)
         currentKeyword = keyword
-        listener.onSearch(keyword)
+        listener.onSearch(keyword, keyRequest = keyRequest)
     }
 
 
-    fun loaded(customers: List<CustomerResp>, isSuccess: Boolean) {
+    fun loaded(customers: List<CustomerResp>, isSuccess: Boolean,keyRequest: Int) {
+        if (keyRequest != this.keyRequest) return
         listCustomer.removeAll { it == null }
         if (isSuccess)
             listener.onLoadedNextPage(if (listCustomer.isEmpty()) 0 else listCustomer.size-1 , listCustomer.apply { addAll(customers) })
@@ -43,7 +48,7 @@ class CustomerAdapterHelper(private val listener: SearchCallBack) {
     }
 
     interface SearchCallBack {
-        fun onSearch(keyword: String, pageNo: Int? = 1)
+        fun onSearch(keyword: String, pageNo: Int? = 1,keyRequest : Int)
         fun onLoadingNextPage(customers: List<CustomerResp?>)
         fun onLoadedNextPage(startIndex: Int, customers: List<CustomerResp?>)
     }
