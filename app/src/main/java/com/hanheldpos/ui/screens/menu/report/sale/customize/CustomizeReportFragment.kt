@@ -2,6 +2,7 @@ package com.hanheldpos.ui.screens.menu.report.sale.customize
 
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentCustomizeReportBinding
+import com.hanheldpos.extension.setOnClickDebounce
 import com.hanheldpos.model.report.SaleReportCustomData
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.utils.DateTimeUtils
@@ -28,7 +29,7 @@ class CustomizeReportFragment(
             saleReportCustomData
         )
 
-        binding.btnDone.setOnClickListener {
+        binding.btnDone.setOnClickDebounce {
             setUpReturn()
         }
 

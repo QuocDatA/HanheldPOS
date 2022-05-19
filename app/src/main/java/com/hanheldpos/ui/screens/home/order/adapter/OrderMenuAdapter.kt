@@ -9,6 +9,7 @@ import com.hanheldpos.R
 import com.hanheldpos.databinding.ItemOrderMenuBinding
 import com.hanheldpos.databinding.ItemOrderMenuDirectionButtonBinding
 import com.hanheldpos.databinding.ItemOrderMenuEmptyBinding
+import com.hanheldpos.extension.setOnClickDebounce
 import com.hanheldpos.model.home.order.menu.MenuModeViewType
 import com.hanheldpos.model.home.order.menu.OrderMenuItem
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
@@ -56,7 +57,7 @@ class OrderMenuAdapter(
         val item = getItem(position);
         when (item.uiType) {
             MenuModeViewType.Menu -> {
-                (holder.binding as ItemOrderMenuBinding).btnMain.setOnClickListener {
+                (holder.binding as ItemOrderMenuBinding).btnMain.setOnClickDebounce {
                     baseListener.onItemClick(position, item);
                 }
             }
@@ -84,8 +85,8 @@ class OrderMenuAdapter(
                         view.btnNextPage.isClickable = false
                     }
                 }
-                view.btnPrevPage.setOnClickListener { listener.onBtnPrevClick() }
-                view.btnNextPage.setOnClickListener { listener.onBtnNextClick() }
+                view.btnPrevPage.setOnClickDebounce { listener.onBtnPrevClick() }
+                view.btnNextPage.setOnClickDebounce { listener.onBtnNextClick() }
             }
         }
         holder.bindItem(item);

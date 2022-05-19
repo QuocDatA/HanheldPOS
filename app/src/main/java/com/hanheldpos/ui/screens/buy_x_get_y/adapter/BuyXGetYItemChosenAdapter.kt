@@ -4,6 +4,7 @@ import androidx.recyclerview.widget.DiffUtil
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.fee.CustomerGets
 import com.hanheldpos.databinding.ItemComboPickedBinding
+import com.hanheldpos.extension.setOnClickDebounce
 import com.hanheldpos.model.cart.Regular
 import com.hanheldpos.model.combo.ItemActionType
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
@@ -21,10 +22,10 @@ class BuyXGetYItemChosenAdapter() : BaseBindingListAdapter<Regular>(DiffCallback
         val item = getItem(position);
         val binding = holder.binding as ItemComboPickedBinding;
         binding.item = item;
-        binding.itemComboModify.setOnClickListener {
+        binding.itemComboModify.setOnClickDebounce {
             //listener.onComboItemChoose(action = ItemActionType.Modify, item);
         }
-        binding.itemComboRemove.setOnClickListener {
+        binding.itemComboRemove.setOnClickDebounce {
             //listener.onComboItemChoose(action = ItemActionType.Remove, item);
         }
     }

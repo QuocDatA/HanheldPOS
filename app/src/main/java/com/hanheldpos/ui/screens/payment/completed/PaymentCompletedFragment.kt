@@ -5,6 +5,7 @@ import com.hanheldpos.R
 import com.hanheldpos.binding.setPriceView
 import com.hanheldpos.database.DatabaseMapper
 import com.hanheldpos.databinding.FragmentPaymentCompletedBinding
+import com.hanheldpos.extension.setOnClickDebounce
 import com.hanheldpos.model.DatabaseHelper
 import com.hanheldpos.model.printer.BillPrinterManager
 import com.hanheldpos.ui.base.fragment.BaseFragment
@@ -76,11 +77,11 @@ class PaymentCompletedFragment(
     }
 
     override fun initAction() {
-        binding.btnNewSale.setOnClickListener {
+        binding.btnNewSale.setOnClickDebounce {
             listener.newSale()
             super.onFragmentBackPressed()
         }
-        binding.btnBecomeAMember.setOnClickListener {
+        binding.btnBecomeAMember.setOnClickDebounce {
             listener.becomeAMember()
         }
     }

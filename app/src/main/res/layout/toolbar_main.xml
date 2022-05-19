@@ -27,7 +27,7 @@
                 android:layout_height="match_parent"
                 android:layout_alignParentStart="true"
                 android:adjustViewBounds="true"
-                android:onClick="@{v-> viewModelHome.openSelectMenu()}"
+                android:onClickDebounce="@{v-> viewModelHome.openSelectMenu()}"
                 android:scaleType="centerInside"
                 android:src="@drawable/ic_toolbar_menu"
                 tools:ignore="ContentDescription" />

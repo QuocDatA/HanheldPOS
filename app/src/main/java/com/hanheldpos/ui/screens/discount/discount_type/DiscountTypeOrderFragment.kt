@@ -9,6 +9,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.order.settings.Reason
 import com.hanheldpos.databinding.FragmentDiscountTypeOrderBinding
+import com.hanheldpos.extension.setOnClickDebounce
 import com.hanheldpos.model.cart.BaseProductInCart
 import com.hanheldpos.model.cart.CartModel
 import com.hanheldpos.model.discount.DiscApplyTo
@@ -140,7 +141,7 @@ class DiscountTypeOrderFragment(
     override fun initAction() {
         viewModel.typeDiscountSelect.observe(this) { type ->
             fragmentMap[type]?.view?.findViewById<PTextView>(R.id.btnClearDiscount)
-                ?.setOnClickListener {
+                ?.setOnClickDebounce {
                     if (!product?.discountUsersList.isNullOrEmpty() || !product?.discountServersList.isNullOrEmpty()) {
                         listener.clearAllDiscountCoupon()
                         viewModel.isAlreadyExistDiscountSelect.postValue(false)

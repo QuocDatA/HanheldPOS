@@ -28,7 +28,7 @@
                 android:layout_gravity="center|start"
                 android:adjustViewBounds="true"
                 android:backgroundTint="@color/textPrimary"
-                android:onClick="@{v -> viewModel.backPress()}"
+                android:onClickDebounce="@{v -> viewModel.backPress()}"
                 android:scaleType="centerInside"
                 android:src="@drawable/ic_baseline_arrow_back_ios_13"
                 tools:ignore="ContentDescription" />
@@ -122,7 +122,7 @@
             <LinearLayout
                 android:clickable="true"
                 android:focusable="true"
-                android:onClick="@{v->viewModel.onOpenCustomizeReport()}"
+                android:onClickDebounce="@{v->viewModel.onOpenCustomizeReport()}"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"

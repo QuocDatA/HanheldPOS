@@ -31,7 +31,7 @@
                     android:layout_height="wrap_content"
                     android:clickable="true"
                     android:focusable="true"
-                    android:onClick="@{v->viewModel.onGetBack()}"
+                    android:onClickDebounce="@{v->viewModel.onGetBack()}"
                     android:padding="@dimen/_14sdp">
 
                     <ImageView
@@ -198,7 +198,7 @@
                         android:layout_width="@dimen/_25sdp"
                         android:layout_height="@dimen/_25sdp"
 
-                        android:onClick="@{v -> viewModel.onQuantityRemoved()}"
+                        android:onClickDebounce="@{v -> viewModel.onQuantityRemoved()}"
                         android:src="@{ viewModel.minQuantity &lt; viewModel.numberQuantity ? @drawable/ic_remove_primary : @drawable/ic_remove_disable}"
                         tools:ignore="ContentDescription" />
 
@@ -216,7 +216,7 @@
                         style="@style/ProductDetailBtnQuantity"
                         android:layout_width="@dimen/_25sdp"
                         android:layout_height="@dimen/_25sdp"
-                        android:onClick="@{v -> viewModel.onQuantityAdded()}"
+                        android:onClickDebounce="@{v -> viewModel.onQuantityAdded()}"
                         android:src="@{viewModel.numberQuantity &lt; viewModel.maxQuantity ? @drawable/ic_add_primary : @drawable/ic_add_disable}"
                         tools:ignore="ContentDescription" />
                 </LinearLayout>
@@ -230,7 +230,7 @@
                     android:elevation="0dp"
                     android:focusable="true"
                     android:minWidth="@dimen/_95sdp"
-                    android:onClick="@{v->viewModel.onAddCart()}"
+                    android:onClickDebounce="@{v->viewModel.onAddCart()}"
                     app:cardCornerRadius="0dp"
                     app:cardElevation="0dp"
                     app:rippleColor="@color/color_2">

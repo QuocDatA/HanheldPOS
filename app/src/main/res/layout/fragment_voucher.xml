@@ -33,7 +33,7 @@
                     android:backgroundTint="@color/textPrimary"
                     android:clickable="true"
                     android:focusable="true"
-                    android:onClick="@{v -> viewModel.getBack()}"
+                    android:onClickDebounce="@{v -> viewModel.getBack()}"
                     android:padding="@dimen/_14sdp"
                     android:scaleType="centerInside"
                     android:src="@drawable/ic_close"

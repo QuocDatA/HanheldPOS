@@ -43,7 +43,7 @@
 
                     <FrameLayout
                         android:layout_width="0dp"
-                        android:onClick="@{v -> viewModel.backPress()}"
+                        android:onClickDebounce="@{v -> viewModel.backPress()}"
                         android:layout_height="match_parent"
                         android:layout_weight="1">
 
@@ -52,9 +52,8 @@
                             android:layout_height="match_parent"
                             android:layout_gravity="center|start"
                             android:adjustViewBounds="true"
-                            android:onClick="@{v -> viewModel.backPress()}"
+                            android:onClickDebounce="@{v -> viewModel.backPress()}"
                             android:backgroundTint="@color/textPrimary"
-
                             android:scaleType="centerInside"
                             android:src="@drawable/ic_baseline_arrow_back_ios_13"
                             tools:ignore="ContentDescription" />
@@ -72,7 +71,7 @@
                         android:layout_height="match_parent"
                         android:clickable="true"
                         android:focusable="true"
-                        android:onClick="@{v->viewModel.deleteCart()}">
+                        android:onClickDebounce="@{v->viewModel.deleteCart()}">
 
                         <com.diadiem.pos_components.PTextView
                             style="@style/CartDelete"
@@ -172,7 +171,7 @@
                                 android:layout_marginEnd="@dimen/_9sdp"
                                 android:clickable="true"
                                 android:focusable="true"
-                                android:onClick="@{v->viewModel.onOpenAddCustomer()}"
+                                android:onClickDebounce="@{v->viewModel.onOpenAddCustomer()}"
                                 android:text="@string/add_customer"
                                 app:useTextColor="color0"
                                 app:useTextHeader="h5" />
@@ -187,7 +186,7 @@
                             android:layout_marginTop="@dimen/_7sdp"
                             android:clickable="true"
                             android:focusable="true"
-                            android:onClick="@{v->viewModel.onShowCustomerDetail()}"
+                            android:onClickDebounce="@{v->viewModel.onShowCustomerDetail()}"
                             app:customer="@{cartDataVM.cartModelLD.customer}" />
 
                     </LinearLayout>
@@ -302,7 +301,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_marginEnd="@dimen/_9sdp"
-                            android:onClick="@{v -> viewModel.backPress()}"
+                            android:onClickDebounce="@{v -> viewModel.backPress()}"
                             android:text="@string/add_items"
                             app:useTextColor="color0"
                             app:useTextHeader="h5" />
@@ -403,7 +402,7 @@
                                 android:layout_gravity="center"
                                 android:clickable="true"
                                 android:focusable="true"
-                                android:onClick="@{()->viewModel.openDiscount()}"
+                                android:onClickDebounce="@{()->viewModel.openDiscount()}"
                                 android:text="@string/add_discount"
                                 app:useTextColor="color0"
                                 app:useTextHeader="h5" />
@@ -667,7 +666,7 @@
                     android:clickable="true"
                     android:focusable="true"
                     android:foreground="?attr/selectableItemBackground"
-                    android:onClick="@{()->viewModel.openDiscount()}"
+                    android:onClickDebounce="@{()->viewModel.openDiscount()}"
                     android:padding="@dimen/_12sdp">
 
                     <ImageView

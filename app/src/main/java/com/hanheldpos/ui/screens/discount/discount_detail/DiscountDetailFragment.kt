@@ -3,6 +3,7 @@ package com.hanheldpos.ui.screens.discount.discount_detail
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.databinding.FragmentDiscountDetailBinding
+import com.hanheldpos.extension.setOnClickDebounce
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.ui.base.fragment.BaseFragment
 
@@ -52,7 +53,7 @@ class DiscountDetailFragment(
     }
 
     override fun initAction() {
-        binding.btnApplyDiscount.setOnClickListener {
+        binding.btnApplyDiscount.setOnClickDebounce {
             onFragmentBackPressed()
             if (discountResp.DiscountAutomatic)
                 onApplyDiscountAuto(discountResp)
@@ -60,15 +61,15 @@ class DiscountDetailFragment(
                 onApplyDiscountCode(discountResp)
         }
 
-        binding.btnShowListAppliesItem.setOnClickListener {
+        binding.btnShowListAppliesItem.setOnClickDebounce {
             viewModel.showListApplies(viewModel.discountDetail?.RequirementProductList)
         }
 
-        binding.btnShowListRewardItem.setOnClickListener {
+        binding.btnShowListRewardItem.setOnClickDebounce {
             viewModel.showListRewards(viewModel.discountDetail?.RewardProductList)
         }
 
-        binding.schedule.setOnClickListener {
+        binding.schedule.setOnClickDebounce {
             viewModel.showListSchedules(viewModel.discountDetail?.ScheduleList)
         }
     }

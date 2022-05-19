@@ -13,6 +13,7 @@ import com.hanheldpos.R
 import com.hanheldpos.binding.setPricePlusView
 import com.hanheldpos.data.api.pojo.product.Product
 import com.hanheldpos.databinding.ItemComboRegularBinding
+import com.hanheldpos.extension.setOnClickDebounce
 import com.hanheldpos.model.cart.GroupBundle
 import com.hanheldpos.model.cart.Regular
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
@@ -63,7 +64,7 @@ class ComboItemPickerAdapter(
             setPricePlusView(binding.priceProduct,price)
         }
         else binding.priceProduct.visibility = View.GONE
-        (holder.binding as ItemComboRegularBinding).root.setOnClickListener {
+        (holder.binding as ItemComboRegularBinding).root.setOnClickDebounce {
             listener.onItemClick(position,item);
         }
     }

@@ -112,7 +112,7 @@
                 android:layout_height="match_parent"
                 android:clickable="true"
                 android:focusable="true"
-                android:onClick="@{clickListener}"
+                android:onClickDebounce="@{clickListener}"
                 android:paddingHorizontal="@dimen/_9sdp">
 
                 <ImageView

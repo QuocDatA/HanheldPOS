@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.icu.text.CaseMap
 import android.view.LayoutInflater
+import android.view.WindowManager
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import com.hanheldpos.R
@@ -82,11 +83,12 @@ class AppAlertDialog : BaseDialog() {
                             dismiss()
 
                             if ((context as Activity).isFinishing) return
-                            dialog!!.show()
 
                             // Custom background
                             val window = dialog!!.window
+                            window?.setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE)
                             window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                            dialog!!.show()
                         }
                 }
         }

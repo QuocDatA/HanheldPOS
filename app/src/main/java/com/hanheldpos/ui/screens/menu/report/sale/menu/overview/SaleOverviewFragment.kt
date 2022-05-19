@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.report.SalesSummary
 import com.hanheldpos.databinding.FragmentSaleOverviewBinding
+import com.hanheldpos.extension.setOnClickDebounce
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.GridSpacingItemDecoration
 import com.hanheldpos.ui.base.fragment.BaseFragment
@@ -112,7 +113,7 @@ class SaleOverviewFragment : BaseFragment<FragmentSaleOverviewBinding, SaleOverv
     }
 
     override fun initAction() {
-        binding.btnShowDetail.setOnClickListener {
+        binding.btnShowDetail.setOnClickDebounce {
             viewModel.isShowDetail.postValue(!viewModel.isShowDetail.value!!)
         }
 

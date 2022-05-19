@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.DiffUtil
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.device.Device
 import com.hanheldpos.databinding.ItemRecentAccountBinding
+import com.hanheldpos.extension.setOnClickDebounce
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
 
@@ -17,10 +18,10 @@ class RecentDeviceAdapter(private val listener : RecentAccountClickListener<Devi
     override fun onBindViewHolder(holder: BaseBindingViewHolder<Device>, position: Int) {
         val device = getItem(position)
         holder.bindItem(device)
-        holder.binding.root.setOnClickListener {
+        holder.binding.root.setOnClickDebounce {
             listener.onItemClick(position,device,holder.itemView)
         }
-        (holder.binding as ItemRecentAccountBinding).btnDeleteAccount.setOnClickListener {
+        (holder.binding as ItemRecentAccountBinding).btnDeleteAccount.setOnClickDebounce {
             listener.onDeleteClick(device)
         }
     }

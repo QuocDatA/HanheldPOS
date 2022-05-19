@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.core.content.ContextCompat
 import com.hanheldpos.R
+import com.hanheldpos.extension.setOnClickDebounce
 import kotlin.system.exitProcess
 
 object CashDrawerHelper {
@@ -29,7 +30,7 @@ object CashDrawerHelper {
 
         val close =
             notificationView.findViewById<View>(if (isOnStarting) R.id.btn_close_notification else R.id.btn_start_again)
-        close.setOnClickListener {
+        close.setOnClickDebounce {
             isStartDrawer = false;
             isEndDrawer = false;
             alert.dismiss()
@@ -46,7 +47,7 @@ object CashDrawerHelper {
             timer.start()
         } else {
             val quit = notificationView.findViewById<View>(R.id.btn_close_app)
-            quit.setOnClickListener {
+            quit.setOnClickDebounce {
                 alert.dismiss()
                 activity.finishAffinity()
                 exitProcess(0);

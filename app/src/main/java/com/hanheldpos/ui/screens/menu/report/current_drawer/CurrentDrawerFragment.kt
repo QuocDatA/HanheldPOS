@@ -81,10 +81,12 @@ class CurrentDrawerFragment : BaseFragment<FragmentCurrentDrawerBinding, Current
     }
 
     override fun onOpenEndDrawer() {
+        showLoading(true)
         CoroutineScope(Dispatchers.IO).launch {
             val ordersCompletedFlow = DatabaseHelper.ordersCompleted.getAll();
             ordersCompletedFlow.take(1).collectLatest { ordersCompleted ->
                 val listOrder = ordersCompleted.filter { OrderHelper.isValidOrderPush(it) }
+                showLoading(false)
                 if (!listOrder.isNullOrEmpty()) {
                     launch(Dispatchers.Main) {
                         AppAlertDialog.get().show(
@@ -92,7 +94,6 @@ class CurrentDrawerFragment : BaseFragment<FragmentCurrentDrawerBinding, Current
                             getString(R.string.please_sync_local_data_before_ending_this_cash_drawer)
                         )
                     }
-
                 } else {
 
                     if (this@CurrentDrawerFragment::report.isInitialized) {

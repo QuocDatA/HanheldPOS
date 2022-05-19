@@ -86,7 +86,7 @@
                     style="@style/MaterialButton.Secondary"
                     android:layout_width="0dp"
                     android:layout_weight="1"
-                    android:onClick="@{btnDeniedOnClick}"
+                    android:onClickDebounce="@{btnDeniedOnClick}"
                     android:text="@{btnDeniedText}"
                     android:visibility="@{btnDeniedText == null ? View.GONE : View.VISIBLE}"
                     app:cornerRadius="@dimen/_4sdp"
@@ -101,7 +101,7 @@
                     style="@style/MaterialButton.Accent"
                     android:layout_width="0dp"
                     android:layout_weight="1"
-                    android:onClick="@{btnConfirmOnClick}"
+                    android:onClickDebounce="@{btnConfirmOnClick}"
                     android:text="@{btnConfirmText}"
                     android:visibility="@{btnConfirmText == null || btnConfirmText.empty ? View.GONE : View.VISIBLE}"
                     app:cornerRadius="@dimen/_4sdp"
@@ -116,7 +116,7 @@
                     android:focusable="true"
                     android:foreground="?attr/selectableItemBackground"
                     android:gravity="center"
-                    android:onClick="@{btnDeniedOnClick}"
+                    android:onClickDebounce="@{btnDeniedOnClick}"
                     android:visibility="@{btnDeniedText == null ? View.GONE : View.VISIBLE}">
 
                     <TextView
@@ -141,7 +141,7 @@
                     android:focusable="true"
                     android:foreground="?attr/selectableItemBackground"
                     android:gravity="center"
-                    android:onClick="@{btnConfirmOnClick}"
+                    android:onClickDebounce="@{btnConfirmOnClick}"
                     android:visibility="@{btnConfirmText == null || btnConfirmText.empty ? View.GONE : View.VISIBLE}">
 
                     <TextView

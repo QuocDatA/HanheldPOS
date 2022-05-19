@@ -14,6 +14,7 @@ import com.hanheldpos.data.api.pojo.order.settings.DiningOption
 import com.hanheldpos.data.api.pojo.order.settings.Reason
 import com.hanheldpos.databinding.FragmentCartBinding
 import com.hanheldpos.extension.notifyValueChange
+import com.hanheldpos.extension.setOnClickDebounce
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.OrderHelper
 import com.hanheldpos.model.cart.BaseProductInCart
@@ -144,7 +145,7 @@ class CartFragment(private val listener: CartCallBack) :
             binding.tipRecyclerView.adapter = cartTipAdapter
         }
 
-        binding.btnBill.setOnClickListener {
+        binding.btnBill.setOnClickDebounce {
             onBillCart()
         }
 
@@ -301,8 +302,9 @@ class CartFragment(private val listener: CartCallBack) :
     }
 
     override fun onFinishOrder(isSuccess: Boolean) {
-        onFragmentBackPressed()
+        navigator.goOneBack()
         if (isSuccess) {
+
             cartDataVM.removeCart()
             cartDataVM.cartModelLD.value?.let {
                 navigator.goTo(
@@ -326,7 +328,6 @@ class CartFragment(private val listener: CartCallBack) :
                 )
             }
             listener.onOrderSuccess()
-
         }
 
     }
@@ -344,7 +345,6 @@ class CartFragment(private val listener: CartCallBack) :
                 override fun onTableChange() {
                     cartDataVM.currentTableFocus.notifyValueChange()
                 }
-
             })
     }
 

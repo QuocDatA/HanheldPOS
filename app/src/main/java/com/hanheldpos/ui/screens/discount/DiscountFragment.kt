@@ -7,6 +7,7 @@ import com.hanheldpos.data.api.pojo.discount.DiscountCoupon
 import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.data.api.pojo.order.settings.Reason
 import com.hanheldpos.databinding.FragmentDiscountBinding
+import com.hanheldpos.extension.setOnClickDebounce
 import com.hanheldpos.model.discount.DiscApplyTo
 import com.hanheldpos.model.discount.DiscountTypeFor
 import com.hanheldpos.model.discount.DiscountUser
@@ -99,7 +100,7 @@ class DiscountFragment(private val listener: DiscountCallback) :
     }
 
     override fun initAction() {
-        binding.btnSave.setOnClickListener {
+        binding.btnSave.setOnClickDebounce {
             requireActivity().supportFragmentManager.setFragmentResult(
                 "saveDiscount",
                 Bundle().apply { putSerializable("DiscountTypeFor", viewModel.typeDiscountSelect.value) });

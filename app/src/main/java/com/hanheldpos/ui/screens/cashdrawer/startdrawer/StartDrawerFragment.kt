@@ -4,6 +4,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentStartDrawerBinding
+import com.hanheldpos.extension.setOnClickDebounce
 import com.hanheldpos.model.keyboard.KeyBoardType
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.home.HomeFragment
@@ -71,7 +72,7 @@ class StartDrawerFragment : BaseFragment<FragmentStartDrawerBinding, StartDrawer
                 }
 
             })
-        binding.btnStartDrawer.setOnClickListener {
+        binding.btnStartDrawer.setOnClickDebounce {
             viewModel.startDrawer(requireContext());
         }
     }

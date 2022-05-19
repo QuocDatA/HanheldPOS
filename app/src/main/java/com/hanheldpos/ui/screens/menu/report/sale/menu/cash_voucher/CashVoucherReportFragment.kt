@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentCashVoucherReportBinding
+import com.hanheldpos.extension.setOnClickDebounce
 import com.hanheldpos.model.menu.report.ReportItem
 import com.hanheldpos.ui.base.adapter.GridSpacingItemDecoration
 import com.hanheldpos.ui.base.fragment.BaseFragment
@@ -95,7 +96,7 @@ class CashVoucherReportFragment : BaseFragment<FragmentCashVoucherReportBinding,
     }
 
     override fun initAction() {
-        binding.btnShowDetail.setOnClickListener {
+        binding.btnShowDetail.setOnClickDebounce {
             viewModel.isShowDetail.postValue(!viewModel.isShowDetail.value!!)
         }
 

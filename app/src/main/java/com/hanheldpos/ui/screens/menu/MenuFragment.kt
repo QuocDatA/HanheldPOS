@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.hanheldpos.BuildConfig
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentMenuBinding
+import com.hanheldpos.extension.setOnClickDebounce
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.DatabaseHelper
 import com.hanheldpos.model.OrderHelper
@@ -74,7 +75,7 @@ class MenuFragment : BaseFragment<FragmentMenuBinding, MenuVM>(), MenuUV {
         binding.menuItemContainer.adapter = menuAdapter
         //endregion
 
-        binding.avatarEmployee.setOnClickListener {
+        binding.avatarEmployee.setOnClickDebounce {
             onLogoutEmployee()
         }
     }

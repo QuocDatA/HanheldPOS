@@ -114,7 +114,6 @@ class CartVM : BaseUiViewModel<CartUV>() {
                 }
 
                 launch(Dispatchers.Main) {
-
                     showLoading(false)
                     if (!onPaymentSelected)
                         uiCallback?.onBillSuccess()

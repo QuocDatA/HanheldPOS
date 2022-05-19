@@ -95,7 +95,7 @@
                 android:layout_marginStart="@dimen/_14sdp"
                 android:layout_marginTop="@dimen/_43sdp"
                 android:layout_marginEnd="@dimen/_14sdp"
-                android:onClick="@{v -> viewModel.openDeviceCode()}"
+                android:onClickDebounce="@{v -> viewModel.openDeviceCode()}"
                 android:padding="@dimen/_12sdp"
                 app:pbtn_useTextColor="color2"
                 app:pbtn_useFontStyle="bold"

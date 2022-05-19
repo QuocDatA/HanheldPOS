@@ -76,5 +76,8 @@ class MainActivity : BaseFragmentBindingActivity<ActivityMainBinding, MainVM>(),
         getNavigator().rootFragment = WelcomeFragment()
     }
 
-
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        SystemHelper.hideSystemUI(window);
+        super.onWindowFocusChanged(hasFocus)
+    }
 }

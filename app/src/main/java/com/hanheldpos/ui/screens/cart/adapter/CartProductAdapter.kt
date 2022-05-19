@@ -3,6 +3,7 @@ package com.hanheldpos.ui.screens.cart.adapter
 import androidx.recyclerview.widget.DiffUtil
 import com.hanheldpos.R
 import com.hanheldpos.databinding.ItemCartProductBinding
+import com.hanheldpos.extension.setOnClickDebounce
 import com.hanheldpos.model.cart.Combo
 import com.hanheldpos.model.cart.DiscountCart
 import com.hanheldpos.model.cart.BaseProductInCart
@@ -24,7 +25,7 @@ class CartProductAdapter(
         val item = getItem(position)
         holder.bindItem(item)
         val binding = (holder.binding as ItemCartProductBinding)
-        binding.layoutRoot.setOnClickListener { listener.onItemClick(position, item) }
+        binding.layoutRoot.setOnClickDebounce { listener.onItemClick(position, item) }
         binding.discountDetail.setClickListener {
             if (!item.discountUsersList.isNullOrEmpty() || !item.discountServersList.isNullOrEmpty())
                 listener.onDiscountDelete(
@@ -41,11 +42,11 @@ class CartProductAdapter(
         }
         if (item is Combo) {
             binding.isShownDetail = item.isShowDetail
-            binding.viewDetailTextView.setOnClickListener {
+            binding.viewDetailTextView.setOnClickDebounce {
                 item.isShowDetail = true
                 notifyItemChanged(position)
             }
-            binding.hideDetailTextView.setOnClickListener {
+            binding.hideDetailTextView.setOnClickDebounce {
                 item.isShowDetail = false
                 notifyItemChanged(position)
             }

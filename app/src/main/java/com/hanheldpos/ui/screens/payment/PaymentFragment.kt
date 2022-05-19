@@ -5,6 +5,7 @@ import android.view.View
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.payment.PaymentSuggestionItem
 import com.hanheldpos.databinding.FragmentPaymentBinding
+import com.hanheldpos.extension.setOnClickDebounce
 import com.hanheldpos.model.keyboard.KeyBoardType
 import com.hanheldpos.model.payment.PaymentApplyTo
 import com.hanheldpos.model.payment.PaymentFactory
@@ -218,7 +219,7 @@ class PaymentFragment(
                 viewModel.completedPayment(alreadyBill, listener)
             }
         }
-        binding.totalPriceButton.setOnClickListener {
+        binding.totalPriceButton.setOnClickDebounce {
             paymentMethodAdapter.currentList.find { PaymentMethodType.fromInt(it.paymentMethod.PaymentMethodType) == PaymentMethodType.CASH }
                 ?.let {
                     paymentChosenSuccess(it, viewModel.balance.value!!)

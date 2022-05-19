@@ -9,6 +9,7 @@ import androidx.fragment.app.activityViewModels
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentSalesReportBinding
 import com.hanheldpos.extension.notifyValueChange
+import com.hanheldpos.extension.setOnClickDebounce
 import com.hanheldpos.model.report.SaleReportCustomData
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
@@ -76,7 +77,7 @@ class SalesReportFragment(private val fragment: Fragment) :
 
     override fun initAction() {
 
-        binding.btnSyncOrders.setOnClickListener {
+        binding.btnSyncOrders.setOnClickDebounce {
             showLoading(true)
             saleReportCommon.onSyncOrders(this.requireView(), succeed = {
                 showLoading(false)

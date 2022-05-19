@@ -3,6 +3,7 @@ package com.hanheldpos.ui.screens.cart.adapter
 import androidx.recyclerview.widget.DiffUtil
 import com.hanheldpos.R
 import com.hanheldpos.databinding.ItemCartDiscountBinding
+import com.hanheldpos.extension.setOnClickDebounce
 import com.hanheldpos.model.cart.DiscountCart
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
@@ -18,7 +19,7 @@ class CartDiscountAdapter(private val listener : BaseItemClickListener<DiscountC
         val discount = getItem(position)
         holder.bindItem(discount)
 
-        (holder.binding as ItemCartDiscountBinding).btnRemove.setOnClickListener {
+        (holder.binding as ItemCartDiscountBinding).btnRemove.setOnClickDebounce {
             listener.onItemClick(position,discount)
         }
     }

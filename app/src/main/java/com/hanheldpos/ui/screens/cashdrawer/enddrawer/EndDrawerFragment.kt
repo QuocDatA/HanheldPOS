@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.cashdrawer.report.ReportCashDrawerResp
 import com.hanheldpos.databinding.FragmentEndDrawerBinding
+import com.hanheldpos.extension.setOnClickDebounce
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.menu.report.current_drawer.adapter.ReportDrawerInfoAdapter
 import com.hanheldpos.ui.screens.pincode.PinCodeFragment
@@ -41,7 +42,7 @@ class EndDrawerFragment(private val report: ReportCashDrawerResp?) : BaseFragmen
         viewModel.amountString.postValue(PriceUtils.formatStringPrice((price?:0.0).toString()));
 
         // Listener Click
-        binding.btnEndDrawer.setOnClickListener {
+        binding.btnEndDrawer.setOnClickDebounce {
             viewModel.endDrawer(requireContext());
         }
 

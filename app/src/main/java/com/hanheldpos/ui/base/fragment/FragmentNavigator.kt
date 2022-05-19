@@ -197,7 +197,7 @@ class FragmentNavigator(
      */
     fun goOneBackTo(tagFragment: String) {
         var i = size - 1
-        while (size >= 1) {
+        while (i >= 1) {
             if (Objects.requireNonNull(mFragmentManager.getBackStackEntryAt(i).name) != tagFragment) {
                 goOneBack()
                 i--
@@ -240,6 +240,15 @@ class FragmentNavigator(
      fun clearHistory() {
         while (mFragmentManager.popBackStackImmediate()) {
         }
+    }
+
+    /**
+     * Get previous fragment on back stack
+     *
+     * @return
+     */
+    fun getPreviousFragment(): Fragment? {
+        return mFragmentManager.fragments[mFragmentManager.backStackEntryCount - 1]
     }
 
     interface OnFragmentStackChanged {

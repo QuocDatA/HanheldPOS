@@ -9,6 +9,7 @@ import com.hanheldpos.R
 import com.hanheldpos.binding.setPriceView
 import com.hanheldpos.databinding.ItemOrderProductBinding
 import com.hanheldpos.databinding.ItemOrderProductDirectionButtonBinding
+import com.hanheldpos.extension.setOnClickDebounce
 import com.hanheldpos.model.home.order.ProductModeViewType
 import com.hanheldpos.model.home.order.menu.ProductMenuItem
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
@@ -68,7 +69,7 @@ class OrderProductAdapter(
 
         if (item.uiType != ProductModeViewType.Empty) {
 
-            holder.binding.root.setOnClickListener { listener.onItemClick(position, item); }
+            holder.binding.root.setOnClickDebounce { listener.onItemClick(position, item); }
         }
     }
 

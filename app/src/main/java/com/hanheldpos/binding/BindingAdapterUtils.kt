@@ -12,6 +12,7 @@ import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.textfield.TextInputEditText
+import com.hanheldpos.extension.setOnClickDebounce
 
 
 @BindingAdapter("useInputEnable")
@@ -219,4 +220,12 @@ fun setBackColor(view: View?, colorHex: String?) {
         /*view.setBackgroundColor(color);*/
     }
 
+}
+
+@BindingAdapter("android:onClickDebounce")
+fun setOnClickDebounce(view : View?, action : View.OnClickListener?) {
+    if (view == null || action == null) return;
+    view.setOnClickDebounce {
+        action.onClick(view)
+    }
 }

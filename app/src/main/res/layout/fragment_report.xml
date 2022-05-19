@@ -30,7 +30,7 @@
                 android:adjustViewBounds="true"
                 android:clickable="true"
                 android:focusable="true"
-                android:onClick="@{v -> viewModel.backPress()}"
+                android:onClickDebounce="@{v -> viewModel.backPress()}"
                 android:backgroundTint="@color/textPrimary"
                 android:src="@drawable/ic_toolbar_menu"
                 tools:ignore="ContentDescription" />

@@ -5,6 +5,7 @@ import android.view.Gravity
 import androidx.fragment.app.activityViewModels
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentSectionSalesReportBinding
+import com.hanheldpos.extension.setOnClickDebounce
 import com.hanheldpos.model.menu.report.ReportItem
 import com.hanheldpos.ui.base.adapter.GridSpacingItemDecoration
 import com.hanheldpos.ui.base.fragment.BaseFragment
@@ -66,7 +67,7 @@ class SectionSalesReportFragment :
     }
 
     override fun initAction() {
-        binding.btnShowDetail.setOnClickListener {
+        binding.btnShowDetail.setOnClickDebounce {
             viewModel.isShowDetail.postValue(!viewModel.isShowDetail.value!!)
         }
 

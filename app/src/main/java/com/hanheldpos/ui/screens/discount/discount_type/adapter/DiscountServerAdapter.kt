@@ -4,6 +4,7 @@ import androidx.recyclerview.widget.DiffUtil
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.databinding.ItemDiscountCodeBinding
+import com.hanheldpos.extension.setOnClickDebounce
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
 
@@ -20,11 +21,11 @@ class DiscountServerAdapter(private val listener : DiscountItemCallBack)  : Base
 
         holder.bindItem(item);
         val binding = holder.binding as ItemDiscountCodeBinding
-        binding.btnViewDetail.setOnClickListener {
+        binding.btnViewDetail.setOnClickDebounce {
             listener.onViewDetailClick(item)
         }
 
-        holder.itemView.setOnClickListener {
+        holder.itemView.setOnClickDebounce {
             listener.onItemClick(item)
         }
     }

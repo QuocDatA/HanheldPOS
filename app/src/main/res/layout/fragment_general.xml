@@ -23,7 +23,7 @@
                 android:layout_gravity="center|start"
                 android:adjustViewBounds="true"
                 android:backgroundTint="@color/textPrimary"
-                android:onClick="@{v -> viewModel.onFragmentBackPressed()}"
+                android:onClickDebounce="@{v -> viewModel.onFragmentBackPressed()}"
                 android:scaleType="centerInside"
                 android:src="@drawable/ic_baseline_arrow_back_ios_13"
                 tools:ignore="ContentDescription" />

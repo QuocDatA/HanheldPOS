@@ -47,7 +47,7 @@
 
                         <com.diadiem.pos_components.PTextView
                             style="@style/NumberPad"
-                            android:onClick="@{(view) -> viewModel.concatenateInputString(view)}"
+                            android:onClickDebounce="@{(view) -> viewModel.concatenateInputString(view)}"
                             android:text="7" />
 
                         <androidx.legacy.widget.Space
@@ -56,7 +56,7 @@
 
                         <com.diadiem.pos_components.PTextView
                             style="@style/NumberPad"
-                            android:onClick="@{(view) -> viewModel.concatenateInputString(view)}"
+                            android:onClickDebounce="@{(view) -> viewModel.concatenateInputString(view)}"
                             android:text="4" />
 
                         <androidx.legacy.widget.Space
@@ -65,7 +65,7 @@
 
                         <com.diadiem.pos_components.PTextView
                             style="@style/NumberPad"
-                            android:onClick="@{(view) -> viewModel.concatenateInputString(view)}"
+                            android:onClickDebounce="@{(view) -> viewModel.concatenateInputString(view)}"
                             android:text="1" />
 
                         <androidx.legacy.widget.Space
@@ -75,7 +75,7 @@
                         <com.diadiem.pos_components.PTextView
                             style="@style/NumberPad"
                             android:layout_weight="1.5"
-                            android:onClick="@{v->viewModel.switchKeyBoardType()}"
+                            android:onClickDebounce="@{v->viewModel.switchKeyBoardType()}"
                             android:text="abc"
                             android:visibility="@{viewModel.keyBoardType == KeyBoardType.NumberOnly ? View.GONE : View.VISIBLE}" />
 
@@ -94,7 +94,7 @@
                         <com.diadiem.pos_components.PTextView
                             style="@style/NumberPad"
                             android:layout_weight="1.5"
-                            android:onClick="@{(view) -> viewModel.concatenateInputString(view)}"
+                            android:onClickDebounce="@{(view) -> viewModel.concatenateInputString(view)}"
                             android:text="8" />
 
                         <androidx.legacy.widget.Space
@@ -104,7 +104,7 @@
                         <com.diadiem.pos_components.PTextView
                             style="@style/NumberPad"
                             android:layout_weight="1.5"
-                            android:onClick="@{(view) -> viewModel.concatenateInputString(view)}"
+                            android:onClickDebounce="@{(view) -> viewModel.concatenateInputString(view)}"
                             android:text="5" />
 
                         <androidx.legacy.widget.Space
@@ -114,7 +114,7 @@
                         <com.diadiem.pos_components.PTextView
                             style="@style/NumberPad"
                             android:layout_weight="1.5"
-                            android:onClick="@{(view) -> viewModel.concatenateInputString(view)}"
+                            android:onClickDebounce="@{(view) -> viewModel.concatenateInputString(view)}"
                             android:text="2" />
 
                         <androidx.legacy.widget.Space
@@ -124,7 +124,7 @@
                         <com.diadiem.pos_components.PTextView
                             style="@style/NumberPad"
                             android:layout_weight="1.5"
-                            android:onClick="@{(view) -> viewModel.concatenateInputString(view)}"
+                            android:onClickDebounce="@{(view) -> viewModel.concatenateInputString(view)}"
                             android:text="0"
                             android:visibility="@{viewModel.keyBoardType == KeyBoardType.NumberOnly ? View.GONE : View.VISIBLE}" />
 
@@ -134,7 +134,7 @@
                 <com.diadiem.pos_components.PTextView
                     style="@style/NumberPad"
                     android:layout_weight="1.5"
-                    android:onClick="@{(view) -> viewModel.concatenateInputString(view)}"
+                    android:onClickDebounce="@{(view) -> viewModel.concatenateInputString(view)}"
                     android:text="0"
                     android:visibility="@{viewModel.keyBoardType == KeyBoardType.NumberOnly ? View.VISIBLE : View.GONE}" />
             </LinearLayout>
@@ -152,7 +152,7 @@
 
                 <com.diadiem.pos_components.PTextView
                     style="@style/NumberPad"
-                    android:onClick="@{(view) -> viewModel.concatenateInputString(view)}"
+                    android:onClickDebounce="@{(view) -> viewModel.concatenateInputString(view)}"
                     android:text="9" />
 
                 <androidx.legacy.widget.Space
@@ -161,7 +161,7 @@
 
                 <com.diadiem.pos_components.PTextView
                     style="@style/NumberPad"
-                    android:onClick="@{(view) -> viewModel.concatenateInputString(view)}"
+                    android:onClickDebounce="@{(view) -> viewModel.concatenateInputString(view)}"
                     android:text="6" />
 
                 <androidx.legacy.widget.Space
@@ -170,7 +170,7 @@
 
                 <com.diadiem.pos_components.PTextView
                     style="@style/NumberPad"
-                    android:onClick="@{(view) -> viewModel.concatenateInputString(view)}"
+                    android:onClickDebounce="@{(view) -> viewModel.concatenateInputString(view)}"
                     android:text="3" />
 
                 <androidx.legacy.widget.Space
@@ -179,7 +179,7 @@
 
                 <com.diadiem.pos_components.PTextView
                     style="@style/NumberPad"
-                    android:onClick="@{(view) -> viewModel.concatenateInputString(view)}"
+                    android:onClickDebounce="@{(view) -> viewModel.concatenateInputString(view)}"
                     android:text="00" />
             </LinearLayout>
 
@@ -196,7 +196,7 @@
                 <ImageView
                     style="@style/NumberPad"
                     android:layout_weight="2"
-                    android:onClick="@{() -> viewModel.delete()}"
+                    android:onClickDebounce="@{() -> viewModel.delete()}"
                     android:paddingVertical="@dimen/_10sdp"
                     android:scaleType="centerInside"
                     android:src="@drawable/ic_backspace" />
@@ -209,7 +209,7 @@
                     style="@style/NumberOk"
                     android:layout_width="match_parent"
                     android:layout_weight="1.75"
-                    android:onClick="@{v->viewModel.listener.onComplete()}"
+                    android:onClickDebounce="@{v->viewModel.listener.onComplete()}"
                     android:text="OK" />
 
                 <androidx.legacy.widget.Space
@@ -219,7 +219,7 @@
                 <com.diadiem.pos_components.PTextView
                     android:id="@+id/cancelBtn"
                     style="@style/NumberPad"
-                    android:onClick="@{v->viewModel.listener.onCancel()}"
+                    android:onClickDebounce="@{v->viewModel.listener.onCancel()}"
                     android:text="Cancel" />
             </LinearLayout>
 

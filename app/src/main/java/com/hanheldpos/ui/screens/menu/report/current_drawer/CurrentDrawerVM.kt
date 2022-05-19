@@ -21,7 +21,6 @@ class CurrentDrawerVM : BaseUiViewModel<CurrentDrawerUV>() {
     }
 
     fun onOpenEndDrawer() {
-
         uiCallback?.onOpenEndDrawer()
     }
 

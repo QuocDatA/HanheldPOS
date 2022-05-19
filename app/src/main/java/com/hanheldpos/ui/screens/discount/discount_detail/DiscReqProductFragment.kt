@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentDiscReqProductBinding
+import com.hanheldpos.extension.setOnClickDebounce
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.discount.discount_detail.adapter.RequirementProductAdapter
 
@@ -59,7 +60,7 @@ class DiscReqProductFragment(private val title: String, private val listItemShow
     }
 
     override fun initAction() {
-        binding.btnOk.setOnClickListener { onFragmentBackPressed() }
+        binding.btnOk.setOnClickDebounce { onFragmentBackPressed() }
     }
 
 }

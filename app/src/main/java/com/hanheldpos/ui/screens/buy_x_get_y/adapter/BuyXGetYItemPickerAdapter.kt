@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.DiffUtil
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.discount.CustomerBuys
 import com.hanheldpos.databinding.ItemComboRegularBinding
+import com.hanheldpos.extension.setOnClickDebounce
 import com.hanheldpos.model.cart.Regular
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
@@ -55,7 +56,7 @@ class BuyXGetYItemPickerAdapter(
 //            setPricePlusView(binding.priceProduct,price)
 //        }
 //        else binding.priceProduct.visibility = View.GONE
-        (holder.binding as ItemComboRegularBinding).root.setOnClickListener {
+        (holder.binding as ItemComboRegularBinding).root.setOnClickDebounce {
             listener.onItemClick(position,item);
         }
     }

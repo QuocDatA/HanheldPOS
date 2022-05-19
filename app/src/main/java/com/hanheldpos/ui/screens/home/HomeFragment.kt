@@ -9,6 +9,8 @@ import androidx.fragment.app.activityViewModels
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.order.settings.DiningOption
 import com.hanheldpos.databinding.FragmentHomeBinding
+import com.hanheldpos.extension.avoidDropdownFocus
+import com.hanheldpos.extension.setOnClickDebounce
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.ui.base.dialog.AppAlertDialog
 import com.hanheldpos.ui.base.fragment.BaseFragment
@@ -75,7 +77,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
             paperAdapter.submitList(fragmentMap.values)
         }
 
-        binding.toolbarLayout.spnDiningOptionBox.setOnClickListener {
+        binding.toolbarLayout.spnDiningOptionBox.apply {
+        }.setOnClickDebounce {
 
             val diningOptions: MutableList<DiningOption> =
                 (DataHelper.orderSettingLocalStorage?.ListDiningOptions as List<DiningOption>).toMutableList();
@@ -87,7 +90,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
                     } else {
                         cartDataVM.diningOptionChange(diningOptions[index + 1])
                     }
-                    return@setOnClickListener
+                    return@setOnClickDebounce
                 }
             }
         }
@@ -186,9 +189,15 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
     private fun initSpinner() {
         val tabSpinnerAdapter = TabSpinnerAdapter(fragmentContext)
         tabSpinnerAdapter.submitList(HomePage.values().toMutableList())
-        binding.toolbarLayout.spinnerMain.adapter = tabSpinnerAdapter
+        binding.toolbarLayout.spinnerMain.apply {
+            avoidDropdownFocus()
+            adapter = tabSpinnerAdapter
+        }
         subSpinnerAdapter = SubSpinnerAdapter(requireContext());
-        binding.toolbarLayout.spnGroupBy.adapter = subSpinnerAdapter;
+        binding.toolbarLayout.spnGroupBy.apply {
+            avoidDropdownFocus()
+            adapter = subSpinnerAdapter;
+        }
 
         //init SubDiningOption
         diningOptionSpinnerAdapter = DiningOptionSpinnerAdapter(fragmentContext)

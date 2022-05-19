@@ -34,7 +34,7 @@
                     android:layout_height="wrap_content"
                     android:clickable="true"
                     android:focusable="true"
-                    android:onClick="@{v->viewModel.backPress()}"
+                    android:onClickDebounce="@{v->viewModel.backPress()}"
                     android:padding="@dimen/_14sdp">
 
                     <ImageView
@@ -661,7 +661,7 @@
                 android:background="@color/color_11"
                 android:clickable="true"
                 android:focusable="true"
-                android:onClick="@{v->viewModel.removeCustomer()}"
+                android:onClickDebounce="@{v->viewModel.removeCustomer()}"
                 android:foreground="?attr/selectableItemBackground"
                 android:gravity="center"
                 android:orientation="horizontal"
@@ -684,7 +684,7 @@
 
             <LinearLayout
                 android:id="@+id/btnOk"
-                android:onClick="@{v->viewModel.backPress()}"
+                android:onClickDebounce="@{v->viewModel.backPress()}"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_3sdp"

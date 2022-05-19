@@ -4,6 +4,7 @@ import android.app.Activity
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
+import android.view.WindowManager
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import com.hanheldpos.R
@@ -44,13 +45,12 @@ class AppLoadingDialog : BaseDialog() {
                 .create()
                 .also {
                     dismiss()
-
                     if ((context as Activity).isFinishing) return
-                    it.show()
-
                     // Custom background
                     val window = it.window
+                    window?.setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE)
                     window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                    it.show()
                 }
         }
     }

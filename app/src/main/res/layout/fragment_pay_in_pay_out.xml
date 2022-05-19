@@ -26,7 +26,7 @@
                 android:layout_gravity="center|start"
                 android:adjustViewBounds="true"
                 android:backgroundTint="@color/textPrimary"
-                android:onClick="@{v -> viewModel.backPress()}"
+                android:onClickDebounce="@{v -> viewModel.backPress()}"
                 android:scaleType="centerInside"
                 android:src="@drawable/ic_baseline_arrow_back_ios_13"
                 tools:ignore="ContentDescription" />
@@ -210,7 +210,7 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:gravity="center"
-                android:onClick="@{v->viewModel.onPayInClick(v)}"
+                android:onClickDebounce="@{v->viewModel.onPayInClick(v)}"
                 android:orientation="horizontal"
                 android:padding="@dimen/_10sdp">
 
@@ -233,7 +233,7 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:gravity="center"
-                android:onClick="@{v->viewModel.onPayoutClick(v)}"
+                android:onClickDebounce="@{v->viewModel.onPayoutClick(v)}"
                 android:orientation="horizontal"
                 android:padding="@dimen/_10sdp">
 

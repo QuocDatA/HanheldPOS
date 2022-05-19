@@ -3,6 +3,7 @@ package com.hanheldpos.ui.base.adapter
 import androidx.databinding.ViewDataBinding
 import androidx.databinding.library.baseAdapters.BR
 import androidx.recyclerview.widget.RecyclerView
+import com.hanheldpos.extension.setOnClickDebounce
 
 class BaseBindingViewHolder<T>(
     val binding: ViewDataBinding,
@@ -23,7 +24,7 @@ class BaseBindingViewHolder<T>(
     }
 
     private fun initActions() {
-        binding.root.setOnClickListener {
+        binding.root.setOnClickDebounce {
             itemClickListener?.onItemClick(absoluteAdapterPosition, item!!)
         }
     }
