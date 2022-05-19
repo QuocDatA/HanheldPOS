@@ -1,22 +1,19 @@
 package com.hanheldpos.ui.screens.buy_x_get_y.adapter
 
-import androidx.fragment.app.FragmentManager
-import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.DiffUtil
 import com.google.android.material.tabs.TabLayout
-import com.google.android.material.tabs.TabLayoutMediator
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.product.Product
 import com.hanheldpos.databinding.ItemBuyXGetYGroupBinding
 import com.hanheldpos.model.buy_x_get_y.GroupBuyXGetY
 import com.hanheldpos.model.buy_x_get_y.ItemBuyXGetYGroup
 import com.hanheldpos.model.buy_x_get_y.ProductTypeTab
+import com.hanheldpos.model.cart.BaseProductInCart
 import com.hanheldpos.model.cart.Regular
 import com.hanheldpos.model.combo.ItemActionType
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
-import com.hanheldpos.ui.screens.discount.adapter.OptionsPagerAdapter
 
 class BuyXGetYGroupAdapter(
     private val listener: BuyXGetYItemListener,
@@ -61,14 +58,11 @@ class BuyXGetYGroupAdapter(
         binding.name = itemBuyXGetYGroup.getGroupName()
         binding.item = itemBuyXGetYGroup
 
-        // Set group that had already been selected
-        val groupChosen: MutableList<Regular> = mutableListOf()
-        itemBuyXGetYGroup.groupBuyXGetY.productList.forEach { basePro -> groupChosen.add(basePro as Regular) }
 
         if(itemBuyXGetYGroup.isApplyToEntireOrder == false) {
             val buyXGetYItemPickerAdapter = BuyXGetYItemPickerAdapter(
-                listener = object : BaseItemClickListener<Regular> {
-                    override fun onItemClick(adapterPosition: Int, item: Regular) {
+                listener = object : BaseItemClickListener<BaseProductInCart> {
+                    override fun onItemClick(adapterPosition: Int, item: BaseProductInCart) {
                         item.quantity = 1
                         listener.onProductSelect(
                             1,
@@ -83,9 +77,13 @@ class BuyXGetYGroupAdapter(
                 adapter = buyXGetYItemPickerAdapter
             }
 
+            // Set group that had already been selected
             val buyXGetYItemChosenAdapter = BuyXGetYItemChosenAdapter(
                 listener = object : BuyXGetYItemChosenAdapter.ComboItemChosenListener {
-                    override fun onComboItemChoose(action: ItemActionType, item: Regular) {
+                    override fun onComboItemChoose(
+                        action: ItemActionType,
+                        item: BaseProductInCart
+                    ) {
                         listener.onProductSelect(
                             itemBuyXGetYGroup.requireQuantity(),
                             itemBuyXGetYGroup.groupBuyXGetY,
@@ -94,7 +92,7 @@ class BuyXGetYGroupAdapter(
                         )
                     }
                 }
-            ).also { it.submitList(groupChosen) }
+            ).also { it.submitList(itemBuyXGetYGroup.groupBuyXGetY.productList) }
             binding.itemSelectedAdapter.apply {
                 adapter = buyXGetYItemChosenAdapter
             }
@@ -112,7 +110,7 @@ class BuyXGetYGroupAdapter(
             val tabSelected = fun(tab: TabLayout.Tab?) {
                 tab ?: return
                 buyXGetYItemPickerAdapter.submitList(
-                    itemBuyXGetYGroup.groupListRegular?.get(
+                    itemBuyXGetYGroup.groupListBaseProduct?.get(
                         tab.position
                     )
                 )
@@ -148,7 +146,7 @@ class BuyXGetYGroupAdapter(
         fun onProductSelect(
             maxQuantity: Int,
             group: GroupBuyXGetY,
-            item: Regular,
+            item: BaseProductInCart,
             actionType: ItemActionType,
         )
     }

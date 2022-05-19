@@ -63,7 +63,7 @@ class ComboItemPickerAdapter(
             setPricePlusView(binding.priceProduct,price)
         }
         else binding.priceProduct.visibility = View.GONE
-        (holder.binding as ItemComboRegularBinding).root.setOnClickListener {
+        (holder.binding).root.setOnClickListener {
             listener.onItemClick(position,item);
         }
     }

@@ -10,14 +10,15 @@ import androidx.recyclerview.widget.DiffUtil
 import com.hanheldpos.R
 import com.hanheldpos.binding.setPricePlusView
 import com.hanheldpos.databinding.ItemComboRegularBinding
+import com.hanheldpos.model.cart.BaseProductInCart
 import com.hanheldpos.model.cart.Regular
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 
 class BuyXGetYItemPickerAdapter(
-    private val listener: BaseItemClickListener<Regular>
-) : BaseBindingListAdapter<Regular>(DiffCallBack()) {
+    private val listener: BaseItemClickListener<BaseProductInCart>
+) : BaseBindingListAdapter<BaseProductInCart>(DiffCallBack()) {
 
     override fun getItemViewType(position: Int): Int {
         return R.layout.item_combo_regular;
@@ -26,7 +27,7 @@ class BuyXGetYItemPickerAdapter(
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): BaseBindingViewHolder<Regular> {
+    ): BaseBindingViewHolder<BaseProductInCart> {
         DataBindingUtil.inflate<ViewDataBinding>(
             LayoutInflater.from(parent.context),
             viewType,
@@ -42,7 +43,7 @@ class BuyXGetYItemPickerAdapter(
         }
     }
 
-    override fun onBindViewHolder(holder: BaseBindingViewHolder<Regular>, position: Int) {
+    override fun onBindViewHolder(holder: BaseBindingViewHolder<BaseProductInCart>, position: Int) {
         val item = getItem(position);
 //        productChosen.find { it.proOriginal?._id == item.proOriginal?._id }?.let {
 //            (holder.binding as ItemComboRegularBinding).isChosen = true;
@@ -58,14 +59,14 @@ class BuyXGetYItemPickerAdapter(
         }
     }
 
-    private class DiffCallBack : DiffUtil.ItemCallback<Regular>() {
-        override fun areItemsTheSame(oldItem: Regular, newItem: Regular): Boolean {
+    private class DiffCallBack : DiffUtil.ItemCallback<BaseProductInCart>() {
+        override fun areItemsTheSame(oldItem: BaseProductInCart, newItem: BaseProductInCart): Boolean {
             return false;
         }
 
         override fun areContentsTheSame(
-            oldItem: Regular,
-            newItem: Regular
+            oldItem: BaseProductInCart,
+            newItem: BaseProductInCart
         ): Boolean {
             return false;
         }

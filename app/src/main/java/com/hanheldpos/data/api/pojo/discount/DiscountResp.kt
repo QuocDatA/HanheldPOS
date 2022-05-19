@@ -12,7 +12,6 @@ import com.hanheldpos.model.buy_x_get_y.BuyXGetYApplyTo
 import com.hanheldpos.model.buy_x_get_y.ItemBuyXGetYGroup
 import com.hanheldpos.model.cart.BaseProductInCart
 import com.hanheldpos.model.cart.CartModel
-import com.hanheldpos.model.cart.Regular
 import com.hanheldpos.model.discount.*
 import com.hanheldpos.ui.screens.cart.CurCartData
 import com.hanheldpos.utils.DateTimeUtils
@@ -403,8 +402,11 @@ data class CustomerBuys(
         return 0
     }
 
-    fun filterListApplyTo(item: ItemBuyXGetYGroup): MutableList<List<Regular>> {
-        val listRegularFilter: MutableList<List<Regular>> = mutableListOf()
+    fun filterListApplyTo(
+        item: ItemBuyXGetYGroup,
+        discount: DiscountResp
+    ): MutableList<List<BaseProductInCart>> {
+        val listRegularFilter: MutableList<List<BaseProductInCart>> = mutableListOf()
         when (BuyXGetYApplyTo.fromInt(ApplyTo)) {
             BuyXGetYApplyTo.ENTIRE_ORDER -> {
 
@@ -413,7 +415,8 @@ data class CustomerBuys(
                 listRegularFilter.add(
                     item.getProductListApplyToBuyXGetY(
                         ListApplyTo,
-                        CurCartData.cartModel?.diningOption!!
+                        CurCartData.cartModel?.diningOption!!,
+                        discount,
                     ).toMutableList()
                 )
             }
@@ -422,7 +425,8 @@ data class CustomerBuys(
                     listRegularFilter.add(
                         item.getProductListApplyToBuyXGetY(
                             list.ProductList ?: listOf(),
-                            CurCartData.cartModel?.diningOption!!
+                            CurCartData.cartModel?.diningOption!!,
+                            discount,
                         )
                     )
                 }
@@ -432,7 +436,8 @@ data class CustomerBuys(
                     listRegularFilter.add(
                         item.getProductListApplyToBuyXGetY(
                             list.ProductList ?: listOf(),
-                            CurCartData.cartModel?.diningOption!!
+                            CurCartData.cartModel?.diningOption!!,
+                            discount,
                         )
                     )
                 }

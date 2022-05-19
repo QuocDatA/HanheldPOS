@@ -28,10 +28,10 @@
             android:layout_height="wrap_content"
             android:focusable="true"
             android:orientation="vertical"
-            android:paddingHorizontal="@dimen/_7sdp"
             android:paddingVertical="@dimen/_13sdp">
 
             <LinearLayout
+                android:layout_marginHorizontal="@dimen/_7sdp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -117,6 +117,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:layout_marginHorizontal="@dimen/_7sdp"
                 visibleObject="@{item.isFocused &amp;&amp; item.mutableTab}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -139,10 +140,21 @@
                     app:tabTextAppearance="@style/TextAppearance.TablayoutBuyXGetY"
                     app:tabTextColor="@color/color_8" />
 
-                <include layout="@layout/divider_horizontal" />
+
             </LinearLayout>
 
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="@{item.isFocused &amp;&amp; item.mutableTab &amp;&amp; !item.containProduct ? View.VISIBLE : View.GONE}">
+                <include
+                    layout="@layout/divider_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_1sdp" />
+            </FrameLayout>
+
             <androidx.recyclerview.widget.RecyclerView
+                android:layout_marginHorizontal="@dimen/_4sdp"
                 android:visibility="gone"
                 android:id="@+id/itemForSelectAdapter"
                 android:layout_width="match_parent"

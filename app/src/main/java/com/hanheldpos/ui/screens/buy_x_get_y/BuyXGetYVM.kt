@@ -9,6 +9,8 @@ import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.data.api.pojo.fee.CustomerGets
 import com.hanheldpos.extension.notifyValueChange
 import com.hanheldpos.model.buy_x_get_y.*
+import com.hanheldpos.model.cart.BaseProductInCart
+import com.hanheldpos.model.cart.Combo
 import com.hanheldpos.model.cart.Regular
 import com.hanheldpos.model.combo.ItemActionType
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
@@ -16,7 +18,6 @@ import com.hanheldpos.ui.screens.cart.CurCartData
 
 class BuyXGetYVM : BaseUiViewModel<BuyXGetYUV>() {
     var buyXGetY = MutableLiveData<BuyXGetY>()
-    var listGroupBuyXGetY = MutableLiveData<BuyXGetY>()
     var actionType = MutableLiveData<ItemActionType>();
     val totalPriceLD = MutableLiveData(0.0);
     var maxQuantity = -1;
@@ -36,13 +37,13 @@ class BuyXGetYVM : BaseUiViewModel<BuyXGetYUV>() {
     fun initLifeCycle(owner: LifecycleOwner) {
         owner.lifecycle.addObserver(this);
 
-        listGroupBuyXGetY.observe(owner) {
+        buyXGetY.observe(owner) {
             updateTotalPrice();
         };
     }
 
     private fun updateTotalPrice() {
-        totalPriceLD.value = listGroupBuyXGetY.value?.total()
+        totalPriceLD.value = buyXGetY.value?.total()
     }
 
     fun initDefaultList(disc: DiscountResp): MutableList<ItemBuyXGetYGroup>? {
@@ -69,10 +70,10 @@ class BuyXGetYVM : BaseUiViewModel<BuyXGetYUV>() {
                 )
             )
 
-        listGroupBuyXGetY.value = buyXGetY.value!!.clone()
-        listGroupBuyXGetY.value!!.groupList = groupList
+        //listGroupBuyXGetY.value = buyXGetY.value!!.clone()
+        buyXGetY.value!!.groupList = groupList
 
-        listGroupBuyXGetY.value!!.groupList?.map { groupBuyXGetY ->
+        buyXGetY.value!!.groupList?.map { groupBuyXGetY ->
             initItemGroupBuyXGetY(groupBuyXGetY)
         }.let {
             return it?.toMutableList()
@@ -107,42 +108,69 @@ class BuyXGetYVM : BaseUiViewModel<BuyXGetYUV>() {
         }
     }
 
-    val isSelectedComplete: MutableLiveData<Boolean> = Transformations.map(listGroupBuyXGetY) {
+    fun onBunbleSelect(
+        group: GroupBuyXGetY,
+        itemAfter: Combo,
+        itemPrev: Combo,
+        action: ItemActionType,
+    ) {
+        when (action) {
+            ItemActionType.Add -> {
+                group.productList.add(itemAfter)
+            }
+            ItemActionType.Modify -> {
+                if ((itemAfter.quantity ?: 0) <= 0) {
+                    group.productList.remove(itemPrev);
+                } else {
+                    group.productList.find { it == itemPrev }.let { regular ->
+                        val index = group.productList.indexOf(regular)
+                        group.productList[index] = itemAfter;
+                    }
+                }
+
+            }
+            ItemActionType.Remove -> {
+                group.productList.remove(itemPrev);
+            }
+        }
+    }
+
+    val isSelectedComplete: MutableLiveData<Boolean> = Transformations.map(buyXGetY) {
         return@map it?.isCompleted();
     } as MutableLiveData<Boolean>
 
-    val numberQuantity = Transformations.map(listGroupBuyXGetY) {
+    val numberQuantity = Transformations.map(buyXGetY) {
         return@map it.quantity;
     }
 
     fun onAddQuantity() {
         if (numberQuantity.value!! < maxQuantity)
-            listGroupBuyXGetY.value?.plusOrderQuantity(1);
-        listGroupBuyXGetY.notifyValueChange()
+            buyXGetY.value?.plusOrderQuantity(1);
+        buyXGetY.notifyValueChange()
     }
 
     fun onRemoveQuantity() {
         if (minQuantity.value!! < numberQuantity.value!!)
-            listGroupBuyXGetY.value?.minusOrderQuantity(1);
-        listGroupBuyXGetY.notifyValueChange();
+            buyXGetY.value?.minusOrderQuantity(1);
+        buyXGetY.notifyValueChange();
     }
 
     fun onAddCart() {
         //uiCallback?.cartAdded(bundleInCart.value!!, actionType.value!!);
     }
 
-    private fun initItemGroupBuyXGetY(groupBuyXGetY: GroupBuyXGetY): ItemBuyXGetYGroup {
+    private fun initItemGroupBuyXGetY(groupBuyXGetY: GroupBuyXGetY, ): ItemBuyXGetYGroup {
         val conditionCustomer = groupBuyXGetY.condition
         val itemBuyXGetYGroup = ItemBuyXGetYGroup(groupBuyXGetY, mutableListOf(), mutableListOf())
         if (conditionCustomer is CustomerBuys) {
-            itemBuyXGetYGroup.groupListRegular =
-                conditionCustomer.filterListApplyTo(itemBuyXGetYGroup)
+            itemBuyXGetYGroup.groupListBaseProduct =
+                conditionCustomer.filterListApplyTo(itemBuyXGetYGroup, buyXGetY.value?.disc!!)
             itemBuyXGetYGroup.listApplyTo = conditionCustomer.ListApplyTo.toMutableList()
             itemBuyXGetYGroup.isApplyToEntireOrder = BuyXGetYApplyTo.fromInt(conditionCustomer.ApplyTo) == BuyXGetYApplyTo.ENTIRE_ORDER
         } else {
             conditionCustomer as CustomerGets
-            itemBuyXGetYGroup.groupListRegular =
-                conditionCustomer.filterListApplyTo(itemBuyXGetYGroup)
+            itemBuyXGetYGroup.groupListBaseProduct =
+                conditionCustomer.filterListApplyTo(itemBuyXGetYGroup, buyXGetY.value?.disc!!)
             itemBuyXGetYGroup.listApplyTo = conditionCustomer.ListApplyTo.toMutableList()
             itemBuyXGetYGroup.isApplyToEntireOrder = BuyXGetYApplyTo.fromInt(conditionCustomer.ApplyTo) == BuyXGetYApplyTo.ENTIRE_ORDER
         }

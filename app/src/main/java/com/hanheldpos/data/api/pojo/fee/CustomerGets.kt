@@ -1,10 +1,12 @@
 package com.hanheldpos.data.api.pojo.fee
 
 import android.os.Parcelable
+import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.data.api.pojo.product.Product
 import com.hanheldpos.data.api.pojo.product.VariantsGroup
 import com.hanheldpos.model.buy_x_get_y.BuyXGetYApplyTo
 import com.hanheldpos.model.buy_x_get_y.ItemBuyXGetYGroup
+import com.hanheldpos.model.cart.BaseProductInCart
 import com.hanheldpos.model.cart.Regular
 import com.hanheldpos.model.fee.ChooseProductApplyTo
 import com.hanheldpos.ui.screens.cart.CurCartData
@@ -39,8 +41,8 @@ data class CustomerGets(
         }
     }
 
-    fun filterListApplyTo(item: ItemBuyXGetYGroup): MutableList<List<Regular>> {
-        val listRegularFilter: MutableList<List<Regular>> = mutableListOf()
+    fun filterListApplyTo(item: ItemBuyXGetYGroup, discount: DiscountResp): MutableList<List<BaseProductInCart>> {
+        val listRegularFilter: MutableList<List<BaseProductInCart>> = mutableListOf()
         when (BuyXGetYApplyTo.fromInt(ApplyTo)) {
             BuyXGetYApplyTo.ENTIRE_ORDER -> {
 
@@ -49,7 +51,8 @@ data class CustomerGets(
                 listRegularFilter.add(
                     item.getProductListApplyToBuyXGetY(
                         ListApplyTo,
-                        CurCartData.cartModel?.diningOption!!
+                        CurCartData.cartModel?.diningOption!!,
+                        discount,
                     ).toMutableList()
                 )
             }
@@ -58,7 +61,8 @@ data class CustomerGets(
                     listRegularFilter.add(
                         item.getProductListApplyToBuyXGetY(
                             list.ProductList ?: listOf(),
-                            CurCartData.cartModel?.diningOption!!
+                            CurCartData.cartModel?.diningOption!!,
+                            discount,
                         )
                     )
                 }
@@ -68,7 +72,8 @@ data class CustomerGets(
                     listRegularFilter.add(
                         item.getProductListApplyToBuyXGetY(
                             list.ProductList ?: listOf(),
-                            CurCartData.cartModel?.diningOption!!
+                            CurCartData.cartModel?.diningOption!!,
+                            discount
                         )
                     )
                 }

@@ -106,7 +106,7 @@ data class GroupBuyXGetY(
     }
 
     fun addProduct(discount: DiscountResp, product: Product, diningOption: DiningOption) {
-        val comboGroupList = GSonUtils.toObject<List<ProductComboItem>>(product.Combo)
+        val comboGroupList = GSonUtils.toList<List<ProductComboItem>>(product.Combo)
         if (comboGroupList == null || !comboGroupList.any()) {
             addRegular(product, diningOption, discount)
         } else {
@@ -136,7 +136,7 @@ data class GroupBuyXGetY(
             null
         )
         bundle.discountServersList?.add(discount)
-        productList.toMutableList().add(bundle)
+        productList.add(bundle)
     }
 
     private fun addRegular(product: Product, diningOption: DiningOption, discount: DiscountResp) {

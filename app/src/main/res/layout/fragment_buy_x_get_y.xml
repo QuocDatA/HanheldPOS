@@ -26,8 +26,7 @@
             android:layout_alignParentTop="true"
             android:id="@+id/toolbarContainer"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_42sdp"
-            android:background="@color/color_0">
+            android:layout_height="@dimen/_42sdp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -45,7 +44,7 @@
                     android:padding="@dimen/_14sdp"
                     android:scaleType="centerInside"
                     android:src="@drawable/ic_close"
-                    app:tint="@color/color_2"
+                    app:tint="@color/color_5"
                     tools:ignore="ContentDescription" />
 
                 <com.diadiem.pos_components.PTextView
@@ -59,7 +58,7 @@
                     android:maxLines="1"
                     android:text="@{discount.discountName}"
                     app:useFontStyle="bold"
-                    app:useTextColor="color2"
+                    app:useTextColor="color4"
                     app:useTextHeader="h4"
                     tools:text="Discount 50%" />
 
@@ -170,18 +169,18 @@
 
                     <com.diadiem.pos_components.PTextView
                         style="@style/ProductDetailText"
+                        android:text="@{viewModel.numberQuantity > 0 ? ( viewModel.actionType == ItemActionType.Add ? `Add` : `Update` ) : `Remove`}"
                         android:textAllCaps="true"
                         app:useFontStyle="bold"
-                        android:text="@{viewModel.numberQuantity > 0 ? ( viewModel.actionType == ItemActionType.Add ? `Add` : `Update` ) : `Remove`}"
                         app:useTextColor="color2"
                         app:useTextHeader="h5" />
 
                     <com.diadiem.pos_components.PTextView
                         style="@style/ProductDetailText"
-                        android:layout_marginStart="@dimen/_25sdp"
-                        app:useFontStyle="bold"
                         priceView="@{viewModel.totalPriceLD}"
                         visibleObject="@{viewModel.totalPriceLD > 0}"
+                        android:layout_marginStart="@dimen/_25sdp"
+                        app:useFontStyle="bold"
                         app:useTextColor="color2"
                         app:useTextHeader="h5" />
                 </LinearLayout>

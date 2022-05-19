@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="com.hanheldpos.model.product.ExtraConverter"/>
+        <variable
+            name="item"
+            type="com.hanheldpos.model.cart.Combo" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/_2sdp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <com.diadiem.pos_components.PTextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@{item.proOriginal.name}"
+                app:useFontStyle="normal"
+                app:useTextColor="color4"
+                app:useTextHeader="h6" />
+
+            <com.diadiem.pos_components.PTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{`(`+ item.quantity + `x)`}"
+                app:useFontStyle="normal"
+                app:useTextColor="color4"
+                app:useTextHeader="h6" />
+
+            <com.diadiem.pos_components.PTextView
+                android:id="@+id/itemComboRemove"
+                android:focusable="true"
+                android:clickable="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:background="@drawable/bg_combo_action_remove"
+                android:paddingHorizontal="@dimen/_7sdp"
+                android:paddingVertical="@dimen/_2sdp"
+                android:text="CHANGE"
+                android:textAllCaps="true"
+                app:useFontStyle="bold"
+                app:useTextColor="color2"
+                app:useTextHeader="h7" />
+
+            <androidx.legacy.widget.Space
+                android:layout_width="@dimen/_5sdp"
+                android:layout_height="wrap_content" />
+
+            <com.diadiem.pos_components.PTextView
+                android:id="@+id/itemComboModify"
+                android:focusable="true"
+                android:clickable="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_combo_action_modifier"
+                android:paddingHorizontal="@dimen/_15sdp"
+                android:paddingVertical="@dimen/_2sdp"
+                android:text="EDIT"
+                android:textAllCaps="true"
+                app:useFontStyle="bold"
+                app:useTextColor="color2"
+                app:useTextHeader="h7" />
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/productComboGroupRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            visibleObject="@{item.proOriginal.bundle}"
+            android:overScrollMode="never"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:itemCount="1"
+            tools:listitem="@layout/buy_x_get_y_item_combo_group"
+            />
+    </LinearLayout>
+</layout>
