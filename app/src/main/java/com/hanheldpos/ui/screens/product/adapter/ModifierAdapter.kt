@@ -4,7 +4,6 @@ import androidx.recyclerview.widget.DiffUtil
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.product.Product
 import com.hanheldpos.databinding.ItemProductModifierBinding
-import com.hanheldpos.extension.setOnClickDebounce
 import com.hanheldpos.model.product.ItemExtra
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
@@ -27,19 +26,19 @@ class ModifierAdapter(private val productOrigin : Product, private val listener:
 
         binding.parentItem = productOrigin;
 
-        binding.btnAddQuantity.setOnClickDebounce {
+        binding.btnAddQuantity.setOnClickListener {
             item.addQuantity(1);
             notifyItemChanged(position)
             listener.onItemClick(position, item)
 
         }
-        binding.itemModifierTextBackground.setOnClickDebounce {
+        binding.itemModifierTextBackground.setOnClickListener {
             item.addQuantity(1);
             notifyItemChanged(position)
             listener.onItemClick(position, item)
 
         }
-        binding.btnRemoveQuantity.setOnClickDebounce {
+        binding.btnRemoveQuantity.setOnClickListener {
             item.deleteQuantity(1);
             notifyItemChanged(position)
             listener.onItemClick(position, item)

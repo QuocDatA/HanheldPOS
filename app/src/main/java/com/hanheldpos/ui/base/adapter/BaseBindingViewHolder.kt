@@ -24,7 +24,7 @@ class BaseBindingViewHolder<T>(
     }
 
     private fun initActions() {
-        binding.root.setOnClickDebounce {
+        binding.root.setOnClickListener {
             itemClickListener?.onItemClick(absoluteAdapterPosition, item!!)
         }
     }

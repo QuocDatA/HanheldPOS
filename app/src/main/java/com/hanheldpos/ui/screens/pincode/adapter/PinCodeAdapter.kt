@@ -42,7 +42,7 @@ class PinCodeAdapter(
         private val binding = dataBinding as ItemPinCodeBinding;
         fun bind(item: PinCodeRecyclerElement) {
             binding.item = item;
-            binding.btnPinItem.setOnClickDebounce {
+            binding.btnPinItem.setOnClickListener {
                 listener?.onClick(item);
             };
         }
