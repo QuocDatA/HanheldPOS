@@ -57,8 +57,8 @@ class SaleReportCommonVM : BaseViewModel() {
         return@map it.filter { order -> OrderHelper.isValidOrderPush(order) }.size
     }
 
-    fun onSyncOrders(view: View,succeed : () -> Unit, failed: () -> Unit) {
-        if (numberOrder.value ?: 0 <= 0){
+    fun onSyncOrders(view: View, succeed: () -> Unit, failed: () -> Unit) {
+        if (numberOrder.value ?: 0 <= 0) {
             succeed()
             return
         }
@@ -92,8 +92,7 @@ class SaleReportCommonVM : BaseViewModel() {
                                     ?: view.context.getString(R.string.alert_msg_an_error_has_occurred),
                             )
                     } else {
-                        pushOrder(view.context);
-                        succeed()
+                        pushOrder(view.context, succeed, failed);
                     }
                 }
 
@@ -105,8 +104,7 @@ class SaleReportCommonVM : BaseViewModel() {
 
     }
 
-    private fun pushOrder(context: Context) {
-
+    private fun pushOrder(context: Context, succeed: () -> Unit, failed: () -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
             val listOrdersFlow = DatabaseHelper.ordersCompleted.getAll()
             var countOrderPush = 0
@@ -154,11 +152,12 @@ class SaleReportCommonVM : BaseViewModel() {
 
                                 override fun showMessage(message: String?) {
                                     countOrderPush += 1
-                                    if (countOrderPush >= listNeedPush.size) {
-                                        isSyncOrderToServer = false
-                                        showLoading(false)
-                                    }
                                     viewModelScope.launch(Dispatchers.Main) {
+                                        if (countOrderPush >= listNeedPush.size) {
+                                            isSyncOrderToServer = false
+                                            showLoading(false)
+                                        }
+
                                         AppAlertDialog.get()
                                             .show(
                                                 context.getString(R.string.notification),
@@ -171,6 +170,10 @@ class SaleReportCommonVM : BaseViewModel() {
                         while (countOrderPush < countPushNeed) {
 
                         }
+                        viewModelScope.launch(Dispatchers.Main) {
+                            succeed()
+                        }
+
                     }
 
                 }
@@ -181,7 +184,7 @@ class SaleReportCommonVM : BaseViewModel() {
 
     }
 
-    fun fetchDataSaleReport(succeed: () -> Unit,failed : ()-> Unit) {
+    fun fetchDataSaleReport(succeed: () -> Unit, failed: () -> Unit) {
         reportRepo.getSalesReport(
             userGuid = UserHelper.getUserGuid(),
             locationGuid = UserHelper.getLocationGuid(),

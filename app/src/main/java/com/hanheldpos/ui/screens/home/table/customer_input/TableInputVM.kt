@@ -5,7 +5,7 @@ import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
 
 class TableInputVM : BaseUiViewModel<TableInputUV>() {
 
-    var numberCustomer : Int = 0
+    var numberCustomer : Long = 0
 
     fun onComplete(){
         uiCallback?.onComplete();

@@ -58,7 +58,6 @@
                 android:focusableInTouchMode="true"
                 android:hint="@string/staring_cash"
                 android:inputType="number"
-                android:maxLength="20"
                 android:paddingHorizontal="@dimen/_8sdp"
                 android:paddingVertical="@dimen/_17sdp"
                 app:ipt_useFontStyle="normal"

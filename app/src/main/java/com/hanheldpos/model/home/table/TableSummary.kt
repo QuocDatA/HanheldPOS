@@ -7,6 +7,6 @@ import kotlinx.parcelize.Parcelize
 data class TableSummary(
     var _id: String,
     var TableName: String,
-    var PeopleQuantity: Int,
+    var PeopleQuantity: Long,
 ) : Parcelable {
 }

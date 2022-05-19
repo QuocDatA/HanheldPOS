@@ -155,7 +155,7 @@ class TableFragment : BaseFragment<FragmentTableBinding, TableVM>(), TableUV {
                 // Show Table input number customer
                 navigator.goTo(TableInputFragment(listener = object :
                     TableInputFragment.TableInputListener {
-                    override fun onCompleteTable(numberCustomer: Int) {
+                    override fun onCompleteTable(numberCustomer: Long) {
                         // Init cart first time
                         orderDataVM.onMenuChange(0)
                         item.updateTableStatus(TableStatusType.Pending);

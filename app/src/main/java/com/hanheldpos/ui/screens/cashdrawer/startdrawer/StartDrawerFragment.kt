@@ -17,7 +17,7 @@ class StartDrawerFragment : BaseFragment<FragmentStartDrawerBinding, StartDrawer
 
     override fun layoutRes(): Int = R.layout.fragment_start_drawer;
 
-    private val keyBoardVM = KeyBoardVM(KeyBoardType.NumberOnly);
+    private val keyBoardVM = KeyBoardVM(KeyBoardType.NumberOnly,15);
 
     override fun initViewModel(viewModel: StartDrawerVM) {
         viewModel.run {

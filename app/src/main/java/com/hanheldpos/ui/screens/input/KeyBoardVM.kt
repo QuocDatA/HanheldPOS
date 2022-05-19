@@ -8,7 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.hanheldpos.model.keyboard.KeyBoardType
 
-class KeyBoardVM(type: KeyBoardType) : ViewModel() {
+class KeyBoardVM(type: KeyBoardType, private val maxLength: Int? = null) : ViewModel() {
 
     private val input = MutableLiveData<String>()
     var listener: KeyBoardCallBack? = null;
@@ -20,6 +20,9 @@ class KeyBoardVM(type: KeyBoardType) : ViewModel() {
     }
 
     fun concatenateInputString(view: View) {
+        maxLength?.let {
+            if (input.value?.length ?: 0 >= it) return
+        }
         val textView = view as TextView
         if (input.value.isNullOrEmpty()) {
             input.value = ""
@@ -28,6 +31,10 @@ class KeyBoardVM(type: KeyBoardType) : ViewModel() {
     }
 
     fun inputString(view: View) {
+        maxLength?.let {
+            if (input.value?.length ?: 0 >= it) return
+        }
+
         val textView = view as TextView
         if (input.value.isNullOrEmpty()) {
             input.value = ""
@@ -104,6 +111,7 @@ class KeyBoardVM(type: KeyBoardType) : ViewModel() {
         input.postValue(initInput)
         this.listener = listener;
     }
+
 
     interface KeyBoardCallBack {
         fun onComplete();

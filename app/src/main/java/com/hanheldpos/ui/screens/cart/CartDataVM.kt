@@ -39,7 +39,7 @@ class CartDataVM : BaseViewModel() {
         return@map "${it.productsList.sumOf { it1 -> it1.quantity ?: 0 }}/${it.productsList.size}"
     }
 
-    val numberOfCustomer: LiveData<Int> = Transformations.map(cartModelLD) {
+    val numberOfCustomer: LiveData<Long> = Transformations.map(cartModelLD) {
         return@map it?.table?.PeopleQuantity
     }
 
@@ -54,7 +54,7 @@ class CartDataVM : BaseViewModel() {
         }
     }
 
-    fun initCart(numberCustomer: Int, table: FloorTable) {
+    fun initCart(numberCustomer: Long, table: FloorTable) {
         cartModelLD.value =
             CartModel(
                 table = TableSummary(

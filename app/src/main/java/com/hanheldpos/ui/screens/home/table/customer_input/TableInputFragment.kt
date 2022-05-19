@@ -16,7 +16,7 @@ class TableInputFragment(
 ) : BaseFragment<FragmentTableInputBinding, TableInputVM>(), TableInputUV {
 
     //ViewModel
-    private val keyBoardVM = KeyBoardVM(KeyBoardType.NumberOnly);
+    private val keyBoardVM = KeyBoardVM(KeyBoardType.NumberOnly,7);
 
     override fun layoutRes() = R.layout.fragment_table_input
 
@@ -69,7 +69,7 @@ class TableInputFragment(
                     return
                 }
                 binding.numberCustomer.removeTextChangedListener(this)
-                viewModel.numberCustomer = s.replace(Regex("[,]"), "").toIntOrNull() ?: 1000000000
+                viewModel.numberCustomer = s.replace(Regex("[,]"), "").toLong()
                 binding.numberCustomer.setText(viewModel.numberCustomer.toString())
                 binding.numberCustomer.addTextChangedListener(this)
             }
@@ -78,7 +78,7 @@ class TableInputFragment(
     }
 
     interface TableInputListener {
-        fun onCompleteTable(numberCustomer: Int)
+        fun onCompleteTable(numberCustomer: Long)
     }
 
     override fun onCancel() {
@@ -88,7 +88,7 @@ class TableInputFragment(
     override fun onComplete() {
         navigator.goOneBack();
         if (viewModel.numberCustomer > 0)
-            listener?.onCompleteTable(Integer.valueOf(viewModel.numberCustomer))
+            listener?.onCompleteTable((viewModel.numberCustomer))
     }
 
 }
