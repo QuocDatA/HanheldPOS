@@ -8,16 +8,25 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.databinding.FragmentBuyXGetYBinding
-import com.hanheldpos.model.cart.BaseProductInCart
-import com.hanheldpos.model.cart.Regular
+import com.hanheldpos.extension.notifyValueChange
 import com.hanheldpos.model.buy_x_get_y.GroupBuyXGetY
+import com.hanheldpos.model.cart.BaseProductInCart
+import com.hanheldpos.model.cart.Combo
+import com.hanheldpos.model.cart.GroupBundle
+import com.hanheldpos.model.cart.Regular
 import com.hanheldpos.model.combo.ItemActionType
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.buy_x_get_y.adapter.BuyXGetYGroupAdapter
+import com.hanheldpos.ui.screens.cart.CurCartData
+import com.hanheldpos.ui.screens.combo.ComboFragment
 import com.hanheldpos.ui.screens.home.order.OrderFragment
 import com.hanheldpos.ui.screens.product.ProductDetailFragment
 
-class BuyXGetYFragment(private val discount: DiscountResp) :
+class BuyXGetYFragment(
+    private val discount: DiscountResp,
+    private val actionType: ItemActionType,
+    private val quantityCanChoose: Int = -1
+) :
     BaseFragment<FragmentBuyXGetYBinding, BuyXGetYVM>(), BuyXGetYUV {
     override fun layoutRes(): Int = R.layout.fragment_buy_x_get_y
 
@@ -30,24 +39,27 @@ class BuyXGetYFragment(private val discount: DiscountResp) :
     override fun initViewModel(viewModel: BuyXGetYVM) {
         viewModel.run {
             init(this@BuyXGetYFragment)
+            initLifeCycle(this@BuyXGetYFragment)
             binding.viewModel = this
             binding.discount = discount
+            binding
         }
     }
 
     override fun initView() {
-        buyXGetYGroupAdapter = BuyXGetYGroupAdapter(listener = object: BuyXGetYGroupAdapter.BuyXGetYItemListener {
+        buyXGetYGroupAdapter = BuyXGetYGroupAdapter(listener = object :
+            BuyXGetYGroupAdapter.BuyXGetYItemListener {
             override fun onProductSelect(
                 maxQuantity: Int,
                 group: GroupBuyXGetY,
-                item: Regular,
+                item: BaseProductInCart,
                 actionType: ItemActionType
             ) {
-                openProductDetail(maxQuantity, group, item, actionType, discount)
+                openProductDetail(maxQuantity, group, item, actionType)
             }
 
         })
-        binding.buyXGetYGroupAdapter.apply {
+        binding.rvBuyXGetYGroup.apply {
             adapter = buyXGetYGroupAdapter;
             addItemDecoration(
                 DividerItemDecoration(
@@ -66,8 +78,9 @@ class BuyXGetYFragment(private val discount: DiscountResp) :
     }
 
     override fun initData() {
+        viewModel.actionType.value = actionType
+        viewModel.maxQuantity = quantityCanChoose
         val listItemBuyXGetYGroup = viewModel.initDefaultList(discount)
-        binding.isComplete = viewModel.isSelectedComplete()
         buyXGetYGroupAdapter.submitList(listItemBuyXGetYGroup)
     }
 
@@ -78,42 +91,88 @@ class BuyXGetYFragment(private val discount: DiscountResp) :
     fun openProductDetail(
         maxQuantity: Int,
         group: GroupBuyXGetY,
-        item: Regular,
+        baseItem: BaseProductInCart,
         action: ItemActionType,
-        discount: DiscountResp
     ) {
         if (SystemClock.elapsedRealtime() - viewModel.mLastTimeClick <= 500) return;
         viewModel.mLastTimeClick = SystemClock.elapsedRealtime();
         when (action) {
             ItemActionType.Remove -> {
-                viewModel.onRegularSelect(group, item, item, action, discount)
+                if (baseItem is Regular) {
+                    viewModel.onRegularSelect(group, baseItem, baseItem, action)
+                } else if (baseItem is Combo) {
+                    viewModel.onBundleSelect(group, baseItem, action)
+                }
                 buyXGetYGroupAdapter.notifyDataSetChanged()
+                viewModel.buyXGetY.notifyValueChange()
             }
             else -> {
-                navigator.goTo(ProductDetailFragment(
-                    regular = item.clone(),
-                    groupBundle = null,
-                    productBundle = null,
-                    quantityCanChoose = maxQuantity,
-                    action = action,
-                    listener = object : OrderFragment.OrderMenuListener {
-                        @SuppressLint("NotifyDataSetChanged")
-                        override fun onCartAdded(
-                            itemAfter: BaseProductInCart,
-                            action: ItemActionType
-                        ) {
-                            viewModel.onRegularSelect(
-                                group,
-                                item,
-                                itemAfter as Regular,
-                                action,
-                                discount
-                            )
-                            buyXGetYGroupAdapter.notifyDataSetChanged()
-                            binding.isComplete = viewModel.isSelectedComplete()
-                        }
+                baseItem.proOriginal.let {
+                    if (!it?.isBundle()!!) {
+                        navigator.goTo(
+                            ProductDetailFragment(
+                                regular = (baseItem as Regular).clone(),
+                                groupBundle = null,
+                                productBundle = null,
+                                quantityCanChoose = maxQuantity,
+                                action = action,
+                                isDiscountBuyXGetY = true,
+                                listener = object : OrderFragment.OrderMenuListener {
+                                    @SuppressLint("NotifyDataSetChanged")
+                                    override fun onCartAdded(
+                                        itemAfter: BaseProductInCart,
+                                        action: ItemActionType
+                                    ) {
+                                        viewModel.onRegularSelect(
+                                            group,
+                                            baseItem,
+                                            (itemAfter as Regular).clone(),
+                                            action
+                                        )
+                                        buyXGetYGroupAdapter.notifyDataSetChanged()
+                                        viewModel.buyXGetY.notifyValueChange()
+                                    }
+                                }
+                            ),
+                        )
+                    } else {
+                        val combo = ComboFragment(
+                            combo = Combo(
+                                it,
+                                it.groupComboList.map { pro ->
+                                    GroupBundle(
+                                        pro,
+                                        mutableListOf()
+                                    )
+                                },
+                                CurCartData.cartModel?.diningOption!!,
+                                1,
+                                it.skuDefault,
+                                it.Variants,
+                                null
+                            ),
+                            action = action,
+                            quantityCanChoose = maxQuantity,
+                            listener = object : OrderFragment.OrderMenuListener {
+                                override fun onCartAdded(
+                                    item: BaseProductInCart,
+                                    action: ItemActionType
+                                ) {
+                                    //add to buy x get y
+                                    viewModel.onBundleSelect(
+                                        group,
+                                        (item as Combo).clone(),
+                                        action,
+                                    )
+                                    buyXGetYGroupAdapter.notifyDataSetChanged()
+                                    viewModel.buyXGetY.notifyValueChange()
+                                }
+                            }
+                        )
+                        navigator.goTo(combo)
                     }
-                ))
+                }
+
             }
         }
     }

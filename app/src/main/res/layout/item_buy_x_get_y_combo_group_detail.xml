@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="com.hanheldpos.model.product.ExtraConverter" />
+
+        <import type="android.text.TextUtils" />
+
+        <variable
+            name="item"
+            type="com.hanheldpos.model.cart.BaseProductInCart" />
+
+        <variable
+            name="productBundle"
+            type="com.hanheldpos.data.api.pojo.product.Product" />
+
+        <variable
+            name="groupBundle"
+            type="com.hanheldpos.model.cart.GroupBundle" />
+    </data>
+
+
+    <LinearLayout
+        style="@style/RootLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/_2sdp"
+        android:orientation="horizontal">
+
+        <com.diadiem.pos_components.PTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_4sdp"
+            android:text="@{`(`+String.valueOf(item.quantity)+`)`}"
+            app:useTextColor="color4"
+            app:useTextHeader="h6"
+            app:useFontStyle="normal"
+            tools:text="(1)" />
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <com.diadiem.pos_components.PTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:gravity="top"
+                android:text="@{item.name}"
+                app:useTextColor="color5"
+                app:useTextHeader="h6"
+                android:padding="0dp"
+                tools:text="Pho Bo Tai" />
+
+                <LinearLayout
+                    visibleObject="@{item.variantList != null &amp;&amp; !item.variantList.empty}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <androidx.legacy.widget.Space
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/_2sdp" />
+
+                    <include
+                        layout="@layout/cart_product_detail_line"
+                        app:isHeaderH6="@{false}"
+                        app:lineText="@{ExtraConverter.INSTANCE.variantStr(item.variantList)}" />
+                </LinearLayout>
+
+                <LinearLayout
+                    visibleObject="@{!item.modifierList.empty}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <androidx.legacy.widget.Space
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/_2sdp" />
+
+                    <include
+                        layout="@layout/cart_product_detail_line"
+                        app:isHeaderH6="@{false}"
+                        app:lineText="@{ExtraConverter.INSTANCE.modifierStr(item.modifierList)}" />
+                </LinearLayout>
+
+                <LinearLayout
+                    visibleObject="@{item.note!=null &amp;&amp; !TextUtils.isEmpty(item.note)}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:orientation="vertical">
+
+                    <androidx.legacy.widget.Space
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/_2sdp" />
+
+                    <include
+                        layout="@layout/cart_product_detail_line"
+                        app:isNote="@{true}"
+                        app:lineText="@{item.note}" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+</layout>

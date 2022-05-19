@@ -8,6 +8,7 @@ import com.hanheldpos.data.api.pojo.customer.CustomerResp
 import com.hanheldpos.data.api.pojo.fee.CustomerGets
 import com.hanheldpos.data.api.pojo.product.Product
 import com.hanheldpos.data.api.pojo.product.VariantsGroup
+import com.hanheldpos.model.buy_x_get_y.ItemBuyXGetYGroup
 import com.hanheldpos.model.cart.BaseProductInCart
 import com.hanheldpos.model.cart.CartModel
 import com.hanheldpos.model.buy_x_get_y.CustomerDiscApplyTo
@@ -77,7 +78,7 @@ data class DiscountResp(
         get() = if (Condition.CustomerBuys.IsMaxQuantity == 1) quantityUsed ?: 0 else 1
 
     fun getAmountUsed(productId: String?): Double? {
-        return if (Condition?.CustomerBuys?.IsMaxAmount == 1) Condition?.CustomerBuys?.ListApplyTo?.firstOrNull { p -> p._id == productId }?.MaxAmount
+        return if (Condition?.CustomerBuys?.IsMaxAmount == 1) Condition?.CustomerBuys?.ListApplyTo?.firstOrNull()?.ProductList?.firstOrNull { p -> p._id == productId }?.MaxAmount
             ?: 0.0 else 0.0
     }
 
@@ -253,8 +254,8 @@ data class DiscountResp(
             DiscountTypeEnum.AMOUNT
             -> return total(subtotal, quantity, discountType, discountValue, productOriginal_id)
             DiscountTypeEnum.BUYX_GETY -> {
-                val discValue = Condition?.CustomerGets?.DiscountValue ?: 0.0
-                return when (DiscountEntireType.fromInt(Condition?.CustomerGets?.DiscountValueType)) {
+                val discValue = Condition.CustomerGets.DiscountValue ?: 0.0
+                return when (DiscountEntireType.fromInt(Condition.CustomerGets.DiscountValueType)) {
                     DiscountEntireType.FREE -> subtotal
                     DiscountEntireType.SPECIFIC -> subtotal?.minus(
                         quantity?.times(discValue) ?: 0.0
@@ -374,43 +375,97 @@ data class CustomerBuys(
     val MinimumValue: Double?,
     val MinimumValueFormat: String,
 ) : Parcelable {
+
+    val requireQuantity
+        get() = MinimumValue
+
     fun getMaxAmount(amountUsed: Double, productId: String?): Double {
-        val productApply = ListApplyTo.firstOrNull { p -> p._id == productId }
+        val productApply =
+            ListApplyTo.firstOrNull()?.ProductList?.firstOrNull { p -> p._id == productId }
         if (productApply != null) {
-            return if (amountUsed <= productApply.MaxAmount) amountUsed else productApply.MaxAmount
+            return if (amountUsed <= productApply.MaxAmount!!) amountUsed else productApply.MaxAmount
         }
         return amountUsed
     }
 
     fun getMaxQuantity(quantityUsed: Int, quantity: Int, product_id: String): Int? {
-        val productApply = this.ListApplyTo.firstOrNull { product -> product._id == product_id }
+        val productApply =
+            this.ListApplyTo.firstOrNull()?.ProductList?.firstOrNull { product -> product._id == product_id }
         if (productApply != null) {
             if (productApply.MaxQuantity == 0) {
                 return quantity
             }
-            val maxQuantity = productApply.MaxQuantity - quantityUsed
-            return if (maxQuantity > 0) {
-                if (quantity >= maxQuantity) maxQuantity
-                else quantity
-            } else 0
+            val maxQuantity = productApply.MaxQuantity?.minus(quantityUsed)
+            if (maxQuantity != null) {
+                return if (maxQuantity > 0) {
+                    if (quantity >= maxQuantity) maxQuantity
+                    else quantity
+                } else 0
+            }
         }
         return 0
     }
 
+    fun filterListApplyTo(
+        item: ItemBuyXGetYGroup,
+        discount: DiscountResp
+    ): MutableList<List<BaseProductInCart>> {
+        val listRegularFilter: MutableList<List<BaseProductInCart>> = mutableListOf()
+        when (CustomerDiscApplyTo.fromInt(ApplyTo)) {
+            CustomerDiscApplyTo.ENTIRE_ORDER -> {
+
+            }
+            CustomerDiscApplyTo.PRODUCT -> {
+                listRegularFilter.add(
+                    item.getProductListApplyToBuyXGetY(
+                        ListApplyTo,
+                        CurCartData.cartModel?.diningOption!!,
+                        discount,
+                    ).toMutableList()
+                )
+            }
+            CustomerDiscApplyTo.GROUP -> {
+                ListApplyTo.forEach { list ->
+                    listRegularFilter.add(
+                        item.getProductListApplyToBuyXGetY(
+                            list.ProductList ?: listOf(),
+                            CurCartData.cartModel?.diningOption!!,
+                            discount,
+                        )
+                    )
+                }
+            }
+            CustomerDiscApplyTo.CATEGORY -> {
+                ListApplyTo.forEach { list ->
+                    listRegularFilter.add(
+                        item.getProductListApplyToBuyXGetY(
+                            list.ProductList ?: listOf(),
+                            CurCartData.cartModel?.diningOption!!,
+                            discount,
+                        )
+                    )
+                }
+            }
+            else -> {}
+        }
+        return listRegularFilter
+    }
+
+
     fun isApplyModifier(productId: String?): Boolean {
-        return ListApplyTo.firstOrNull { p -> p._id == productId }?.ApplyToModifier == 1;
+        return ListApplyTo.firstOrNull()?.ProductList?.firstOrNull { p -> p._id == productId }?.ApplyToModifier == 1;
     }
 
     fun isBuyCompleted(totalOrder: Double, totalQuantityOrder: Int): Boolean {
-        when(DiscMinRequiredType.fromInt(MinimumTypeId ?: 1)) {
+        return when (DiscMinRequiredType.fromInt(MinimumTypeId ?: 1)) {
             DiscMinRequiredType.AMOUNT -> {
-                return totalOrder > MinimumValue ?: 0.0
+                totalOrder > MinimumValue ?: 0.0
             }
             DiscMinRequiredType.QUANTITY -> {
-                return totalQuantityOrder > MinimumValue ?: 0.0
+                totalQuantityOrder > MinimumValue ?: 0.0
             }
             else -> {
-                return false
+                false
             }
         }
     }
@@ -421,11 +476,11 @@ data class CustomerBuys(
                 return ListApplyTo.firstOrNull { p -> p._id == product_id }?.VariantsGroup
             }
             CustomerDiscApplyTo.GROUP -> {
-                return ListApplyTo.map { p -> p.ProductList }.flatten()
+                return ListApplyTo.map { p -> p.ProductList ?: mutableListOf() }.flatten()
                     .firstOrNull { p -> p._id == product_id }?.VariantsGroup
             }
             CustomerDiscApplyTo.CATEGORY -> {
-                return ListApplyTo.map { p -> p.ProductList }.flatten()
+                return ListApplyTo.map { p -> p.ProductList ?: mutableListOf() }.flatten()
                     .firstOrNull { p -> p._id == product_id }?.VariantsGroup
             }
             else -> {
@@ -435,9 +490,24 @@ data class CustomerBuys(
     }
     fun getProductApply(productId: String?) : Product? {
         val productApplyList = if (ApplyTo == CustomerDiscApplyTo.PRODUCT.value)  ListApplyTo else ListApplyTo.map { pro-> pro?.ProductList ?: emptyList()}.flatten()
-        return  productApplyList?.firstOrNull { p-> p._id == productId }
+        return productApplyList.firstOrNull { p-> p._id == productId }
     }
 }
+
+@Parcelize
+data class ListApplyTo(
+    val ApplyTo: Int,
+    val ApplyToModifier: Int,
+    val Color: String,
+    val isMaxAmount: Int,
+    val MaxAmount: Int,
+    val MaxQuantity: Int,
+    val Name1: String,
+    val ProductList: List<Product>,
+    val Quantity: Int,
+    val Url: String,
+    val _id: String,
+) : Parcelable {}
 
 @Parcelize
 data class DiscountsApplyToItem(
@@ -468,7 +538,7 @@ data class ListScheduleItem(
 ) : Parcelable {
     val listTimeString: String
         get() {
-            if (!Active || ListSetTime?.isEmpty())
+            if (!Active || ListSetTime.isEmpty())
                 return "--:--"
             return ListSetTime.joinToString("\n") { time -> "${time.TimeOn} to ${time.TimeOff}" }
         }

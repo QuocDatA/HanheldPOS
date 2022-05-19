@@ -188,7 +188,7 @@ object OrderConverter {
             this.discountServersList = discountServerList.toMutableList()
             this.discountUsersList = discountUserList.toMutableList()
             this.productType = ProductType.REGULAR
-            this.modifierList = toModifierCartList(productBuy.ModifierList, proOriginal.Modifier)
+            this.modifierList = toModifierCartList(productBuy.ModifierList, proOriginal.Modifier!!)
             this.note = productBuy.Note
         }
     }

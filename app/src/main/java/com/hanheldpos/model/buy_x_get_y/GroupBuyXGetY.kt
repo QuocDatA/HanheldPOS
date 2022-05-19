@@ -30,6 +30,10 @@ data class GroupBuyXGetY(
     var productList: MutableList<BaseProductInCart> = mutableListOf()
 
     val totalQuantity get() = productList.sumOf { basePro -> basePro.quantity ?: 0 }
+    val requireQuantity
+        get() = if (condition is CustomerBuys) (condition as CustomerBuys).requireQuantity?.minus(
+            totalQuantity
+        ) else (condition as CustomerGets).requireQuantity.minus(totalQuantity);
     val totalPrice get() = productList.sumOf { basePro -> basePro.lineTotalValue }
     val groupName get() = getGroupName(type)
     val isCompleted get() = getIsCompleted()
@@ -40,7 +44,9 @@ data class GroupBuyXGetY(
         get() = GroupType.fromInt(type.value) == GroupType.BUY && CustomerDiscApplyTo.fromInt((condition as CustomerBuys).ApplyTo) == CustomerDiscApplyTo.ENTIRE_ORDER
 
     private fun getIsCompleted(): Boolean {
-        val result =  productList.firstOrNull { p -> !p.isCompleted() } == null && isConditionCompleted()
+        val result = productList.firstOrNull { p ->
+            !p.isCompleted()
+        } == null && isConditionCompleted()
         return result
     }
 
@@ -99,7 +105,7 @@ data class GroupBuyXGetY(
     }
 
     fun addProduct(discount: DiscountResp, product: Product, diningOption: DiningOption) {
-        val comboGroupList = GSonUtils.toObject<List<ProductComboItem>>(product.Combo)
+        val comboGroupList = GSonUtils.toList<List<ProductComboItem>>(product.Combo)
         if (comboGroupList == null || !comboGroupList.any()) {
             addRegular(product, diningOption, discount)
         } else {
@@ -129,7 +135,7 @@ data class GroupBuyXGetY(
             null
         )
         bundle.discountServersList?.add(discount)
-        productList.toMutableList().add(bundle)
+        productList.add(bundle)
     }
 
     private fun addRegular(product: Product, diningOption: DiningOption, discount: DiscountResp) {

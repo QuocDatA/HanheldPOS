@@ -140,13 +140,12 @@ class BuyXGetY() : BaseProductInCart(),Cloneable {
         groupList?.forEach { group -> total += group.productList.sumOf { it.total() } }
         return total
     }
+
+    fun plusOrderQuantity(num: Int) {
+        quantity = (quantity ?: 0).plus(num)
+    }
+
+    fun minusOrderQuantity(num: Int) {
+        quantity = if (quantity!! > 0) quantity!!.minus(num) else 0
+    }
 }
-
-data class ProductBuyXGetYParent(
-    var GroupGuid: String,
-)
-
-data class ProductBuyXGetY(
-    var ProductGuid: String,
-    var ListVariants: MutableList<VariantCart>
-)

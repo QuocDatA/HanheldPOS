@@ -9,6 +9,7 @@ import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.discount.DiscountCoupon
 import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.databinding.FragmentDiscountCodeBinding
+import com.hanheldpos.model.combo.ItemActionType
 import com.hanheldpos.model.discount.DiscApplyTo
 import com.hanheldpos.model.discount.DiscountTriggerType
 import com.hanheldpos.model.discount.DiscountTypeFor
@@ -89,7 +90,7 @@ class DiscountCodeFragment(
 
     override fun openBuyXGetY(discount: DiscountResp) {
         listener.addDiscountBuyXGetY(discount)
-        navigator.goTo(BuyXGetYFragment(discount))
+        navigator.goTo(BuyXGetYFragment(discount, actionType = ItemActionType.Add))
     }
 
     override fun initAction() {

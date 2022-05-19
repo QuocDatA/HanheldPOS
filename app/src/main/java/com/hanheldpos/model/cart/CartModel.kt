@@ -271,23 +271,32 @@ open class CartModel(
 
     fun getProductApplyOnePerOrderDisc(discOnePerOrder: DiscountResp): BaseProductInCart? {
         val applyToList = discOnePerOrder.Condition.CustomerBuys.ListApplyTo.toList()
-        val productApplyList = getProductListApplyToDiscount(applyToList)
+        val productApplyList =
+            getProductListApplyToDiscount(applyToList.firstOrNull()?.ProductList ?: listOf())
         if (productApplyList.isEmpty()) return null
         var applyValue = 0.0
         when (discOnePerOrder.ApplyToPriceProduct) {
             DiscountPriceType.HIGHEST.value -> {
                 applyValue =
-                    productApplyList.maxOfOrNull { basePro -> basePro.compareValue(applyToList) }
+                    productApplyList.maxOfOrNull { basePro ->
+                        basePro.compareValue(
+                            applyToList.firstOrNull()?.ProductList ?: listOf()
+                        )
+                    }
                         ?: 0.0
             }
             DiscountPriceType.LOWEST.value -> {
                 applyValue =
-                    productApplyList.minOfOrNull { basePro -> basePro.compareValue(applyToList) }
+                    productApplyList.minOfOrNull { basePro ->
+                        basePro.compareValue(
+                            applyToList.firstOrNull()?.ProductList ?: listOf()
+                        )
+                    }
                         ?: 0.0
             }
         }
         return productApplyList.firstOrNull { basePro ->
-            val subtotal = basePro.compareValue(applyToList)
+            val subtotal = basePro.compareValue(applyToList.firstOrNull()?.ProductList ?: listOf())
             return@firstOrNull subtotal == applyValue
         }
     }

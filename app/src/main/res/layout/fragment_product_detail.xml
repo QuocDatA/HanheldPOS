@@ -8,6 +8,10 @@
         <import type="com.hanheldpos.model.combo.ItemActionType" />
 
         <variable
+            name="isDiscountBuyXGetY"
+            type="Boolean" />
+
+        <variable
             name="viewModel"
             type="com.hanheldpos.ui.screens.product.ProductDetailVM" />
     </data>
@@ -153,6 +157,8 @@
                         app:ipt_useTextHeader="h5" />
                 </LinearLayout>
                 <androidx.fragment.app.FragmentContainerView
+                    android:visibility="gone"
+                    visibleObject="@{!isDiscountBuyXGetY}"
                     android:id="@+id/fragment_container_discount"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"

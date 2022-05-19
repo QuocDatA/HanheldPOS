@@ -7,7 +7,7 @@
 
         <variable
             name="item"
-            type="com.hanheldpos.model.cart.Regular" />
+            type="com.hanheldpos.model.cart.BaseProductInCart" />
 
         <variable
             name="isChosen"
