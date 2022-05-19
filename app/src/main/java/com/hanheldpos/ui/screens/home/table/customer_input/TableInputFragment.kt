@@ -69,7 +69,7 @@ class TableInputFragment(
                     return
                 }
                 binding.numberCustomer.removeTextChangedListener(this)
-                viewModel.numberCustomer = s.replace(Regex("[,]"), "").toInt()
+                viewModel.numberCustomer = s.replace(Regex("[,]"), "").toIntOrNull() ?: 1000000000
                 binding.numberCustomer.setText(viewModel.numberCustomer.toString())
                 binding.numberCustomer.addTextChangedListener(this)
             }
