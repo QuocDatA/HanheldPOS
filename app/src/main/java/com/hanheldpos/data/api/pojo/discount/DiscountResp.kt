@@ -374,7 +374,9 @@ data class CustomerBuys(
     val MinimumValueFormat: String,
 ) : Parcelable {
 
-    val requireQuantity get() = ListApplyTo.sumOf { basePro -> basePro.MaxQuantity ?: 0 }
+    val requireQuantity
+        get() = MinimumValue
+
     fun getMaxAmount(amountUsed: Double, productId: String?): Double {
         val productApply =
             ListApplyTo.firstOrNull()?.ProductList?.firstOrNull { p -> p._id == productId }

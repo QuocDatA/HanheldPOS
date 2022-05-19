@@ -98,7 +98,11 @@ class BuyXGetYFragment(
         viewModel.mLastTimeClick = SystemClock.elapsedRealtime();
         when (action) {
             ItemActionType.Remove -> {
-                viewModel.onRegularSelect(group, baseItem as Regular, baseItem, action)
+                if (baseItem is Regular) {
+                    viewModel.onRegularSelect(group, baseItem, baseItem, action)
+                } else if (baseItem is Combo) {
+                    viewModel.onBundleSelect(group, baseItem, action)
+                }
                 buyXGetYGroupAdapter.notifyDataSetChanged()
                 viewModel.buyXGetY.notifyValueChange()
             }
@@ -122,7 +126,7 @@ class BuyXGetYFragment(
                                         viewModel.onRegularSelect(
                                             group,
                                             baseItem,
-                                            itemAfter as Regular,
+                                            (itemAfter as Regular).clone(),
                                             action
                                         )
                                         buyXGetYGroupAdapter.notifyDataSetChanged()
@@ -155,10 +159,9 @@ class BuyXGetYFragment(
                                     action: ItemActionType
                                 ) {
                                     //add to buy x get y
-                                    viewModel.onBunbleSelect(
+                                    viewModel.onBundleSelect(
                                         group,
-                                        baseItem as Combo,
-                                        item as Combo,
+                                        (item as Combo).clone(),
                                         action,
                                     )
                                     buyXGetYGroupAdapter.notifyDataSetChanged()

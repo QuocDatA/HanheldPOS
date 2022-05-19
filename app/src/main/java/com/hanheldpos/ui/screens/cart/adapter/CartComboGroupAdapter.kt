@@ -39,7 +39,8 @@ class CartComboGroupAdapter(
             binding.position = position + 1
             val cartComboGroupDetailAdapter = CartComboGroupDetailAdapter(
                 groupBundle = item,
-                productBundle = productOrigin
+                productBundle = productOrigin,
+                isBuyXGetY = true
             ).apply {
                 val productList = item.productList.toMutableList()
                 submitList(productList as List<BaseProductInCart>)

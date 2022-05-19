@@ -125,7 +125,9 @@ class Combo() : BaseProductInCart() {
     }
 
     override fun isCompleted(): Boolean {
-        return groupList.firstOrNull { gr -> !gr.isComplete() } == null
+        return groupList.firstOrNull { gr ->
+            !gr.isComplete()
+        } == null
     }
 
     override fun isMatching(productItem: Product): Boolean {

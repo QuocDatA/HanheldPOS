@@ -31,7 +31,7 @@ data class GroupBuyXGetY(
 
     val totalQuantity get() = productList.sumOf { basePro -> basePro.quantity ?: 0 }
     val requireQuantity
-        get() = if (condition is CustomerBuys) (condition as CustomerBuys).requireQuantity.minus(
+        get() = if (condition is CustomerBuys) (condition as CustomerBuys).requireQuantity?.minus(
             totalQuantity
         ) else (condition as CustomerGets).requireQuantity.minus(totalQuantity);
     val totalPrice get() = productList.sumOf { basePro -> basePro.lineTotalValue }
@@ -46,8 +46,7 @@ data class GroupBuyXGetY(
     private fun getIsCompleted(): Boolean {
         val result = productList.firstOrNull { p ->
             !p.isCompleted()
-        } == null &&
-                isConditionCompleted()
+        } == null && isConditionCompleted()
         return result
     }
 

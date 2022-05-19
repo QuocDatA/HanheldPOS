@@ -92,10 +92,10 @@ class BuyXGetYVM : BaseUiViewModel<BuyXGetYUV>() {
                 group.productList.add(itemAfter)
             }
             ItemActionType.Modify -> {
-                if (itemAfter.quantity ?: 0 <= 0) {
+                if ((itemAfter.quantity ?: 0) <= 0) {
                     group.productList.remove(itemPrev);
                 } else {
-                    group.productList.find { it == itemPrev }.let { regular ->
+                    group.productList.find { it == itemPrev }?.let { regular ->
                         val index = group.productList.indexOf(regular)
                         group.productList[index] = itemAfter;
                     }
@@ -108,29 +108,28 @@ class BuyXGetYVM : BaseUiViewModel<BuyXGetYUV>() {
         }
     }
 
-    fun onBunbleSelect(
+    fun onBundleSelect(
         group: GroupBuyXGetY,
-        itemAfter: Combo,
-        itemPrev: Combo,
+        item: Combo,
         action: ItemActionType,
     ) {
         when (action) {
             ItemActionType.Add -> {
-                group.productList.add(itemAfter)
+                group.productList.add(item)
             }
             ItemActionType.Modify -> {
-                if ((itemAfter.quantity ?: 0) <= 0) {
-                    group.productList.remove(itemPrev);
+                if ((item.quantity ?: 0) <= 0) {
+                    group.productList.remove(item);
                 } else {
-                    group.productList.find { it == itemPrev }.let { regular ->
+                    group.productList.find { it.proOriginal?._id == item.proOriginal?._id }?.let { regular ->
                         val index = group.productList.indexOf(regular)
-                        group.productList[index] = itemAfter;
+                        group.productList[index] = item;
                     }
                 }
 
             }
             ItemActionType.Remove -> {
-                group.productList.remove(itemPrev);
+                group.productList.remove(item);
             }
         }
     }

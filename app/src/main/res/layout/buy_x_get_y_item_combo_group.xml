@@ -14,11 +14,6 @@
             type="int" />
     </data>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -30,18 +25,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top"
-                android:includeFontPadding="false"
+                android:gravity="bottom"
                 android:text="@{String.valueOf(position) + '.'}"
                 app:useFontStyle="bold"
-                app:useTextColor="color2"
-                app:useTextHeader="h7"
+                app:useTextColor="color4"
+                app:useTextHeader="h5"
                 tools:text="1." />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/cartComboGroupDetailRecyclerView"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginStart="@dimen/_10sdp"
                 android:orientation="vertical"
                 android:overScrollMode="never"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -49,5 +44,4 @@
                 tools:listitem="@layout/item_buy_x_get_y_combo_group_detail" />
         </LinearLayout>
 
-    </LinearLayout>
 </layout>
