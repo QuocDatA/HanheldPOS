@@ -11,9 +11,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import kotlin.system.exitProcess
 import android.view.WindowManager
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.updatePadding
+import androidx.core.view.*
 
 
 object SystemHelper {

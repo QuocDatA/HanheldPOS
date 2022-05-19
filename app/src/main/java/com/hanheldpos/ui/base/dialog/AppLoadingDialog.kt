@@ -3,13 +3,21 @@ package com.hanheldpos.ui.base.dialog
 import android.app.Activity
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.os.Build
 import android.view.LayoutInflater
+import android.view.View
 import android.view.WindowManager
 import androidx.appcompat.app.AlertDialog
+import androidx.core.view.WindowCompat
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import com.hanheldpos.R
 import com.hanheldpos.databinding.DialogLoadingBinding
 import com.hanheldpos.databinding.DialogProgressBinding
+import com.hanheldpos.extension.showWithoutSystemUI
+import com.hanheldpos.ui.base.activity.BaseActivity
+import com.hanheldpos.ui.base.fragment.BaseFragment
+import com.utils.helper.SystemHelper
 
 class AppLoadingDialog : BaseDialog() {
 
@@ -31,7 +39,7 @@ class AppLoadingDialog : BaseDialog() {
     /**
      * Show loading dialog
      */
-    fun show() {
+     fun show() {
         context?.let { context ->
             val binding = DataBindingUtil.inflate<DialogLoadingBinding>(
                 LayoutInflater.from(context),
@@ -48,12 +56,13 @@ class AppLoadingDialog : BaseDialog() {
                     if ((context as Activity).isFinishing) return
                     // Custom background
                     val window = it.window
-                    window?.setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE)
                     window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-                    it.show()
+                    it.showWithoutSystemUI()
                 }
         }
     }
+
+
 
     /**
      * Show progress dialog

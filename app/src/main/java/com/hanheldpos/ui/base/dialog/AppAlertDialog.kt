@@ -5,11 +5,13 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.icu.text.CaseMap
 import android.view.LayoutInflater
+import android.view.View
 import android.view.WindowManager
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import com.hanheldpos.R
 import com.hanheldpos.databinding.DialogMessageBinding
+import com.hanheldpos.extension.showWithoutSystemUI
 
 class AppAlertDialog : BaseDialog() {
 
@@ -86,12 +88,15 @@ class AppAlertDialog : BaseDialog() {
 
                             // Custom background
                             val window = dialog!!.window
-                            window?.setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE)
                             window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-                            dialog!!.show()
+                            dialog!!.showWithoutSystemUI()
                         }
                 }
         }
+    }
+
+    fun show() {
+
     }
 
     interface AlertDialogOnClickListener {

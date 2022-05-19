@@ -81,12 +81,10 @@ class CurrentDrawerFragment : BaseFragment<FragmentCurrentDrawerBinding, Current
     }
 
     override fun onOpenEndDrawer() {
-        showLoading(true)
         CoroutineScope(Dispatchers.IO).launch {
             val ordersCompletedFlow = DatabaseHelper.ordersCompleted.getAll();
             ordersCompletedFlow.take(1).collectLatest { ordersCompleted ->
                 val listOrder = ordersCompleted.filter { OrderHelper.isValidOrderPush(it) }
-                showLoading(false)
                 if (!listOrder.isNullOrEmpty()) {
                     launch(Dispatchers.Main) {
                         AppAlertDialog.get().show(

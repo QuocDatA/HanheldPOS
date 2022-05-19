@@ -33,6 +33,8 @@
     <style name="Base.MaterialAlertDialog" parent="Theme.MaterialComponents.Light.Dialog.Alert">
         <item name="android:colorAccent">@color/secondary</item>
         <item name="android:textColor">@color/onSurface</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
         <item name="buttonBarPositiveButtonStyle">@style/Base.Alert.PositiveButton</item>
         <item name="buttonBarNegativeButtonStyle">@style/Base.Alert.NegativeButton</item>
     </style>
