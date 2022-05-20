@@ -1,39 +1,39 @@
-package com.hanheldpos.model.printer
+package com.hanheldpos.model.printer.layouts
 
 import android.app.Activity
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.Drawable
+import android.util.Log
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
+import com.handheld.printer.PrintConstants
 import com.handheld.printer.printer_manager.BasePrinterManager
+import com.handheld.printer.wagu.Block
+import com.handheld.printer.wagu.WaguUtils
 import com.hanheldpos.R
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.order.OrderFee
 import com.hanheldpos.model.order.OrderReq
 import com.hanheldpos.model.order.ProductChosen
-import com.hanheldpos.model.payment.PaymentMethodType
+import com.hanheldpos.model.printer.BillPrinterManager
 import com.hanheldpos.model.product.ExtraConverter
 import com.hanheldpos.model.product.ProductType
-import com.hanheldpos.utils.*
-import com.handheld.printer.wagu.Block
-import com.handheld.printer.wagu.WaguUtils
+import com.hanheldpos.utils.DrawableHelper
+import com.hanheldpos.utils.PriceUtils
+import com.hanheldpos.utils.StringUtils
 
-class LayoutBillPrinter(
-    private val context: Context,
-    private val order: OrderReq,
-    private val printer: BasePrinterManager,
-    private val printOptions: BillPrinterManager.PrintOptions
-) {
-    private val charPerLineHeader = printOptions.deviceInfo.charsPerLineLarge()
-    private val charPerLineText = printOptions.deviceInfo.charsPerLineNormal()
+class CashierLayout(
+    context: Context,
+    order: OrderReq,
+    printer: BasePrinterManager,
+    printOptions: BillPrinterManager.PrintOptions,
+) : BaseLayoutPrinter(context, order, printer, printOptions) {
 
-    fun print() {
-        setUpPage()
-
+    override fun print() {
         // Order Meta Data
-        printBillStatus()
+        printBillStatus(false)
         feedLines(printOptions.deviceInfo.linesFeed(1))
         printBrandIcon()
         printAddress()
@@ -67,7 +67,7 @@ class LayoutBillPrinter(
         printTotal()
         printDivider()
 
-        // Cash - Change
+        // Payments - Change
         printPayments()
         feedLines(printOptions.deviceInfo.linesFeed(1))
 
@@ -78,37 +78,8 @@ class LayoutBillPrinter(
 
         feedLines(printOptions.deviceInfo.linesFeed(3))
         cutPaper()
-    }
 
-
-    private fun setUpPage() {
-        printer.setupPage(printOptions.deviceInfo.paperWidth(), -1f)
-    }
-
-
-    // region print sections
-
-    private fun printDivider() {
-        printer.drawLine(charPerLineText)
-    }
-
-    private fun printBillStatus() {
-        printer.drawText(
-            StringUtils.removeAccent(
-                WaguUtils.columnListDataBlock(
-                    charPerLineHeader,
-                    mutableListOf(
-                        mutableListOf(
-                            order.OrderDetail.TableList.firstOrNull()?.TableName.toString(),
-                            order.OrderDetail.DiningOption.Title.toString()
-                        )
-                    ),
-                    mutableListOf(Block.DATA_MIDDLE_LEFT, Block.DATA_MIDDLE_RIGHT)
-                )
-            ).toString(),
-            false,
-            BasePrinterManager.FontSize.Medium
-        )
+        Log.d(PrintConstants.TAG, "Print succeeded.")
     }
 
     private fun printBrandIcon() {
@@ -123,7 +94,7 @@ class LayoutBillPrinter(
 
     private fun printAddress() {
         WaguUtils.columnListDataBlock(
-            charPerLineText,
+            charPerLineNormal,
             mutableListOf(
                 mutableListOf(
                     "",
@@ -132,12 +103,11 @@ class LayoutBillPrinter(
                 )
             ),
             mutableListOf(Block.DATA_CENTER, Block.DATA_CENTER, Block.DATA_CENTER),
-            columnSize = mutableListOf(3, charPerLineText - 6, 3),
+            columnSize = mutableListOf(3, charPerLineNormal - 6, 3),
             isWrapWord = true
         ).let {
             printer.drawText(StringUtils.removeAccent(it))
         }
-
     }
 
     private fun printDeliveryAddress() {
@@ -165,49 +135,12 @@ class LayoutBillPrinter(
         }
     }
 
-    private fun printOrderInfo() {
-        val orderCode = mutableListOf("Order #:", order.Order.Code.toString())
-        val employee =
-            mutableListOf(
-                "Employee :",
-                DataHelper.deviceCodeLocalStorage?.Employees?.find { it._id == order.Order.EmployeeGuid }?.FullName.toString()
-            )
-        val dateCreate = mutableListOf(
-            "Create Date :", DateTimeUtils.dateToString(
-                DateTimeUtils.strToDate(
-                    order.Order.CreateDate,
-                    DateTimeUtils.Format.FULL_DATE_UTC_TIMEZONE
-                ), DateTimeUtils.Format.DD_MM_YYYY_HH_MM
-            )
-        )
-        val content = WaguUtils.columnListDataBlock(
-            charPerLineText, mutableListOf(orderCode, employee, dateCreate),
-            mutableListOf(Block.DATA_MIDDLE_LEFT, Block.DATA_MIDDLE_RIGHT), isWrapWord = true
-        )
-        printer.drawText(content)
-    }
-
-
-    private val columnOrderDetailAlign = mutableListOf(
-        Block.DATA_MIDDLE_LEFT,
-        Block.DATA_MIDDLE_LEFT,
-        Block.DATA_MIDDLE_RIGHT
-    )
-
-    private val leftColumn = printOptions.deviceInfo.leftColumnWidth()
-    private val rightColumn = printOptions.deviceInfo.rightColumnWidth()
-    private val centerColumn = printOptions.deviceInfo.centerColumnWidth()
-
-    private val columnSize = mutableListOf(leftColumn, centerColumn, rightColumn)
-    private val columnExtraSize = mutableListOf(2, centerColumn - 2)
-    private val columnGroupBundle = mutableListOf(4, centerColumn - 4)
-    private val columnGroupBundleExtra = mutableListOf(2, centerColumn - 6)
     private fun printOrderDetail() {
 
         val title = mutableListOf("Qty", "Items", "Amount")
         val contentTitle = WaguUtils.columnListDataBlock(
-            charPerLineText, mutableListOf(title), columnOrderDetailAlign,
-            columnSize
+            charPerLineNormal, mutableListOf(title), columnOrderDetailAlign,
+            columnSize()
         )
         printer.drawText(StringUtils.removeAccent(contentTitle), true)
         order.OrderDetail.OrderProducts.forEach { productChosen ->
@@ -221,7 +154,7 @@ class LayoutBillPrinter(
         val proName = productChosen.Name1
         val subtotal = productChosen.Subtotal
         val contentName = WaguUtils.columnListDataBlock(
-            charPerLineText,
+            charPerLineNormal,
             mutableListOf(
                 mutableListOf(
                     quantity,
@@ -230,7 +163,7 @@ class LayoutBillPrinter(
                 )
             ),
             columnOrderDetailAlign,
-            columnSize,
+            columnSize(),
             isWrapWord = true
         )
         printer.drawText(StringUtils.removeAccent(contentName), true)
@@ -247,11 +180,11 @@ class LayoutBillPrinter(
                             )
                         ),
                         columnOrderDetailAlign,
-                        columnGroupBundle,
+                        columnGroupBundle(),
                     )
                 ).toString().trim().let {
                     WaguUtils.columnListDataBlock(
-                        charPerLineText,
+                        charPerLineNormal,
                         mutableListOf(
                             mutableListOf(
                                 "",
@@ -264,7 +197,7 @@ class LayoutBillPrinter(
                             )
                         ),
                         columnOrderDetailAlign,
-                        columnSize,
+                        columnSize(),
                     ).let { line ->
                         printer.drawText(
                             line
@@ -297,7 +230,7 @@ class LayoutBillPrinter(
                         centerColumn - 4,
                         listInfoGroupExtra,
                         columnOrderDetailAlign,
-                        columnGroupBundleExtra,
+                        columnGroupBundleExtra(),
                         isWrapWord = true
                     )
                 ).toString()
@@ -311,12 +244,12 @@ class LayoutBillPrinter(
                             )
                         ),
                         columnOrderDetailAlign,
-                        columnGroupBundle,
+                        columnGroupBundle(),
                     )
                 ).toString().takeIf { it.isNotEmpty() }?.let {
                     printer.drawText(
                         WaguUtils.columnListDataBlock(
-                            charPerLineText,
+                            charPerLineNormal,
                             mutableListOf(
                                 mutableListOf(
                                     "",
@@ -324,7 +257,7 @@ class LayoutBillPrinter(
                                 )
                             ),
                             columnOrderDetailAlign,
-                            columnSize,
+                            columnSize(),
                         )
                     )
                 }
@@ -384,16 +317,16 @@ class LayoutBillPrinter(
                 centerColumn,
                 listExtraInfo,
                 columnOrderDetailAlign,
-                columnExtraSize,
+                columnExtraSize(),
                 isWrapWord = true
             )
         ).toString()
         contentExtra.takeIf { it.isNotEmpty() }?.let {
             WaguUtils.columnListDataBlock(
-                charPerLineText,
+                charPerLineNormal,
                 mutableListOf(mutableListOf("", contentExtra.trim())),
                 columnOrderDetailAlign,
-                columnSize,
+                columnSize(),
             ).let {
                 printer.drawText(
                     it
@@ -403,17 +336,11 @@ class LayoutBillPrinter(
         }
     }
 
-    private fun printNote() {
-        order.OrderDetail.Order.Note?.let {
-            printer.drawText(StringUtils.removeAccent("Note : $it"))
-            printer.drawLine(charPerLineText)
-        }
-    }
 
     private fun printSubtotal() {
         order.OrderDetail.Order.Subtotal.let {
             val content = WaguUtils.columnListDataBlock(
-                charPerLineText,
+                charPerLineNormal,
                 mutableListOf(mutableListOf("Subtotal", PriceUtils.formatStringPrice(it))),
                 mutableListOf(Block.DATA_MIDDLE_LEFT, Block.DATA_MIDDLE_RIGHT)
             )
@@ -435,7 +362,7 @@ class LayoutBillPrinter(
 
         feesList.forEach { fee ->
             val content = WaguUtils.columnListDataBlock(
-                charPerLineText,
+                charPerLineNormal,
                 mutableListOf(
                     mutableListOf(
                         fee.FeeName.toString(),
@@ -456,7 +383,7 @@ class LayoutBillPrinter(
 
         discounts.forEach { discount ->
             val content = WaguUtils.columnListDataBlock(
-                charPerLineText,
+                charPerLineNormal,
                 mutableListOf(
                     mutableListOf(
                         discount.DiscountName,
@@ -468,18 +395,13 @@ class LayoutBillPrinter(
 
             printer.drawText(content)
         }
-
         printDivider()
-    }
-
-    private fun feedLines(line: Int) {
-        printer.feedLines(line)
     }
 
     private fun printTotal() {
         order.OrderDetail.Order.Grandtotal.let {
             val content = WaguUtils.columnListDataBlock(
-                charPerLineHeader,
+                charPerLineLarge,
                 mutableListOf(mutableListOf("Total", PriceUtils.formatStringPrice(it))),
                 mutableListOf(Block.DATA_MIDDLE_LEFT, Block.DATA_MIDDLE_RIGHT)
             )
@@ -504,7 +426,7 @@ class LayoutBillPrinter(
                 )
             )
             val content = WaguUtils.columnListDataBlock(
-                charPerLineText, lines,
+                charPerLineNormal, lines,
                 mutableListOf(Block.DATA_MIDDLE_LEFT, Block.DATA_MIDDLE_RIGHT)
             )
             printer.drawText(content)
@@ -514,7 +436,7 @@ class LayoutBillPrinter(
     private fun printThankYou() {
         printer.drawText(
             WaguUtils.columnListDataBlock(
-                charPerLineHeader,
+                charPerLineLarge,
                 mutableListOf(mutableListOf("THANK YOU")),
                 mutableListOf(Block.DATA_CENTER)
             ),
@@ -523,7 +445,4 @@ class LayoutBillPrinter(
         )
     }
 
-    private fun cutPaper() {
-        printer.cutPaper()
-    }
 }

@@ -1,6 +1,7 @@
 package com.hanheldpos.ui.screens.payment.completed
 
 import com.handheld.printer.PrintConstants
+import com.handheld.printer.printer_manager.BasePrinterManager
 import com.hanheldpos.R
 import com.hanheldpos.binding.setPriceView
 import com.hanheldpos.database.DatabaseMapper
@@ -8,6 +9,7 @@ import com.hanheldpos.databinding.FragmentPaymentCompletedBinding
 import com.hanheldpos.extension.setOnClickDebounce
 import com.hanheldpos.model.DatabaseHelper
 import com.hanheldpos.model.printer.BillPrinterManager
+import com.hanheldpos.model.printer.layouts.BaseLayoutPrinter
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -41,26 +43,29 @@ class PaymentCompletedFragment(
         CoroutineScope(Dispatchers.IO).launch {
             DatabaseHelper.ordersCompleted.getAll().take(1).collectLatest {
                 it.lastOrNull()?.let { completedEntity ->
-                    launch(Dispatchers.Main) {
+
+                    launch(Dispatchers.IO) {
                         try {
-                            BillPrinterManager.init(
-                                fragmentContext.applicationContext,
-                                BillPrinterManager.PrintOptions(
-                                    connectionType = BillPrinterManager.PrintConnectionType.BLUETOOTH,
-                                    deviceType = BillPrinterManager.PrinterDeviceInfo.DeviceType.UROVO
-                                )
-                            )
-                            BillPrinterManager.get().apply {
+                            BillPrinterManager.get(
+                                onConnectionFailed = { ex ->
+                                    launch(Dispatchers.Main) {
+                                        showMessage(ex.message)
+                                    }
+
+                                }
+                            ).apply {
                                 print(
                                     fragmentContext,
-                                    DatabaseMapper.mappingOrderReqFromEntity(completedEntity)
+                                    DatabaseMapper.mappingOrderReqFromEntity(completedEntity),
+                                    layoutType = BaseLayoutPrinter.LayoutType.Kitchen
                                 )
-                                disconnect()
                             }
-
                         } catch (e: Exception) {
                             e.printStackTrace()
                         }
+                    }
+
+                    launch(Dispatchers.Main) {
                         showLoading(false)
                     }
                 }

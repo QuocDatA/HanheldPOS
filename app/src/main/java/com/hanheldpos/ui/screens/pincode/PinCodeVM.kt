@@ -68,7 +68,9 @@ class PinCodeVM : BaseRepoViewModel<EmployeeRepo, PinCodeUV>() {
             lstResultLD.notifyValueChange();
         }
         if (listSize.value != null && listSize.value == PIN_MAX_LENGTH) {
+
             checkPinInput()
+            lstResultLD.postValue(mutableListOf())
         }
     }
 

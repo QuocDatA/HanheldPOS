@@ -11,6 +11,7 @@ import android.view.WindowManager
 import androidx.core.content.ContextCompat
 import com.hanheldpos.R
 import com.hanheldpos.extension.setOnClickDebounce
+import com.hanheldpos.extension.showWithoutSystemUI
 import kotlin.system.exitProcess
 
 object CashDrawerHelper {
@@ -55,7 +56,6 @@ object CashDrawerHelper {
         }
 
         alert.setCancelable(false)
-        alert.show()
-        alert.window?.setBackgroundDrawableResource(android.R.color.transparent);
+        alert.showWithoutSystemUI()
     }
 }

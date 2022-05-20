@@ -9,7 +9,9 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.Window
+import android.view.WindowManager
 import androidx.core.content.ContextCompat
 import com.downloader.OnDownloadListener
 import com.downloader.PRDownloader
@@ -20,6 +22,7 @@ import com.hanheldpos.PosApp
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.resource.ResourceResp
 import com.hanheldpos.databinding.DialogProcessDownloadResourceBinding
+import com.hanheldpos.extension.showWithoutSystemUI
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -57,7 +60,7 @@ object DownloadService {
         binding = DialogProcessDownloadResourceBinding.inflate(LayoutInflater.from(context))
         binding.isLoading = true
         processDialog.setContentView(binding.root)
-        processDialog.show()
+        processDialog.showWithoutSystemUI()
 
 //        with(processDialog) {
 //            setCancelable(false)

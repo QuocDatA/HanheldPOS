@@ -68,7 +68,7 @@ class StartDrawerFragment : BaseFragment<FragmentStartDrawerBinding, StartDrawer
                 }
 
                 override fun onCancel() {
-
+                    onFragmentBackPressed()
                 }
 
             })
@@ -79,10 +79,6 @@ class StartDrawerFragment : BaseFragment<FragmentStartDrawerBinding, StartDrawer
 
     override fun viewModelClass(): Class<StartDrawerVM> {
         return StartDrawerVM::class.java;
-    }
-
-    override fun onFragmentBackPressed() {
-        requireActivity().finish()
     }
 
     override fun goHome() {
