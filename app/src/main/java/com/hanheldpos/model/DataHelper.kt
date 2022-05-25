@@ -11,6 +11,7 @@ import com.hanheldpos.data.api.pojo.fee.FeeResp
 import com.hanheldpos.data.api.pojo.floor.FloorResp
 import com.hanheldpos.data.api.pojo.order.menu.MenuResp
 import com.hanheldpos.data.api.pojo.order.settings.OrderSettingResp
+import com.hanheldpos.data.api.pojo.order.status.OrderStatusResp
 import com.hanheldpos.data.api.pojo.payment.PaymentMethodResp
 import com.hanheldpos.data.api.pojo.resource.ResourceResp
 import com.hanheldpos.data.api.pojo.system.AddressTypeResp
@@ -32,14 +33,17 @@ object DataHelper {
         currentDrawerId = null
         numberIncreaseOrder = 0
         // Local
-        deviceCodeLocalStorage = null
         menuLocalStorage = null
         orderSettingLocalStorage = null
+        orderStatusLocalStorage = null
+        deviceCodeLocalStorage = null
         floorLocalStorage = null
         feeLocalStorage = null
         discountsLocalStorage = null
         discountDetailsLocalStorage = null
         paymentMethodsLocalStorage = null
+        addressTypesLocalStorage = null
+        resourceLocalStorage = null
     }
 
     var numberIncreaseOrder: Long = 0
@@ -54,54 +58,74 @@ object DataHelper {
     var menuLocalStorage: MenuResp? = null
         get() {
             if (field == null) {
-                field = AppPreferences.get().getParcelableObject(
-                    PrefKey.Order.MENU_RESP,
-                    MenuResp::class.java
+                field = GSonUtils.toObject(
+                    AppPreferences.get().getString(
+                        PrefKey.Order.MENU_RESP,
+                    )
                 )
             }
             return field
         }
         set(value) {
             field = value
-            AppPreferences.get().storeValue(PrefKey.Order.MENU_RESP, value)
+            AppPreferences.get().storeValue(PrefKey.Order.MENU_RESP, GSonUtils.toJson(value))
         }
 
     var orderSettingLocalStorage: OrderSettingResp? = null
         get() {
             if (field == null) {
-                field = AppPreferences.get().getParcelableObject(
-                    PrefKey.Order.MENU_SETTING_RESP,
-                    OrderSettingResp::class.java
+                field = GSonUtils.toObject(
+                    AppPreferences.get().getString(
+                        PrefKey.Order.MENU_SETTING_RESP
+                    )
                 )
             }
             return field
         }
         set(value) {
             field = value
-            AppPreferences.get().storeValue(PrefKey.Order.MENU_SETTING_RESP, value)
+            AppPreferences.get()
+                .storeValue(PrefKey.Order.MENU_SETTING_RESP, GSonUtils.toJson(value))
+        }
+
+    var orderStatusLocalStorage: OrderStatusResp? = null
+        get() {
+            if (field == null) {
+                field = GSonUtils.toObject(
+                    AppPreferences.get().getString(PrefKey.Order.MENU_STATUS_RESP)
+                )
+            }
+            return field
+        }
+        set(value) {
+            field = value
+            AppPreferences.get().storeValue(PrefKey.Order.MENU_STATUS_RESP, GSonUtils.toJson(value))
         }
 
     var deviceCodeLocalStorage: DeviceCodeResp? = null
         get() {
             if (field == null) {
-                field = AppPreferences.get().getParcelableObject(
-                    PrefKey.Setting.DEVICE_CODE,
-                    DeviceCodeResp::class.java
+                field = GSonUtils.toObject(
+                    AppPreferences.get().getString(
+                        PrefKey.Setting.DEVICE_CODE
+                    )
                 )
             }
             return field
         }
         set(value) {
             field = value
-            AppPreferences.get().storeValue(PrefKey.Setting.DEVICE_CODE, value)
+            AppPreferences.get().storeValue(PrefKey.Setting.DEVICE_CODE, GSonUtils.toJson(value))
         }
 
     var floorLocalStorage: FloorResp? = null
         get() {
             if (field == null) {
-                field = AppPreferences.get().getParcelableObject(
-                    PrefKey.Floor.FLOOR_RESP,
-                    FloorResp::class.java
+                field = GSonUtils.toObject(
+                    AppPreferences.get().getString(
+                        PrefKey.Floor.FLOOR_RESP,
+
+                        )
                 )
             }
             return field
@@ -111,22 +135,23 @@ object DataHelper {
                 it.Visible = ApiConst.VISIBLE
             }
             field = value
-            AppPreferences.get().storeValue(PrefKey.Floor.FLOOR_RESP, value)
+            AppPreferences.get().storeValue(PrefKey.Floor.FLOOR_RESP, GSonUtils.toJson(value))
         }
 
     var feeLocalStorage: FeeResp? = null
         get() {
             if (field == null) {
-                field = AppPreferences.get().getParcelableObject(
-                    PrefKey.Fee.FEE_RESP,
-                    FeeResp::class.java
+                field = GSonUtils.toObject(
+                    AppPreferences.get().getString(
+                        PrefKey.Fee.FEE_RESP
+                    )
                 )
             }
             return field
         }
         set(value) {
             field = value
-            AppPreferences.get().storeValue(PrefKey.Fee.FEE_RESP, value)
+            AppPreferences.get().storeValue(PrefKey.Fee.FEE_RESP, GSonUtils.toJson(value))
         }
 
     var discountsLocalStorage: List<DiscountResp>? = null
@@ -235,7 +260,7 @@ object DataHelper {
         }.toList()
     }
 
-    fun  findDiscountOrderList(
+    fun findDiscountOrderList(
         cart: CartModel,
         timeServer: Date,
         triggerType: DiscountTriggerType = DiscountTriggerType.ALL
@@ -249,7 +274,8 @@ object DataHelper {
     }
 
     fun findDiscount(discountId: String): DiscountResp? {
-        return discountsLocalStorage?.firstOrNull{discount -> discount._id == discountId}?.clone()
+        return discountsLocalStorage?.firstOrNull { discount -> discount._id == discountId }
+            ?.clone()
     }
 
     fun userGuid(): String {
@@ -260,7 +286,7 @@ object DataHelper {
         return deviceCodeLocalStorage?.Device?.firstOrNull()?.Location!!
     }
 
-    fun deviceGuid(): String{
+    fun deviceGuid(): String {
         return deviceCodeLocalStorage?.Device?.firstOrNull()?._Id!!
     }
 }

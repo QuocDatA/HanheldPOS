@@ -236,6 +236,9 @@
     <string name="manual">Manual</string>
     <string name="bill_language">Bill Language</string>
     <string name="printer_status">Printer Status</string>
+    <string name="completed">Completed</string>
+    <string name="paid">Paid</string>
+    <string name="unpaid">Unpaid</string>
     <string name="see_printer_log">See printer log</string>
     <string name="other_device_status">Other Device Status</string>
     <string name="item_sales">Item Sales</string>
@@ -260,4 +263,7 @@
     <string name="net_qty">Net Qty</string>
     <string name="total_gross_qty">Total Gross Qty</string>
     <string name="total_net_qty">Total Net Qty</string>
+    <string name="unsync">Unsync</string>
+    <string name="synced">Synced</string>
+    <string name="an_error_occurred_please_try_again">An error occurred, please try again!</string>
 </resources>

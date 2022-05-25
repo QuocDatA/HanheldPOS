@@ -10,6 +10,7 @@ import com.hanheldpos.data.api.pojo.fee.FeeResp
 import com.hanheldpos.data.api.pojo.floor.FloorResp
 import com.hanheldpos.data.api.pojo.order.menu.MenuResp
 import com.hanheldpos.data.api.pojo.order.settings.OrderSettingResp
+import com.hanheldpos.data.api.pojo.order.status.OrderStatusResp
 import com.hanheldpos.data.api.pojo.payment.PaymentMethodResp
 import com.hanheldpos.data.api.pojo.resource.ResourceResp
 import com.hanheldpos.data.api.pojo.system.AddressTypeResp
@@ -68,6 +69,24 @@ class SyncDataService : BaseViewModel() {
                         onDataFailure(context.getString(R.string.failed_to_load_data), listener);
                     } else {
                         DataHelper.orderSettingLocalStorage = data.Model?.firstOrNull();
+                        startMappingData(context, listener);
+                    }
+                }
+
+                override fun showMessage(message: String?) {
+                    onDataFailure(message, listener);
+                }
+            }
+        )
+
+        orderRepo.getOrderStatus(
+            userGuid = userGuid,
+            callback = object : BaseRepoCallback<BaseResponse<List<OrderStatusResp>>?> {
+                override fun apiResponse(data: BaseResponse<List<OrderStatusResp>>?) {
+                    if (data == null || data.DidError) {
+                        onDataFailure(context.getString(R.string.failed_to_load_data), listener);
+                    } else {
+                        DataHelper.orderStatusLocalStorage = data.Model?.firstOrNull();
                         startMappingData(context, listener);
                     }
                 }
@@ -217,13 +236,16 @@ class SyncDataService : BaseViewModel() {
     private fun startMappingData(context: Context, listener: SyncDataServiceListener) {
         DataHelper.let {
             it.menuLocalStorage ?: return;
+            it.orderSettingLocalStorage ?: return;
+            it.orderStatusLocalStorage ?: return;
+            it.deviceCodeLocalStorage?: return;
             it.floorLocalStorage ?: return;
             it.feeLocalStorage ?: return;
             it.discountsLocalStorage ?: return;
             it.discountDetailsLocalStorage ?: return;
             it.paymentMethodsLocalStorage ?: return;
             it.addressTypesLocalStorage ?: return;
-            it.resourceLocalStorage ?: return;
+            it.resourceLocalStorage ?: return
         }
         DataHelper.numberIncreaseOrder =
             DataHelper.deviceCodeLocalStorage?.ListSettingsId?.firstOrNull()?.NumberIncrement?.toLong()

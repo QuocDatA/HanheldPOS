@@ -74,7 +74,9 @@ object OrderHelper {
     }
 
     fun isValidOrderPush(orderEntity: OrderCompletedEntity): Boolean {
-        return !orderEntity.isSync && orderEntity.statusId == OrderStatus.COMPLETED
+        return (orderEntity.isSync != true) && orderEntity.statusId == OrderStatus.COMPLETED
     }
+
+
 
 }

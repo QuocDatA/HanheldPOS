@@ -28,4 +28,6 @@ class OrderCompletedLocalRepo(private val orderCompletedDao: OrderCompletedDao) 
 
     fun getAll(): Flow<MutableList<OrderCompletedEntity>> = orderCompletedDao.getAll();
 
+
+
 }

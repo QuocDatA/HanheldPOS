@@ -127,13 +127,13 @@ object CartConverter {
                 OrderCode = cart.orderCode,
                 OrderStatusId = orderStatus,
                 PaymentStatusId = paymentStatus,
-                Description = description,
+                OrderDescription = description,
                 GrandTotal = total,
                 TableId = cart.table._id,
                 DiningOptionId = cart.diningOption.Id,
                 DiningOptionName = cart.diningOption.Title,
                 TableName = cart.table.TableName,
-                CreateDate = cart.createDate!!
+                OrderCreateDate = cart.createDate
             )
         )
     }

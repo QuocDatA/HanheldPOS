@@ -9,6 +9,7 @@ import android.text.*
 import android.text.style.ReplacementSpan
 import android.view.View
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.databinding.BindingAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.textfield.TextInputEditText
@@ -82,7 +83,7 @@ fun setGroupSize(inputEditText: TextInputEditText?, groupSize: Int) {
         allowDigits = true,
         allowSpaceChar = false
     )
-    inputEditText.filters = arrayOf(InputFilter.AllCaps(),inputFilter)
+    inputEditText.filters = arrayOf(InputFilter.AllCaps(), inputFilter)
 
 
     inputEditText.addTextChangedListener(object : TextWatcher {
@@ -154,7 +155,7 @@ fun textNumberAllCaps(inputEditText: TextInputEditText?, isAllCaps: Boolean) {
         allowDigits = true,
         allowSpaceChar = false
     )
-    inputEditText.filters = arrayOf(InputFilter.AllCaps(),inputFilter)
+    inputEditText.filters = arrayOf(InputFilter.AllCaps(), inputFilter)
 }
 
 private fun getCustomInputFilter(
@@ -212,10 +213,16 @@ fun setBackColor(view: View?, colorHex: String?) {
     if (!TextUtils.isEmpty(colorHex)) {
         try {
             val color = Color.parseColor(colorHex)
-            view.backgroundTintList = ColorStateList.valueOf(color);
+            if (view is CardView) {
+                view.setCardBackgroundColor(ColorStateList.valueOf(color))
+            } else
+                view.backgroundTintList = ColorStateList.valueOf(color);
         } catch (e: Exception) {
             val color = Color.parseColor("#8f8f8f");
-            view.backgroundTintList = ColorStateList.valueOf(color);
+            if (view is CardView) {
+                view.setCardBackgroundColor(ColorStateList.valueOf(color))
+            } else
+                view.backgroundTintList = ColorStateList.valueOf(color);
         }
         /*view.setBackgroundColor(color);*/
     }
@@ -223,7 +230,7 @@ fun setBackColor(view: View?, colorHex: String?) {
 }
 
 @BindingAdapter("android:onClickDebounce")
-fun setOnClickDebounce(view : View?, action : View.OnClickListener?) {
+fun setOnClickDebounce(view: View?, action: View.OnClickListener?) {
     if (view == null || action == null) return;
     view.setOnClickDebounce {
         action.onClick(view)

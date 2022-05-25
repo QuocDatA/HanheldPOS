@@ -53,21 +53,26 @@ class SaleReportCommonVM : BaseViewModel() {
     private val settingRepo = SettingRepo();
     private val orderAlterRepo = OrderAsyncRepo();
 
-    val numberOrder = Transformations.map(DatabaseHelper.ordersCompleted.getAll().asLiveData()) {
-        return@map it.filter { order -> OrderHelper.isValidOrderPush(order) }.size
+    val orderCompleted = Transformations.map(DatabaseHelper.ordersCompleted.getAll().asLiveData()) {
+        return@map it.filter { order -> OrderHelper.isValidOrderPush(order) }
     }
 
+    val numberOrder = Transformations.map(orderCompleted) {
+        return@map it.size
+    }
+
+
+
     fun onSyncOrders(view: View, succeed: () -> Unit, failed: () -> Unit) {
-        if (numberOrder.value ?: 0 <= 0) {
+        if ((numberOrder.value ?: 0) <= 0) {
             succeed()
             return
         }
         if (isSyncOrderToServer) {
-            succeed()
             return
         }
         isSyncOrderToServer = true
-        //TODO : sync order
+
         val json = GSonUtils.toServerJson(
             SettingDevicePut(
                 MaxChar = DataHelper.numberIncreaseOrder.toString().length.toLong(),

@@ -26,7 +26,6 @@ import com.hanheldpos.ui.screens.home.table.customer_input.TableInputFragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.lang.Exception
 
 
 class TableFragment : BaseFragment<FragmentTableBinding, TableVM>(), TableUV {
@@ -157,9 +156,17 @@ class TableFragment : BaseFragment<FragmentTableBinding, TableVM>(), TableUV {
                     TableInputFragment.TableInputListener {
                     override fun onCompleteTable(numberCustomer: Long) {
                         // Init cart first time
+                        try{
+                            cartDataVM.initCart(numberCustomer, item)
+                        }catch (e: Exception) {
+                            e.printStackTrace()
+                            showMessage(getString(R.string.an_error_occurred_please_try_again))
+                            return
+                        }
+
                         orderDataVM.onMenuChange(0)
                         item.updateTableStatus(TableStatusType.Pending);
-                        cartDataVM.initCart(numberCustomer, item);
+
                         screenViewModel.showOrderPage();
                     }
                 }))

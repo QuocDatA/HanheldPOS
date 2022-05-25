@@ -26,7 +26,7 @@ class RequirementProductAdapter : BaseBindingListAdapter<Any>(DiffCallBack()) {
         }
     }
 
-    class DiffCallBack : DiffUtil.ItemCallback<Any>() {
+    private class DiffCallBack : DiffUtil.ItemCallback<Any>() {
         override fun areItemsTheSame(oldItem: Any, newItem: Any): Boolean {
             return false
         }

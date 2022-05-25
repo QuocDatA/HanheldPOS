@@ -26,6 +26,11 @@ object DateTimeUtils {
         return null
     }
 
+    fun strToStr(dateStr: String?, format: String?, formatNew: String?): String {
+        val date = strToDate(dateStr, format)
+        return dateToString(date, formatNew)
+    }
+
     fun strToCalendar(dateStr: String?, format: String?): Calendar? {
         val date = strToDate(dateStr, format) ?: return null
         val calendar = Calendar.getInstance()
@@ -170,6 +175,7 @@ object DateTimeUtils {
         const val FULL_DATE_UTC_TIMEZONE = "yyyy-MM-dd'T'HH:mm:ssZZZZZ"
         const val DD_MM_YYYY = "dd/MM/yyyy"
         const val DD_MM = "dd/MM"
+        const val DD_MM_HH_MM_aa = "dd/MM HH:mm aa"
         const val MM_DD_YYYY_HH_MM_SS_aa = "MM/dd/yyyy HH:mm:ss aa"
         const val MM_DD_YYYY_HH_MM_SS = "MM/dd/yyyy HH:mm:ss"
         const val DD_MM_YYYY_HH_MM_AA = "dd/MM/yyyy hh:ss aa"

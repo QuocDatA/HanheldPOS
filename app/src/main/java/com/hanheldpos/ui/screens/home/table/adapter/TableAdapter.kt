@@ -117,7 +117,7 @@ class TableAdapter(
                                 unavailableColor
                             )
                             DateTimeUtils.strToDate(
-                                item.orderSummary!!.CreateDate,
+                                item.orderSummary!!.OrderCreateDate,
                                 DateTimeUtils.Format.FULL_DATE_UTC_TIMEZONE
                             )?.let {
                                 val time = Date().time  - it.time

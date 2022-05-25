@@ -39,8 +39,9 @@ object DownloadService {
     private var downloadId: Int = 0
     private var listFileToExtract: MutableList<String> = mutableListOf()
     lateinit var processDialog: Dialog
+    @SuppressLint("StaticFieldLeak")
     lateinit var binding: DialogProcessDownloadResourceBinding
-    var currentByte: Long = 0L
+    private var currentByte: Long = 0L
 
     private fun initDownloadService(context: Context) {
         val config = PRDownloaderConfig.newBuilder()

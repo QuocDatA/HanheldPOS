@@ -143,6 +143,7 @@
     <string name="cancel_order">Cancel Order</string>
     <string name="re_order">Re-order</string>
     <string name="new_order">New Order</string>
+    <string name="new_orders">New Orders</string>
     <string name="unpaid">Unpaid</string>
     <string name="search_a_location">Search a location</string>
     <string name="to">to</string>
