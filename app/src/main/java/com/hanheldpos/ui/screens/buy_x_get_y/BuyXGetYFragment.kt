@@ -21,6 +21,7 @@ import com.hanheldpos.ui.screens.cart.CurCartData
 import com.hanheldpos.ui.screens.combo.ComboFragment
 import com.hanheldpos.ui.screens.home.order.OrderFragment
 import com.hanheldpos.ui.screens.product.ProductDetailFragment
+import okhttp3.internal.notify
 
 class BuyXGetYFragment(
     private val discount: DiscountResp,
@@ -53,11 +54,10 @@ class BuyXGetYFragment(
                 maxQuantity: Int,
                 group: GroupBuyXGetY,
                 item: BaseProductInCart,
-                actionType: ItemActionType
+                actionType: ItemActionType,
             ) {
                 openProductDetail(maxQuantity, group, item, actionType)
             }
-
         })
         binding.rvBuyXGetYGroup.apply {
             adapter = buyXGetYGroupAdapter;
@@ -99,9 +99,9 @@ class BuyXGetYFragment(
         when (action) {
             ItemActionType.Remove -> {
                 if (baseItem is Regular) {
-                    viewModel.onRegularSelect(group, baseItem, baseItem, action)
+                    viewModel.onRegularSelect(group, baseItem, baseItem, action, discount)
                 } else if (baseItem is Combo) {
-                    viewModel.onBundleSelect(group, baseItem, action)
+                    viewModel.onBundleSelect(group, baseItem, action, discount)
                 }
                 buyXGetYGroupAdapter.notifyDataSetChanged()
                 viewModel.buyXGetY.notifyValueChange()
@@ -127,7 +127,8 @@ class BuyXGetYFragment(
                                             group,
                                             baseItem,
                                             (itemAfter as Regular).clone(),
-                                            action
+                                            action,
+                                            discount,
                                         )
                                         buyXGetYGroupAdapter.notifyDataSetChanged()
                                         viewModel.buyXGetY.notifyValueChange()
@@ -163,6 +164,7 @@ class BuyXGetYFragment(
                                         group,
                                         (item as Combo).clone(),
                                         action,
+                                        discount
                                     )
                                     buyXGetYGroupAdapter.notifyDataSetChanged()
                                     viewModel.buyXGetY.notifyValueChange()
@@ -176,5 +178,4 @@ class BuyXGetYFragment(
             }
         }
     }
-
 }

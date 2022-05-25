@@ -6,7 +6,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class CashDrawerStatusResp(
     val CashDrawerGuid: String,
-    val StartingCash: Int,
+    val StartingCash: Double,
     val StatusId: Int,
     val _key: Int
 ) : Parcelable

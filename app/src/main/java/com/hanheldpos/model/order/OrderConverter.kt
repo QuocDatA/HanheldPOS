@@ -93,7 +93,7 @@ object OrderConverter {
 
             when (ProductType.values()[productBuy.ProductTypeId]) {
                 ProductType.REGULAR -> run {
-                    val proOriginal = findProduct(productBuy._id) ?: return@run
+                    val proOriginal = findProduct(productBuy._id!!) ?: return@run
                     proOriginal.AsignTo = OrderType.REGULAR.value
                     baseProductList.add(
                         toRegular(
@@ -108,7 +108,7 @@ object OrderConverter {
                     )
                 }
                 ProductType.BUNDLE -> run {
-                    val proOriginal = findProduct(productBuy._id)
+                    val proOriginal = findProduct(productBuy._id!!)
                     val comboList: List<ProductComboItem> = Gson().fromJson(
                         proOriginal?.Combo,
                         object : TypeToken<List<ProductComboItem>>() {}.type
@@ -120,7 +120,7 @@ object OrderConverter {
                         val listProduct: MutableList<Regular> = mutableListOf()
                         productBuy.ProductChoosedList?.filter { it.Parent_id.equals(comboInfo.ComboGuid) }
                             ?.toList()?.forEach { productChosen ->
-                                val productChosenOriginal = findProduct(productChosen._id)
+                                val productChosenOriginal = findProduct(productChosen._id!!)
                                 listProduct.add(
                                     toRegular(
                                         productBuy = productChosen,

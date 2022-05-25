@@ -1,19 +1,22 @@
 package com.hanheldpos.ui.screens.buy_x_get_y.adapter
 
+import android.view.View
 import androidx.recyclerview.widget.DiffUtil
 import com.google.android.material.tabs.TabLayout
 import com.hanheldpos.R
+import com.hanheldpos.data.api.pojo.discount.CustomerBuys
+import com.hanheldpos.data.api.pojo.fee.CustomerGets
 import com.hanheldpos.data.api.pojo.product.Product
 import com.hanheldpos.databinding.ItemBuyXGetYGroupBinding
 import com.hanheldpos.model.buy_x_get_y.GroupBuyXGetY
 import com.hanheldpos.model.buy_x_get_y.ItemBuyXGetYGroup
 import com.hanheldpos.model.buy_x_get_y.ProductTypeTab
 import com.hanheldpos.model.cart.BaseProductInCart
-import com.hanheldpos.model.cart.Regular
 import com.hanheldpos.model.combo.ItemActionType
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
+import com.hanheldpos.ui.screens.cart.CurCartData
 
 class BuyXGetYGroupAdapter(
     private val listener: BuyXGetYItemListener,
@@ -35,17 +38,37 @@ class BuyXGetYGroupAdapter(
         holder: BaseBindingViewHolder<ItemBuyXGetYGroup>,
         position: Int
     ) {
+        val itemBuyXGetYGroup = getItem(position)
+
+        val binding = holder.binding as ItemBuyXGetYGroupBinding
+        binding.position = (position + 1).toString()
+        binding.name = itemBuyXGetYGroup.getGroupName()
+        binding.item = itemBuyXGetYGroup
+
         // Check your turn
         var positionFocus: Int = -1
         run checkFocus@{
             currentList.forEachIndexed { index, itemBuyXGetYGroup ->
                 if (!itemBuyXGetYGroup.isMaxItemSelected()) {
                     positionFocus = index
+                    if (itemBuyXGetYGroup.isApplyToEntireOrder == true) {
+                        if (position == 1) {
+                            binding.linearProgress.linearProgressIndicator.progress =
+                                if (itemBuyXGetYGroup.isGetComplete == true) 100 else 0
+                        }
+                    }
                     return@checkFocus
+                } else if (itemBuyXGetYGroup.isApplyToEntireOrder == true) {
+                    if (itemBuyXGetYGroup.isBuyComplete == true && position == 0) {
+                        binding.linearProgress.linearProgressIndicator.progress =
+                            (itemBuyXGetYGroup.groupBuyXGetY.condition as CustomerBuys).getProgressValue(
+                                CurCartData.cartModel!!.total(),
+                                CurCartData.cartModel!!.getTotalQuantity()
+                            )
+                    }
                 }
             }
         }
-        val itemBuyXGetYGroup = getItem(position)
 
         // Ẩn thông tin combo khi chưa tới lượt
         if (positionFocus == position) {
@@ -53,13 +76,8 @@ class BuyXGetYGroupAdapter(
             itemBuyXGetYGroup.isFocused = true
         } else itemBuyXGetYGroup.isFocused = false
 
-        val binding = holder.binding as ItemBuyXGetYGroupBinding
-        binding.position = (position + 1).toString()
-        binding.name = itemBuyXGetYGroup.getGroupName()
-        binding.item = itemBuyXGetYGroup
 
-
-        if(itemBuyXGetYGroup.isApplyToEntireOrder == false) {
+        if (itemBuyXGetYGroup.isApplyToEntireOrder == false) {
             val buyXGetYItemPickerAdapter = BuyXGetYItemPickerAdapter(
                 listener = object : BaseItemClickListener<BaseProductInCart> {
                     override fun onItemClick(adapterPosition: Int, item: BaseProductInCart) {
@@ -92,7 +110,9 @@ class BuyXGetYGroupAdapter(
                         )
                     }
                 }
-            ).also { it.submitList(itemBuyXGetYGroup.groupBuyXGetY.productList) }
+            ).also {
+                it.submitList(itemBuyXGetYGroup.groupBuyXGetY.productList)
+            }
             binding.itemSelectedAdapter.apply {
                 adapter = buyXGetYItemChosenAdapter
             }

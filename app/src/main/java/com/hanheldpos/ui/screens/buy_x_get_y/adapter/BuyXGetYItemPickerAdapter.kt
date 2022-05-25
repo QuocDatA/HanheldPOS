@@ -46,9 +46,6 @@ class BuyXGetYItemPickerAdapter(
 
     override fun onBindViewHolder(holder: BaseBindingViewHolder<BaseProductInCart>, position: Int) {
         val item = getItem(position);
-//        productChosen.find { it.proOriginal?._id == item.proOriginal?._id }?.let {
-//            (holder.binding as ItemComboRegularBinding).isChosen = true;
-//        }
         holder.bindItem(item);
         val binding = holder.binding as ItemComboRegularBinding;
         val price = item.proOriginal?.Price ?: 0.0

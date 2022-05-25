@@ -1,17 +1,18 @@
 package com.hanheldpos.model.buy_x_get_y
 
-import android.os.Parcelable
 import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.data.api.pojo.fee.Fee
 import com.hanheldpos.data.api.pojo.order.settings.DiningOption
 import com.hanheldpos.data.api.pojo.order.settings.Reason
 import com.hanheldpos.data.api.pojo.product.Product
 import com.hanheldpos.model.cart.BaseProductInCart
-import com.hanheldpos.model.cart.VariantCart
+import com.hanheldpos.model.cart.Combo
+import com.hanheldpos.model.cart.Regular
 import com.hanheldpos.model.discount.DiscountUser
+import com.hanheldpos.model.order.BuyXGetYEntire
+import com.hanheldpos.model.order.ChooseProductApplyTo
+import com.hanheldpos.model.order.ProductChosen
 import com.hanheldpos.model.product.ProductType
-import kotlinx.parcelize.IgnoredOnParcel
-import kotlinx.parcelize.Parcelize
 
 
 class BuyXGetY() : BaseProductInCart(),Cloneable {
@@ -147,5 +148,107 @@ class BuyXGetY() : BaseProductInCart(),Cloneable {
 
     fun minusOrderQuantity(num: Int) {
         quantity = if (quantity!! > 0) quantity!!.minus(num) else 0
+    }
+
+    fun toProductChosen(orderDetail_id: Int): ProductChosen {
+        var productChosenList = mutableListOf<ProductChosen>()
+
+        var customerGet = disc?.Condition?.CustomerGets
+        var customerBuy = disc?.Condition?.CustomerBuys
+        var regularsGet = groupList?.last()?.productList
+
+        val price = price()
+        val subTotal = subTotal()
+        var lineTotal = total()
+        var proModSubTotal = price
+        var grossPrice = grossPrice(subTotal, 0.0)
+
+        var subOrderDetail_id = 0;
+
+        groupList?.mapIndexed { groupIndex, groupBuyXGetY ->
+            groupBuyXGetY.productList.mapIndexed { proIndex, baseProduct ->
+                lateinit var subProductChoosed: ProductChosen
+                var parentIndex = groupIndex + 1
+                if (baseProduct.productType == ProductType.REGULAR) {
+                    subProductChoosed = (baseProduct as Regular).toProductChosen(
+                        subOrderDetail_id,
+                        baseProduct.quantity!!,
+                        groupBuyXGetY.groupName,
+                        parentIndex
+                    )
+                } else if (baseProduct.productType == ProductType.BUNDLE) {
+                    subProductChoosed = (baseProduct as Combo).toProductChosen(
+                        subOrderDetail_id,
+                        groupBuyXGetY.groupName,
+                        parentIndex
+                    )
+                }
+
+                subProductChoosed.ProductApplyTo =
+                    if (groupIndex == 0) ChooseProductApplyTo.DEFAULT.value else ChooseProductApplyTo.PRO_GET.value
+                productChosenList.add(subProductChoosed)
+
+                subOrderDetail_id++
+            }
+        }
+
+        // CustomerBuy is buy entire
+        if (customerBuy?.ApplyTo == CustomerDiscApplyTo.ENTIRE_ORDER.value) {
+            subOrderDetail_id++
+            val productChosenBuyEntire = ProductChosen(
+                orderDetailId = subOrderDetail_id,
+                productTypeId = ProductType.UNKNOWN.value,
+                parentName = customerBuy.CustomerName,
+                productApplyTo = ChooseProductApplyTo.DEFAULT.value,
+                buyXGetY = BuyXGetYEntire(
+                    ApplyTo = customerBuy.ApplyTo,
+                    MinimumTypeId = customerBuy.MinimumTypeId!!,
+                    MinimumValue = customerBuy.MinimumValue!!,
+                    DiscountValueType = 0,
+                    DiscountValue = 0.0,
+                )
+            )
+
+            productChosenList.add(productChosenBuyEntire)
+        }
+
+        // CustomerGet is get entire
+        if (customerGet?.ApplyTo == CustomerDiscApplyTo.ENTIRE_ORDER.value) {
+            subOrderDetail_id++
+            val productChosenGetEntire = ProductChosen(
+                orderDetailId = subOrderDetail_id,
+                productTypeId = ProductType.UNKNOWN.value,
+                parentName = customerGet.CustomerName,
+                productApplyTo = ChooseProductApplyTo.PRO_GET.value,
+                buyXGetY = BuyXGetYEntire(
+                    ApplyTo = customerGet.ApplyTo,
+                    MinimumTypeId = 0,
+                    MinimumValue = 0.0,
+                    DiscountValueType = customerGet.DiscountValueType,
+                    DiscountValue = customerGet.DiscountValue,
+                ),
+            )
+            productChosenList.add(productChosenGetEntire)
+        }
+
+        val totalCompVoid = totalComp()
+        val compVoidList = toCompVoidList(compReason, totalCompVoid)
+
+        // BuyXGetY as ProductChosen
+        return ProductChosen(
+            orderDetailId = orderDetail_id,
+            name1 = disc?.DiscountName,
+            _id = disc?._id,
+            quantity = quantity,
+            subtotal = subTotal,
+            lineTotal = lineTotal,
+            grossPrice = grossPrice,
+            productTypeId = ProductType.BUYX_GETY_DISC.value,
+            compVoidList = compVoidList,
+            proModSubTotal = proModSubTotal,
+            note = note,
+            diningOption = diningOption,
+            productChosenList = productChosenList,
+        )
     }
 }
