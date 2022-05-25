@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.hanheldpos.ui.screens.menu.orders.synced.SyncedOrdersVM" />
+    </data>
+
+    <LinearLayout
+        style="@style/RootLayout"
+        android:background="@color/color_10">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_42sdp"
+            android:background="@color/color_2"
+            android:orientation="horizontal">
+
+            <ImageButton
+                style="@style/MaterialButton.Icon"
+                android:layout_height="match_parent"
+                android:layout_gravity="center|start"
+                android:adjustViewBounds="true"
+                android:backgroundTint="@color/textPrimary"
+                android:onClickDebounce="@{v -> viewModel.onFragmentBackPressed()}"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_baseline_arrow_back_ios_13"
+                tools:ignore="ContentDescription" />
+
+
+            <com.diadiem.pos_components.PTextView
+                android:id="@+id/header_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/synced"
+                app:useFontStyle="bold"
+                app:useTextColor="color4"
+                app:useTextHeader="h4" />
+
+            <include
+                layout="@layout/divider_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_gravity="bottom" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center|end"
+                android:orientation="horizontal">
+
+            </LinearLayout>
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:background="@color/color_2"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:background="@drawable/bg_outline"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_33sdp"
+                >
+
+                <com.diadiem.pos_components.PTextInputEditText
+                    android:id="@+id/discountAutomaticInput"
+                    style="@style/BaseTextInput"
+                    textNumberAllCaps="@{true}"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="0dp"
+                    android:layout_weight="1"
+                    android:focusableInTouchMode="true"
+                    android:gravity="center_vertical"
+                    android:hint="@string/search"
+                    android:inputType="textCapWords"
+                    android:paddingHorizontal="@dimen/_10sdp"
+                    android:textAllCaps="true"
+                    app:ipt_useFontStyle="normal"
+                    app:ipt_useHintTextColor="color8"
+                    app:ipt_useTextColor="color4"
+                    app:ipt_useTextHeader="h5" />
+
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent">
+                    <ImageView
+                        android:layout_width="@dimen/_33sdp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/bg_outline"
+                        android:contentDescription="TODO"
+                        android:padding="@dimen/_10sdp"
+                        android:src="@drawable/ic_discount_automatic_1" />
+                </FrameLayout>
+            </LinearLayout>
+        </FrameLayout>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/listOrdersGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:overScrollMode="never"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:itemCount="1"
+            tools:listitem="@layout/item_orders_menu_group" />
+
+    </LinearLayout>
+</layout>

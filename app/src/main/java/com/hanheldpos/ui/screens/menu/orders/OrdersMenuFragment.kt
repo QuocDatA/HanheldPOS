@@ -17,6 +17,7 @@ import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.menu.adapter.ItemOptionNav
 import com.hanheldpos.ui.screens.menu.adapter.OptionNavAdapter
+import com.hanheldpos.ui.screens.menu.orders.synced.SyncedOrdersFragment
 import com.hanheldpos.ui.screens.menu.orders.unsync.UnsyncOrdersFragment
 import com.hanheldpos.ui.screens.menu.report.current_drawer.CurrentDrawerFragment
 import com.hanheldpos.ui.screens.menu.report.sale.SaleReportsMenuFragment
@@ -87,7 +88,9 @@ class OrdersMenuFragment : BaseFragment<FragmentOrdersMenuBinding,OrdersMenuVM>(
             OrdersOptionType.UNSYNC -> navigator.goToWithAnimationEnterFromRight(
                 UnsyncOrdersFragment()
             )
-            OrdersOptionType.SYNCED -> TODO()
+            OrdersOptionType.SYNCED -> navigator.goToWithAnimationEnterFromRight(
+                SyncedOrdersFragment()
+            )
         }
     }
 

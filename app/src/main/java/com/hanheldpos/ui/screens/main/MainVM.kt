@@ -5,7 +5,8 @@ import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
 
 class MainVM : BaseUiViewModel<MainUV>() {
     fun initView() {
-        if (DataHelper.deviceCodeLocalStorage != null) {
+
+        if (DataHelper.isValidData()) {
             uiCallback?.openPinCode()
         } else uiCallback?.openWelcome()
     }

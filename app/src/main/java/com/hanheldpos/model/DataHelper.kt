@@ -29,6 +29,21 @@ object DataHelper {
 
     var currentDrawerId: String? = null;
 
+    fun isValidData() : Boolean {
+        menuLocalStorage ?: return false
+        orderSettingLocalStorage ?: return false
+        orderStatusLocalStorage ?: return false
+        deviceCodeLocalStorage?: return false
+        floorLocalStorage ?: return false
+        feeLocalStorage ?: return false
+        discountsLocalStorage ?: return false
+        discountDetailsLocalStorage ?: return false
+        paymentMethodsLocalStorage ?: return false
+        addressTypesLocalStorage ?: return false
+        resourceLocalStorage ?: return false
+        return true
+    }
+
     fun clearData() {
         currentDrawerId = null
         numberIncreaseOrder = 0
