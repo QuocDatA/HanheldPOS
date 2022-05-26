@@ -22,7 +22,7 @@ open class KitchenLayout(
 
     final override val leftColumn = printOptions.deviceInfo.leftColumnWidth() / 2
     final override val rightColumn = printOptions.deviceInfo.rightColumnWidth() / 2
-    override fun columnExtraSize() = mutableListOf(centerColumn-2)
+    override fun columnExtraSize() = mutableListOf(centerColumn - 2)
 
     override val centerColumn =
         printOptions.deviceInfo.charsPerLineLarge() - leftColumn - rightColumn
@@ -67,7 +67,7 @@ open class KitchenLayout(
         val proName = productChosen.Name1
 
         val productDetail = mutableListOf<MutableList<String>>()
-        productDetail.add(mutableListOf( proName))
+        productDetail.add(mutableListOf(proName ?: ""))
 
         productChosen.VariantList?.takeIf { it.isNotEmpty() }?.let {
             productDetail.add(

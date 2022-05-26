@@ -68,6 +68,9 @@
                 android:layout_height="@dimen/_40sdp"
                 >
                 <ImageView
+                    android:id="@+id/btnSearch"
+                    android:clickable="true"
+                    android:focusable="true"
                     android:padding="@dimen/_12sdp"
                     android:paddingEnd="0dp"
                     android:src="@drawable/ic_search"
@@ -78,6 +81,7 @@
                 <com.diadiem.pos_components.PTextInputEditText
                     android:id="@+id/discountAutomaticInput"
                     style="@style/BaseTextInput"
+                    android:text="@={viewModel.orderCodeSearch}"
                     textNumberAllCaps="@{true}"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
@@ -111,6 +115,15 @@
             </LinearLayout>
         </FrameLayout>
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_marginTop="@dimen/_5sdp"
+            android:id="@+id/listFilterOption"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:overScrollMode="never"
+            app:layoutManager="com.xiaofeng.flowlayoutmanager.FlowLayoutManager"
+            tools:itemCount="2"
+            tools:listitem="@layout/item_order_option_filter" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/listOrdersGroup"

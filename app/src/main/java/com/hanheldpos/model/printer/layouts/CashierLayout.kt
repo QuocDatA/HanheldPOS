@@ -176,7 +176,7 @@ class CashierLayout(
                         mutableListOf(
                             mutableListOf(
                                 "(${pro.Quantity})",
-                                pro.Name1
+                                pro.Name1 ?: ""
                             )
                         ),
                         columnOrderDetailAlign,

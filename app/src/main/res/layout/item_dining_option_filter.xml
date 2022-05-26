@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="item"
+            type="com.hanheldpos.data.api.pojo.order.settings.DiningOption" />
+    </data>
+
+    <LinearLayout
+        android:background="@color/color_2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.diadiem.pos_components.PRadioButton
+            style="@style/RadioCustom"
+            android:gravity="center_vertical"
+            android:id="@+id/btn"
+            android:text="@{item.title}"
+            android:clickable="true"
+            android:focusable="true"
+            android:paddingVertical="@dimen/_10sdp"
+            tools:text="Title"
+            android:paddingHorizontal="@dimen/_7sdp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+</layout>

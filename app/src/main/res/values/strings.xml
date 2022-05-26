@@ -267,4 +267,6 @@
     <string name="synced">Synced</string>
     <string name="an_error_occurred_please_try_again">An error occurred, please try again!</string>
     <string name="filter">Filter</string>
+    <string name="end">End</string>
+    <string name="all_dining_options">All Dining Options</string>
 </resources>

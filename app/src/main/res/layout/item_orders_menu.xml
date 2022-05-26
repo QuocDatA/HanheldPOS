@@ -75,13 +75,13 @@
                 tools:text="Pho Bo Tai (S), Pho Bo Tai (S), Pho Bo Tai (S),Pho Bo Tai..." />
 
             <com.diadiem.pos_components.PTextView
+                android:id="@+id/diningOptionOrder"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="@dimen/_5sdp"
                 android:layout_marginEnd="@dimen/_20sdp"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="@{item.diningOptionName + ` | ` + DateTimeUtils.INSTANCE.strToStr(item.orderCreateDate,DateTimeUtils.Format.FULL_DATE_UTC_TIMEZONE,DateTimeUtils.Format.DD_MM_HH_MM_aa)}"
                 app:useFontStyle="normal"
                 app:useTextColor="color5"
                 app:useTextHeader="h6"

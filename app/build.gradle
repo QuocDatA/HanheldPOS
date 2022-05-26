@@ -160,4 +160,7 @@ dependencies {
     // download file lib
     implementation 'com.mindorks.android:prdownloader:0.6.0'
 
+    // layout
+    implementation 'com.github.simonebortolin:FlowLayoutManager:1.8.0'
+
 }

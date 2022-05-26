@@ -4,12 +4,12 @@ import androidx.recyclerview.widget.DiffUtil
 import com.hanheldpos.R
 import com.hanheldpos.binding.setBackColor
 import com.hanheldpos.databinding.ItemOrdersMenuBinding
-import com.hanheldpos.databinding.ItemOrdersMenuBindingImpl
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.order.OrderSummaryPrimary
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
+import com.hanheldpos.utils.DateTimeUtils
 
 class OrdersMenuAdapter(listener: BaseItemClickListener<OrderSummaryPrimary>) :
     BaseBindingListAdapter<OrderSummaryPrimary>(DiffCallBack(), listener) {
@@ -24,6 +24,9 @@ class OrdersMenuAdapter(listener: BaseItemClickListener<OrderSummaryPrimary>) :
         val item = getItem(position)
         holder.bindItem(item)
         val binding = holder.binding as ItemOrdersMenuBinding
+        var diningOptionOrder = DateTimeUtils.strToStr(item.OrderCreateDate,DateTimeUtils.Format.FULL_DATE_UTC_TIMEZONE,DateTimeUtils.Format.DD_MM_HH_MM_aa)
+        if (diningOptionOrder.isEmpty()) diningOptionOrder =DateTimeUtils.strToStr(item.OrderCreateDate,DateTimeUtils.Format.YYYY_MM_DD_HH_MM_SS,DateTimeUtils.Format.DD_MM_HH_MM_aa)
+        binding.diningOptionOrder.text = "${item.DiningOptionName} | $diningOptionOrder "
         binding.paymentStatusText.text =
             DataHelper.orderStatusLocalStorage?.Payments?.findTextPaymentStatus(
                 item?.PaymentStatusId ?: 0

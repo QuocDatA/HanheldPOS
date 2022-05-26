@@ -72,7 +72,7 @@ abstract class BaseLayoutPrinter(
                 WaguUtils.columnListDataBlock(
                     charPerLineLarge,
                     list = mutableListOf(status),
-                    statusColumns,
+                    aligns = statusColumns,
                 )
             ).toString(),
             false,

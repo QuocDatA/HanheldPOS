@@ -25,34 +25,7 @@ class CustomizeReportFragment(
     }
 
     override fun initView() {
-        viewModel.initCustomReportData(
-            saleReportCustomData
-        )
 
-        binding.btnDone.setOnClickDebounce {
-            setUpReturn()
-        }
-
-        binding.currentDrawerCheckbox.isChecked = saleReportCustomData.isCurrentDrawer
-        binding.btnIsAllDay.isChecked = saleReportCustomData.isAllDay
-
-        if (viewModel.startDay.isBefore(viewModel.endDay)) {
-            binding.calendarView.selectRange(
-                viewModel.startDay, viewModel.endDay
-            )
-        } else {
-            binding.calendarView.selectedDate = viewModel.startDay
-        }
-
-
-        binding.calendarView.setOnDateChangedListener { _, _, _ ->
-            binding.currentDrawerCheckbox.isChecked = false
-            binding.btnIsAllDay.isChecked = true
-        }
-        binding.calendarView.setOnRangeSelectedListener { _, _ ->
-            binding.currentDrawerCheckbox.isChecked = false
-            binding.btnIsAllDay.isChecked = true
-        }
     }
 
     private fun setUpReturn() {
@@ -84,15 +57,38 @@ class CustomizeReportFragment(
         )
     }
 
-    private fun convertDateToLocalDate(dateStr: String) {
-
-    }
-
     override fun initData() {
+
+        viewModel.initCustomReportData(
+            saleReportCustomData
+        )
+
+        binding.currentDrawerCheckbox.isChecked = saleReportCustomData.isCurrentDrawer
+
+        binding.btnIsAllDay.isChecked = saleReportCustomData.isAllDay
+
+        if (viewModel.startDay.isBefore(viewModel.endDay)) {
+            binding.calendarView.selectRange(
+                viewModel.startDay, viewModel.endDay
+            )
+        } else {
+            binding.calendarView.selectedDate = viewModel.startDay
+        }
     }
 
     override fun initAction() {
+        binding.btnDone.setOnClickDebounce {
+            setUpReturn()
+        }
 
+        binding.calendarView.setOnDateChangedListener { _, _, _ ->
+            binding.currentDrawerCheckbox.isChecked = false
+            binding.btnIsAllDay.isChecked = true
+        }
+        binding.calendarView.setOnRangeSelectedListener { _, _ ->
+            binding.currentDrawerCheckbox.isChecked = false
+            binding.btnIsAllDay.isChecked = true
+        }
     }
 
     override fun getBack() {

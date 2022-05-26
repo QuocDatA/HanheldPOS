@@ -23,7 +23,7 @@ object WaguUtils {
             if (items.isEmpty()) return@lit
             val listSize = items.size
             val columns =
-                if (columnSize?.isNullOrEmpty() != false) mutableListOf(width / listSize) else columnSize
+                if (columnSize?.isEmpty() != false) mutableListOf(width / listSize) else columnSize
             Board(width).let { b ->
                 val columnItem = columns.first()
                 val textF = if (isWrapWord) wrapWord(items.first(), columnItem) else items.first()
