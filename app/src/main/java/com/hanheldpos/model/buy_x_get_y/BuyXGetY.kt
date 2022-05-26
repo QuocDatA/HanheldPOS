@@ -18,7 +18,7 @@ import com.hanheldpos.model.product.ProductType
 class BuyXGetY() : BaseProductInCart(),Cloneable {
 
     var groupList: MutableList<GroupBuyXGetY>? = null
-
+    var isShowDetail: Boolean = false
     var disc: DiscountResp? = null
 
     constructor(

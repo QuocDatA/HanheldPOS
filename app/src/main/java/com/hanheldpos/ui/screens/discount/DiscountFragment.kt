@@ -8,6 +8,7 @@ import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.data.api.pojo.order.settings.Reason
 import com.hanheldpos.databinding.FragmentDiscountBinding
 import com.hanheldpos.extension.setOnClickDebounce
+import com.hanheldpos.model.buy_x_get_y.BuyXGetY
 import com.hanheldpos.model.discount.DiscApplyTo
 import com.hanheldpos.model.discount.DiscountTypeFor
 import com.hanheldpos.model.discount.DiscountUser
@@ -84,8 +85,9 @@ class DiscountFragment(private val listener: DiscountCallback) :
                         binding.btnSave.isEnabled = isValid;
                     }
 
-                    override fun addDiscountBuyXGetY(discount: DiscountResp) {
-                        listener.addDiscountBuyXGetYToCart(discount)
+                    override fun addDiscountBuyXGetY(discount: DiscountResp, buyXGetY: BuyXGetY) {
+                        listener.addDiscountBuyXGetYToCart(discount, buyXGetY)
+                        backPress()
                     }
 
                     override fun clearAllDiscountCoupon() {
@@ -114,7 +116,7 @@ class DiscountFragment(private val listener: DiscountCallback) :
         fun onCompReasonChoose(reason: Reason);
         fun onCompRemove();
         fun clearAllDiscountCoupon()
-        fun addDiscountBuyXGetYToCart(discount: DiscountResp)
+        fun addDiscountBuyXGetYToCart(discount: DiscountResp, buyXGetY: BuyXGetY)
     }
 
     interface DiscountTypeListener {
@@ -126,7 +128,7 @@ class DiscountFragment(private val listener: DiscountCallback) :
         fun clearAllDiscountCoupon() : Unit {}
         fun discountFocus(type : DiscountTypeFor) : Unit{}
         fun validDiscount(isValid : Boolean)
-        fun addDiscountBuyXGetY(discount: DiscountResp): Unit{}
+        fun addDiscountBuyXGetY(discount: DiscountResp, buyXGetY: BuyXGetY): Unit{}
     }
 
     override fun backPress() {

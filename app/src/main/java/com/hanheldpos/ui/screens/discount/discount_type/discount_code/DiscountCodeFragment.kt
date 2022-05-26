@@ -89,8 +89,14 @@ class DiscountCodeFragment(
     }
 
     override fun openBuyXGetY(discount: DiscountResp) {
-        listener.addDiscountBuyXGetY(discount)
-        navigator.goTo(BuyXGetYFragment(discount, actionType = ItemActionType.Add))
+        navigator.goTo(
+            BuyXGetYFragment(
+                discount, actionType = ItemActionType.Add,
+                onApplyDiscountBuyXGetY = {
+                        _, buyXGetY -> listener.addDiscountBuyXGetY(discount, buyXGetY)
+                }
+            )
+        )
     }
 
     override fun initAction() {
@@ -130,4 +136,6 @@ class DiscountCodeFragment(
     override fun updateDiscountCouponCode(discount: List<DiscountCoupon>?) {
         listener.discountCodeChoose(discount)
     }
+
+
 }

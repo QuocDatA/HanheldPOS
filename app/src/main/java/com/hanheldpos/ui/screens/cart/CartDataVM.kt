@@ -14,9 +14,8 @@ import com.hanheldpos.extension.notifyValueChange
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.OrderHelper
 import com.hanheldpos.model.UserHelper
+import com.hanheldpos.model.buy_x_get_y.BuyXGetY
 import com.hanheldpos.model.cart.*
-import com.hanheldpos.model.buy_x_get_y.GroupBuyXGetY
-import com.hanheldpos.model.buy_x_get_y.GroupType
 import com.hanheldpos.model.discount.DiscApplyTo
 import com.hanheldpos.model.discount.DiscountUser
 import com.hanheldpos.model.home.table.TableSummary
@@ -201,24 +200,8 @@ class CartDataVM : BaseViewModel() {
         notifyCartChange()
     }
 
-    fun addBuyXGetY(disc: DiscountResp) {
-        val groupList: MutableList<GroupBuyXGetY> = mutableListOf(
-            GroupBuyXGetY(disc._id, disc.Condition.CustomerBuys, GroupType.BUY, ),
-            GroupBuyXGetY(disc._id, disc.Condition.CustomerGets, GroupType.GET)
-        )
-//        this.cartModelLD.value?.productsList?.add(
-//            BuyXGetY(
-//                disc, null, null,
-//                this.cartModelLD.value!!.diningOption,
-//                1,
-//                null,
-//                null,
-//                null,
-//                null,
-//                null,
-//                groupList
-//            )
-//        )
+    fun addBuyXGetY(disc: DiscountResp, buyXGetY: BuyXGetY) {
+        this.cartModelLD.value?.productsList?.add(buyXGetY)
         notifyCartChange()
     }
 

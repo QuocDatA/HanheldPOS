@@ -176,7 +176,7 @@ class BuyXGetYVM : BaseUiViewModel<BuyXGetYUV>() {
     }
 
     fun onAddCart() {
-        //uiCallback?.cartAdded(bundleInCart.value!!, actionType.value!!);
+        uiCallback?.cartAdded(buyXGetY.value!!, actionType.value!!);
     }
 
     private fun initItemGroupBuyXGetY(groupBuyXGetY: GroupBuyXGetY, isBuyComplete: Boolean): ItemBuyXGetYGroup {

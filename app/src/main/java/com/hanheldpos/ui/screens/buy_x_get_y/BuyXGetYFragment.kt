@@ -9,6 +9,7 @@ import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.databinding.FragmentBuyXGetYBinding
 import com.hanheldpos.extension.notifyValueChange
+import com.hanheldpos.model.buy_x_get_y.BuyXGetY
 import com.hanheldpos.model.buy_x_get_y.GroupBuyXGetY
 import com.hanheldpos.model.cart.BaseProductInCart
 import com.hanheldpos.model.cart.Combo
@@ -26,7 +27,8 @@ import okhttp3.internal.notify
 class BuyXGetYFragment(
     private val discount: DiscountResp,
     private val actionType: ItemActionType,
-    private val quantityCanChoose: Int = -1
+    private val quantityCanChoose: Int = -1,
+    private val onApplyDiscountBuyXGetY: (discount: DiscountResp, buyXGetY: BuyXGetY) -> Unit,
 ) :
     BaseFragment<FragmentBuyXGetYBinding, BuyXGetYVM>(), BuyXGetYUV {
     override fun layoutRes(): Int = R.layout.fragment_buy_x_get_y
@@ -177,5 +179,10 @@ class BuyXGetYFragment(
 
             }
         }
+    }
+
+    override fun cartAdded(item: BaseProductInCart, action: ItemActionType) {
+        onApplyDiscountBuyXGetY(discount, item as BuyXGetY)
+        onFragmentBackPressed()
     }
 }

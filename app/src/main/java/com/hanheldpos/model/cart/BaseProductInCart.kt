@@ -283,4 +283,8 @@ abstract class BaseProductInCart {
     open fun clearCompReason() {
         compReason = null
     }
+
+    fun isBuyXGetY() : Boolean {
+        return productType == ProductType.BUYX_GETY_DISC
+    }
 }
