@@ -4,4 +4,5 @@ import com.hanheldpos.ui.base.BaseUserView
 
 interface SyncedOrdersUV : BaseUserView {
     fun onFragmentBackPressed()
+    fun onShowFilter()
 }

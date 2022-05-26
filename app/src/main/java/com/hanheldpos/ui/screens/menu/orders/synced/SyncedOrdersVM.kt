@@ -6,4 +6,8 @@ class SyncedOrdersVM : BaseUiViewModel<SyncedOrdersUV>() {
     fun onFragmentBackPressed() {
         uiCallback?.onFragmentBackPressed()
     }
+
+    fun showFilter() {
+        uiCallback?.onShowFilter()
+    }
 }

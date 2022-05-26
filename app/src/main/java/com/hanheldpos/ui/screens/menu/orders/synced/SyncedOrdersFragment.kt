@@ -11,6 +11,7 @@ import com.hanheldpos.model.order.OrderSummaryPrimary
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.menu.orders.adapter.OrdersMenuGroupAdapter
+import com.hanheldpos.ui.screens.menu.orders.synced.filter.FilterSyncedOrdersFragment
 
 
 class SyncedOrdersFragment : BaseFragment<FragmentSyncedOrdersBinding, SyncedOrdersVM>(),
@@ -50,6 +51,10 @@ class SyncedOrdersFragment : BaseFragment<FragmentSyncedOrdersBinding, SyncedOrd
 
     override fun initAction() {
 
+    }
+
+    override fun onShowFilter() {
+        navigator.goTo(FilterSyncedOrdersFragment())
     }
 
 }

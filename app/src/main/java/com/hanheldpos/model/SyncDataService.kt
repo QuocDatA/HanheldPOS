@@ -234,19 +234,7 @@ class SyncDataService : BaseViewModel() {
 
 
     private fun startMappingData(context: Context, listener: SyncDataServiceListener) {
-        DataHelper.let {
-            it.menuLocalStorage ?: return;
-            it.orderSettingLocalStorage ?: return;
-            it.orderStatusLocalStorage ?: return;
-            it.deviceCodeLocalStorage?: return;
-            it.floorLocalStorage ?: return;
-            it.feeLocalStorage ?: return;
-            it.discountsLocalStorage ?: return;
-            it.discountDetailsLocalStorage ?: return;
-            it.paymentMethodsLocalStorage ?: return;
-            it.addressTypesLocalStorage ?: return;
-            it.resourceLocalStorage ?: return
-        }
+        if (!DataHelper.isValidData()) return
         DataHelper.numberIncreaseOrder =
             DataHelper.deviceCodeLocalStorage?.ListSettingsId?.firstOrNull()?.NumberIncrement?.toLong()
                 ?: 0
