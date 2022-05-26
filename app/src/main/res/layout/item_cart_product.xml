@@ -68,13 +68,15 @@
                             tools:text="Pho Bo Tai" />
 
                         <com.diadiem.pos_components.PTextView
-                            android:id="@+id/viewDetailTextView"
-                            visibleObject="@{item.proOriginal.bundle &amp;&amp; isShownDetail==false}"
+                            android:id="@+id/viewDetailBundleTextView"
+                            visibleObject="@{item.proOriginal.bundle &amp;&amp; isShownDetail==false }"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/view_details"
                             app:useTextColor="color0"
                             app:useTextHeader="h6" />
+
+
                     </LinearLayout>
 
                     <RelativeLayout
@@ -113,11 +115,11 @@
 
 
                         <com.diadiem.pos_components.PTextView
-                            android:text="@{ `(Base price :` + PriceUtils.INSTANCE.formatStringPrice(item.priceOverride) + `)` }"
                             visibleObject="@{item.proOriginal.bundle}"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/priceTextView"
+                            android:text="@{ `(Base price :` + PriceUtils.INSTANCE.formatStringPrice(item.priceOverride) + `)` }"
                             android:textAlignment="textEnd"
                             app:useTextColor="color7"
                             app:useTextHeader="h7"
@@ -137,7 +139,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
-                            visibleObject="@{item.proOriginal.bundle}"
+                            visibleObject="@{item.proOriginal.bundle || item.buyXGetY}"
                             android:overScrollMode="never"
                             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                             tools:itemCount="1"
@@ -189,8 +191,17 @@
                     </LinearLayout>
 
                 <com.diadiem.pos_components.PTextView
+                    android:id="@+id/viewDetailBuyXGetYTextView"
+                    visibleObject="@{item.buyXGetY &amp;&amp; isShownDetail==false }"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/view_details"
+                    app:useTextColor="color0"
+                    app:useTextHeader="h6" />
+
+                <com.diadiem.pos_components.PTextView
                     android:id="@+id/hideDetailTextView"
-                    visibleObject="@{item.proOriginal.bundle &amp;&amp; isShownDetail==true}"
+                    visibleObject="@{(item.proOriginal.bundle || item.buyXGetY) &amp;&amp; isShownDetail==true  }"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/hide_details"

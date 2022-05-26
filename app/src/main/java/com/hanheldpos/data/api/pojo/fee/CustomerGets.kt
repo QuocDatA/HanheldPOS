@@ -22,7 +22,9 @@ data class CustomerGets(
     val ProductApplyTo: ChooseProductApplyTo?,
     val Quantity: Int
 ) : Parcelable {
-    val requireQuantity get() = ListApplyTo.sumOf { basePro -> basePro.MaxQuantity ?: 0 }
+    val requireQuantity get() = ListApplyTo.sumOf { basePro ->
+        basePro.MaxQuantity ?: 0
+    }
     fun findVariantGroup(product_id: String): VariantsGroup? {
         when (CustomerDiscApplyTo.fromInt(ApplyTo)) {
             CustomerDiscApplyTo.PRODUCT -> {

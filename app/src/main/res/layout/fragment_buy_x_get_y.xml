@@ -155,6 +155,7 @@
                 android:elevation="0dp"
                 android:focusable="true"
                 android:minWidth="@dimen/_95sdp"
+                android:onClick="@{v -> viewModel.onAddCart()}"
                 app:cardCornerRadius="0dp"
                 app:cardElevation="0dp"
                 app:rippleColor="@color/color_2">

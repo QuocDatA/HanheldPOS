@@ -2,7 +2,7 @@ package com.hanheldpos.model.product
 
 
 enum class ProductType(val value : Int) {
-    NOT_FOUND(0),
+    UNKNOWN(0),
     REGULAR(1),
     BUNDLE(2),
     GROUP_SKU(3),

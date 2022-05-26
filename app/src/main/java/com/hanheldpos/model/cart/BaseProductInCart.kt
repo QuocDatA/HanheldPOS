@@ -20,7 +20,7 @@ import java.util.*
 
 
 abstract class BaseProductInCart {
-    open var productType: ProductType = ProductType.NOT_FOUND
+    open var productType: ProductType = ProductType.UNKNOWN
     open var variants: String? = null
     open var sku: String? = null
     open var note: String? = null
@@ -282,5 +282,9 @@ abstract class BaseProductInCart {
 
     open fun clearCompReason() {
         compReason = null
+    }
+
+    fun isBuyXGetY() : Boolean {
+        return productType == ProductType.BUYX_GETY_DISC
     }
 }

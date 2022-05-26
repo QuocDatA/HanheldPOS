@@ -243,9 +243,9 @@ class LayoutBillPrinter(
                         mutableListOf(
                             mutableListOf(
                                 "(${pro.Quantity})",
-                                pro.Name1
+                                pro.Name1 ?: ""
                             )
-                        ),
+                        ) ,
                         columnOrderDetailAlign,
                         columnGroupBundle,
                     )

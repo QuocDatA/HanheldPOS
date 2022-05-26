@@ -9,7 +9,6 @@ import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.data.api.pojo.fee.CustomerGets
 import com.hanheldpos.extension.notifyValueChange
 import com.hanheldpos.model.buy_x_get_y.*
-import com.hanheldpos.model.cart.BaseProductInCart
 import com.hanheldpos.model.cart.Combo
 import com.hanheldpos.model.cart.Regular
 import com.hanheldpos.model.combo.ItemActionType
@@ -70,15 +69,34 @@ class BuyXGetYVM : BaseUiViewModel<BuyXGetYUV>() {
                 )
             )
 
-        //listGroupBuyXGetY.value = buyXGetY.value!!.clone()
         buyXGetY.value!!.groupList = groupList
 
         buyXGetY.value!!.groupList?.map { groupBuyXGetY ->
-            initItemGroupBuyXGetY(groupBuyXGetY)
+            initItemGroupBuyXGetY(groupBuyXGetY, isBuyComplete())
         }.let {
             return it?.toMutableList()
         }
 
+    }
+
+    private fun isBuyComplete(): Boolean {
+        val applyTo = buyXGetY.value!!.disc?.Condition?.CustomerBuys?.ApplyTo ?: 0
+        when (CustomerDiscApplyTo.fromInt(applyTo)) {
+            CustomerDiscApplyTo.ENTIRE_ORDER -> {
+                val totalOrder = CurCartData.cartModel!!.total()
+                val totalQuantityOrder = CurCartData.cartModel!!.getTotalQuantity()
+
+                if(!(buyXGetY.value!!.disc?.Condition?.CustomerBuys?.isBuyCompleted(totalOrder, totalQuantityOrder))!!) {
+
+                } else {
+                    return true
+                }
+            }
+            else -> {
+
+            }
+        }
+        return false
     }
 
     fun onRegularSelect(
@@ -86,9 +104,11 @@ class BuyXGetYVM : BaseUiViewModel<BuyXGetYUV>() {
         itemPrev: Regular,
         itemAfter: Regular,
         action: ItemActionType,
+        discount: DiscountResp,
     ) {
         when (action) {
             ItemActionType.Add -> {
+                itemAfter.addDiscountServer(discount)
                 group.productList.add(itemAfter)
             }
             ItemActionType.Modify -> {
@@ -112,6 +132,7 @@ class BuyXGetYVM : BaseUiViewModel<BuyXGetYUV>() {
         group: GroupBuyXGetY,
         item: Combo,
         action: ItemActionType,
+        discount: DiscountResp,
     ) {
         when (action) {
             ItemActionType.Add -> {
@@ -155,10 +176,10 @@ class BuyXGetYVM : BaseUiViewModel<BuyXGetYUV>() {
     }
 
     fun onAddCart() {
-        //uiCallback?.cartAdded(bundleInCart.value!!, actionType.value!!);
+        uiCallback?.cartAdded(buyXGetY.value!!, actionType.value!!);
     }
 
-    private fun initItemGroupBuyXGetY(groupBuyXGetY: GroupBuyXGetY, ): ItemBuyXGetYGroup {
+    private fun initItemGroupBuyXGetY(groupBuyXGetY: GroupBuyXGetY, isBuyComplete: Boolean): ItemBuyXGetYGroup {
         val conditionCustomer = groupBuyXGetY.condition
         val itemBuyXGetYGroup = ItemBuyXGetYGroup(groupBuyXGetY, mutableListOf(), mutableListOf())
         if (conditionCustomer is CustomerBuys) {
@@ -166,6 +187,8 @@ class BuyXGetYVM : BaseUiViewModel<BuyXGetYUV>() {
                 conditionCustomer.filterListApplyTo(itemBuyXGetYGroup, buyXGetY.value?.disc!!)
             itemBuyXGetYGroup.listApplyTo = conditionCustomer.ListApplyTo.toMutableList()
             itemBuyXGetYGroup.isApplyToEntireOrder = CustomerDiscApplyTo.fromInt(conditionCustomer.ApplyTo) == CustomerDiscApplyTo.ENTIRE_ORDER
+            itemBuyXGetYGroup.isBuyComplete = isBuyComplete
+            itemBuyXGetYGroup.isBuyComplete
         } else {
             conditionCustomer as CustomerGets
             itemBuyXGetYGroup.groupListBaseProduct =

@@ -9,6 +9,7 @@ import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.databinding.FragmentBuyXGetYBinding
 import com.hanheldpos.extension.notifyValueChange
+import com.hanheldpos.model.buy_x_get_y.BuyXGetY
 import com.hanheldpos.model.buy_x_get_y.GroupBuyXGetY
 import com.hanheldpos.model.cart.BaseProductInCart
 import com.hanheldpos.model.cart.Combo
@@ -21,11 +22,13 @@ import com.hanheldpos.ui.screens.cart.CurCartData
 import com.hanheldpos.ui.screens.combo.ComboFragment
 import com.hanheldpos.ui.screens.home.order.OrderFragment
 import com.hanheldpos.ui.screens.product.ProductDetailFragment
+import okhttp3.internal.notify
 
 class BuyXGetYFragment(
     private val discount: DiscountResp,
     private val actionType: ItemActionType,
-    private val quantityCanChoose: Int = -1
+    private val quantityCanChoose: Int = -1,
+    private val onApplyDiscountBuyXGetY: (discount: DiscountResp, buyXGetY: BuyXGetY) -> Unit,
 ) :
     BaseFragment<FragmentBuyXGetYBinding, BuyXGetYVM>(), BuyXGetYUV {
     override fun layoutRes(): Int = R.layout.fragment_buy_x_get_y
@@ -53,11 +56,10 @@ class BuyXGetYFragment(
                 maxQuantity: Int,
                 group: GroupBuyXGetY,
                 item: BaseProductInCart,
-                actionType: ItemActionType
+                actionType: ItemActionType,
             ) {
                 openProductDetail(maxQuantity, group, item, actionType)
             }
-
         })
         binding.rvBuyXGetYGroup.apply {
             adapter = buyXGetYGroupAdapter;
@@ -99,9 +101,9 @@ class BuyXGetYFragment(
         when (action) {
             ItemActionType.Remove -> {
                 if (baseItem is Regular) {
-                    viewModel.onRegularSelect(group, baseItem, baseItem, action)
+                    viewModel.onRegularSelect(group, baseItem, baseItem, action, discount)
                 } else if (baseItem is Combo) {
-                    viewModel.onBundleSelect(group, baseItem, action)
+                    viewModel.onBundleSelect(group, baseItem, action, discount)
                 }
                 buyXGetYGroupAdapter.notifyDataSetChanged()
                 viewModel.buyXGetY.notifyValueChange()
@@ -127,7 +129,8 @@ class BuyXGetYFragment(
                                             group,
                                             baseItem,
                                             (itemAfter as Regular).clone(),
-                                            action
+                                            action,
+                                            discount,
                                         )
                                         buyXGetYGroupAdapter.notifyDataSetChanged()
                                         viewModel.buyXGetY.notifyValueChange()
@@ -163,6 +166,7 @@ class BuyXGetYFragment(
                                         group,
                                         (item as Combo).clone(),
                                         action,
+                                        discount
                                     )
                                     buyXGetYGroupAdapter.notifyDataSetChanged()
                                     viewModel.buyXGetY.notifyValueChange()
@@ -177,4 +181,8 @@ class BuyXGetYFragment(
         }
     }
 
+    override fun cartAdded(item: BaseProductInCart, action: ItemActionType) {
+        onApplyDiscountBuyXGetY(discount, item as BuyXGetY)
+        onFragmentBackPressed()
+    }
 }

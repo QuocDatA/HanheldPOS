@@ -21,9 +21,13 @@ data class ItemBuyXGetYGroup(
     // only show buy x get y  list when item in cart is focused by user
     var isFocused: Boolean = false,
     var isApplyToEntireOrder: Boolean? = false,
+    var isBuyComplete: Boolean? = false,
+    var isGetComplete: Boolean? = false,
 ) {
     fun requireQuantity(): Int =
-        if (groupBuyXGetY.requireQuantity is Int) (groupBuyXGetY.requireQuantity as Int) else (groupBuyXGetY.requireQuantity as Double).toInt()
+        if (groupBuyXGetY.requireQuantity is Int) (groupBuyXGetY.requireQuantity as Int)
+        else
+                (groupBuyXGetY.requireQuantity as Double).toInt()
 
     fun isMaxItemSelected(): Boolean {
         return groupBuyXGetY.isCompleted

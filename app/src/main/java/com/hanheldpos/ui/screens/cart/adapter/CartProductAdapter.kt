@@ -4,9 +4,9 @@ import androidx.recyclerview.widget.DiffUtil
 import com.hanheldpos.R
 import com.hanheldpos.databinding.ItemCartProductBinding
 import com.hanheldpos.extension.setOnClickDebounce
-import com.hanheldpos.model.cart.Combo
-import com.hanheldpos.model.cart.DiscountCart
+import com.hanheldpos.model.buy_x_get_y.BuyXGetY
 import com.hanheldpos.model.cart.BaseProductInCart
+import com.hanheldpos.model.cart.Combo
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
 
@@ -42,7 +42,22 @@ class CartProductAdapter(
         }
         if (item is Combo) {
             binding.isShownDetail = item.isShowDetail
-            binding.viewDetailTextView.setOnClickDebounce {
+            binding.viewDetailBundleTextView.setOnClickDebounce {
+                item.isShowDetail = true
+                notifyItemChanged(position)
+            }
+            binding.hideDetailTextView.setOnClickDebounce {
+                item.isShowDetail = false
+                notifyItemChanged(position)
+            }
+            val cartComboGroupAdapter = CartComboGroupAdapter(productOrigin = item.proOriginal!!)
+            cartComboGroupAdapter.submitList(item.groupList)
+            binding.productComboGroupRecyclerView.adapter = cartComboGroupAdapter
+        }
+
+        if (item is BuyXGetY) {
+            binding.isShownDetail = item.isShowDetail
+            binding.viewDetailBuyXGetYTextView.setOnClickDebounce {
                 item.isShowDetail = true
                 notifyItemChanged(position)
             }
@@ -51,9 +66,9 @@ class CartProductAdapter(
                 notifyItemChanged(position)
             }
 
-            val cartComboGroupAdapter = CartComboGroupAdapter(productOrigin = item.proOriginal!!)
-            cartComboGroupAdapter.submitList(item.groupList)
-            binding.productComboGroupRecyclerView.adapter = cartComboGroupAdapter
+            val cartBuyXGetYGroupAdapter = CartBuyXGetYGroupAdapter()
+            cartBuyXGetYGroupAdapter.submitList(item.groupList)
+            binding.productComboGroupRecyclerView.adapter = cartBuyXGetYGroupAdapter
         }
     }
 

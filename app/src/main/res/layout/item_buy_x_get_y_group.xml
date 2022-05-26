@@ -96,6 +96,7 @@
                         tools:listitem="@layout/item_combo_picked" />
 
                     <include
+                        android:id="@+id/linearProgress"
                         android:visibility="@{item.isApplyToEntireOrder() ? View.VISIBLE : View.GONE}"
                         layout="@layout/layout_linear_process"
                         android:layout_marginTop="@dimen/_10sdp"
@@ -155,7 +156,6 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_marginHorizontal="@dimen/_4sdp"
-                android:visibility="gone"
                 android:id="@+id/itemForSelectAdapter"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

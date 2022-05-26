@@ -12,6 +12,7 @@ import com.hanheldpos.model.buy_x_get_y.ItemBuyXGetYGroup
 import com.hanheldpos.model.cart.BaseProductInCart
 import com.hanheldpos.model.cart.CartModel
 import com.hanheldpos.model.buy_x_get_y.CustomerDiscApplyTo
+import com.hanheldpos.model.buy_x_get_y.MinimumType
 import com.hanheldpos.model.discount.*
 import com.hanheldpos.ui.screens.cart.CurCartData
 import com.hanheldpos.utils.DateTimeUtils
@@ -457,15 +458,32 @@ data class CustomerBuys(
     }
 
     fun isBuyCompleted(totalOrder: Double, totalQuantityOrder: Int): Boolean {
-        return when (DiscMinRequiredType.fromInt(MinimumTypeId ?: 1)) {
-            DiscMinRequiredType.AMOUNT -> {
-                totalOrder > MinimumValue ?: 0.0
+        return when (MinimumType.fromInt(MinimumTypeId ?: 1)) {
+            MinimumType.AMOUNT -> {
+                totalOrder >= (MinimumValue ?: 0.0)
             }
-            DiscMinRequiredType.QUANTITY -> {
-                totalQuantityOrder > MinimumValue ?: 0.0
+            MinimumType.QUANTITY -> {
+                totalQuantityOrder >= (MinimumValue ?: 0.0).toInt()
             }
             else -> {
                 false
+            }
+        }
+    }
+
+    fun getProgressValue(
+        totalAmount: Double,
+        totalQuantity: Int,
+    ): Int {
+        return when (MinimumType.fromInt(MinimumTypeId ?: 0)) {
+            MinimumType.AMOUNT -> {
+                totalAmount.toInt() / MinimumValue!!.toInt() * 100
+            }
+            MinimumType.QUANTITY -> {
+                totalQuantity / MinimumValue!!.toInt() * 100
+            }
+            else -> {
+                0
             }
         }
     }

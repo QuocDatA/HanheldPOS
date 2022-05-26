@@ -8,6 +8,7 @@ import com.hanheldpos.data.api.pojo.order.settings.Reason
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.OrderHelper
 import com.hanheldpos.model.UserHelper
+import com.hanheldpos.model.buy_x_get_y.BuyXGetY
 import com.hanheldpos.model.cart.fee.FeeType
 import com.hanheldpos.model.discount.DiscountUser
 import com.hanheldpos.model.order.*
@@ -157,9 +158,12 @@ object CartConverter {
                     val bundle = baseProductInCart as Combo
                     proOrderList.add(bundle.toProductChosen(index, null))
                 }
-                ProductType.NOT_FOUND -> TODO()
+                ProductType.UNKNOWN -> TODO()
                 ProductType.GROUP_SKU -> TODO()
-                ProductType.BUYX_GETY_DISC -> TODO()
+                ProductType.BUYX_GETY_DISC -> {
+                    val buyXGetY = baseProductInCart as BuyXGetY
+                    proOrderList.add(buyXGetY.toProductChosen(index))
+                }
                 ProductType.COMBO_DISC -> TODO()
             }
         }

@@ -17,6 +17,7 @@ import com.hanheldpos.extension.notifyValueChange
 import com.hanheldpos.extension.setOnClickDebounce
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.OrderHelper
+import com.hanheldpos.model.buy_x_get_y.BuyXGetY
 import com.hanheldpos.model.cart.BaseProductInCart
 import com.hanheldpos.model.cart.Combo
 import com.hanheldpos.model.cart.DiscountCart
@@ -245,8 +246,8 @@ class CartFragment(private val listener: CartCallBack) :
                     cartDataVM.clearAllDiscountCoupon()
                 }
 
-                override fun addDiscountBuyXGetYToCart(discount: DiscountResp) {
-                    cartDataVM.addBuyXGetY(discount)
+                override fun addDiscountBuyXGetYToCart(discount: DiscountResp, buyXGetY: BuyXGetY) {
+                    cartDataVM.addBuyXGetY(discount, buyXGetY)
                 }
             }))
     }
