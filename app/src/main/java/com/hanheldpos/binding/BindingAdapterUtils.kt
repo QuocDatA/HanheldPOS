@@ -215,6 +215,7 @@ fun setBackColor(view: View?, colorHex: String?) {
             val color = Color.parseColor(colorHex)
             if (view is CardView) {
                 view.setCardBackgroundColor(ColorStateList.valueOf(color))
+                view.backgroundTintList = ColorStateList.valueOf(color)
             } else
                 view.backgroundTintList = ColorStateList.valueOf(color);
         } catch (e: Exception) {
