@@ -51,7 +51,8 @@ class SyncedOrdersFragment : BaseFragment<FragmentSyncedOrdersBinding, SyncedOrd
         filterOptionAdapter = FilterOptionAdapter(object : BaseItemClickListener<String> {
             @SuppressLint("NotifyDataSetChanged")
             override fun onItemClick(adapterPosition: Int, item: String) {
-                filterOptionAdapter.submitList(filterOptionAdapter.currentList.toMutableList().apply { remove(item) })
+                filterOptionAdapter.submitList(
+                    filterOptionAdapter.currentList.toMutableList().apply { remove(item) })
                 filterOptionAdapter.notifyDataSetChanged()
             }
 
@@ -132,7 +133,8 @@ class SyncedOrdersFragment : BaseFragment<FragmentSyncedOrdersBinding, SyncedOrd
                             data.startDay,
                             DateTimeUtils.Format.dd_MMM_YYYY
                         )
-                    } From ${data.startTime} To ${data.endTime}","${data.diningOption?.Title}"
+                    } From ${data.startTime} To ${data.endTime}",
+                    data.diningOption?.Title ?: context?.getString(R.string.all_dining_options)
                 )
             )
             filterOptionAdapter.notifyDataSetChanged()
