@@ -66,7 +66,7 @@ class CartProductAdapter(
                 notifyItemChanged(position)
             }
 
-            val cartBuyXGetYGroupAdapter = CartBuyXGetYGroupAdapter()
+            val cartBuyXGetYGroupAdapter = CartBuyXGetYGroupAdapter(proOriginal = item.proOriginal!!)
             cartBuyXGetYGroupAdapter.submitList(item.groupList)
             binding.productComboGroupRecyclerView.adapter = cartBuyXGetYGroupAdapter
         }
