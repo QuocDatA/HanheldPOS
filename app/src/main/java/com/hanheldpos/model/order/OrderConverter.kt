@@ -10,6 +10,9 @@ import com.hanheldpos.data.api.pojo.order.settings.Reason
 import com.hanheldpos.data.api.pojo.product.Product
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.OrderHelper
+import com.hanheldpos.model.buy_x_get_y.BuyXGetY
+import com.hanheldpos.model.buy_x_get_y.GroupBuyXGetY
+import com.hanheldpos.model.buy_x_get_y.GroupType
 import com.hanheldpos.model.cart.*
 import com.hanheldpos.model.cart.fee.FeeType
 import com.hanheldpos.model.discount.DiscountUser
@@ -82,8 +85,8 @@ object OrderConverter {
             val diningOption = OrderHelper.getDiningOptionItem(productBuy.DiningOption?.Id ?: 0)!!
 
             val compReason = toReasonComp(productBuy.CompVoidList!!)
-            val discountServerList = toDiscountsServer(productBuy.DiscountList!!)
-            val discountUserList = toDiscountsUser(productBuy.DiscountList)
+            val discountServerList = toDiscountsServer(productBuy.DiscountList ?: listOf())
+            val discountUserList = toDiscountsUser(productBuy.DiscountList ?: listOf())
             val feeList = toFeeList(
                 serviceFeeList = productBuy.ServiceFeeList,
                 surchargeFeeList = productBuy.SurchargeFeeList,
@@ -153,13 +156,81 @@ object OrderConverter {
                         )
                     )
                 }
+                ProductType.BUYX_GETY_DISC -> run {
+                    val baseProductBuyList: MutableList<BaseProductInCart> = mutableListOf()
+                    val baseProductGetList: MutableList<BaseProductInCart> = mutableListOf()
 
+                    productBuy.ProductChoosedList?.filter { p -> p.ProductApplyTo == ChooseProductApplyTo.DEFAULT.value }
+                        ?.toList()?.forEach { productChosen ->
+                            baseProductBuyList.add(
+                                toBuyXGetYBaseProduct(
+                                    productChosen,
+                                    diningOption,
+                                    compReason,
+                                    discountUserList = discountUserList,
+                                    discountServerList = discountServerList,
+                                    feeList = feeList
+                                )
+                            )
+                        }
+                    productBuy.ProductChoosedList?.filter { p -> p.ProductApplyTo == ChooseProductApplyTo.PRO_GET.value }
+                        ?.toList()?.forEach { productChosen ->
+                            baseProductGetList.add(
+                                toBuyXGetYBaseProduct(
+                                    productChosen,
+                                    diningOption,
+                                    compReason,
+                                    discountUserList = discountUserList,
+                                    discountServerList = discountServerList,
+                                    feeList = feeList
+                                )
+                            )
+                        }
+
+                    val disc =
+                        DataHelper.discountsLocalStorage?.find { discountResp -> discountResp._id == productBuy._id }
+
+                    val groupBuys = GroupBuyXGetY(
+                        disc?._id ?: "",
+                        disc?.Condition?.CustomerBuys,
+                        GroupType.BUY,
+                    )
+                    groupBuys.productList = baseProductBuyList
+
+                    val groupGets = GroupBuyXGetY(
+                        disc?._id ?: "",
+                        disc?.Condition?.CustomerGets,
+                        GroupType.GET
+                    )
+                    groupGets.productList = baseProductGetList
+
+                    val groupBuyXGetYList =
+                        listOf(
+                            groupBuys,
+                            groupGets,
+                        )
+
+                    baseProductList.add(
+                        BuyXGetY(
+                            disc!!,
+                            productBuy.Note,
+                            productBuy.Sku,
+                            diningOption,
+                            productBuy.Quantity,
+                            productBuy.Variant,
+                            compReason,
+                            discountUserList.toMutableList(),
+                            discountServerList.toMutableList(),
+                            feeList.toMutableList(),
+                            groupBuyXGetYList.toMutableList()
+                        )
+                    )
+                }
                 else -> {}
             }
         }
         return baseProductList
     }
-
 
     private fun findProduct(productGuid: String): Product? {
         return DataHelper.menuLocalStorage?.ProductList?.firstOrNull {
@@ -300,5 +371,84 @@ object OrderConverter {
                 quantity = extra.ModifierQuantity ?: 1
             )
         }.toMutableList()
+    }
+
+    private fun toBuyXGetYBaseProduct(
+        productBuy: ProductChosen,
+        diningOption: DiningOption,
+        compReason: Reason?,
+        discountUserList: List<DiscountUser>,
+        discountServerList: List<DiscountResp>,
+        feeList: List<Fee>
+    ): BaseProductInCart {
+        lateinit var baseProduct: BaseProductInCart
+        when (ProductType.fromInt(productBuy.ProductTypeId)) {
+            ProductType.REGULAR -> run {
+                val proOriginal = findProduct(productBuy._id!!) ?: return@run
+                proOriginal.AsignTo = OrderType.REGULAR.value
+                baseProduct =
+                    toRegular(
+                        productBuy = productBuy,
+                        proOriginal = proOriginal,
+                        diningOption = diningOption,
+                        compReason = compReason,
+                        discountUserList = discountUserList,
+                        discountServerList = discountServerList,
+                        feeList = feeList
+                    )
+            }
+            ProductType.BUNDLE -> run {
+                val proOriginal = findProduct(productBuy._id!!)
+                val comboList: List<ProductComboItem> = Gson().fromJson(
+                    proOriginal?.Combo,
+                    object : TypeToken<List<ProductComboItem>>() {}.type
+                )
+                if (comboList.isEmpty())
+                    return@run
+                val groupBundleList = mutableListOf<GroupBundle>()
+                comboList.forEachIndexed { index, comboInfo ->
+                    val listProduct: MutableList<Regular> = mutableListOf()
+                    productBuy.ProductChoosedList?.filter {
+                        it.Parent_id.equals(
+                            comboInfo.ComboGuid
+                        )
+                    }
+                        ?.toList()?.forEach { productChosen ->
+                            val productChosenOriginal =
+                                findProduct(productChosen._id!!)
+                            listProduct.add(
+                                toRegular(
+                                    productBuy = productChosen,
+                                    proOriginal = productChosenOriginal!!,
+                                    diningOption = diningOption,
+                                    compReason = null,
+                                    discountUserList = emptyList(),
+                                    discountServerList = emptyList(),
+                                    feeList = emptyList()
+                                )
+                            )
+                        }
+                    groupBundleList.add(
+                        GroupBundle(
+                            comboInfo = comboInfo,
+                            productList = listProduct
+                        )
+                    )
+                }
+                baseProduct =
+                    toBundle(
+                        productBuy = productBuy,
+                        proOriginal = proOriginal!!,
+                        groupBundleList = groupBundleList,
+                        diningOption = diningOption,
+                        compReason = compReason,
+                        discountUserList = discountUserList,
+                        discountServerList = discountServerList,
+                        feeList = feeList
+                    )
+            }
+            else -> {}
+        }
+        return baseProduct
     }
 }

@@ -9,6 +9,8 @@ import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.discount.DiscountCoupon
 import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.databinding.FragmentDiscountCodeBinding
+import com.hanheldpos.model.buy_x_get_y.BuyXGetY
+import com.hanheldpos.model.cart.BaseProductInCart
 import com.hanheldpos.model.combo.ItemActionType
 import com.hanheldpos.model.discount.DiscApplyTo
 import com.hanheldpos.model.discount.DiscountTriggerType
@@ -18,6 +20,7 @@ import com.hanheldpos.ui.screens.buy_x_get_y.BuyXGetYFragment
 import com.hanheldpos.ui.screens.discount.DiscountFragment
 import com.hanheldpos.ui.screens.discount.discount_detail.DiscountDetailFragment
 import com.hanheldpos.ui.screens.discount.discount_type.adapter.DiscountServerAdapter
+import com.hanheldpos.ui.screens.home.order.OrderFragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -91,9 +94,13 @@ class DiscountCodeFragment(
     override fun openBuyXGetY(discount: DiscountResp) {
         navigator.goTo(
             BuyXGetYFragment(
-                discount, actionType = ItemActionType.Add,
-                onApplyDiscountBuyXGetY = {
-                        _, buyXGetY -> listener.addDiscountBuyXGetY(discount, buyXGetY)
+                buyXGetY = viewModel.initDefaultBuyXGetY(discount),
+                discount = discount,
+                actionType = ItemActionType.Add,
+                listener = object : OrderFragment.OrderMenuListener {
+                    override fun onCartAdded(item: BaseProductInCart, action: ItemActionType) {
+                        listener.addDiscountBuyXGetY(discount, item as BuyXGetY)
+                    }
                 }
             )
         )

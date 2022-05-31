@@ -31,7 +31,7 @@ class BuyXGetY() : BaseProductInCart(),Cloneable {
         compReason: Reason? = null,
         discountUserList: MutableList<DiscountUser>?,
         discountServerList: MutableList<DiscountResp>?,
-        feeList: MutableList<Fee>? = null,
+        feeList: MutableList<Fee>? = mutableListOf(),
         groupList: MutableList<GroupBuyXGetY>? = null
     ) : this() {
         this.disc = discount

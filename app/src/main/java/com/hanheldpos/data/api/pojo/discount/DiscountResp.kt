@@ -369,7 +369,7 @@ data class CustomerBuys(
     val IsDiscountLimit: Int,
     val IsMaxAmount: Int,
     val IsMaxQuantity: Int,
-    val ListApplyTo: List<Product>,
+    var ListApplyTo: List<Product>,
     val MaximumDiscount: Double,
     val CustomerName: String,
     val MinimumTypeId: Int?,
