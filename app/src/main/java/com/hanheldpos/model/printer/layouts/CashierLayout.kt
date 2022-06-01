@@ -1,7 +1,5 @@
 package com.hanheldpos.model.printer.layouts
 
-import android.app.Activity
-import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.util.Log
@@ -12,10 +10,11 @@ import com.handheld.printer.PrintConstants
 import com.handheld.printer.printer_manager.BasePrinterManager
 import com.handheld.printer.wagu.Block
 import com.handheld.printer.wagu.WaguUtils
+import com.hanheldpos.PosApp
 import com.hanheldpos.R
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.order.OrderFee
-import com.hanheldpos.model.order.OrderReq
+import com.hanheldpos.model.order.OrderModel
 import com.hanheldpos.model.order.ProductChosen
 import com.hanheldpos.model.printer.BillPrinterManager
 import com.hanheldpos.model.product.ExtraConverter
@@ -25,11 +24,10 @@ import com.hanheldpos.utils.PriceUtils
 import com.hanheldpos.utils.StringUtils
 
 class CashierLayout(
-    context: Context,
-    order: OrderReq,
+    order: OrderModel,
     printer: BasePrinterManager,
     printOptions: BillPrinterManager.PrintOptions,
-) : BaseLayoutPrinter(context, order, printer, printOptions) {
+) : BaseLayoutPrinter(order, printer, printOptions) {
 
     override fun print() {
         // Order Meta Data
@@ -83,7 +81,7 @@ class CashierLayout(
     }
 
     private fun printBrandIcon() {
-        val drawable = ContextCompat.getDrawable(context as Activity, R.drawable.ic_note)
+        val drawable = ContextCompat.getDrawable(PosApp.instance.applicationContext, R.drawable.ic_note)
         val wrappedDrawable: Drawable = DrawableCompat.wrap(drawable!!)
         DrawableCompat.setTint(wrappedDrawable, Color.BLACK)
         printer.drawBitmap(

@@ -11,9 +11,8 @@ import com.handheld.printer.printer_manager.BasePrinterManager
 import com.hanheldpos.R
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.order.OrderFee
-import com.hanheldpos.model.order.OrderReq
+import com.hanheldpos.model.order.OrderModel
 import com.hanheldpos.model.order.ProductChosen
-import com.hanheldpos.model.payment.PaymentMethodType
 import com.hanheldpos.model.product.ExtraConverter
 import com.hanheldpos.model.product.ProductType
 import com.hanheldpos.utils.*
@@ -22,7 +21,7 @@ import com.handheld.printer.wagu.WaguUtils
 
 class LayoutBillPrinter(
     private val context: Context,
-    private val order: OrderReq,
+    private val order: OrderModel,
     private val printer: BasePrinterManager,
     private val printOptions: BillPrinterManager.PrintOptions
 ) {

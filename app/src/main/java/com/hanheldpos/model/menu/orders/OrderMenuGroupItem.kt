@@ -5,6 +5,7 @@ import java.util.*
 
 data class OrderMenuGroupItem(
     val createDate : String,
-    val orders : List<OrderSummaryPrimary>
+    val orders : List<OrderSummaryPrimary>,
+    var isCollapse : Boolean = false,
 ) {
 }

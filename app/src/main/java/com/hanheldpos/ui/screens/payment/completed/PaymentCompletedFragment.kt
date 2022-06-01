@@ -2,6 +2,7 @@ package com.hanheldpos.ui.screens.payment.completed
 
 import com.handheld.printer.PrintConstants
 import com.handheld.printer.printer_manager.BasePrinterManager
+import com.hanheldpos.PosApp
 import com.hanheldpos.R
 import com.hanheldpos.binding.setPriceView
 import com.hanheldpos.database.DatabaseMapper
@@ -55,7 +56,7 @@ class PaymentCompletedFragment(
                                 }
                             ).apply {
                                 print(
-                                    fragmentContext,
+                                    PosApp.instance.applicationContext,
                                     DatabaseMapper.mappingOrderReqFromEntity(completedEntity),
                                     layoutType = BaseLayoutPrinter.LayoutType.Kitchen
                                 )

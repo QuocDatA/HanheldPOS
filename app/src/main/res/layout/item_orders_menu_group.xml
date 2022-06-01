@@ -7,9 +7,6 @@
         <variable
             name="item"
             type="com.hanheldpos.model.menu.orders.OrderMenuGroupItem" />
-        <variable
-            name="isCollapse"
-            type="Boolean"/>
     </data>
 
     <LinearLayout
@@ -44,13 +41,13 @@
             <ImageView
                 android:layout_width="@dimen/_14sdp"
                 android:layout_height="@dimen/_14sdp"
-                android:src="@{isCollapse ? @drawable/ic_up : @drawable/ic_down }"
+                android:src="@{!item.isCollapse ? @drawable/ic_up : @drawable/ic_down }"
                 tools:ignore="ContentDescription" />
         </LinearLayout>
         <androidx.recyclerview.widget.RecyclerView
             android:overScrollMode="never"
             android:id="@+id/listOrders"
-            visibleObject="@{isCollapse}"
+            visibleObject="@{!item.isCollapse}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:listitem="@layout/item_orders_menu"

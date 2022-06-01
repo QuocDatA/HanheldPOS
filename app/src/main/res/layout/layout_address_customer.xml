@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="customer"
+            type="com.hanheldpos.data.api.pojo.customer.CustomerResp" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.diadiem.pos_components.PTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{customer.fullName}"
+            app:useFontStyle="bold"
+            app:useTextColor="color4"
+            app:useTextHeader="h5"
+            tools:text="Quan Nguyen" />
+
+        <com.diadiem.pos_components.PTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{customer.getFullAddressWithLineBreaker()}"
+            app:useFontStyle="normal"
+            app:useTextColor="color4"
+            app:useTextHeader="h6"
+            tools:text="Sarimi
+Block A3, Floor 5, Room 404
+74 Nguyen Co Thach
+An Loi Dong Ward, District 2" />
+
+        <com.diadiem.pos_components.PTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{customer.getContactInfo()}"
+            app:useFontStyle="normal"
+            app:useTextColor="color4"
+            app:useTextHeader="h6"
+            tools:text="Apartment |
+090 264 8048
+Note: Near school" />
+    </LinearLayout>
+</layout>

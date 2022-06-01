@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="com.hanheldpos.model.DataHelper"/>
+        <import type="com.hanheldpos.utils.DateTimeUtils"/>
+        <variable
+            name="orderInfo"
+            type="com.hanheldpos.model.order.Order" />
+    </data>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <com.diadiem.pos_components.PTextView
+                app:useTextColor="color4"
+                app:useTextHeader="h5"
+                app:useFontStyle="normal"
+                android:text="@string/order_sharp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+            <androidx.legacy.widget.Space
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"/>
+
+            <com.diadiem.pos_components.PTextView
+                app:useTextColor="color4"
+                app:useTextHeader="h5"
+                app:useFontStyle="normal"
+                tools:text="IP1102"
+                android:text="@{orderInfo.code}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+        </LinearLayout>
+        <androidx.legacy.widget.Space
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_8sdp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <com.diadiem.pos_components.PTextView
+                app:useTextColor="color4"
+                app:useTextHeader="h5"
+                app:useFontStyle="normal"
+                android:text="@string/employee"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+            <androidx.legacy.widget.Space
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"/>
+
+            <com.diadiem.pos_components.PTextView
+                app:useTextColor="color4"
+                app:useTextHeader="h5"
+                app:useFontStyle="normal"
+                tools:text="IP1102"
+                android:text="@{DataHelper.INSTANCE.deviceCodeLocalStorage.getEmployeeById(orderInfo.employeeGuid).fullName}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+        </LinearLayout>
+        <androidx.legacy.widget.Space
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_8sdp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <com.diadiem.pos_components.PTextView
+                app:useTextColor="color4"
+                app:useTextHeader="h5"
+                app:useFontStyle="normal"
+                android:text="@string/create_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+            <androidx.legacy.widget.Space
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"/>
+
+            <com.diadiem.pos_components.PTextView
+                app:useTextColor="color4"
+                app:useTextHeader="h5"
+                app:useFontStyle="normal"
+                tools:text="IP1102"
+                android:text="@{DateTimeUtils.INSTANCE.strToStr(orderInfo.createDate,DateTimeUtils.Format.YYYY_MM_DD_HH_MM_SS,DateTimeUtils.Format.MM_DD_YYYY_HH_MM)}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+        </LinearLayout>
+    </LinearLayout>
+</layout>

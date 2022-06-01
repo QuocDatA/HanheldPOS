@@ -27,12 +27,13 @@ class OrdersMenuGroupAdapter(private val listener : BaseItemClickListener<OrderS
         position: Int
     ) {
         val item = getItem(position)
+        holder.bindItem(item)
         val binding = holder.binding as ItemOrdersMenuGroupBinding
-
         binding.title.text = item.createDate
 
         binding.groupTitle.setOnClickListener {
-            binding.isCollapse = ! (binding.isCollapse ?: false)
+            item.isCollapse = !item.isCollapse
+            notifyItemChanged(position)
         }
         val adapter = OrdersMenuAdapter(listener = listener)
         binding.listOrders.apply {

@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="com.hanheldpos.utils.PriceUtils" />
+
+        <variable
+            name="viewModel"
+            type="com.hanheldpos.ui.screens.menu.order_detail.OrderDetailViewVM" />
+
+        <variable
+            name="order"
+            type="com.hanheldpos.model.order.OrderModel" />
+    </data>
+
+    <LinearLayout style="@style/RootLayout">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_42sdp"
+            android:background="@color/color_2"
+            android:orientation="horizontal">
+
+            <ImageButton
+                style="@style/MaterialButton.Icon"
+                android:layout_height="match_parent"
+                android:layout_gravity="center|start"
+                android:adjustViewBounds="true"
+                android:backgroundTint="@color/textPrimary"
+                android:onClickDebounce="@{v -> viewModel.onFragmentBackPressed()}"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_baseline_arrow_back_ios_13"
+                tools:ignore="ContentDescription" />
+
+
+            <com.diadiem.pos_components.PTextView
+                android:id="@+id/header_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/order_details"
+                app:useFontStyle="bold"
+                app:useTextColor="color4"
+                app:useTextHeader="h4" />
+
+            <include
+                layout="@layout/divider_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_gravity="bottom" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center|end"
+                android:orientation="horizontal">
+
+            </LinearLayout>
+
+        </FrameLayout>
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                visibleObject="@{order}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="@dimen/_9sdp">
+
+                <include
+                    layout="@layout/layout_address_customer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="@dimen/_11sdp"
+                    android:visibility="@{order.orderDetail.billing != null ? View.VISIBLE : View.GONE}"
+                    app:customer="@{order.orderDetail.billing}" />
+
+                <ImageView
+                    visibleObject="@{order.orderDetail.billing}"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_2sdp"
+                    android:src="@drawable/dotted"
+                    tools:ignore="ContentDescription" />
+
+                <include
+                    layout="@layout/layout_order_infor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="@dimen/_11sdp"
+                    android:visibility="@{order.order != null ? View.VISIBLE : View.GONE}"
+                    app:orderInfo="@{order.order}" />
+
+                <ImageView
+                    visibleObject="@{order.order}"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_2sdp"
+                    android:layerType="software"
+                    android:src="@drawable/dotted"
+                    tools:ignore="ContentDescription" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="@dimen/_11sdp"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <com.diadiem.pos_components.PTextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/qty"
+                            app:useFontStyle="bold"
+                            app:useTextColor="color4"
+                            app:useTextHeader="h5" />
+
+                        <com.diadiem.pos_components.PTextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="9"
+                            android:text="@string/items"
+                            app:useFontStyle="bold"
+                            app:useTextColor="color4"
+                            app:useTextHeader="h5" />
+
+                        <com.diadiem.pos_components.PTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/amount"
+                            android:textAlignment="textEnd"
+                            app:useFontStyle="bold"
+                            app:useTextColor="color4"
+                            app:useTextHeader="h5" />
+                    </LinearLayout>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        android:id="@+id/itemList"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_2sdp"
+                    android:layerType="software"
+                    android:src="@drawable/dotted"
+                    tools:ignore="ContentDescription" />
+
+                <com.diadiem.pos_components.PTextView
+                    visibleObject="@{order.orderDetail.order.note}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="@dimen/_11sdp"
+                    android:text="@{`Note : ` + order.orderDetail.order.note}"
+                    app:useFontStyle="normal"
+                    app:useTextColor="color4"
+                    app:useTextHeader="h5"
+                    tools:text="Note : Note" />
+
+                <ImageView
+                    visibleObject="@{order.orderDetail.order.note}"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_2sdp"
+                    android:layerType="software"
+                    android:src="@drawable/dotted"
+                    tools:ignore="ContentDescription" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <com.diadiem.pos_components.PTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="@dimen/_11sdp"
+                        android:text="@string/subtotal"
+                        app:useFontStyle="normal"
+                        app:useTextColor="color4"
+                        app:useTextHeader="h5" />
+
+                    <androidx.legacy.widget.Space
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+
+                    <com.diadiem.pos_components.PTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="@dimen/_11sdp"
+                        android:text="@{PriceUtils.INSTANCE.formatStringPrice(order.orderDetail.order.subtotal)}"
+                        app:useFontStyle="normal"
+                        app:useTextColor="color4"
+                        app:useTextHeader="h5"
+                        tools:text="100,000" />
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_2sdp"
+                    android:layerType="software"
+                    android:src="@drawable/dotted"
+                    tools:ignore="ContentDescription" />
+
+                <LinearLayout
+                    visibleObject="@{order.orderDetail.order.discount > 0}"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <com.diadiem.pos_components.PTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="@dimen/_11sdp"
+                        android:text="@string/discount"
+                        app:useFontStyle="normal"
+                        app:useTextColor="color4"
+                        app:useTextHeader="h5" />
+
+                    <androidx.legacy.widget.Space
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+
+                    <com.diadiem.pos_components.PTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="@dimen/_11sdp"
+                        android:text="@{PriceUtils.INSTANCE.formatStringPrice(order.orderDetail.order.discount)}"
+                        app:useFontStyle="normal"
+                        app:useTextColor="color4"
+                        app:useTextHeader="h5"
+                        tools:text="100,000" />
+                </LinearLayout>
+
+                <ImageView
+                    visibleObject="@{order.orderDetail.order.discount > 0}"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_2sdp"
+                    android:layerType="software"
+                    android:src="@drawable/dotted"
+                    tools:ignore="ContentDescription" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_11sdp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <com.diadiem.pos_components.PTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:text="@string/total"
+                        app:useFontStyle="normal"
+                        app:useTextColor="color4"
+                        app:useTextHeader="h5" />
+
+                    <androidx.legacy.widget.Space
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+
+                    <com.diadiem.pos_components.PTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{PriceUtils.INSTANCE.formatStringPrice(order.orderDetail.order.grandtotal)}"
+                        app:useFontStyle="normal"
+                        app:useTextColor="color4"
+                        app:useTextHeader="h5"
+                        tools:text="100,000" />
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_marginTop="@dimen/_11sdp"
+                    visibleObject="@{order.orderDetail}"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+
+                    />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_11sdp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <com.diadiem.pos_components.PTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/change"
+                        app:useFontStyle="normal"
+                        app:useTextColor="color4"
+                        app:useTextHeader="h5" />
+
+                    <androidx.legacy.widget.Space
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+
+                    <com.diadiem.pos_components.PTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{PriceUtils.INSTANCE.formatStringPrice(order.orderDetail.order.change)}"
+                        app:useFontStyle="normal"
+                        app:useTextColor="color4"
+                        app:useTextHeader="h5"
+                        tools:text="100,000" />
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
+    </LinearLayout>
+</layout>

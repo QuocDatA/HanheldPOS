@@ -4,6 +4,8 @@ import com.hanheldpos.data.api.pojo.order.filter.OrderFilterResp
 import com.hanheldpos.data.api.pojo.order.settings.OrderSettingResp
 import com.hanheldpos.data.api.pojo.order.status.OrderStatusResp
 import com.hanheldpos.data.repository.BaseResponse
+import com.hanheldpos.model.order.OrderModel
+import com.hanheldpos.model.order.OrderSummaryPrimary
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -32,4 +34,18 @@ interface OrderService {
         @Query("endDate") endDate: String?,
         @Query("orderCode") orderCode: String?,
     ): Call<BaseResponse<OrderFilterResp>>
+
+    @GET("order/history/v3")
+    fun getOrderHistory(
+        @Query("userGuid") userGuid: String?,
+        @Query("locationGuid") location: String?,
+        @Query("deviceGuid") deviceGuid: String?,
+        @Query("pageSize") pageSize: Int?,
+        @Query("order_id") lastOrderId: String?,
+    ): Call<BaseResponse<List<OrderSummaryPrimary>>>
+
+    @GET("order/detail")
+    fun getOrderDetail(
+        @Query("order_id") orderId: String?,
+    ): Call<BaseResponse<OrderModel>>
 }

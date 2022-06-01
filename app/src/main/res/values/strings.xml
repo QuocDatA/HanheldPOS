@@ -269,4 +269,8 @@
     <string name="filter">Filter</string>
     <string name="end">End</string>
     <string name="all_dining_options">All Dining Options</string>
+    <string name="order_details">Order Details</string>
+    <string name="order_sharp">Order #</string>
+    <string name="employee">Employee</string>
+    <string name="subtotal">Subtotal</string>
 </resources>

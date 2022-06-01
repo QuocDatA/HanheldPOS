@@ -1,13 +1,10 @@
 package com.hanheldpos.model
 
-import androidx.room.Index
 import com.hanheldpos.data.api.pojo.fee.Fee
 import com.hanheldpos.database.entities.OrderCompletedEntity
 import com.hanheldpos.model.cart.CartModel
 import com.hanheldpos.model.cart.fee.FeeApplyToType
-import com.hanheldpos.model.payment.PaymentOrder
-import com.hanheldpos.model.order.Order
-import com.hanheldpos.model.order.OrderReq
+import com.hanheldpos.model.order.OrderModel
 import com.hanheldpos.model.order.OrderStatus
 
 object OrderHelper {
@@ -65,9 +62,9 @@ object OrderHelper {
         return totalPay >= total
     }
 
-    fun isPaymentSuccess(orderReq: OrderReq): Boolean {
-        val total = orderReq.OrderSummary.GrandTotal ?: 0.0
-        val totalPay = orderReq.OrderDetail.PaymentList?.sumOf {
+    fun isPaymentSuccess(orderModel: OrderModel): Boolean {
+        val total = orderModel.OrderSummary.GrandTotal ?: 0.0
+        val totalPay = orderModel.OrderDetail.PaymentList?.sumOf {
             it.Payable ?: 0.0
         }?: 0.0
         return totalPay >= total

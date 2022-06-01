@@ -1,6 +1,5 @@
 package com.hanheldpos.ui.screens.cart
 
-import com.hanheldpos.model.order.OrderReq
 import com.hanheldpos.model.payment.PaymentOrder
 import com.hanheldpos.ui.base.BaseUserView
 

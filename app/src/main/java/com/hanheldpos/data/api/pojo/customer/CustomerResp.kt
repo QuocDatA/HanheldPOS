@@ -1,6 +1,7 @@
 package com.hanheldpos.data.api.pojo.customer
 
 import android.os.Parcelable
+import com.hanheldpos.model.DataHelper
 import kotlinx.parcelize.Parcelize
 
 
@@ -61,6 +62,24 @@ data class CustomerResp(
 ) : Parcelable {
     fun getFullAddressWithLineBreaker(): String {
         return getFullAddress(true)
+    }
+
+    fun getContactInfo() : String {
+        val result = StringBuilder()
+        var addressType: String? = ""
+        val phoneNumber = Phone
+        DataHelper.addressTypesLocalStorage?.find { addressTypeResp -> addressTypeResp.AddressTypeId == AddressTypeId }
+            ?.let { address ->
+                addressType = address.AddressTypeEn
+            }
+
+        if (!addressType.isNullOrEmpty() || !phoneNumber.isNullOrEmpty())
+           result.append("$addressType${if (addressType.isNullOrEmpty() && phoneNumber.isNullOrEmpty()) "" else " | "}$phoneNumber")
+        Note?.let { note ->
+            result.append('\n')
+            result.append(note)
+        }
+        return result.toString()
     }
 
     private fun getFullAddress(isLineBreaked: Boolean = false): String {

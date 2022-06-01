@@ -1,25 +1,17 @@
 package com.hanheldpos.model.printer
 
-import android.app.Activity
 import android.content.Context
-import android.graphics.Color
-import android.graphics.drawable.Drawable
 import android.os.StrictMode
 import android.util.Log
-import androidx.core.content.ContextCompat
-import androidx.core.graphics.drawable.DrawableCompat
 import com.handheld.printer.PrintConstants
 import com.handheld.printer.interfaces.BluetoothPrinterManager
 import com.handheld.printer.interfaces.LanPrinterManager
 import com.handheld.printer.interfaces.UrovoPrinterManager
 import com.handheld.printer.printer_manager.BasePrinterManager
-import com.hanheldpos.model.order.Order
-import com.hanheldpos.model.order.OrderReq
+import com.hanheldpos.model.order.OrderModel
 import com.hanheldpos.model.printer.layouts.BaseLayoutPrinter
 import com.hanheldpos.model.printer.layouts.BaseLayoutPrinterFactory
 import java.lang.Exception
-import java.net.ConnectException
-import java.util.concurrent.TimeoutException
 
 class BillPrinterManager private constructor() {
 
@@ -207,7 +199,7 @@ class BillPrinterManager private constructor() {
 
     fun print(
         context: Context,
-        order: OrderReq,
+        order: OrderModel,
         layoutType: BaseLayoutPrinter.LayoutType
     ): BillPrinterManager {
         printer?.performPrinterAction {
@@ -242,12 +234,11 @@ class BillPrinterManager private constructor() {
 
     private fun printBill(
         context: Context,
-        order: OrderReq,
+        order: OrderModel,
         layoutType: BaseLayoutPrinter.LayoutType
     ) {
         printer ?: return
         BaseLayoutPrinterFactory.getLayout(
-            context,
             order,
             printer!!,
             printOptions,
@@ -261,7 +252,7 @@ class BillPrinterManager private constructor() {
 
     private fun printImageBill(
         context: Context,
-        order: OrderReq
+        order: OrderModel
     ) {
 
     }

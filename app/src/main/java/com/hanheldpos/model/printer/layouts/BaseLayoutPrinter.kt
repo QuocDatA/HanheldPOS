@@ -1,18 +1,16 @@
 package com.hanheldpos.model.printer.layouts
 
-import android.content.Context
 import com.handheld.printer.printer_manager.BasePrinterManager
 import com.handheld.printer.wagu.Block
 import com.handheld.printer.wagu.WaguUtils
 import com.hanheldpos.model.DataHelper
-import com.hanheldpos.model.order.OrderReq
+import com.hanheldpos.model.order.OrderModel
 import com.hanheldpos.model.printer.BillPrinterManager
 import com.hanheldpos.utils.DateTimeUtils
 import com.hanheldpos.utils.StringUtils
 
 abstract class BaseLayoutPrinter(
-    protected val context: Context,
-    protected val order: OrderReq,
+    protected val order: OrderModel,
     protected val printer: BasePrinterManager,
     protected val printOptions: BillPrinterManager.PrintOptions
 ) {
