@@ -9,6 +9,10 @@ import com.hanheldpos.data.repository.BaseResponse
 import com.hanheldpos.data.repository.base.BaseRepoCallback
 import com.hanheldpos.data.repository.discount.DiscountRepo
 import com.hanheldpos.model.DataHelper
+import com.hanheldpos.model.buy_x_get_y.BuyXGetY
+import com.hanheldpos.model.buy_x_get_y.GroupBuyXGetY
+import com.hanheldpos.model.buy_x_get_y.GroupType
+import com.hanheldpos.model.buy_x_get_y.ItemBuyXGetYGroup
 import com.hanheldpos.model.cart.CartConverter
 import com.hanheldpos.model.discount.DiscountTypeEnum
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
@@ -18,6 +22,7 @@ import com.hanheldpos.utils.GSonUtils
 class DiscountCodeVM : BaseUiViewModel<DiscountCodeUV>() {
 
     val isLoading = MutableLiveData<Boolean>(false);
+    var buyXGetY = MutableLiveData<BuyXGetY>()
     private val discountRepo = DiscountRepo()
     fun initData() {
         searchDiscountCode()
@@ -75,5 +80,35 @@ class DiscountCodeVM : BaseUiViewModel<DiscountCodeUV>() {
                     showError(message)
                 }
             })
+    }
+
+    fun initDefaultBuyXGetY(disc: DiscountResp): BuyXGetY {
+        val groupList: MutableList<GroupBuyXGetY> = mutableListOf()
+
+        buyXGetY.value = BuyXGetY(
+            discount = disc,
+            null,
+            null,
+            diningOption = CurCartData.cartModel?.diningOption!!,
+            quantity = 1,
+            null,
+            null,
+            null,
+            null,
+            null
+        )
+
+        for (index in 0..1)
+            groupList.add(
+                GroupBuyXGetY(
+                    parentDisc_Id = disc._id,
+                    condition = if (index == 0) disc.Condition.CustomerBuys else disc.Condition.CustomerGets,
+                    type = if (index == 0) GroupType.BUY else GroupType.GET
+                )
+            )
+
+        buyXGetY.value!!.groupList = groupList
+
+        return buyXGetY.value!!
     }
 }

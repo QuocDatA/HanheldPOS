@@ -18,7 +18,7 @@ data class CustomerGets(
     val DiscountValue: Double,
     val DiscountValueType: Int,
     val Handle: String,
-    val ListApplyTo: List<Product>,
+    var ListApplyTo: List<Product>,
     val ProductApplyTo: ChooseProductApplyTo?,
     val Quantity: Int
 ) : Parcelable {

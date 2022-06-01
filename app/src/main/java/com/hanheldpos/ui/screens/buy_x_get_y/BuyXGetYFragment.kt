@@ -25,10 +25,11 @@ import com.hanheldpos.ui.screens.product.ProductDetailFragment
 import okhttp3.internal.notify
 
 class BuyXGetYFragment(
+    private val buyXGetY: BuyXGetY,
     private val discount: DiscountResp,
     private val actionType: ItemActionType,
     private val quantityCanChoose: Int = -1,
-    private val onApplyDiscountBuyXGetY: (discount: DiscountResp, buyXGetY: BuyXGetY) -> Unit,
+    private val listener: OrderFragment.OrderMenuListener
 ) :
     BaseFragment<FragmentBuyXGetYBinding, BuyXGetYVM>(), BuyXGetYUV {
     override fun layoutRes(): Int = R.layout.fragment_buy_x_get_y
@@ -80,9 +81,10 @@ class BuyXGetYFragment(
     }
 
     override fun initData() {
+        viewModel.buyXGetY.value = buyXGetY
         viewModel.actionType.value = actionType
         viewModel.maxQuantity = quantityCanChoose
-        val listItemBuyXGetYGroup = viewModel.initDefaultList(discount)
+        val listItemBuyXGetYGroup = viewModel.initDefaultList()
         buyXGetYGroupAdapter.submitList(listItemBuyXGetYGroup)
     }
 
@@ -107,6 +109,7 @@ class BuyXGetYFragment(
                 }
                 buyXGetYGroupAdapter.notifyDataSetChanged()
                 viewModel.buyXGetY.notifyValueChange()
+                viewModel.buyXGetY.value
             }
             else -> {
                 baseItem.proOriginal.let {
@@ -140,22 +143,10 @@ class BuyXGetYFragment(
                         )
                     } else {
                         val combo = ComboFragment(
-                            combo = Combo(
-                                it,
-                                it.groupComboList.map { pro ->
-                                    GroupBundle(
-                                        pro,
-                                        mutableListOf()
-                                    )
-                                },
-                                CurCartData.cartModel?.diningOption!!,
-                                1,
-                                it.skuDefault,
-                                it.Variants,
-                                null
-                            ),
+                            combo = (baseItem as Combo).clone(),
                             action = action,
                             quantityCanChoose = maxQuantity,
+                            isDiscountBuyXGetY = true,
                             listener = object : OrderFragment.OrderMenuListener {
                                 override fun onCartAdded(
                                     item: BaseProductInCart,
@@ -182,7 +173,7 @@ class BuyXGetYFragment(
     }
 
     override fun cartAdded(item: BaseProductInCart, action: ItemActionType) {
-        onApplyDiscountBuyXGetY(discount, item as BuyXGetY)
+        listener.onCartAdded(item , action)
         onFragmentBackPressed()
     }
 }

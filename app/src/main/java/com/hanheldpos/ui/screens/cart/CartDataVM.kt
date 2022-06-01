@@ -28,6 +28,7 @@ class CartDataVM : BaseViewModel() {
 
     val cartModelLD: MutableLiveData<CartModel> = MutableLiveData()
     val currentTableFocus: MutableLiveData<FloorTable> = MutableLiveData()
+    var discountResp: MutableLiveData<DiscountResp> = MutableLiveData()
 
     val diningOptionLD: LiveData<DiningOption> = Transformations.map(cartModelLD) {
         return@map it?.diningOption
@@ -202,6 +203,7 @@ class CartDataVM : BaseViewModel() {
 
     fun addBuyXGetY(disc: DiscountResp, buyXGetY: BuyXGetY) {
         this.cartModelLD.value?.productsList?.add(buyXGetY)
+        this.discountResp.postValue(disc)
         notifyCartChange()
     }
 

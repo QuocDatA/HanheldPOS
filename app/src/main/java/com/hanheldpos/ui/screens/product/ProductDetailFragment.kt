@@ -253,8 +253,9 @@ class ProductDetailFragment(
 
     override fun onAddCart(item: BaseProductInCart) {
         // Check if product is combo or regular to check discount
-        if (productBundle == null && viewModel.numberQuantity.value ?: 0 > 0 && (viewModel.isValidDiscount.value == false && action == ItemActionType.Modify) && !isDiscountBuyXGetY!!)
-            return
+        if (productBundle == null && (viewModel.numberQuantity.value
+                ?: 0) > 0 && (viewModel.isValidDiscount.value == false && action == ItemActionType.Modify) && !isDiscountBuyXGetY!!
+        ) return
 
         requireActivity().supportFragmentManager.setFragmentResult(
             "saveDiscount",

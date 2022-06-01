@@ -30,6 +30,7 @@ import com.hanheldpos.model.discount.DiscountUser
 import com.hanheldpos.model.product.ProductType
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
+import com.hanheldpos.ui.screens.buy_x_get_y.BuyXGetYFragment
 import com.hanheldpos.ui.screens.cart.adapter.CartDiningOptionAdapter
 import com.hanheldpos.ui.screens.cart.adapter.CartDiscountAdapter
 import com.hanheldpos.ui.screens.cart.adapter.CartProductAdapter
@@ -377,6 +378,17 @@ class CartFragment(private val listener: CartCallBack) :
                         combo = (item as Combo).clone(),
                         action = ItemActionType.Modify,
                         quantityCanChoose = 1000,
+                        listener = callbackEdit
+                    )
+                )
+            }
+            ProductType.BUYX_GETY_DISC -> {
+                navigator.goTo(
+                    BuyXGetYFragment(
+                        buyXGetY = (item as BuyXGetY).clone(),
+                        discount = item.clone().disc!!,
+                        actionType = ItemActionType.Modify,
+                        quantityCanChoose = 1,
                         listener = callbackEdit
                     )
                 )

@@ -33,7 +33,8 @@ class ComboFragment(
     private val combo: Combo,
     private val quantityCanChoose: Int = -1,
     private val action: ItemActionType,
-    private val listener: OrderFragment.OrderMenuListener
+    private val listener: OrderFragment.OrderMenuListener,
+    private val isDiscountBuyXGetY: Boolean? = false,
 ) : BaseFragment<FragmentComboBinding, ComboVM>(), ComboUV {
 
     private val cartDataVM by activityViewModels<CartDataVM>()
@@ -56,6 +57,9 @@ class ComboFragment(
     }
 
     override fun initView() {
+        // check to show discount fragment
+        binding.isDiscountBuyXGetY = isDiscountBuyXGetY
+
         comboGroupAdapter = ComboGroupAdapter(
             proOriginal = combo.proOriginal!!, listener = object : ComboGroupAdapter.ItemListener {
             override fun onProductSelect(
@@ -186,7 +190,9 @@ class ComboFragment(
 
 
     override fun cartAdded(item: BaseProductInCart, action: ItemActionType) {
-        if (viewModel.numberQuantity.value ?: 0 > 0 && (viewModel.isValidDiscount.value == false && action == ItemActionType.Modify)) return;
+        if ((viewModel.numberQuantity.value
+                ?: 0) > 0 && (viewModel.isValidDiscount.value == false && action == ItemActionType.Modify) && !isDiscountBuyXGetY!!
+        ) return;
         requireActivity().supportFragmentManager.setFragmentResult("saveDiscount", Bundle().apply { putSerializable("DiscountTypeFor", viewModel.typeDiscountSelect) });
         onBack();
         listener.onCartAdded(item, action);

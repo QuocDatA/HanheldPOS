@@ -7,15 +7,11 @@
 
         <variable
             name="item"
-            type="com.hanheldpos.model.buy_x_get_y.GroupBuyXGetY" />
+            type="com.hanheldpos.model.cart.GroupBundle" />
 
         <variable
             name="position"
             type="int" />
-
-        <variable
-            name="isShowDetail"
-            type="Boolean" />
     </data>
 
     <LinearLayout
@@ -30,21 +26,16 @@
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
-            <LinearLayout
-                android:layout_width="@dimen/_11sdp"
-                android:layout_height="@dimen/_11sdp"
-                android:background="@drawable/bg_cart_number"
-                android:gravity="center">
 
-                <com.diadiem.pos_components.PTextView
-                    android:includeFontPadding="false"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@{String.valueOf(position)}"
-                    app:useTextColor="color2"
-                    app:useTextHeader="h7"
-                    tools:text="1" />
-            </LinearLayout>
+            <com.diadiem.pos_components.PTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:includeFontPadding="false"
+                android:text="@{String.valueOf(position) + '.'}"
+                app:useTextColor="color5"
+                app:useTextHeader="h6"
+                tools:text="1." />
+
 
             <com.diadiem.pos_components.PTextView
                 android:layout_width="wrap_content"
@@ -57,7 +48,6 @@
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
-            visibleObject="@{isShowDetail}"
             android:id="@+id/cartComboGroupDetailRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

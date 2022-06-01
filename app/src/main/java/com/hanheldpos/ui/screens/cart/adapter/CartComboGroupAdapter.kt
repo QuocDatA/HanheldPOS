@@ -3,8 +3,7 @@ package com.hanheldpos.ui.screens.cart.adapter
 import androidx.recyclerview.widget.DiffUtil
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.product.Product
-import com.hanheldpos.databinding.BuyXGetYItemComboGroupBinding
-import com.hanheldpos.databinding.CartItemComboGroupBinding
+import com.hanheldpos.databinding.*
 import com.hanheldpos.model.cart.BaseProductInCart
 import com.hanheldpos.model.cart.GroupBundle
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
@@ -12,11 +11,15 @@ import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
 
 class CartComboGroupAdapter(
     private val productOrigin: Product,
-    private val isBuyXGetY: Boolean? = false
+    private val isBuyXGetY: Boolean? = false,
+    private val isInCart: Boolean? = false
 ) : BaseBindingListAdapter<GroupBundle>(DiffCallback()) {
 
     override fun getItemViewType(position: Int): Int {
-        return if (isBuyXGetY == false) R.layout.cart_item_combo_group else R.layout.buy_x_get_y_item_combo_group
+        return if (isBuyXGetY == false) {
+            R.layout.cart_item_combo_group
+        } else if(isInCart == false) R.layout.buy_x_get_y_item_combo_group
+        else R.layout.item_cart_buy_x_get_y_combo_group_detail
     }
 
     override fun onBindViewHolder(holder: BaseBindingViewHolder<GroupBundle>, position: Int) {
@@ -34,7 +37,7 @@ class CartComboGroupAdapter(
                 submitList(productList as List<BaseProductInCart>)
             }
             binding.cartComboGroupDetailRecyclerView.adapter = cartComboGroupDetailAdapter
-        } else {
+        } else if(isInCart == false) {
             val binding = (holder.binding as BuyXGetYItemComboGroupBinding)
             binding.position = position + 1
             val cartComboGroupDetailAdapter = CartComboGroupDetailAdapter(
@@ -46,8 +49,18 @@ class CartComboGroupAdapter(
                 submitList(productList as List<BaseProductInCart>)
             }
             binding.cartComboGroupDetailRecyclerView.adapter = cartComboGroupDetailAdapter
+        } else {
+            val binding = (holder.binding as ItemCartBuyXGetYComboGroupDetailBinding)
+            binding.position = position + 1
+            val cartComboGroupDetailAdapter = CartComboGroupDetailAdapter(
+                groupBundle = item,
+                productBundle = productOrigin,
+            ).apply {
+                val productList = item.productList.toMutableList()
+                submitList(productList as List<BaseProductInCart>)
+            }
+            binding.cartComboGroupDetailRecyclerView.adapter = cartComboGroupDetailAdapter
         }
-
     }
 
 

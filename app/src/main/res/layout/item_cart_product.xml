@@ -179,7 +179,7 @@
                         <include
                             layout="@layout/cart_product_detail_line"
                             app:isOtherFee="@{true}"
-                            visibleObject="@{!item.fees.empty}"
+                            visibleObject="@{!item.fees.empty &amp;&amp; item.fees != null}"
                             app:lineText="@{`Other fees `}"
                             app:priceDiscMinus="@{item.totalFee()}"/>
 

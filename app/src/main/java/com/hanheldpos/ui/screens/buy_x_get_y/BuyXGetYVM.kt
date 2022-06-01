@@ -8,7 +8,10 @@ import com.hanheldpos.data.api.pojo.discount.CustomerBuys
 import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.data.api.pojo.fee.CustomerGets
 import com.hanheldpos.extension.notifyValueChange
-import com.hanheldpos.model.buy_x_get_y.*
+import com.hanheldpos.model.buy_x_get_y.BuyXGetY
+import com.hanheldpos.model.buy_x_get_y.CustomerDiscApplyTo
+import com.hanheldpos.model.buy_x_get_y.GroupBuyXGetY
+import com.hanheldpos.model.buy_x_get_y.ItemBuyXGetYGroup
 import com.hanheldpos.model.cart.Combo
 import com.hanheldpos.model.cart.Regular
 import com.hanheldpos.model.combo.ItemActionType
@@ -45,31 +48,7 @@ class BuyXGetYVM : BaseUiViewModel<BuyXGetYUV>() {
         totalPriceLD.value = buyXGetY.value?.total()
     }
 
-    fun initDefaultList(disc: DiscountResp): MutableList<ItemBuyXGetYGroup>? {
-        val groupList: MutableList<GroupBuyXGetY> = mutableListOf()
-
-        buyXGetY.value = BuyXGetY(
-            discount = disc,
-            null,
-            null,
-            diningOption = CurCartData.cartModel?.diningOption!!,
-            quantity = 1,
-            null,
-            null,
-            null,
-            null,
-        )
-
-        for (index in 0..1)
-            groupList.add(
-                GroupBuyXGetY(
-                    parentDisc_Id = disc._id,
-                    condition = if (index == 0) disc.Condition.CustomerBuys else disc.Condition.CustomerGets,
-                    type = if (index == 0) GroupType.BUY else GroupType.GET
-                )
-            )
-
-        buyXGetY.value!!.groupList = groupList
+    fun initDefaultList(): MutableList<ItemBuyXGetYGroup>? {
 
         buyXGetY.value!!.groupList?.map { groupBuyXGetY ->
             initItemGroupBuyXGetY(groupBuyXGetY, isBuyComplete())
@@ -140,7 +119,7 @@ class BuyXGetYVM : BaseUiViewModel<BuyXGetYUV>() {
             }
             ItemActionType.Modify -> {
                 if ((item.quantity ?: 0) <= 0) {
-                    group.productList.remove(item);
+                    group.productList.removeIf { product -> (product as Combo).proOriginal?._id == (item).proOriginal?._id }
                 } else {
                     group.productList.find { it.proOriginal?._id == item.proOriginal?._id }?.let { regular ->
                         val index = group.productList.indexOf(regular)
@@ -150,7 +129,7 @@ class BuyXGetYVM : BaseUiViewModel<BuyXGetYUV>() {
 
             }
             ItemActionType.Remove -> {
-                group.productList.remove(item);
+                group.productList.removeIf { product -> (product as Combo).proOriginal?._id == (item).proOriginal?._id }
             }
         }
     }
