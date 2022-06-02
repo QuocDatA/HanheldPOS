@@ -9,9 +9,10 @@ import android.view.WindowManager
 import androidx.activity.viewModels
 import androidx.fragment.app.activityViewModels
 import com.handheld.printer.PrintConstants
+import com.handheld.printer.printer_setup.PrintOptions
 import com.hanheldpos.R
 import com.hanheldpos.databinding.ActivityMainBinding
-import com.hanheldpos.model.printer.BillPrinterManager
+import com.hanheldpos.printer.BillPrinterManager
 import com.hanheldpos.ui.base.activity.BaseFragmentBindingActivity
 import com.hanheldpos.ui.base.dialog.AppAlertDialog
 import com.hanheldpos.ui.base.fragment.FragmentNavigator
@@ -67,21 +68,6 @@ class MainActivity : BaseFragmentBindingActivity<ActivityMainBinding, MainVM>(),
     }
 
     override fun initAction() {
-        CoroutineScope(Dispatchers.IO).launch {
-            BillPrinterManager.init(
-                this@MainActivity,
-                BillPrinterManager.PrintOptions(
-                    connectionType = BillPrinterManager.PrintConnectionType.BLUETOOTH,
-                    deviceType = BillPrinterManager.PrinterDeviceInfo.DeviceType.UROVO
-                ).setUpLan(BillPrinterManager.PrintOptions.LanConfig(PrintConstants.LAN_PORT,PrintConstants.LAN_ADDRESS)),
-                onConnectionFailed = {ex->
-                    launch(Dispatchers.Main) {
-                        showMessage(ex.message)
-                    }
-
-                }
-            )
-        }
 
     }
 

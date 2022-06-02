@@ -1,4 +1,4 @@
-package com.example.pos2.printer_setup.interfaces
+package com.handheld.printer.printer_setup.interfaces
 
 import android.annotation.SuppressLint
 import android.device.PrinterManager
@@ -7,7 +7,7 @@ import android.graphics.Bitmap
 import android.os.Handler
 import android.os.Looper
 import android.os.Message
-import com.example.pos2.printer_setup.printer_manager.BasePrinterManager
+import com.handheld.printer.printer_setup.printer_manager.BasePrinterManager
 
 class UrovoPrinterManager : BasePrinterManager() {
 

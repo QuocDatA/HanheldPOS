@@ -1,7 +1,7 @@
-package com.example.pos2.printer_setup
+package com.handheld.printer.printer_setup
 
-import com.example.pos2.printer_setup.device_info.DeviceInfo
-import com.example.pos2.printer_setup.device_info.DeviceType
+import com.handheld.printer.printer_setup.device_info.DeviceInfo
+import com.handheld.printer.printer_setup.device_info.DeviceType
 
 class PrintOptions private constructor(
     val connectionType: PrintConnectionType,

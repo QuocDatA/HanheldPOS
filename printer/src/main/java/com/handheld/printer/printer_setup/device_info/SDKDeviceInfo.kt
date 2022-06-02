@@ -1,4 +1,7 @@
-package com.example.pos2.printer_setup.device_info
+package com.handheld.printer.printer_setup.device_info
+
+import com.handheld.printer.printer_setup.device_info.DeviceInfo
+import com.handheld.printer.printer_setup.device_info.DeviceType
 
 class SDKDeviceInfo(private val deviceType: DeviceType.SDK.Types) : DeviceInfo() {
     override fun paperWidth(): Float = 383f

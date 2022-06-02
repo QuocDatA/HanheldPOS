@@ -1,21 +1,22 @@
-package com.hanheldpos.printer.layouts
+package com.hanheldpos.printer.layouts.order
 
-import com.handheld.printer.printer_manager.BasePrinterManager
+import com.handheld.printer.printer_setup.PrintOptions
+import com.handheld.printer.printer_setup.printer_manager.BasePrinterManager
 import com.handheld.printer.wagu.Block
 import com.handheld.printer.wagu.WaguUtils
 import com.hanheldpos.model.order.OrderModel
 import com.hanheldpos.model.order.ProductChosen
-import com.hanheldpos.printer.BillPrinterManager
 import com.hanheldpos.model.product.ExtraConverter
 import com.hanheldpos.utils.StringUtils
 
-open class KitchenLayout(
 
+open class KitchenLayout(
     order: OrderModel,
     printer: BasePrinterManager,
-    printOptions: BillPrinterManager.PrintOptions
-) : BaseLayoutPrinter(
-    order, printer, printOptions
+    printOptions: PrintOptions,
+    isReprint: Boolean,
+) : BaseLayoutOrder(
+    order, printer, printOptions, isReprint
 ) {
 
 
@@ -28,7 +29,7 @@ open class KitchenLayout(
 
 
     override fun print() {
-        printBillStatus(false)
+        printBillStatus()
         feedLines(printOptions.deviceInfo.linesFeed(1))
 
         printOrderInfo()
@@ -132,7 +133,7 @@ open class KitchenLayout(
                 )
             ).toString(),
             false,
-            BasePrinterManager.FontSize.Medium
+            BasePrinterManager.FontSize.Large
         )
     }
 }

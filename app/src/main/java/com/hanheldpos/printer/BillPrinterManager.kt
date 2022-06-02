@@ -1,4 +1,4 @@
-package com.hanheldpos.model.printer
+package com.hanheldpos.printer
 
 import android.content.Context
 import android.os.StrictMode
@@ -7,111 +7,20 @@ import com.handheld.printer.PrintConstants
 import com.handheld.printer.interfaces.BluetoothPrinterManager
 import com.handheld.printer.interfaces.LanPrinterManager
 import com.handheld.printer.interfaces.UrovoPrinterManager
-import com.handheld.printer.printer_manager.BasePrinterManager
+import com.handheld.printer.printer_setup.PrintConnectionType
+import com.handheld.printer.printer_setup.PrintOptions
+import com.handheld.printer.printer_setup.device_info.DeviceType
+import com.handheld.printer.printer_setup.printer_manager.BasePrinterManager
 import com.hanheldpos.model.order.OrderModel
-import com.hanheldpos.model.printer.layouts.BaseLayoutPrinter
-import com.hanheldpos.model.printer.layouts.BaseLayoutPrinterFactory
+import com.hanheldpos.printer.layouts.LayoutType
+import com.hanheldpos.printer.layouts.order.CashierLayout
+import com.hanheldpos.printer.layouts.order.KitchenLayout
+import com.hanheldpos.printer.layouts.report.InventoryLayout
 import java.lang.Exception
 
 class BillPrinterManager private constructor() {
 
-    // region classes
-
-    /**
-     * Whether should print by image or text
-     * */
-    enum class PrintMethod {
-        TEXT,
-        IMAGE
-    }
-
-    enum class PrintConnectionType {
-        LAN,
-        BLUETOOTH,
-    }
-
-    class PrinterDeviceInfo(val deviceType: DeviceType) {
-        enum class DeviceType {
-            HANDHELD,
-            POS,
-            UROVO // SDK
-        }
-
-        fun printerDPI(): Int = 203
-
-        fun paperWidth(): Float = when (deviceType) {
-            DeviceType.POS -> 72f
-            DeviceType.HANDHELD -> 48f
-            DeviceType.UROVO -> 383f
-        }
-
-        fun charsPerLineNormal(): Int = when (deviceType) {
-            DeviceType.POS -> 48
-            DeviceType.HANDHELD -> 32
-            DeviceType.UROVO -> 32
-        }
-
-        fun charsPerLineLarge(): Int = when (deviceType) {
-            DeviceType.POS -> 24
-            DeviceType.HANDHELD -> 16
-            DeviceType.UROVO -> 22
-        }
-
-        // Number of characters per left column
-        fun leftColumnWidth(): Int = when (deviceType) {
-            DeviceType.HANDHELD -> 4
-            DeviceType.POS -> 6
-            DeviceType.UROVO -> 4
-        }
-
-        // Number of characters per center column
-        fun centerColumnWidth(): Int =
-            charsPerLineNormal() - leftColumnWidth() - rightColumnWidth()
-
-        // Number of characters per right column
-        fun rightColumnWidth(): Int = when (deviceType) {
-            DeviceType.HANDHELD -> 9
-            DeviceType.POS -> 9
-            DeviceType.UROVO -> 9
-        }
-
-        fun linesFeed(numLines: Int): Int = when (deviceType) {
-            DeviceType.HANDHELD, DeviceType.POS -> 1 * numLines
-            DeviceType.UROVO -> 60 * numLines
-        }
-    }
-
-    class PrintOptions(
-        val printMethod: PrintMethod = PrintMethod.TEXT,
-        val connectionType: PrintConnectionType,
-        val deviceType: PrinterDeviceInfo.DeviceType,
-    ) {
-        val deviceInfo = PrinterDeviceInfo(deviceType)
-        var lanConfig: LanConfig? = null
-
-        class LanConfig(
-            var port: Int? = null,
-            var ipAddress: String? = null,
-            var timeOut: Int? = 30000
-        ) {
-            override fun toString(): String {
-                return "Port: $port, ipAddress: $ipAddress"
-            }
-        }
-
-        fun setUpLan(lanConfig: LanConfig): PrintOptions {
-            this.lanConfig = lanConfig
-            return this
-        }
-
-        override fun toString(): String {
-            return "Print method: ${printMethod.name}, Connection Type: ${connectionType.name}, Device Type: ${deviceInfo.deviceType.name}, Lan Configuration: ${lanConfig ?: "Not Config"}"
-        }
-    }
-
-    // endregion
-
-    // region Singleton
+// region Singleton
 
     companion object {
         @Volatile
@@ -138,42 +47,51 @@ class BillPrinterManager private constructor() {
                 if (instance.isConnected()) return instance
 
                 instance.apply {
-                    if (printOptions.deviceInfo.deviceType == PrinterDeviceInfo.DeviceType.UROVO) {
-                        printer = UrovoPrinterManager()
-                        printer?.connect()
-                    } else {
-                        printer = when (printOptions.connectionType) {
-                            PrintConnectionType.LAN -> {
-                                val policy = StrictMode
-                                    .ThreadPolicy
-                                    .Builder()
-                                    .permitAll()
-                                    .build()
 
-                                StrictMode.setThreadPolicy(policy)
-
-                                LanPrinterManager(
-                                    ipAddress = printOptions.lanConfig?.ipAddress ?: "",
-                                    port = printOptions.lanConfig?.port ?: 0,
-                                    timeout = printOptions.lanConfig?.timeOut,
-                                    printerDPI = printOptions.deviceInfo.printerDPI(),
-                                    printerPaperWidth = printOptions.deviceInfo.paperWidth(),
-                                    charsPerLine = printOptions.deviceInfo.charsPerLineNormal()
-                                )
+                    when (printingOptions.deviceType) {
+                        is DeviceType.SDK -> {
+                            when ((printingOptions.deviceType as DeviceType.SDK).type) {
+                                DeviceType.SDK.Types.UROVO -> {
+                                    printer = UrovoPrinterManager()
+                                    printer?.connect()
+                                }
+                                else -> {}
                             }
-                            PrintConnectionType.BLUETOOTH -> {
-                                BluetoothPrinterManager(
-                                    context = context,
-                                    printerDPI = printOptions.deviceInfo.printerDPI(),
-                                    printerPaperWidth = printOptions.deviceInfo.paperWidth(),
-                                    charsPerLine = printOptions.deviceInfo.charsPerLineNormal(),
-                                )
+                        }
+                        is DeviceType.NO_SDK -> {
+                            printer = when (printingOptions.connectionType) {
+                                PrintConnectionType.LAN -> {
+                                    val policy = StrictMode
+                                        .ThreadPolicy
+                                        .Builder()
+                                        .permitAll()
+                                        .build()
+
+                                    StrictMode.setThreadPolicy(policy)
+
+                                    LanPrinterManager(
+                                        ipAddress = printOptions.lanConfig.ipAddress,
+                                        port = printOptions.lanConfig.port,
+                                        timeout = printOptions.lanConfig.timeOut,
+                                        printerDPI = printOptions.deviceInfo.printerDPI(),
+                                        printerPaperWidth = printOptions.deviceInfo.paperWidth(),
+                                        charsPerLine = printOptions.deviceInfo.charsPerLineNormal()
+                                    )
+                                }
+                                PrintConnectionType.BLUETOOTH -> {
+                                    BluetoothPrinterManager(
+                                        context = context,
+                                        printerDPI = printOptions.deviceInfo.printerDPI(),
+                                        printerPaperWidth = printOptions.deviceInfo.paperWidth(),
+                                        charsPerLine = printOptions.deviceInfo.charsPerLineNormal(),
+                                    )
+                                }
                             }
                         }
                     }
 
                     if (!instance.isConnected()) {
-                        throw PrinterException("")
+                        throw PrinterException("Printer is not connected")
                     }
 
                     Log.d(PrintConstants.TAG, "Printer initialized.")
@@ -194,29 +112,53 @@ class BillPrinterManager private constructor() {
         }
     }
 
-    // endregion
+// endregion
 
+// region printer methods
 
-    fun print(
-        context: Context,
+    fun printBill(
         order: OrderModel,
-        layoutType: BaseLayoutPrinter.LayoutType
+        layoutType: LayoutType.Order,
+        isReprint: Boolean,
     ): BillPrinterManager {
+
         printer?.performPrinterAction {
-            if (printOptions.printMethod == PrintMethod.TEXT) {
-                printBill(context, order, layoutType)
-            } else if (printOptions.printMethod == PrintMethod.IMAGE) {
-                printImageBill(context, order)
-            }
+
+            when (layoutType) {
+                LayoutType.Order.Cashier -> CashierLayout(
+                    order, printer!!, printOptions, isReprint
+                )
+                LayoutType.Order.Kitchen -> KitchenLayout(
+                    order, printer!!, printOptions, isReprint
+                )
+            }.print()
         }
+
         return this
     }
+
+    fun printReport(
+        layoutType: LayoutType.Report,
+        startDate: String,
+        endDate: String,
+    ) {
+        printer?.performPrinterAction {
+            when (layoutType) {
+                LayoutType.Report.Inventory -> {
+                    InventoryLayout(printer!!, printOptions, startDate, endDate, emptyMap())
+                }
+                LayoutType.Report.Overview -> {
+                    InventoryLayout(printer!!, printOptions, startDate, endDate, emptyMap())
+                }
+            }.print()
+        }
+    }
+
 
     fun openCashDrawer(): BillPrinterManager {
         printer?.performPrinterAction {
             printer?.openCashDrawer()
         }
-
         return this
     }
 
@@ -229,34 +171,5 @@ class BillPrinterManager private constructor() {
         return isConnected
     }
 
-
-    // region print bill text
-
-    private fun printBill(
-        context: Context,
-        order: OrderModel,
-        layoutType: BaseLayoutPrinter.LayoutType
-    ) {
-        printer ?: return
-        BaseLayoutPrinterFactory.getLayout(
-            order,
-            printer!!,
-            printOptions,
-            layoutType,
-        ).print()
-    }
-
-    // endregion
-
-    // region print image
-
-    private fun printImageBill(
-        context: Context,
-        order: OrderModel
-    ) {
-
-    }
-
-    // endregion
-
+// endregion
 }

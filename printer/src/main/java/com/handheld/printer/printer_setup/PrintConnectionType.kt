@@ -1,4 +1,4 @@
-package com.example.pos2.printer_setup
+package com.handheld.printer.printer_setup
 
 enum class PrintConnectionType {
     LAN,

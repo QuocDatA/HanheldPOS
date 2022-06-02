@@ -1,4 +1,4 @@
-package com.example.pos2.printer_setup
+package com.handheld.printer.printer_setup
 
 import android.graphics.Bitmap
 import android.graphics.Canvas

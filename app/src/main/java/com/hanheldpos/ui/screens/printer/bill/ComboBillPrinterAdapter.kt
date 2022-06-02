@@ -4,7 +4,7 @@ import androidx.recyclerview.widget.DiffUtil
 import com.hanheldpos.R
 import com.hanheldpos.databinding.ItemComboGroupBillPrinterBinding
 import com.hanheldpos.model.order.ProductChosen
-import com.hanheldpos.model.printer.GroupBundlePrinter
+import com.hanheldpos.printer.GroupBundlePrinter
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
 

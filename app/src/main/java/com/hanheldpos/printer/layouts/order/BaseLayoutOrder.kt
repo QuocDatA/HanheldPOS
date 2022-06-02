@@ -1,14 +1,15 @@
-package com.example.pos2.printer.layouts.order
+package com.hanheldpos.printer.layouts.order
 
-import com.example.pos2.model.DataHelper
-import com.example.pos2.model.order.OrderModel
-import com.example.pos2.printer.layouts.BaseLayoutPrinter
-import com.example.pos2.printer_setup.PrintOptions
-import com.example.pos2.printer_setup.printer_manager.BasePrinterManager
-import com.example.pos2.utils.StringHelper
-import com.example.pos2.utils.time.DateTimeHelper
-import com.example.pos2.wagu.Block
-import com.example.pos2.wagu.WaguUtils
+
+import com.handheld.printer.printer_setup.PrintOptions
+import com.handheld.printer.printer_setup.printer_manager.BasePrinterManager
+import com.handheld.printer.wagu.Block
+import com.handheld.printer.wagu.WaguUtils
+import com.hanheldpos.model.DataHelper
+import com.hanheldpos.model.order.OrderModel
+import com.hanheldpos.printer.layouts.BaseLayoutPrinter
+import com.hanheldpos.utils.DateTimeUtils
+import com.hanheldpos.utils.StringUtils
 
 abstract class BaseLayoutOrder(
     protected val order: OrderModel,
@@ -21,20 +22,20 @@ abstract class BaseLayoutOrder(
     protected open fun printBillStatus() {
         val status = mutableListOf<String>()
         val statusColumns = mutableListOf<Int>()
-        status.add(order.orderDetail.tableList?.firstOrNull()?.tableName.toString())
+        status.add(order.OrderDetail.TableList.firstOrNull()?.TableName.toString())
         statusColumns.add(Block.DATA_MIDDLE_LEFT)
         if (isReprint) {
             status.add("COPY")
             statusColumns.add(Block.DATA_CENTER)
         }
-        status.add(order.orderDetail.diningOption?.acronymn.toString())
+        status.add(order.OrderDetail.DiningOption.Acronymn.toString())
         statusColumns.add(Block.DATA_MIDDLE_RIGHT)
 
 
         printer.drawText(
-            StringHelper.removeAccent(
+            StringUtils.removeAccent(
                 WaguUtils.columnListDataBlock(
-                    charPerLineNormal,
+                    charPerLineLarge,
                     list = mutableListOf(status),
                     statusColumns,
                 )
@@ -45,19 +46,18 @@ abstract class BaseLayoutOrder(
     }
 
     protected fun printOrderInfo() {
-        val orderCode = mutableListOf("Order #:", order.order.code)
+        val orderCode = mutableListOf("Order #:", order.Order.Code.toString())
         val employee =
             mutableListOf(
                 "Employee:",
-                DataHelper.getEmployeeListByDeviceCode()
-                    ?.find { it?.id == order.order.employeeGuid }?.fullName.toString()
+                DataHelper.deviceCodeLocalStorage?.Employees?.find { it._id == order.Order.EmployeeGuid }?.FullName.toString()
             )
         val dateCreate = mutableListOf(
-            "Create Date:", DateTimeHelper.dateToString(
-                DateTimeHelper.strToDate(
-                    order.order.createDate,
-                    DateTimeHelper.Format.FULL_DATE_UTC
-                ), DateTimeHelper.Format.DD_MM_YYYY_HH_MM
+            "Create Date:", DateTimeUtils.dateToString(
+                DateTimeUtils.strToDate(
+                    order.Order.CreateDate,
+                    DateTimeUtils.Format.FULL_DATE_UTC_TIMEZONE
+                ), DateTimeUtils.Format.DD_MM_YYYY_HH_MM
             )
         )
         val content = WaguUtils.columnListDataBlock(
@@ -68,8 +68,8 @@ abstract class BaseLayoutOrder(
     }
 
     protected fun printNote(drawBottomLine: Boolean = true) {
-        order.orderDetail.order?.note?.takeIf { it.isNotEmpty() }?.let {
-            printer.drawText(StringHelper.removeAccent("Note: $it"))
+        order.OrderDetail.Order.Note?.takeIf { it.isNotEmpty() }?.let {
+            printer.drawText(StringUtils.removeAccent("Note: $it"))
             if (drawBottomLine)
                 printer.drawLine(charPerLineNormal)
         }

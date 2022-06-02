@@ -1,11 +1,10 @@
-package com.example.pos2.printer.layouts.report
+package com.hanheldpos.printer.layouts.report
 
-import com.example.pos2.printer.layouts.BaseLayoutPrinter
-import com.example.pos2.printer_setup.PrintOptions
-import com.example.pos2.printer_setup.printer_manager.BasePrinterManager
-import com.example.pos2.view.left.report.sales.inventory.adapter.ListProductInventoryHeader
-import com.example.pos2.wagu.Block
-import com.example.pos2.wagu.WaguUtils
+import com.handheld.printer.printer_setup.PrintOptions
+import com.handheld.printer.printer_setup.printer_manager.BasePrinterManager
+import com.handheld.printer.wagu.Block
+import com.handheld.printer.wagu.WaguUtils
+import com.hanheldpos.data.api.pojo.report.InventoryReport
 
 
 class InventoryLayout(
@@ -13,7 +12,7 @@ class InventoryLayout(
     printOptions: PrintOptions,
     startDate: String,
     endDate: String,
-    inventories: List<ListProductInventoryHeader>
+    inventories:  Map<InventoryReport,List<InventoryReport>>
 ) : BaseLayoutReport(printer, printOptions, startDate, endDate) {
 
     override fun print() {

@@ -1,11 +1,11 @@
-package com.example.pos2.printer.layouts.report
+package com.hanheldpos.printer.layouts.report
 
-import com.example.pos2.printer.layouts.BaseLayoutPrinter
-import com.example.pos2.printer_setup.PrintOptions
-import com.example.pos2.printer_setup.printer_manager.BasePrinterManager
-import com.example.pos2.utils.time.DateTimeHelper
-import com.example.pos2.wagu.Block
-import com.example.pos2.wagu.WaguUtils
+import com.handheld.printer.printer_setup.PrintOptions
+import com.handheld.printer.printer_setup.printer_manager.BasePrinterManager
+import com.handheld.printer.wagu.Block
+import com.handheld.printer.wagu.WaguUtils
+import com.hanheldpos.printer.layouts.BaseLayoutPrinter
+import com.hanheldpos.utils.DateTimeUtils
 
 
 abstract class BaseLayoutReport(
@@ -23,16 +23,16 @@ abstract class BaseLayoutReport(
                 mutableListOf(
                     mutableListOf(
                         "[ ${
-                            DateTimeHelper.utcTimeToDateStr(
+                            DateTimeUtils.strToStr(
                                 startDate,
-                                DateTimeHelper.Format.EEEE_dd_MMM_yyyy,
-                                DateTimeHelper.Format.DD_MM_YYYY
+                                DateTimeUtils.Format.EEEE_dd_MMM_yyyy,
+                                DateTimeUtils.Format.DD_MM_YYYY
                             )
                         } - ${
-                            DateTimeHelper.utcTimeToDateStr(
+                            DateTimeUtils.strToStr(
                                 endDate,
-                                DateTimeHelper.Format.EEEE_dd_MMM_yyyy,
-                                DateTimeHelper.Format.DD_MM_YYYY
+                                DateTimeUtils.Format.EEEE_dd_MMM_yyyy,
+                                DateTimeUtils.Format.DD_MM_YYYY
                             )
                         } ]"
                     )

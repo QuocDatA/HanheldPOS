@@ -1,4 +1,4 @@
-package com.example.pos2.printer_setup.printer_manager
+package com.handheld.printer.printer_setup.printer_manager
 
 import android.graphics.Bitmap
 import android.util.Log
@@ -6,8 +6,8 @@ import com.dantsu.escposprinter.EscPosCharsetEncoding
 import com.dantsu.escposprinter.EscPosPrinter
 import com.dantsu.escposprinter.connection.DeviceConnection
 import com.dantsu.escposprinter.textparser.PrinterTextParserImg
-import com.example.pos2.PrintConstants
-import com.example.pos2.printer_setup.ImagePrinterHelper
+import com.handheld.printer.printer_setup.ImagePrinterHelper
+import com.handheld.printer.PrintConstants
 
 /**
  * This is the base print manager for universal method

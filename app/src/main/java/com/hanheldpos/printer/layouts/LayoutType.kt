@@ -1,4 +1,4 @@
-package com.example.pos2.printer.layouts
+package com.hanheldpos.printer.layouts
 
 enum class LayoutType {
     ;

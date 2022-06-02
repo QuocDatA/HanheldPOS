@@ -1,4 +1,4 @@
-package com.example.pos2.printer_setup.interfaces
+package com.handheld.printer.printer_setup.interfaces
 
 import android.Manifest
 import android.app.Activity
@@ -7,7 +7,7 @@ import android.content.pm.PackageManager
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.dantsu.escposprinter.connection.bluetooth.BluetoothPrintersConnections
-import com.example.pos2.printer_setup.printer_manager.BasePrinterUniversalManager
+import com.handheld.printer.printer_setup.printer_manager.BasePrinterUniversalManager
 
 class BluetoothPrinterManager(
     context: Context,

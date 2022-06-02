@@ -1,4 +1,4 @@
-package com.hanheldpos.model.printer
+package com.hanheldpos.printer
 
 import java.lang.Exception
 

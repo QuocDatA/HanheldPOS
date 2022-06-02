@@ -1,4 +1,4 @@
-package com.hanheldpos.printer.layouts
+package com.hanheldpos.printer.layouts.order
 
 import android.graphics.Color
 import android.graphics.drawable.Drawable
@@ -7,7 +7,8 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import com.handheld.printer.PrintConstants
-import com.handheld.printer.printer_manager.BasePrinterManager
+import com.handheld.printer.printer_setup.PrintOptions
+import com.handheld.printer.printer_setup.printer_manager.BasePrinterManager
 import com.handheld.printer.wagu.Block
 import com.handheld.printer.wagu.WaguUtils
 import com.hanheldpos.PosApp
@@ -16,22 +17,23 @@ import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.order.OrderFee
 import com.hanheldpos.model.order.OrderModel
 import com.hanheldpos.model.order.ProductChosen
-import com.hanheldpos.printer.BillPrinterManager
 import com.hanheldpos.model.product.ExtraConverter
 import com.hanheldpos.model.product.ProductType
 import com.hanheldpos.utils.DrawableHelper
 import com.hanheldpos.utils.PriceUtils
 import com.hanheldpos.utils.StringUtils
 
+
 class CashierLayout(
     order: OrderModel,
     printer: BasePrinterManager,
-    printOptions: BillPrinterManager.PrintOptions,
-) : BaseLayoutPrinter(order, printer, printOptions) {
+    printOptions: PrintOptions,
+    isReprint: Boolean,
+) : BaseLayoutOrder(order, printer, printOptions, isReprint) {
 
     override fun print() {
         // Order Meta Data
-        printBillStatus(false)
+        printBillStatus()
         feedLines(printOptions.deviceInfo.linesFeed(1))
         printBrandIcon()
         printAddress()
@@ -187,7 +189,7 @@ class CashierLayout(
                             mutableListOf(
                                 "",
                                 it,
-                                if (pro.LineTotal ?: 0.0 <= 0) "" else "+${
+                                if ((pro.LineTotal ?: 0.0) <= 0) "" else "+${
                                     PriceUtils.formatStringPrice(
                                         pro.LineTotal ?: 0.0
                                     )
@@ -377,7 +379,7 @@ class CashierLayout(
 
     private fun printDiscounts() {
         val discounts = order.OrderDetail.DiscountList
-        if (discounts.isNullOrEmpty()) return
+        if (discounts.isEmpty()) return
 
         discounts.forEach { discount ->
             val content = WaguUtils.columnListDataBlock(
@@ -403,7 +405,7 @@ class CashierLayout(
                 mutableListOf(mutableListOf("Total", PriceUtils.formatStringPrice(it))),
                 mutableListOf(Block.DATA_MIDDLE_LEFT, Block.DATA_MIDDLE_RIGHT)
             )
-            printer.drawText(content, true, BasePrinterManager.FontSize.Medium)
+            printer.drawText(content, true, BasePrinterManager.FontSize.Large)
         }
     }
 
@@ -439,7 +441,7 @@ class CashierLayout(
                 mutableListOf(Block.DATA_CENTER)
             ),
             true,
-            BasePrinterManager.FontSize.Medium
+            BasePrinterManager.FontSize.Large
         )
     }
 

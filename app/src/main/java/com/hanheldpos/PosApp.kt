@@ -7,7 +7,7 @@ import com.diadiem.pos_components.PTextInputEditText
 import com.diadiem.pos_components.PTextView
 import com.diadiem.pos_config.AppConfig
 import com.hanheldpos.model.DatabaseHelper
-import com.hanheldpos.model.printer.BillPrinterManager
+import com.hanheldpos.printer.BillPrinterManager
 import com.orhanobut.logger.AndroidLogAdapter
 import com.orhanobut.logger.Logger
 import com.utils.helper.AppPreferences

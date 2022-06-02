@@ -1,7 +1,7 @@
-package com.example.pos2.printer_setup.interfaces
+package com.handheld.printer.printer_setup.interfaces
 
 import com.dantsu.escposprinter.connection.tcp.TcpConnection
-import com.example.pos2.printer_setup.printer_manager.BasePrinterUniversalManager
+import com.handheld.printer.printer_setup.printer_manager.BasePrinterUniversalManager
 
 class LanPrinterManager(
     ipAddress: String,

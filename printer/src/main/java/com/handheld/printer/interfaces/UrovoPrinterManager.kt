@@ -7,7 +7,7 @@ import android.graphics.Bitmap
 import android.os.Handler
 import android.os.Looper
 import android.os.Message
-import com.handheld.printer.printer_manager.BasePrinterManager
+import com.handheld.printer.printer_setup.printer_manager.BasePrinterManager
 
 class UrovoPrinterManager : BasePrinterManager() {
 
@@ -164,9 +164,9 @@ class UrovoPrinterManager : BasePrinterManager() {
                     var height: Int = 0;
                     val fontSize = when (value.size) {
                         FontSize.Small -> 20
-                        FontSize.Medium -> 28
+//                        FontSize.Medium -> 28
                         FontSize.Large -> 35
-                        FontSize.Wide -> 35
+//                        FontSize.Wide -> 35
                     }
                     val fontName = "monospace" // simsun , arial , serif
                     val texts = value.data?.split("\n", "\n\r");

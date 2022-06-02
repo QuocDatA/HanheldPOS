@@ -7,7 +7,7 @@ import android.content.pm.PackageManager
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.dantsu.escposprinter.connection.bluetooth.BluetoothPrintersConnections
-import com.handheld.printer.printer_manager.BasePrinterUniversalManager
+import com.handheld.printer.printer_setup.printer_manager.BasePrinterUniversalManager
 import java.util.concurrent.TimeoutException
 
 class BluetoothPrinterManager(

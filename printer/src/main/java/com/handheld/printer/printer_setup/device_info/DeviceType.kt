@@ -1,4 +1,4 @@
-package com.example.pos2.printer_setup.device_info
+package com.handheld.printer.printer_setup.device_info
 
 sealed class DeviceType {
     class SDK(val type: Types) : DeviceType() {

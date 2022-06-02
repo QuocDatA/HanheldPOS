@@ -1,4 +1,7 @@
-package com.example.pos2.printer_setup.device_info
+package com.handheld.printer.printer_setup.device_info
+
+import com.handheld.printer.printer_setup.device_info.DeviceInfo
+import com.handheld.printer.printer_setup.device_info.DeviceType
 
 class NoSDKDeviceInfo(private val deviceType: DeviceType.NO_SDK.Types) :
     DeviceInfo() {

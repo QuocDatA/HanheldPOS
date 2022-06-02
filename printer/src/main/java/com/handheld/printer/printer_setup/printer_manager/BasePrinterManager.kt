@@ -1,4 +1,4 @@
-package com.example.pos2.printer_setup.printer_manager
+package com.handheld.printer.printer_setup.printer_manager
 
 import android.graphics.Bitmap
 
