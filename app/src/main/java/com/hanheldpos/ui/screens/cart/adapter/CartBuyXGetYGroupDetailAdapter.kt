@@ -11,13 +11,14 @@ import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
 
 
 class CartBuyXGetYGroupDetailAdapter(
+    private val isGroupBuy: Boolean ? = false,
 ) : BaseBindingListAdapter<BaseProductInCart>(
     DiffCallback(),
 ) {
 
     override fun getItemViewType(position: Int): Int {
         val item = getItem(position)
-        return if (!item.proOriginal?.isBundle()!!) R.layout.item_cart_buy_x_get_y_group_detail
+        return if (item.proOriginal?.isBundle() != true) R.layout.item_cart_buy_x_get_y_group_detail
         else R.layout.cart_item_buy_x_get_y_combo_group
     }
 
@@ -29,6 +30,7 @@ class CartBuyXGetYGroupDetailAdapter(
                 (holder.binding as ItemCartBuyXGetYGroupDetailBinding)
             binding.item = item
             binding.productBundle = item.proOriginal
+            binding.isGroupBuy = isGroupBuy
         } else {
             val binding = (holder.binding as CartItemBuyXGetYComboGroupBinding)
             binding.item = item as Combo

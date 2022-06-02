@@ -164,7 +164,7 @@ class BuyXGetYVM : BaseUiViewModel<BuyXGetYUV>() {
         val itemBuyXGetYGroup = ItemBuyXGetYGroup(groupBuyXGetY, mutableListOf(), mutableListOf())
         if (conditionCustomer is CustomerBuys) {
             itemBuyXGetYGroup.groupListBaseProduct =
-                conditionCustomer.filterListApplyTo(itemBuyXGetYGroup, buyXGetY.value?.disc!!)
+                conditionCustomer.filterListApplyTo(itemBuyXGetYGroup)
             itemBuyXGetYGroup.listApplyTo = conditionCustomer.ListApplyTo.toMutableList()
             itemBuyXGetYGroup.isApplyToEntireOrder = CustomerDiscApplyTo.fromInt(conditionCustomer.ApplyTo) == CustomerDiscApplyTo.ENTIRE_ORDER
             itemBuyXGetYGroup.isBuyComplete = isBuyComplete
