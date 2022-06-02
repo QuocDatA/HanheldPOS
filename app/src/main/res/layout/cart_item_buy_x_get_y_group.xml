@@ -57,7 +57,6 @@
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
-            visibleObject="@{isShowDetail}"
             android:id="@+id/cartComboGroupDetailRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

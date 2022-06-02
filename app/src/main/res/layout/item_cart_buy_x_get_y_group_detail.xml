@@ -10,8 +10,14 @@
 
         <import type="android.text.TextUtils" />
 
+        <import type="com.hanheldpos.utils.PriceUtils"/>
+
         <variable
             name="isGroupBuy"
+            type="Boolean" />
+
+        <variable
+            name="isShowDetail"
             type="Boolean" />
 
         <variable
@@ -30,7 +36,7 @@
 
     <LinearLayout
         style="@style/RootLayout"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/_2sdp"
         android:orientation="horizontal">
@@ -47,7 +53,8 @@
 
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
@@ -58,13 +65,13 @@
                 android:layout_gravity="top"
                 android:gravity="top"
                 android:text="@{item.name}"
-                app:useTextColor="color5"
+                app:useTextColor="color4"
                 app:useTextHeader="h6"
                 android:padding="0dp"
                 tools:text="Pho Bo Tai" />
 
             <LinearLayout
-                visibleObject="@{item.variantList != null &amp;&amp; !item.variantList.empty}"
+                visibleObject="@{item.variantList != null &amp;&amp; !item.variantList.empty &amp;&amp; isShowDetail == true}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
@@ -79,7 +86,7 @@
             </LinearLayout>
 
             <LinearLayout
-                visibleObject="@{!item.modifierList.empty}"
+                visibleObject="@{!item.modifierList.empty &amp;&amp; isShowDetail == true}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
@@ -94,7 +101,7 @@
             </LinearLayout>
 
             <LinearLayout
-                visibleObject="@{item.note!=null &amp;&amp; !TextUtils.isEmpty(item.note)}"
+                visibleObject="@{item.note!=null &amp;&amp; !TextUtils.isEmpty(item.note) &amp;&amp; isShowDetail == true}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="start"
@@ -115,12 +122,22 @@
                 layout="@layout/cart_product_detail_line"
                 app:isDiscount="@{true}"
                 app:hasIcon="@{false}"
-                visibleObject="@{(item.discountServersList != null &amp;&amp; !item.discountServersList.empty &amp;&amp; isGroupBuy == false) }"
+                visibleObject="@{(item.discountServersList != null &amp;&amp; !item.discountServersList.empty &amp;&amp; isGroupBuy == false &amp;&amp; isShowDetail == true) }"
                 app:lineText="@{`Discount : ` }"
-                app:priceDiscMinus="@{item.totalDiscount()}"
-                />
+                app:priceDiscMinus="@{item.totalDiscount()}" />
 
         </LinearLayout>
+
+        <com.diadiem.pos_components.PTextView
+            android:id="@+id/priceTextView"
+            android:text="@{ '+' + PriceUtils.INSTANCE.formatStringPrice(item.total())}"
+            visibleObject="@{item.total() != 0}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="textEnd"
+            app:useTextColor="color4"
+            app:useTextHeader="h6"
+            tools:text="137.000" />
 
     </LinearLayout>
 

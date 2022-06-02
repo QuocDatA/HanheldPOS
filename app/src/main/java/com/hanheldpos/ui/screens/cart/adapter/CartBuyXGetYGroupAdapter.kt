@@ -24,10 +24,9 @@ class CartBuyXGetYGroupAdapter(
         binding.position = position + 1
 
         val cartBuyXGetYGroupAdapter =
-            CartBuyXGetYGroupDetailAdapter(isGroupBuy = item.condition is CustomerBuys)
+            CartBuyXGetYGroupDetailAdapter(isGroupBuy = item.condition is CustomerBuys, isShowDetail)
         cartBuyXGetYGroupAdapter.submitList(item.productList)
         binding.cartComboGroupDetailRecyclerView.adapter = cartBuyXGetYGroupAdapter
-        binding.isShowDetail = isShowDetail
     }
 
 
