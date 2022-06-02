@@ -1,5 +1,6 @@
 package com.hanheldpos.model.buy_x_get_y
 
+import com.hanheldpos.data.api.pojo.discount.CustomerBuys
 import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.data.api.pojo.fee.Fee
 import com.hanheldpos.data.api.pojo.order.settings.DiningOption
@@ -108,16 +109,18 @@ class BuyXGetY() : BaseProductInCart(),Cloneable {
 
     override fun clone(): BuyXGetY {
         val cloneValue = BuyXGetY(this.disc!!,
-            this.note ,
-            this.sku ,
-            this.diningOption!! ,
+            this.note,
+            this.sku,
+            this.diningOption!!,
             this.quantity,
-            this.variants ,
+            this.variants,
             this.compReason,
-            this.discountUsersList ,
-            this.discountServersList ,
+            this.discountUsersList,
+            this.discountServersList,
             this.fees?.toMutableList(),
-            this.groupList )
+            this.groupList?.toMutableList()?.map { it.clone() }?.toMutableList()
+        )
+
 
         cloneValue.variantList = this.variantList?.map { it.copy() }?.toMutableList()
         cloneValue.modifierList.addAll(this.modifierList.map { it.copy() }.toMutableList())
@@ -138,7 +141,18 @@ class BuyXGetY() : BaseProductInCart(),Cloneable {
 
     fun price(): Double {
         var total = 0.0
-        groupList?.forEach { group -> total += group.productList.sumOf { it.total() } }
+        groupList?.forEach { group ->
+            total += group.productList.sumOf {
+                if(group.condition is CustomerBuys)
+                    when(it) {
+                        is Combo -> it.total()
+                        is Regular -> it.totalPrice()
+                        else -> it.lineTotalValue
+                    }
+                else
+                    it.lineTotalValue
+            }
+        }
         return total
     }
 

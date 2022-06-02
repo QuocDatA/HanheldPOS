@@ -25,7 +25,7 @@ data class GroupBuyXGetY(
 
     var type: GroupType,
 
-    ) : Parcelable {
+    ) : Parcelable, Cloneable {
 
     var productList: MutableList<BaseProductInCart> = mutableListOf()
 
@@ -152,8 +152,21 @@ data class GroupBuyXGetY(
         productList.add(regular)
     }
 
-    fun clone(): GroupBuyXGetY {
-        return this.copy()
+    public override fun clone(): GroupBuyXGetY {
+        val result = copy()
+        result.productList = productList.map {
+            when (it) {
+                is Combo -> {
+                    it.clone()
+                }
+                is Regular -> {
+                    it.clone()
+                }
+                else ->
+                    it.clone()
+            }
+        }.toMutableList()
+        return result
     }
 }
 

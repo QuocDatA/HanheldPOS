@@ -115,6 +115,7 @@ class BuyXGetYVM : BaseUiViewModel<BuyXGetYUV>() {
     ) {
         when (action) {
             ItemActionType.Add -> {
+                item.addDiscountServer(discount)
                 group.productList.add(item)
             }
             ItemActionType.Modify -> {
