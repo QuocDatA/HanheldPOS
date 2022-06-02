@@ -1,4 +1,4 @@
-package com.handheld.printer.printer_manager
+package com.example.pos2.printer_setup.printer_manager
 
 import android.graphics.Bitmap
 
@@ -18,11 +18,23 @@ abstract class BasePrinterManager {
     abstract fun performPrinterAction(printerAction: () -> Unit)
 
 
-    enum class FontSize(val charsPerLine: Int) {
-        Small(48),
-        Medium(48),
-        Large(24),
-        Wide(24)
+    enum class FontSize() {
+        Small() {
+            override fun urovo() = 20
+        },
+//        Medium() {
+//            override fun urovo() = 28
+//        },
+        Large() {
+            override fun urovo() = 28
+        }
+//,
+//        Wide() {
+//            override fun urovo() = 35
+//        }
+        ;
+
+        abstract fun urovo(): Int;
     }
 
     enum class BitmapAlign {

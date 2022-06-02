@@ -1,4 +1,4 @@
-package com.handheld.printer.printer_manager
+package com.example.pos2.printer_setup.printer_manager
 
 import android.graphics.Bitmap
 import android.util.Log
@@ -6,8 +6,8 @@ import com.dantsu.escposprinter.EscPosCharsetEncoding
 import com.dantsu.escposprinter.EscPosPrinter
 import com.dantsu.escposprinter.connection.DeviceConnection
 import com.dantsu.escposprinter.textparser.PrinterTextParserImg
-import com.handheld.printer.ImagePrinterHelper
-import com.handheld.printer.PrintConstants
+import com.example.pos2.PrintConstants
+import com.example.pos2.printer_setup.ImagePrinterHelper
 
 /**
  * This is the base print manager for universal method
@@ -43,12 +43,11 @@ abstract class BasePrinterUniversalManager(
     override fun connect() {
         if (!isConnected())
             deviceConnection?.connect()
-        Log.d(PrintConstants.TAG, "Printer connected")
     }
 
     override fun disconnect() {
-        deviceConnection?.disconnect()
-        Log.d(PrintConstants.TAG, "Printer disconnected")
+        if (isConnected())
+            deviceConnection?.disconnect()
     }
 
     override fun drawText(data: String?, bold: Boolean, size: FontSize) {
@@ -58,9 +57,9 @@ abstract class BasePrinterUniversalManager(
         }
         content = when (size) {
             FontSize.Small -> "<font size='normal'>$content</font>"
-            FontSize.Medium -> "<font size='big'>$content</font>"
+//            FontSize.Medium -> "<font size='big'>$content</font>"
             FontSize.Large -> "<font size='big'>$content</font>"
-            FontSize.Wide -> "<font size='wide'>$content</font>"
+//            FontSize.Wide -> "<font size='wide'>$content</font>"
         }
         printer.printFormattedText(
             content + "\n",
@@ -95,7 +94,7 @@ abstract class BasePrinterUniversalManager(
 
             y += 250
         }
-        printer.printFormattedText(content.toString(), 1);
+        printer.printFormattedText(content.toString(), 1)
     }
 
     override fun drawLine(widthLine: Int) {

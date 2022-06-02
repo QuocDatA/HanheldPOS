@@ -1,11 +1,11 @@
-package com.hanheldpos.model.printer.layouts
+package com.hanheldpos.printer.layouts
 
 import com.handheld.printer.printer_manager.BasePrinterManager
 import com.handheld.printer.wagu.Block
 import com.handheld.printer.wagu.WaguUtils
 import com.hanheldpos.model.order.OrderModel
 import com.hanheldpos.model.order.ProductChosen
-import com.hanheldpos.model.printer.BillPrinterManager
+import com.hanheldpos.printer.BillPrinterManager
 import com.hanheldpos.model.product.ExtraConverter
 import com.hanheldpos.utils.StringUtils
 
