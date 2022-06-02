@@ -62,8 +62,8 @@ open class CartModel(
         return total;
     }
 
-    fun anyProductList(): Boolean {
-        return !this.productsList.isNullOrEmpty() && this.productsList.any()
+    private fun anyProductList(): Boolean {
+        return this.productsList.isNotEmpty() && this.productsList.any()
     }
 
     fun totalFee(subTotal: Double, totalDiscount: Double): Double {
@@ -218,7 +218,7 @@ open class CartModel(
         updateDiscountAutomatic(DiscountTriggerType.ON_CLICK)
     }
 
-    fun updateDiscountAutomatic(triggerType: DiscountTriggerType) {
+    private fun updateDiscountAutomatic(triggerType: DiscountTriggerType) {
 
         if (!anyProductList()) return
         var discountAutoList: List<DiscountResp> = listOf()

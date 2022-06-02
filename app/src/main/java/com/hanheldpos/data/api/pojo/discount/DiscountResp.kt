@@ -8,11 +8,11 @@ import com.hanheldpos.data.api.pojo.customer.CustomerResp
 import com.hanheldpos.data.api.pojo.fee.CustomerGets
 import com.hanheldpos.data.api.pojo.product.Product
 import com.hanheldpos.data.api.pojo.product.VariantsGroup
+import com.hanheldpos.model.buy_x_get_y.CustomerDiscApplyTo
 import com.hanheldpos.model.buy_x_get_y.ItemBuyXGetYGroup
+import com.hanheldpos.model.buy_x_get_y.MinimumType
 import com.hanheldpos.model.cart.BaseProductInCart
 import com.hanheldpos.model.cart.CartModel
-import com.hanheldpos.model.buy_x_get_y.CustomerDiscApplyTo
-import com.hanheldpos.model.buy_x_get_y.MinimumType
 import com.hanheldpos.model.discount.*
 import com.hanheldpos.ui.screens.cart.CurCartData
 import com.hanheldpos.utils.DateTimeUtils
@@ -237,14 +237,13 @@ data class DiscountResp(
         quantity: Int? = 1
     ): Double? {
         val subtotal =
-            if (Condition?.CustomerBuys.isApplyModifier(productOriginal_id ?: "")) totalPrice?.plus(
+            if (Condition.CustomerBuys.isApplyModifier(productOriginal_id ?: "")) totalPrice?.plus(
                 totalModifier ?: 0.0
             ) else totalPrice
 
-        val discountValue = Condition.DiscountValue ?: 0.0
-        val discountType = DiscountTypeEnum.fromInt(DiscountType)
+        val discountValue = Condition.DiscountValue
 
-        when (discountType) {
+        when (val discountType = DiscountTypeEnum.fromInt(DiscountType)) {
             DiscountTypeEnum.PERCENT -> return total(
                 subtotal,
                 quantity,
@@ -255,14 +254,17 @@ data class DiscountResp(
             DiscountTypeEnum.AMOUNT
             -> return total(subtotal, quantity, discountType, discountValue, productOriginal_id)
             DiscountTypeEnum.BUYX_GETY -> {
-                val discValue = Condition.CustomerGets.DiscountValue ?: 0.0
+                val discValue = Condition.CustomerGets.DiscountValue
                 return when (DiscountEntireType.fromInt(Condition.CustomerGets.DiscountValueType)) {
-                    DiscountEntireType.FREE -> subtotal
+                    DiscountEntireType.FREE ->
+                        subtotal
                     DiscountEntireType.SPECIFIC -> subtotal?.minus(
                         quantity?.times(discValue) ?: 0.0
                     )
-                    DiscountEntireType.AMOUNT -> discValue
-                    DiscountEntireType.PERCENT -> subtotal?.times(discValue.div(100))
+                    DiscountEntireType.AMOUNT ->
+                        discValue
+                    DiscountEntireType.PERCENT ->
+                        subtotal?.times(discValue.div(100))
                     else -> {
                         0.0
                     }
@@ -421,7 +423,7 @@ data class CustomerBuys(
                     item.getProductListApplyToBuyXGetY(
                         ListApplyTo,
                         CurCartData.cartModel?.diningOption!!,
-                        discount,
+                        null,
                     ).toMutableList()
                 )
             }
@@ -431,7 +433,7 @@ data class CustomerBuys(
                         item.getProductListApplyToBuyXGetY(
                             list.ProductList ?: listOf(),
                             CurCartData.cartModel?.diningOption!!,
-                            discount,
+                            null,
                         )
                     )
                 }
@@ -442,7 +444,7 @@ data class CustomerBuys(
                         item.getProductListApplyToBuyXGetY(
                             list.ProductList ?: listOf(),
                             CurCartData.cartModel?.diningOption!!,
-                            discount,
+                            null,
                         )
                     )
                 }
@@ -454,7 +456,22 @@ data class CustomerBuys(
 
 
     fun isApplyModifier(productId: String?): Boolean {
-        return ListApplyTo.firstOrNull()?.ProductList?.firstOrNull { p -> p._id == productId }?.ApplyToModifier == 1;
+        when (CustomerDiscApplyTo.fromInt(ApplyTo)) {
+            CustomerDiscApplyTo.ENTIRE_ORDER -> {
+
+            }
+            CustomerDiscApplyTo.PRODUCT -> {
+                return ListApplyTo.firstOrNull { it._id == productId }?.ApplyToModifier == 1
+            }
+            CustomerDiscApplyTo.GROUP -> {
+                return ListApplyTo.firstOrNull()?.ProductList?.firstOrNull { p -> p._id == productId }?.ApplyToModifier == 1
+            }
+            CustomerDiscApplyTo.CATEGORY -> {
+                return ListApplyTo.firstOrNull()?.ProductList?.firstOrNull { p -> p._id == productId }?.ApplyToModifier == 1
+            }
+            else -> {}
+        }
+        return false
     }
 
     fun isBuyCompleted(totalOrder: Double, totalQuantityOrder: Int): Boolean {

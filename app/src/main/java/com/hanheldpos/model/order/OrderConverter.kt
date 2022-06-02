@@ -84,7 +84,7 @@ object OrderConverter {
         productList.forEachIndexed { _, productBuy ->
             val diningOption = OrderHelper.getDiningOptionItem(productBuy.DiningOption?.Id ?: 0)!!
 
-            val compReason = toReasonComp(productBuy.CompVoidList!!)
+            val compReason = toReasonComp(productBuy.CompVoidList ?: listOf())
             val discountServerList = toDiscountsServer(productBuy.DiscountList ?: listOf())
             val discountUserList = toDiscountsUser(productBuy.DiscountList ?: listOf())
             val feeList = toFeeList(
@@ -157,57 +157,21 @@ object OrderConverter {
                     )
                 }
                 ProductType.BUYX_GETY_DISC -> run {
-                    val baseProductBuyList: MutableList<BaseProductInCart> = mutableListOf()
-                    val baseProductGetList: MutableList<BaseProductInCart> = mutableListOf()
-
-                    productBuy.ProductChoosedList?.filter { p -> p.ProductApplyTo == ChooseProductApplyTo.DEFAULT.value }
-                        ?.toList()?.forEach { productChosen ->
-                            baseProductBuyList.add(
-                                toBuyXGetYBaseProduct(
-                                    productChosen,
-                                    diningOption,
-                                    compReason,
-                                    discountUserList = discountUserList,
-                                    discountServerList = discountServerList,
-                                    feeList = feeList
-                                )
-                            )
-                        }
-                    productBuy.ProductChoosedList?.filter { p -> p.ProductApplyTo == ChooseProductApplyTo.PRO_GET.value }
-                        ?.toList()?.forEach { productChosen ->
-                            baseProductGetList.add(
-                                toBuyXGetYBaseProduct(
-                                    productChosen,
-                                    diningOption,
-                                    compReason,
-                                    discountUserList = discountUserList,
-                                    discountServerList = discountServerList,
-                                    feeList = feeList
-                                )
-                            )
-                        }
-
                     val disc =
                         DataHelper.discountsLocalStorage?.find { discountResp -> discountResp._id == productBuy._id }
 
-                    val groupBuys = GroupBuyXGetY(
-                        disc?._id ?: "",
-                        disc?.Condition?.CustomerBuys,
-                        GroupType.BUY,
-                    )
-                    groupBuys.productList = baseProductBuyList
-
-                    val groupGets = GroupBuyXGetY(
-                        disc?._id ?: "",
-                        disc?.Condition?.CustomerGets,
-                        GroupType.GET
-                    )
-                    groupGets.productList = baseProductGetList
-
                     val groupBuyXGetYList =
                         listOf(
-                            groupBuys,
-                            groupGets,
+                            GroupBuyXGetY(
+                                disc?._id ?: "",
+                                disc?.Condition?.CustomerBuys,
+                                GroupType.BUY,
+                            ),
+                            GroupBuyXGetY(
+                                disc?._id ?: "",
+                                disc?.Condition?.CustomerGets,
+                                GroupType.GET
+                            ),
                         )
 
                     baseProductList.add(
@@ -292,7 +256,17 @@ object OrderConverter {
     }
 
     private fun toDiscountsServer(orderDiscounts: List<DiscountOrder>): List<DiscountResp> {
-        return listOf()
+        val discServerList: MutableList<DiscountResp> = mutableListOf()
+        if (orderDiscounts.isNotEmpty()) {
+            orderDiscounts.filter { discResp -> discResp._id.isNotEmpty() }.toList()
+                .forEach { discount ->
+                    val disc =
+                        DataHelper.discountsLocalStorage?.find { discLocal -> discLocal._id == discount._id }
+                    if(disc != null)
+                        discServerList.add(disc)
+                }
+        }
+        return discServerList
     }
 
     private fun toFeeList(

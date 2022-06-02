@@ -46,7 +46,7 @@ data class ItemBuyXGetYGroup(
     fun getProductListApplyToBuyXGetY(
         appliesTo: List<Product>,
         diningOption: DiningOption,
-        discount: DiscountResp,
+        discount: DiscountResp?,
     ): List<BaseProductInCart> {
         val baseProductList: MutableList<BaseProductInCart> = mutableListOf()
         appliesTo.forEach { productDisc ->
@@ -72,7 +72,7 @@ data class ItemBuyXGetYGroup(
         return baseProductList
     }
 
-    private fun initCombo(product: Product, diningOption: DiningOption, discount: DiscountResp): Combo {
+    private fun initCombo(product: Product, diningOption: DiningOption, discount: DiscountResp?): Combo {
         val comboGroupList = GSonUtils.toList<List<ProductComboItem>>(product.Combo)
         val groupList = comboGroupList?.map { comboGroup ->
             GroupBundle(
@@ -89,7 +89,8 @@ data class ItemBuyXGetYGroup(
             product.variantDefault,
             null
         )
-        bundle.discountServersList?.add(discount)
+        if(discount != null)
+            bundle.discountServersList?.add(discount)
         return bundle
     }
 

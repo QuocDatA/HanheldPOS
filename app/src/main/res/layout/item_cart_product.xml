@@ -103,7 +103,7 @@
                             <com.diadiem.pos_components.PTextView
                                 bindStrike="@{true}"
                                 priceView="@{item.subtotalValue}"
-                                visibleObject="@{ !item.fees.empty}"
+                                visibleObject="@{ !item.fees.empty &amp;&amp; item.buyXGetY == false}"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/_2sdp"

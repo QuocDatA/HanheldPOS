@@ -13,16 +13,13 @@ import com.hanheldpos.model.buy_x_get_y.BuyXGetY
 import com.hanheldpos.model.buy_x_get_y.GroupBuyXGetY
 import com.hanheldpos.model.cart.BaseProductInCart
 import com.hanheldpos.model.cart.Combo
-import com.hanheldpos.model.cart.GroupBundle
 import com.hanheldpos.model.cart.Regular
 import com.hanheldpos.model.combo.ItemActionType
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.buy_x_get_y.adapter.BuyXGetYGroupAdapter
-import com.hanheldpos.ui.screens.cart.CurCartData
 import com.hanheldpos.ui.screens.combo.ComboFragment
 import com.hanheldpos.ui.screens.home.order.OrderFragment
 import com.hanheldpos.ui.screens.product.ProductDetailFragment
-import okhttp3.internal.notify
 
 class BuyXGetYFragment(
     private val buyXGetY: BuyXGetY,
@@ -125,13 +122,13 @@ class BuyXGetYFragment(
                                 listener = object : OrderFragment.OrderMenuListener {
                                     @SuppressLint("NotifyDataSetChanged")
                                     override fun onCartAdded(
-                                        itemAfter: BaseProductInCart,
+                                        item: BaseProductInCart,
                                         action: ItemActionType
                                     ) {
                                         viewModel.onRegularSelect(
                                             group,
                                             baseItem,
-                                            (itemAfter as Regular).clone(),
+                                            (item as Regular).clone(),
                                             action,
                                             discount,
                                         )

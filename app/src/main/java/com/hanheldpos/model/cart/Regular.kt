@@ -161,16 +161,22 @@ class Regular() : BaseProductInCart(), Parcelable, Cloneable {
         return telcomp
     }
 
-    fun totalDiscount(productPricing: Product): Double {
+    private fun totalDiscount(productPricing: Product): Double {
         val totalPrice = totalPrice()
         val totalModifierPrice = totalModifier(productPricing)
 
         val subtotal = totalPrice + totalModifierPrice
         val totalDiscUser = discountUsersList?.sumOf { disc -> disc.total(subtotal) } ?: 0.0
-        var totalDiscServer = discountServersList?.sumOf { disc -> disc.total(totalPrice, totalModifierPrice, proOriginal?._id, quantity) ?: 0.0 } ?: 0.0
+        val totalDiscServer = discountServersList?.sumOf { disc ->
+            disc.total(
+                totalPrice,
+                totalModifierPrice,
+                proOriginal?._id,
+                quantity
+            ) ?: 0.0
+        } ?: 0.0
 
-        val total = totalDiscUser + totalDiscServer
-        return total
+        return totalDiscUser + totalDiscServer
     }
 
     fun modSubTotal(productPricing: Product): Double {
