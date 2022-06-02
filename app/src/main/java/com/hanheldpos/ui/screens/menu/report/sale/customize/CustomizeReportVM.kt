@@ -1,7 +1,7 @@
 package com.hanheldpos.ui.screens.menu.report.sale.customize
 
 import androidx.lifecycle.MutableLiveData
-import com.hanheldpos.model.report.SaleReportCustomData
+import com.hanheldpos.model.report.SaleReportFilter
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
 import com.hanheldpos.utils.DateTimeUtils
 import com.prolificinteractive.materialcalendarview.CalendarDay
@@ -16,7 +16,7 @@ class CustomizeReportVM : BaseUiViewModel<CustomizeReportUV>() {
     var isAllDevice = MutableLiveData<Boolean>(false)
     var isThisDevice = MutableLiveData<Boolean>(true)
 
-    fun initCustomReportData(saleReportCustomData: SaleReportCustomData) {
+    fun initCustomReportData(saleReportCustomData: SaleReportFilter) {
         val startDayInInt = splitDate(saleReportCustomData.startDay!!)
         val endDayInInt = splitDate(saleReportCustomData.endDay!!)
         this.isCurrentDrawer.postValue(saleReportCustomData.isCurrentDrawer)

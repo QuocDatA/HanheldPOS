@@ -4,6 +4,7 @@ import com.handheld.printer.printer_setup.PrintOptions
 import com.handheld.printer.printer_setup.printer_manager.BasePrinterManager
 import com.handheld.printer.wagu.Block
 import com.handheld.printer.wagu.WaguUtils
+import com.handheld.printer.wagu.WrapType
 import com.hanheldpos.model.order.OrderModel
 import com.hanheldpos.model.order.ProductChosen
 import com.hanheldpos.model.product.ExtraConverter
@@ -97,7 +98,7 @@ open class KitchenLayout(
                 productDetail,
                 columnOrderDetailAlign,
                 columnExtraSize(),
-                isWrapWord = true
+                wrapType = WrapType.SOFT_WRAP
             )
         ).toString().takeIf { it.isNotEmpty() }?.let {
             result = WaguUtils.columnListDataBlock(

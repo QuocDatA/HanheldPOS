@@ -28,4 +28,31 @@ data class ReportSalesResp(
     val TimeSpan: List<TimeSpan>,
     val _id: String,
     val _key: Int
-) : Parcelable
+) : Parcelable {
+    fun mapInventorySaleReport(): Map<ProductInventory, List<ProductInventory>> {
+        val result = mutableMapOf<ProductInventory, List<ProductInventory>>()
+        ListInventory.forEach { item ->
+            result[ProductInventory(
+                Name = item.CategoryName,
+                GrossQuantity = item.Product?.sumOf { product -> product.GrossQuantity ?: 0 }
+                    ?: 0,
+                RefundQuantity = item.Product?.sumOf { product -> product.RefundQuantity ?: 0 }
+                    ?: 0,
+                NetQuantity = item.Product?.sumOf { product -> product.NetQuantity ?: 0 } ?: 0,
+                ProductGuid = item.CategoryGuid
+            )] = item.Product
+        }
+        return result
+    }
+    fun getInventoryOverview(inventories: Map<ProductInventory, List<ProductInventory>>) : ProductInventory {
+        return ProductInventory(
+            GrossQuantity = inventories.keys.sumOf { inventory -> inventory.GrossQuantity ?: 0 },
+            RefundQuantity = inventories.keys.sumOf { inventory ->
+                inventory.RefundQuantity ?: 0
+            },
+            NetQuantity = inventories.keys.sumOf { inventory -> inventory.NetQuantity ?: 0 },
+            ProductGuid = "",
+            Name = ""
+        )
+    }
+}

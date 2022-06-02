@@ -2,7 +2,7 @@ package com.hanheldpos.model.report
 
 import java.util.*
 
-data class SaleReportCustomData(
+data class SaleReportFilter(
     var startDay: Date?,
     var endDay: Date?,
     var isAllDay: Boolean,

@@ -1,25 +1,18 @@
 package com.hanheldpos.ui.screens.menu.report.sale
 
 import android.annotation.SuppressLint
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentSaleReportsMenuBinding
-import com.hanheldpos.model.menu.report.ReportOptionType
 import com.hanheldpos.model.menu.report.SaleOptionPage
-import com.hanheldpos.model.report.SaleReportCustomData
+import com.hanheldpos.model.report.SaleReportFilter
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.menu.adapter.ItemOptionNav
 import com.hanheldpos.ui.screens.menu.adapter.OptionNavAdapter
-import com.hanheldpos.ui.screens.menu.report.current_drawer.CurrentDrawerFragment
 import com.hanheldpos.ui.screens.menu.report.sale.menu.cash_voucher.CashVoucherReportFragment
 import com.hanheldpos.ui.screens.menu.report.sale.menu.category_sales.CategorySalesReportFragment
 import com.hanheldpos.ui.screens.menu.report.sale.menu.comps.CompsReportFragment
@@ -34,7 +27,6 @@ import com.hanheldpos.ui.screens.menu.report.sale.menu.section_sales.SectionSale
 import com.hanheldpos.ui.screens.menu.report.sale.menu.services.ServicesReportFragment
 import com.hanheldpos.ui.screens.menu.report.sale.menu.surcharges.SurchargesReportFragment
 import com.hanheldpos.ui.screens.menu.report.sale.menu.taxes.TaxesReportFragment
-import com.hanheldpos.ui.widgets.TableLayoutFixedHeader
 import com.hanheldpos.utils.DateTimeUtils
 
 
@@ -84,8 +76,8 @@ class SaleReportsMenuFragment : BaseFragment<FragmentSaleReportsMenuBinding, Sal
 
     @SuppressLint("NotifyDataSetChanged")
     override fun initData() {
-        saleReportCommon.saleReportCustomData.postValue(
-            SaleReportCustomData(
+        saleReportCommon.saleReportFillter.postValue(
+            SaleReportFilter(
                 startDay = DateTimeUtils.curDate,
                 endDay = DateTimeUtils.curDate,
                 isCurrentDrawer = true,
@@ -117,6 +109,7 @@ class SaleReportsMenuFragment : BaseFragment<FragmentSaleReportsMenuBinding, Sal
         when (option.type as SaleOptionPage) {
             SaleOptionPage.Overview -> navigator.goToWithAnimationEnterFromRight(
                 SalesReportFragment(
+                    SaleOptionPage.Overview,
                     fragment = SaleOverviewFragment()
                 )
             )
@@ -157,6 +150,7 @@ class SaleReportsMenuFragment : BaseFragment<FragmentSaleReportsMenuBinding, Sal
             )
             SaleOptionPage.InventorySales -> navigator.goToWithAnimationEnterFromRight(
                 SalesReportFragment(
+                    SaleOptionPage.InventorySales,
                     fragment = InventorySalesReportFragment()
                 )
             )

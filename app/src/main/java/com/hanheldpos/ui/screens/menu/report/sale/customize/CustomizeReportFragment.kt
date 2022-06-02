@@ -3,12 +3,12 @@ package com.hanheldpos.ui.screens.menu.report.sale.customize
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentCustomizeReportBinding
 import com.hanheldpos.extension.setOnClickDebounce
-import com.hanheldpos.model.report.SaleReportCustomData
+import com.hanheldpos.model.report.SaleReportFilter
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.utils.DateTimeUtils
 
 class CustomizeReportFragment(
-    private val saleReportCustomData: SaleReportCustomData,
+    private val saleReportCustomData: SaleReportFilter,
     private val listener: CustomizeReportCallBack
 ) :
     BaseFragment<FragmentCustomizeReportBinding, CustomizeReportVM>(), CustomizeReportUV {
@@ -39,7 +39,7 @@ class CustomizeReportFragment(
             }
         }
         listener.onComplete(
-            saleReportCustomData = SaleReportCustomData(
+            saleReportCustomData = SaleReportFilter(
                 startDay = (DateTimeUtils.strToDate(
                     "${viewModel.startDay.year}-${viewModel.startDay.month}-${viewModel.startDay.day}T00:00:00",
                     DateTimeUtils.Format.FULL_DATE_UTC_NOT_MILI
@@ -97,7 +97,7 @@ class CustomizeReportFragment(
 
     interface CustomizeReportCallBack {
         fun onComplete(
-            saleReportCustomData: SaleReportCustomData
+            saleReportCustomData: SaleReportFilter
         )
 
     }

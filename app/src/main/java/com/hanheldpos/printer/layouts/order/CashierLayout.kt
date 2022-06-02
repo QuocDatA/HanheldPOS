@@ -11,6 +11,7 @@ import com.handheld.printer.printer_setup.PrintOptions
 import com.handheld.printer.printer_setup.printer_manager.BasePrinterManager
 import com.handheld.printer.wagu.Block
 import com.handheld.printer.wagu.WaguUtils
+import com.handheld.printer.wagu.WrapType
 import com.hanheldpos.PosApp
 import com.hanheldpos.R
 import com.hanheldpos.model.DataHelper
@@ -104,7 +105,7 @@ class CashierLayout(
             ),
             mutableListOf(Block.DATA_CENTER, Block.DATA_CENTER, Block.DATA_CENTER),
             columnSize = mutableListOf(3, charPerLineNormal - 6, 3),
-            isWrapWord = true
+            wrapType = WrapType.SOFT_WRAP
         ).let {
             printer.drawText(StringUtils.removeAccent(it))
         }
@@ -164,7 +165,7 @@ class CashierLayout(
             ),
             columnOrderDetailAlign,
             columnSize(),
-            isWrapWord = true
+            wrapType = WrapType.SOFT_WRAP
         )
         printer.drawText(StringUtils.removeAccent(contentName), true)
 
@@ -231,7 +232,7 @@ class CashierLayout(
                         listInfoGroupExtra,
                         columnOrderDetailAlign,
                         columnGroupBundleExtra(),
-                        isWrapWord = true
+                        wrapType = WrapType.SOFT_WRAP
                     )
                 ).toString()
                 StringUtils.removeAccent(
@@ -318,7 +319,7 @@ class CashierLayout(
                 listExtraInfo,
                 columnOrderDetailAlign,
                 columnExtraSize(),
-                isWrapWord = true
+                wrapType = WrapType.SOFT_WRAP
             )
         ).toString()
         contentExtra.takeIf { it.isNotEmpty() }?.let {

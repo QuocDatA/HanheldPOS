@@ -90,6 +90,7 @@
 
 
                 <ImageButton
+                    android:id="@+id/btnPrintReport"
                     style="@style/MaterialButton.Icon"
                     android:layout_height="match_parent"
                     android:adjustViewBounds="true"

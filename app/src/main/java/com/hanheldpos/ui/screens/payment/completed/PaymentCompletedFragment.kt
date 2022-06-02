@@ -51,7 +51,7 @@ class PaymentCompletedFragment(
                         try {
                             BillPrinterManager.init(
                                 PosApp.instance.applicationContext,
-                                PrintOptions.bluetooth(DeviceType.NO_SDK.Types.HANDHELD),
+                                PrintOptions.lan(port = 9100, ipAddress = "192.168.0.86", deviceType = DeviceType.NO_SDK.Types.POS),
                                 onConnectionFailed = { ex ->
                                     launch(Dispatchers.Main) {
                                         showMessage(ex.message)
@@ -59,7 +59,7 @@ class PaymentCompletedFragment(
 
                                 }
                             ).apply {
-                                printBill(DatabaseMapper.mappingOrderReqFromEntity(completedEntity),LayoutType.Order.Cashier,false)
+                                printBill(DatabaseMapper.mappingOrderReqFromEntity(completedEntity),LayoutType.Order.Cashier,true)
                             }
                         } catch (e: Exception) {
                             e.printStackTrace()

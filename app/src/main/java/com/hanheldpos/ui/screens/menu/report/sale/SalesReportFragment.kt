@@ -3,14 +3,19 @@ package com.hanheldpos.ui.screens.menu.report.sale
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.activityViewModels
+import com.handheld.printer.printer_setup.PrintOptions
+import com.handheld.printer.printer_setup.device_info.DeviceType
+import com.hanheldpos.PosApp
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentSalesReportBinding
 import com.hanheldpos.extension.notifyValueChange
 import com.hanheldpos.extension.setOnClickDebounce
-import com.hanheldpos.model.report.SaleReportCustomData
+import com.hanheldpos.model.menu.report.SaleOptionPage
+import com.hanheldpos.model.report.SaleReportFilter
+import com.hanheldpos.printer.BillPrinterManager
+import com.hanheldpos.printer.layouts.LayoutType
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.menu.report.sale.adapter.NumberDayReportAdapter
@@ -20,7 +25,7 @@ import com.hanheldpos.utils.DateTimeUtils
 import java.time.temporal.ChronoUnit
 import java.util.*
 
-class SalesReportFragment(private val fragment: Fragment) :
+class SalesReportFragment(private val type: SaleOptionPage? = null, private val fragment: Fragment) :
     BaseFragment<FragmentSalesReportBinding, SalesReportVM>(),
     SalesReportUV {
     private lateinit var numberDayReportAdapter: NumberDayReportAdapter;
@@ -50,7 +55,7 @@ class SalesReportFragment(private val fragment: Fragment) :
                 listener = object : BaseItemClickListener<NumberDayReportItem> {
                     @RequiresApi(Build.VERSION_CODES.O)
                     override fun onItemClick(adapterPosition: Int, item: NumberDayReportItem) {
-                        saleReportCommon.saleReportCustomData.postValue(saleReportCommon.saleReportCustomData.value!!.apply {
+                        saleReportCommon.saleReportFillter.postValue(saleReportCommon.saleReportFillter.value!!.apply {
                             startDay = Date.from(
                                 endDay?.toInstant()?.minus(item.value.toLong(), ChronoUnit.DAYS)
                             );
@@ -65,7 +70,7 @@ class SalesReportFragment(private val fragment: Fragment) :
     override fun initData() {
         numberDayReportAdapter.submitList(viewModel.initNumberDaySelected());
 
-        saleReportCommon.saleReportCustomData.observe(this) {
+        saleReportCommon.saleReportFillter.observe(this) {
             setUpDateTitle(it);
         };
 
@@ -81,14 +86,33 @@ class SalesReportFragment(private val fragment: Fragment) :
             showLoading(true)
             saleReportCommon.onSyncOrders(this.requireView(), succeed = {
                 showLoading(false)
-                saleReportCommon.saleReportCustomData.notifyValueChange()
+                saleReportCommon.saleReportFillter.notifyValueChange()
             }, failed = {
                 showLoading(false)
             })
         }
+        binding.btnPrintReport.setOnClickDebounce {
+            when (type) {
+                SaleOptionPage.Overview -> {}
+                SaleOptionPage.InventorySales -> {
+                    BillPrinterManager.init(
+                        PosApp.instance.applicationContext,
+                        PrintOptions.bluetooth(DeviceType.NO_SDK.Types.HANDHELD),
+                        {
 
-        var firstObserver : Boolean = true
-        saleReportCommon.saleReportCustomData.observe(this) {
+                        }
+                    ).printReport(
+                        LayoutType.Report.Inventory,
+                        saleReportCommon.saleReport.value,
+                        saleReportCommon.saleReportFillter.value
+                    )
+                }
+                else -> {}
+            }
+        }
+
+        var firstObserver: Boolean = true
+        saleReportCommon.saleReportFillter.observe(this) {
             if (firstObserver) {
                 firstObserver = false
                 return@observe
@@ -106,20 +130,20 @@ class SalesReportFragment(private val fragment: Fragment) :
         navigator.goToWithCustomAnimation(CustomizeReportFragment(listener = object :
             CustomizeReportFragment.CustomizeReportCallBack {
             override fun onComplete(
-                saleReportCustomData: SaleReportCustomData
+                saleReportCustomData: SaleReportFilter
             ) {
                 numberDayReportAdapter.clearSelected();
-                saleReportCommon.saleReportCustomData.postValue(saleReportCustomData);
+                saleReportCommon.saleReportFillter.postValue(saleReportCustomData);
             }
 
-        }, saleReportCustomData = saleReportCommon.saleReportCustomData.value!!));
+        }, saleReportCustomData = saleReportCommon.saleReportFillter.value!!));
     }
 
     override fun backPress() {
         onFragmentBackPressed()
     }
 
-    private fun setUpDateTitle(saleReportCustomData: SaleReportCustomData) {
+    private fun setUpDateTitle(saleReportCustomData: SaleReportFilter) {
 
         val dateStr: String = DateTimeUtils.dateToString(
             saleReportCustomData.startDay,

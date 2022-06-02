@@ -5,6 +5,7 @@ import com.handheld.printer.printer_setup.PrintOptions
 import com.handheld.printer.printer_setup.printer_manager.BasePrinterManager
 import com.handheld.printer.wagu.Block
 import com.handheld.printer.wagu.WaguUtils
+import com.handheld.printer.wagu.WrapType
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.order.OrderModel
 import com.hanheldpos.printer.layouts.BaseLayoutPrinter
@@ -62,7 +63,7 @@ abstract class BaseLayoutOrder(
         )
         val content = WaguUtils.columnListDataBlock(
             charPerLineNormal, mutableListOf(orderCode, employee, dateCreate),
-            mutableListOf(Block.DATA_MIDDLE_LEFT, Block.DATA_MIDDLE_RIGHT), isWrapWord = true
+            mutableListOf(Block.DATA_MIDDLE_LEFT, Block.DATA_MIDDLE_RIGHT), wrapType = WrapType.SOFT_WRAP
         )
         printer.drawText(content)
     }
