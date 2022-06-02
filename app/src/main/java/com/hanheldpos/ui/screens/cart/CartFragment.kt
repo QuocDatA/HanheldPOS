@@ -1,6 +1,7 @@
 package com.hanheldpos.ui.screens.cart
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.activityViewModels
