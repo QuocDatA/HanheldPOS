@@ -130,8 +130,8 @@
 
         <com.diadiem.pos_components.PTextView
             android:id="@+id/priceTextView"
-            android:text="@{ '+' + PriceUtils.INSTANCE.formatStringPrice(item.total())}"
-            visibleObject="@{item.total() != 0}"
+            android:text="@{ '+' + PriceUtils.INSTANCE.formatStringPrice(item.total(isGroupBuy))}"
+            visibleObject="@{item.total(isGroupBuy) != 0}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAlignment="textEnd"

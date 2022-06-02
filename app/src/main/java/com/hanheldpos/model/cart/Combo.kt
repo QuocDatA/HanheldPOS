@@ -70,7 +70,7 @@ class Combo() : BaseProductInCart() {
         return total
     }
 
-    override fun total(): Double {
+    override fun total(isGroupBuy: Boolean?): Double {
         val totalTemp = totalTemp()
         val lineTotal = totalTemp - totalComp(totalTemp)
         return lineTotal
@@ -132,6 +132,10 @@ class Combo() : BaseProductInCart() {
 
     override fun isMatching(productItem: Product): Boolean {
         return false
+    }
+
+    override fun totalBuyXGetYDiscount(isGroupBuy: Boolean): Double {
+        return totalDiscount()
     }
 
     override fun clone(): Combo {
