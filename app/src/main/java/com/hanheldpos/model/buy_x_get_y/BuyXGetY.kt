@@ -69,8 +69,8 @@ class BuyXGetY() : BaseProductInCart(),Cloneable {
         return 0.0
     }
 
-    override fun total(): Double {
-        val totalTemp = subTotal()
+    override fun total(isGroupBuy: Boolean?): Double {
+        val totalTemp = subTotalBuyXGetY()
         val totalComp = totalComp(totalTemp)
         return totalTemp - totalComp
     }
@@ -97,7 +97,7 @@ class BuyXGetY() : BaseProductInCart(),Cloneable {
     }
 
     override fun isCompleted(): Boolean {
-        if(groupList != null) {
+        if (groupList != null) {
             return groupList?.firstOrNull { gr -> !gr.isCompleted } == null
         }
         return false
@@ -107,8 +107,13 @@ class BuyXGetY() : BaseProductInCart(),Cloneable {
         return false
     }
 
+    override fun totalBuyXGetYDiscount(isGroupBuy: Boolean): Double {
+        return 0.0
+    }
+
     override fun clone(): BuyXGetY {
-        val cloneValue = BuyXGetY(this.disc!!,
+        val cloneValue = BuyXGetY(
+            this.disc!!,
             this.note,
             this.sku,
             this.diningOption!!,
@@ -133,20 +138,20 @@ class BuyXGetY() : BaseProductInCart(),Cloneable {
         return cloneValue
     }
 
-    private fun proModSubtotal(): Double {
-        val proSubtotal = price()
+    private fun proModSubtotal(isGroupBuy: Boolean? = false): Double {
+        val proSubtotal = price(isGroupBuy)
         val modSubtotal = 0.0
         return proSubtotal - modSubtotal
     }
 
-    fun price(): Double {
+    fun price(isGroupBuy: Boolean? = false): Double {
         var total = 0.0
         groupList?.forEach { group ->
             total += group.productList.sumOf {
-                if(group.condition is CustomerBuys)
-                    when(it) {
+                if (group.condition is CustomerBuys)
+                    when (it) {
                         is Combo -> it.total()
-                        is Regular -> it.totalPrice()
+                        is Regular -> it.total(isGroupBuy)
                         else -> it.lineTotalValue
                     }
                 else
@@ -154,6 +159,10 @@ class BuyXGetY() : BaseProductInCart(),Cloneable {
             }
         }
         return total
+    }
+
+    private fun subTotalBuyXGetY(): Double {
+        return proModSubtotal(true) * (quantity ?: 0)
     }
 
     fun plusOrderQuantity(num: Int) {

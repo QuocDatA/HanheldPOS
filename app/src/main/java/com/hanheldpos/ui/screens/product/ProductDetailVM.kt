@@ -24,6 +24,8 @@ class ProductDetailVM : BaseUiViewModel<ProductDetailUV>() {
     val listVariantGroups: MutableList<VariantsGroup> = mutableListOf();
     val listModifierGroups: MutableList<GroupExtra> = mutableListOf();
 
+    var isGroupBuy : Boolean ? = false
+
     // Product Detail
     var productBundle: Product? = null;
     var groupBundle: GroupBundle? = null;
@@ -39,7 +41,7 @@ class ProductDetailVM : BaseUiViewModel<ProductDetailUV>() {
 
     val totalPriceLD = Transformations.map(regularInCart) {
         return@map if (productBundle == null)
-            regularInCart.value?.total() ?: 0.0
+            regularInCart.value?.total(isGroupBuy) ?: 0.0
         else
             regularInCart.value?.total(groupBundle!!, productBundle!!) ?: 0.0
     }

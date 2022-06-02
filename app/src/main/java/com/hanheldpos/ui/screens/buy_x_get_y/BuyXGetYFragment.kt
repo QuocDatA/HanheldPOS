@@ -6,6 +6,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hanheldpos.R
+import com.hanheldpos.data.api.pojo.discount.CustomerBuys
 import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.databinding.FragmentBuyXGetYBinding
 import com.hanheldpos.extension.notifyValueChange
@@ -119,6 +120,7 @@ class BuyXGetYFragment(
                                 quantityCanChoose = maxQuantity,
                                 action = action,
                                 isDiscountBuyXGetY = true,
+                                isGroupBuy = group.condition is CustomerBuys,
                                 listener = object : OrderFragment.OrderMenuListener {
                                     @SuppressLint("NotifyDataSetChanged")
                                     override fun onCartAdded(
@@ -132,6 +134,8 @@ class BuyXGetYFragment(
                                             action,
                                             discount,
                                         )
+                                        val isGroupBuy = group.condition is CustomerBuys
+                                        viewModel.isGroupBuy.value = isGroupBuy
                                         buyXGetYGroupAdapter.notifyDataSetChanged()
                                         viewModel.buyXGetY.notifyValueChange()
                                     }

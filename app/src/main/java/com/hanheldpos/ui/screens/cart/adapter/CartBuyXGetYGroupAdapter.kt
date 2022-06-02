@@ -2,7 +2,7 @@ package com.hanheldpos.ui.screens.cart.adapter
 
 import androidx.recyclerview.widget.DiffUtil
 import com.hanheldpos.R
-import com.hanheldpos.data.api.pojo.product.Product
+import com.hanheldpos.data.api.pojo.discount.CustomerBuys
 import com.hanheldpos.databinding.CartItemBuyXGetYGroupBinding
 import com.hanheldpos.model.buy_x_get_y.GroupBuyXGetY
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
@@ -23,10 +23,10 @@ class CartBuyXGetYGroupAdapter(
         val binding = (holder.binding as CartItemBuyXGetYGroupBinding)
         binding.position = position + 1
 
-        val cartBuyXGetYGroupAdapter = CartBuyXGetYGroupDetailAdapter()
+        val cartBuyXGetYGroupAdapter =
+            CartBuyXGetYGroupDetailAdapter(isGroupBuy = item.condition is CustomerBuys, isShowDetail)
         cartBuyXGetYGroupAdapter.submitList(item.productList)
         binding.cartComboGroupDetailRecyclerView.adapter = cartBuyXGetYGroupAdapter
-        binding.isShowDetail = isShowDetail
     }
 
 

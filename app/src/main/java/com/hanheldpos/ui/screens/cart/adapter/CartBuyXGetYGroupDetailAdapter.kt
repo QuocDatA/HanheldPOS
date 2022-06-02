@@ -11,24 +11,28 @@ import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
 
 
 class CartBuyXGetYGroupDetailAdapter(
+    private val isGroupBuy: Boolean ? = false,
+    private val isShowDetail: Boolean,
 ) : BaseBindingListAdapter<BaseProductInCart>(
     DiffCallback(),
 ) {
 
     override fun getItemViewType(position: Int): Int {
         val item = getItem(position)
-        return if (!item.proOriginal?.isBundle()!!) R.layout.item_cart_buy_x_get_y_group_detail
+        return if (item.proOriginal?.isBundle() != true) R.layout.item_cart_buy_x_get_y_group_detail
         else R.layout.cart_item_buy_x_get_y_combo_group
     }
 
     override fun onBindViewHolder(holder: BaseBindingViewHolder<BaseProductInCart>, position: Int) {
         val item = getItem(position)
         holder.bindItem(item)
-        if (!item.proOriginal?.isBundle()!!) {
+        if (item.proOriginal?.isBundle() != true) {
             val binding =
                 (holder.binding as ItemCartBuyXGetYGroupDetailBinding)
             binding.item = item
             binding.productBundle = item.proOriginal
+            binding.isGroupBuy = isGroupBuy
+            binding.isShowDetail = isShowDetail
         } else {
             val binding = (holder.binding as CartItemBuyXGetYComboGroupBinding)
             binding.item = item as Combo
@@ -37,6 +41,7 @@ class CartBuyXGetYGroupDetailAdapter(
                 CartComboGroupAdapter(productOrigin = item.proOriginal!!, isBuyXGetY = true, isInCart = true)
             cartComboGroupAdapter.submitList(item.groupList)
             binding.cartComboGroupDetailRecyclerView.adapter = cartComboGroupAdapter
+            binding.isShowDetail = isShowDetail
         }
     }
     private class DiffCallback : DiffUtil.ItemCallback<BaseProductInCart>() {

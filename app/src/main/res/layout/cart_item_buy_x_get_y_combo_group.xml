@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="com.hanheldpos.utils.PriceUtils"/>
 
         <variable
             name="item"
@@ -12,6 +13,10 @@
         <variable
             name="position"
             type="int" />
+
+        <variable
+            name="isShowDetail"
+            type="Boolean" />
     </data>
 
     <LinearLayout
@@ -20,7 +25,7 @@
         android:orientation="vertical">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/_2sdp"
             android:gravity="center_vertical"
@@ -32,21 +37,34 @@
                 android:layout_height="wrap_content"
                 android:includeFontPadding="false"
                 android:text="@{`(`+String.valueOf(item.quantity)+ `x)` }"
-                app:useTextColor="color5"
+                app:useTextColor="color4"
                 app:useTextHeader="h7"
                 tools:text="(1x)" />
 
             <com.diadiem.pos_components.PTextView
-                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_3sdp"
                 android:text="@{item.productName}"
                 app:useTextColor="color4"
                 app:useTextHeader="h6"
                 tools:text="Combo 1" />
+
+            <com.diadiem.pos_components.PTextView
+                android:id="@+id/priceTextView"
+                android:text="@{ '+' + PriceUtils.INSTANCE.formatStringPrice(item.total(false))}"
+                visibleObject="@{item.total(false)  != 0}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAlignment="textEnd"
+                app:useTextColor="color4"
+                app:useTextHeader="h6"
+                tools:text="137.000" />
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
+            visibleObject="@{isShowDetail}"
             android:id="@+id/cartComboGroupDetailRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

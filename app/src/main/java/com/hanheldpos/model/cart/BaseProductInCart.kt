@@ -51,7 +51,7 @@ abstract class BaseProductInCart {
     abstract fun totalFee(): Double
     abstract fun subTotal(): Double
     abstract fun totalDiscount(): Double
-    abstract fun total(): Double
+    abstract fun total(isGroupBuy: Boolean? = false): Double
     abstract fun totalComp(): Double
 
     abstract fun totalPriceUsed(discount: DiscountResp): Double
@@ -60,6 +60,8 @@ abstract class BaseProductInCart {
 
     abstract fun isCompleted(): Boolean
     abstract fun isMatching(productItem: Product): Boolean
+
+    abstract fun totalBuyXGetYDiscount(isGroupBuy: Boolean) : Double
 
     abstract fun clone(): BaseProductInCart
 

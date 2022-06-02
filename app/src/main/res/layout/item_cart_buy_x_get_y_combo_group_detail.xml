@@ -42,7 +42,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_3sdp"
                 android:text="@{item.groupName}"
-                app:useTextColor="color4"
+                app:useTextColor="color5"
                 app:useTextHeader="h6"
                 tools:text="Group Pho" />
         </LinearLayout>

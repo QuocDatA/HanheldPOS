@@ -36,6 +36,7 @@ class ProductDetailFragment(
     private val action: ItemActionType,
     private val listener: OrderFragment.OrderMenuListener? = null,
     private val isDiscountBuyXGetY: Boolean? = false,
+    private val isGroupBuy: Boolean? = false
 ) : BaseFragment<FragmentProductDetailBinding, ProductDetailVM>(), ProductDetailUV {
 
     private val cartDataVM by activityViewModels<CartDataVM>()
@@ -60,6 +61,7 @@ class ProductDetailFragment(
     override fun initView() {
         // Check to show discount fragment or not
         binding.isDiscountBuyXGetY = isDiscountBuyXGetY
+        viewModel.isGroupBuy = isGroupBuy
 
         // Variant Group
         groupVariantAdapter = GroupVariantAdapter(

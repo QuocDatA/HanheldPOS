@@ -21,6 +21,7 @@ import com.hanheldpos.ui.screens.cart.CurCartData
 class BuyXGetYVM : BaseUiViewModel<BuyXGetYUV>() {
     var buyXGetY = MutableLiveData<BuyXGetY>()
     var actionType = MutableLiveData<ItemActionType>();
+    var isGroupBuy = MutableLiveData(false)
     val totalPriceLD = MutableLiveData(0.0);
     var maxQuantity = -1;
     var minQuantity: LiveData<Int> = Transformations.map(actionType) {
@@ -40,12 +41,12 @@ class BuyXGetYVM : BaseUiViewModel<BuyXGetYUV>() {
         owner.lifecycle.addObserver(this);
 
         buyXGetY.observe(owner) {
-            updateTotalPrice();
+            updateTotalPrice(this.isGroupBuy.value);
         };
     }
 
-    private fun updateTotalPrice() {
-        totalPriceLD.value = buyXGetY.value?.total()
+    private fun updateTotalPrice(isGroupBuy: Boolean? = false) {
+        totalPriceLD.value = buyXGetY.value?.total(isGroupBuy)
     }
 
     fun initDefaultList(): MutableList<ItemBuyXGetYGroup>? {
@@ -164,7 +165,7 @@ class BuyXGetYVM : BaseUiViewModel<BuyXGetYUV>() {
         val itemBuyXGetYGroup = ItemBuyXGetYGroup(groupBuyXGetY, mutableListOf(), mutableListOf())
         if (conditionCustomer is CustomerBuys) {
             itemBuyXGetYGroup.groupListBaseProduct =
-                conditionCustomer.filterListApplyTo(itemBuyXGetYGroup, buyXGetY.value?.disc!!)
+                conditionCustomer.filterListApplyTo(itemBuyXGetYGroup)
             itemBuyXGetYGroup.listApplyTo = conditionCustomer.ListApplyTo.toMutableList()
             itemBuyXGetYGroup.isApplyToEntireOrder = CustomerDiscApplyTo.fromInt(conditionCustomer.ApplyTo) == CustomerDiscApplyTo.ENTIRE_ORDER
             itemBuyXGetYGroup.isBuyComplete = isBuyComplete

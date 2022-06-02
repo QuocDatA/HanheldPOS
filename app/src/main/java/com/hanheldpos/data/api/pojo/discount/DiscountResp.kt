@@ -234,7 +234,8 @@ data class DiscountResp(
         totalPrice: Double?,
         totalModifier: Double?,
         productOriginal_id: String? = null,
-        quantity: Int? = 1
+        quantity: Int? = 1,
+        isBuyXGetYGroupBuy: Boolean? = false,
     ): Double? {
         val subtotal =
             if (Condition.CustomerBuys.isApplyModifier(productOriginal_id ?: "")) totalPrice?.plus(
@@ -254,20 +255,24 @@ data class DiscountResp(
             DiscountTypeEnum.AMOUNT
             -> return total(subtotal, quantity, discountType, discountValue, productOriginal_id)
             DiscountTypeEnum.BUYX_GETY -> {
-                val discValue = Condition.CustomerGets.DiscountValue
-                return when (DiscountEntireType.fromInt(Condition.CustomerGets.DiscountValueType)) {
-                    DiscountEntireType.FREE ->
-                        subtotal
-                    DiscountEntireType.SPECIFIC -> subtotal?.minus(
-                        quantity?.times(discValue) ?: 0.0
-                    )
-                    DiscountEntireType.AMOUNT ->
-                        discValue
-                    DiscountEntireType.PERCENT ->
-                        subtotal?.times(discValue.div(100))
-                    else -> {
-                        0.0
+                return if (isBuyXGetYGroupBuy == false) {
+                    val discValue = Condition.CustomerGets.DiscountValue
+                    when (DiscountEntireType.fromInt(Condition.CustomerGets.DiscountValueType)) {
+                        DiscountEntireType.FREE ->
+                            subtotal
+                        DiscountEntireType.SPECIFIC -> subtotal?.minus(
+                            quantity?.times(discValue) ?: 0.0
+                        )
+                        DiscountEntireType.AMOUNT ->
+                            discValue
+                        DiscountEntireType.PERCENT ->
+                            subtotal?.times(discValue.div(100))
+                        else -> {
+                            0.0
+                        }
                     }
+                } else {
+                    0.0
                 }
             }
             else -> return 0.0
@@ -411,7 +416,6 @@ data class CustomerBuys(
 
     fun filterListApplyTo(
         item: ItemBuyXGetYGroup,
-        discount: DiscountResp
     ): MutableList<List<BaseProductInCart>> {
         val listRegularFilter: MutableList<List<BaseProductInCart>> = mutableListOf()
         when (CustomerDiscApplyTo.fromInt(ApplyTo)) {
@@ -426,6 +430,8 @@ data class CustomerBuys(
                         null,
                     ).toMutableList()
                 )
+                val result = listRegularFilter.last().last().totalDiscountValue
+                print(result)
             }
             CustomerDiscApplyTo.GROUP -> {
                 ListApplyTo.forEach { list ->

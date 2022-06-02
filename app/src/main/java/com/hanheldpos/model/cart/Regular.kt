@@ -79,8 +79,8 @@ class Regular() : BaseProductInCart(), Parcelable, Cloneable {
         return totalDiscount(proOriginal!!)
     }
 
-    override fun total(): Double {
-        return total(proOriginal!!)
+    override fun total(isGroupBuy: Boolean?): Double {
+        return total(proOriginal!!, isGroupBuy)
     }
 
     override fun totalComp(): Double {
@@ -121,6 +121,25 @@ class Regular() : BaseProductInCart(), Parcelable, Cloneable {
         return proOriginal?._id.equals(productItem._id) && proOriginal?.VariantsGroup == null
     }
 
+    override fun totalBuyXGetYDiscount(isGroupBuy: Boolean): Double {
+        val totalPrice = totalPrice()
+        val totalModifierPrice = totalModifier(proOriginal!!)
+
+        val subtotal = totalPrice + totalModifierPrice
+        val totalDiscUser = discountUsersList?.sumOf { disc -> disc.total(subtotal) } ?: 0.0
+        val totalDiscServer = discountServersList?.sumOf { disc ->
+            disc.total(
+                totalPrice,
+                totalModifierPrice,
+                proOriginal?._id,
+                quantity,
+                isBuyXGetYGroupBuy = isGroupBuy
+            ) ?: 0.0
+        } ?: 0.0
+
+        return totalDiscUser + totalDiscServer
+    }
+
     override fun clone(): Regular {
         val cloneValue = Regular(
             this.proOriginal!!,
@@ -141,9 +160,9 @@ class Regular() : BaseProductInCart(), Parcelable, Cloneable {
         return cloneValue
     }
 
-    private fun totalTemp(productPricing: Product): Double {
+    private fun totalTemp(productPricing: Product, isGroupBuy: Boolean? = false): Double {
         val subtotal = subTotal(productPricing)
-        val totalDiscPrice = totalDiscount(productPricing)
+        val totalDiscPrice = totalDiscount(productPricing, isGroupBuy)
         val totalFeePrice = totalFee(subtotal, totalDiscPrice)
         var total = subtotal - totalDiscPrice + totalFeePrice
         total = if (total < 0) 0.0 else total
@@ -161,7 +180,7 @@ class Regular() : BaseProductInCart(), Parcelable, Cloneable {
         return telcomp
     }
 
-    private fun totalDiscount(productPricing: Product): Double {
+    private fun totalDiscount(productPricing: Product, isGroupBuy: Boolean? = false): Double {
         val totalPrice = totalPrice()
         val totalModifierPrice = totalModifier(productPricing)
 
@@ -172,7 +191,8 @@ class Regular() : BaseProductInCart(), Parcelable, Cloneable {
                 totalPrice,
                 totalModifierPrice,
                 proOriginal?._id,
-                quantity
+                quantity,
+                isGroupBuy
             ) ?: 0.0
         } ?: 0.0
 
@@ -206,8 +226,8 @@ class Regular() : BaseProductInCart(), Parcelable, Cloneable {
         return subtotal
     }
 
-    fun total(productPricing: Product): Double {
-        val totalTemp = totalTemp(productPricing)
+    fun total(productPricing: Product, isGroupBuy: Boolean? = false): Double {
+        val totalTemp = totalTemp(productPricing, isGroupBuy)
         val totalComp = totalComp(totalTemp)
         val lineTotal = totalTemp - totalComp
         return lineTotal
