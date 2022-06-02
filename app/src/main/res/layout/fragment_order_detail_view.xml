@@ -77,7 +77,7 @@
                     layout="@layout/layout_address_customer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="@dimen/_11sdp"
+                    android:layout_marginVertical="@dimen/_9sdp"
                     android:visibility="@{order.orderDetail.billing != null ? View.VISIBLE : View.GONE}"
                     app:customer="@{order.orderDetail.billing}" />
 
@@ -92,7 +92,7 @@
                     layout="@layout/layout_order_infor"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="@dimen/_11sdp"
+                    android:layout_marginVertical="@dimen/_9sdp"
                     android:visibility="@{order.order != null ? View.VISIBLE : View.GONE}"
                     app:orderInfo="@{order.order}" />
 
@@ -107,7 +107,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="@dimen/_11sdp"
+                    android:layout_marginVertical="@dimen/_9sdp"
                     android:orientation="vertical">
 
                     <LinearLayout
@@ -144,6 +144,7 @@
                     </LinearLayout>
 
                     <androidx.recyclerview.widget.RecyclerView
+                        android:overScrollMode="never"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         android:id="@+id/itemList"
                         android:layout_width="match_parent"
@@ -161,7 +162,7 @@
                     visibleObject="@{order.orderDetail.order.note}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="@dimen/_11sdp"
+                    android:layout_marginVertical="@dimen/_9sdp"
                     android:text="@{`Note : ` + order.orderDetail.order.note}"
                     app:useFontStyle="normal"
                     app:useTextColor="color4"
@@ -185,7 +186,7 @@
                     <com.diadiem.pos_components.PTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginVertical="@dimen/_11sdp"
+                        android:layout_marginVertical="@dimen/_9sdp"
                         android:text="@string/subtotal"
                         app:useFontStyle="normal"
                         app:useTextColor="color4"
@@ -199,7 +200,7 @@
                     <com.diadiem.pos_components.PTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginVertical="@dimen/_11sdp"
+                        android:layout_marginVertical="@dimen/_9sdp"
                         android:text="@{PriceUtils.INSTANCE.formatStringPrice(order.orderDetail.order.subtotal)}"
                         app:useFontStyle="normal"
                         app:useTextColor="color4"
@@ -224,7 +225,7 @@
                     <com.diadiem.pos_components.PTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginVertical="@dimen/_11sdp"
+                        android:layout_marginVertical="@dimen/_9sdp"
                         android:text="@string/discount"
                         app:useFontStyle="normal"
                         app:useTextColor="color4"
@@ -238,7 +239,7 @@
                     <com.diadiem.pos_components.PTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginVertical="@dimen/_11sdp"
+                        android:layout_marginVertical="@dimen/_9sdp"
                         android:text="@{PriceUtils.INSTANCE.formatStringPrice(order.orderDetail.order.discount)}"
                         app:useFontStyle="normal"
                         app:useTextColor="color4"
@@ -257,7 +258,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_11sdp"
+                    android:layout_marginTop="@dimen/_9sdp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
@@ -286,18 +287,19 @@
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:layout_marginTop="@dimen/_11sdp"
-                    visibleObject="@{order.orderDetail}"
+                    android:overScrollMode="never"
+                    android:id="@+id/paymentList"
+                    visibleObject="@{order.orderDetail.paymentList != null &amp;&amp; !order.orderDetail.paymentList.empty}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-
+                    tools:itemCount="3"
                     />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_11sdp"
+                    android:layout_marginTop="@dimen/_9sdp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 

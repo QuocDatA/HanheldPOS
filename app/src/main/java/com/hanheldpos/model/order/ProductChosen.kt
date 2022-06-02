@@ -1,8 +1,10 @@
 package com.hanheldpos.model.order
 
 import android.os.Parcelable
+import android.util.Pair
 import com.hanheldpos.data.api.pojo.order.settings.DiningOption
 import com.hanheldpos.model.cart.VariantCart
+import com.hanheldpos.model.product.ProductType
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -138,7 +140,7 @@ data class ProductChosen(
         OtherFee = 0.0,
         LineTotal = lineTotal,
         GrossPrice = grossPrice,
-        DiningOption =OrderDiningOption(
+        DiningOption = OrderDiningOption(
             Id = diningOption?.Id ?: 0,
             TypeId = diningOption?.TypeId ?: 0,
             Title = diningOption?.Title,
@@ -159,4 +161,15 @@ data class ProductChosen(
         Parent_id = null,
         ParentIndex = 0,
     )
+
+
+    fun groupProducts(): List<GroupProductChosen> {
+        return ProductChoosedList?.groupBy { Pair(it.ParentIndex, (it.ParentName ?: "")) }?.toList()
+            ?.map {
+                GroupProductChosen(it.first.first, it.first.second, it.second)
+            }
+            ?: mutableListOf()
+    }
+
 }
+

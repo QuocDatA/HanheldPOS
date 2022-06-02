@@ -15,7 +15,7 @@ data class GroupBundle(
     val totalQuantity get() = productList.sumOf { it.quantity?: 0 }
     val requireQuantity get() = comboInfo.Quantity?.minus(totalQuantity);
     val groupName get() = MenuDataMapper.getGroupNameFromGroupGuid(comboInfo.ComboGuid,DataHelper.menuLocalStorage!!);
-    fun isComplete() = totalQuantity >= comboInfo.Quantity ?: 0;
+    fun isComplete() = totalQuantity >= (comboInfo.Quantity ?: 0);
 
     fun addRegular(regular: Regular){
         productList.add(regular)

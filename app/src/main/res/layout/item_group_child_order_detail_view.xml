@@ -6,7 +6,7 @@
     <data>
         <variable
             name="item"
-            type="com.hanheldpos.model.cart.GroupBundle" />
+            type="com.hanheldpos.model.order.GroupProductChosen" />
 
         <variable
             name="position"
@@ -28,31 +28,30 @@
             <LinearLayout
                 android:layout_width="@dimen/_11sdp"
                 android:layout_height="@dimen/_11sdp"
-                android:background="@drawable/bg_cart_number"
                 android:gravity="center">
 
                 <com.diadiem.pos_components.PTextView
                     android:includeFontPadding="false"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{String.valueOf(position)}"
-                    app:useTextColor="color2"
+                    android:text="@{String.valueOf(item.index) + `.`}"
+                    app:useTextColor="color4"
                     app:useTextHeader="h7"
-                    tools:text="1" />
+                    tools:text="1." />
             </LinearLayout>
 
             <com.diadiem.pos_components.PTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_3sdp"
-                android:text="@{item.groupName}"
+                android:text="@{item.title}"
                 app:useTextColor="color4"
                 app:useTextHeader="h6"
                 tools:text="Group Pho" />
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/cartComboGroupDetailRecyclerView"
+            android:id="@+id/groupChildOrderDetailItem"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_15sdp"
@@ -60,7 +59,7 @@
             android:overScrollMode="never"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:itemCount="3"
-            tools:listitem="@layout/item_cart_combo_group_detail" />
+            />
 
     </LinearLayout>
 </layout>
