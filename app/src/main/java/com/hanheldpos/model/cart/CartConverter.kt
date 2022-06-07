@@ -63,7 +63,7 @@ object CartConverter {
                 MenuLocationGuid = cart.menuLocationGuid,
                 CurrencySymbol = OrderHelper.getCurrencySymbol()!!,
                 CashDrawer_id = DataHelper.currentDrawerId,
-                CustomerGuestGuid = cart.customer?._Id,
+                CustomerGuestGuid = cart.customer?._id,
                 Checksum = EncryptUtils.getHash(CheckSum(cart.createDate!!,DataHelper.deviceGuid()))
             ),
             OrderDetail = OrderDetail(

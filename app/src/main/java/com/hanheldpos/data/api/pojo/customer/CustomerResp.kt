@@ -55,7 +55,7 @@ data class CustomerResp(
     val WardId: Int,
     val WardName: String,
     val Zip: String,
-    val _Id: String,
+    val _id: String,
     val _key: Int,
     val _rev: String,
 //    val grant_type: Any

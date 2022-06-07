@@ -17,7 +17,7 @@ class AddCustomerVM : BaseRepoViewModel<CustomerRepo, AddCustomerUV>() {
         return CustomerRepo()
     }
 
-    fun searchCustomer(keyword: String?, pageNo: Int? = 1,keyRequest : Int) {
+    fun searchCustomer(keyword: String?, pageNo: Int? = 1, keyRequest: Int) {
         val userGuid = UserHelper.getUserGuid()
         repo?.getCustomersFromSearch(
             userGuid = userGuid,
@@ -25,20 +25,25 @@ class AddCustomerVM : BaseRepoViewModel<CustomerRepo, AddCustomerUV>() {
             pageNo = pageNo,
             object : BaseRepoCallback<BaseResponse<List<CustomerSearchResp>>?> {
                 override fun apiRequesting(showLoading: Boolean) {
-                    if (pageNo == 1)
-                        isLoading.postValue(showLoading)
+                    isLoading.postValue(showLoading)
                 }
 
                 override fun apiResponse(data: BaseResponse<List<CustomerSearchResp>>?) {
                     if (data == null || data.DidError) {
-                        uiCallback?.loadCustomer(mutableListOf(),false,keyRequest)
+                        uiCallback?.loadCustomer(mutableListOf(), false, keyRequest)
                     } else {
-                        data.Model?.firstOrNull()?.List?.let { uiCallback?.loadCustomer(it,true,keyRequest) }
+                        data.Model?.firstOrNull()?.List?.let {
+                            uiCallback?.loadCustomer(
+                                it,
+                                true,
+                                keyRequest
+                            )
+                        }
                     }
                 }
 
                 override fun showMessage(message: String?) {
-                    uiCallback?.loadCustomer(mutableListOf(),false,keyRequest)
+                    uiCallback?.loadCustomer(mutableListOf(), false, keyRequest)
                 }
             })
     }

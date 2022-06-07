@@ -18,6 +18,8 @@ import com.hanheldpos.ui.base.dialog.AppAlertDialog
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.menu.adapter.ItemOptionNav
 import com.hanheldpos.ui.screens.menu.adapter.OptionNavAdapter
+import com.hanheldpos.ui.screens.menu.customers.CustomerMenuFragment
+import com.hanheldpos.ui.screens.menu.customers.CustomerMenuVM
 import com.hanheldpos.ui.screens.menu.order_history.OrderHistoryFragment
 import com.hanheldpos.ui.screens.menu.orders.OrdersMenuFragment
 import com.hanheldpos.ui.screens.menu.report.ReportFragment
@@ -103,7 +105,7 @@ class MenuFragment : BaseFragment<FragmentMenuBinding, MenuVM>(), MenuUV {
             }
             NavBarOptionType.TRANSACTIONS -> {}
             NavBarOptionType.REPORTS -> navigator.goToWithCustomAnimation(ReportFragment());
-            NavBarOptionType.CUSTOMER -> {}
+            NavBarOptionType.CUSTOMER -> navigator.goToWithCustomAnimation(CustomerMenuFragment());
             NavBarOptionType.ORDER_HISTORY -> navigator.goToWithCustomAnimation(OrderHistoryFragment())
             NavBarOptionType.SETTINGS -> navigator.goToWithCustomAnimation(SettingsFragment());
             NavBarOptionType.SUPPORT -> {}

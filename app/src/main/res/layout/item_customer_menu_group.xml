@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.hanheldpos.ui.screens.menu.customers.adapter.CustomerGroup" />
+    </data>
+
+    <LinearLayout
+
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.diadiem.pos_components.PTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_12sdp"
+            android:layout_marginVertical="@dimen/_6sdp"
+            android:text="@{item.groupTitle}"
+            app:useFontStyle="bold"
+            app:useTextColor="color4"
+            app:useTextHeader="h5" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/customers"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:itemCount="3"
+            tools:listitem="@layout/item_customer_menu" />
+    </LinearLayout>
+</layout>

@@ -273,4 +273,5 @@
     <string name="order_sharp">Order #</string>
     <string name="employee">Employee</string>
     <string name="subtotal">Subtotal</string>
+    <string name="customers">Customers</string>
 </resources>

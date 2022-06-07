@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.hanheldpos.ui.screens.menu.customers.CustomerMenuVM" />
+    </data>
+
+
+    <LinearLayout style="@style/RootLayout">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_42sdp"
+            android:background="@color/color_2">
+
+            <ImageView
+                android:id="@+id/homeMenu"
+                style="@style/MaterialButton.Icon"
+                android:layout_width="@dimen/_48sdp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center|start"
+                android:adjustViewBounds="true"
+                android:backgroundTint="@color/textPrimary"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClickDebounce="@{v -> viewModel.onFragmentBackPressed()}"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_toolbar_menu"
+                tools:ignore="ContentDescription" />
+
+            <com.diadiem.pos_components.PTextView
+                style="@style/CartTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/customers" />
+
+            <ImageView
+                android:id="@+id/btnMore"
+                style="@style/MaterialButton.Icon"
+                android:layout_width="@dimen/_48sdp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center|end"
+                android:adjustViewBounds="true"
+                android:backgroundTint="@color/textPrimary"
+                android:clickable="true"
+                android:focusable="true"
+                android:padding="@dimen/_15sdp"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_more"
+                tools:ignore="ContentDescription" />
+        </FrameLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_1sdp"
+            android:background="@color/color_10" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/color_2">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_40sdp"
+                    android:background="@drawable/bg_outline">
+
+                    <ImageView
+                        android:id="@+id/btnSearch"
+                        android:layout_width="@dimen/_33sdp"
+                        android:layout_height="match_parent"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:padding="@dimen/_12sdp"
+                        android:paddingEnd="0dp"
+                        android:src="@drawable/ic_search"
+                        app:tint="@color/color_8"
+                        tools:ignore="RtlSymmetry" />
+
+                    <com.diadiem.pos_components.PTextInputEditText
+                        android:id="@+id/discountAutomaticInput"
+                        style="@style/BaseTextInput"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_margin="0dp"
+                        android:layout_weight="1"
+                        android:focusableInTouchMode="true"
+                        android:gravity="center_vertical"
+                        android:hint="@string/search"
+                        android:inputType="textCapWords"
+                        android:paddingHorizontal="@dimen/_10sdp"
+                        android:text="@={viewModel.customerSearchString}"
+                        android:textAllCaps="true"
+                        app:ipt_useFontStyle="normal"
+                        app:ipt_useHintTextColor="color8"
+                        app:ipt_useTextColor="color4"
+                        app:ipt_useTextHeader="h5" />
+
+                </LinearLayout>
+            </FrameLayout>
+
+            <FrameLayout
+                android:background="@color/color_11"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/customerGroups"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:itemCount="3"
+                    tools:listitem="@layout/item_customer_menu_group" />
+
+                <FrameLayout
+                    visibleObject="@{viewModel.isLoading()}"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clickable="true"
+                    android:focusable="true" />
+
+                <ProgressBar
+                    visibleObject="@{viewModel.isLoading()}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:indeterminateTint="@color/color_0" />
+            </FrameLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+</layout>
