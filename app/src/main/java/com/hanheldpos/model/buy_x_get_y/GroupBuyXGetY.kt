@@ -1,6 +1,8 @@
 package com.hanheldpos.model.buy_x_get_y
 
 import android.os.Parcelable
+import com.hanheldpos.PosApp
+import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.discount.CustomerBuys
 import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.data.api.pojo.fee.CustomerGets
@@ -11,9 +13,11 @@ import com.hanheldpos.model.cart.BaseProductInCart
 import com.hanheldpos.model.cart.Combo
 import com.hanheldpos.model.cart.GroupBundle
 import com.hanheldpos.model.cart.Regular
+import com.hanheldpos.model.discount.DiscountEntireType
 import com.hanheldpos.model.product.ProductComboItem
 import com.hanheldpos.ui.screens.cart.CurCartData
 import com.hanheldpos.utils.GSonUtils
+import com.hanheldpos.utils.PriceUtils
 import kotlinx.android.parcel.Parcelize
 import kotlinx.android.parcel.RawValue
 
@@ -167,6 +171,57 @@ data class GroupBuyXGetY(
             }
         }.toMutableList()
         return result
+    }
+
+    fun getRequireQuantityFormat(): String {
+        if (condition is CustomerBuys) {
+            val customerBuys = condition as CustomerBuys
+            return when (MinimumType.fromInt(customerBuys.MinimumTypeId ?: 0)) {
+                MinimumType.AMOUNT -> {
+                    PosApp.instance.getString(R.string.minimum_purchase_amount) + " " + PriceUtils.formatStringPrice(
+                        customerBuys.MinimumValue ?: 0.0
+                    )
+                }
+                MinimumType.QUANTITY -> {
+                    (PriceUtils.formatStringPrice(customerBuys.MinimumValue.toString()) + " " + getItemRequired(
+                        customerBuys.MinimumValue ?: 0.0
+                    ))
+                }
+                else -> {
+                    ""
+                }
+            }
+
+        } else { // condition is CustomerGets
+            val customerGets = condition as CustomerGets
+            when (CustomerDiscApplyTo.fromInt(customerGets.ApplyTo)) {
+                CustomerDiscApplyTo.ENTIRE_ORDER -> {
+                    return when (DiscountEntireType.fromInt(customerGets.DiscountValueType)) {
+                        DiscountEntireType.PERCENT -> {
+                            PosApp.instance.getString(R.string.discount) + " " + PriceUtils.formatStringPrice(
+                                customerGets.DiscountValue
+                            ) + "%"
+                        }
+                        else -> {
+                            PosApp.instance.getString(R.string.discount) + " " + PriceUtils.formatStringPrice(
+                                customerGets.DiscountValue
+                            )
+                        }
+                    }
+                }
+                else -> {
+                    return PriceUtils.formatStringPrice(customerGets.Quantity.toString()) + " " + getItemRequired(
+                        customerGets.Quantity
+                    )
+                }
+            }
+        }
+    }
+
+    private fun getItemRequired(value: Double): String {
+        return if (value > 1) (PosApp.instance.getString(R.string.items_required)) else (PosApp.instance.getString(
+            R.string.item_required
+        ))
     }
 }
 

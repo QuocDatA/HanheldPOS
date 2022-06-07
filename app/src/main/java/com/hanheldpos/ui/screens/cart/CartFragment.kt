@@ -42,6 +42,7 @@ import com.hanheldpos.ui.screens.payment.PaymentFragment
 import com.hanheldpos.ui.screens.payment.completed.PaymentCompletedFragment
 import com.hanheldpos.ui.screens.combo.ComboFragment
 import com.hanheldpos.ui.screens.discount.DiscountFragment
+import com.hanheldpos.ui.screens.discount.discount_type.discount_code.DiscountCodeFragment
 import com.hanheldpos.ui.screens.home.order.OrderFragment
 import com.hanheldpos.ui.screens.product.ProductDetailFragment
 
@@ -362,6 +363,21 @@ class CartFragment(private val listener: CartCallBack) :
             }
         }
 
+        val callbackEditBuyXGetY = object : DiscountCodeFragment.BuyXGetYListener {
+            override fun onCartAdded(
+                item: BaseProductInCart,
+                action: ItemActionType
+            ) {
+                if(action == ItemActionType.Remove)
+
+                    onUpdateItemInCart(position, item)
+            }
+
+            override fun onDiscountBuyXGetYEntireOrder(discountUser: DiscountUser) {
+                cartDataVM.addDiscountUser(discountUser)
+            }
+        }
+
         when (item.productType) {
             ProductType.REGULAR -> {
                 navigator.goToWithCustomAnimation(
@@ -390,7 +406,7 @@ class CartFragment(private val listener: CartCallBack) :
                         discount = item.clone().disc!!,
                         actionType = ItemActionType.Modify,
                         quantityCanChoose = 1,
-                        listener = callbackEdit
+                        listener = callbackEditBuyXGetY
                     )
                 )
             }

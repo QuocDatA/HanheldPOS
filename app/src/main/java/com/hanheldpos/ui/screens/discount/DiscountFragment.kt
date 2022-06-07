@@ -52,9 +52,10 @@ class DiscountFragment(private val listener: DiscountCallback) :
                 applyToType = DiscApplyTo.ORDER,
                 cart = cartDataVM.cartModelLD.value!!,
                 listener = object : DiscountTypeListener {
-                    override fun discountUserChoose(discount: DiscountUser) {
+                    override fun discountUserChoose(discount: DiscountUser, isBuyXGetY: Boolean?) {
                         listener.onDiscountUserChoose(discount);
-                        onFragmentBackPressed()
+                        if(isBuyXGetY == false)
+                            onFragmentBackPressed()
                     }
 
                     override fun discountServerChoose(discount: DiscountResp, discApplyTo: DiscApplyTo) {
@@ -120,7 +121,7 @@ class DiscountFragment(private val listener: DiscountCallback) :
     }
 
     interface DiscountTypeListener {
-        fun discountUserChoose(discount: DiscountUser): Unit {}
+        fun discountUserChoose(discount: DiscountUser, isBuyXGetY: Boolean? = false): Unit {}
         fun discountServerChoose(discount : DiscountResp,discApplyTo: DiscApplyTo) : Unit {}
         fun discountCodeChoose(discount: List<DiscountCoupon>?): Unit{}
         fun compReasonChoose(item: Reason): Unit {}

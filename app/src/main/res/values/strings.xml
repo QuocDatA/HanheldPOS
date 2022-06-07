@@ -267,4 +267,8 @@
     <string name="synced">Synced</string>
     <string name="an_error_occurred_please_try_again">An error occurred, please try again!</string>
     <string name="filter">Filter</string>
+    <string name="minimum_purchase_amount">Minimum Purchase Amount</string>
+    <string name="discount">Discount</string>
+    <string name="items_required">items required</string>
+    <string name="item_required">item required</string>
 </resources>

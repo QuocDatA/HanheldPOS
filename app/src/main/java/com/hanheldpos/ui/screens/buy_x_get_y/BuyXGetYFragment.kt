@@ -16,9 +16,11 @@ import com.hanheldpos.model.cart.BaseProductInCart
 import com.hanheldpos.model.cart.Combo
 import com.hanheldpos.model.cart.Regular
 import com.hanheldpos.model.combo.ItemActionType
+import com.hanheldpos.model.discount.DiscountUser
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.buy_x_get_y.adapter.BuyXGetYGroupAdapter
 import com.hanheldpos.ui.screens.combo.ComboFragment
+import com.hanheldpos.ui.screens.discount.discount_type.discount_code.DiscountCodeFragment
 import com.hanheldpos.ui.screens.home.order.OrderFragment
 import com.hanheldpos.ui.screens.product.ProductDetailFragment
 
@@ -27,7 +29,7 @@ class BuyXGetYFragment(
     private val discount: DiscountResp,
     private val actionType: ItemActionType,
     private val quantityCanChoose: Int = -1,
-    private val listener: OrderFragment.OrderMenuListener
+    private val listener: DiscountCodeFragment.BuyXGetYListener
 ) :
     BaseFragment<FragmentBuyXGetYBinding, BuyXGetYVM>(), BuyXGetYUV {
     override fun layoutRes(): Int = R.layout.fragment_buy_x_get_y
@@ -176,5 +178,9 @@ class BuyXGetYFragment(
     override fun cartAdded(item: BaseProductInCart, action: ItemActionType) {
         listener.onCartAdded(item , action)
         onFragmentBackPressed()
+    }
+
+    override fun onDiscountBuyXGetYEntireOrder(discountUser: DiscountUser) {
+        listener.onDiscountBuyXGetYEntireOrder(discountUser)
     }
 }

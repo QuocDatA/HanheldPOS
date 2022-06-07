@@ -10,22 +10,28 @@
             type="com.hanheldpos.model.cart.DiscountCart" />
     </data>
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:gravity="start|center"
+        android:orientation="horizontal"
+        android:paddingStart="@dimen/_9sdp"
+        android:paddingEnd="0dp">
+
         <LinearLayout
-            android:layout_alignParentStart="true"
-            android:gravity="center"
-            android:paddingHorizontal="@dimen/_9sdp"
-            android:orientation="horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent">
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:gravity="center|start"
+            android:orientation="horizontal">
 
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingVertical="@dimen/_9sdp"
-                android:orientation="horizontal">
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingVertical="@dimen/_9sdp">
 
                 <ImageView
                     android:layout_width="@dimen/_14sdp"
@@ -37,20 +43,24 @@
                     android:layout_height="wrap_content" />
 
                 <com.diadiem.pos_components.PTextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:useTextColor="color4"
-                    app:useTextHeader="h5"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:gravity="center|start"
+                    android:text="@{item.title, default=`10% Off Order`}"
                     app:useFontStyle="normal"
-                    android:text="@{item.title, default=`10% Off Order`}" />
+                    app:useTextColor="color4"
+                    app:useTextHeader="h5" />
             </LinearLayout>
 
             <FrameLayout
-                android:clickable="true"
-                android:focusable="true"
                 android:id="@+id/btnRemove"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:clickable="true"
+                android:focusable="true"
+                android:layout_marginEnd="@dimen/_9sdp"
                 android:paddingHorizontal="@dimen/_9sdp">
 
                 <ImageView
@@ -59,22 +69,18 @@
                     android:layout_gravity="center"
                     android:src="@drawable/ic_delete" />
             </FrameLayout>
-
         </LinearLayout>
 
         <com.diadiem.pos_components.PTextView
             android:text="@{ `-` + PriceUtils.INSTANCE.formatStringPrice(item.amount) }"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_alignParentEnd="true"
-            android:gravity="center"
+            android:layout_gravity="end|center"
             android:padding="@dimen/_9sdp"
             app:useFontStyle="normal"
             app:useTextColor="color0"
             app:useTextHeader="h6"
             tools:text="-5,000" />
-    </RelativeLayout>
 
-
+    </LinearLayout>
 </layout>
