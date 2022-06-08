@@ -97,7 +97,10 @@ class ComboFragment(
                     applyToType = DiscApplyTo.ITEM,
                     cart = cartDataVM.cartModelLD.value!!,
                     listener = object : DiscountFragment.DiscountTypeListener {
-                        override fun discountUserChoose(discount: DiscountUser) {
+                        override fun discountUserChoose(
+                            discount: DiscountUser,
+                            isBuyXGetY: Boolean?
+                        ) {
                             if (viewModel.isValidDiscount.value != true) return;
                             viewModel.bundleInCart.value?.addDiscountUser(discount)
                             viewModel.bundleInCart.notifyValueChange();
