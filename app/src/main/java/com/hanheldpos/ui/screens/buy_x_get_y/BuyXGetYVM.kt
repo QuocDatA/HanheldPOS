@@ -15,6 +15,7 @@ import com.hanheldpos.model.buy_x_get_y.ItemBuyXGetYGroup
 import com.hanheldpos.model.cart.Combo
 import com.hanheldpos.model.cart.Regular
 import com.hanheldpos.model.combo.ItemActionType
+import com.hanheldpos.model.discount.DiscountUser
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
 import com.hanheldpos.ui.screens.cart.CurCartData
 
@@ -23,6 +24,7 @@ class BuyXGetYVM : BaseUiViewModel<BuyXGetYUV>() {
     var actionType = MutableLiveData<ItemActionType>();
     var isGroupBuy = MutableLiveData(false)
     val totalPriceLD = MutableLiveData(0.0);
+    var discountUser: DiscountUser? = null
     var maxQuantity = -1;
     var minQuantity: LiveData<Int> = Transformations.map(actionType) {
         return@map when (actionType.value) {
@@ -66,15 +68,27 @@ class BuyXGetYVM : BaseUiViewModel<BuyXGetYUV>() {
                 val totalOrder = CurCartData.cartModel!!.total()
                 val totalQuantityOrder = CurCartData.cartModel!!.getTotalQuantity()
 
-                if(!(buyXGetY.value!!.disc?.Condition?.CustomerBuys?.isBuyCompleted(totalOrder, totalQuantityOrder))!!) {
+                if ((buyXGetY.value!!.disc?.Condition?.CustomerBuys?.isBuyCompleted(
+                        totalOrder,
+                        totalQuantityOrder
+                    ))!!
+                ) {
+                    // only add discount to cart if ApplyTo of CustomerBuys is Entire Order
+                    if (buyXGetY.value!!.disc?.Condition?.CustomerGets?.ApplyTo == CustomerDiscApplyTo.ENTIRE_ORDER.value) {
+                        val disc = buyXGetY.value!!.disc!!
+                        discountUser =
+                            DiscountUser(
+                                DiscountGuid = disc._id,
+                                DiscountName = disc.DiscountName,
+                                DiscountValue = disc.Condition.CustomerGets.DiscountValue,
+                                DiscountType = disc.Condition.CustomerGets.DiscountValueType
+                            )
+                    }
 
-                } else {
                     return true
                 }
             }
-            else -> {
-
-            }
+            else -> {}
         }
         return false
     }
@@ -157,6 +171,9 @@ class BuyXGetYVM : BaseUiViewModel<BuyXGetYUV>() {
     }
 
     fun onAddCart() {
+        if (discountUser != null) {  // add discount for reward for buy x get y entire order if exist
+            uiCallback?.onDiscountBuyXGetYEntireOrder(discountUser!!)
+        }
         uiCallback?.cartAdded(buyXGetY.value!!, actionType.value!!);
     }
 

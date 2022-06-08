@@ -274,4 +274,8 @@
     <string name="employee">Employee</string>
     <string name="subtotal">Subtotal</string>
     <string name="customers">Customers</string>
+    <string name="minimum_purchase_amount">Minimum Purchase Amount</string>
+    <string name="discount">Discount</string>
+    <string name="items_required">items required</string>
+    <string name="item_required">item required</string>
 </resources>

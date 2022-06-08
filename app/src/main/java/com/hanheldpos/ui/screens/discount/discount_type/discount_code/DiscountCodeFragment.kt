@@ -15,6 +15,7 @@ import com.hanheldpos.model.combo.ItemActionType
 import com.hanheldpos.model.discount.DiscApplyTo
 import com.hanheldpos.model.discount.DiscountTriggerType
 import com.hanheldpos.model.discount.DiscountTypeFor
+import com.hanheldpos.model.discount.DiscountUser
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.buy_x_get_y.BuyXGetYFragment
 import com.hanheldpos.ui.screens.discount.DiscountFragment
@@ -97,9 +98,13 @@ class DiscountCodeFragment(
                 buyXGetY = viewModel.initDefaultBuyXGetY(discount),
                 discount = discount,
                 actionType = ItemActionType.Add,
-                listener = object : OrderFragment.OrderMenuListener {
+                listener = object : BuyXGetYListener {
                     override fun onCartAdded(item: BaseProductInCart, action: ItemActionType) {
                         listener.addDiscountBuyXGetY(discount, item as BuyXGetY)
+                    }
+
+                    override fun onDiscountBuyXGetYEntireOrder(discountUser: DiscountUser) {
+                        listener.discountUserChoose(discountUser, isBuyXGetY = true)
                     }
                 }
             )
@@ -144,5 +149,8 @@ class DiscountCodeFragment(
         listener.discountCodeChoose(discount)
     }
 
-
+    interface BuyXGetYListener {
+        fun onCartAdded(item: BaseProductInCart, action: ItemActionType)
+        fun onDiscountBuyXGetYEntireOrder(discountUser: DiscountUser)
+    }
 }

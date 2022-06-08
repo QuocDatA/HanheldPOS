@@ -1,8 +1,6 @@
 package com.hanheldpos.model.buy_x_get_y
 
-import com.hanheldpos.data.api.pojo.discount.CustomerBuys
 import com.hanheldpos.data.api.pojo.discount.DiscountResp
-import com.hanheldpos.data.api.pojo.fee.CustomerGets
 import com.hanheldpos.data.api.pojo.order.settings.DiningOption
 import com.hanheldpos.data.api.pojo.product.Product
 import com.hanheldpos.model.DataHelper
@@ -99,13 +97,6 @@ data class ItemBuyXGetYGroup(
     }
 
     fun getMinimumValueFormat(): String {
-        val conditionCustomer: Any
-        return if (groupBuyXGetY.condition is CustomerBuys) {
-            conditionCustomer = groupBuyXGetY.condition as CustomerBuys
-            conditionCustomer.MinimumValueFormat
-        } else {
-            conditionCustomer = groupBuyXGetY.condition as CustomerGets
-            conditionCustomer.Quantity.toString() + " item required"
-        }
+        return groupBuyXGetY.getRequireQuantityFormat()
     }
 }

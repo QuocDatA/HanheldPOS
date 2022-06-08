@@ -20,7 +20,7 @@ data class CustomerGets(
     val Handle: String,
     var ListApplyTo: List<Product>,
     val ProductApplyTo: ChooseProductApplyTo?,
-    val Quantity: Int
+    val Quantity: Double
 ) : Parcelable {
     val requireQuantity get() = ListApplyTo.sumOf { basePro ->
         basePro.MaxQuantity ?: 0
