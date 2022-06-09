@@ -36,16 +36,16 @@ class DiningOptionsVM : BaseUiViewModel<DiningOptionsUV>() {
             totalAmount += dinningOptionReport.Total
             ReportItemDetail(
                 dinningOptionReport.DinningOptionName,
-                dinningOptionReport.Quantity.toString(),
-                PriceUtils.formatStringPrice(dinningOptionReport.Total)
+                dinningOptionReport.Quantity,
+                dinningOptionReport.Total
             )
         }?.toMutableList()?.let {
             rows.addAll(it)
         }
         rows.add(ReportItemDetail(
             context.getString(R.string.total),
-            totalQty.toString(),
-            PriceUtils.formatStringPrice(totalAmount),
+            totalQty,
+            totalAmount,
             isBold = true
         ))
         return rows

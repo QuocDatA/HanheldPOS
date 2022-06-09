@@ -93,21 +93,33 @@ class SalesReportFragment(private val type: SaleOptionPage? = null, private val 
         }
         binding.btnPrintReport.setOnClickDebounce {
             when (type) {
-                SaleOptionPage.Overview -> {}
+                SaleOptionPage.Overview -> {
+                    BillPrinterManager.init(
+                        PosApp.instance.applicationContext,
+                        PrintOptions.bluetooth(DeviceType.NO_SDK.Types.HANDHELD)
+                    ) {
+                        showMessage(it.message)
+                    }.printReport(
+                        LayoutType.Report.Overview,
+                        saleReportCommon.saleReport.value,
+                        saleReportCommon.saleReportFillter.value
+                    )
+                }
                 SaleOptionPage.InventorySales -> {
                     BillPrinterManager.init(
                         PosApp.instance.applicationContext,
-                        PrintOptions.bluetooth(DeviceType.NO_SDK.Types.HANDHELD),
-                        {
-
-                        }
-                    ).printReport(
+                        PrintOptions.bluetooth(DeviceType.NO_SDK.Types.HANDHELD)
+                    ) {
+                        showMessage(it.message)
+                    }.printReport(
                         LayoutType.Report.Inventory,
                         saleReportCommon.saleReport.value,
                         saleReportCommon.saleReportFillter.value
                     )
                 }
-                else -> {}
+                else -> {
+
+                }
             }
         }
 

@@ -37,8 +37,8 @@ class TaxesReportVM : BaseUiViewModel<TaxesReportUV>() {
             totalAmount += tax.Amount ?: 0.0
             ReportItemDetail(
                 tax.FeeName,
-                tax.Quantity.toString(),
-                PriceUtils.formatStringPrice(tax.Amount?: 0.0)
+                tax.Quantity?.toInt(),
+                tax.Amount?: 0.0
             )
         }?.toMutableList()?.let {
             rows.addAll(it)
@@ -46,8 +46,8 @@ class TaxesReportVM : BaseUiViewModel<TaxesReportUV>() {
         rows.add(
             ReportItemDetail(
                 context.getString(R.string.total),
-                totalQty.toString(),
-                PriceUtils.formatStringPrice(totalAmount),
+                totalQty.toInt(),
+                totalAmount,
                 isBold = true
             )
         )

@@ -37,8 +37,8 @@ class DiscountsReportVM : BaseUiViewModel<DiscountsReportUV>() {
             totalAmount += discount.DiscountAmount ?: 0.0
             ReportItemDetail(
                 discount.DiscountName,
-                discount.Quantity.toInt().toString() ?: "",
-                PriceUtils.formatStringPrice(discount.DiscountAmount?:0.0)
+                discount.Quantity.toInt(),
+                discount.DiscountAmount?:0.0
             )
         }?.toMutableList()?.let {
             rows.addAll(it)
@@ -46,8 +46,8 @@ class DiscountsReportVM : BaseUiViewModel<DiscountsReportUV>() {
         rows.add(
             ReportItemDetail(
             context.getString(R.string.total),
-            totalQty.toString(),
-            PriceUtils.formatStringPrice(totalAmount),
+            totalQty,
+            totalAmount,
             isBold = true
         )
         )

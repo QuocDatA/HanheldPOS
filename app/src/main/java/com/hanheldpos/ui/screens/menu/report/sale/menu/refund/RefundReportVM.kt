@@ -37,8 +37,8 @@ class RefundReportVM : BaseUiViewModel<RefundReportUV>() {
             totalAmount += refund.RefundAmount ?: 0.0
             ReportItemDetail(
                 refund.RefundTypeName,
-                refund.Quantity.toString(),
-                PriceUtils.formatStringPrice(refund.RefundAmount?: 0.0)
+                refund.Quantity?.toInt(),
+                refund.RefundAmount?: 0.0
             )
         }?.toMutableList()?.let {
             rows.addAll(it)
@@ -46,8 +46,8 @@ class RefundReportVM : BaseUiViewModel<RefundReportUV>() {
         rows.add(
             ReportItemDetail(
                 context.getString(R.string.total),
-                totalQty.toString(),
-                PriceUtils.formatStringPrice(totalAmount),
+                totalQty.toInt(),
+                totalAmount,
                 isBold = true
             )
         )

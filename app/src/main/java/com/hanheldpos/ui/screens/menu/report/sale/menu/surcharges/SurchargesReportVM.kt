@@ -37,8 +37,8 @@ class SurchargesReportVM : BaseUiViewModel<SurchargesReportUV>() {
             totalAmount += surcharge.Amount ?: 0.0
             ReportItemDetail(
                 surcharge.FeeName,
-                surcharge.Quantity.toString(),
-                PriceUtils.formatStringPrice(surcharge.Amount?: 0.0)
+                surcharge.Quantity?.toInt(),
+                surcharge.Amount?: 0.0
             )
         }?.toMutableList()?.let {
             rows.addAll(it)
@@ -46,8 +46,8 @@ class SurchargesReportVM : BaseUiViewModel<SurchargesReportUV>() {
         rows.add(
             ReportItemDetail(
                 context.getString(R.string.total),
-                totalQty.toString(),
-                PriceUtils.formatStringPrice(totalAmount),
+                totalQty.toInt(),
+                totalAmount,
                 isBold = true
             )
         )

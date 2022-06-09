@@ -18,6 +18,7 @@ import com.hanheldpos.printer.layouts.LayoutType
 import com.hanheldpos.printer.layouts.order.CashierLayout
 import com.hanheldpos.printer.layouts.order.KitchenLayout
 import com.hanheldpos.printer.layouts.report.InventoryLayout
+import com.hanheldpos.printer.layouts.report.OverviewLayout
 import java.lang.Exception
 
 class BillPrinterManager private constructor() {
@@ -150,7 +151,7 @@ class BillPrinterManager private constructor() {
                     InventoryLayout(printer!!, printOptions, report, filterOptions)
                 }
                 LayoutType.Report.Overview -> {
-                    InventoryLayout(printer!!, printOptions, report, filterOptions)
+                    OverviewLayout(printer!!, printOptions, report, filterOptions)
                 }
             }.print()
         }

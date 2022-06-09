@@ -17,19 +17,14 @@ import java.util.*
 class InventoryLayout(
     printer: BasePrinterManager,
     printOptions: PrintOptions,
-    private val salesReport: ReportSalesResp?,
-    private val filterOptionSalesReport: SaleReportFilter?,
-    private val inventories: Map<ProductInventory, List<ProductInventory>> = salesReport?.mapInventorySaleReport() ?: emptyMap()
+    reportSalesModel: ReportSalesResp?,
+    filterOptionReportSale: SaleReportFilter?,
+    private val inventories: Map<ProductInventory, List<ProductInventory>> = reportSalesModel?.mapInventorySaleReport() ?: emptyMap()
 ) : BaseLayoutReport(
     printer, printOptions,
-    DateTimeUtils.dateToString(
-        filterOptionSalesReport?.startDay,
-        DateTimeUtils.Format.EEEE_dd_MMM_yyyy
-    ),
-    DateTimeUtils.dateToString(
-        filterOptionSalesReport?.endDay,
-        DateTimeUtils.Format.EEEE_dd_MMM_yyyy
-    ),
+    title = "Item Sales Report",
+    reportSalesModel,
+    filterOptionReportSale
 ) {
 
     private val inventoryColumnSize = mutableListOf(
@@ -37,19 +32,8 @@ class InventoryLayout(
     )
 
     override fun print() {
-        printLogo()
-        feedLines(1)
-        printTitle()
-        printDate()
-        feedLines(1)
-
-        printEmployee()
-        printStaff()
-
-        printDivider()
-        printBillTime()
-        printDivider()
         printHeader()
+        printSectionHeader()
         printCategories()
         feedLines(2)
         printOverview()
@@ -57,55 +41,7 @@ class InventoryLayout(
         cutPaper()
     }
 
-    /// region print methods
-    private fun printLogo() {
-        printer.drawText(
-            WaguUtils.columnListDataBlock(
-                charPerLineNormal,
-                mutableListOf(
-                    mutableListOf(
-                        "<logo>"
-                    )
-                ),
-                columnSize = mutableListOf(6),
-                aligns = mutableListOf(Block.DATA_MIDDLE_LEFT)
-            )
-        )
-    }
-
-    private fun printTitle() {
-        printer.drawText(
-            WaguUtils.columnListDataBlock(
-                charPerLineLarge,
-                mutableListOf(
-                    mutableListOf(
-                        "Item Sales Report",
-                    )
-                ),
-                aligns = mutableListOf(Block.DATA_CENTER),
-                wrapType = WrapType.SOFT_WRAP
-            ),
-            bold = true,
-            BasePrinterManager.FontSize.Large
-        )
-    }
-
-    private fun printBillTime() {
-        printer.drawText(
-            WaguUtils.columnListDataBlock(
-                charPerLineNormal,
-                mutableListOf(
-                    mutableListOf(
-                        "Bill Time",
-                        "All Day"
-                    )
-                ),
-                aligns = mutableListOf(Block.DATA_MIDDLE_LEFT, Block.DATA_MIDDLE_RIGHT),
-            )
-        )
-    }
-
-    private fun printHeader() {
+    private fun printSectionHeader() {
         printer.drawText(
             WaguUtils.columnListDataBlock(
                 charPerLineNormal,
@@ -123,42 +59,8 @@ class InventoryLayout(
                     Block.DATA_MIDDLE_RIGHT,
                     Block.DATA_MIDDLE_RIGHT
                 ),
-                columnSize = mutableListOf(
-                    charPerLineNormal - 6 - 8 - 4, 6, 8, 4
-                ),
-                wrapType = WrapType.ELLIPSIS
-
+                columnSize = inventoryColumnSize
             ), bold = true
-        )
-    }
-
-    private fun printEmployee() {
-        printer.drawText(
-            WaguUtils.columnListDataBlock(
-                charPerLineNormal,
-                mutableListOf(
-                    mutableListOf(
-                        "Shop: ${salesReport?.Report?.firstOrNull()?.LocationName ?: ""}"
-                    )
-                ),
-                aligns = mutableListOf(Block.DATA_MIDDLE_LEFT)
-            ),
-            size = BasePrinterManager.FontSize.Small
-        )
-    }
-
-    private fun printStaff() {
-        printer.drawText(
-            WaguUtils.columnListDataBlock(
-                charPerLineNormal,
-                mutableListOf(
-                    mutableListOf(
-                        "Staff: ${salesReport?.Report?.firstOrNull()?.Employee ?: ""}",
-                        DateTimeUtils.dateToString(Date(),DateTimeUtils.Format.DD_MM_YYYY_HH_MM)
-                    )
-                ),
-                aligns = mutableListOf(Block.DATA_MIDDLE_LEFT, Block.DATA_MIDDLE_RIGHT)
-            )
         )
     }
 
@@ -226,7 +128,7 @@ class InventoryLayout(
 
     private fun printOverview() {
         printInventory(
-            salesReport?.getInventoryOverview(inventories),
+            reportSalesModel?.getInventoryOverview(inventories),
             header = "Total",
             printInventoryColumns = true
         )

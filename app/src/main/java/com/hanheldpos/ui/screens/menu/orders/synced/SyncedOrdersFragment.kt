@@ -18,6 +18,7 @@ import com.hanheldpos.model.order.OrderSummaryPrimary
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.main.adapter.SubSpinnerAdapter
+import com.hanheldpos.ui.screens.menu.order_detail.OrderDetailViewFragment
 import com.hanheldpos.ui.screens.menu.orders.adapter.FilterOptionAdapter
 import com.hanheldpos.ui.screens.menu.orders.adapter.OrdersMenuGroupAdapter
 import com.hanheldpos.ui.screens.menu.orders.synced.filter.FilterSyncedOrdersFragment
@@ -67,7 +68,9 @@ class SyncedOrdersFragment : BaseFragment<FragmentSyncedOrdersBinding, SyncedOrd
         ordersMenuGroupAdapter = OrdersMenuGroupAdapter(listener = object :
             BaseItemClickListener<OrderSummaryPrimary> {
             override fun onItemClick(adapterPosition: Int, item: OrderSummaryPrimary) {
-
+                item._id?.let {
+                    navigator.goToWithCustomAnimation(OrderDetailViewFragment(it))
+                }
             }
 
         })

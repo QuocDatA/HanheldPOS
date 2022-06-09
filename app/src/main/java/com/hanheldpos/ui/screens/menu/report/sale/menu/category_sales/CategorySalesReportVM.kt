@@ -44,15 +44,15 @@ class CategorySalesReportVM : BaseUiViewModel<CategorySalesReportUV>() {
                 items.add(
                     ReportItemDetail(
                         item.CateName,
-                        item.Quantity.toLong().toString(),
-                        PriceUtils.formatStringPrice(i.SubTotal ?: 0.0)
+                        item.Quantity,
+                        i.SubTotal
                     )
                 )
                 items.addAll(item.Product.map { pro ->
                     ReportItemDetail(
                         "       ${pro.ProductName}",
-                        pro.Quantity.toLong().toString(),
-                        PriceUtils.formatStringPrice(pro.SubTotal ?: 0.0),
+                        pro.Quantity,
+                        pro.SubTotal,
                         isGray = true
                     )
                 })
@@ -64,8 +64,8 @@ class CategorySalesReportVM : BaseUiViewModel<CategorySalesReportUV>() {
         rows.add(
             ReportItemDetail(
                 context.getString(R.string.total),
-                totalQty.toString(),
-                PriceUtils.formatStringPrice(totalAmount),
+                totalQty.toInt(),
+                totalAmount,
                 isBold = true
             )
         )
