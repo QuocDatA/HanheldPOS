@@ -103,8 +103,8 @@ class DiscountCodeFragment(
                         listener.addDiscountBuyXGetY(discount, item as BuyXGetY)
                     }
 
-                    override fun onDiscountBuyXGetYEntireOrder(discountUser: DiscountUser) {
-                        listener.discountUserChoose(discountUser, isBuyXGetY = true)
+                    override fun onDiscountBuyXGetYEntireOrder(discount: DiscountResp) {
+                        listener.discountServerChoose(discount, DiscApplyTo.ORDER, true)
                     }
                 }
             )
@@ -151,6 +151,6 @@ class DiscountCodeFragment(
 
     interface BuyXGetYListener {
         fun onCartAdded(item: BaseProductInCart, action: ItemActionType)
-        fun onDiscountBuyXGetYEntireOrder(discountUser: DiscountUser)
+        fun onDiscountBuyXGetYEntireOrder(discount: DiscountResp)
     }
 }

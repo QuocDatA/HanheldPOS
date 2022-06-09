@@ -3,13 +3,17 @@ package com.hanheldpos.ui.screens.cart.adapter
 import androidx.recyclerview.widget.DiffUtil
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.discount.CustomerBuys
+import com.hanheldpos.data.api.pojo.fee.CustomerGets
 import com.hanheldpos.databinding.CartItemBuyXGetYGroupBinding
+import com.hanheldpos.model.buy_x_get_y.BuyXGetY
+import com.hanheldpos.model.buy_x_get_y.CustomerDiscApplyTo
 import com.hanheldpos.model.buy_x_get_y.GroupBuyXGetY
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
+import com.hanheldpos.ui.screens.cart.CurCartData
 
 class CartBuyXGetYGroupAdapter(
-    private val isShowDetail: Boolean
+    private val isShowDetail: Boolean,
 ) : BaseBindingListAdapter<GroupBuyXGetY>(DiffCallback()) {
 
     override fun getItemViewType(position: Int): Int {
@@ -24,9 +28,30 @@ class CartBuyXGetYGroupAdapter(
         binding.position = position + 1
 
         val cartBuyXGetYGroupAdapter =
-            CartBuyXGetYGroupDetailAdapter(isGroupBuy = item.condition is CustomerBuys, isShowDetail)
+            CartBuyXGetYGroupDetailAdapter(
+                isGroupBuy = item.condition is CustomerBuys,
+                isShowDetail
+            )
         cartBuyXGetYGroupAdapter.submitList(item.productList)
         binding.cartComboGroupDetailRecyclerView.adapter = cartBuyXGetYGroupAdapter
+
+        // variable to check complete status for entire order
+        val totalOrder = CurCartData.cartModel!!.total()
+        val totalQuantityOrder = CurCartData.cartModel!!.getTotalQuantity()
+
+        binding.isComplete = if (item.condition is CustomerBuys) {
+            if (CustomerDiscApplyTo.fromInt((item.condition as CustomerBuys).ApplyTo) != CustomerDiscApplyTo.ENTIRE_ORDER)
+                (item.condition as CustomerBuys).isBuyCompleted(item.totalPrice, item.totalQuantity)
+            else (item.condition as CustomerBuys).isBuyCompleted(
+                totalOrder,
+                totalQuantityOrder
+            )
+        } else {
+            if (CustomerDiscApplyTo.fromInt((item.condition as CustomerGets).ApplyTo) != CustomerDiscApplyTo.ENTIRE_ORDER)
+                item.isCompleted
+            else
+                true
+        }
     }
 
 

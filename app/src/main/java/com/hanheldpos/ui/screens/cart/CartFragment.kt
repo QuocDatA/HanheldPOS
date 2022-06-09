@@ -1,7 +1,6 @@
 package com.hanheldpos.ui.screens.cart
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.activityViewModels
@@ -9,6 +8,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.customer.CustomerResp
+import com.hanheldpos.data.api.pojo.discount.CustomerBuys
 import com.hanheldpos.data.api.pojo.discount.DiscountCoupon
 import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.data.api.pojo.order.settings.DiningOption
@@ -24,10 +24,10 @@ import com.hanheldpos.model.cart.Combo
 import com.hanheldpos.model.cart.DiscountCart
 import com.hanheldpos.model.cart.Regular
 import com.hanheldpos.model.cart.fee.FeeTip
-import com.hanheldpos.model.payment.PaymentOrder
 import com.hanheldpos.model.combo.ItemActionType
 import com.hanheldpos.model.discount.DiscApplyTo
 import com.hanheldpos.model.discount.DiscountUser
+import com.hanheldpos.model.payment.PaymentOrder
 import com.hanheldpos.model.product.ProductType
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
@@ -38,13 +38,14 @@ import com.hanheldpos.ui.screens.cart.adapter.CartProductAdapter
 import com.hanheldpos.ui.screens.cart.adapter.CartTipAdapter
 import com.hanheldpos.ui.screens.cart.customer.add_customer.AddCustomerFragment
 import com.hanheldpos.ui.screens.cart.customer.detail_customer.CustomerDetailFragment
-import com.hanheldpos.ui.screens.payment.PaymentFragment
-import com.hanheldpos.ui.screens.payment.completed.PaymentCompletedFragment
 import com.hanheldpos.ui.screens.combo.ComboFragment
 import com.hanheldpos.ui.screens.discount.DiscountFragment
 import com.hanheldpos.ui.screens.discount.discount_type.discount_code.DiscountCodeFragment
 import com.hanheldpos.ui.screens.home.order.OrderFragment
+import com.hanheldpos.ui.screens.payment.PaymentFragment
+import com.hanheldpos.ui.screens.payment.completed.PaymentCompletedFragment
 import com.hanheldpos.ui.screens.product.ProductDetailFragment
+import okhttp3.internal.notify
 
 
 class CartFragment(private val listener: CartCallBack) :
@@ -360,6 +361,7 @@ class CartFragment(private val listener: CartCallBack) :
                 action: ItemActionType
             ) {
                 onUpdateItemInCart(position, item)
+                onUpdateBuyXGetYInCart()
             }
         }
 
@@ -368,13 +370,15 @@ class CartFragment(private val listener: CartCallBack) :
                 item: BaseProductInCart,
                 action: ItemActionType
             ) {
-                if(action == ItemActionType.Remove)
+                // remove discount of buy x get y entire order when remove buy x get y out of cart
+                if (action == ItemActionType.Modify && item.quantity!! <= 0)
+                    cartDataVM.removeDiscountById((item as BuyXGetY).disc?._id ?: "")
 
-                    onUpdateItemInCart(position, item)
+                onUpdateItemInCart(position, item)
             }
 
-            override fun onDiscountBuyXGetYEntireOrder(discountUser: DiscountUser) {
-                cartDataVM.addDiscountUser(discountUser)
+            override fun onDiscountBuyXGetYEntireOrder(discount: DiscountResp) {
+                cartDataVM.addDiscountServer(discount, DiscApplyTo.ORDER)
             }
         }
 
@@ -418,6 +422,18 @@ class CartFragment(private val listener: CartCallBack) :
     fun onUpdateItemInCart(position: Int, item: BaseProductInCart) {
         cartDataVM.updateItemInCart(position, item)
         cartProductAdapter.notifyDataSetChanged()
+    }
+
+    fun onUpdateBuyXGetYInCart() {
+        cartDataVM.cartModelLD.value?.productsList?.forEach { baseProduct ->
+            if (baseProduct is BuyXGetY) {
+                baseProduct.groupList?.forEach { group ->
+                    if (group.condition is CustomerBuys) {
+                        (group.condition as CustomerBuys).notify()
+                    }
+                }
+            }
+        }
     }
 
     interface CartCallBack {

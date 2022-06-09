@@ -271,4 +271,7 @@
     <string name="discount">Discount</string>
     <string name="items_required">items required</string>
     <string name="item_required">item required</string>
+    <string name="selections_required">selections required</string>
+    <string name="selection_required">selection required</string>
+    <string name="continue_buy_x_get_y">Continue</string>
 </resources>

@@ -99,4 +99,8 @@ data class ItemBuyXGetYGroup(
     fun getMinimumValueFormat(): String {
         return groupBuyXGetY.getRequireQuantityFormat()
     }
+
+    fun getSelectionRequiredFormat() : String{
+        return groupBuyXGetY.getRequirementFormat(requireQuantity())
+    }
 }

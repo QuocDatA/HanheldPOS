@@ -109,7 +109,7 @@
                         visibleObject="@{!item.maxItemSelected &amp;&amp; item.groupBuyXGetY.totalQuantity > 0}"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{item.requireQuantity() + ` selection required`,default=`1 items required`}"
+                        android:text="@{item.selectionRequiredFormat}"
                         android:textColor="#FF0000"
                         app:useFontStyle="normal"
                         app:useTextHeader="h7" />

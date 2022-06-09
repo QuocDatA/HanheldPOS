@@ -62,33 +62,15 @@ class BuyXGetYVM : BaseUiViewModel<BuyXGetYUV>() {
     }
 
     private fun isBuyComplete(): Boolean {
-        val applyTo = buyXGetY.value!!.disc?.Condition?.CustomerBuys?.ApplyTo ?: 0
-        when (CustomerDiscApplyTo.fromInt(applyTo)) {
-            CustomerDiscApplyTo.ENTIRE_ORDER -> {
-                val totalOrder = CurCartData.cartModel!!.total()
-                val totalQuantityOrder = CurCartData.cartModel!!.getTotalQuantity()
+        val totalOrder = CurCartData.cartModel!!.total()
+        val totalQuantityOrder = CurCartData.cartModel!!.getTotalQuantity()
 
-                if ((buyXGetY.value!!.disc?.Condition?.CustomerBuys?.isBuyCompleted(
-                        totalOrder,
-                        totalQuantityOrder
-                    ))!!
-                ) {
-                    // only add discount to cart if ApplyTo of CustomerBuys is Entire Order
-                    if (buyXGetY.value!!.disc?.Condition?.CustomerGets?.ApplyTo == CustomerDiscApplyTo.ENTIRE_ORDER.value) {
-                        val disc = buyXGetY.value!!.disc!!
-                        discountUser =
-                            DiscountUser(
-                                DiscountGuid = disc._id,
-                                DiscountName = disc.DiscountName,
-                                DiscountValue = disc.Condition.CustomerGets.DiscountValue,
-                                DiscountType = disc.Condition.CustomerGets.DiscountValueType
-                            )
-                    }
-
-                    return true
-                }
-            }
-            else -> {}
+        if ((buyXGetY.value!!.disc?.Condition?.CustomerBuys?.isBuyCompleted(
+                totalOrder,
+                totalQuantityOrder
+            ))!!
+        ) {
+            return true
         }
         return false
     }
@@ -98,12 +80,17 @@ class BuyXGetYVM : BaseUiViewModel<BuyXGetYUV>() {
         itemPrev: Regular,
         itemAfter: Regular,
         action: ItemActionType,
-        discount: DiscountResp,
+        discount: DiscountResp?,
     ) {
         when (action) {
             ItemActionType.Add -> {
-                itemAfter.addDiscountServer(discount)
-                group.productList.add(itemAfter)
+                itemAfter.sku
+                itemAfter.variants
+                group.addProduct(
+                    discount,
+                    itemAfter.proOriginal!!, itemAfter,
+                    CurCartData.cartModel?.diningOption!!
+                )
             }
             ItemActionType.Modify -> {
                 if ((itemAfter.quantity ?: 0) <= 0) {
@@ -126,12 +113,15 @@ class BuyXGetYVM : BaseUiViewModel<BuyXGetYUV>() {
         group: GroupBuyXGetY,
         item: Combo,
         action: ItemActionType,
-        discount: DiscountResp,
+        discount: DiscountResp?,
     ) {
         when (action) {
             ItemActionType.Add -> {
-                item.addDiscountServer(discount)
-                group.productList.add(item)
+                group.addProduct(
+                    discount,
+                    item.proOriginal!!, item,
+                    CurCartData.cartModel?.diningOption!!
+                )
             }
             ItemActionType.Modify -> {
                 if ((item.quantity ?: 0) <= 0) {
@@ -171,28 +161,35 @@ class BuyXGetYVM : BaseUiViewModel<BuyXGetYUV>() {
     }
 
     fun onAddCart() {
-        if (discountUser != null) {  // add discount for reward for buy x get y entire order if exist
-            uiCallback?.onDiscountBuyXGetYEntireOrder(discountUser!!)
+        if (isBuyComplete()) {
+            // only add discount to cart if ApplyTo of CustomerBuys is Entire Order
+            if (buyXGetY.value!!.disc?.Condition?.CustomerGets?.ApplyTo == CustomerDiscApplyTo.ENTIRE_ORDER.value) {
+                uiCallback?.onDiscountBuyXGetYEntireOrder(buyXGetY.value!!.disc!!)
+            }
         }
         uiCallback?.cartAdded(buyXGetY.value!!, actionType.value!!);
     }
 
-    private fun initItemGroupBuyXGetY(groupBuyXGetY: GroupBuyXGetY, isBuyComplete: Boolean): ItemBuyXGetYGroup {
+    private fun initItemGroupBuyXGetY(
+        groupBuyXGetY: GroupBuyXGetY,
+        isBuyComplete: Boolean,
+    ): ItemBuyXGetYGroup {
         val conditionCustomer = groupBuyXGetY.condition
         val itemBuyXGetYGroup = ItemBuyXGetYGroup(groupBuyXGetY, mutableListOf(), mutableListOf())
         if (conditionCustomer is CustomerBuys) {
             itemBuyXGetYGroup.groupListBaseProduct =
                 conditionCustomer.filterListApplyTo(itemBuyXGetYGroup)
             itemBuyXGetYGroup.listApplyTo = conditionCustomer.ListApplyTo.toMutableList()
-            itemBuyXGetYGroup.isApplyToEntireOrder = CustomerDiscApplyTo.fromInt(conditionCustomer.ApplyTo) == CustomerDiscApplyTo.ENTIRE_ORDER
+            itemBuyXGetYGroup.isApplyToEntireOrder =
+                CustomerDiscApplyTo.fromInt(conditionCustomer.ApplyTo) == CustomerDiscApplyTo.ENTIRE_ORDER
             itemBuyXGetYGroup.isBuyComplete = isBuyComplete
-            itemBuyXGetYGroup.isBuyComplete
         } else {
             conditionCustomer as CustomerGets
             itemBuyXGetYGroup.groupListBaseProduct =
                 conditionCustomer.filterListApplyTo(itemBuyXGetYGroup, buyXGetY.value?.disc!!)
             itemBuyXGetYGroup.listApplyTo = conditionCustomer.ListApplyTo.toMutableList()
-            itemBuyXGetYGroup.isApplyToEntireOrder = CustomerDiscApplyTo.fromInt(conditionCustomer.ApplyTo) == CustomerDiscApplyTo.ENTIRE_ORDER
+            itemBuyXGetYGroup.isApplyToEntireOrder =
+                CustomerDiscApplyTo.fromInt(conditionCustomer.ApplyTo) == CustomerDiscApplyTo.ENTIRE_ORDER
         }
         return itemBuyXGetYGroup
     }

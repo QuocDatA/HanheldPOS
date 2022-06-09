@@ -58,9 +58,10 @@ class DiscountFragment(private val listener: DiscountCallback) :
                             onFragmentBackPressed()
                     }
 
-                    override fun discountServerChoose(discount: DiscountResp, discApplyTo: DiscApplyTo) {
+                    override fun discountServerChoose(discount: DiscountResp, discApplyTo: DiscApplyTo, isBuyXGetY: Boolean?) {
                         listener.onDiscountServerChoose(discount,discApplyTo)
-                        onFragmentBackPressed()
+                        if(isBuyXGetY == false)
+                            onFragmentBackPressed()
                     }
 
                     override fun discountCodeChoose(discount: List<DiscountCoupon>?) {
@@ -122,7 +123,7 @@ class DiscountFragment(private val listener: DiscountCallback) :
 
     interface DiscountTypeListener {
         fun discountUserChoose(discount: DiscountUser, isBuyXGetY: Boolean? = false): Unit {}
-        fun discountServerChoose(discount : DiscountResp,discApplyTo: DiscApplyTo) : Unit {}
+        fun discountServerChoose(discount : DiscountResp,discApplyTo: DiscApplyTo, isBuyXGetY: Boolean? = false) : Unit {}
         fun discountCodeChoose(discount: List<DiscountCoupon>?): Unit{}
         fun compReasonChoose(item: Reason): Unit {}
         fun compRemoveAll(): Unit {}

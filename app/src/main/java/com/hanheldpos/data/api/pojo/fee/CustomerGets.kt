@@ -6,7 +6,9 @@ import com.hanheldpos.data.api.pojo.product.Product
 import com.hanheldpos.data.api.pojo.product.VariantsGroup
 import com.hanheldpos.model.buy_x_get_y.CustomerDiscApplyTo
 import com.hanheldpos.model.buy_x_get_y.ItemBuyXGetYGroup
+import com.hanheldpos.model.buy_x_get_y.MinimumType
 import com.hanheldpos.model.cart.BaseProductInCart
+import com.hanheldpos.model.discount.DiscountEntireType
 import com.hanheldpos.model.fee.ChooseProductApplyTo
 import com.hanheldpos.ui.screens.cart.CurCartData
 import kotlinx.parcelize.Parcelize
@@ -84,5 +86,22 @@ data class CustomerGets(
             else -> {}
         }
         return listRegularFilter
+    }
+
+    fun isBuyCompleted(totalOrder: Double, totalQuantityOrder: Int): Boolean {
+        return when (DiscountEntireType.fromInt(DiscountValueType)) {
+            DiscountEntireType.AMOUNT -> {
+                totalOrder >= (DiscountValue)
+            }
+            DiscountEntireType.PERCENT -> {
+                totalQuantityOrder >= (DiscountValue).toInt()
+            }
+            DiscountEntireType.NONE -> TODO()
+            DiscountEntireType.FREE -> TODO()
+            DiscountEntireType.SPECIFIC -> TODO()
+            else -> {
+                false
+            }
+        }
     }
 }
