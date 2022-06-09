@@ -146,7 +146,7 @@
 
                     <include
                         layout="@layout/order_product_detail_view_line"
-                        visibleObject="@{item.variantList != null &amp;&amp; !item.modifierList.empty}"
+                        visibleObject="@{item.modifierList != null &amp;&amp; !item.modifierList.empty}"
                         app:lineText="@{ExtraConverter.INSTANCE.modifierOrderStr(item.modifierList)}" />
 
                     <include

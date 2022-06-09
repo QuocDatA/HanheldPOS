@@ -46,6 +46,13 @@ class PrintOptions private constructor(
                 deviceType = DeviceType.NO_SDK(deviceType)
             )
         }
+
+        fun urovo(): PrintOptions {
+            return PrintOptions(
+                connectionType = PrintConnectionType.LAN,
+                deviceType = DeviceType.SDK(DeviceType.SDK.Types.UROVO),
+            )
+        }
     }
 
     override fun toString(): String {

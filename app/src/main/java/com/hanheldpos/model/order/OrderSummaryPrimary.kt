@@ -55,5 +55,5 @@ data class OrderSummaryPrimary(
         } else DiningOptionName?: ""
 
     }
-    val groupHistoryName :String get() =  DateTimeUtils.strToStr(OrderCreateDate,DateTimeUtils.Format.FULL_DATE_UTC_TIMEZONE,DateTimeUtils.Format.EEEE_dd_MMM_yyyy)
+    val groupHistoryName :String get() =  DateTimeUtils.strToStr(OrderCreateDate,DateTimeUtils.Format.YYYY_MM_DD_HH_MM_SS,DateTimeUtils.Format.EEEE_dd_MMM_yyyy)
 }

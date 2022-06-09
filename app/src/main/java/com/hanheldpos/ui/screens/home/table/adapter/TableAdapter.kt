@@ -118,7 +118,7 @@ class TableAdapter(
                             )
                             DateTimeUtils.strToDate(
                                 item.orderSummary!!.OrderCreateDate,
-                                DateTimeUtils.Format.FULL_DATE_UTC_TIMEZONE
+                                DateTimeUtils.Format.YYYY_MM_DD_HH_MM_SS
                             )?.let {
                                 val time = Date().time  - it.time
                                 view.timeCount.text = String.format("%02d:%02d",

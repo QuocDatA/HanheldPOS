@@ -64,8 +64,10 @@
 
         </FrameLayout>
         <androidx.core.widget.NestedScrollView
+            android:layout_weight="1"
+            android:fillViewport="true"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="0dp">
             <LinearLayout
                 visibleObject="@{order}"
                 android:layout_width="match_parent"
@@ -325,8 +327,31 @@
                         app:useTextHeader="h5"
                         tools:text="100,000" />
                 </LinearLayout>
+
+
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
+        <LinearLayout
+            android:id="@+id/btnPrint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_8sdp"
+            android:background="@color/color_0"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="@dimen/_10sdp">
 
+            <com.diadiem.pos_components.PTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/print"
+                app:useFontStyle="bold"
+                app:useTextColor="color2"
+                app:useTextHeader="h5" />
+    </LinearLayout>
     </LinearLayout>
 </layout>

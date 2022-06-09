@@ -57,7 +57,7 @@ abstract class BaseLayoutOrder(
             "Create Date:", DateTimeUtils.dateToString(
                 DateTimeUtils.strToDate(
                     order.Order.CreateDate,
-                    DateTimeUtils.Format.FULL_DATE_UTC_TIMEZONE
+                    DateTimeUtils.Format.YYYY_MM_DD_HH_MM_SS
                 ), DateTimeUtils.Format.DD_MM_YYYY_HH_MM
             )
         )

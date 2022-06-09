@@ -211,7 +211,7 @@ class CashierLayout(
                     listInfoGroupExtra.add(
                         mutableListOf(
                             "*",
-                            ExtraConverter.variantStr(it).toString()
+                            ExtraConverter.variantOrderStr(it).toString()
                         )
                     )
                 }
@@ -268,7 +268,7 @@ class CashierLayout(
 
         val listExtraInfo = mutableListOf<MutableList<String>>()
         productChosen.VariantList?.takeIf { it.isNotEmpty() }?.let {
-            listExtraInfo.add(mutableListOf("*", ExtraConverter.variantStr(it).toString()))
+            listExtraInfo.add(mutableListOf("*", ExtraConverter.variantOrderStr(it).toString()))
         }
         productChosen.ModifierList?.takeIf { it.isNotEmpty() }?.let {
             listExtraInfo.add(

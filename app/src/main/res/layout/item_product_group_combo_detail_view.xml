@@ -81,7 +81,7 @@
                     <include
                         layout="@layout/order_product_detail_view_line"
                         app:isHeaderH6="@{false}"
-                        app:lineText="@{ExtraConverter.INSTANCE.variantStr(item.variantList)}" />
+                        app:lineText="@{ExtraConverter.INSTANCE.variantOrderStr(item.variantList)}" />
                 </LinearLayout>
 
                 <LinearLayout

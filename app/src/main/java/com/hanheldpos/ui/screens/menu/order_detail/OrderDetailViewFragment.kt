@@ -6,12 +6,22 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.handheld.printer.printer_setup.PrintOptions
+import com.handheld.printer.printer_setup.device_info.DeviceType
+import com.hanheldpos.PosApp
 import com.hanheldpos.R
+import com.hanheldpos.database.DatabaseMapper
 import com.hanheldpos.databinding.FragmentOrderDetailViewBinding
+import com.hanheldpos.extension.setOnClickDebounce
 import com.hanheldpos.model.order.OrderModel
+import com.hanheldpos.printer.BillPrinterManager
+import com.hanheldpos.printer.layouts.LayoutType
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.menu.order_detail.adapter.OrderDetailItemViewAdapter
 import com.hanheldpos.ui.screens.menu.order_detail.adapter.OrderDetailPaymentAdapter
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 class OrderDetailViewFragment(private val orderId: String) :
@@ -47,7 +57,32 @@ class OrderDetailViewFragment(private val orderId: String) :
     }
 
     override fun initAction() {
+        binding.btnPrint.setOnClickDebounce {
+            CoroutineScope(Dispatchers.IO).launch{
+                try {
+                    BillPrinterManager.init(
+                        PosApp.instance.applicationContext,
+                        PrintOptions.bluetooth(deviceType = DeviceType.NO_SDK.Types.HANDHELD),
+                        onConnectionFailed = { ex ->
+                            launch(Dispatchers.Main) {
+                                showMessage(ex.message)
+                            }
 
+                        }
+                    ).apply {
+                        viewModel.orderModel.value?.let {
+                            printBill(
+                                it,
+                                LayoutType.Order.Cashier,true)
+                        }
+
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+
+        }
     }
 
     @SuppressLint("NotifyDataSetChanged")

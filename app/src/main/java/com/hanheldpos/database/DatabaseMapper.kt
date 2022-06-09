@@ -19,7 +19,7 @@ object DatabaseMapper {
             orderModel.Order.CashDrawer_id!!,
             statusId = OrderStatus.fromInt(orderModel.Order.OrderStatusId!!)!!,
             createAt = orderModel.Order.CreateDate!!,
-            modifierAt = DateTimeUtils.dateToString(Date(), DateTimeUtils.Format.FULL_DATE_UTC_TIMEZONE),
+            modifierAt = DateTimeUtils.dateToString(Date(), DateTimeUtils.Format.YYYY_MM_DD_HH_MM_SS),
         )
     }
 

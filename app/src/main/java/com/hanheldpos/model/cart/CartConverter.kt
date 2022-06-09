@@ -47,7 +47,7 @@ object CartConverter {
             cart.productsList.map { baseProductInCart -> baseProductInCart.name }.joinToString(",")
 
         cart.createDate =
-            DateTimeUtils.dateToString(Date(), DateTimeUtils.Format.FULL_DATE_UTC_TIMEZONE)
+            DateTimeUtils.dateToString(Date(), DateTimeUtils.Format.YYYY_MM_DD_HH_MM_SS)
 
         return OrderModel(
             Order = Order(

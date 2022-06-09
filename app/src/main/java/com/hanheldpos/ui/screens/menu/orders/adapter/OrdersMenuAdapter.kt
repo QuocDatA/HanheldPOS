@@ -24,7 +24,7 @@ class OrdersMenuAdapter(listener: BaseItemClickListener<OrderSummaryPrimary>) :
         val item = getItem(position)
         holder.bindItem(item)
         val binding = holder.binding as ItemOrdersMenuBinding
-        var diningOptionOrder = DateTimeUtils.strToStr(item.OrderCreateDate,DateTimeUtils.Format.FULL_DATE_UTC_TIMEZONE,DateTimeUtils.Format.DD_MM_HH_MM_aa)
+        var diningOptionOrder = DateTimeUtils.strToStr(item.OrderCreateDate,DateTimeUtils.Format.YYYY_MM_DD_HH_MM_SS,DateTimeUtils.Format.DD_MM_HH_MM_aa)
         if (diningOptionOrder.isEmpty()) diningOptionOrder =DateTimeUtils.strToStr(item.OrderCreateDate,DateTimeUtils.Format.YYYY_MM_DD_HH_MM_SS,DateTimeUtils.Format.DD_MM_HH_MM_aa)
         binding.diningOptionOrder.text = "${item.DiningOptionName} | $diningOptionOrder "
         binding.paymentStatusText.text =

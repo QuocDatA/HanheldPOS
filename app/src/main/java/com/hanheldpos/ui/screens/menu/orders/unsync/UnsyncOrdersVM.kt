@@ -32,7 +32,7 @@ class UnsyncOrdersVM : BaseUiViewModel<UnsyncOrdersUV>() {
                 .groupBy { item ->
                     DateTimeUtils.strToStr(
                         item.OrderCreateDate,
-                        DateTimeUtils.Format.FULL_DATE_UTC_TIMEZONE,
+                        DateTimeUtils.Format.YYYY_MM_DD_HH_MM_SS,
                         DateTimeUtils.Format.EEEE_dd_MMM_yyyy
                     )
                 }.map {

@@ -73,7 +73,7 @@ open class KitchenLayout(
         productChosen.VariantList?.takeIf { it.isNotEmpty() }?.let {
             productDetail.add(
                 mutableListOf(
-                    "(${ExtraConverter.variantStr(it, separator = " ").toString()})"
+                    "(${ExtraConverter.variantOrderStr(it, separator = " ").toString()})"
                 )
             )
         }
@@ -81,7 +81,7 @@ open class KitchenLayout(
         productChosen.ModifierList?.takeIf { it.isNotEmpty() }?.let {
             productDetail.add(
                 mutableListOf(
-                    "54(${ExtraConverter.modifierOrderStr(it, separator = " ").toString()})"
+                    "(${ExtraConverter.modifierOrderStr(it, separator = " ").toString()})"
                 )
             )
         }
