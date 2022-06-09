@@ -278,4 +278,11 @@
     <string name="discount">Discount</string>
     <string name="items_required">items required</string>
     <string name="item_required">item required</string>
+    <string name="personal_information">Personal Information</string>
+    <string name="active"><u>Active</u></string>
+    <string name="reset_password">Reset Password</string>
+    <string name="add_wallet">Add Wallet</string>
+    <string name="add_note">Add Note</string>
+    <string name="files">Files</string>
+    <string name="add_file">Add File</string>
 </resources>

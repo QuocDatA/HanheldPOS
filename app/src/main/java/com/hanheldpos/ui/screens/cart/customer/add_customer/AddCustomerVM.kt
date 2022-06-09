@@ -5,7 +5,6 @@ import com.hanheldpos.data.api.pojo.customer.CustomerSearchResp
 import com.hanheldpos.data.repository.BaseResponse
 import com.hanheldpos.data.repository.base.BaseRepoCallback
 import com.hanheldpos.data.repository.customer.CustomerRepo
-import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.UserHelper
 import com.hanheldpos.ui.base.viewmodel.BaseRepoViewModel
 

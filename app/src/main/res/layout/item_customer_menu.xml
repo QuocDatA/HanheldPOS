@@ -96,7 +96,7 @@
 
                 <View
                     visibleObject="@{ !TextUtils.isEmpty(item.phone) &amp;&amp; !TextUtils.isEmpty(item.email)}"
-                    android:layout_width="@dimen/_1sdp"
+                    android:layout_width="0.5dp"
                     android:layout_height="match_parent"
                     android:layout_marginHorizontal="@dimen/_8sdp"
                     android:background="@color/color_5" />

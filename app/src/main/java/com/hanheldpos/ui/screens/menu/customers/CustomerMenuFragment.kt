@@ -9,11 +9,13 @@ import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.cart.customer.add_customer.adapter.CustomerAdapterHelper
 import com.hanheldpos.ui.screens.menu.customers.adapter.CustomerMenuGroupAdapter
+import com.hanheldpos.ui.screens.menu.customers.customer_detail.CustomerMenuDetailFragment
 
 
-class CustomerMenuFragment : BaseFragment<FragmentCustomerMenuBinding,CustomerMenuVM>() , CustomerMenuUV {
+class CustomerMenuFragment : BaseFragment<FragmentCustomerMenuBinding, CustomerMenuVM>(),
+    CustomerMenuUV {
     private lateinit var customerAdapterHelper: CustomerAdapterHelper
-    private lateinit var customerGroupAdapter : CustomerMenuGroupAdapter
+    private lateinit var customerGroupAdapter: CustomerMenuGroupAdapter
     override fun layoutRes(): Int {
         return R.layout.fragment_customer_menu
     }
@@ -30,11 +32,12 @@ class CustomerMenuFragment : BaseFragment<FragmentCustomerMenuBinding,CustomerMe
     }
 
     override fun initView() {
-        customerGroupAdapter = CustomerMenuGroupAdapter(listener = object : BaseItemClickListener<CustomerResp> {
-            override fun onItemClick(adapterPosition: Int, item: CustomerResp) {
-
-            }
-        })
+        customerGroupAdapter =
+            CustomerMenuGroupAdapter(listener = object : BaseItemClickListener<CustomerResp> {
+                override fun onItemClick(adapterPosition: Int, item: CustomerResp) {
+                    navigator.goToWithCustomAnimation(CustomerMenuDetailFragment(item))
+                }
+            })
         binding.customerGroups.run {
             adapter = customerGroupAdapter
             setHasFixedSize(true)
@@ -57,7 +60,7 @@ class CustomerMenuFragment : BaseFragment<FragmentCustomerMenuBinding,CustomerMe
                     binding.customerGroups.smoothScrollToPosition(0)
                     if (keyword.trim().isBlank()) return
                 }
-                viewModel.fetchDataCustomer(keyword, pageNo,keyRequest)
+                viewModel.fetchDataCustomer(keyword, pageNo, keyRequest)
             }
 
             override fun onLoadingNextPage(customers: List<CustomerResp>) {
@@ -91,7 +94,7 @@ class CustomerMenuFragment : BaseFragment<FragmentCustomerMenuBinding,CustomerMe
     }
 
     override fun onLoadedCustomers(list: List<CustomerResp>?, isSuccess: Boolean, keyRequest: Int) {
-        list?.let { customerAdapterHelper.loaded(it,isSuccess,keyRequest) }
+        list?.let { customerAdapterHelper.loaded(it, isSuccess, keyRequest) }
     }
 
 }
