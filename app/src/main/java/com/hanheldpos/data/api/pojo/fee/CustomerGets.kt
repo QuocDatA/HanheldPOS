@@ -87,21 +87,4 @@ data class CustomerGets(
         }
         return listRegularFilter
     }
-
-    fun isBuyCompleted(totalOrder: Double, totalQuantityOrder: Int): Boolean {
-        return when (DiscountEntireType.fromInt(DiscountValueType)) {
-            DiscountEntireType.AMOUNT -> {
-                totalOrder >= (DiscountValue)
-            }
-            DiscountEntireType.PERCENT -> {
-                totalQuantityOrder >= (DiscountValue).toInt()
-            }
-            DiscountEntireType.NONE -> TODO()
-            DiscountEntireType.FREE -> TODO()
-            DiscountEntireType.SPECIFIC -> TODO()
-            else -> {
-                false
-            }
-        }
-    }
 }
