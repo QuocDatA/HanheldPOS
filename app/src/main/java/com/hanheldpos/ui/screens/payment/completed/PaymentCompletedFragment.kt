@@ -51,7 +51,8 @@ class PaymentCompletedFragment(
                         try {
                             BillPrinterManager.init(
                                 PosApp.instance.applicationContext,
-                                PrintOptions.bluetooth(deviceType = DeviceType.NO_SDK.Types.HANDHELD),
+//                                PrintOptions.bluetooth(deviceType = DeviceType.NO_SDK.Types.HANDHELD),
+                                PrintOptions.urovo(),
                                 onConnectionFailed = { ex ->
                                     launch(Dispatchers.Main) {
                                         showMessage(ex.message)

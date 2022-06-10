@@ -96,8 +96,10 @@ class SalesReportFragment(private val type: SaleOptionPage? = null, private val 
                 SaleOptionPage.Overview -> {
                     BillPrinterManager.init(
                         PosApp.instance.applicationContext,
-                        PrintOptions.bluetooth(DeviceType.NO_SDK.Types.HANDHELD)
+//                        PrintOptions.bluetooth(DeviceType.NO_SDK.Types.HANDHELD)
+                    PrintOptions.urovo()
                     ) {
+
                         showMessage(it.message)
                     }.printReport(
                         LayoutType.Report.Overview,
@@ -108,7 +110,8 @@ class SalesReportFragment(private val type: SaleOptionPage? = null, private val 
                 SaleOptionPage.InventorySales -> {
                     BillPrinterManager.init(
                         PosApp.instance.applicationContext,
-                        PrintOptions.bluetooth(DeviceType.NO_SDK.Types.HANDHELD)
+//                        PrintOptions.bluetooth(DeviceType.NO_SDK.Types.HANDHELD)
+                        PrintOptions.urovo()
                     ) {
                         showMessage(it.message)
                     }.printReport(
