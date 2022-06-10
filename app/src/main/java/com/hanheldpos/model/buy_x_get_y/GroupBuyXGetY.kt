@@ -108,41 +108,38 @@ data class GroupBuyXGetY(
         }
     }
 
-    fun addProduct(discount: DiscountResp, product: Product, diningOption: DiningOption) {
-        val comboGroupList = GSonUtils.toList<List<ProductComboItem>>(product.Combo)
-        if (comboGroupList == null || !comboGroupList.any()) {
-            addRegular(product, diningOption, discount)
+    fun addProduct(discount: DiscountResp?, product: Product, baseProductInCart: BaseProductInCart, diningOption: DiningOption) {
+        if (baseProductInCart is Regular) {
+            addRegular(product, diningOption, discount, baseProductInCart)
         } else {
-            addBundle(product, diningOption, discount, comboGroupList)
+            addBundle(product, diningOption, discount, baseProductInCart)
         }
     }
 
     private fun addBundle(
         product: Product,
         diningOption: DiningOption,
-        discount: DiscountResp,
-        comboGroupList: List<ProductComboItem>
+        discount: DiscountResp?,
+        baseProduct: BaseProductInCart,
     ) {
-        val groupList = comboGroupList.map { comboGroup ->
-            GroupBundle(
-                comboInfo = comboGroup,
-                productList = mutableListOf()
-            )
-        }.toList()
         val bundle = Combo(
             product,
-            groupList,
+            (baseProduct as Combo).groupList,
             diningOption,
             1,
             product.skuDefault,
             product.variantDefault,
             null
         )
-        bundle.discountServersList?.add(discount)
+        if(discount != null) {
+            if(bundle.discountServersList == null) bundle.discountServersList = mutableListOf()
+            bundle.discountServersList?.add(discount)
+        }
         productList.add(bundle)
+        productList
     }
 
-    private fun addRegular(product: Product, diningOption: DiningOption, discount: DiscountResp) {
+    private fun addRegular(product: Product, diningOption: DiningOption, discount: DiscountResp?, baseProductInCart: BaseProductInCart?) {
         //Update variant group
         if (product.VariantsGroup != null) {
             val variantGroup = getVariantGroup(product._id)
@@ -151,8 +148,13 @@ data class GroupBuyXGetY(
         }
 
         val regular =
-            Regular(product, diningOption, 1, product.skuDefault, product.variantDefault, null)
-        regular.discountServersList?.add(discount)
+            Regular(product, diningOption, 1, (baseProductInCart as Regular).sku, baseProductInCart.variants, null)
+        regular.modifierList = baseProductInCart.modifierList
+        regular.variantList = baseProductInCart.variantList
+        if(discount != null) {
+            if(regular.discountServersList == null) regular.discountServersList = mutableListOf()
+            regular.discountServersList?.add(discount)
+        }
         productList.add(regular)
     }
 
@@ -218,9 +220,43 @@ data class GroupBuyXGetY(
         }
     }
 
+    fun getRequirementFormat(requireAmount : Int): String {
+        if (condition is CustomerBuys) {
+            val customerBuys = condition as CustomerBuys
+            return when (MinimumType.fromInt(customerBuys.MinimumTypeId ?: 0)) {
+                MinimumType.QUANTITY -> {
+                    "$requireAmount " + getSelectionRequired(
+                        requireAmount
+                    )
+                }
+                else -> {
+                    ""
+                }
+            }
+
+        } else { // condition is CustomerGets
+            val customerGets = condition as CustomerGets
+            return when (CustomerDiscApplyTo.fromInt(customerGets.ApplyTo)) {
+                CustomerDiscApplyTo.ENTIRE_ORDER -> {
+                    ""
+                }
+                else -> {
+                    "$requireAmount " + getSelectionRequired(
+                        requireAmount
+                    )
+                }
+            }
+        }
+    }
+
     private fun getItemRequired(value: Double): String {
         return if (value > 1) (PosApp.instance.getString(R.string.items_required)) else (PosApp.instance.getString(
             R.string.item_required
+        ))
+    }
+    private fun getSelectionRequired(value: Int): String {
+        return if (value > 1) (PosApp.instance.getString(R.string.selections_required)) else (PosApp.instance.getString(
+            R.string.selection_required
         ))
     }
 }

@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.discount.CustomerBuys
 import com.hanheldpos.data.api.pojo.discount.DiscountResp
+import com.hanheldpos.data.api.pojo.fee.CustomerGets
+import com.hanheldpos.data.api.pojo.fee.Discount
 import com.hanheldpos.databinding.FragmentBuyXGetYBinding
 import com.hanheldpos.extension.notifyValueChange
 import com.hanheldpos.model.buy_x_get_y.BuyXGetY
@@ -129,12 +131,14 @@ class BuyXGetYFragment(
                                         item: BaseProductInCart,
                                         action: ItemActionType
                                     ) {
+                                        (item as Regular).sku
+                                        (item).variants
                                         viewModel.onRegularSelect(
                                             group,
                                             baseItem,
                                             (item as Regular).clone(),
                                             action,
-                                            discount,
+                                            if(group.condition is CustomerGets) discount else null,
                                         )
                                         val isGroupBuy = group.condition is CustomerBuys
                                         viewModel.isGroupBuy.value = isGroupBuy
@@ -160,7 +164,7 @@ class BuyXGetYFragment(
                                         group,
                                         (item as Combo).clone(),
                                         action,
-                                        discount
+                                        if( group.condition is CustomerGets) discount else null
                                     )
                                     buyXGetYGroupAdapter.notifyDataSetChanged()
                                     viewModel.buyXGetY.notifyValueChange()
@@ -180,7 +184,7 @@ class BuyXGetYFragment(
         onFragmentBackPressed()
     }
 
-    override fun onDiscountBuyXGetYEntireOrder(discountUser: DiscountUser) {
-        listener.onDiscountBuyXGetYEntireOrder(discountUser)
+    override fun onDiscountBuyXGetYEntireOrder(discount: DiscountResp) {
+        listener.onDiscountBuyXGetYEntireOrder(discount)
     }
 }

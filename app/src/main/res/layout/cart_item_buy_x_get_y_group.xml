@@ -16,6 +16,10 @@
         <variable
             name="isShowDetail"
             type="Boolean" />
+
+        <variable
+            name="isComplete"
+            type="Boolean" />
     </data>
 
     <LinearLayout
@@ -34,6 +38,7 @@
                 android:layout_width="@dimen/_11sdp"
                 android:layout_height="@dimen/_11sdp"
                 android:background="@drawable/bg_cart_number"
+                android:backgroundTint="@{isComplete ? @color/color_0 : @color/color_7}"
                 android:gravity="center">
 
                 <com.diadiem.pos_components.PTextView
@@ -54,6 +59,38 @@
                 app:useTextColor="color4"
                 app:useTextHeader="h6"
                 tools:text="Group Pho" />
+        </LinearLayout>
+
+        <LinearLayout
+            visibleObject="@{!isComplete}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_14sdp">
+
+            <com.diadiem.pos_components.PTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{item.requireQuantityFormat}"
+                app:useTextColor="color4"
+                app:useTextHeader="h6"
+                tools:text="Minimum purchase amount: 200.000" />
+
+            <com.diadiem.pos_components.PTextView
+                android:id="@+id/itemComboRemove"
+                android:focusable="true"
+                android:clickable="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:background="@drawable/bg_cart_tip_item"
+                android:backgroundTint="@color/color_0"
+                android:paddingHorizontal="@dimen/_7sdp"
+                android:paddingVertical="@dimen/_2sdp"
+                android:text="@string/continue_buy_x_get_y"
+                android:textAllCaps="true"
+                app:useFontStyle="bold"
+                app:useTextColor="color2"
+                app:useTextHeader="h6" />
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView

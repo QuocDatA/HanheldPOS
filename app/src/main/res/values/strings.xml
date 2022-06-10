@@ -286,4 +286,7 @@
     <string name="files">Files</string>
     <string name="add_file">Add File</string>
     <string name="print">Print</string>
+    <string name="selections_required">selections required</string>
+    <string name="selection_required">selection required</string>
+    <string name="continue_buy_x_get_y">Continue</string>
 </resources>

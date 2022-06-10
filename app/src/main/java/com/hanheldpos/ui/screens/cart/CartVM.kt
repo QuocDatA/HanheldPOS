@@ -48,6 +48,16 @@ class CartVM : BaseUiViewModel<CartUV>() {
         onPaymentSelected: Boolean = false,
         listener: CartActionCallBack
     ) {
+        cart.productsList.forEach { baseProductInCart ->
+            if (!baseProductInCart.isCompleted()) {
+                AppAlertDialog.get()
+                    .show(
+                        context.getString(R.string.notification),
+                        context.getString(R.string.order_not_completed),
+                    )
+                return
+            }
+        }
         if (cart.productsList.isEmpty()) {
             AppAlertDialog.get()
                 .show(

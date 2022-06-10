@@ -1,11 +1,9 @@
 package com.hanheldpos.ui.screens.buy_x_get_y.adapter
 
-import android.view.View
 import androidx.recyclerview.widget.DiffUtil
 import com.google.android.material.tabs.TabLayout
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.discount.CustomerBuys
-import com.hanheldpos.data.api.pojo.fee.CustomerGets
 import com.hanheldpos.data.api.pojo.product.Product
 import com.hanheldpos.databinding.ItemBuyXGetYGroupBinding
 import com.hanheldpos.model.buy_x_get_y.GroupBuyXGetY
@@ -76,8 +74,6 @@ class BuyXGetYGroupAdapter(
             itemBuyXGetYGroup.isFocused = true
         } else itemBuyXGetYGroup.isFocused = false
 
-
-        if (itemBuyXGetYGroup.isApplyToEntireOrder == false) {
             val buyXGetYItemPickerAdapter = BuyXGetYItemPickerAdapter(
                 listener = object : BaseItemClickListener<BaseProductInCart> {
                     override fun onItemClick(adapterPosition: Int, item: BaseProductInCart) {
@@ -151,9 +147,6 @@ class BuyXGetYGroupAdapter(
             })
 
             binding.tabDiscountType.getTabAt(0)?.select()
-        } else {
-
-        }
 
     }
 
@@ -185,6 +178,5 @@ class BuyXGetYGroupAdapter(
         ): Boolean {
             return oldItem.groupBuyXGetY == newItem.groupBuyXGetY
         }
-
     }
 }

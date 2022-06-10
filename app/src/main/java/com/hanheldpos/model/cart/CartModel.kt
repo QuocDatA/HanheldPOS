@@ -8,10 +8,8 @@ import com.hanheldpos.data.api.pojo.order.settings.Reason
 import com.hanheldpos.data.api.pojo.product.Product
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.OrderHelper
-import com.hanheldpos.model.discount.DiscApplyTo
-import com.hanheldpos.model.discount.DiscountPriceType
-import com.hanheldpos.model.discount.DiscountTriggerType
-import com.hanheldpos.model.discount.DiscountUser
+import com.hanheldpos.model.buy_x_get_y.BuyXGetY
+import com.hanheldpos.model.discount.*
 import com.hanheldpos.model.home.table.TableSummary
 import com.hanheldpos.model.order.DeliveryTime
 import com.hanheldpos.model.order.Order
@@ -40,7 +38,7 @@ open class CartModel(
 ) {
 
     fun getSubTotal() = productsList.sumOf {
-        it.lineTotalValue
+        it.total()
     }
 
     fun getDiscountPrice() = totalDiscount(getSubTotal());
@@ -197,13 +195,13 @@ open class CartModel(
         }
     }
 
-    fun removeAllDiscountAutoInCart() {
+    private fun removeAllDiscountAutoInCart() {
         this.discountServerList.removeAll { disc ->
             disc.isAutoInCart()
         }
     }
 
-    fun removeAllDiscountAutoOnClick() {
+    private fun removeAllDiscountAutoOnClick() {
         this.discountServerList.removeAll { disc ->
             disc.isAutoOnClick()
         }
@@ -257,19 +255,19 @@ open class CartModel(
         addRangeDiscountOnePerOrder(discOnePerOrderList)
     }
 
-    fun addRangeDiscountOnePerOrder(discountOnePerOrderList: List<DiscountResp>) {
+    private fun addRangeDiscountOnePerOrder(discountOnePerOrderList: List<DiscountResp>) {
         discountOnePerOrderList.distinctBy { disc -> disc._id }.toList()
             .forEach { discOnePerOrder ->
                 addDiscountOnePerOrder(discOnePerOrder)
             }
     }
 
-    fun addDiscountOnePerOrder(discountOnePerOrder: DiscountResp) {
+    private fun addDiscountOnePerOrder(discountOnePerOrder: DiscountResp) {
         val baseProductApplyDisc = getProductApplyOnePerOrderDisc(discountOnePerOrder)
         baseProductApplyDisc?.discountServersList?.add(discountOnePerOrder.clone())
     }
 
-    fun getProductApplyOnePerOrderDisc(discOnePerOrder: DiscountResp): BaseProductInCart? {
+    private fun getProductApplyOnePerOrderDisc(discOnePerOrder: DiscountResp): BaseProductInCart? {
         val applyToList = discOnePerOrder.Condition.CustomerBuys.ListApplyTo.toList()
         val productApplyList =
             getProductListApplyToDiscount(applyToList.firstOrNull()?.ProductList ?: listOf())
@@ -301,7 +299,7 @@ open class CartModel(
         }
     }
 
-    fun getProductListApplyToDiscount(appliesTo: List<Product>): List<BaseProductInCart> {
+    private fun getProductListApplyToDiscount(appliesTo: List<Product>): List<BaseProductInCart> {
         val baseProductList: MutableList<BaseProductInCart> = mutableListOf()
         appliesTo.forEach { productDisc ->
             val baseProduct = this.productsList.firstOrNull { p ->
@@ -314,13 +312,14 @@ open class CartModel(
         return baseProductList
     }
 
-    fun removeAllDiscountCoupon() {
+    private fun removeAllDiscountCoupon() {
         if (!anyProductList()) return
         this.discountServerList.removeAll { disc ->
-            disc.isCoupon()
+            disc.isCoupon() && DiscountTypeEnum.fromInt(disc.DiscountType) != DiscountTypeEnum.BUYX_GETY
         }
         this.productsList.forEach { baseProduct ->
-            baseProduct.removeAllDiscountCoupon()
+            if(baseProduct !is BuyXGetY)
+                baseProduct.removeAllDiscountCoupon()
         }
     }
 
@@ -331,10 +330,8 @@ open class CartModel(
         return totalQty ?: 0;
     }
 
-    fun addBuyXGetYEntireOrderDisc(discount : DiscountResp) {
-        if(discountServerList.isNullOrEmpty()) return
-        val isDiscExists = discountServerList.firstOrNull{d -> d._id == discount._id} != null
-        if(!isDiscExists)
-            discountServerList.add(discount)
+    fun removeDiscountById(discountGuid: String) {
+        this.discountUserList.removeIf { disc -> disc.DiscountGuid == discountGuid }
+        this.discountUserList
     }
 }

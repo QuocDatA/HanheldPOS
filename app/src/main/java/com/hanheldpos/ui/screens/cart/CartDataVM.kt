@@ -17,6 +17,7 @@ import com.hanheldpos.model.UserHelper
 import com.hanheldpos.model.buy_x_get_y.BuyXGetY
 import com.hanheldpos.model.cart.*
 import com.hanheldpos.model.discount.DiscApplyTo
+import com.hanheldpos.model.discount.DiscountTypeEnum
 import com.hanheldpos.model.discount.DiscountUser
 import com.hanheldpos.model.home.table.TableSummary
 import com.hanheldpos.model.payment.PaymentOrder
@@ -198,13 +199,13 @@ class CartDataVM : BaseViewModel() {
 
     fun addDiscountServer(discount: DiscountResp, applyTo: DiscApplyTo) {
         this.cartModelLD.value!!.addDiscountAutoServer(discount, applyTo)
-        notifyCartChange()
+        notifyCartChange(DiscountTypeEnum.fromInt( discount.DiscountType) != DiscountTypeEnum.BUYX_GETY)
     }
 
     fun addBuyXGetY(disc: DiscountResp, buyXGetY: BuyXGetY) {
         this.cartModelLD.value?.productsList?.add(buyXGetY)
         this.discountResp.postValue(disc)
-        notifyCartChange()
+        notifyCartChange(false)
     }
 
     fun clearAllDiscountCoupon() {
@@ -252,6 +253,9 @@ class CartDataVM : BaseViewModel() {
         notifyCartChange(false)
     }
 
+    fun removeDiscountById(discountGuid: String) {
+        this.cartModelLD.value?.removeDiscountById(discountGuid)
+    }
 
     fun updateNote(note: String?) {
         this.cartModelLD.value?.note = note
