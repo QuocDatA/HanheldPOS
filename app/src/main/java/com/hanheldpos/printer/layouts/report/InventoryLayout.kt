@@ -1,17 +1,13 @@
 package com.hanheldpos.printer.layouts.report
 
-import com.handheld.printer.printer_setup.PrintOptions
-import com.handheld.printer.printer_setup.printer_manager.BasePrinterManager
-import com.handheld.printer.wagu.Block
-import com.handheld.printer.wagu.WaguUtils
-import com.handheld.printer.wagu.WrapType
-import com.hanheldpos.data.api.pojo.report.InventoryReport
+import com.hanheldpos.printer.printer_setup.PrintOptions
+import com.hanheldpos.printer.printer_setup.printer_manager.BasePrinterManager
+import com.hanheldpos.printer.wagu.Block
+import com.hanheldpos.printer.wagu.WaguUtils
+import com.hanheldpos.printer.wagu.WrapType
 import com.hanheldpos.data.api.pojo.report.ProductInventory
 import com.hanheldpos.data.api.pojo.report.ReportSalesResp
 import com.hanheldpos.model.report.SaleReportFilter
-import com.hanheldpos.ui.screens.menu.report.sale.SalesReportVM
-import com.hanheldpos.utils.DateTimeUtils
-import java.util.*
 
 
 class InventoryLayout(

@@ -1,16 +1,9 @@
 package com.hanheldpos.ui.screens.menu.order_detail
 
 import android.annotation.SuppressLint
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import com.handheld.printer.printer_setup.PrintOptions
-import com.handheld.printer.printer_setup.device_info.DeviceType
+import com.hanheldpos.printer.printer_setup.PrintOptions
 import com.hanheldpos.PosApp
 import com.hanheldpos.R
-import com.hanheldpos.database.DatabaseMapper
 import com.hanheldpos.databinding.FragmentOrderDetailViewBinding
 import com.hanheldpos.extension.setOnClickDebounce
 import com.hanheldpos.model.order.OrderModel

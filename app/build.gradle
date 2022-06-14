@@ -27,7 +27,7 @@ android {
     buildToolsVersion "30.0.3"
 
     defaultConfig {
-        applicationId "com.hanheldpos"
+        applicationId "com.dev.hanheldpos"
         minSdk 25
         targetSdk 31
         versionCode VERSION_CODE
@@ -59,6 +59,13 @@ android {
         dataBinding true
     }
 }
+
+apply plugin: 'com.android.application'
+
+// Add this line
+apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.firebase.crashlytics'
+
 
 dependencies {
     // Modules
@@ -96,17 +103,16 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp:4.9.0'
     implementation 'com.squareup.retrofit2:converter-scalars:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
-    implementation 'com.google.code.gson:gson:2.8.7'
+    implementation 'com.google.code.gson:gson:2.9.0'
 
     //TODO enable it for Google Services
-//    // Firebase & Google Services
-//    implementation platform('com.google.firebase:firebase-bom:28.2.0')
-//    implementation 'com.google.firebase:firebase-analytics-ktx'
-//    implementation 'com.google.firebase:firebase-crashlytics-ktx'
-//    implementation 'com.google.firebase:firebase-perf-ktx'
-//    implementation 'com.google.firebase:firebase-messaging-ktx'
-//    implementation 'com.google.android.gms:play-services-maps:17.0.1'
-//    implementation 'com.google.android.play:core-ktx:1.8.1'
+    // Firebase & Google Services
+    implementation platform('com.google.firebase:firebase-bom:30.1.0')
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+    implementation 'com.google.firebase:firebase-crashlytics-ktx'
+    implementation 'com.google.firebase:firebase-perf-ktx'
+    implementation 'com.google.firebase:firebase-messaging-ktx'
+    implementation 'com.google.android.play:core-ktx:1.8.1'
 
     // Logger
     implementation 'com.orhanobut:logger:2.2.0'

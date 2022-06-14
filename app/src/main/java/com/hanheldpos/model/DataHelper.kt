@@ -3,6 +3,7 @@ package com.hanheldpos.model
 
 import com.hanheldpos.data.api.ApiConst
 import com.hanheldpos.data.api.pojo.customer.CustomerResp
+import com.hanheldpos.data.api.pojo.data.DataVersion
 import com.hanheldpos.data.api.pojo.device.Device
 import com.hanheldpos.data.api.pojo.device.DeviceCodeResp
 import com.hanheldpos.data.api.pojo.discount.CouponResp
@@ -31,6 +32,7 @@ object DataHelper {
     var currentDrawerId: String? = null;
 
     fun isValidData(): Boolean {
+        dataVersionLocalStorage ?: return  false
         receiptCashierLocalStorage ?: return false
         menuLocalStorage ?: return false
         orderSettingLocalStorage ?: return false
@@ -50,6 +52,8 @@ object DataHelper {
         currentDrawerId = null
         numberIncreaseOrder = 0
         // Local
+        dataVersionLocalStorage = null
+        receiptCashierLocalStorage = null
         menuLocalStorage = null
         orderSettingLocalStorage = null
         orderStatusLocalStorage = null
@@ -267,6 +271,22 @@ object DataHelper {
         set(value) {
             field = value
             AppPreferences.get().storeValue(PrefKey.Receipt.CASHIER, GSonUtils.toJson(value))
+        }
+
+    var dataVersionLocalStorage: DataVersion? = null
+        get() {
+            if (field == null) {
+                field = GSonUtils.toObject(
+                    AppPreferences.get().getString(
+                        PrefKey.Data.VERSION
+                    )
+                )
+            }
+            return field
+        }
+        set(value) {
+            field = value
+            AppPreferences.get().storeValue(PrefKey.Data.VERSION, GSonUtils.toJson(value))
         }
 
     fun findDiscountAutoList(applyTo: DiscApplyTo): List<DiscountResp> {

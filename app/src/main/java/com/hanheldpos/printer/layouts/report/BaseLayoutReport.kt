@@ -1,9 +1,9 @@
 package com.hanheldpos.printer.layouts.report
 
-import com.handheld.printer.printer_setup.PrintOptions
-import com.handheld.printer.printer_setup.printer_manager.BasePrinterManager
-import com.handheld.printer.wagu.Block
-import com.handheld.printer.wagu.WaguUtils
+import com.hanheldpos.printer.printer_setup.PrintOptions
+import com.hanheldpos.printer.printer_setup.printer_manager.BasePrinterManager
+import com.hanheldpos.printer.wagu.Block
+import com.hanheldpos.printer.wagu.WaguUtils
 import com.hanheldpos.data.api.pojo.report.ReportSalesResp
 import com.hanheldpos.model.report.SaleReportFilter
 import com.hanheldpos.printer.layouts.BaseLayoutPrinter
