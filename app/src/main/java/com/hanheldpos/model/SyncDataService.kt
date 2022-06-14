@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.lifecycle.viewModelScope
 import com.hanheldpos.PosApp
 import com.hanheldpos.R
+import com.hanheldpos.data.api.pojo.data.DataVersion
 import com.hanheldpos.data.api.pojo.discount.CouponResp
 import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.data.api.pojo.fee.FeeResp
@@ -17,6 +18,7 @@ import com.hanheldpos.data.api.pojo.resource.ResourceResp
 import com.hanheldpos.data.api.pojo.system.AddressTypeResp
 import com.hanheldpos.data.repository.BaseResponse
 import com.hanheldpos.data.repository.base.BaseRepoCallback
+import com.hanheldpos.data.repository.data.DataRepo
 import com.hanheldpos.data.repository.discount.DiscountRepo
 import com.hanheldpos.data.repository.fee.FeeRepo
 import com.hanheldpos.data.repository.floor.FloorRepo
@@ -42,10 +44,12 @@ class SyncDataService : BaseViewModel() {
     private var systemRepo: SystemRepo = SystemRepo();
     private var resourceRepo: ResourceRepo = ResourceRepo()
     private var receiptRepo : ReceiptRepo = ReceiptRepo()
+    private var dataRepo : DataRepo = DataRepo()
 
     fun fetchAllData(context: Context, listener: SyncDataServiceListener) {
         val location = UserHelper.getLocationGuid()
         val userGuid = UserHelper.getUserGuid()
+        val deviceGuid = UserHelper.getDeviceGuid()
         menuRepo.getOrderMenu(
             userGuid = userGuid,
             locationGuid = location,
@@ -236,6 +240,21 @@ class SyncDataService : BaseViewModel() {
                     onDataFailure(context.getString(R.string.failed_to_load_data), listener)
                 } else {
                     DataHelper.receiptCashierLocalStorage = data.Model?.firstOrNull();
+                    startMappingData(context, listener);
+                }
+            }
+
+            override fun showMessage(message: String?) {
+                onDataFailure(message, listener)
+            }
+        })
+
+        dataRepo.getDataVersion(userGuid,location,deviceGuid ,callback = object : BaseRepoCallback<BaseResponse<DataVersion>> {
+            override fun apiResponse(data: BaseResponse<DataVersion>?) {
+                if (data == null || data.DidError) {
+                    onDataFailure(context.getString(R.string.failed_to_load_data), listener)
+                } else {
+                    DataHelper.dataVersionLocalStorage = data.Model;
                     startMappingData(context, listener);
                 }
             }

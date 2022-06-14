@@ -1,14 +1,8 @@
 package com.hanheldpos.printer.layouts
 
-import com.handheld.printer.printer_setup.PrintOptions
-import com.handheld.printer.printer_setup.printer_manager.BasePrinterManager
-import com.handheld.printer.wagu.Block
-import com.handheld.printer.wagu.WaguUtils
-import com.hanheldpos.model.DataHelper
-import com.hanheldpos.model.order.OrderModel
-import com.hanheldpos.printer.BillPrinterManager
-import com.hanheldpos.utils.DateTimeUtils
-import com.hanheldpos.utils.StringUtils
+import com.hanheldpos.printer.printer_setup.PrintOptions
+import com.hanheldpos.printer.printer_setup.printer_manager.BasePrinterManager
+import com.hanheldpos.printer.wagu.Block
 
 abstract class BaseLayoutPrinter(
     protected val printer: BasePrinterManager,

@@ -1,0 +1,278 @@
+{
+  "project_info": {
+    "project_number": "978245830819",
+    "firebase_url": "https://pendogo-default-rtdb.firebaseio.com",
+    "project_id": "pendogo",
+    "storage_bucket": "pendogo.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:978245830819:android:b5ce0773582a7cb778d716",
+        "android_client_info": {
+          "package_name": "com.dev.hanheldpos"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "978245830819-mimnqhc9j4mavs230152ri8av6acjhps.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dev.hanheldpos",
+            "certificate_hash": "293e44758219326c5da11b2c1fff54b5fbf321a9"
+          }
+        },
+        {
+          "client_id": "978245830819-erikqq3g5t6povjr9hcgs5nnc022p7mm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBYHluaOYBqOcAMv9KWiuQB5wrizJAxqTY"
+        },
+        {
+          "current_key": "AIzaSyCQvVW2F3D0jpddpDGTsqG-6ehe5YuKmUE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "109427977812803742070",
+              "client_type": 3
+            },
+            {
+              "client_id": "978245830819-b7cr69ve8ctdsruts3kcbpaie0u1g4e1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.dev.heineken"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:978245830819:android:99d8c2f5495f5c5c78d716",
+        "android_client_info": {
+          "package_name": "com.dev.heinekenapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "978245830819-hhljcr0e50gu6g094ba30tb1rip41efa.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dev.heinekenapp",
+            "certificate_hash": "d419c9654ad3ef602a108d8024bbc4ccc41c5c0f"
+          }
+        },
+        {
+          "client_id": "978245830819-tjh787qovkssis3k7njegqmabmb2s82g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dev.heinekenapp",
+            "certificate_hash": "bf0a9eea68b97ceb5fb573cc41c8db0241e17475"
+          }
+        },
+        {
+          "client_id": "978245830819-erikqq3g5t6povjr9hcgs5nnc022p7mm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBYHluaOYBqOcAMv9KWiuQB5wrizJAxqTY"
+        },
+        {
+          "current_key": "AIzaSyCQvVW2F3D0jpddpDGTsqG-6ehe5YuKmUE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "109427977812803742070",
+              "client_type": 3
+            },
+            {
+              "client_id": "978245830819-b7cr69ve8ctdsruts3kcbpaie0u1g4e1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.dev.heineken"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:978245830819:android:db1256715459b26978d716",
+        "android_client_info": {
+          "package_name": "com.dev.medilink"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "978245830819-1r8o985c0bgssgma4c3kicencln0cje5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dev.medilink",
+            "certificate_hash": "bf0a9eea68b97ceb5fb573cc41c8db0241e17475"
+          }
+        },
+        {
+          "client_id": "978245830819-2gl6ksoahh2gapibp4kg05fsbhfu7h81.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dev.medilink",
+            "certificate_hash": "d419c9654ad3ef602a108d8024bbc4ccc41c5c0f"
+          }
+        },
+        {
+          "client_id": "978245830819-erikqq3g5t6povjr9hcgs5nnc022p7mm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBYHluaOYBqOcAMv9KWiuQB5wrizJAxqTY"
+        },
+        {
+          "current_key": "AIzaSyCQvVW2F3D0jpddpDGTsqG-6ehe5YuKmUE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "109427977812803742070",
+              "client_type": 3
+            },
+            {
+              "client_id": "978245830819-b7cr69ve8ctdsruts3kcbpaie0u1g4e1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.dev.heineken"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:978245830819:android:3900518ce855dfb378d716",
+        "android_client_info": {
+          "package_name": "dev.com.diadiem.pos_v2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "978245830819-esarn7vafnqhm119a8qhg831n3bmfdfh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "dev.com.diadiem.pos_v2",
+            "certificate_hash": "d419c9654ad3ef602a108d8024bbc4ccc41c5c0f"
+          }
+        },
+        {
+          "client_id": "978245830819-gu8sc46s4skati30uulhmavg348af082.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "dev.com.diadiem.pos_v2",
+            "certificate_hash": "bf0a9eea68b97ceb5fb573cc41c8db0241e17475"
+          }
+        },
+        {
+          "client_id": "978245830819-erikqq3g5t6povjr9hcgs5nnc022p7mm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBYHluaOYBqOcAMv9KWiuQB5wrizJAxqTY"
+        },
+        {
+          "current_key": "AIzaSyCQvVW2F3D0jpddpDGTsqG-6ehe5YuKmUE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "109427977812803742070",
+              "client_type": 3
+            },
+            {
+              "client_id": "978245830819-b7cr69ve8ctdsruts3kcbpaie0u1g4e1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.dev.heineken"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:978245830819:android:07579c32ef7d746478d716",
+        "android_client_info": {
+          "package_name": "dev.com.pos_v2.desktop"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "978245830819-b6an987biijm3vc2vi1j0vagur1eek6n.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "dev.com.pos_v2.desktop",
+            "certificate_hash": "aec5199d6b4212b7ea31c989d47c4b152bce8447"
+          }
+        },
+        {
+          "client_id": "978245830819-h2g9r3u6dmkmf7dkgcrll2rlcvqbnos0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "dev.com.pos_v2.desktop",
+            "certificate_hash": "3e4b8c199347abbda1234b2d2bfc5bcbba825bd1"
+          }
+        },
+        {
+          "client_id": "978245830819-erikqq3g5t6povjr9hcgs5nnc022p7mm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBYHluaOYBqOcAMv9KWiuQB5wrizJAxqTY"
+        },
+        {
+          "current_key": "AIzaSyCQvVW2F3D0jpddpDGTsqG-6ehe5YuKmUE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "109427977812803742070",
+              "client_type": 3
+            },
+            {
+              "client_id": "978245830819-b7cr69ve8ctdsruts3kcbpaie0u1g4e1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.dev.heineken"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

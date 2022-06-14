@@ -1,8 +1,6 @@
 package com.hanheldpos.ui.screens.payment.completed
 
-import com.handheld.printer.PrintConstants
-import com.handheld.printer.printer_setup.PrintOptions
-import com.handheld.printer.printer_setup.device_info.DeviceType
+import com.hanheldpos.printer.printer_setup.PrintOptions
 import com.hanheldpos.PosApp
 import com.hanheldpos.R
 import com.hanheldpos.binding.setPriceView
@@ -11,7 +9,6 @@ import com.hanheldpos.databinding.FragmentPaymentCompletedBinding
 import com.hanheldpos.extension.setOnClickDebounce
 import com.hanheldpos.model.DatabaseHelper
 import com.hanheldpos.printer.BillPrinterManager
-import com.hanheldpos.printer.layouts.BaseLayoutPrinter
 import com.hanheldpos.printer.layouts.LayoutType
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import kotlinx.coroutines.CoroutineScope

@@ -1,5 +1,7 @@
 package com.hanheldpos.prefs
 
+import android.os.Build
+
 object  PrefKey {
     const val TOKEN_EXPIRED_IN = "TOKEN_EXPIRED_IN"
     const val BEARER_TOKEN = "BEARER_TOKEN"
@@ -50,5 +52,8 @@ object  PrefKey {
 
     object Receipt {
         const val CASHIER = "RECEIPT_CASHIER"
+    }
+    object Data {
+        const val VERSION = "DATA_VERSION"
     }
 }

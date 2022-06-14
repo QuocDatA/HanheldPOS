@@ -5,8 +5,7 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.activityViewModels
-import com.handheld.printer.printer_setup.PrintOptions
-import com.handheld.printer.printer_setup.device_info.DeviceType
+import com.hanheldpos.printer.printer_setup.PrintOptions
 import com.hanheldpos.PosApp
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentSalesReportBinding

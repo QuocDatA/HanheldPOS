@@ -1,12 +1,11 @@
 package com.hanheldpos.printer.layouts.order
 
 
-import com.handheld.printer.printer_setup.PrintOptions
-import com.handheld.printer.printer_setup.printer_manager.BasePrinterManager
-import com.handheld.printer.wagu.Block
-import com.handheld.printer.wagu.WaguUtils
-import com.handheld.printer.wagu.WrapType
-import com.hanheldpos.data.api.ApiConst
+import com.hanheldpos.printer.printer_setup.PrintOptions
+import com.hanheldpos.printer.printer_setup.printer_manager.BasePrinterManager
+import com.hanheldpos.printer.wagu.Block
+import com.hanheldpos.printer.wagu.WaguUtils
+import com.hanheldpos.printer.wagu.WrapType
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.order.OrderModel
 import com.hanheldpos.printer.layouts.BaseLayoutPrinter
