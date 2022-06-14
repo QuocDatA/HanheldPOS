@@ -8,12 +8,13 @@ import com.hanheldpos.databinding.CartItemBuyXGetYGroupBinding
 import com.hanheldpos.model.buy_x_get_y.BuyXGetY
 import com.hanheldpos.model.buy_x_get_y.CustomerDiscApplyTo
 import com.hanheldpos.model.buy_x_get_y.GroupBuyXGetY
+import com.hanheldpos.model.cart.BaseProductInCart
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
 import com.hanheldpos.ui.screens.cart.CurCartData
 
 class CartBuyXGetYGroupAdapter(
-    private val isShowDetail: Boolean,
+    private val isShowDetail: Boolean, private val listener : CartBuyXGetYListener,
 ) : BaseBindingListAdapter<GroupBuyXGetY>(DiffCallback()) {
 
     override fun getItemViewType(position: Int): Int {
@@ -34,6 +35,10 @@ class CartBuyXGetYGroupAdapter(
             )
         cartBuyXGetYGroupAdapter.submitList(item.productList)
         binding.cartComboGroupDetailRecyclerView.adapter = cartBuyXGetYGroupAdapter
+
+        binding.btnContinueBuyXGetY.setOnClickListener {
+            listener.onItemClick()
+        }
 
         // variable to check complete status for entire order
         val totalOrder = CurCartData.cartModel!!.total()
@@ -70,5 +75,9 @@ class CartBuyXGetYGroupAdapter(
             return false
         }
 
+    }
+
+    interface CartBuyXGetYListener {
+        fun onItemClick()
     }
 }
