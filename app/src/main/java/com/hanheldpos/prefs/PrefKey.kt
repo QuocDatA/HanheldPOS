@@ -47,4 +47,8 @@ object  PrefKey {
     object Resource {
         const val RESOURCE_RESP = "RESOURCE_RESP"
     }
+
+    object Receipt {
+        const val CASHIER = "RECEIPT_CASHIER"
+    }
 }

@@ -12,6 +12,7 @@ import com.hanheldpos.data.api.pojo.order.menu.MenuResp
 import com.hanheldpos.data.api.pojo.order.settings.OrderSettingResp
 import com.hanheldpos.data.api.pojo.order.status.OrderStatusResp
 import com.hanheldpos.data.api.pojo.payment.PaymentMethodResp
+import com.hanheldpos.data.api.pojo.receipt.ReceiptCashier
 import com.hanheldpos.data.api.pojo.resource.ResourceResp
 import com.hanheldpos.data.api.pojo.system.AddressTypeResp
 import com.hanheldpos.data.repository.BaseResponse
@@ -22,8 +23,10 @@ import com.hanheldpos.data.repository.floor.FloorRepo
 import com.hanheldpos.data.repository.menu.MenuRepo
 import com.hanheldpos.data.repository.order.OrderRepo
 import com.hanheldpos.data.repository.payment.PaymentRepo
+import com.hanheldpos.data.repository.receipt.ReceiptRepo
 import com.hanheldpos.data.repository.resource.ResourceRepo
 import com.hanheldpos.data.repository.system.SystemRepo
+import com.hanheldpos.prefs.PrefKey
 import com.hanheldpos.ui.base.viewmodel.BaseViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -38,6 +41,7 @@ class SyncDataService : BaseViewModel() {
     private var paymentRepo: PaymentRepo = PaymentRepo();
     private var systemRepo: SystemRepo = SystemRepo();
     private var resourceRepo: ResourceRepo = ResourceRepo()
+    private var receiptRepo : ReceiptRepo = ReceiptRepo()
 
     fun fetchAllData(context: Context, listener: SyncDataServiceListener) {
         val location = UserHelper.getLocationGuid()
@@ -224,7 +228,22 @@ class SyncDataService : BaseViewModel() {
                 }
 
             }
-        );
+        )
+
+        receiptRepo.getReceiptCashiers(userGuid,location, callback = object : BaseRepoCallback<BaseResponse<List<ReceiptCashier>>> {
+            override fun apiResponse(data: BaseResponse<List<ReceiptCashier>>?) {
+                if (data == null || data.DidError) {
+                    onDataFailure(context.getString(R.string.failed_to_load_data), listener)
+                } else {
+                    DataHelper.receiptCashierLocalStorage = data.Model?.firstOrNull();
+                    startMappingData(context, listener);
+                }
+            }
+
+            override fun showMessage(message: String?) {
+                onDataFailure(message, listener)
+            }
+        })
     }
 
     private fun onDataFailure(message: String?, listener: SyncDataServiceListener) {

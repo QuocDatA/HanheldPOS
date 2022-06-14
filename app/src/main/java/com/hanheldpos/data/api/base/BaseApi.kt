@@ -32,6 +32,7 @@ abstract class BaseApi : BaseApiError() {
     protected val systemService: SystemService = retrofit.createService(SystemService::class.java);
     protected val welcomeService: WelcomeService =
         retrofit.createService(WelcomeService::class.java)
+    protected val receiptService: ReceiptService = retrofit.createService(ReceiptService::class.java)
     protected val resourceService: ResourceService =
         retrofit.createService(ResourceService::class.java)
     protected val reportService: ReportService = retrofit.createService(ReportService::class.java)

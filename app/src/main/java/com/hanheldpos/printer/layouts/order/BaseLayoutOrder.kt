@@ -6,6 +6,7 @@ import com.handheld.printer.printer_setup.printer_manager.BasePrinterManager
 import com.handheld.printer.wagu.Block
 import com.handheld.printer.wagu.WaguUtils
 import com.handheld.printer.wagu.WrapType
+import com.hanheldpos.data.api.ApiConst
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.order.OrderModel
 import com.hanheldpos.printer.layouts.BaseLayoutPrinter
@@ -47,12 +48,18 @@ abstract class BaseLayoutOrder(
     }
 
     protected fun printOrderInfo() {
+        val listPrintInfo = mutableListOf<MutableList<String>>()
         val orderCode = mutableListOf("Order #:", order.Order.Code.toString())
+        listPrintInfo.add(orderCode)
+        DataHelper.receiptCashierLocalStorage?.let {
+            listPrintInfo.add(mutableListOf("Location:",it.LocationBusinessName))
+        }
         val employee =
             mutableListOf(
                 "Employee:",
                 DataHelper.deviceCodeLocalStorage?.Employees?.find { it._id == order.Order.EmployeeGuid }?.FullName.toString()
             )
+        listPrintInfo.add(employee)
         val dateCreate = mutableListOf(
             "Create Date:", DateTimeUtils.dateToString(
                 DateTimeUtils.strToDate(
@@ -61,8 +68,9 @@ abstract class BaseLayoutOrder(
                 ), DateTimeUtils.Format.DD_MM_YYYY_HH_MM
             )
         )
+        listPrintInfo.add(dateCreate)
         val content = WaguUtils.columnListDataBlock(
-            charPerLineNormal, mutableListOf(orderCode, employee, dateCreate),
+            charPerLineNormal, listPrintInfo,
             mutableListOf(Block.DATA_MIDDLE_LEFT, Block.DATA_MIDDLE_RIGHT), wrapType = WrapType.SOFT_WRAP
         )
         printer.drawText(content)

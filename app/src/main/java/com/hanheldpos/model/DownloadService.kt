@@ -93,15 +93,18 @@ object DownloadService {
             val downloadRequest = PRDownloader.download(item.Url, INTERNAL_PATH, item.Name)
                 .build()
                 .setOnStartOrResumeListener {
+                    binding.isLoading = false
                     binding.downloadTitle.text = "Downloading"
                     binding.itemName.text = item.Name
                     currentByte = 0L
                 }
                 .setOnPauseListener {
+                    binding.isLoading = false
                     isDownloading = false
                     listener.onPause()
                 }
                 .setOnCancelListener {
+                    binding.isLoading = false
                     isDownloading = false
                     listener.onCancel()
                 }
@@ -159,7 +162,7 @@ object DownloadService {
                     })
                 while (PRDownloader.getStatus(downloadId) in mutableListOf(Status.QUEUED,Status.RUNNING)) { }
                 currentDownloadPos++
-                if (PRDownloader.getStatus(downloadId) in mutableListOf(Status.CANCELLED,Status.PAUSED)) return@launch
+                if (PRDownloader.getStatus(downloadId) in mutableListOf(Status.CANCELLED,Status.PAUSED)) {}
                 if (PRDownloader.getStatus(downloadId) in mutableListOf(Status.FAILED,Status.UNKNOWN)) Log.d("Download Resources","Failed")
                 if (isDownloading && currentDownloadPos >= listResources.size) {
                     isDownloading = false

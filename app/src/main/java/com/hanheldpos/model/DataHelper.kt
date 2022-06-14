@@ -13,6 +13,7 @@ import com.hanheldpos.data.api.pojo.order.menu.MenuResp
 import com.hanheldpos.data.api.pojo.order.settings.OrderSettingResp
 import com.hanheldpos.data.api.pojo.order.status.OrderStatusResp
 import com.hanheldpos.data.api.pojo.payment.PaymentMethodResp
+import com.hanheldpos.data.api.pojo.receipt.ReceiptCashier
 import com.hanheldpos.data.api.pojo.resource.ResourceResp
 import com.hanheldpos.data.api.pojo.system.AddressTypeResp
 import com.hanheldpos.model.cart.BaseProductInCart
@@ -29,11 +30,12 @@ object DataHelper {
 
     var currentDrawerId: String? = null;
 
-    fun isValidData() : Boolean {
+    fun isValidData(): Boolean {
+        receiptCashierLocalStorage ?: return false
         menuLocalStorage ?: return false
         orderSettingLocalStorage ?: return false
         orderStatusLocalStorage ?: return false
-        deviceCodeLocalStorage?: return false
+        deviceCodeLocalStorage ?: return false
         floorLocalStorage ?: return false
         feeLocalStorage ?: return false
         discountsLocalStorage ?: return false
@@ -250,6 +252,21 @@ object DataHelper {
             field = value
             AppPreferences.get()
                 .storeValue(PrefKey.Setting.RECENT_DEVICE_LIST, GSonUtils.toJson(value))
+        }
+    var receiptCashierLocalStorage: ReceiptCashier? = null
+        get() {
+            if (field == null) {
+                field = GSonUtils.toObject(
+                    AppPreferences.get().getString(
+                        PrefKey.Receipt.CASHIER
+                    )
+                )
+            }
+            return field
+        }
+        set(value) {
+            field = value
+            AppPreferences.get().storeValue(PrefKey.Receipt.CASHIER, GSonUtils.toJson(value))
         }
 
     fun findDiscountAutoList(applyTo: DiscApplyTo): List<DiscountResp> {

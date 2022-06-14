@@ -42,6 +42,10 @@ class MenuVM : BaseUiViewModel<MenuUV>() {
                 name = getNameMenu(NavBarOptionType.SUPPORT, context)
             ),
             ItemOptionNav(
+                type = NavBarOptionType.UPDATE_DATA,
+                name = getNameMenu(NavBarOptionType.UPDATE_DATA, context)
+            ),
+            ItemOptionNav(
                 type = NavBarOptionType.LOGOUT_DEVICE,
                 name = getNameMenu(NavBarOptionType.LOGOUT_DEVICE, context)
             ),
@@ -63,6 +67,7 @@ class MenuVM : BaseUiViewModel<MenuUV>() {
             NavBarOptionType.SUPPORT -> context.getString(R.string.support)
             NavBarOptionType.LOGOUT_DEVICE -> context.getString(R.string.logout_device)
             NavBarOptionType.RESET_SYSTEM -> context.getString(R.string.reset_system)
+            NavBarOptionType.UPDATE_DATA -> context.getString(R.string.update_data)
         }
     }
 }

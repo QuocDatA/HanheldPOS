@@ -117,6 +117,9 @@ class MenuFragment : BaseFragment<FragmentMenuBinding, MenuVM>(), MenuUV {
             NavBarOptionType.RESET_SYSTEM -> {
 
             }
+            NavBarOptionType.UPDATE_DATA -> {
+
+            }
         }
     }
 

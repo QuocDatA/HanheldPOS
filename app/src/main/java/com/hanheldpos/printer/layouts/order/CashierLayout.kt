@@ -435,15 +435,32 @@ class CashierLayout(
     }
 
     private fun printThankYou() {
-        printer.drawText(
-            WaguUtils.columnListDataBlock(
-                charPerLineLarge,
-                mutableListOf(mutableListOf("THANK YOU")),
-                mutableListOf(Block.DATA_CENTER)
-            ),
-            true,
-            BasePrinterManager.FontSize.Large
-        )
+        DataHelper.receiptCashierLocalStorage?.let {
+            printer.drawText(
+                WaguUtils.columnListDataBlock(
+                    charPerLineNormal,
+                    mutableListOf(mutableListOf("",it.AdditionalText_ReturnPolicy.trim(),"")),
+                    mutableListOf(Block.DATA_CENTER, Block.DATA_CENTER, Block.DATA_CENTER),
+                    columnSize = mutableListOf(1,charPerLineNormal-2,1),
+                    wrapType = WrapType.SOFT_WRAP
+
+                ),
+                true,
+                BasePrinterManager.FontSize.Small
+            )
+            feedLines(3)
+            printer.drawText(
+                WaguUtils.columnListDataBlock(
+                    charPerLineLarge,
+                    mutableListOf(mutableListOf(it.AdditionalText_CustomText)),
+                    mutableListOf(Block.DATA_CENTER)
+                ),
+                true,
+                BasePrinterManager.FontSize.Large
+            )
+        }
+
+
     }
 
 }
