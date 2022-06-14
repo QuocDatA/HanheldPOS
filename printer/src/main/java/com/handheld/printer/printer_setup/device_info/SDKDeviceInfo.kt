@@ -8,7 +8,7 @@ class SDKDeviceInfo(private val deviceType: DeviceType.SDK.Types) : DeviceInfo()
 
     override fun charsPerLineNormal(): Int = 32
 
-    override fun charsPerLineLarge(): Int = 16
+    override fun charsPerLineLarge(): Int = 18
 
     override fun leftColumnWidth(): Int = 4
 
