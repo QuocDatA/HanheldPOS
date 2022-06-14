@@ -1,5 +1,6 @@
 package com.hanheldpos.ui.screens.buy_x_get_y.adapter
 
+import android.view.View
 import androidx.recyclerview.widget.DiffUtil
 import com.google.android.material.tabs.TabLayout
 import com.hanheldpos.R
@@ -51,8 +52,8 @@ class BuyXGetYGroupAdapter(
                     positionFocus = index
                     if (itemBuyXGetYGroup.isApplyToEntireOrder == true) {
                         if (position == 1) {
-                            binding.linearProgress.linearProgressIndicator.progress =
-                                if (itemBuyXGetYGroup.isGetComplete == true) 100 else 0
+                            binding.linearProgressContainer.visibility = View.GONE
+                            binding.topSpacer.visibility = View.GONE
                         }
                     }
                     return@checkFocus
@@ -61,7 +62,7 @@ class BuyXGetYGroupAdapter(
                         binding.linearProgress.linearProgressIndicator.progress =
                             (itemBuyXGetYGroup.groupBuyXGetY.condition as CustomerBuys).getProgressValue(
                                 CurCartData.cartModel!!.total(),
-                                CurCartData.cartModel!!.getTotalQuantity()
+                                CurCartData.cartModel!!.getBuyXGetYQuantity(itemBuyXGetYGroup.groupBuyXGetY.parentDisc_Id)
                             )
                     }
                 }

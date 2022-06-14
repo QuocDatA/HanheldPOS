@@ -19,6 +19,7 @@ import com.hanheldpos.extension.setOnClickDebounce
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.OrderHelper
 import com.hanheldpos.model.buy_x_get_y.BuyXGetY
+import com.hanheldpos.model.buy_x_get_y.CustomerDiscApplyTo
 import com.hanheldpos.model.cart.BaseProductInCart
 import com.hanheldpos.model.cart.Combo
 import com.hanheldpos.model.cart.DiscountCart
@@ -45,7 +46,6 @@ import com.hanheldpos.ui.screens.home.order.OrderFragment
 import com.hanheldpos.ui.screens.payment.PaymentFragment
 import com.hanheldpos.ui.screens.payment.completed.PaymentCompletedFragment
 import com.hanheldpos.ui.screens.product.ProductDetailFragment
-import okhttp3.internal.notify
 
 
 class CartFragment(private val listener: CartCallBack) :
@@ -425,15 +425,7 @@ class CartFragment(private val listener: CartCallBack) :
     }
 
     fun onUpdateBuyXGetYInCart() {
-        cartDataVM.cartModelLD.value?.productsList?.forEach { baseProduct ->
-            if (baseProduct is BuyXGetY) {
-                baseProduct.groupList?.forEach { group ->
-                    if (group.condition is CustomerBuys) {
-                        (group.condition as CustomerBuys).notify()
-                    }
-                }
-            }
-        }
+        cartDataVM.updateItemBuyXGetYInCart()
     }
 
     interface CartCallBack {

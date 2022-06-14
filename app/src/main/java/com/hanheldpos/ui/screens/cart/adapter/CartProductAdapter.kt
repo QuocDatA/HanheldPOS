@@ -66,7 +66,13 @@ class CartProductAdapter(
                 notifyItemChanged(position)
             }
 
-            val cartBuyXGetYGroupAdapter = CartBuyXGetYGroupAdapter(isShowDetail = item.isShowDetail)
+            val cartBuyXGetYGroupAdapter = CartBuyXGetYGroupAdapter(
+                isShowDetail = item.isShowDetail,
+                listener = object : CartBuyXGetYGroupAdapter.CartBuyXGetYListener {
+                    override fun onItemClick() {
+                        listener.onItemClick(holder.bindingAdapterPosition, item)
+                    }
+                })
             cartBuyXGetYGroupAdapter.submitList(item.groupList)
             binding.productComboGroupRecyclerView.adapter = cartBuyXGetYGroupAdapter
         }

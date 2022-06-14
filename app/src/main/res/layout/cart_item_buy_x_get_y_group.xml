@@ -76,7 +76,7 @@
                 tools:text="Minimum purchase amount: 200.000" />
 
             <com.diadiem.pos_components.PTextView
-                android:id="@+id/itemComboRemove"
+                android:id="@+id/btnContinueBuyXGetY"
                 android:focusable="true"
                 android:clickable="true"
                 android:layout_width="wrap_content"
