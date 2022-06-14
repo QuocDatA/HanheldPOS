@@ -63,7 +63,8 @@ class BuyXGetYVM : BaseUiViewModel<BuyXGetYUV>() {
 
     private fun isBuyComplete(): Boolean {
         val totalOrder = CurCartData.cartModel!!.total()
-        val totalQuantityOrder = CurCartData.cartModel!!.getTotalQuantity()
+        val totalQuantityOrder =
+            CurCartData.cartModel!!.getBuyXGetYQuantity(buyXGetY.value?.disc?._id ?: "")
 
         if ((buyXGetY.value!!.disc?.Condition?.CustomerBuys?.isBuyCompleted(
                 totalOrder,
@@ -162,9 +163,12 @@ class BuyXGetYVM : BaseUiViewModel<BuyXGetYUV>() {
 
     fun onAddCart() {
         if (isBuyComplete()) {
-            // only add discount to cart if ApplyTo of CustomerBuys is Entire Order
-            if (buyXGetY.value!!.disc?.Condition?.CustomerGets?.ApplyTo == CustomerDiscApplyTo.ENTIRE_ORDER.value) {
-                uiCallback?.onDiscountBuyXGetYEntireOrder(buyXGetY.value!!.disc!!)
+            // check if discount for buy x get y entire order already exist in cart
+            if(CurCartData.cartModel?.discountServerList?.find { disc -> disc._id == buyXGetY.value?.disc?._id } == null) {
+                // only add discount to cart if ApplyTo of CustomerBuys is Entire Order
+                if (buyXGetY.value!!.disc?.Condition?.CustomerGets?.ApplyTo == CustomerDiscApplyTo.ENTIRE_ORDER.value) {
+                    uiCallback?.onDiscountBuyXGetYEntireOrder(buyXGetY.value!!.disc!!)
+                }
             }
         }
         uiCallback?.cartAdded(buyXGetY.value!!, actionType.value!!);

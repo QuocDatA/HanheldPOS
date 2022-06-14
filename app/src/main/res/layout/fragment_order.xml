@@ -225,7 +225,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginTop="@dimen/_2sdp"
-                        android:text="@{String.valueOf(cartDataVM.cartModelLD.totalQuantity)}"
+                        android:text="@{String.valueOf(cartDataVM.cartModelLD.getTotalQuantity())}"
                         app:useFontStyle="bold"
                         app:useTextColor="color0"
                         app:useTextHeader="h6"

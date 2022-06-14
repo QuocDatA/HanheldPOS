@@ -47,6 +47,18 @@ open class CartModel(
         it.quantity ?: 0
     }
 
+    // minus itself because buy x get y cant count itself as an item in order
+    fun getBuyXGetYQuantity(discId: String): Int {
+        var quantity = 0;
+        productsList.forEach { baseProductInCart ->
+            if (baseProductInCart is BuyXGetY && baseProductInCart.disc?._id != discId)
+                quantity++
+            else if (baseProductInCart is Combo || baseProductInCart is Regular)
+                quantity++
+        }
+        return quantity
+    }
+
     fun getTotalPrice() = total();
 
     fun updatePriceList(menuLocation_id: String) {
@@ -315,11 +327,15 @@ open class CartModel(
     private fun removeAllDiscountCoupon() {
         if (!anyProductList()) return
         this.discountServerList.removeAll { disc ->
-            disc.isCoupon() && DiscountTypeEnum.fromInt(disc.DiscountType) != DiscountTypeEnum.BUYX_GETY
+            disc.isCoupon() && DiscountTypeEnum.fromInt(disc.DiscountType) != DiscountTypeEnum.BUYX_GETY // remove discount except for buy x get y
         }
         this.productsList.forEach { baseProduct ->
-            if(baseProduct !is BuyXGetY)
+            if (baseProduct !is BuyXGetY)
                 baseProduct.removeAllDiscountCoupon()
+            else {
+                if (!baseProduct.isCompleted())
+                    this.discountServerList.removeAll { disc -> disc._id == baseProduct.disc?._id } // remove discount of buy x get y if group buy is not complete
+            }
         }
     }
 
@@ -331,7 +347,6 @@ open class CartModel(
     }
 
     fun removeDiscountById(discountGuid: String) {
-        this.discountUserList.removeIf { disc -> disc.DiscountGuid == discountGuid }
-        this.discountUserList
+        this.discountServerList.removeIf { disc -> disc._id == discountGuid }
     }
 }

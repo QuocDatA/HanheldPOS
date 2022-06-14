@@ -57,7 +57,7 @@ data class GroupBuyXGetY(
     private fun isConditionCompleted(): Boolean {
         if (isBuyEntire) {
             val totalOrder = CurCartData.cartModel?.total() ?: 0.0
-            val totalQuantityOrder = CurCartData.cartModel?.getTotalQuantity() ?: 0
+            val totalQuantityOrder = CurCartData.cartModel?.getBuyXGetYQuantity(parentDisc_Id) ?: 0
             return (condition as CustomerBuys).isBuyCompleted(totalOrder, totalQuantityOrder)
         }
 

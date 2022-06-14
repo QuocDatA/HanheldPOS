@@ -5,8 +5,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.hanheldpos.data.api.pojo.customer.CustomerResp
+import com.hanheldpos.data.api.pojo.discount.CustomerBuys
 import com.hanheldpos.data.api.pojo.discount.DiscountCoupon
 import com.hanheldpos.data.api.pojo.discount.DiscountResp
+import com.hanheldpos.data.api.pojo.fee.CustomerGets
 import com.hanheldpos.data.api.pojo.floor.FloorTable
 import com.hanheldpos.data.api.pojo.order.settings.DiningOption
 import com.hanheldpos.data.api.pojo.order.settings.Reason
@@ -15,6 +17,8 @@ import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.OrderHelper
 import com.hanheldpos.model.UserHelper
 import com.hanheldpos.model.buy_x_get_y.BuyXGetY
+import com.hanheldpos.model.buy_x_get_y.CustomerDiscApplyTo
+import com.hanheldpos.model.buy_x_get_y.GroupType
 import com.hanheldpos.model.cart.*
 import com.hanheldpos.model.discount.DiscApplyTo
 import com.hanheldpos.model.discount.DiscountTypeEnum
@@ -114,6 +118,48 @@ class CartDataVM : BaseViewModel() {
     fun updateItemInCart(index: Int, item: BaseProductInCart) {
         if (item.quantity!! > 0) {
             cartModelLD.value!!.productsList[index] = item
+        } else {
+            cartModelLD.value!!.productsList.removeAt(index)
+        }
+        notifyCartChange()
+    }
+
+    fun updateItemBuyXGetYInCart() {
+        cartModelLD.value?.productsList?.forEachIndexed { index, baseProduct ->
+            if (baseProduct is BuyXGetY) {
+                baseProduct.groupList?.forEach { group ->
+                    if (group.condition is CustomerBuys) {
+                        if (!(group.condition as CustomerBuys).isBuyCompleted(
+                                CurCartData.cartModel?.total() ?: 0.0,
+                                CurCartData.cartModel?.getBuyXGetYQuantity(
+                                    baseProduct.disc?._id ?: ""
+                                ) ?: 0
+                            )
+                        ) {
+                            updateBuyXGetYInCart(index, baseProduct)
+                        } else {
+                            (baseProduct.groupList ?: mutableListOf()).forEach { group ->
+                                if (group.type == GroupType.GET) {
+                                    if((group.condition as CustomerGets).ApplyTo == CustomerDiscApplyTo.ENTIRE_ORDER.value) {
+                                        if (cartModelLD.value!!.discountServerList.find { disc -> disc._id == baseProduct.disc?._id } == null)
+                                            addDiscountServer(
+                                                baseProduct.disc!!,
+                                                DiscApplyTo.ORDER
+                                            ) // add discount server to buy x get y entire order when update , if group buy is complete
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    fun updateBuyXGetYInCart(index: Int, item: BaseProductInCart) {
+        if (item.quantity!! > 0) {
+            cartModelLD.value!!.productsList.removeAt(index)
+            cartModelLD.value!!.productsList.add(item)
         } else {
             cartModelLD.value!!.productsList.removeAt(index)
         }

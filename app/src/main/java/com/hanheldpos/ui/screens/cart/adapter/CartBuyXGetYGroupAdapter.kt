@@ -37,7 +37,7 @@ class CartBuyXGetYGroupAdapter(
 
         // variable to check complete status for entire order
         val totalOrder = CurCartData.cartModel!!.total()
-        val totalQuantityOrder = CurCartData.cartModel!!.getTotalQuantity()
+        val totalQuantityOrder = CurCartData.cartModel!!.getBuyXGetYQuantity(item.parentDisc_Id)
 
         binding.isComplete = if (item.condition is CustomerBuys) {
             if (CustomerDiscApplyTo.fromInt((item.condition as CustomerBuys).ApplyTo) != CustomerDiscApplyTo.ENTIRE_ORDER)

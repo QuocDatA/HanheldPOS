@@ -95,14 +95,19 @@
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         tools:listitem="@layout/item_combo_picked" />
 
-                    <include
-                        android:id="@+id/linearProgress"
-                        android:visibility="@{item.isApplyToEntireOrder() ? View.VISIBLE : View.GONE}"
-                        layout="@layout/layout_linear_process"
-                        android:layout_marginTop="@dimen/_10sdp"
-                        android:layout_marginEnd="@dimen/_40sdp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                    <FrameLayout
+                        android:id="@+id/linearProgressContainer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                        <include
+                            android:id="@+id/linearProgress"
+                            android:visibility="@{(item.isApplyToEntireOrder()) ? View.VISIBLE : View.GONE}"
+                            layout="@layout/layout_linear_process"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:layout_marginEnd="@dimen/_40sdp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+                    </FrameLayout>
 
                     <com.diadiem.pos_components.PTextView
                         android:visibility="gone"
@@ -154,12 +159,16 @@
                     android:layout_height="@dimen/_1sdp" />
             </FrameLayout>
 
+            <androidx.legacy.widget.Space
+                android:id="@+id/topSpacer"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_10sdp" />
+
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_marginHorizontal="@dimen/_4sdp"
                 android:id="@+id/itemForSelectAdapter"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
                 visibleObject="@{item.isFocused}"
                 android:overScrollMode="never"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"

@@ -5,16 +5,23 @@ import android.os.SystemClock
 import android.util.Log
 import androidx.fragment.app.activityViewModels
 import com.hanheldpos.R
+import com.hanheldpos.data.api.pojo.discount.CustomerBuys
+import com.hanheldpos.data.api.pojo.fee.CustomerGets
 import com.hanheldpos.data.api.pojo.order.menu.Menu
 import com.hanheldpos.databinding.FragmentOrderBinding
+import com.hanheldpos.model.buy_x_get_y.BuyXGetY
+import com.hanheldpos.model.buy_x_get_y.CustomerDiscApplyTo
+import com.hanheldpos.model.buy_x_get_y.GroupType
 import com.hanheldpos.model.cart.*
 import com.hanheldpos.model.combo.ItemActionType
+import com.hanheldpos.model.discount.DiscApplyTo
 import com.hanheldpos.model.home.order.ProductModeViewType
 import com.hanheldpos.model.home.order.menu.ProductMenuItem
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
-import com.hanheldpos.ui.screens.cart.CartFragment
 import com.hanheldpos.ui.screens.cart.CartDataVM
+import com.hanheldpos.ui.screens.cart.CartFragment
+import com.hanheldpos.ui.screens.cart.CurCartData
 import com.hanheldpos.ui.screens.combo.ComboFragment
 import com.hanheldpos.ui.screens.home.HomeFragment
 import com.hanheldpos.ui.screens.home.ScreenViewModel
@@ -33,6 +40,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
     private val dataVM by activityViewModels<OrderDataVM>()
     private val screenViewModel by activityViewModels<ScreenViewModel>()
     private val cartDataVM by activityViewModels<CartDataVM>()
+
     //Adapter
     private lateinit var productAdapter: OrderProductAdapter;
     private lateinit var productAdapterHelper: OrderProductAdapterHelper;
@@ -69,7 +77,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
         productAdapter = OrderProductAdapter(
             listener = object : BaseItemClickListener<ProductMenuItem> {
                 override fun onItemClick(adapterPosition: Int, item: ProductMenuItem) {
-                    Log.d("OrderFragment",  "Product Selected");
+                    Log.d("OrderFragment", "Product Selected");
                     onProductMenuSelected(item)
                 }
             }
@@ -127,6 +135,10 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
                 val onCartAdded = object : OrderMenuListener {
                     override fun onCartAdded(item: BaseProductInCart, action: ItemActionType) {
                         showCartAnimation(item)
+                        CurCartData.cartModel?.productsList?.forEachIndexed { index,
+                                                                              baseProduct ->
+                            onBuyXGetYInCart(index, baseProduct)
+                        }
                     }
                 }
                 item.proOriginal?.let {
@@ -167,7 +179,6 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
                         )
                         navigator.goTo(combo)
                     }
-
 
                 }
             }
@@ -234,4 +245,32 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
         var selectedSort: Int = 0
     }
 
+    private fun onBuyXGetYInCart(index: Int, baseProduct: BaseProductInCart) {
+        if (baseProduct is BuyXGetY) {
+            baseProduct.groupList?.forEach { group ->
+                if (group.condition is CustomerBuys) {
+                    if (!(group.condition as CustomerBuys).isBuyCompleted(
+                            CurCartData.cartModel?.total() ?: 0.0,
+                            CurCartData.cartModel?.getTotalQuantity() ?: 0
+                        )
+                    ) {
+                        cartDataVM.updateBuyXGetYInCart(index, baseProduct)
+                    } else {
+                        (baseProduct.groupList ?: mutableListOf()).forEach { group ->
+                            if (group.type == GroupType.GET) {
+                                if ((group.condition as CustomerGets).ApplyTo == CustomerDiscApplyTo.ENTIRE_ORDER.value) {
+                                    if (cartDataVM.cartModelLD.value!!.discountServerList.find { disc -> disc._id == baseProduct.disc?._id } == null)
+                                        cartDataVM.addDiscountServer(
+                                            baseProduct.disc!!,
+                                            DiscApplyTo.ORDER
+                                        ) // add discount server to buy x get y entire order when update , if group buy is complete
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+        }
+    }
 }

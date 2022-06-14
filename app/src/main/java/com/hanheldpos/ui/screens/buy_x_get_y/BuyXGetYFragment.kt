@@ -136,7 +136,7 @@ class BuyXGetYFragment(
                                         viewModel.onRegularSelect(
                                             group,
                                             baseItem,
-                                            (item as Regular).clone(),
+                                            (item).clone(),
                                             action,
                                             if(group.condition is CustomerGets) discount else null,
                                         )
