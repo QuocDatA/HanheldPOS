@@ -14,6 +14,7 @@ object  PrefKey {
         const val UI = "UI"
         const val DEVICE_CODE = "DEVICE_CODE"
         const val RECENT_DEVICE_LIST = "RECENT_DEVICE_LIST"
+        const val FIREBASE = "SETTING_FIREBASE";
     }
 
     object Order {

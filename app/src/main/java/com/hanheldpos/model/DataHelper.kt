@@ -16,6 +16,7 @@ import com.hanheldpos.data.api.pojo.order.status.OrderStatusResp
 import com.hanheldpos.data.api.pojo.payment.PaymentMethodResp
 import com.hanheldpos.data.api.pojo.receipt.ReceiptCashier
 import com.hanheldpos.data.api.pojo.resource.ResourceResp
+import com.hanheldpos.data.api.pojo.setting.firebase.FirebaseSetting
 import com.hanheldpos.data.api.pojo.system.AddressTypeResp
 import com.hanheldpos.model.cart.BaseProductInCart
 import com.hanheldpos.model.cart.CartModel
@@ -28,10 +29,11 @@ import com.utils.helper.AppPreferences
 import java.util.*
 
 object DataHelper {
-
+    var isNeedToUpdateNewData : Boolean = false
     var currentDrawerId: String? = null;
 
     fun isValidData(): Boolean {
+        firebaseSettingLocalStorage ?: return  false
         dataVersionLocalStorage ?: return  false
         receiptCashierLocalStorage ?: return false
         menuLocalStorage ?: return false
@@ -52,6 +54,7 @@ object DataHelper {
         currentDrawerId = null
         numberIncreaseOrder = 0
         // Local
+        firebaseSettingLocalStorage = null
         dataVersionLocalStorage = null
         receiptCashierLocalStorage = null
         menuLocalStorage = null
@@ -287,6 +290,22 @@ object DataHelper {
         set(value) {
             field = value
             AppPreferences.get().storeValue(PrefKey.Data.VERSION, GSonUtils.toJson(value))
+        }
+
+    var firebaseSettingLocalStorage: FirebaseSetting? = null
+        get() {
+            if (field == null) {
+                field = GSonUtils.toObject(
+                    AppPreferences.get().getString(
+                        PrefKey.Setting.FIREBASE
+                    )
+                )
+            }
+            return field
+        }
+        set(value) {
+            field = value
+            AppPreferences.get().storeValue(PrefKey.Setting.FIREBASE, GSonUtils.toJson(value))
         }
 
     fun findDiscountAutoList(applyTo: DiscApplyTo): List<DiscountResp> {

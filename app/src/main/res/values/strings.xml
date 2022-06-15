@@ -290,4 +290,11 @@
     <string name="selection_required">selection required</string>
     <string name="continue_buy_x_get_y">Continue</string>
     <string name="update_data">Update Data</string>
+    <string name="new_string">New</string>
+    <string name="data_update_successful">Data Update Successful</string>
+    <string name="new_data_available">New Data Available!</string>
+    <string name="new_data_update_description">There are new data for your app. Please update now</string>
+    <string name="later">Later</string>
+    <string name="update">Update</string>
+    <string name="no_new_update_found">No new update found!</string>
 </resources>

@@ -15,6 +15,7 @@ import com.hanheldpos.data.api.pojo.order.status.OrderStatusResp
 import com.hanheldpos.data.api.pojo.payment.PaymentMethodResp
 import com.hanheldpos.data.api.pojo.receipt.ReceiptCashier
 import com.hanheldpos.data.api.pojo.resource.ResourceResp
+import com.hanheldpos.data.api.pojo.setting.firebase.FirebaseSetting
 import com.hanheldpos.data.api.pojo.system.AddressTypeResp
 import com.hanheldpos.data.repository.BaseResponse
 import com.hanheldpos.data.repository.base.BaseRepoCallback
@@ -27,6 +28,7 @@ import com.hanheldpos.data.repository.order.OrderRepo
 import com.hanheldpos.data.repository.payment.PaymentRepo
 import com.hanheldpos.data.repository.receipt.ReceiptRepo
 import com.hanheldpos.data.repository.resource.ResourceRepo
+import com.hanheldpos.data.repository.setting.SettingRepo
 import com.hanheldpos.data.repository.system.SystemRepo
 import com.hanheldpos.prefs.PrefKey
 import com.hanheldpos.ui.base.viewmodel.BaseViewModel
@@ -34,6 +36,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class SyncDataService : BaseViewModel() {
+
 
     private var menuRepo: MenuRepo = MenuRepo();
     private var orderRepo: OrderRepo = OrderRepo();
@@ -43,8 +46,9 @@ class SyncDataService : BaseViewModel() {
     private var paymentRepo: PaymentRepo = PaymentRepo();
     private var systemRepo: SystemRepo = SystemRepo();
     private var resourceRepo: ResourceRepo = ResourceRepo()
-    private var receiptRepo : ReceiptRepo = ReceiptRepo()
-    private var dataRepo : DataRepo = DataRepo()
+    private var receiptRepo: ReceiptRepo = ReceiptRepo()
+    private var dataRepo: DataRepo = DataRepo()
+    private var settingRepo: SettingRepo = SettingRepo()
 
     fun fetchAllData(context: Context, listener: SyncDataServiceListener) {
         val location = UserHelper.getLocationGuid()
@@ -234,42 +238,66 @@ class SyncDataService : BaseViewModel() {
             }
         )
 
-        receiptRepo.getReceiptCashiers(userGuid,location, callback = object : BaseRepoCallback<BaseResponse<List<ReceiptCashier>>> {
-            override fun apiResponse(data: BaseResponse<List<ReceiptCashier>>?) {
-                if (data == null || data.DidError) {
-                    onDataFailure(context.getString(R.string.failed_to_load_data), listener)
-                } else {
-                    DataHelper.receiptCashierLocalStorage = data.Model?.firstOrNull();
-                    startMappingData(context, listener);
+        receiptRepo.getReceiptCashiers(
+            userGuid,
+            location,
+            callback = object : BaseRepoCallback<BaseResponse<List<ReceiptCashier>>> {
+                override fun apiResponse(data: BaseResponse<List<ReceiptCashier>>?) {
+                    if (data == null || data.DidError) {
+                        onDataFailure(context.getString(R.string.failed_to_load_data), listener)
+                    } else {
+                        DataHelper.receiptCashierLocalStorage = data.Model?.firstOrNull();
+                        startMappingData(context, listener);
+                    }
                 }
-            }
 
-            override fun showMessage(message: String?) {
-                onDataFailure(message, listener)
-            }
-        })
-
-        dataRepo.getDataVersion(userGuid,location,deviceGuid ,callback = object : BaseRepoCallback<BaseResponse<DataVersion>> {
-            override fun apiResponse(data: BaseResponse<DataVersion>?) {
-                if (data == null || data.DidError) {
-                    onDataFailure(context.getString(R.string.failed_to_load_data), listener)
-                } else {
-                    DataHelper.dataVersionLocalStorage = data.Model;
-                    startMappingData(context, listener);
+                override fun showMessage(message: String?) {
+                    onDataFailure(message, listener)
                 }
-            }
+            })
 
-            override fun showMessage(message: String?) {
-                onDataFailure(message, listener)
-            }
-        })
+        dataRepo.getDataVersion(
+            userGuid,
+            location,
+            deviceGuid,
+            callback = object : BaseRepoCallback<BaseResponse<DataVersion>> {
+                override fun apiResponse(data: BaseResponse<DataVersion>?) {
+                    if (data == null || data.DidError) {
+                        onDataFailure(context.getString(R.string.failed_to_load_data), listener)
+                    } else {
+                        DataHelper.dataVersionLocalStorage = data.Model;
+                        startMappingData(context, listener);
+                    }
+                }
+
+                override fun showMessage(message: String?) {
+                    onDataFailure(message, listener)
+                }
+            })
+        settingRepo.getFirebaseSetting(
+            userGuid,
+            location,
+            deviceGuid,
+            callback = object : BaseRepoCallback<BaseResponse<FirebaseSetting>> {
+                override fun apiResponse(data: BaseResponse<FirebaseSetting>?) {
+                    if (data == null || data.DidError) {
+                        onDataFailure(context.getString(R.string.failed_to_load_data), listener)
+                    } else {
+                        DataHelper.firebaseSettingLocalStorage = data.Model;
+                        startMappingData(context, listener);
+                    }
+                }
+
+                override fun showMessage(message: String?) {
+                    onDataFailure(message, listener)
+                }
+            })
     }
 
     private fun onDataFailure(message: String?, listener: SyncDataServiceListener) {
         DataHelper.clearData()
         listener.onError(message)
     }
-
 
     private fun startMappingData(context: Context, listener: SyncDataServiceListener) {
         if (!DataHelper.isValidData()) return
@@ -301,8 +329,8 @@ class SyncDataService : BaseViewModel() {
 
 
                     override fun onFail(errorMessage: String?) {
-                        if(errorMessage.isNullOrEmpty())
-                        onDataFailure(context.getString(R.string.failed_to_load_data), listener)
+                        if (errorMessage.isNullOrEmpty())
+                            onDataFailure(context.getString(R.string.failed_to_load_data), listener)
                         else onDataFailure(errorMessage, listener)
                     }
 
@@ -316,6 +344,106 @@ class SyncDataService : BaseViewModel() {
         if (!isNeedToDownload) {
             listener.onLoadedResources()
         }
+    }
+
+    fun fetchMenuDiscountData(context: Context, listener: SyncDataServiceListener) {
+        val location = UserHelper.getLocationGuid()
+        val userGuid = UserHelper.getUserGuid()
+        val deviceGuid = UserHelper.getDeviceGuid()
+        var succeededCount = 0
+        fun startFetchMenuDiscount()  {
+            menuRepo.getOrderMenu(
+                userGuid = userGuid,
+                locationGuid = location,
+                callback = object : BaseRepoCallback<BaseResponse<MenuResp>> {
+                    override fun apiResponse(data: BaseResponse<MenuResp>?) {
+                        if (data == null || data.DidError) {
+                            onDataFailure(context.getString(R.string.failed_to_load_data), listener);
+                        } else {
+                            DataHelper.menuLocalStorage = data.Model;
+                            succeededCount++
+                            if (succeededCount >= 3) {
+                                listener.onLoadedResources();
+                            }
+                        }
+                    }
+
+                    override fun showMessage(message: String?) {
+                        onDataFailure(message, listener);
+                    }
+                });
+            discountRepo.getDiscountList(
+                userGuid = userGuid,
+                locationGuid = location,
+                callback = object : BaseRepoCallback<BaseResponse<List<DiscountResp>>> {
+                    override fun apiResponse(data: BaseResponse<List<DiscountResp>>?) {
+                        if (data == null || data.DidError) {
+                            onDataFailure(context.getString(R.string.failed_to_load_data), listener);
+                        } else {
+                            DataHelper.discountsLocalStorage = data.Model;
+                            succeededCount++
+                            if (succeededCount >= 3) {
+                                listener.onLoadedResources();
+                            }
+                        }
+                    }
+
+                    override fun showMessage(message: String?) {
+                        onDataFailure(message, listener);
+                    }
+                },
+            );
+
+            discountRepo.getDiscountDetailList(
+                userGuid = userGuid,
+                locationGuid = location,
+                callback = object : BaseRepoCallback<BaseResponse<List<CouponResp>>> {
+                    override fun apiResponse(data: BaseResponse<List<CouponResp>>?) {
+                        if (data == null || data.DidError) {
+                            onDataFailure(context.getString(R.string.failed_to_load_data), listener);
+                        } else {
+                            DataHelper.discountDetailsLocalStorage = data.Model;
+                            succeededCount++
+                            if (succeededCount >= 3) {
+                                listener.onLoadedResources();
+                            }
+                        }
+                    }
+
+                    override fun showMessage(message: String?) {
+                        onDataFailure(message, listener);
+                    }
+                },
+            );
+        }
+        dataRepo.getDataVersion(
+            userGuid,
+            location,
+            deviceGuid,
+            callback = object : BaseRepoCallback<BaseResponse<DataVersion>> {
+                override fun apiResponse(data: BaseResponse<DataVersion>?) {
+                    if (data == null || data.DidError) {
+                        onDataFailure(context.getString(R.string.failed_to_load_data), listener)
+                    } else {
+                        if(DataHelper.dataVersionLocalStorage?.menu != data.Model?.menu || DataHelper.dataVersionLocalStorage?.discount != data.Model?.discount){
+                            DataHelper.dataVersionLocalStorage = data.Model
+                            startFetchMenuDiscount()
+                        }
+                        else {
+                            listener.onLoadedResources();
+                            onDataFailure(context.getString(R.string.no_new_update_found), listener)
+                        }
+
+                    }
+                }
+
+                override fun showMessage(message: String?) {
+                    onDataFailure(message, listener)
+                }
+            })
+
+
+
     }
 
     interface SyncDataServiceListener {

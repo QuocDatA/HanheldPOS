@@ -11,6 +11,7 @@ import com.hanheldpos.extension.setOnClickDebounce
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.DatabaseHelper
 import com.hanheldpos.model.OrderHelper
+import com.hanheldpos.model.SyncDataService
 import com.hanheldpos.model.menu.LogoutType
 import com.hanheldpos.model.menu.NavBarOptionType
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
@@ -38,6 +39,8 @@ class MenuFragment : BaseFragment<FragmentMenuBinding, MenuVM>(), MenuUV {
 
     private lateinit var menuAdapter: OptionNavAdapter
 
+    // Fetch all data for storage local
+    private val syncDataService by lazy { SyncDataService() }
 
     override fun viewModelClass(): Class<MenuVM> {
         return MenuVM::class.java
@@ -118,7 +121,43 @@ class MenuFragment : BaseFragment<FragmentMenuBinding, MenuVM>(), MenuUV {
 
             }
             NavBarOptionType.UPDATE_DATA -> {
+                if (DataHelper.isNeedToUpdateNewData) {
+                    showAlert(
+                        getString(R.string.new_data_available),
+                        getString(R.string.new_data_update_description),
+                        negativeText = getString(
+                            R.string.later
+                        ),
+                        positiveText = getString(R.string.update),
+                        onClickListener = object : AppAlertDialog.AlertDialogOnClickListener {
+                            override fun onPositiveClick() {
+                                context?.let {
+                                    showLoading(true)
+                                    syncDataService.fetchMenuDiscountData(it,
+                                        object : SyncDataService.SyncDataServiceListener {
+                                            override fun onLoadedResources() {
+                                                showLoading(false)
+                                                DataHelper.isNeedToUpdateNewData = false
+                                                menuAdapter.submitList(viewModel.initMenuItemList(requireContext()))
+                                                menuAdapter.notifyDataSetChanged()
+                                                showMessage(getString(R.string.data_update_successful))
+                                            }
 
+                                            override fun onError(message: String?) {
+                                                showLoading(false)
+                                                showMessage(message)
+                                            }
+
+                                        })
+                                }
+                            }
+                        }
+                    )
+
+                }
+                else {
+                    showMessage(getString(R.string.no_new_update_found))
+                }
             }
         }
     }
@@ -128,7 +167,7 @@ class MenuFragment : BaseFragment<FragmentMenuBinding, MenuVM>(), MenuUV {
             val ordersCompletedFlow = DatabaseHelper.ordersCompleted.getAll()
             ordersCompletedFlow.take(1).collectLatest { ordersCompleted ->
                 val listOrder = ordersCompleted.filter { OrderHelper.isValidOrderPush(it) }
-                if (!listOrder.isNullOrEmpty()) {
+                if (listOrder.isNotEmpty()) {
                     launch(Dispatchers.Main) {
                         AppAlertDialog.get().show(
                             getString(R.string.notification),
