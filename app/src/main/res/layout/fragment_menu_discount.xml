@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.hanheldpos.ui.screens.menu.discount.MenuDiscountVM" />
+    </data>
+
+    <LinearLayout
+        android:orientation="vertical"
+        style="@style/RootLayout"
+        android:background="@color/color_2">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_42sdp"
+            android:background="@color/color_2">
+
+            <ImageView
+                style="@style/MaterialButton.Icon"
+                android:id="@+id/homeMenu"
+                android:layout_width="@dimen/_48sdp"
+                android:layout_height="match_parent"
+                android:scaleType="centerInside"
+                android:layout_gravity="center|start"
+                android:adjustViewBounds="true"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClickDebounce="@{v -> viewModel.onFragmentBackPress()}"
+                android:backgroundTint="@color/textPrimary"
+                android:src="@drawable/ic_toolbar_menu"
+                tools:ignore="ContentDescription" />
+
+            <com.diadiem.pos_components.PTextView
+                style="@style/CartTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/discount" />
+        </FrameLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_1sdp"
+            android:background="@color/color_10" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            >
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/menuDiscountContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/color_2"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:spanCount="1" />
+        </LinearLayout>
+
+    </LinearLayout>
+</layout>

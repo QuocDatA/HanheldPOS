@@ -62,7 +62,7 @@
         </LinearLayout>
 
         <LinearLayout
-            visibleObject="@{!isComplete}"
+            visibleObject="@{!isComplete || item.applyEntireOrder}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_14sdp">
@@ -76,6 +76,7 @@
                 tools:text="Minimum purchase amount: 200.000" />
 
             <com.diadiem.pos_components.PTextView
+                visibleObject="@{!isComplete}"
                 android:id="@+id/btnContinueBuyXGetY"
                 android:focusable="true"
                 android:clickable="true"

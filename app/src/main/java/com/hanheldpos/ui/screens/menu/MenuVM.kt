@@ -15,6 +15,10 @@ class MenuVM : BaseUiViewModel<MenuUV>() {
     fun initMenuItemList(context: Context): List<ItemOptionNav> {
         return mutableListOf(
             ItemOptionNav(
+                type = NavBarOptionType.DISCOUNT,
+                name = getNameMenu(NavBarOptionType.DISCOUNT, context)
+            ),
+            ItemOptionNav(
                 type = NavBarOptionType.ORDERS,
                 name = getNameMenu(NavBarOptionType.ORDERS, context)
             ),
@@ -70,6 +74,7 @@ class MenuVM : BaseUiViewModel<MenuUV>() {
             NavBarOptionType.LOGOUT_DEVICE -> context.getString(R.string.logout_device)
             NavBarOptionType.RESET_SYSTEM -> context.getString(R.string.reset_system)
             NavBarOptionType.UPDATE_DATA -> context.getString(R.string.update_data)
+            NavBarOptionType.DISCOUNT -> context.getString(R.string.discount)
         }
     }
 }

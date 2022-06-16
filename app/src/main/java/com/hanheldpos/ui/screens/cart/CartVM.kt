@@ -9,6 +9,7 @@ import com.hanheldpos.model.OrderHelper
 import com.hanheldpos.model.cart.CartConverter
 import com.hanheldpos.model.cart.CartModel
 import com.hanheldpos.model.cart.DiscountCart
+import com.hanheldpos.model.discount.DiscountTypeEnum
 import com.hanheldpos.model.home.table.TableStatusType
 import com.hanheldpos.model.order.OrderStatus
 import com.hanheldpos.model.payment.PaymentStatus
@@ -152,7 +153,10 @@ class CartVM : BaseUiViewModel<CartUV>() {
         }
 
         cart.discountServerList.forEach {
-            list.add(DiscountCart(it, it.DiscountName, it.total(cart.getSubTotal(), 0.0) ?: 0.0))
+            if(DiscountTypeEnum.fromInt(it.DiscountType) == DiscountTypeEnum.BUYX_GETY)
+                list.add(DiscountCart(it, it.DiscountName, it.total(cart.getSubTotal(), 0.0) ?: 0.0, isDiscBuyXGetYEntire = true))
+            else
+                list.add(DiscountCart(it, it.DiscountName, it.total(cart.getSubTotal(), 0.0) ?: 0.0))
         }
 
         cart.compReason?.let {
