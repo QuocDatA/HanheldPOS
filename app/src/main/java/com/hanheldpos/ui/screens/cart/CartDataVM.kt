@@ -16,9 +16,9 @@ import com.hanheldpos.extension.notifyValueChange
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.OrderHelper
 import com.hanheldpos.model.UserHelper
-import com.hanheldpos.model.buy_x_get_y.BuyXGetY
-import com.hanheldpos.model.buy_x_get_y.CustomerDiscApplyTo
-import com.hanheldpos.model.buy_x_get_y.GroupType
+import com.hanheldpos.model.product.buy_x_get_y.BuyXGetY
+import com.hanheldpos.model.product.buy_x_get_y.CustomerDiscApplyTo
+import com.hanheldpos.model.product.buy_x_get_y.GroupType
 import com.hanheldpos.model.cart.*
 import com.hanheldpos.model.discount.DiscApplyTo
 import com.hanheldpos.model.discount.DiscountTypeEnum

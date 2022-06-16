@@ -10,7 +10,7 @@ import com.hanheldpos.data.api.pojo.product.VariantsGroup
 import com.hanheldpos.databinding.FragmentRegularDetailBinding
 import com.hanheldpos.extension.notifyValueChange
 import com.hanheldpos.model.cart.*
-import com.hanheldpos.model.combo.ItemActionType
+import com.hanheldpos.model.product.combo.ItemActionType
 import com.hanheldpos.model.discount.DiscApplyTo
 import com.hanheldpos.model.discount.DiscountTypeFor
 import com.hanheldpos.model.discount.DiscountUser

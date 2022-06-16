@@ -17,13 +17,13 @@ import com.hanheldpos.extension.notifyValueChange
 import com.hanheldpos.extension.setOnClickDebounce
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.OrderHelper
-import com.hanheldpos.model.buy_x_get_y.BuyXGetY
+import com.hanheldpos.model.product.buy_x_get_y.BuyXGetY
 import com.hanheldpos.model.cart.BaseProductInCart
 import com.hanheldpos.model.cart.Combo
 import com.hanheldpos.model.cart.DiscountCart
 import com.hanheldpos.model.cart.Regular
 import com.hanheldpos.model.cart.fee.FeeTip
-import com.hanheldpos.model.combo.ItemActionType
+import com.hanheldpos.model.product.combo.ItemActionType
 import com.hanheldpos.model.discount.DiscApplyTo
 import com.hanheldpos.model.discount.DiscountUser
 import com.hanheldpos.model.payment.PaymentOrder

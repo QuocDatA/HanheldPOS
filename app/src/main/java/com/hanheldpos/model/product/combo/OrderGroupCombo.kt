@@ -1,4 +1,4 @@
-package com.hanheldpos.model.combo
+package com.hanheldpos.model.product.combo
 
 import com.hanheldpos.model.cart.GroupBundle
 import com.hanheldpos.model.cart.Regular

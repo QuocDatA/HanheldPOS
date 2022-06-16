@@ -1,4 +1,4 @@
-package com.hanheldpos.model.buy_x_get_y
+package com.hanheldpos.model.product.buy_x_get_y
 
 enum class MinimumType(val value: Int) {
     UNKNOWN( 0),

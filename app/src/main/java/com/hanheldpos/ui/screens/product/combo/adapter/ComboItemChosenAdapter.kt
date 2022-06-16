@@ -9,7 +9,7 @@ import com.hanheldpos.R
 import com.hanheldpos.databinding.ItemComboPickedBinding
 import com.hanheldpos.extension.setOnClickDebounce
 import com.hanheldpos.model.cart.Regular
-import com.hanheldpos.model.combo.ItemActionType
+import com.hanheldpos.model.product.combo.ItemActionType
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
 

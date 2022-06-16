@@ -10,8 +10,8 @@ import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.cart.Combo
 import com.hanheldpos.model.cart.GroupBundle
 import com.hanheldpos.model.cart.Regular
-import com.hanheldpos.model.combo.ItemActionType
-import com.hanheldpos.model.combo.ItemComboGroup
+import com.hanheldpos.model.product.combo.ItemActionType
+import com.hanheldpos.model.product.combo.ItemComboGroup
 import com.hanheldpos.model.discount.DiscountTypeFor
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
 

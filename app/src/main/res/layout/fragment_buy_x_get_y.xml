@@ -5,7 +5,7 @@
 
     <data>
 
-        <import type="com.hanheldpos.model.combo.ItemActionType"/>
+        <import type="com.hanheldpos.model.product.combo.ItemActionType"/>
 
         <variable
             name="discount"
@@ -13,7 +13,7 @@
 
         <variable
             name="item"
-            type="com.hanheldpos.model.buy_x_get_y.BuyXGetY" />
+            type="com.hanheldpos.model.product.buy_x_get_y.BuyXGetY" />
 
         <variable
             name="viewModel"

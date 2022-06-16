@@ -9,11 +9,11 @@ import com.hanheldpos.data.api.pojo.discount.CustomerBuys
 import com.hanheldpos.data.api.pojo.fee.CustomerGets
 import com.hanheldpos.data.api.pojo.order.menu.Menu
 import com.hanheldpos.databinding.FragmentOrderBinding
-import com.hanheldpos.model.buy_x_get_y.BuyXGetY
-import com.hanheldpos.model.buy_x_get_y.CustomerDiscApplyTo
-import com.hanheldpos.model.buy_x_get_y.GroupType
+import com.hanheldpos.model.product.buy_x_get_y.BuyXGetY
+import com.hanheldpos.model.product.buy_x_get_y.CustomerDiscApplyTo
+import com.hanheldpos.model.product.buy_x_get_y.GroupType
 import com.hanheldpos.model.cart.*
-import com.hanheldpos.model.combo.ItemActionType
+import com.hanheldpos.model.product.combo.ItemActionType
 import com.hanheldpos.model.discount.DiscApplyTo
 import com.hanheldpos.model.home.order.ProductModeViewType
 import com.hanheldpos.model.home.order.menu.ProductMenuItem

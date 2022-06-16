@@ -5,8 +5,8 @@ import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.product.Product
 import com.hanheldpos.databinding.ItemComboGroupBinding
 import com.hanheldpos.model.cart.Regular
-import com.hanheldpos.model.combo.ItemActionType
-import com.hanheldpos.model.combo.ItemComboGroup
+import com.hanheldpos.model.product.combo.ItemActionType
+import com.hanheldpos.model.product.combo.ItemComboGroup
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener

@@ -8,7 +8,7 @@ import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.data.api.pojo.order.settings.Reason
 import com.hanheldpos.databinding.FragmentDiscountBinding
 import com.hanheldpos.extension.setOnClickDebounce
-import com.hanheldpos.model.buy_x_get_y.BuyXGetY
+import com.hanheldpos.model.product.buy_x_get_y.BuyXGetY
 import com.hanheldpos.model.discount.DiscApplyTo
 import com.hanheldpos.model.discount.DiscountTypeFor
 import com.hanheldpos.model.discount.DiscountUser

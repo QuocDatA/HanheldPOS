@@ -7,7 +7,7 @@
 
         <variable
             name="item"
-            type="com.hanheldpos.model.combo.ItemComboGroup" />
+            type="com.hanheldpos.model.product.combo.ItemComboGroup" />
 
         <variable
             name="name"

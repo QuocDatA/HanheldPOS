@@ -14,8 +14,8 @@ import com.hanheldpos.extension.notifyValueChange
 import com.hanheldpos.model.UserHelper
 import com.hanheldpos.model.cart.Combo
 import com.hanheldpos.model.cart.Regular
-import com.hanheldpos.model.combo.ItemActionType
-import com.hanheldpos.model.combo.ItemComboGroup
+import com.hanheldpos.model.product.combo.ItemActionType
+import com.hanheldpos.model.product.combo.ItemComboGroup
 import com.hanheldpos.model.discount.DiscountTypeFor
 import com.hanheldpos.model.discount.DiscountUser
 import com.hanheldpos.model.cart.BaseProductInCart

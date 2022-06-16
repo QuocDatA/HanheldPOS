@@ -76,7 +76,7 @@
 
                 <androidx.legacy.widget.Space
                     android:layout_width="wrap_content"
-                    android:layout_height="@dimen/_15sdp" />
+                    android:layout_height="@dimen/_10sdp" />
 
                 <com.diadiem.pos_components.PTextView
                     android:layout_width="wrap_content"
@@ -85,7 +85,6 @@
                     android:layout_gravity="center_horizontal"
                     android:text="@{message}"
                     tools:text="Message"
-                    app:useFontStyle="bold"
                     app:useTextColor="color4"
                     app:useTextHeader="h3" />
 

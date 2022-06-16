@@ -5,9 +5,9 @@ import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.discount.CustomerBuys
 import com.hanheldpos.data.api.pojo.fee.CustomerGets
 import com.hanheldpos.databinding.CartItemBuyXGetYGroupBinding
-import com.hanheldpos.model.buy_x_get_y.BuyXGetY
-import com.hanheldpos.model.buy_x_get_y.CustomerDiscApplyTo
-import com.hanheldpos.model.buy_x_get_y.GroupBuyXGetY
+import com.hanheldpos.model.product.buy_x_get_y.BuyXGetY
+import com.hanheldpos.model.product.buy_x_get_y.CustomerDiscApplyTo
+import com.hanheldpos.model.product.buy_x_get_y.GroupBuyXGetY
 import com.hanheldpos.model.cart.BaseProductInCart
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder

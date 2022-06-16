@@ -7,7 +7,7 @@
 
         <variable
             name="item"
-            type="com.hanheldpos.model.buy_x_get_y.GroupBuyXGetY" />
+            type="com.hanheldpos.model.product.buy_x_get_y.GroupBuyXGetY" />
 
         <variable
             name="position"
