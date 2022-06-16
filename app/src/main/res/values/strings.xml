@@ -297,4 +297,5 @@
     <string name="later">Later</string>
     <string name="update">Update</string>
     <string name="no_new_update_found">No new update found!</string>
+    <string name="please_choose_table_first">Please choose table first</string>
 </resources>
