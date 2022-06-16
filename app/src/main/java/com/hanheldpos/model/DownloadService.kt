@@ -9,16 +9,14 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.Window
-import android.view.WindowManager
 import androidx.core.content.ContextCompat
 import com.downloader.OnDownloadListener
 import com.downloader.PRDownloader
 import com.downloader.PRDownloaderConfig
 import com.downloader.Status
 import com.downloader.request.DownloadRequest
-import com.hanheldpos.PosApp
+import com.hanheldpos.BuildConfig
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.resource.ResourceResp
 import com.hanheldpos.databinding.DialogProcessDownloadResourceBinding
@@ -34,17 +32,24 @@ import java.util.zip.ZipInputStream
 
 
 object DownloadService {
-    private final var INTERNAL_PATH =
-        Environment.getDataDirectory().path + "/data/com.hanheldpos/local/"
+    private var INTERNAL_PATH = ""
+
     private var downloadId: Int = 0
     private var listFileToExtract: MutableList<String> = mutableListOf()
-    lateinit var processDialog: Dialog
+    private lateinit var processDialog: Dialog
 
     @SuppressLint("StaticFieldLeak")
     lateinit var binding: DialogProcessDownloadResourceBinding
     private var currentByte: Long = 0L
 
     private fun initDownloadService(context: Context) {
+
+        val path = File(
+            "/${context.filesDir.absolutePath}/",
+        )
+
+        INTERNAL_PATH = path.path
+
         val config = PRDownloaderConfig.newBuilder()
             .setDatabaseEnabled(true)
             .setReadTimeout(30000)
@@ -94,7 +99,6 @@ object DownloadService {
             val downloadRequest = PRDownloader.download(item.Url, INTERNAL_PATH, item.Name)
                 .build()
                 .setOnStartOrResumeListener {
-                    binding.isLoading = false
                     binding.downloadTitle.text = "Downloading"
                     binding.itemName.text = item.Name
                     currentByte = 0L
@@ -173,7 +177,10 @@ object DownloadService {
                         Status.CANCELLED,
                         Status.PAUSED
                     )
-                ) return@launch
+                ) {
+                    processDialog.dismiss()
+                    return@launch
+                }
                 if (PRDownloader.getStatus(downloadId) in mutableListOf(
                         Status.FAILED,
                         Status.UNKNOWN
