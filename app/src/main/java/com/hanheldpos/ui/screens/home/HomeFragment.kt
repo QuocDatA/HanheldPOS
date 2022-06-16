@@ -60,6 +60,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
     }
 
     override fun initView() {
+
         binding.root.viewTreeObserver.addOnGlobalLayoutListener(object :
             ViewTreeObserver.OnGlobalLayoutListener {
             override fun onGlobalLayout() {
@@ -104,6 +105,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
     override fun initAction() {
         NetworkUtils.cancelNetworkCheck()
 
+        cartDataVM.cartModelLD.observe(this){
+            if(it == null) {
+                screenViewModel.showTablePage()
+            }
+        }
+
         cartDataVM.diningOptionLD.observe(this) { diningOption ->
             if (diningOption?.SubDiningOption.isNullOrEmpty()) {
                 diningOptionSpinnerAdapter.submitList(mutableListOf())
@@ -125,7 +132,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
                 HomePage.Order -> {
                     if (cartDataVM.cartModelLD.value == null) {
                         showAlert(
-                            message = "Cart has not been initialized!",
+                            message = getString(R.string.cart_has_not_been_initialized),
                             onClickListener = object : AppAlertDialog.AlertDialogOnClickListener {
                                 override fun onPositiveClick() {
                                     screenViewModel.showTablePage()

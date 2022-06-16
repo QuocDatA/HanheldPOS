@@ -125,6 +125,13 @@ abstract class BaseFragment<T : ViewDataBinding, VM : BaseViewModel> : Fragment(
     }
 
     /**
+     * Show error dialog
+     */
+    fun showSuccessfully(title: String?,message: String?) {
+        (activity as? BaseActivity<*, *>)?.showSuccessfully(title,message = message)
+    }
+
+    /**
      * Show alert dialog with full options
      * ------------------------------------------
      * | Title                                  |

@@ -151,6 +151,14 @@ abstract class BaseActivity<T : ViewDataBinding, VM : BaseViewModel> : AppCompat
     }
 
     /**
+     * Show error dialog
+     */
+    fun showSuccessfully(title: String?, message: String?) {
+        dismissDialog()
+        AppAlertDialog.get().showSuccessfully(title, message = message)
+    }
+
+    /**
      * Show alert dialog with full options
      * ------------------------------------------
      * | Title                                  |

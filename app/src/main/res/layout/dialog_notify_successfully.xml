@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="title"
+            type="String" />
+
+        <variable
+            name="message"
+            type="String" />
+
+        <variable
+            name="btnConfirmText"
+            type="String" />
+
+        <variable
+            name="btnConfirmOnClick"
+            type="android.view.View.OnClickListener" />
+
+        <variable
+            name="btnDeniedText"
+            type="String" />
+
+        <variable
+            name="btnDeniedOnClick"
+            type="android.view.View.OnClickListener" />
+
+        <variable
+            name="reverseStyle"
+            type="Boolean" />
+    </data>
+
+    <LinearLayout
+        style="@style/RootLayout"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/layoutMain"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_12sdp"
+            android:elevation="0dp"
+            app:cardCornerRadius="@dimen/_7sdp"
+            app:cardElevation="0dp">
+
+            <LinearLayout
+                style="@style/RootLayout.WrapHeight"
+                android:layout_width="match_parent"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="@dimen/_56sdp"
+                    android:layout_height="@dimen/_56sdp"
+                    android:layout_gravity="center"
+                    android:layout_marginHorizontal="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginBottom="@dimen/_13sdp"
+                    android:src="@drawable/ic_clockinout_ic_check_big"
+                    tools:ignore="ContentDescription" />
+
+                <com.diadiem.pos_components.PTextView
+                    visibleObject="@{title != null}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="@{title}"
+                    tools:text="Title"
+                    app:useFontStyle="bold"
+                    app:useTextColor="color4"
+                    app:useTextHeader="h3" />
+
+                <androidx.legacy.widget.Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_15sdp" />
+
+                <com.diadiem.pos_components.PTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="@{message}"
+                    tools:text="Message"
+                    app:useFontStyle="bold"
+                    app:useTextColor="color4"
+                    app:useTextHeader="h3" />
+
+                <androidx.legacy.widget.Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_15sdp" />
+
+                <include layout="@layout/divider_vertical" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:gravity="center">
+
+                    <com.diadiem.pos_components.PTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/_10sdp"
+                        android:text="@string/ok"
+                        android:textAlignment="center"
+                        android:textAllCaps="true"
+                        android:textColor="@color/primary"
+                        android:textStyle="bold"
+                        app:useFontStyle="bold"
+                        app:useTextColor="color0"
+                        app:useTextHeader="h5" />
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
+</layout>

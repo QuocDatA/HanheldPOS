@@ -2,6 +2,7 @@ package com.hanheldpos.ui.screens.menu
 
 import android.annotation.SuppressLint
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hanheldpos.BuildConfig
@@ -17,6 +18,7 @@ import com.hanheldpos.model.menu.NavBarOptionType
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.dialog.AppAlertDialog
 import com.hanheldpos.ui.base.fragment.BaseFragment
+import com.hanheldpos.ui.screens.home.ScreenViewModel
 import com.hanheldpos.ui.screens.menu.adapter.ItemOptionNav
 import com.hanheldpos.ui.screens.menu.adapter.OptionNavAdapter
 import com.hanheldpos.ui.screens.menu.customers.CustomerMenuFragment
@@ -41,6 +43,7 @@ class MenuFragment : BaseFragment<FragmentMenuBinding, MenuVM>(), MenuUV {
 
     // Fetch all data for storage local
     private val syncDataService by lazy { SyncDataService() }
+    private val screenViewModel by activityViewModels<ScreenViewModel>()
 
     override fun viewModelClass(): Class<MenuVM> {
         return MenuVM::class.java
@@ -138,9 +141,18 @@ class MenuFragment : BaseFragment<FragmentMenuBinding, MenuVM>(), MenuUV {
                                             override fun onLoadedResources() {
                                                 showLoading(false)
                                                 DataHelper.isNeedToUpdateNewData = false
-                                                menuAdapter.submitList(viewModel.initMenuItemList(requireContext()))
+                                                menuAdapter.submitList(
+                                                    viewModel.initMenuItemList(
+                                                        requireContext()
+                                                    )
+                                                )
                                                 menuAdapter.notifyDataSetChanged()
-                                                showMessage(getString(R.string.data_update_successful))
+                                                screenViewModel.showTablePage()
+                                                showSuccessfully(
+                                                    getString(R.string.done),
+                                                    getString(R.string.new_data_have_been_updated_successfully)
+                                                )
+                                                onFragmentBackPressed()
                                             }
 
                                             override fun onError(message: String?) {
@@ -154,8 +166,7 @@ class MenuFragment : BaseFragment<FragmentMenuBinding, MenuVM>(), MenuUV {
                         }
                     )
 
-                }
-                else {
+                } else {
                     showMessage(getString(R.string.no_new_update_found))
                 }
             }
