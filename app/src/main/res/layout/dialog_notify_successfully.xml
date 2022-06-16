@@ -86,7 +86,7 @@
                     android:text="@{message}"
                     tools:text="Message"
                     app:useTextColor="color4"
-                    app:useTextHeader="h3" />
+                    app:useTextHeader="h4" />
 
                 <androidx.legacy.widget.Space
                     android:layout_width="wrap_content"
