@@ -126,7 +126,8 @@ class BuyXGetYVM : BaseUiViewModel<BuyXGetYUV>() {
             }
             ItemActionType.Modify -> {
                 if ((item.quantity ?: 0) <= 0) {
-                    group.productList.removeIf { product -> (product as Combo).proOriginal?._id == (item).proOriginal?._id }
+                    val index = group.productList.indexOf(item)
+                    group.productList.removeAt(index)
                 } else {
                     group.productList.find { it.proOriginal?._id == item.proOriginal?._id }?.let { regular ->
                         val index = group.productList.indexOf(regular)
@@ -136,7 +137,7 @@ class BuyXGetYVM : BaseUiViewModel<BuyXGetYUV>() {
 
             }
             ItemActionType.Remove -> {
-                group.productList.removeIf { product -> (product as Combo).proOriginal?._id == (item).proOriginal?._id }
+                group.productList.remove(item)
             }
         }
     }

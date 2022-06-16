@@ -44,10 +44,10 @@ class BuyXGetYGroupAdapter(
         binding.name = itemBuyXGetYGroup.getGroupName()
         binding.item = itemBuyXGetYGroup
 
-//        if (position == 1) {
-//            binding.linearProgressContainer.visibility = View.GONE
-//            binding.topSpacer.visibility = View.GONE
-//        }
+        if (position == 1) {
+            binding.linearProgressContainer.visibility = View.GONE
+            binding.topSpacer.visibility = View.GONE
+        }
 
         // Check your turn
         var positionFocus: Int = -1
@@ -55,15 +55,15 @@ class BuyXGetYGroupAdapter(
             currentList.forEachIndexed { index, itemBuyXGetYGroup ->
                 if (!itemBuyXGetYGroup.isMaxItemSelected()) {
                     positionFocus = index
-                    if (itemBuyXGetYGroup.isApplyToEntireOrder == true) {
-                        if (position == 1) {
-                            binding.linearProgress.linearProgressIndicator.progress =
-                                if (itemBuyXGetYGroup.isGetComplete == true) 100 else 0
-                        }
-                    }
-//                    if(position == 1 && positionFocus == position) {
-//                        binding.topSpacer.visibility = View.VISIBLE
+//                    if (itemBuyXGetYGroup.isApplyToEntireOrder == true) {
+//                        if (position == 1) {
+//                            binding.linearProgress.linearProgressIndicator.progress =
+//                                if (itemBuyXGetYGroup.isGetComplete == true) 100 else 0
+//                        }
 //                    }
+                    if(position == 1 && positionFocus == position) {
+                        binding.topSpacer.visibility = View.VISIBLE
+                    }
                     return@checkFocus
                 }
                 else if (itemBuyXGetYGroup.isApplyToEntireOrder == true) {
