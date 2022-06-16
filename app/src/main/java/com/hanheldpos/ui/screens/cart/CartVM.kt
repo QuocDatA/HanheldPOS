@@ -87,7 +87,7 @@ class CartVM : BaseUiViewModel<CartUV>() {
                 cart.createDate =
                     DateTimeUtils.dateToString(
                         Date(),
-                        DateTimeUtils.Format.FULL_DATE_UTC_TIMEZONE
+                        DateTimeUtils.Format.YYYY_MM_DD_HH_MM_SS
                     )
             val orderStatus =
                 if (OrderHelper.isPaymentSuccess(cart)) OrderStatus.COMPLETED.value else OrderStatus.ORDER.value

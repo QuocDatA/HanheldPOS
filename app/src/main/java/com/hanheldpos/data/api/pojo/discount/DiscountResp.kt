@@ -138,7 +138,7 @@ data class DiscountResp(
                     ?.isNotEmpty() == true
 
             CtmEligibilityType.SPECIFIC_CUSTOMER ->
-                CustomerEligibilityList.firstOrNull { c -> c._id == customer?._Id } != null;
+                CustomerEligibilityList.firstOrNull { c -> c._id == customer?._id } != null;
 
             else ->
                 false;

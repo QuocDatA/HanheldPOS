@@ -3,12 +3,12 @@ package com.hanheldpos.ui.screens.menu.report.sale.customize
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentCustomizeReportBinding
 import com.hanheldpos.extension.setOnClickDebounce
-import com.hanheldpos.model.report.SaleReportCustomData
+import com.hanheldpos.model.report.SaleReportFilter
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.utils.DateTimeUtils
 
 class CustomizeReportFragment(
-    private val saleReportCustomData: SaleReportCustomData,
+    private val saleReportCustomData: SaleReportFilter,
     private val listener: CustomizeReportCallBack
 ) :
     BaseFragment<FragmentCustomizeReportBinding, CustomizeReportVM>(), CustomizeReportUV {
@@ -25,34 +25,7 @@ class CustomizeReportFragment(
     }
 
     override fun initView() {
-        viewModel.initCustomReportData(
-            saleReportCustomData
-        )
 
-        binding.btnDone.setOnClickDebounce {
-            setUpReturn()
-        }
-
-        binding.currentDrawerCheckbox.isChecked = saleReportCustomData.isCurrentDrawer
-        binding.btnIsAllDay.isChecked = saleReportCustomData.isAllDay
-
-        if (viewModel.startDay.isBefore(viewModel.endDay)) {
-            binding.calendarView.selectRange(
-                viewModel.startDay, viewModel.endDay
-            )
-        } else {
-            binding.calendarView.selectedDate = viewModel.startDay
-        }
-
-
-        binding.calendarView.setOnDateChangedListener { _, _, _ ->
-            binding.currentDrawerCheckbox.isChecked = false
-            binding.btnIsAllDay.isChecked = true
-        }
-        binding.calendarView.setOnRangeSelectedListener { _, _ ->
-            binding.currentDrawerCheckbox.isChecked = false
-            binding.btnIsAllDay.isChecked = true
-        }
     }
 
     private fun setUpReturn() {
@@ -66,7 +39,7 @@ class CustomizeReportFragment(
             }
         }
         listener.onComplete(
-            saleReportCustomData = SaleReportCustomData(
+            saleReportCustomData = SaleReportFilter(
                 startDay = (DateTimeUtils.strToDate(
                     "${viewModel.startDay.year}-${viewModel.startDay.month}-${viewModel.startDay.day}T00:00:00",
                     DateTimeUtils.Format.FULL_DATE_UTC_NOT_MILI
@@ -84,15 +57,38 @@ class CustomizeReportFragment(
         )
     }
 
-    private fun convertDateToLocalDate(dateStr: String) {
-
-    }
-
     override fun initData() {
+
+        viewModel.initCustomReportData(
+            saleReportCustomData
+        )
+
+        binding.currentDrawerCheckbox.isChecked = saleReportCustomData.isCurrentDrawer
+
+        binding.btnIsAllDay.isChecked = saleReportCustomData.isAllDay
+
+        if (viewModel.startDay.isBefore(viewModel.endDay)) {
+            binding.calendarView.selectRange(
+                viewModel.startDay, viewModel.endDay
+            )
+        } else {
+            binding.calendarView.selectedDate = viewModel.startDay
+        }
     }
 
     override fun initAction() {
+        binding.btnDone.setOnClickDebounce {
+            setUpReturn()
+        }
 
+        binding.calendarView.setOnDateChangedListener { _, _, _ ->
+            binding.currentDrawerCheckbox.isChecked = false
+            binding.btnIsAllDay.isChecked = true
+        }
+        binding.calendarView.setOnRangeSelectedListener { _, _ ->
+            binding.currentDrawerCheckbox.isChecked = false
+            binding.btnIsAllDay.isChecked = true
+        }
     }
 
     override fun getBack() {
@@ -101,7 +97,7 @@ class CustomizeReportFragment(
 
     interface CustomizeReportCallBack {
         fun onComplete(
-            saleReportCustomData: SaleReportCustomData
+            saleReportCustomData: SaleReportFilter
         )
 
     }

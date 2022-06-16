@@ -11,7 +11,7 @@
 
         <variable
             name="order"
-            type="com.hanheldpos.model.order.OrderReq" />
+            type="com.hanheldpos.model.order.OrderModel" />
     </data>
 
     <androidx.core.widget.NestedScrollView

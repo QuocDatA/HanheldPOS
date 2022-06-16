@@ -1,15 +1,15 @@
 package com.hanheldpos.ui.screens.payment.completed
 
-import com.handheld.printer.PrintConstants
-import com.handheld.printer.printer_manager.BasePrinterManager
+import com.hanheldpos.printer.printer_setup.PrintOptions
+import com.hanheldpos.PosApp
 import com.hanheldpos.R
 import com.hanheldpos.binding.setPriceView
 import com.hanheldpos.database.DatabaseMapper
 import com.hanheldpos.databinding.FragmentPaymentCompletedBinding
 import com.hanheldpos.extension.setOnClickDebounce
 import com.hanheldpos.model.DatabaseHelper
-import com.hanheldpos.model.printer.BillPrinterManager
-import com.hanheldpos.model.printer.layouts.BaseLayoutPrinter
+import com.hanheldpos.printer.BillPrinterManager
+import com.hanheldpos.printer.layouts.LayoutType
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -46,7 +46,10 @@ class PaymentCompletedFragment(
 
                     launch(Dispatchers.IO) {
                         try {
-                            BillPrinterManager.get(
+                            BillPrinterManager.init(
+                                PosApp.instance.applicationContext,
+//                                PrintOptions.bluetooth(deviceType = DeviceType.NO_SDK.Types.HANDHELD),
+                                PrintOptions.urovo(),
                                 onConnectionFailed = { ex ->
                                     launch(Dispatchers.Main) {
                                         showMessage(ex.message)
@@ -54,11 +57,7 @@ class PaymentCompletedFragment(
 
                                 }
                             ).apply {
-                                print(
-                                    fragmentContext,
-                                    DatabaseMapper.mappingOrderReqFromEntity(completedEntity),
-                                    layoutType = BaseLayoutPrinter.LayoutType.Kitchen
-                                )
+                                printBill(DatabaseMapper.mappingOrderReqFromEntity(completedEntity),LayoutType.Order.Cashier,false)
                             }
                         } catch (e: Exception) {
                             e.printStackTrace()

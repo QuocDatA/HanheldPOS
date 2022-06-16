@@ -37,8 +37,8 @@ class CompsReportVM : BaseUiViewModel<CompsReportUV>() {
             totalAmount += comp.Amount ?: 0.0
             ReportItemDetail(
                 comp.Name,
-                comp.Quantity.toString(),
-                PriceUtils.formatStringPrice(comp.Amount?: 0.0)
+                comp.Quantity?.toInt(),
+                comp.Amount?: 0.0
             )
         }?.toMutableList()?.let {
             rows.addAll(it)
@@ -46,8 +46,8 @@ class CompsReportVM : BaseUiViewModel<CompsReportUV>() {
         rows.add(
             ReportItemDetail(
             context.getString(R.string.total),
-            totalQty.toString(),
-            PriceUtils.formatStringPrice(totalAmount),
+            totalQty.toInt(),
+            totalAmount,
             isBold = true
         )
         )

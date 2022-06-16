@@ -36,16 +36,16 @@ class CashVoucherReportVM : BaseUiViewModel<CashVoucherReportUV>() {
             totalAmount += cashVoucher.PaymentAmount ?: 0.0
             ReportItemDetail(
                 cashVoucher.Title,
-                cashVoucher.Quantity?.toInt()?.toString() ?: "",
-                PriceUtils.formatStringPrice(cashVoucher.PaymentAmount?:0.0)
+                cashVoucher.Quantity?.toInt(),
+                cashVoucher.PaymentAmount?:0.0
             )
         }?.toMutableList()?.let {
             rows.addAll(it)
         }
         rows.add(ReportItemDetail(
             context.getString(R.string.total),
-            totalQty.toString(),
-            PriceUtils.formatStringPrice(totalAmount),
+            totalQty.toInt(),
+            totalAmount,
             isBold = true
         ))
         return rows

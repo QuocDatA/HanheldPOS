@@ -7,7 +7,7 @@
 
         <variable
             name="item"
-            type="com.hanheldpos.model.printer.GroupBundlePrinter" />
+            type="com.hanheldpos.printer.GroupBundlePrinter" />
 
     </data>
 

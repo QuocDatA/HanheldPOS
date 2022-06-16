@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="com.hanheldpos.utils.PriceUtils" />
+
+        <variable
+            name="isDiscount"
+            type="Boolean" />
+
+        <variable
+            name="isOtherFee"
+            type="Boolean" />
+
+        <variable
+            name="isNote"
+            type="Boolean" />
+
+        <variable
+            name="lineText"
+            type="String" />
+
+        <variable
+            name="priceDiscMinus"
+            type="Double" />
+
+        <variable
+            name="isHeaderH6"
+            type="Boolean" />
+
+        <variable
+            name="nameLineText"
+            type="String" />
+
+        <variable
+            name="clickListener"
+            type="android.view.View.OnClickListener" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginEnd="@dimen/_40sdp"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <com.diadiem.pos_components.PTextView
+            visibleObject="@{isNote==false || isNote==null,default=true}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="•  "
+            app:useTextColor="color5"
+            app:useTextHeader="h6" />
+
+        <ImageView
+            visibleObject="@{isNote,default=false}"
+            android:layout_width="@dimen/_12sdp"
+            android:layout_height="@dimen/_13sdp"
+            android:layout_gravity="center"
+            android:layout_marginEnd="@dimen/_2sdp"
+            android:src="@drawable/ic_note"
+            app:tint="@color/color_4" />
+
+        <com.diadiem.pos_components.PTextView
+            visibleObject="@{isHeaderH6==true,default=true}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{lineText}"
+            app:useTextColor="color5"
+            app:useTextHeader="h6"
+            tools:text="Variant 1" />
+
+        <com.diadiem.pos_components.PTextView
+            visibleObject="@{isHeaderH6==false,default=false}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{lineText}"
+            app:useTextColor="color5"
+            app:useTextHeader="h7"
+            tools:text="Variant 1" />
+
+        <com.diadiem.pos_components.PTextView
+            visibleObject="@{nameLineText}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{nameLineText}"
+            app:useTextColor="color5"
+            app:useTextHeader="h6"
+            tools:text="Variant 1" />
+
+        <LinearLayout
+            visibleObject="@{isDiscount || isOtherFee,default=false}"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <com.diadiem.pos_components.PTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@{`(` + PriceUtils.INSTANCE.formatStringPrice( isDiscount ? -priceDiscMinus : priceDiscMinus) + `)` }"
+                app:useTextColor="color5"
+                app:useTextHeader="h6" />
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+</layout>

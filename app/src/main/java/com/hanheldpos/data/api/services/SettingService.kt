@@ -1,12 +1,9 @@
 package com.hanheldpos.data.api.services
 
-import com.hanheldpos.data.api.pojo.setting.SettingDeviceResp
+import com.hanheldpos.data.api.pojo.setting.firebase.FirebaseSetting
 import com.hanheldpos.data.repository.BaseResponse
-import com.hanheldpos.model.setting.SettingDevicePut
 import retrofit2.Call
-import retrofit2.http.Body
-import retrofit2.http.Headers
-import retrofit2.http.PUT
+import retrofit2.http.*
 
 interface SettingService {
 
@@ -16,4 +13,11 @@ interface SettingService {
     fun putSettingsDevice(
         @Body body : String
     ): Call<BaseResponse<String>>
+
+    @GET("settings/firebase")
+    fun getFirebaseSetting(
+        @Query("userGuid") userGuid: String?,
+        @Query("locationGuid") location: String?,
+        @Query("deviceGuid") deviceGuid: String?,
+    ): Call<BaseResponse<FirebaseSetting>>
 }

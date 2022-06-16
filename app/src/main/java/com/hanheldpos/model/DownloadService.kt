@@ -39,6 +39,7 @@ object DownloadService {
     private var downloadId: Int = 0
     private var listFileToExtract: MutableList<String> = mutableListOf()
     lateinit var processDialog: Dialog
+
     @SuppressLint("StaticFieldLeak")
     lateinit var binding: DialogProcessDownloadResourceBinding
     private var currentByte: Long = 0L
@@ -93,15 +94,18 @@ object DownloadService {
             val downloadRequest = PRDownloader.download(item.Url, INTERNAL_PATH, item.Name)
                 .build()
                 .setOnStartOrResumeListener {
+                    binding.isLoading = false
                     binding.downloadTitle.text = "Downloading"
                     binding.itemName.text = item.Name
                     currentByte = 0L
                 }
                 .setOnPauseListener {
+                    binding.isLoading = false
                     isDownloading = false
                     listener.onPause()
                 }
                 .setOnCancelListener {
+                    binding.isLoading = false
                     isDownloading = false
                     listener.onCancel()
                 }
@@ -145,6 +149,7 @@ object DownloadService {
                         }
 
                         override fun onError(error: com.downloader.Error?) {
+                            Log.d("Download Resources", error.toString())
 //                            CoroutineScope(Dispatchers.Main).launch {
 //                                if(error?.connectionException?.message?.contains("Unacceptable certificate") == true){
 //                                    listener.onFail(PosApp.instance.getString(R.string.date_and_time_of_the_device_are_out_of_sync))
@@ -157,20 +162,34 @@ object DownloadService {
                         }
 
                     })
-                while (PRDownloader.getStatus(downloadId) in mutableListOf(Status.QUEUED,Status.RUNNING)) { }
+                while (PRDownloader.getStatus(downloadId) in mutableListOf(
+                        Status.QUEUED,
+                        Status.RUNNING
+                    )
+                ) {
+                }
                 currentDownloadPos++
-                if (PRDownloader.getStatus(downloadId) in mutableListOf(Status.CANCELLED,Status.PAUSED)) return@launch
-                if (PRDownloader.getStatus(downloadId) in mutableListOf(Status.FAILED,Status.UNKNOWN)) Log.d("Download Resources","Failed")
+                if (PRDownloader.getStatus(downloadId) in mutableListOf(
+                        Status.CANCELLED,
+                        Status.PAUSED
+                    )
+                ) return@launch
+                if (PRDownloader.getStatus(downloadId) in mutableListOf(
+                        Status.FAILED,
+                        Status.UNKNOWN
+                    )
+                ) Log.d("Download Resources", "Failed")
                 if (isDownloading && currentDownloadPos >= listResources.size) {
                     isDownloading = false
                     processDialog.dismiss()
-                    CoroutineScope(Dispatchers.Main).launch {
-                        listener.onComplete()
-                        CoroutineScope(Dispatchers.IO).launch {
-                            listFileToExtract.forEach { file ->
-                                unpackZip(INTERNAL_PATH, file)
-                            }
+                    CoroutineScope(Dispatchers.IO).launch {
+                        listFileToExtract.forEach { file ->
+                            unpackZip(INTERNAL_PATH, file)
                         }
+                        CoroutineScope(Dispatchers.Main).launch {
+                            listener.onComplete()
+                        }
+
                     }
                     return@launch
                 }
@@ -210,10 +229,10 @@ object DownloadService {
 
                 val fileName = filePath.split("/").last()
 
-                val fileDirs = filePath.substring(0,filePath.length - fileName.length)
+                val fileDirs = filePath.substring(0, filePath.length - fileName.length)
 
                 File(path + fileDirs).run {
-                    if(!exists())
+                    if (!exists())
                         mkdirs()
                 }
 

@@ -12,17 +12,17 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.0.3'
+        classpath 'com.android.tools.build:gradle:7.0.4'
 
         // Kotlin
         classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.21'
         classpath "org.jetbrains.kotlin:kotlin-android-extensions:$kotlin_version"
 
         //TODO enable it for Google Services
-//        // Google & Firebase
-//        classpath 'com.google.gms:google-services:4.3.8'
-//        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.7.1'
-//        classpath 'com.google.firebase:perf-plugin:1.4.0'
+        // Google & Firebase
+        classpath 'com.google.gms:google-services:4.3.10'
+        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.9.0'
+        classpath 'com.google.firebase:perf-plugin:1.4.1'
     }
 }
 

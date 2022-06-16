@@ -10,9 +10,8 @@ import com.hanheldpos.R
 
 abstract class BaseBindingListAdapter<T>(
     diffCallback: DiffUtil.ItemCallback<T>,
-    private val itemClickListener: BaseItemClickListener<T>? = null
+    private val itemClickListener: BaseItemClickListener<T>? = null,
 ) : ListAdapter<T, BaseBindingViewHolder<T>>(diffCallback) {
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseBindingViewHolder<T> {
         DataBindingUtil.inflate<ViewDataBinding>(
@@ -27,4 +26,5 @@ abstract class BaseBindingListAdapter<T>(
     override fun onBindViewHolder(holder: BaseBindingViewHolder<T>, position: Int) {
         holder.bindItem(getItem(position))
     }
+
 }

@@ -2,6 +2,7 @@ package com.hanheldpos.ui.screens.devicecode
 
 import android.content.Context
 import android.os.SystemClock
+import android.util.Log
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 import com.hanheldpos.R
@@ -43,6 +44,7 @@ class DeviceCodeVM : BaseUiViewModel<DeviceCodeUV>() {
         } else {
             getPinWithSymbol(pinTextLD.value.toString())
         }
+        Log.d("Uuid",StringUtils.getAndroidDeviceId(context = view.context));
         repo.getDataByAppCode(result,StringUtils.getAndroidDeviceId(context = view.context) ,object : BaseRepoCallback<BaseResponse<List<DeviceCodeResp>>> {
             override fun apiResponse(data: BaseResponse<List<DeviceCodeResp>>?) {
                 if (data == null || data.DidError) {

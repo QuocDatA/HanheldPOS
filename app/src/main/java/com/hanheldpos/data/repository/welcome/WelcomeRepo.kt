@@ -1,6 +1,5 @@
 package com.hanheldpos.data.repository.welcome
 
-import com.hanheldpos.data.api.pojo.setting.SettingDeviceResp
 import com.hanheldpos.data.api.pojo.welcome.WelcomeRespModel
 import com.hanheldpos.data.repository.BaseResponse
 import com.hanheldpos.data.repository.base.BaseRepo

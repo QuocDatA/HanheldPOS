@@ -90,17 +90,16 @@ class AddCustomerFragment(
                 viewModel.searchCustomer(keyword, pageNo,keyRequest)
             }
 
-            override fun onLoadingNextPage(customers: List<CustomerResp?>) {
+            override fun onLoadingNextPage(customers: List<CustomerResp>) {
                 adapterCustomer.apply {
                     submitList(customers)
-                    notifyItemRangeInserted(customers.size - 1, 1)
                     if (customers.isNotEmpty())
                         binding.customerContainer.smoothScrollToPosition(customers.size - 1)
                 }
             }
 
             @SuppressLint("NotifyDataSetChanged")
-            override fun onLoadedNextPage(startIndex: Int, customers: List<CustomerResp?>) {
+            override fun onLoadedNextPage(startIndex: Int, customers: List<CustomerResp>) {
                 adapterCustomer.apply {
                     submitList(customers)
                     notifyDataSetChanged()

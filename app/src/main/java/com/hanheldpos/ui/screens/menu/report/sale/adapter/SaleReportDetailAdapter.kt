@@ -7,6 +7,7 @@ import com.hanheldpos.databinding.ItemSaleReportDetailBinding
 import com.hanheldpos.model.menu.report.ReportItemDetail
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
+import com.hanheldpos.utils.PriceUtils
 
 class SaleReportDetailAdapter : BaseBindingListAdapter<ReportItemDetail>(DiffCallBack()) {
     override fun getItemViewType(position: Int): Int {
@@ -16,9 +17,9 @@ class SaleReportDetailAdapter : BaseBindingListAdapter<ReportItemDetail>(DiffCal
     override fun onBindViewHolder(holder: BaseBindingViewHolder<ReportItemDetail>, position: Int) {
         val item = getItem(position)
         val binding = holder.binding as ItemSaleReportDetailBinding
-        binding.amountLine.text = item.amount
+        binding.amountLine.text = PriceUtils.formatStringPrice(item.amount)
         binding.nameLine.text = item.name
-        binding.quantityLine.text = item.qty
+        binding.quantityLine.text = item.qty?.toString() ?: ""
         if (item.isBold == true) {
             binding.quantityLine.setTypeface(null,Typeface.BOLD)
             binding.amountLine.setTypeface(null,Typeface.BOLD)

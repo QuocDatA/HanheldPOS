@@ -16,4 +16,12 @@ data class DeviceCodeResp(
     val Users: Users,
     val ViewItemMode: List<ViewItemMode>,
     val domain_images: String
-) : Parcelable
+) : Parcelable {
+    fun getEmployeeByPasscode(passcode : String?) : Employee? {
+         return Employees.find { it.PassCode == passcode }
+    }
+    fun getEmployeeById(idEmployee: String?) : Employee? {
+        idEmployee?: return null
+        return  Employees.find { it._id == idEmployee }
+    }
+}

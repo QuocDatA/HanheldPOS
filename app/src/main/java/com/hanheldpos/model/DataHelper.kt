@@ -3,6 +3,7 @@ package com.hanheldpos.model
 
 import com.hanheldpos.data.api.ApiConst
 import com.hanheldpos.data.api.pojo.customer.CustomerResp
+import com.hanheldpos.data.api.pojo.data.DataVersion
 import com.hanheldpos.data.api.pojo.device.Device
 import com.hanheldpos.data.api.pojo.device.DeviceCodeResp
 import com.hanheldpos.data.api.pojo.discount.CouponResp
@@ -13,7 +14,9 @@ import com.hanheldpos.data.api.pojo.order.menu.MenuResp
 import com.hanheldpos.data.api.pojo.order.settings.OrderSettingResp
 import com.hanheldpos.data.api.pojo.order.status.OrderStatusResp
 import com.hanheldpos.data.api.pojo.payment.PaymentMethodResp
+import com.hanheldpos.data.api.pojo.receipt.ReceiptCashier
 import com.hanheldpos.data.api.pojo.resource.ResourceResp
+import com.hanheldpos.data.api.pojo.setting.firebase.FirebaseSetting
 import com.hanheldpos.data.api.pojo.system.AddressTypeResp
 import com.hanheldpos.model.cart.BaseProductInCart
 import com.hanheldpos.model.cart.CartModel
@@ -26,14 +29,17 @@ import com.utils.helper.AppPreferences
 import java.util.*
 
 object DataHelper {
-
+    var isNeedToUpdateNewData : Boolean = false
     var currentDrawerId: String? = null;
 
-    fun isValidData() : Boolean {
+    fun isValidData(): Boolean {
+        firebaseSettingLocalStorage ?: return  false
+        dataVersionLocalStorage ?: return  false
+        receiptCashierLocalStorage ?: return false
         menuLocalStorage ?: return false
         orderSettingLocalStorage ?: return false
         orderStatusLocalStorage ?: return false
-        deviceCodeLocalStorage?: return false
+        deviceCodeLocalStorage ?: return false
         floorLocalStorage ?: return false
         feeLocalStorage ?: return false
         discountsLocalStorage ?: return false
@@ -48,6 +54,9 @@ object DataHelper {
         currentDrawerId = null
         numberIncreaseOrder = 0
         // Local
+        firebaseSettingLocalStorage = null
+        dataVersionLocalStorage = null
+        receiptCashierLocalStorage = null
         menuLocalStorage = null
         orderSettingLocalStorage = null
         orderStatusLocalStorage = null
@@ -250,6 +259,53 @@ object DataHelper {
             field = value
             AppPreferences.get()
                 .storeValue(PrefKey.Setting.RECENT_DEVICE_LIST, GSonUtils.toJson(value))
+        }
+    var receiptCashierLocalStorage: ReceiptCashier? = null
+        get() {
+            if (field == null) {
+                field = GSonUtils.toObject(
+                    AppPreferences.get().getString(
+                        PrefKey.Receipt.CASHIER
+                    )
+                )
+            }
+            return field
+        }
+        set(value) {
+            field = value
+            AppPreferences.get().storeValue(PrefKey.Receipt.CASHIER, GSonUtils.toJson(value))
+        }
+
+    var dataVersionLocalStorage: DataVersion? = null
+        get() {
+            if (field == null) {
+                field = GSonUtils.toObject(
+                    AppPreferences.get().getString(
+                        PrefKey.Data.VERSION
+                    )
+                )
+            }
+            return field
+        }
+        set(value) {
+            field = value
+            AppPreferences.get().storeValue(PrefKey.Data.VERSION, GSonUtils.toJson(value))
+        }
+
+    var firebaseSettingLocalStorage: FirebaseSetting? = null
+        get() {
+            if (field == null) {
+                field = GSonUtils.toObject(
+                    AppPreferences.get().getString(
+                        PrefKey.Setting.FIREBASE
+                    )
+                )
+            }
+            return field
+        }
+        set(value) {
+            field = value
+            AppPreferences.get().storeValue(PrefKey.Setting.FIREBASE, GSonUtils.toJson(value))
         }
 
     fun findDiscountAutoList(applyTo: DiscApplyTo): List<DiscountResp> {

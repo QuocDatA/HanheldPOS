@@ -1,5 +1,7 @@
 package com.hanheldpos.prefs
 
+import android.os.Build
+
 object  PrefKey {
     const val TOKEN_EXPIRED_IN = "TOKEN_EXPIRED_IN"
     const val BEARER_TOKEN = "BEARER_TOKEN"
@@ -12,6 +14,7 @@ object  PrefKey {
         const val UI = "UI"
         const val DEVICE_CODE = "DEVICE_CODE"
         const val RECENT_DEVICE_LIST = "RECENT_DEVICE_LIST"
+        const val FIREBASE = "SETTING_FIREBASE";
     }
 
     object Order {
@@ -46,5 +49,12 @@ object  PrefKey {
 
     object Resource {
         const val RESOURCE_RESP = "RESOURCE_RESP"
+    }
+
+    object Receipt {
+        const val CASHIER = "RECEIPT_CASHIER"
+    }
+    object Data {
+        const val VERSION = "DATA_VERSION"
     }
 }

@@ -1,10 +1,9 @@
 package com.hanheldpos.data.repository.setting
 
-import com.hanheldpos.data.api.pojo.setting.SettingDeviceResp
+import com.hanheldpos.data.api.pojo.setting.firebase.FirebaseSetting
 import com.hanheldpos.data.repository.BaseResponse
 import com.hanheldpos.data.repository.base.BaseRepo
 import com.hanheldpos.data.repository.base.BaseRepoCallback
-import com.hanheldpos.model.setting.SettingDevicePut
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -31,6 +30,27 @@ class SettingRepo : BaseRepo() {
                 callback.showMessage(t.message);
             }
 
+        })
+    }
+
+    fun getFirebaseSetting(  userGuid: String?,
+                         localeGuid : String?,deviceGuid : String?, callback: BaseRepoCallback<BaseResponse<FirebaseSetting>>) {
+        callback.apiRequesting(true)
+        settingService.getFirebaseSetting(userGuid,localeGuid,deviceGuid).enqueue(object :
+            Callback<BaseResponse<FirebaseSetting>> {
+            override fun onResponse(
+                call: Call<BaseResponse<FirebaseSetting>>,
+                response: Response<BaseResponse<FirebaseSetting>>
+            ) {
+                callback.apiRequesting(false);
+                callback.apiResponse(getBodyResponse(response));
+            }
+
+            override fun onFailure(call: Call<BaseResponse<FirebaseSetting>>, t: Throwable) {
+                callback.apiRequesting(false);
+                t.printStackTrace();
+                callback.showMessage(t.message);
+            }
         })
     }
 }

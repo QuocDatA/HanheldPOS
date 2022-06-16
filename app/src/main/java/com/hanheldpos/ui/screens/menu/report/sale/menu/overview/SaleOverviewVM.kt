@@ -38,76 +38,68 @@ class SaleOverviewVM : BaseUiViewModel<SaleOverviewUV>() {
             ),
         )
     }
-    fun getReportItemsDetail(salesSummary: SalesSummary?) : List<ReportItemDetail> {
-        salesSummary?: return emptyList()
+
+    fun getReportItemsDetail(salesSummary: SalesSummary?): List<ReportItemDetail> {
+        salesSummary ?: return emptyList()
         return mutableListOf(
             ReportItemDetail(
                 name = "Order",
-                qty = salesSummary.QuantityBillCount.toInt().toString(),
-                amount = PriceUtils.formatStringPrice(salesSummary.OrderAmount)
+                qty = salesSummary.QuantityBillCount.toInt(),
+                amount = salesSummary.OrderAmount
             ),
             ReportItemDetail(
                 name = "Cover",
-                qty = salesSummary.Cover.toInt().toString(),
-                amount = "0"
+                qty = salesSummary.Cover.toInt(),
+                amount = 0.0
             ),
             ReportItemDetail(
                 name = "Service Charge",
-                qty = "",
-                amount = PriceUtils.formatStringPrice(salesSummary.ServiceCharge)
+                amount = salesSummary.ServiceCharge
             ),
             ReportItemDetail(
                 name = "Discount & Comp",
-                qty = "",
-                amount = PriceUtils.formatStringPrice(salesSummary.OrderDiscountComp)
+                amount = salesSummary.OrderDiscountComp
             ),
             ReportItemDetail(
                 name = "Refund",
-                qty = salesSummary.QuantityRefund.toInt().toString(),
-                amount = PriceUtils.formatStringPrice(salesSummary.OrderRefund)
+                qty = salesSummary.QuantityRefund.toInt(),
+                amount = salesSummary.OrderRefund
             ),
             ReportItemDetail(
                 name = "Net Sales",
-                qty = "",
-                amount = PriceUtils.formatStringPrice(salesSummary.NetSales),
+                amount = salesSummary.NetSales,
                 isBold = true
             ),
             ReportItemDetail(
                 name = "Taxes",
-                qty = "",
-                amount = PriceUtils.formatStringPrice(salesSummary.TaxFee),
+                amount = salesSummary.TaxFee,
             ),
             ReportItemDetail(
                 name = "Service Fee",
-                qty = "",
-                amount = PriceUtils.formatStringPrice(salesSummary.ServiceFee),
+                amount = salesSummary.ServiceFee,
             ),
             ReportItemDetail(
                 name = "Surcharge",
-                qty = "",
-                amount = PriceUtils.formatStringPrice(salesSummary.SurchargeFee),
+                amount = salesSummary.SurchargeFee,
             ),
             ReportItemDetail(
                 name = "Total Sales",
-                qty = "",
-                amount = PriceUtils.formatStringPrice(salesSummary.TotalSales),
+                amount = salesSummary.TotalSales,
                 isBold = true
             ),
             ReportItemDetail(
                 name = "Bill Count",
-                qty = salesSummary.QuantityBillCount.toInt().toString(),
-                amount = PriceUtils.formatStringPrice(salesSummary.BillCount),
+                qty = salesSummary.QuantityBillCount.toInt(),
+                amount = salesSummary.BillCount,
                 isBold = true
             ),
             ReportItemDetail(
                 name = "Bill Average (Gross)",
-                qty = "",
-                amount = PriceUtils.formatStringPrice(salesSummary.BillAverageGrossSale),
+                amount = salesSummary.BillAverageGrossSale,
             ),
             ReportItemDetail(
                 name = "Bill Average (Net)",
-                qty = "",
-                amount = PriceUtils.formatStringPrice(salesSummary.BillAverageNetSale),
+                amount = salesSummary.BillAverageNetSale,
             ),
         )
     }

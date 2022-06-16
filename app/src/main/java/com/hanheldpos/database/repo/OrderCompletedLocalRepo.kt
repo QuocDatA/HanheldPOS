@@ -17,7 +17,7 @@ class OrderCompletedLocalRepo(private val orderCompletedDao: OrderCompletedDao) 
     fun update(orderCompletedEntity: OrderCompletedEntity) =
         orderCompletedDao.update(orderCompletedEntity.apply {
             modifierAt =
-                DateTimeUtils.dateToString(Date(), DateTimeUtils.Format.FULL_DATE_UTC_TIMEZONE)
+                DateTimeUtils.dateToString(Date(), DateTimeUtils.Format.YYYY_MM_DD_HH_MM_SS)
         });
 
     fun delete(id: String) = orderCompletedDao.delete(id)

@@ -17,18 +17,23 @@ object ExtraConverter {
     fun modifierOrderStr(list: List<OrderModifier>?, separator: String? = null): String? {
         return if (list?.isEmpty() == true) null;
         else list?.joinToString(separator = separator ?: Const.SymBol.CommaSeparator) { item ->
-            (if (item.ModifierQuantity?:0 > 1) "(${item.ModifierQuantity}) " else "") + item.Name
+            (if ((item.ModifierQuantity ?: 0) > 1) "(${item.ModifierQuantity}) " else "") + item.Name
         }
     }
 
     fun modifierOrderStr(list: List<OrderModifier>?): String? {
         return if (list?.isEmpty() == true) null;
         else list?.joinToString(separator = Const.SymBol.CommaSeparator) { item ->
-            (if (item.ModifierQuantity?:0 > 1) "(${item.ModifierQuantity}) " else "") + item.Name
+            (if ((item.ModifierQuantity ?: 0) > 1) "(${item.ModifierQuantity}) " else "") + item.Name
         }
     }
 
-
+    fun variantStr(list: List<VariantCart>?): String? {
+        list ?: return null;
+        return list.joinToString(
+            separator = Const.SymBol.CommaSeparator
+        ) { item -> "(${item.Value})" }
+    }
 
     fun variantStr(list: List<VariantCart>?, separator: String? = null): String? {
         list ?: return null;
@@ -37,11 +42,18 @@ object ExtraConverter {
         ) { item -> "(${item.Value})" }
     }
 
-    fun variantStr(list: List<VariantCart>?): String? {
+    fun variantOrderStr(list: List<VariantCart>?, separator: String? = null): String? {
         list ?: return null;
         return list.joinToString(
-            separator = Const.SymBol.CommaSeparator
-        ) { item -> "(${item.Value})" }
+            separator = separator?: Const.SymBol.SplashSeparator
+        ) { item -> item.Value }
+    }
+
+    fun variantOrderStr(list: List<VariantCart>?): String? {
+        list ?: return null;
+        return list.joinToString(
+            separator = Const.SymBol.SplashSeparator
+        ) { item -> item.Value }
     }
 
 }

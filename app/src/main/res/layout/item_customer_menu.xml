@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.text.TextUtils" />
+
+        <variable
+            name="item"
+            type="com.hanheldpos.data.api.pojo.customer.CustomerResp" />
+
+    </data>
+
+    <LinearLayout
+        android:background="@color/color_2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground"
+        android:orientation="horizontal"
+        android:paddingHorizontal="@dimen/_12sdp"
+        android:paddingVertical="@dimen/_11sdp">
+
+        <FrameLayout
+            android:layout_gravity="center_vertical"
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_30sdp">
+
+            <com.google.android.material.card.MaterialCardView
+                visibleObject="@{TextUtils.isEmpty(item.avatar)}"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:backgroundTint="@color/color_1"
+                android:elevation="0dp"
+                app:cardCornerRadius="@dimen/_15sdp"
+                app:cardElevation="0dp">
+
+                <com.diadiem.pos_components.PTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@{item.nameAcronymn}"
+                    tools:ignore="ContentDescription" />
+            </com.google.android.material.card.MaterialCardView>
+
+            <ImageView
+                imageCircularUrl="@{item.avatar}"
+                visibleObject="@{!TextUtils.isEmpty(item.avatar)}"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:ignore="ContentDescription" />
+        </FrameLayout>
+        <androidx.legacy.widget.Space
+            android:layout_width="@dimen/_7sdp"
+            android:layout_height="wrap_content"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical">
+
+                <com.diadiem.pos_components.PTextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/_5sdp"
+                    android:layout_weight="1"
+                    android:text="@{item.fullName,default=`Full Name`}"
+                    app:useFontStyle="normal"
+                    app:useTextColor="color4"
+                    app:useTextHeader="h5" />
+            </LinearLayout>
+
+            <androidx.legacy.widget.Space
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/_5sdp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical">
+
+                <com.diadiem.pos_components.PTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{item.phone,default=`090 367 8928`}"
+                    app:useFontStyle="normal"
+                    app:useTextColor="color5"
+                    app:useTextHeader="h5" />
+
+                <View
+                    visibleObject="@{ !TextUtils.isEmpty(item.phone) &amp;&amp; !TextUtils.isEmpty(item.email)}"
+                    android:layout_width="0.5dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginHorizontal="@dimen/_8sdp"
+                    android:background="@color/color_5" />
+
+                <com.diadiem.pos_components.PTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{item.email,default=`quantran@gmail.com`}"
+                    app:useFontStyle="normal"
+                    app:useTextColor="color5"
+                    app:useTextHeader="h5" />
+            </LinearLayout>
+        </LinearLayout>
+
+
+    </LinearLayout>
+</layout>

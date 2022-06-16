@@ -36,8 +36,8 @@ class ServicesReportVM : BaseUiViewModel<ServicesReportUV>() {
             totalAmount += services.Amount ?: 0.0
             ReportItemDetail(
                 services.FeeName,
-                services.Quantity.toString(),
-                PriceUtils.formatStringPrice(services.Amount?: 0.0)
+                services.Quantity?.toInt(),
+                services.Amount?: 0.0
             )
         }?.toMutableList()?.let {
             rows.addAll(it)
@@ -45,8 +45,8 @@ class ServicesReportVM : BaseUiViewModel<ServicesReportUV>() {
         rows.add(
             ReportItemDetail(
                 context.getString(R.string.total),
-                totalQty.toString(),
-                PriceUtils.formatStringPrice(totalAmount),
+                totalQty.toInt(),
+                totalAmount,
                 isBold = true
             )
         )

@@ -1,6 +1,5 @@
 package com.hanheldpos.model.cart
 
-import android.util.Log
 import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.data.api.pojo.discount.DiscountUsed
 import com.hanheldpos.data.api.pojo.fee.Fee
@@ -26,7 +25,7 @@ object CartConverter {
         couponCode: String? = null,
         orderStatus: Int = OrderStatus.ORDER.value,
         paymentStatus: Int = PaymentStatus.UNPAID.value
-    ): OrderReq {
+    ): OrderModel {
         val subTotal = cart.getSubTotal()
         val total = cart.total()
         val totalCompVoid = cart.totalComp()
@@ -48,9 +47,9 @@ object CartConverter {
             cart.productsList.map { baseProductInCart -> baseProductInCart.name }.joinToString(",")
 
         cart.createDate =
-            DateTimeUtils.dateToString(Date(), DateTimeUtils.Format.FULL_DATE_UTC_TIMEZONE)
+            DateTimeUtils.dateToString(Date(), DateTimeUtils.Format.YYYY_MM_DD_HH_MM_SS)
 
-        return OrderReq(
+        return OrderModel(
             Order = Order(
                 OrderStatusId = orderStatus,
                 PaymentStatusId = paymentStatus,
@@ -64,7 +63,7 @@ object CartConverter {
                 MenuLocationGuid = cart.menuLocationGuid,
                 CurrencySymbol = OrderHelper.getCurrencySymbol()!!,
                 CashDrawer_id = DataHelper.currentDrawerId,
-                CustomerGuestGuid = cart.customer?._Id,
+                CustomerGuestGuid = cart.customer?._id,
                 Checksum = EncryptUtils.getHash(CheckSum(cart.createDate!!,DataHelper.deviceGuid()))
             ),
             OrderDetail = OrderDetail(

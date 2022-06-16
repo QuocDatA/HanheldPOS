@@ -59,7 +59,7 @@ class PaymentFragment(
                     item.startPayment(
                         viewModel.balance.value!!,
                         CurCartData.cartModel?.orderGuid!!,
-                        CurCartData.cartModel?.customer?._Id
+                        CurCartData.cartModel?.customer?._id
                     )
                 }
             },
@@ -143,7 +143,7 @@ class PaymentFragment(
                                                 cardCode,
                                                 amount,
                                                 balance,
-                                                CurCartData.cartModel?.customer?._Id
+                                                CurCartData.cartModel?.customer?._id
                                             )
                                         } else
                                             paymentChosenSuccess(base, amount)
@@ -254,7 +254,7 @@ class PaymentFragment(
             cardCode,
             balanceCart,
             CurCartData.cartModel?.orderGuid!!,
-            CurCartData.cartModel?.customer?._Id
+            CurCartData.cartModel?.customer?._id
         )
     }
 

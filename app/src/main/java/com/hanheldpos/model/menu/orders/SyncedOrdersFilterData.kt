@@ -1,5 +1,6 @@
 package com.hanheldpos.model.menu.orders
 
+import com.hanheldpos.data.api.pojo.order.settings.DiningOption
 import java.util.*
 
 data class SyncedOrdersFilterData(
@@ -8,4 +9,5 @@ data class SyncedOrdersFilterData(
     var isAllDay: Boolean,
     var startTime: String?,
     var endTime: String?,
+    val diningOption: DiningOption?,
 )

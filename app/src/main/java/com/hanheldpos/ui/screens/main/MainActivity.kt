@@ -1,31 +1,23 @@
 package com.hanheldpos.ui.screens.main
 
-import android.graphics.Color
-import android.graphics.Rect
-import android.view.View
-import android.view.ViewTreeObserver
-import android.view.ViewTreeObserver.OnGlobalLayoutListener
-import android.view.WindowManager
-import androidx.activity.viewModels
-import androidx.fragment.app.activityViewModels
-import com.handheld.printer.PrintConstants
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import com.hanheldpos.R
+import com.hanheldpos.data.api.pojo.data.DataVersion
 import com.hanheldpos.databinding.ActivityMainBinding
-import com.hanheldpos.model.printer.BillPrinterManager
+import com.hanheldpos.model.DataHelper
+import com.hanheldpos.printer.PrinterException
 import com.hanheldpos.ui.base.activity.BaseFragmentBindingActivity
-import com.hanheldpos.ui.base.dialog.AppAlertDialog
 import com.hanheldpos.ui.base.fragment.FragmentNavigator
-import com.hanheldpos.ui.screens.home.HomeFragment
-import com.hanheldpos.ui.screens.home.ScreenViewModel
 import com.hanheldpos.ui.screens.pincode.PinCodeFragment
-import com.hanheldpos.ui.screens.root.RootFragment
 import com.hanheldpos.ui.screens.welcome.WelcomeFragment
+import com.hanheldpos.utils.GSonUtils
 import com.hanheldpos.utils.NetworkUtils
-import com.hanheldpos.utils.StringUtils
 import com.utils.helper.SystemHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.json.JSONObject
 
 class MainActivity : BaseFragmentBindingActivity<ActivityMainBinding, MainVM>(), MainUV {
 
@@ -53,34 +45,37 @@ class MainActivity : BaseFragmentBindingActivity<ActivityMainBinding, MainVM>(),
     }
 
     override fun initData() {
-        NetworkUtils.checkActiveInternetConnection(listener = object : NetworkUtils.NetworkConnectionCallBack {
+        NetworkUtils.checkActiveInternetConnection(listener = object :
+            NetworkUtils.NetworkConnectionCallBack {
             override fun onAvailable() {
 
             }
 
             override fun onLost() {
                 CoroutineScope(Dispatchers.Main).launch {
-                    showAlert(title =  getString(R.string.notification), message =  getString(R.string.no_network_connection))
+                    showAlert(
+                        title = getString(R.string.notification),
+                        message = getString(R.string.no_network_connection)
+                    )
                 }
             }
         })
     }
 
     override fun initAction() {
-        CoroutineScope(Dispatchers.IO).launch {
-            BillPrinterManager.init(
-                this@MainActivity,
-                BillPrinterManager.PrintOptions(
-                    connectionType = BillPrinterManager.PrintConnectionType.BLUETOOTH,
-                    deviceType = BillPrinterManager.PrinterDeviceInfo.DeviceType.UROVO
-                ).setUpLan(BillPrinterManager.PrintOptions.LanConfig(PrintConstants.LAN_PORT,PrintConstants.LAN_ADDRESS)),
-                onConnectionFailed = {ex->
-                    launch(Dispatchers.Main) {
-                        showMessage(ex.message)
+        DataHelper.firebaseSettingLocalStorage?.fireStorePath?.let {
+            Firebase.firestore.collection(it.dataVersion ?: "")
+                .addSnapshotListener { value, error ->
+                    GSonUtils.toObject<DataVersion>(value?.documents?.firstOrNull()?.data?.let { it1 ->
+                        JSONObject(
+                            it1
+                        ).toString()
+                    })?.let { dataVersionNew ->
+                        if (DataHelper.dataVersionLocalStorage?.menu != dataVersionNew.menu || DataHelper.dataVersionLocalStorage?.discount != dataVersionNew.discount) {
+                            DataHelper.isNeedToUpdateNewData = true
+                        }
                     }
-
                 }
-            )
         }
 
     }
