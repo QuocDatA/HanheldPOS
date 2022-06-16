@@ -4,11 +4,14 @@ import android.annotation.SuppressLint
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.hanheldpos.PosApp
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.databinding.FragmentMenuDiscountBinding
 import com.hanheldpos.model.discount.DiscountTriggerType
 import com.hanheldpos.ui.base.fragment.BaseFragment
+import com.hanheldpos.ui.screens.buy_x_get_y.BuyXGetYFragment
+import com.hanheldpos.ui.screens.cart.CurCartData
 import com.hanheldpos.ui.screens.discount.discount_detail.DiscountDetailFragment
 import com.hanheldpos.ui.screens.discount.discount_type.adapter.MenuDiscountAdapter
 import kotlinx.coroutines.CoroutineScope
@@ -40,14 +43,25 @@ class MenuDiscountFragment : BaseFragment<FragmentMenuDiscountBinding, MenuDisco
                         DiscountDetailFragment(
                             item,
                             onApplyDiscountAuto = {},
-                            onApplyDiscountCode = { })
+                            onApplyDiscountCode = {
+                                if (CurCartData.cartModel != null)
+                                    viewModel.onApplyDiscount(item)
+                                else showAlert(
+                                    PosApp.instance.getString(R.string.notification),
+                                    PosApp.instance.getString(R.string.please_choose_table_first)
+                                )
+                            })
                     )
                 }
-
                 override fun onItemClick(item: DiscountResp) {
-                    if (item.isExistsTrigger(DiscountTriggerType.ON_CLICK)) {
-                        //viewModel.onApplyDiscount(item)
-                    }
+                    if (CurCartData.cartModel != null) {
+                        if (item.isExistsTrigger(DiscountTriggerType.ON_CLICK)) {
+                            viewModel.onApplyDiscount(item)
+                        }
+                    } else showAlert(
+                        PosApp.instance.getString(R.string.notification),
+                        PosApp.instance.getString(R.string.please_choose_table_first)
+                    )
                 }
             });
         binding.menuDiscountContainer.apply {
@@ -81,5 +95,9 @@ class MenuDiscountFragment : BaseFragment<FragmentMenuDiscountBinding, MenuDisco
             discountMenuAdapter.submitList(list);
             discountMenuAdapter.notifyDataSetChanged();
         }
+    }
+
+    override fun openBuyXGetY(discount: DiscountResp) {
+
     }
 }

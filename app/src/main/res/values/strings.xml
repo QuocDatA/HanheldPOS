@@ -297,6 +297,7 @@
     <string name="later">Later</string>
     <string name="update">Update</string>
     <string name="no_new_update_found">No new update found!</string>
+    <string name="please_choose_table_first">Please choose table first</string>
     <string name="cart_has_not_been_initialized">Cart has not been initialized!</string>
     <string name="done">Done!</string>
     <string name="new_data_have_been_updated_successfully">New data have been updated successfully</string>
