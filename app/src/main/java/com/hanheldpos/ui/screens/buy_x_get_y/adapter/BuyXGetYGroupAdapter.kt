@@ -55,12 +55,6 @@ class BuyXGetYGroupAdapter(
             currentList.forEachIndexed { index, itemBuyXGetYGroup ->
                 if (!itemBuyXGetYGroup.isMaxItemSelected()) {
                     positionFocus = index
-//                    if (itemBuyXGetYGroup.isApplyToEntireOrder == true) {
-//                        if (position == 1) {
-//                            binding.linearProgress.linearProgressIndicator.progress =
-//                                if (itemBuyXGetYGroup.isGetComplete == true) 100 else 0
-//                        }
-//                    }
                     if(position == 1 && positionFocus == position) {
                         binding.topSpacer.visibility = View.VISIBLE
                     }
