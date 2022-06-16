@@ -79,7 +79,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
         }
 
         binding.toolbarLayout.spnDiningOptionBox.apply {
-        }.setOnClickDebounce {
+        }.setOnClickListener {
 
             val diningOptions: MutableList<DiningOption> =
                 (DataHelper.orderSettingLocalStorage?.ListDiningOptions as List<DiningOption>).toMutableList();
@@ -91,7 +91,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
                     } else {
                         cartDataVM.diningOptionChange(diningOptions[index + 1])
                     }
-                    return@setOnClickDebounce
+                    return@setOnClickListener
                 }
             }
         }
