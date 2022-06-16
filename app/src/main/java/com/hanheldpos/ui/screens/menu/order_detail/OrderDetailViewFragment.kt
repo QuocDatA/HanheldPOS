@@ -9,6 +9,7 @@ import com.hanheldpos.extension.setOnClickDebounce
 import com.hanheldpos.model.order.OrderModel
 import com.hanheldpos.printer.BillPrinterManager
 import com.hanheldpos.printer.layouts.LayoutType
+import com.hanheldpos.printer.printer_setup.device_info.DeviceType
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.menu.order_detail.adapter.OrderDetailItemViewAdapter
 import com.hanheldpos.ui.screens.menu.order_detail.adapter.OrderDetailPaymentAdapter

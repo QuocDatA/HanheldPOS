@@ -13,7 +13,7 @@
 
         <variable
             name="viewModel"
-            type="com.hanheldpos.ui.screens.product.ProductDetailVM" />
+            type="com.hanheldpos.ui.screens.product.regular.RegularDetailVM" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout style="@style/RootLayout">

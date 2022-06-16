@@ -1,4 +1,4 @@
-package com.hanheldpos.ui.screens.product
+package com.hanheldpos.ui.screens.product.regular
 
 import android.os.Bundle
 import android.view.View
@@ -7,7 +7,7 @@ import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.order.settings.Reason
 import com.hanheldpos.data.api.pojo.product.Product
 import com.hanheldpos.data.api.pojo.product.VariantsGroup
-import com.hanheldpos.databinding.FragmentProductDetailBinding
+import com.hanheldpos.databinding.FragmentRegularDetailBinding
 import com.hanheldpos.extension.notifyValueChange
 import com.hanheldpos.model.cart.*
 import com.hanheldpos.model.combo.ItemActionType
@@ -22,13 +22,13 @@ import com.hanheldpos.ui.screens.cart.CartDataVM
 import com.hanheldpos.ui.screens.discount.DiscountFragment
 import com.hanheldpos.ui.screens.discount.discount_type.DiscountTypeItemFragment
 import com.hanheldpos.ui.screens.home.order.OrderFragment
-import com.hanheldpos.ui.screens.product.adapter.GroupModifierAdapter
-import com.hanheldpos.ui.screens.product.adapter.GroupVariantAdapter
+import com.hanheldpos.ui.screens.product.regular.adapter.GroupModifierAdapter
+import com.hanheldpos.ui.screens.product.regular.adapter.GroupVariantAdapter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class ProductDetailFragment(
+class RegularDetailFragment(
     private val regular: Regular,
     private val groupBundle: GroupBundle? = null,
     private val productBundle: Product? = null,
@@ -37,22 +37,22 @@ class ProductDetailFragment(
     private val listener: OrderFragment.OrderMenuListener? = null,
     private val isDiscountBuyXGetY: Boolean? = false,
     private val isGroupBuy: Boolean? = false
-) : BaseFragment<FragmentProductDetailBinding, ProductDetailVM>(), ProductDetailUV {
+) : BaseFragment<FragmentRegularDetailBinding, RegularDetailVM>(), RegularDetailUV {
 
     private val cartDataVM by activityViewModels<CartDataVM>()
 
     private lateinit var groupVariantAdapter: GroupVariantAdapter
     private lateinit var groupModifierAdapter: GroupModifierAdapter
 
-    override fun layoutRes(): Int = R.layout.fragment_product_detail
+    override fun layoutRes(): Int = R.layout.fragment_regular_detail
 
-    override fun viewModelClass(): Class<ProductDetailVM> {
-        return ProductDetailVM::class.java
+    override fun viewModelClass(): Class<RegularDetailVM> {
+        return RegularDetailVM::class.java
     }
 
-    override fun initViewModel(viewModel: ProductDetailVM) {
+    override fun initViewModel(viewModel: RegularDetailVM) {
         viewModel.run {
-            init(this@ProductDetailFragment)
+            init(this@RegularDetailFragment)
             binding.viewModel = this
         }
     }

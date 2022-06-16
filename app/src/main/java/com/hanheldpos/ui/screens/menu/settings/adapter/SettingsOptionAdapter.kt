@@ -9,11 +9,6 @@ import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 
-enum class SettingOptionType {
-    RADIO,
-    BOX
-}
-
 class SettingsOptionAdapter(
     private val style: SettingOptionType = SettingOptionType.RADIO,
     private val listener: BaseItemClickListener<ItemSettingOption>

@@ -1,4 +1,4 @@
-package com.hanheldpos.ui.screens.product.adapter
+package com.hanheldpos.ui.screens.product.regular.adapter
 
 import androidx.recyclerview.widget.DiffUtil
 import com.hanheldpos.R
@@ -7,7 +7,6 @@ import com.hanheldpos.databinding.ItemProductGroupModifierBinding
 import com.hanheldpos.model.cart.ModifierCart
 import com.hanheldpos.model.product.GroupExtra
 import com.hanheldpos.model.product.ItemExtra
-import com.hanheldpos.model.product.ProductComboItem
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener

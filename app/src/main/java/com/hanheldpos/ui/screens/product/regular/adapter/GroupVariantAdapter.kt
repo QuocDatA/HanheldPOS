@@ -1,4 +1,4 @@
-package com.hanheldpos.ui.screens.product.adapter
+package com.hanheldpos.ui.screens.product.regular.adapter
 
 import android.annotation.SuppressLint
 import androidx.core.content.ContextCompat

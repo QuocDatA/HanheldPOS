@@ -16,6 +16,7 @@ import com.hanheldpos.data.api.pojo.payment.PaymentMethodResp
 import com.hanheldpos.data.api.pojo.receipt.ReceiptCashier
 import com.hanheldpos.data.api.pojo.resource.ResourceResp
 import com.hanheldpos.data.api.pojo.setting.firebase.FirebaseSetting
+import com.hanheldpos.data.api.pojo.setting.hardware.HardwareSetting
 import com.hanheldpos.data.api.pojo.system.AddressTypeResp
 import com.hanheldpos.data.repository.BaseResponse
 import com.hanheldpos.data.repository.base.BaseRepoCallback
@@ -284,6 +285,24 @@ class SyncDataService : BaseViewModel() {
                         onDataFailure(context.getString(R.string.failed_to_load_data), listener)
                     } else {
                         DataHelper.firebaseSettingLocalStorage = data.Model;
+                        startMappingData(context, listener);
+                    }
+                }
+
+                override fun showMessage(message: String?) {
+                    onDataFailure(message, listener)
+                }
+            })
+        settingRepo.getHardwareSetting(
+            userGuid,
+            location,
+            deviceGuid,
+            callback = object : BaseRepoCallback<BaseResponse<HardwareSetting>> {
+                override fun apiResponse(data: BaseResponse<HardwareSetting>?) {
+                    if (data == null || data.DidError) {
+                        onDataFailure(context.getString(R.string.failed_to_load_data), listener)
+                    } else {
+                        DataHelper.hardwareSettingLocalStorage = data.Model;
                         startMappingData(context, listener);
                     }
                 }

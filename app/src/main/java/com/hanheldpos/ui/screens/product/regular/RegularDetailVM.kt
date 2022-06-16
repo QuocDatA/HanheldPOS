@@ -1,22 +1,19 @@
-package com.hanheldpos.ui.screens.product
+package com.hanheldpos.ui.screens.product.regular
 
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.hanheldpos.data.api.pojo.product.Product
-import com.hanheldpos.data.api.pojo.product.ProductModifiers
 import com.hanheldpos.data.api.pojo.product.VariantsGroup
 import com.hanheldpos.extension.notifyValueChange
 import com.hanheldpos.model.cart.GroupBundle
-import com.hanheldpos.model.cart.ModifierCart
 import com.hanheldpos.model.cart.Regular
 import com.hanheldpos.model.combo.ItemActionType
 import com.hanheldpos.model.discount.DiscountTypeFor
 import com.hanheldpos.model.product.GroupExtra
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
 
-class ProductDetailVM : BaseUiViewModel<ProductDetailUV>() {
+class RegularDetailVM : BaseUiViewModel<RegularDetailUV>() {
 
     val isValidDiscount = MutableLiveData<Boolean>(false);
     var typeDiscountSelect: DiscountTypeFor? = null;

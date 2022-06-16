@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.customer.CustomerResp
-import com.hanheldpos.data.api.pojo.discount.CustomerBuys
 import com.hanheldpos.data.api.pojo.discount.DiscountCoupon
 import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.data.api.pojo.order.settings.DiningOption
@@ -19,7 +18,6 @@ import com.hanheldpos.extension.setOnClickDebounce
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.OrderHelper
 import com.hanheldpos.model.buy_x_get_y.BuyXGetY
-import com.hanheldpos.model.buy_x_get_y.CustomerDiscApplyTo
 import com.hanheldpos.model.cart.BaseProductInCart
 import com.hanheldpos.model.cart.Combo
 import com.hanheldpos.model.cart.DiscountCart
@@ -39,13 +37,13 @@ import com.hanheldpos.ui.screens.cart.adapter.CartProductAdapter
 import com.hanheldpos.ui.screens.cart.adapter.CartTipAdapter
 import com.hanheldpos.ui.screens.cart.customer.add_customer.AddCustomerFragment
 import com.hanheldpos.ui.screens.cart.customer.detail_customer.CustomerDetailFragment
-import com.hanheldpos.ui.screens.combo.ComboFragment
+import com.hanheldpos.ui.screens.product.combo.ComboFragment
 import com.hanheldpos.ui.screens.discount.DiscountFragment
 import com.hanheldpos.ui.screens.discount.discount_type.discount_code.DiscountCodeFragment
 import com.hanheldpos.ui.screens.home.order.OrderFragment
 import com.hanheldpos.ui.screens.payment.PaymentFragment
 import com.hanheldpos.ui.screens.payment.completed.PaymentCompletedFragment
-import com.hanheldpos.ui.screens.product.ProductDetailFragment
+import com.hanheldpos.ui.screens.product.regular.RegularDetailFragment
 
 
 class CartFragment(private val listener: CartCallBack) :
@@ -385,7 +383,7 @@ class CartFragment(private val listener: CartCallBack) :
         when (item.productType) {
             ProductType.REGULAR -> {
                 navigator.goToWithCustomAnimation(
-                    ProductDetailFragment(
+                    RegularDetailFragment(
                         regular = (item as Regular).clone(),
                         action = ItemActionType.Modify,
                         quantityCanChoose = 1000,

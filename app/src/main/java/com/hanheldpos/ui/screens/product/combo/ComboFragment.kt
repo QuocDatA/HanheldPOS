@@ -1,4 +1,4 @@
-package com.hanheldpos.ui.screens.combo
+package com.hanheldpos.ui.screens.product.combo
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -22,11 +22,11 @@ import com.hanheldpos.model.cart.BaseProductInCart
 import com.hanheldpos.model.discount.DiscApplyTo
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.cart.CartDataVM
-import com.hanheldpos.ui.screens.combo.adapter.ComboGroupAdapter
+import com.hanheldpos.ui.screens.product.combo.adapter.ComboGroupAdapter
 import com.hanheldpos.ui.screens.discount.DiscountFragment
 import com.hanheldpos.ui.screens.discount.discount_type.DiscountTypeItemFragment
 import com.hanheldpos.ui.screens.home.order.OrderFragment
-import com.hanheldpos.ui.screens.product.ProductDetailFragment
+import com.hanheldpos.ui.screens.product.regular.RegularDetailFragment
 import kotlinx.coroutines.*
 
 class ComboFragment(
@@ -172,7 +172,7 @@ class ComboFragment(
                 comboGroupAdapter.notifyDataSetChanged()
             }
             else->{
-                navigator.goTo(ProductDetailFragment(
+                navigator.goTo(RegularDetailFragment(
                     regular = item.clone(),
                     groupBundle = group.groupBundle,
                     productBundle = this.combo.proOriginal,

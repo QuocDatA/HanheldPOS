@@ -1,4 +1,4 @@
-package com.hanheldpos.ui.screens.combo
+package com.hanheldpos.ui.screens.product.combo
 
 import com.hanheldpos.model.combo.ItemActionType
 import com.hanheldpos.model.combo.ItemComboGroup

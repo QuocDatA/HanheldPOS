@@ -22,13 +22,13 @@ import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.cart.CartDataVM
 import com.hanheldpos.ui.screens.cart.CartFragment
 import com.hanheldpos.ui.screens.cart.CurCartData
-import com.hanheldpos.ui.screens.combo.ComboFragment
+import com.hanheldpos.ui.screens.product.combo.ComboFragment
 import com.hanheldpos.ui.screens.home.HomeFragment
 import com.hanheldpos.ui.screens.home.ScreenViewModel
 import com.hanheldpos.ui.screens.home.order.adapter.OrderProductAdapter
 import com.hanheldpos.ui.screens.home.order.adapter.OrderProductAdapterHelper
 import com.hanheldpos.ui.screens.home.order.menu.CategoryMenuFragment
-import com.hanheldpos.ui.screens.product.ProductDetailFragment
+import com.hanheldpos.ui.screens.product.regular.RegularDetailFragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -143,7 +143,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
                 }
                 item.proOriginal?.let {
                     if (!it.isBundle()) {
-                        val product = ProductDetailFragment(
+                        val product = RegularDetailFragment(
                             regular = Regular(
                                 it,
                                 cartDataVM.diningOptionLD.value!!,

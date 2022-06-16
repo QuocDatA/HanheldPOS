@@ -1,4 +1,4 @@
-package com.hanheldpos.ui.screens.combo.adapter
+package com.hanheldpos.ui.screens.product.combo.adapter
 
 import android.util.Log
 import android.view.LayoutInflater

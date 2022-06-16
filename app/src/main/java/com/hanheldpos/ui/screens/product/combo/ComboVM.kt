@@ -1,4 +1,4 @@
-package com.hanheldpos.ui.screens.combo
+package com.hanheldpos.ui.screens.product.combo
 
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData

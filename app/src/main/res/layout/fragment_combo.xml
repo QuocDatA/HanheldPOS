@@ -13,7 +13,7 @@
 
         <variable
             name="viewModel"
-            type="com.hanheldpos.ui.screens.combo.ComboVM" />
+            type="com.hanheldpos.ui.screens.product.combo.ComboVM" />
     </data>
 
     <RelativeLayout style="@style/RootLayout">

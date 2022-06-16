@@ -1,4 +1,4 @@
-package com.hanheldpos.ui.screens.product.adapter
+package com.hanheldpos.ui.screens.product.regular.adapter
 
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil

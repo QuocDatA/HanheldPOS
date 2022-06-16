@@ -9,7 +9,6 @@ import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.discount.CustomerBuys
 import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.data.api.pojo.fee.CustomerGets
-import com.hanheldpos.data.api.pojo.fee.Discount
 import com.hanheldpos.databinding.FragmentBuyXGetYBinding
 import com.hanheldpos.extension.notifyValueChange
 import com.hanheldpos.model.buy_x_get_y.BuyXGetY
@@ -18,13 +17,12 @@ import com.hanheldpos.model.cart.BaseProductInCart
 import com.hanheldpos.model.cart.Combo
 import com.hanheldpos.model.cart.Regular
 import com.hanheldpos.model.combo.ItemActionType
-import com.hanheldpos.model.discount.DiscountUser
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.buy_x_get_y.adapter.BuyXGetYGroupAdapter
-import com.hanheldpos.ui.screens.combo.ComboFragment
+import com.hanheldpos.ui.screens.product.combo.ComboFragment
 import com.hanheldpos.ui.screens.discount.discount_type.discount_code.DiscountCodeFragment
 import com.hanheldpos.ui.screens.home.order.OrderFragment
-import com.hanheldpos.ui.screens.product.ProductDetailFragment
+import com.hanheldpos.ui.screens.product.regular.RegularDetailFragment
 
 class BuyXGetYFragment(
     private val buyXGetY: BuyXGetY,
@@ -117,7 +115,7 @@ class BuyXGetYFragment(
                 baseItem.proOriginal.let {
                     if (!it?.isBundle()!!) {
                         navigator.goTo(
-                            ProductDetailFragment(
+                            RegularDetailFragment(
                                 regular = (baseItem as Regular).clone(),
                                 groupBundle = null,
                                 productBundle = null,

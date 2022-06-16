@@ -178,7 +178,6 @@ object DownloadService {
                         Status.PAUSED
                     )
                 ) {
-                    processDialog.dismiss()
                     return@launch
                 }
                 if (PRDownloader.getStatus(downloadId) in mutableListOf(
