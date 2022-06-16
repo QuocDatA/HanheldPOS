@@ -18,6 +18,7 @@ import com.hanheldpos.ui.base.dialog.AppAlertDialog
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.menu.adapter.ItemOptionNav
 import com.hanheldpos.ui.screens.menu.adapter.OptionNavAdapter
+import com.hanheldpos.ui.screens.menu.discount.MenuDiscountFragment
 import com.hanheldpos.ui.screens.menu.orders.OrdersMenuFragment
 import com.hanheldpos.ui.screens.menu.report.ReportFragment
 import com.hanheldpos.ui.screens.menu.settings.SettingsFragment
@@ -97,6 +98,9 @@ class MenuFragment : BaseFragment<FragmentMenuBinding, MenuVM>(), MenuUV {
 
     fun onNavOptionClick(option: ItemOptionNav) {
         when (option.type as NavBarOptionType) {
+            NavBarOptionType.DISCOUNT -> {
+                navigator.goToWithCustomAnimation(MenuDiscountFragment())
+            }
             NavBarOptionType.ORDERS -> {
                 navigator.goToWithCustomAnimation(OrdersMenuFragment());
             }

@@ -44,6 +44,11 @@ class BuyXGetYGroupAdapter(
         binding.name = itemBuyXGetYGroup.getGroupName()
         binding.item = itemBuyXGetYGroup
 
+//        if (position == 1) {
+//            binding.linearProgressContainer.visibility = View.GONE
+//            binding.topSpacer.visibility = View.GONE
+//        }
+
         // Check your turn
         var positionFocus: Int = -1
         run checkFocus@{
@@ -52,12 +57,16 @@ class BuyXGetYGroupAdapter(
                     positionFocus = index
                     if (itemBuyXGetYGroup.isApplyToEntireOrder == true) {
                         if (position == 1) {
-                            binding.linearProgressContainer.visibility = View.GONE
-                            binding.topSpacer.visibility = View.GONE
+                            binding.linearProgress.linearProgressIndicator.progress =
+                                if (itemBuyXGetYGroup.isGetComplete == true) 100 else 0
                         }
                     }
+//                    if(position == 1 && positionFocus == position) {
+//                        binding.topSpacer.visibility = View.VISIBLE
+//                    }
                     return@checkFocus
-                } else if (itemBuyXGetYGroup.isApplyToEntireOrder == true) {
+                }
+                else if (itemBuyXGetYGroup.isApplyToEntireOrder == true) {
                     if (itemBuyXGetYGroup.isBuyComplete == true && position == 0) {
                         binding.linearProgress.linearProgressIndicator.progress =
                             (itemBuyXGetYGroup.groupBuyXGetY.condition as CustomerBuys).getProgressValue(

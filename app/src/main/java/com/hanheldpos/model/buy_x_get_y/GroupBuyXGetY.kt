@@ -11,12 +11,9 @@ import com.hanheldpos.data.api.pojo.product.Product
 import com.hanheldpos.data.api.pojo.product.VariantsGroup
 import com.hanheldpos.model.cart.BaseProductInCart
 import com.hanheldpos.model.cart.Combo
-import com.hanheldpos.model.cart.GroupBundle
 import com.hanheldpos.model.cart.Regular
 import com.hanheldpos.model.discount.DiscountEntireType
-import com.hanheldpos.model.product.ProductComboItem
 import com.hanheldpos.ui.screens.cart.CurCartData
-import com.hanheldpos.utils.GSonUtils
 import com.hanheldpos.utils.PriceUtils
 import kotlinx.android.parcel.Parcelize
 import kotlinx.android.parcel.RawValue
@@ -254,10 +251,16 @@ data class GroupBuyXGetY(
             R.string.item_required
         ))
     }
+
     private fun getSelectionRequired(value: Int): String {
         return if (value > 1) (PosApp.instance.getString(R.string.selections_required)) else (PosApp.instance.getString(
             R.string.selection_required
         ))
+    }
+
+    fun isApplyEntireOrder(): Boolean {
+        return (condition is CustomerBuys && ((condition as CustomerBuys).ApplyTo == CustomerDiscApplyTo.ENTIRE_ORDER.value))
+                || (condition is CustomerGets && ((condition as CustomerGets).ApplyTo == CustomerDiscApplyTo.ENTIRE_ORDER.value))
     }
 }
 
