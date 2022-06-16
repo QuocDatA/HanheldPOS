@@ -23,8 +23,6 @@ data class ItemBuyXGetYGroup(
     var isGetComplete: Boolean? = false,
 ) {
     fun requireQuantity(): Int =
-        if (groupBuyXGetY.requireQuantity is Int) (groupBuyXGetY.requireQuantity as Int)
-        else
                 (groupBuyXGetY.requireQuantity as Double).toInt()
 
     fun isMaxItemSelected(): Boolean {

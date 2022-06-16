@@ -112,7 +112,8 @@ class BuyXGetYVM : BaseUiViewModel<BuyXGetYUV>() {
 
     fun onBundleSelect(
         group: GroupBuyXGetY,
-        item: Combo,
+        itemAfter: Combo,
+        itemPrev: Combo,
         action: ItemActionType,
         discount: DiscountResp?,
     ) {
@@ -120,24 +121,24 @@ class BuyXGetYVM : BaseUiViewModel<BuyXGetYUV>() {
             ItemActionType.Add -> {
                 group.addProduct(
                     discount,
-                    item.proOriginal!!, item,
+                    itemAfter.proOriginal!!, itemAfter,
                     CurCartData.cartModel?.diningOption!!
                 )
             }
             ItemActionType.Modify -> {
-                if ((item.quantity ?: 0) <= 0) {
-                    val index = group.productList.indexOf(item)
-                    group.productList.removeAt(index)
+                if ((itemAfter.quantity ?: 0) <= 0) {
+                    group.productList.remove(itemPrev)
+                    group.productList
                 } else {
-                    group.productList.find { it.proOriginal?._id == item.proOriginal?._id }?.let { regular ->
+                    group.productList.find { it.proOriginal?._id == itemPrev.proOriginal?._id }?.let { regular ->
                         val index = group.productList.indexOf(regular)
-                        group.productList[index] = item;
+                        group.productList[index] = itemAfter;
                     }
                 }
 
             }
             ItemActionType.Remove -> {
-                group.productList.remove(item)
+                group.productList.remove(itemPrev)
             }
         }
     }

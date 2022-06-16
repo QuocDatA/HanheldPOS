@@ -107,7 +107,7 @@ class BuyXGetYFragment(
                 if (baseItem is Regular) {
                     viewModel.onRegularSelect(group, baseItem, baseItem, action, discount)
                 } else if (baseItem is Combo) {
-                    viewModel.onBundleSelect(group, baseItem, action, discount)
+                    viewModel.onBundleSelect(group, baseItem,baseItem , action, discount)
                 }
                 buyXGetYGroupAdapter.notifyDataSetChanged()
                 viewModel.buyXGetY.notifyValueChange()
@@ -163,6 +163,7 @@ class BuyXGetYFragment(
                                     viewModel.onBundleSelect(
                                         group,
                                         (item as Combo).clone(),
+                                        baseItem,
                                         action,
                                         if( group.condition is CustomerGets) discount else null
                                     )
