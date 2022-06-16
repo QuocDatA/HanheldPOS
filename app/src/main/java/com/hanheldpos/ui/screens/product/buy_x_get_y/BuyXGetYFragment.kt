@@ -1,4 +1,4 @@
-package com.hanheldpos.ui.screens.buy_x_get_y
+package com.hanheldpos.ui.screens.product.buy_x_get_y
 
 import android.annotation.SuppressLint
 import android.os.SystemClock
@@ -18,7 +18,7 @@ import com.hanheldpos.model.cart.Combo
 import com.hanheldpos.model.cart.Regular
 import com.hanheldpos.model.combo.ItemActionType
 import com.hanheldpos.ui.base.fragment.BaseFragment
-import com.hanheldpos.ui.screens.buy_x_get_y.adapter.BuyXGetYGroupAdapter
+import com.hanheldpos.ui.screens.product.buy_x_get_y.adapter.BuyXGetYGroupAdapter
 import com.hanheldpos.ui.screens.product.combo.ComboFragment
 import com.hanheldpos.ui.screens.discount.discount_type.discount_code.DiscountCodeFragment
 import com.hanheldpos.ui.screens.home.order.OrderFragment

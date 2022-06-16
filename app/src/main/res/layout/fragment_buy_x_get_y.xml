@@ -17,7 +17,7 @@
 
         <variable
             name="viewModel"
-            type="com.hanheldpos.ui.screens.buy_x_get_y.BuyXGetYVM" />
+            type="com.hanheldpos.ui.screens.product.buy_x_get_y.BuyXGetYVM" />
     </data>
 
     <RelativeLayout style="@style/RootLayout">

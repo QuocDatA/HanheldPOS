@@ -30,7 +30,7 @@ import com.hanheldpos.model.payment.PaymentOrder
 import com.hanheldpos.model.product.ProductType
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
-import com.hanheldpos.ui.screens.buy_x_get_y.BuyXGetYFragment
+import com.hanheldpos.ui.screens.product.buy_x_get_y.BuyXGetYFragment
 import com.hanheldpos.ui.screens.cart.adapter.CartDiningOptionAdapter
 import com.hanheldpos.ui.screens.cart.adapter.CartDiscountAdapter
 import com.hanheldpos.ui.screens.cart.adapter.CartProductAdapter

@@ -1,4 +1,4 @@
-package com.hanheldpos.ui.screens.buy_x_get_y.adapter
+package com.hanheldpos.ui.screens.product.buy_x_get_y.adapter
 
 import android.view.View
 import androidx.recyclerview.widget.DiffUtil

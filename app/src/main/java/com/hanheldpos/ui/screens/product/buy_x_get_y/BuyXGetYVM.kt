@@ -1,4 +1,4 @@
-package com.hanheldpos.ui.screens.buy_x_get_y
+package com.hanheldpos.ui.screens.product.buy_x_get_y
 
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData

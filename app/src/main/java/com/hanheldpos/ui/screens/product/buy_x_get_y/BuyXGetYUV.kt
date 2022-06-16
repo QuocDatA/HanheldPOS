@@ -1,4 +1,4 @@
-package com.hanheldpos.ui.screens.buy_x_get_y
+package com.hanheldpos.ui.screens.product.buy_x_get_y
 
 import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.model.cart.BaseProductInCart

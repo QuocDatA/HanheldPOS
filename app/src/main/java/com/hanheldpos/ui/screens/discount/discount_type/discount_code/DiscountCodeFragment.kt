@@ -17,7 +17,7 @@ import com.hanheldpos.model.discount.DiscountTriggerType
 import com.hanheldpos.model.discount.DiscountTypeFor
 import com.hanheldpos.model.discount.DiscountUser
 import com.hanheldpos.ui.base.fragment.BaseFragment
-import com.hanheldpos.ui.screens.buy_x_get_y.BuyXGetYFragment
+import com.hanheldpos.ui.screens.product.buy_x_get_y.BuyXGetYFragment
 import com.hanheldpos.ui.screens.discount.DiscountFragment
 import com.hanheldpos.ui.screens.discount.discount_detail.DiscountDetailFragment
 import com.hanheldpos.ui.screens.discount.discount_type.adapter.DiscountServerAdapter

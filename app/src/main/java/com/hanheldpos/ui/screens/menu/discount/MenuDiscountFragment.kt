@@ -10,7 +10,7 @@ import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.databinding.FragmentMenuDiscountBinding
 import com.hanheldpos.model.discount.DiscountTriggerType
 import com.hanheldpos.ui.base.fragment.BaseFragment
-import com.hanheldpos.ui.screens.buy_x_get_y.BuyXGetYFragment
+import com.hanheldpos.ui.screens.product.buy_x_get_y.BuyXGetYFragment
 import com.hanheldpos.ui.screens.cart.CurCartData
 import com.hanheldpos.ui.screens.discount.discount_detail.DiscountDetailFragment
 import com.hanheldpos.ui.screens.discount.discount_type.adapter.MenuDiscountAdapter
