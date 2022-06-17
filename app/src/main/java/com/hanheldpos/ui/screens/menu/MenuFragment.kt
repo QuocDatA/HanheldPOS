@@ -128,51 +128,60 @@ class MenuFragment : BaseFragment<FragmentMenuBinding, MenuVM>(), MenuUV {
 
             }
             NavBarOptionType.UPDATE_DATA -> {
-                if (DataHelper.isNeedToUpdateNewData) {
-                    showAlert(
-                        getString(R.string.new_data_available),
-                        getString(R.string.new_data_update_description),
-                        negativeText = getString(
-                            R.string.later
-                        ),
-                        positiveText = getString(R.string.update),
-                        onClickListener = object : AppAlertDialog.AlertDialogOnClickListener {
-                            override fun onPositiveClick() {
-                                context?.let {
-                                    showLoading(true)
-                                    syncDataService.fetchMenuDiscountData(it,
-                                        object : SyncDataService.SyncDataServiceListener {
-                                            override fun onLoadedResources() {
-                                                showLoading(false)
-                                                DataHelper.isNeedToUpdateNewData = false
-                                                menuAdapter.submitList(
-                                                    viewModel.initMenuItemList(
-                                                        requireContext()
+                context?.let {
+                    showLoading(true)
+                    syncDataService.checkNewUpdateVersion(it,
+                        object : SyncDataService.SyncDataServiceListener {
+                            override fun onLoadedResources() {
+                                showLoading(false)
+                                showAlert(
+                                    getString(R.string.new_data_available),
+                                    getString(R.string.new_data_update_description),
+                                    negativeText = getString(
+                                        R.string.later
+                                    ),
+                                    positiveText = getString(R.string.update),
+                                    onClickListener = object :
+                                        AppAlertDialog.AlertDialogOnClickListener {
+                                        override fun onPositiveClick() {
+                                            showLoading(true)
+                                            syncDataService.fetchMenuDiscountData(it,object : SyncDataService.SyncDataServiceListener{
+                                                override fun onLoadedResources() {
+                                                    DataHelper.isNeedToUpdateNewData = false
+                                                    menuAdapter.submitList(
+                                                        viewModel.initMenuItemList(
+                                                            requireContext()
+                                                        )
                                                     )
-                                                )
-                                                menuAdapter.notifyDataSetChanged()
-                                                screenViewModel.showTablePage()
-                                                showSuccessfully(
-                                                    getString(R.string.done),
-                                                    getString(R.string.new_data_have_been_updated_successfully)
-                                                )
-                                                onFragmentBackPressed()
-                                            }
+                                                    menuAdapter.notifyDataSetChanged()
+                                                    screenViewModel.showTablePage()
+                                                    showSuccessfully(
+                                                        getString(R.string.done),
+                                                        getString(R.string.new_data_have_been_updated_successfully)
+                                                    )
+                                                    onFragmentBackPressed()
+                                                }
 
-                                            override fun onError(message: String?) {
-                                                showLoading(false)
-                                                showMessage(message)
-                                            }
+                                                override fun onError(message: String?) {
+                                                    showLoading(false)
+                                                    showMessage(message)
+                                                }
+                                            })
 
-                                        })
-                                }
+                                        }
+                                    }
+                                )
+
                             }
-                        }
-                    )
 
-                } else {
-                    showMessage(getString(R.string.no_new_update_found))
+                            override fun onError(message: String?) {
+                                showLoading(false)
+                                showMessage(message)
+                            }
+
+                        })
                 }
+
             }
         }
     }

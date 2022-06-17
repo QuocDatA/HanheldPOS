@@ -371,101 +371,110 @@ class SyncDataService : BaseViewModel() {
     fun fetchMenuDiscountData(context: Context, listener: SyncDataServiceListener) {
         val location = UserHelper.getLocationGuid()
         val userGuid = UserHelper.getUserGuid()
-        val deviceGuid = UserHelper.getDeviceGuid()
         var succeededCount = 0
-        fun startFetchMenuDiscount()  {
-            menuRepo.getOrderMenu(
-                userGuid = userGuid,
-                locationGuid = location,
-                callback = object : BaseRepoCallback<BaseResponse<MenuResp>> {
-                    override fun apiResponse(data: BaseResponse<MenuResp>?) {
-                        if (data == null || data.DidError) {
-                            onDataFailure(context.getString(R.string.failed_to_load_data), listener);
-                        } else {
-                            DataHelper.menuLocalStorage = data.Model;
-                            succeededCount++
-                            if (succeededCount >= 3) {
-                                listener.onLoadedResources();
-                            }
+        menuRepo.getOrderMenu(
+            userGuid = userGuid,
+            locationGuid = location,
+            callback = object : BaseRepoCallback<BaseResponse<MenuResp>> {
+                override fun apiResponse(data: BaseResponse<MenuResp>?) {
+                    if (data == null || data.DidError || data.Model == null) {
+                        listener.onError(
+                            context.getString(R.string.failed_to_load_data)
+                        );
+                    } else {
+                        DataHelper.menuLocalStorage = data.Model;
+                        succeededCount++
+                        if (succeededCount >= 3) {
+                            listener.onLoadedResources();
                         }
                     }
+                }
 
-                    override fun showMessage(message: String?) {
-                        onDataFailure(message, listener);
-                    }
-                });
-            discountRepo.getDiscountList(
-                userGuid = userGuid,
-                locationGuid = location,
-                callback = object : BaseRepoCallback<BaseResponse<List<DiscountResp>>> {
-                    override fun apiResponse(data: BaseResponse<List<DiscountResp>>?) {
-                        if (data == null || data.DidError) {
-                            onDataFailure(context.getString(R.string.failed_to_load_data), listener);
-                        } else {
-                            DataHelper.discountsLocalStorage = data.Model;
-                            succeededCount++
-                            if (succeededCount >= 3) {
-                                listener.onLoadedResources();
-                            }
+                override fun showMessage(message: String?) {
+                    listener.onError(message);
+                }
+            });
+        discountRepo.getDiscountList(
+            userGuid = userGuid,
+            locationGuid = location,
+            callback = object : BaseRepoCallback<BaseResponse<List<DiscountResp>>> {
+                override fun apiResponse(data: BaseResponse<List<DiscountResp>>?) {
+                    if (data == null || data.DidError || data.Model == null) {
+                        listener.onError(
+                            context.getString(R.string.failed_to_load_data)
+                        );
+                    } else {
+                        DataHelper.discountsLocalStorage = data.Model;
+                        succeededCount++
+                        if (succeededCount >= 3) {
+                            listener.onLoadedResources();
                         }
                     }
+                }
 
-                    override fun showMessage(message: String?) {
-                        onDataFailure(message, listener);
-                    }
-                },
-            );
+                override fun showMessage(message: String?) {
+                    listener.onError(message);
+                }
+            },
+        );
 
-            discountRepo.getDiscountDetailList(
-                userGuid = userGuid,
-                locationGuid = location,
-                callback = object : BaseRepoCallback<BaseResponse<List<CouponResp>>> {
-                    override fun apiResponse(data: BaseResponse<List<CouponResp>>?) {
-                        if (data == null || data.DidError) {
-                            onDataFailure(context.getString(R.string.failed_to_load_data), listener);
-                        } else {
-                            DataHelper.discountDetailsLocalStorage = data.Model;
-                            succeededCount++
-                            if (succeededCount >= 3) {
-                                listener.onLoadedResources();
-                            }
+        discountRepo.getDiscountDetailList(
+            userGuid = userGuid,
+            locationGuid = location,
+            callback = object : BaseRepoCallback<BaseResponse<List<CouponResp>>> {
+                override fun apiResponse(data: BaseResponse<List<CouponResp>>?) {
+                    if (data == null || data.DidError || data.Model == null) {
+                        listener.onError(
+                            context.getString(R.string.failed_to_load_data),
+                        );
+                    } else {
+                        DataHelper.discountDetailsLocalStorage = data.Model;
+                        succeededCount++
+                        if (succeededCount >= 3) {
+                            listener.onLoadedResources();
                         }
                     }
+                }
 
-                    override fun showMessage(message: String?) {
-                        onDataFailure(message, listener);
-                    }
-                },
-            );
-        }
+                override fun showMessage(message: String?) {
+                    listener.onError(message);
+                }
+            },
+        );
+
+    }
+
+    fun checkNewUpdateVersion(context: Context, listener: SyncDataServiceListener) {
+        val location = UserHelper.getLocationGuid()
+        val userGuid = UserHelper.getUserGuid()
+        val deviceGuid = UserHelper.getDeviceGuid()
         dataRepo.getDataVersion(
             userGuid,
             location,
             deviceGuid,
             callback = object : BaseRepoCallback<BaseResponse<DataVersion>> {
                 override fun apiResponse(data: BaseResponse<DataVersion>?) {
-                    if (data == null || data.DidError) {
+                    if (data == null || data.DidError || data.Model == null) {
                         onDataFailure(context.getString(R.string.failed_to_load_data), listener)
                     } else {
-                        if(DataHelper.dataVersionLocalStorage?.menu != data.Model?.menu || DataHelper.dataVersionLocalStorage?.discount != data.Model?.discount){
+                        if ((DataHelper.dataVersionLocalStorage?.menu ?: 0) < (data.Model.menu
+                                ?: 0) || (DataHelper.dataVersionLocalStorage?.discount
+                                ?: 0) < (data.Model.discount ?: 0)
+                        ) {
                             DataHelper.dataVersionLocalStorage = data.Model
-                            startFetchMenuDiscount()
-                        }
-                        else {
-                            listener.onLoadedResources();
-                            onDataFailure(context.getString(R.string.no_new_update_found), listener)
+                            listener.onLoadedResources()
+
+                        } else {
+                            listener.onError(context.getString(R.string.no_new_update_found))
                         }
 
                     }
                 }
 
                 override fun showMessage(message: String?) {
-                    onDataFailure(message, listener)
+                    listener.onError(message)
                 }
             })
-
-
-
     }
 
     interface SyncDataServiceListener {
