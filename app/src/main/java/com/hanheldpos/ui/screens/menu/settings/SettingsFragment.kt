@@ -28,6 +28,7 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding, SettingsVM>(), Se
     }
 
     override fun initViewModel(viewModel: SettingsVM) {
+
         viewModel.run {
             init(this@SettingsFragment)
             binding.viewModel = this

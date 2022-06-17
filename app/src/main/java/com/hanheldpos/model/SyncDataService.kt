@@ -31,6 +31,7 @@ import com.hanheldpos.data.repository.receipt.ReceiptRepo
 import com.hanheldpos.data.repository.resource.ResourceRepo
 import com.hanheldpos.data.repository.setting.SettingRepo
 import com.hanheldpos.data.repository.system.SystemRepo
+import com.hanheldpos.model.setting.GeneralSetting
 import com.hanheldpos.prefs.PrefKey
 import com.hanheldpos.ui.base.viewmodel.BaseViewModel
 import kotlinx.coroutines.Dispatchers
@@ -311,6 +312,8 @@ class SyncDataService : BaseViewModel() {
                     onDataFailure(message, listener)
                 }
             })
+
+        DataHelper.generalSettingLocalStorage = GeneralSetting();
     }
 
     private fun onDataFailure(message: String?, listener: SyncDataServiceListener) {

@@ -23,6 +23,7 @@ import com.hanheldpos.model.cart.BaseProductInCart
 import com.hanheldpos.model.cart.CartModel
 import com.hanheldpos.model.discount.DiscApplyTo
 import com.hanheldpos.model.discount.DiscountTriggerType
+import com.hanheldpos.model.setting.GeneralSetting
 import com.hanheldpos.prefs.PrefKey
 import com.hanheldpos.ui.screens.cart.CurCartData
 import com.hanheldpos.utils.GSonUtils
@@ -56,6 +57,7 @@ object DataHelper {
         currentDrawerId = null
         numberIncreaseOrder = 0
         // Local
+        generalSettingLocalStorage = null
         hardwareSettingLocalStorage = null
         firebaseSettingLocalStorage = null
         dataVersionLocalStorage = null
@@ -325,6 +327,22 @@ object DataHelper {
         set(value) {
             field = value
             AppPreferences.get().storeValue(PrefKey.Setting.HARDWARE, GSonUtils.toJson(value))
+        }
+
+    var generalSettingLocalStorage: GeneralSetting? = null
+        get() {
+            if (field == null) {
+                field = GSonUtils.toObject(
+                    AppPreferences.get().getString(
+                        PrefKey.Setting.GENERAL
+                    )
+                )
+            }
+            return field
+        }
+        set(value) {
+            field = value
+            AppPreferences.get().storeValue(PrefKey.Setting.GENERAL, GSonUtils.toJson(value))
         }
 
     fun findDiscountAutoList(applyTo: DiscApplyTo): List<DiscountResp> {

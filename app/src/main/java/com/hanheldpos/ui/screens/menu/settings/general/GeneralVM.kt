@@ -12,7 +12,7 @@ class GeneralVM : BaseUiViewModel<GeneralUV>() {
         uiCallback?.onFragmentBackPressed()
     }
 
-    fun getNotificationOptions(context : Context): List<ItemSettingOption> {
+    fun getNotificationOptions(context: Context): List<ItemSettingOption> {
         return mutableListOf(
             ItemSettingOption(
                 title = context.getString(R.string.default_m),
@@ -20,11 +20,11 @@ class GeneralVM : BaseUiViewModel<GeneralUV>() {
             ),
             ItemSettingOption(
                 title = "1 Minute",
-                value = GeneralNotificationType.TIME.apply { amount = 60 }
+                value = GeneralNotificationType.TIME_1M
             ),
             ItemSettingOption(
                 title = "5 Minutes",
-                value = GeneralNotificationType.TIME.apply { amount = 300 }
+                value = GeneralNotificationType.TIME_5M
             ),
             ItemSettingOption(
                 title = context.getString(R.string.forever),
@@ -33,7 +33,7 @@ class GeneralVM : BaseUiViewModel<GeneralUV>() {
         )
     }
 
-    fun getPushOptions(context: Context) : List<ItemSettingOption> {
+    fun getPushOptions(context: Context): List<ItemSettingOption> {
         return mutableListOf(
             ItemSettingOption(
                 title = context.getString(R.string.manual),
@@ -41,23 +41,23 @@ class GeneralVM : BaseUiViewModel<GeneralUV>() {
             ),
             ItemSettingOption(
                 title = "5 Minute",
-                value = GeneralPushType.TIME.apply { amount = 300 }
+                value = GeneralPushType.TIME_5M
             ),
             ItemSettingOption(
                 title = "15 Minutes",
-                value = GeneralPushType.TIME.apply { amount = 15*60 }
+                value = GeneralPushType.TIME_15M
             ),
             ItemSettingOption(
                 title = "30 Minutes",
-                value = GeneralPushType.TIME.apply { amount = 30 * 60 }
+                value = GeneralPushType.TIME_30M
             ),
             ItemSettingOption(
                 title = "1 Hour",
-                value = GeneralPushType.TIME.apply { amount = 60 * 60 }
+                value = GeneralPushType.TIME_1H
             ),
             ItemSettingOption(
                 title = "2 Hours",
-                value = GeneralPushType.TIME.apply { amount = 120 * 60 }
+                value = GeneralPushType.TIME_2H
             ),
         )
     }

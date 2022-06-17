@@ -159,6 +159,9 @@ class CartFragment(private val listener: CartCallBack) :
     }
 
     override fun initData() {
+
+
+
         //init dining option data
         val diningOptions: MutableList<DiningOption> =
             (DataHelper.orderSettingLocalStorage?.ListDiningOptions as List<DiningOption>).toMutableList()

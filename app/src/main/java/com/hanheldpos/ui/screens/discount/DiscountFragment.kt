@@ -45,7 +45,6 @@ class DiscountFragment(private val listener: DiscountCallback) :
 
     override fun initData() {
 
-
         childFragmentManager.beginTransaction().replace(
             R.id.fragment_container,
             DiscountTypeOrderFragment(
