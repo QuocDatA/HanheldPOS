@@ -24,7 +24,7 @@ class OptionNavAdapter(
         val item = getItem(position)
         holder.bindItem(item)
         val binding = holder.binding as ItemMenuBinding
-        if (item.type == NavBarOptionType.UPDATE_DATA && item.value != null && item.value is Boolean && item.value){
+        if (item.type == NavBarOptionType.UPDATE_DATA && item.value != null && item.value is Boolean && item.value == true){
             binding.tagNew.visibility = View.VISIBLE
         }else {
             binding.tagNew.visibility = View.GONE

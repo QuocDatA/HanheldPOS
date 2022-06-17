@@ -19,7 +19,7 @@
         app:cardCornerRadius="@dimen/_2sdp">
         <com.diadiem.pos_components.PTextView
             android:id="@+id/tagNew"
-
+            android:visibility="gone"
             android:paddingVertical="@dimen/_2sdp"
             android:paddingHorizontal="@dimen/_7sdp"
             android:background="@drawable/bg_tag_update_new"
