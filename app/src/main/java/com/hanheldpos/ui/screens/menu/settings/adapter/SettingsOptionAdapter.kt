@@ -10,6 +10,7 @@ import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 
 class SettingsOptionAdapter(
+    private val defaultSelection: Any? = null,
     private val style: SettingOptionType = SettingOptionType.RADIO,
     private val listener: BaseItemClickListener<ItemSettingOption>
 ) :
@@ -31,6 +32,9 @@ class SettingsOptionAdapter(
         position: Int
     ) {
         val item = getItem(position);
+        if (selectedItem.value == -1 && defaultSelection == item.value) {
+            selectedItem.value = position
+        }
         when (style) {
             SettingOptionType.RADIO -> (holder.binding as ItemRadioSettingOptionBinding).let { binding ->
                 binding.item = item;

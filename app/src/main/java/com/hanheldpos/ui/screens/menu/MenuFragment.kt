@@ -19,6 +19,8 @@ import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.dialog.AppAlertDialog
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.home.ScreenViewModel
+import com.hanheldpos.ui.screens.home.order.OrderFragment
+import com.hanheldpos.ui.screens.home.table.TableFragment
 import com.hanheldpos.ui.screens.menu.adapter.ItemOptionNav
 import com.hanheldpos.ui.screens.menu.adapter.OptionNavAdapter
 import com.hanheldpos.ui.screens.menu.discount.MenuDiscountFragment
@@ -147,7 +149,9 @@ class MenuFragment : BaseFragment<FragmentMenuBinding, MenuVM>(), MenuUV {
                                             showLoading(true)
                                             syncDataService.fetchMenuDiscountData(it,object : SyncDataService.SyncDataServiceListener{
                                                 override fun onLoadedResources() {
-                                                    DataHelper.isNeedToUpdateNewData = false
+                                                    DataHelper.isNeedToUpdateNewData.postValue(false)
+                                                    OrderFragment.selectedSort = 0
+                                                    TableFragment.selectedSort = 0
                                                     menuAdapter.submitList(
                                                         viewModel.initMenuItemList(
                                                             requireContext()

@@ -110,11 +110,12 @@ class TableFragment : BaseFragment<FragmentTableBinding, TableVM>(), TableUV {
         screenViewModel.dropDownSelected.observe(this) {
             val screen = screenViewModel.screenEvent.value?.screen;
             if (screen == HomeFragment.HomePage.Table) {
-                if (it.realItem is Floor) {
-                    viewModel.floorItemSelected.value = it.realItem;
-                } else if (it.realItem == null)
-                    viewModel.getTableList()?.toMutableList()
-                        ?.let { it1 -> tableAdapterHelper.submitList(it1); };
+                if (it != null)
+                    if (it.realItem == null)
+                        viewModel.getTableList()?.toMutableList()
+                            ?.let { it1 -> tableAdapterHelper.submitList(it1); };
+                    else if (it.realItem is Floor)
+                        viewModel.floorItemSelected.value = it.realItem;
             }
         }
 
@@ -156,9 +157,9 @@ class TableFragment : BaseFragment<FragmentTableBinding, TableVM>(), TableUV {
                     TableInputFragment.TableInputListener {
                     override fun onCompleteTable(numberCustomer: Long) {
                         // Init cart first time
-                        try{
+                        try {
                             cartDataVM.initCart(numberCustomer, item)
-                        }catch (e: Exception) {
+                        } catch (e: Exception) {
                             e.printStackTrace()
                             showMessage(getString(R.string.an_error_occurred_please_try_again))
                             return

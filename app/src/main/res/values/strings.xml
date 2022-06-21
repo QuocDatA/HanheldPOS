@@ -301,4 +301,5 @@
     <string name="cart_has_not_been_initialized">Cart has not been initialized!</string>
     <string name="done">Done!</string>
     <string name="new_data_have_been_updated_successfully">New data have been updated successfully</string>
+    <string name="new_data_available_description">There are new data for your app./n Please update now</string>
 </resources>

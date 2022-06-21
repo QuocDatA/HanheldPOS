@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hanheldpos.R
@@ -15,6 +16,7 @@ import com.hanheldpos.model.menu.settings.ItemSettingOption
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.adapter.GridSpacingItemDecoration
 import com.hanheldpos.ui.base.fragment.BaseFragment
+import com.hanheldpos.ui.screens.menu.settings.SettingsControlVM
 import com.hanheldpos.ui.screens.menu.settings.adapter.SettingOptionType
 import com.hanheldpos.ui.screens.menu.settings.adapter.SettingsOptionAdapter
 
@@ -22,6 +24,7 @@ class HardwareFragment : BaseFragment<FragmentHardwareBinding, HardwareVM>(), Ha
     private lateinit var printerStatusAdapter: SettingsOptionAdapter
     private lateinit var deviceStatusAdapter: SettingsOptionAdapter
     private lateinit var selectPrinterAdapter: SettingsOptionAdapter
+    private val settingsControlVM by activityViewModels<SettingsControlVM>()
 
     override fun layoutRes(): Int {
         return R.layout.fragment_hardware
@@ -39,7 +42,8 @@ class HardwareFragment : BaseFragment<FragmentHardwareBinding, HardwareVM>(), Ha
     }
 
     override fun initView() {
-        printerStatusAdapter = SettingsOptionAdapter(style = SettingOptionType.BOX,
+        printerStatusAdapter = SettingsOptionAdapter(
+            null, style = SettingOptionType.BOX,
             object : BaseItemClickListener<ItemSettingOption> {
                 override fun onItemClick(adapterPosition: Int, item: ItemSettingOption) {
 
@@ -56,7 +60,7 @@ class HardwareFragment : BaseFragment<FragmentHardwareBinding, HardwareVM>(), Ha
             adapter = printerStatusAdapter
         }
 
-        deviceStatusAdapter = SettingsOptionAdapter(style = SettingOptionType.BOX,
+        deviceStatusAdapter = SettingsOptionAdapter(null, style = SettingOptionType.BOX,
             object : BaseItemClickListener<ItemSettingOption> {
                 override fun onItemClick(adapterPosition: Int, item: ItemSettingOption) {
 
@@ -73,7 +77,7 @@ class HardwareFragment : BaseFragment<FragmentHardwareBinding, HardwareVM>(), Ha
             adapter = deviceStatusAdapter
         }
 
-        selectPrinterAdapter = SettingsOptionAdapter(style = SettingOptionType.RADIO,
+        selectPrinterAdapter = SettingsOptionAdapter(null,style = SettingOptionType.RADIO,
             object : BaseItemClickListener<ItemSettingOption> {
                 override fun onItemClick(adapterPosition: Int, item: ItemSettingOption) {
 

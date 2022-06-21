@@ -71,11 +71,12 @@ class MainActivity : BaseFragmentBindingActivity<ActivityMainBinding, MainVM>(),
                             it1
                         ).toString()
                     })?.let { dataVersionNew ->
-                        DataHelper.isNeedToUpdateNewData =
+                        DataHelper.isNeedToUpdateNewData.postValue(
                             (DataHelper.dataVersionLocalStorage?.menu ?: 0) < (dataVersionNew.menu
                                 ?: 0) || (DataHelper.dataVersionLocalStorage?.discount
                                 ?: 0) < (dataVersionNew.discount
                                 ?: 0)
+                        )
                     }
                 }
         }

@@ -10,8 +10,10 @@ import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.order.settings.DiningOption
 import com.hanheldpos.databinding.FragmentHomeBinding
 import com.hanheldpos.extension.avoidDropdownFocus
+import com.hanheldpos.extension.notifyValueChange
 import com.hanheldpos.extension.setOnClickDebounce
 import com.hanheldpos.model.DataHelper
+import com.hanheldpos.model.SyncDataService
 import com.hanheldpos.ui.base.dialog.AppAlertDialog
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.base.pager.FragmentPagerAdapter
@@ -39,6 +41,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
     private val screenViewModel by activityViewModels<ScreenViewModel>()
     private val settingsControlVM by activityViewModels<SettingsControlVM>()
     private val cartDataVM by activityViewModels<CartDataVM>()
+    private val syncDataService by lazy { SyncDataService() }
 
     // Adapter
     private lateinit var paperAdapter: FragmentPagerAdapter
@@ -103,20 +106,54 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
     override fun initData() {
         settingsControlVM.init(this, listener = object : SettingsControlVM.SettingListener {
             override fun onNotification() {
+                showAlert(
+                    title = getString(R.string.new_data_available),
+                    message = getString(R.string.new_data_update_description),
+                    negativeText = getString(R.string.later),
+                    positiveText = getString(R.string.update),
+                    onClickListener = object :
+                        AppAlertDialog.AlertDialogOnClickListener {
+                        override fun onPositiveClick() {
+                            showLoading(true)
+                            syncDataService.fetchMenuDiscountData(requireContext(),
+                                object : SyncDataService.SyncDataServiceListener {
+                                    override fun onLoadedResources() {
+                                        DataHelper.isNeedToUpdateNewData.postValue(false)
+                                        OrderFragment.selectedSort = 0
+                                        TableFragment.selectedSort = 0
+                                        screenViewModel.showTablePage()
+                                        showSuccessfully(
+                                            getString(R.string.done),
+                                            getString(R.string.new_data_have_been_updated_successfully)
+                                        )
+                                    }
 
+                                    override fun onError(message: String?) {
+                                        showLoading(false)
+                                        showMessage(message)
+                                    }
+                                })
+
+                        }
+                    }
+                )
             }
 
             override fun onPushOrder() {
 
             }
         })
+
+        DataHelper.isNeedToUpdateNewData.observe(this) {
+            settingsControlVM.generalSetting.notifyValueChange()
+        }
     }
 
     override fun initAction() {
         NetworkUtils.cancelNetworkCheck()
 
-        cartDataVM.cartModelLD.observe(this){
-            if(it == null) {
+        cartDataVM.cartModelLD.observe(this) {
+            if (it == null) {
                 screenViewModel.showTablePage()
             }
         }
@@ -190,7 +227,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
                 ) {
                     val item = parent?.getItemAtPosition(position) as HomePage;
                     if (screenViewModel.screenEvent.value?.screen != item) {
-                        screenViewModel.screenEvent.value = ScreenViewModel.ScreenEvent(item, null)
+                        screenViewModel.screenEvent.postValue(
+                            ScreenViewModel.ScreenEvent(
+                                item,
+                                null
+                            )
+                        )
                     }
                     switchToPage(item);
                 }

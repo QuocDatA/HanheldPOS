@@ -1,6 +1,7 @@
 package com.hanheldpos.model
 
 
+import androidx.lifecycle.MutableLiveData
 import com.hanheldpos.data.api.ApiConst
 import com.hanheldpos.data.api.pojo.customer.CustomerResp
 import com.hanheldpos.data.api.pojo.data.DataVersion
@@ -31,7 +32,7 @@ import com.utils.helper.AppPreferences
 import java.util.*
 
 object DataHelper {
-    var isNeedToUpdateNewData : Boolean = false
+    var isNeedToUpdateNewData = MutableLiveData<Boolean>(false)
     var currentDrawerId: String? = null;
 
     fun isValidData(): Boolean {

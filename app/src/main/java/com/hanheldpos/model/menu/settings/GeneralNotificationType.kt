@@ -7,7 +7,7 @@ enum class GeneralNotificationType(var value: Int? = null) {
 
     companion object {
         fun fromInt(value: Int): GeneralNotificationType? {
-            GeneralNotificationType.values().forEach {
+            values().forEach {
                 if (it.value == value) {
                     return it
                 }

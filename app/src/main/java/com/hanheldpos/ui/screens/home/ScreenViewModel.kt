@@ -9,22 +9,24 @@ import com.hanheldpos.ui.base.viewmodel.BaseViewModel
 class ScreenViewModel : BaseViewModel() {
     data class ScreenEvent(
         val screen: HomeFragment.HomePage,
-        val data: Parcelable? = null
+        val data: Parcelable? = null,
     )
+
 
     val screenEvent: MutableLiveData<ScreenEvent> = MutableLiveData()
 
     fun showOrderPage(data: Parcelable? = null) {
-        screenEvent.value = ScreenEvent(HomeFragment.HomePage.Order, data)
+        screenEvent.postValue(ScreenEvent(HomeFragment.HomePage.Order, data))
+
     }
 
     fun showTablePage(data: Parcelable? = null) {
-        screenEvent.value = ScreenEvent(HomeFragment.HomePage.Table, data)
+        screenEvent.postValue(ScreenEvent(HomeFragment.HomePage.Table, data))
     }
 
     //Sub Spinner Sort
     val dropDownSelected = MutableLiveData<DropDownItem>();
-    fun onChangeDropdown(item : DropDownItem){
+    fun onChangeDropdown(item: DropDownItem) {
         dropDownSelected.value = item;
     }
 

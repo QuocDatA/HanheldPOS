@@ -2,15 +2,19 @@ package com.hanheldpos.ui.screens.menu.settings.general
 
 import android.annotation.SuppressLint
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentGeneralBinding
 import com.hanheldpos.model.menu.settings.ItemSettingOption
 import com.hanheldpos.model.menu.settings.BillLanguageOption
+import com.hanheldpos.model.menu.settings.GeneralNotificationType
+import com.hanheldpos.model.menu.settings.GeneralPushType
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.home.DropDownItem
+import com.hanheldpos.ui.screens.menu.settings.SettingsControlVM
 import com.hanheldpos.ui.screens.menu.settings.adapter.BillLanguageOptionSpinner
 import com.hanheldpos.ui.screens.menu.settings.adapter.SettingOptionType
 import com.hanheldpos.ui.screens.menu.settings.adapter.SettingsOptionAdapter
@@ -21,6 +25,7 @@ class GeneralFragment : BaseFragment<FragmentGeneralBinding, GeneralVM>(), Gener
     private lateinit var notificationAdapter: SettingsOptionAdapter
     private lateinit var pushAdapter: SettingsOptionAdapter
     private lateinit var billLanguageOptionSpinner: BillLanguageOptionSpinner
+    private val settingsControlVM by activityViewModels<SettingsControlVM>()
 
     override fun layoutRes(): Int {
         return R.layout.fragment_general
@@ -39,11 +44,15 @@ class GeneralFragment : BaseFragment<FragmentGeneralBinding, GeneralVM>(), Gener
 
     override fun initView() {
         notificationAdapter =
-            SettingsOptionAdapter(style = SettingOptionType.RADIO,object : BaseItemClickListener<ItemSettingOption> {
-                override fun onItemClick(adapterPosition: Int, item: ItemSettingOption) {
-
-                }
-            })
+            SettingsOptionAdapter(defaultSelection = settingsControlVM.generalSetting.value?.notificationTime,
+                style = SettingOptionType.RADIO,
+                object : BaseItemClickListener<ItemSettingOption> {
+                    override fun onItemClick(adapterPosition: Int, item: ItemSettingOption) {
+                        settingsControlVM.generalSetting.postValue(settingsControlVM.generalSetting.value.apply {
+                            this?.notificationTime = item.value as GeneralNotificationType
+                        })
+                    }
+                })
         notificationAdapter.let {
             binding.notificationOption.listOption.apply {
                 adapter = it
@@ -65,9 +74,12 @@ class GeneralFragment : BaseFragment<FragmentGeneralBinding, GeneralVM>(), Gener
 
         pushAdapter =
             SettingsOptionAdapter(
+                settingsControlVM.generalSetting.value?.automaticallyPushOrdersTime,
                 style = SettingOptionType.RADIO, object : BaseItemClickListener<ItemSettingOption> {
                     override fun onItemClick(adapterPosition: Int, item: ItemSettingOption) {
-
+                        settingsControlVM.generalSetting.postValue(settingsControlVM.generalSetting.value.apply {
+                            this?.automaticallyPushOrdersTime = item.value as GeneralPushType
+                        })
                     }
                 })
 

@@ -49,7 +49,7 @@ class MenuVM : BaseUiViewModel<MenuUV>() {
             ItemOptionNav(
                 type = NavBarOptionType.UPDATE_DATA,
                 name = getNameMenu(NavBarOptionType.UPDATE_DATA, context),
-                value = DataHelper.isNeedToUpdateNewData
+                value = DataHelper.isNeedToUpdateNewData.value
             ),
             ItemOptionNav(
                 type = NavBarOptionType.LOGOUT_DEVICE,
