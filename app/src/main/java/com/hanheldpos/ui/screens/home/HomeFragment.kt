@@ -25,6 +25,7 @@ import com.hanheldpos.ui.screens.home.table.TableFragment
 import com.hanheldpos.ui.screens.main.adapter.SubSpinnerAdapter
 import com.hanheldpos.ui.screens.main.adapter.TabSpinnerAdapter
 import com.hanheldpos.ui.screens.menu.MenuFragment
+import com.hanheldpos.ui.screens.menu.report.sale.SaleReportCommonVM
 import com.hanheldpos.ui.screens.menu.settings.SettingsControlVM
 import com.hanheldpos.utils.NetworkUtils
 
@@ -40,6 +41,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
 
     private val screenViewModel by activityViewModels<ScreenViewModel>()
     private val settingsControlVM by activityViewModels<SettingsControlVM>()
+    private val saleReportCommonVM by activityViewModels<SaleReportCommonVM>()
     private val cartDataVM by activityViewModels<CartDataVM>()
     private val syncDataService by lazy { SyncDataService() }
 
@@ -140,7 +142,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
             }
 
             override fun onPushOrder() {
-
+                Log.d("Push Order", "Time to push")
+                saleReportCommonVM.onSyncOrders(requireView(), {}, {})
             }
         })
 
