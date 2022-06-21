@@ -17,22 +17,21 @@
         android:background="@color/color_2"
         android:foreground="?attr/selectableItemBackground"
         app:cardCornerRadius="@dimen/_2sdp">
+
         <com.diadiem.pos_components.PTextView
             android:id="@+id/tagNew"
-            android:visibility="gone"
-            android:paddingVertical="@dimen/_2sdp"
-            android:paddingHorizontal="@dimen/_7sdp"
-            android:background="@drawable/bg_tag_update_new"
-            android:text="@string/new_string"
-            android:layout_marginVertical="@dimen/_5sdp"
-            android:layout_marginHorizontal="@dimen/_30sdp"
-            android:layout_alignParentEnd="true"
-            app:useTextHeader="h6"
-            app:useFontStyle="normal"
-            app:useTextColor="color2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            />
+            android:layout_toEndOf="@id/textName"
+            android:layout_marginVertical="@dimen/_5sdp"
+            android:background="@drawable/bg_tag_update_new"
+            android:paddingHorizontal="@dimen/_7sdp"
+            android:paddingVertical="@dimen/_2sdp"
+            android:text="@string/new_string"
+            android:visibility="visible"
+            app:useFontStyle="normal"
+            app:useTextColor="color2"
+            app:useTextHeader="h6" />
 
         <com.diadiem.pos_components.PTextView
             android:id="@+id/textName"
