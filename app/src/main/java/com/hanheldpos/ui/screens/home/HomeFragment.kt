@@ -1,5 +1,6 @@
 package com.hanheldpos.ui.screens.home
 
+import android.app.Activity
 import android.util.Log
 import android.view.View
 import android.view.ViewTreeObserver
@@ -11,7 +12,6 @@ import com.hanheldpos.data.api.pojo.order.settings.DiningOption
 import com.hanheldpos.databinding.FragmentHomeBinding
 import com.hanheldpos.extension.avoidDropdownFocus
 import com.hanheldpos.extension.notifyValueChange
-import com.hanheldpos.extension.setOnClickDebounce
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.SyncDataService
 import com.hanheldpos.ui.base.dialog.AppAlertDialog
@@ -28,6 +28,9 @@ import com.hanheldpos.ui.screens.menu.MenuFragment
 import com.hanheldpos.ui.screens.menu.report.sale.SaleReportCommonVM
 import com.hanheldpos.ui.screens.menu.settings.SettingsControlVM
 import com.hanheldpos.utils.NetworkUtils
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 class HomeFragment : BaseFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
@@ -50,6 +53,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
     private lateinit var subSpinnerAdapter: SubSpinnerAdapter
     private lateinit var diningOptionSpinnerAdapter: DiningOptionSpinnerAdapter
 
+    // Value
+    private var isWaitingForNotification: Boolean = false
     override fun layoutRes() = R.layout.fragment_home;
 
     override fun viewModelClass(): Class<HomeVM> {
@@ -67,7 +72,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
     }
 
     override fun initView() {
-
         binding.root.viewTreeObserver.addOnGlobalLayoutListener(object :
             ViewTreeObserver.OnGlobalLayoutListener {
             override fun onGlobalLayout() {
@@ -108,37 +112,48 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
     override fun initData() {
         settingsControlVM.init(this, listener = object : SettingsControlVM.SettingListener {
             override fun onNotification() {
-                showAlert(
-                    title = getString(R.string.new_data_available),
-                    message = getString(R.string.new_data_update_description),
-                    negativeText = getString(R.string.later),
-                    positiveText = getString(R.string.update),
-                    onClickListener = object :
-                        AppAlertDialog.AlertDialogOnClickListener {
-                        override fun onPositiveClick() {
-                            showLoading(true)
-                            syncDataService.fetchMenuDiscountData(requireContext(),
-                                object : SyncDataService.SyncDataServiceListener {
-                                    override fun onLoadedResources() {
-                                        DataHelper.isNeedToUpdateNewData.postValue(false)
-                                        OrderFragment.selectedSort = 0
-                                        TableFragment.selectedSort = 0
-                                        screenViewModel.showTablePage()
-                                        showSuccessfully(
-                                            getString(R.string.done),
-                                            getString(R.string.new_data_have_been_updated_successfully)
-                                        )
-                                    }
-
-                                    override fun onError(message: String?) {
-                                        showLoading(false)
-                                        showMessage(message)
-                                    }
-                                })
-
-                        }
+                CoroutineScope(Dispatchers.IO).launch {
+                    if (isWaitingForNotification) return@launch
+                    isWaitingForNotification = true
+                    while (navigator.activeFragment != this@HomeFragment) {
                     }
-                )
+                    isWaitingForNotification = false
+                    launch(Dispatchers.Main) {
+                        showAlert(
+                            title = getString(R.string.new_data_available),
+                            message = getString(R.string.new_data_update_description),
+                            negativeText = getString(R.string.later),
+                            positiveText = getString(R.string.update),
+                            onClickListener = object :
+                                AppAlertDialog.AlertDialogOnClickListener {
+                                override fun onPositiveClick() {
+                                    showLoading(true)
+                                    syncDataService.fetchMenuDiscountData(requireContext(),
+                                        object : SyncDataService.SyncDataServiceListener {
+                                            override fun onLoadedResources() {
+                                                DataHelper.isNeedToUpdateNewData.postValue(false)
+                                                OrderFragment.selectedSort = 0
+                                                TableFragment.selectedSort = 0
+                                                screenViewModel.showTablePage()
+                                                showSuccessfully(
+                                                    getString(R.string.done),
+                                                    getString(R.string.new_data_have_been_updated_successfully)
+                                                )
+                                            }
+
+                                            override fun onError(message: String?) {
+                                                showLoading(false)
+                                                showMessage(message)
+                                            }
+                                        })
+
+                                }
+                            }
+                        )
+                    }
+
+                }
+
             }
 
             override fun onPushOrder() {

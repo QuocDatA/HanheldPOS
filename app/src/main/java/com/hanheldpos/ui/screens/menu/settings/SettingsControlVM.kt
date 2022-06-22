@@ -11,10 +11,7 @@ import com.hanheldpos.model.menu.settings.GeneralNotificationType
 import com.hanheldpos.model.menu.settings.GeneralPushType
 import com.hanheldpos.model.setting.GeneralSetting
 import com.hanheldpos.ui.base.viewmodel.BaseViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.Future
@@ -58,8 +55,8 @@ class SettingsControlVM : BaseViewModel() {
     }
     private val runNotification = fun(value: Int?): Job {
         return viewModelScope.launch {
-            while ((value ?: -1) >= 0) {
-                launch(Dispatchers.Main) {
+            while ((value ?: -1) >= 0 && this.isActive) {
+                launch(Dispatchers.Main ) {
                     listener?.onNotification()
                 }
                 delay(value?.toLong()?.times(1000) ?: 0)
@@ -68,7 +65,7 @@ class SettingsControlVM : BaseViewModel() {
     }
     private val runAutomaticPushOrder = fun(value: Int?): Job {
         return viewModelScope.launch(Dispatchers.IO) {
-            while ((value ?: -1) >= 0) {
+            while ((value ?: -1) >= 0 && this.isActive) {
                 launch(Dispatchers.Main) {
                     listener?.onPushOrder()
                 }
