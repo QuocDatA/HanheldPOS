@@ -46,7 +46,6 @@ class BuyXGetYFragment(
             initLifeCycle(this@BuyXGetYFragment)
             binding.viewModel = this
             binding.discount = discount
-            binding
         }
     }
 
