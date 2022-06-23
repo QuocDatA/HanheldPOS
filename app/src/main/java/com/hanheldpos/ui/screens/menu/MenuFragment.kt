@@ -23,9 +23,8 @@ import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.home.ScreenViewModel
 import com.hanheldpos.ui.screens.menu.adapter.ItemOptionNav
 import com.hanheldpos.ui.screens.menu.adapter.OptionNavAdapter
-import com.hanheldpos.ui.screens.menu.discount.MenuDiscountFragment
 import com.hanheldpos.ui.screens.menu.customers.CustomerMenuFragment
-import com.hanheldpos.ui.screens.menu.customers.CustomerMenuVM
+import com.hanheldpos.ui.screens.menu.discount.MenuDiscountFragment
 import com.hanheldpos.ui.screens.menu.order_history.OrderHistoryFragment
 import com.hanheldpos.ui.screens.menu.orders.OrdersMenuFragment
 import com.hanheldpos.ui.screens.menu.report.ReportFragment
@@ -112,12 +111,13 @@ class MenuFragment(private val listener: MenuCallBack) : BaseFragment<FragmentMe
             NavBarOptionType.DISCOUNT -> {
                 navigator.goToWithCustomAnimation(MenuDiscountFragment(listener = object: MenuDiscountFragment.MenuDiscountCallBack {
                     override fun updateDiscountCouponCode(discountCouponList: List<DiscountCoupon>?) {
+                        onFragmentBackPressed()
                         listener.updateDiscountCouponCode(discountCouponList)
                     }
 
                     override fun openDiscountBuyXGetY(discount: DiscountResp) {
                         onFragmentBackPressed()
-                       listener.openBuyXGetY(discount)
+                        listener.openBuyXGetY(discount)
                     }
 
                 }))
