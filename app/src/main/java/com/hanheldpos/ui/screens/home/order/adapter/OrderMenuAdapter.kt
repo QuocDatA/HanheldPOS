@@ -17,6 +17,7 @@ import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 
 class OrderMenuAdapter(
+    private val space : Int,
     private val listener: OrderMenuCallBack<OrderMenuItem>,
     private val baseListener: BaseItemClickListener<OrderMenuItem>
 ) : BaseBindingListAdapter<OrderMenuItem>(DiffCallBack()) {
@@ -40,7 +41,7 @@ class OrderMenuAdapter(
             viewType,
             parent, false
         ).also {
-            val height = ((parent.height) / 11.2) - parent.resources.getDimension(R.dimen._6sdp)
+            val height = ((parent.height - space * 11) / 10)
             when (it) {
                 is ItemOrderMenuBinding -> it.btnMain.layoutParams.height = height.toInt()
                 is ItemOrderMenuDirectionButtonBinding -> it.layoutMain.layoutParams.height = height.toInt()

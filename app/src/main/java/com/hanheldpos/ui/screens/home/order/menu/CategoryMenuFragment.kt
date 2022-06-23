@@ -11,6 +11,7 @@ import com.hanheldpos.databinding.FragmentCategoryMenuBinding
 import com.hanheldpos.model.home.order.menu.MenuModeViewType
 import com.hanheldpos.model.home.order.menu.OrderMenuItem
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
+import com.hanheldpos.ui.base.adapter.GridSpacingItemDecoration
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.home.order.OrderDataVM
 import com.hanheldpos.ui.screens.home.order.adapter.OrderMenuAdapter
@@ -58,6 +59,7 @@ class CategoryMenuFragment(
         });
 
         menuAdapter = OrderMenuAdapter(
+            space = resources.getDimension(R.dimen._12sdp).toInt(),
             listener = object : OrderMenuAdapter.OrderMenuCallBack<OrderMenuItem> {
 
                 override fun onBtnPrevClick() {
@@ -82,6 +84,7 @@ class CategoryMenuFragment(
             binding.categoryList.apply {
                 adapter = it
                 itemAnimator = null
+                addItemDecoration(GridSpacingItemDecoration(2,resources.getDimension(R.dimen._12sdp).toInt(),true))
             }
         }
         binding.categoryList.layoutManager = object: GridLayoutManager(this.requireContext(), 2) {
