@@ -1,6 +1,5 @@
 package com.hanheldpos.printer.layouts.report
 
-import com.hanheldpos.printer.printer_setup.PrintOptions
 import com.hanheldpos.printer.printer_setup.printer_manager.BasePrinterManager
 import com.hanheldpos.printer.wagu.Block
 import com.hanheldpos.printer.wagu.WaguUtils
@@ -8,17 +7,18 @@ import com.hanheldpos.data.api.pojo.report.ReportSalesResp
 import com.hanheldpos.model.menu.report.ReportHelper
 import com.hanheldpos.model.menu.report.SaleOptionPage
 import com.hanheldpos.model.report.SaleReportFilter
+import com.hanheldpos.printer.printer_setup.PrintConfig
 import com.hanheldpos.utils.PriceUtils
 
 
 class OverviewLayout(
     printer: BasePrinterManager,
-    printOptions: PrintOptions,
+    printConfig: PrintConfig,
     reportSalesModel: ReportSalesResp?,
     filterOptionReportSale: SaleReportFilter?
 ) : BaseLayoutReport(
     printer,
-    printOptions,
+    printConfig,
     title = "Sales Report",
     reportSalesModel,
     filterOptionReportSale
@@ -88,8 +88,8 @@ class OverviewLayout(
                     charPerLineNormal,
                     list = mutableListOf(
                         mutableListOf(
-                            it.DeviceName ?: "",
-                            (it.Quantity ?: 0).toString(),
+                            it.DeviceName,
+                            it.Quantity.toString(),
                             PriceUtils.formatStringPrice(it.Total),
                         )
                     ),

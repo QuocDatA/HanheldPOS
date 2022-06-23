@@ -1,6 +1,5 @@
 package com.hanheldpos.printer.layouts.order
 
-import com.hanheldpos.printer.printer_setup.PrintOptions
 import com.hanheldpos.printer.printer_setup.printer_manager.BasePrinterManager
 import com.hanheldpos.printer.wagu.Block
 import com.hanheldpos.printer.wagu.WaguUtils
@@ -8,30 +7,31 @@ import com.hanheldpos.printer.wagu.WrapType
 import com.hanheldpos.model.order.OrderModel
 import com.hanheldpos.model.order.ProductChosen
 import com.hanheldpos.model.product.ExtraConverter
+import com.hanheldpos.printer.printer_setup.PrintConfig
 import com.hanheldpos.utils.StringUtils
 
 
 open class KitchenLayout(
     order: OrderModel,
     printer: BasePrinterManager,
-    printOptions: PrintOptions,
+    printConfig: PrintConfig,
     isReprint: Boolean,
 ) : BaseLayoutOrder(
-    order, printer, printOptions, isReprint
+    order, printer, printConfig, isReprint
 ) {
 
 
-    final override val leftColumn = printOptions.deviceInfo.leftColumnWidth() / 2
-    final override val rightColumn = printOptions.deviceInfo.rightColumnWidth() / 2
+    final override val leftColumn = printConfig.deviceInfo.leftColumnWidth() / 2
+    final override val rightColumn = printConfig.deviceInfo.rightColumnWidth() / 2
     override fun columnExtraSize() = mutableListOf(centerColumn - 2)
 
     override val centerColumn =
-        printOptions.deviceInfo.charsPerLineLarge() - leftColumn - rightColumn
+        printConfig.deviceInfo.charsPerLineLarge() - leftColumn - rightColumn
 
 
     override fun print() {
         printBillStatus()
-        feedLines(printOptions.deviceInfo.linesFeed(1))
+        feedLines(printConfig.deviceInfo.linesFeed(1))
 
         printOrderInfo()
         printDivider()
@@ -40,10 +40,10 @@ open class KitchenLayout(
         printDivider()
 
         printNote(drawBottomLine = false)
-        feedLines(printOptions.deviceInfo.linesFeed(1))
+        feedLines(printConfig.deviceInfo.linesFeed(1))
 
         printTableNumber()
-        feedLines(printOptions.deviceInfo.linesFeed(3))
+        feedLines(printConfig.deviceInfo.linesFeed(3))
 
         cutPaper()
     }

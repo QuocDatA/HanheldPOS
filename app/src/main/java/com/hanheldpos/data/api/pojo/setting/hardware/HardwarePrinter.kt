@@ -1,8 +1,11 @@
 package com.hanheldpos.data.api.pojo.setting.hardware
 
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class HardwarePrinter(
     @SerializedName("ConnectionList")
     val connectionList: List<HardwareConnection>?,
@@ -22,4 +25,4 @@ data class HardwarePrinter(
     val receiptList: List<HardwareReceipt>?,
     @SerializedName("Visible")
     val visible: Int?
-)
+) : Parcelable

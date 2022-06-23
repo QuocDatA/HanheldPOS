@@ -1,7 +1,6 @@
 package com.hanheldpos.ui.screens.menu.order_detail
 
 import android.annotation.SuppressLint
-import com.hanheldpos.printer.printer_setup.PrintOptions
 import com.hanheldpos.PosApp
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentOrderDetailViewBinding
@@ -21,7 +20,7 @@ import kotlinx.coroutines.launch
 class OrderDetailViewFragment(private val orderId: String) :
     BaseFragment<FragmentOrderDetailViewBinding, OrderDetailViewVM>(), OrderDetailViewUV {
     private lateinit var orderDetailItemViewAdapter: OrderDetailItemViewAdapter
-    private lateinit var orderDetailPaymentViewAdapter : OrderDetailPaymentAdapter
+    private lateinit var orderDetailPaymentViewAdapter: OrderDetailPaymentAdapter
     override fun layoutRes(): Int {
         return R.layout.fragment_order_detail_view
     }
@@ -52,23 +51,11 @@ class OrderDetailViewFragment(private val orderId: String) :
 
     override fun initAction() {
         binding.btnPrint.setOnClickDebounce {
-            CoroutineScope(Dispatchers.IO).launch{
+            CoroutineScope(Dispatchers.IO).launch {
                 try {
-                    BillPrinterManager.init(
-                        PosApp.instance.applicationContext,
-//                        PrintOptions.bluetooth(deviceType = DeviceType.NO_SDK.Types.HANDHELD),
-                        PrintOptions.urovo(),
-                        onConnectionFailed = { ex ->
-                            launch(Dispatchers.Main) {
-                                showMessage(ex.message)
-                            }
-
-                        }
-                    ).apply {
+                    BillPrinterManager.get { }.run {
                         viewModel.orderModel.value?.let {
-                            printBill(
-                                it,
-                                LayoutType.Order.Cashier,true)
+                            printBill(it, true)
                         }
 
                     }

@@ -1,6 +1,5 @@
 package com.hanheldpos.ui.screens.payment.completed
 
-import com.hanheldpos.printer.printer_setup.PrintOptions
 import com.hanheldpos.PosApp
 import com.hanheldpos.R
 import com.hanheldpos.binding.setPriceView
@@ -46,18 +45,8 @@ class PaymentCompletedFragment(
 
                     launch(Dispatchers.IO) {
                         try {
-                            BillPrinterManager.init(
-                                PosApp.instance.applicationContext,
-//                                PrintOptions.bluetooth(deviceType = DeviceType.NO_SDK.Types.HANDHELD),
-                                PrintOptions.urovo(),
-                                onConnectionFailed = { ex ->
-                                    launch(Dispatchers.Main) {
-                                        showMessage(ex.message)
-                                    }
-
-                                }
-                            ).apply {
-                                printBill(DatabaseMapper.mappingOrderReqFromEntity(completedEntity),LayoutType.Order.Cashier,false)
+                            BillPrinterManager.get {  }.run {
+                                printBill(DatabaseMapper.mappingOrderReqFromEntity(completedEntity),false)
                             }
                         } catch (e: Exception) {
                             e.printStackTrace()

@@ -1,12 +1,16 @@
 package com.hanheldpos.ui.screens.main
 
+import android.util.Log
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.hanheldpos.PosApp
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.data.DataVersion
 import com.hanheldpos.databinding.ActivityMainBinding
 import com.hanheldpos.model.DataHelper
+import com.hanheldpos.printer.BillPrinterManager
 import com.hanheldpos.printer.PrinterException
+import com.hanheldpos.printer.layouts.LayoutType
 import com.hanheldpos.ui.base.activity.BaseFragmentBindingActivity
 import com.hanheldpos.ui.base.fragment.FragmentNavigator
 import com.hanheldpos.ui.screens.pincode.PinCodeFragment
@@ -63,6 +67,8 @@ class MainActivity : BaseFragmentBindingActivity<ActivityMainBinding, MainVM>(),
     }
 
     override fun initAction() {
+
+        // Setup firebase
         DataHelper.firebaseSettingLocalStorage?.fireStorePath?.let {
             Firebase.firestore.collection(it.dataVersion ?: "")
                 .addSnapshotListener { value, error ->
@@ -80,6 +86,22 @@ class MainActivity : BaseFragmentBindingActivity<ActivityMainBinding, MainVM>(),
                     }
                 }
         }
+        // Setup Printer
+        CoroutineScope(Dispatchers.IO).launch {
+            BillPrinterManager.init(
+                PosApp.instance.applicationContext,
+                onConnectionSuccess = {
+                   Log.d("Printer","The printer is connected with config: $it")
+                },
+                onConnectionFailed = { ex ->
+                    launch(Dispatchers.Main) {
+                        showMessage(ex.message)
+                    }
+
+                }
+            )
+        }
+
 
     }
 

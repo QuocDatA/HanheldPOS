@@ -1,8 +1,11 @@
 package com.hanheldpos.data.api.pojo.setting.hardware
 
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class HardwareConnection(
     @SerializedName("ConnectionTypeId")
     val connectionTypeId: Int?,
@@ -14,4 +17,4 @@ data class HardwareConnection(
     val name: String?,
     @SerializedName("Port")
     val port: String?
-)
+) : Parcelable

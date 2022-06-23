@@ -1,24 +1,24 @@
 package com.hanheldpos.printer.layouts.report
 
-import com.hanheldpos.printer.printer_setup.PrintOptions
 import com.hanheldpos.printer.printer_setup.printer_manager.BasePrinterManager
 import com.hanheldpos.printer.wagu.Block
 import com.hanheldpos.printer.wagu.WaguUtils
 import com.hanheldpos.data.api.pojo.report.ReportSalesResp
 import com.hanheldpos.model.report.SaleReportFilter
 import com.hanheldpos.printer.layouts.BaseLayoutPrinter
+import com.hanheldpos.printer.printer_setup.PrintConfig
 import com.hanheldpos.utils.DateTimeUtils
 import java.util.*
 
 
 abstract class BaseLayoutReport(
     printer: BasePrinterManager,
-    printOptions: PrintOptions,
+    printConfig: PrintConfig,
     private val title: String,
     protected val reportSalesModel: ReportSalesResp?,
     protected val filterOptionReportSale: SaleReportFilter?,
 ) :
-    BaseLayoutPrinter(printer, printOptions) {
+    BaseLayoutPrinter(printer, printConfig) {
 
     private val startDate: String = DateTimeUtils.dateToString(
         filterOptionReportSale?.startDay,
