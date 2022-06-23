@@ -29,7 +29,7 @@ class BuyXGetYFragment(
     private val discount: DiscountResp,
     private val actionType: ItemActionType,
     private val quantityCanChoose: Int = -1,
-    private val listener: DiscountCodeFragment.BuyXGetYListener
+    private val listener: DiscountCodeFragment.BuyXGetYCallBack
 ) :
     BaseFragment<FragmentBuyXGetYBinding, BuyXGetYVM>(), BuyXGetYUV {
     override fun layoutRes(): Int = R.layout.fragment_buy_x_get_y
@@ -63,7 +63,7 @@ class BuyXGetYFragment(
             }
         })
         binding.rvBuyXGetYGroup.apply {
-            adapter = buyXGetYGroupAdapter;
+            adapter = buyXGetYGroupAdapter
             addItemDecoration(
                 DividerItemDecoration(
                     context,
@@ -98,8 +98,8 @@ class BuyXGetYFragment(
         baseItem: BaseProductInCart,
         action: ItemActionType,
     ) {
-        if (SystemClock.elapsedRealtime() - viewModel.mLastTimeClick <= 500) return;
-        viewModel.mLastTimeClick = SystemClock.elapsedRealtime();
+        if (SystemClock.elapsedRealtime() - viewModel.mLastTimeClick <= 500) return
+        viewModel.mLastTimeClick = SystemClock.elapsedRealtime()
         when (action) {
             ItemActionType.Remove -> {
                 if (baseItem is Regular) {

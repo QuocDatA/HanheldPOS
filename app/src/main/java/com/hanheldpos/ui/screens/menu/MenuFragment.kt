@@ -7,6 +7,8 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hanheldpos.BuildConfig
 import com.hanheldpos.R
+import com.hanheldpos.data.api.pojo.discount.DiscountCoupon
+import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.databinding.FragmentMenuBinding
 import com.hanheldpos.extension.setOnClickDebounce
 import com.hanheldpos.model.DataHelper
@@ -39,7 +41,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
 
-class MenuFragment : BaseFragment<FragmentMenuBinding, MenuVM>(), MenuUV {
+class MenuFragment(private val listener: MenuCallBack) : BaseFragment<FragmentMenuBinding, MenuVM>(), MenuUV {
     override fun layoutRes() = R.layout.fragment_menu
 
     private lateinit var menuAdapter: OptionNavAdapter
@@ -66,10 +68,10 @@ class MenuFragment : BaseFragment<FragmentMenuBinding, MenuVM>(), MenuUV {
         menuAdapter = OptionNavAdapter(
             onMenuItemClickListener = object : BaseItemClickListener<ItemOptionNav> {
                 override fun onItemClick(adapterPosition: Int, item: ItemOptionNav) {
-                    onNavOptionClick(item);
+                    onNavOptionClick(item)
                 }
             },
-        );
+        )
         binding.menuItemContainer.apply {
             addItemDecoration(
                 DividerItemDecoration(
@@ -84,7 +86,7 @@ class MenuFragment : BaseFragment<FragmentMenuBinding, MenuVM>(), MenuUV {
                     )
                 }
             )
-        };
+        }
         binding.menuItemContainer.adapter = menuAdapter
         //endregion
 
@@ -96,7 +98,7 @@ class MenuFragment : BaseFragment<FragmentMenuBinding, MenuVM>(), MenuUV {
     override fun initData() {
 
         //region init payment suggestion data
-        menuAdapter.submitList(viewModel.initMenuItemList(requireContext()));
+        menuAdapter.submitList(viewModel.initMenuItemList(requireContext()))
         //endregion
     }
 
@@ -110,16 +112,26 @@ class MenuFragment : BaseFragment<FragmentMenuBinding, MenuVM>(), MenuUV {
     fun onNavOptionClick(option: ItemOptionNav) {
         when (option.type as NavBarOptionType) {
             NavBarOptionType.DISCOUNT -> {
-                navigator.goToWithCustomAnimation(MenuDiscountFragment())
+                navigator.goToWithCustomAnimation(MenuDiscountFragment(listener = object: MenuDiscountFragment.MenuDiscountCallBack {
+                    override fun updateDiscountCouponCode(discountCouponList: List<DiscountCoupon>?) {
+                        listener.updateDiscountCouponCode(discountCouponList)
+                    }
+
+                    override fun openDiscountBuyXGetY(discount: DiscountResp) {
+                        onFragmentBackPressed()
+                       listener.openBuyXGetY(discount)
+                    }
+
+                }))
             }
             NavBarOptionType.ORDERS -> {
-                navigator.goToWithCustomAnimation(OrdersMenuFragment());
+                navigator.goToWithCustomAnimation(OrdersMenuFragment())
             }
             NavBarOptionType.TRANSACTIONS -> {}
-            NavBarOptionType.REPORTS -> navigator.goToWithCustomAnimation(ReportFragment());
-            NavBarOptionType.CUSTOMER -> navigator.goToWithCustomAnimation(CustomerMenuFragment());
+            NavBarOptionType.REPORTS -> navigator.goToWithCustomAnimation(ReportFragment())
+            NavBarOptionType.CUSTOMER -> navigator.goToWithCustomAnimation(CustomerMenuFragment())
             NavBarOptionType.ORDER_HISTORY -> navigator.goToWithCustomAnimation(OrderHistoryFragment())
-            NavBarOptionType.SETTINGS -> navigator.goToWithCustomAnimation(SettingsFragment());
+            NavBarOptionType.SETTINGS -> navigator.goToWithCustomAnimation(SettingsFragment())
             NavBarOptionType.SUPPORT -> {}
             NavBarOptionType.LOGOUT_DEVICE -> onLogoutOption(
                 LogoutType.LOGOUT_DEVICE,
@@ -245,5 +257,9 @@ class MenuFragment : BaseFragment<FragmentMenuBinding, MenuVM>(), MenuUV {
             })
     }
 
+    interface MenuCallBack {
+        fun updateDiscountCouponCode(discountCouponList: List<DiscountCoupon>?)
+        fun openBuyXGetY(discount: DiscountResp)
+    }
 
 }

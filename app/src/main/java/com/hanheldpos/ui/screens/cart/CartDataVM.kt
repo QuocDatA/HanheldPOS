@@ -25,6 +25,7 @@ import com.hanheldpos.model.discount.DiscountTypeEnum
 import com.hanheldpos.model.discount.DiscountUser
 import com.hanheldpos.model.home.table.TableSummary
 import com.hanheldpos.model.payment.PaymentOrder
+import com.hanheldpos.model.product.buy_x_get_y.GroupBuyXGetY
 import com.hanheldpos.ui.base.dialog.AppAlertDialog
 import com.hanheldpos.ui.base.viewmodel.BaseViewModel
 
@@ -138,9 +139,9 @@ class CartDataVM : BaseViewModel() {
                         ) {
                             updateBuyXGetYInCart(index, baseProduct)
                         } else {
-                            (baseProduct.groupList ?: mutableListOf()).forEach { group ->
-                                if (group.type == GroupType.GET) {
-                                    if((group.condition as CustomerGets).ApplyTo == CustomerDiscApplyTo.ENTIRE_ORDER.value) {
+                            (baseProduct.groupList ?: mutableListOf()).forEach { groupBuyXGetY ->
+                                if (groupBuyXGetY.type == GroupType.GET) {
+                                    if((groupBuyXGetY.condition as CustomerGets).ApplyTo == CustomerDiscApplyTo.ENTIRE_ORDER.value) {
                                         if (cartModelLD.value!!.discountServerList.find { disc -> disc._id == baseProduct.disc?._id } == null)
                                             addDiscountServer(
                                                 baseProduct.disc!!,
@@ -306,5 +307,35 @@ class CartDataVM : BaseViewModel() {
     fun updateNote(note: String?) {
         this.cartModelLD.value?.note = note
         notifyCartChange(false)
+    }
+
+    fun initDefaultBuyXGetY(disc: DiscountResp): BuyXGetY {
+        val groupList: MutableList<GroupBuyXGetY> = mutableListOf()
+
+        val buyXGetY = BuyXGetY(
+            discount = disc,
+            null,
+            null,
+            diningOption = CurCartData.cartModel?.diningOption!!,
+            quantity = 1,
+            null,
+            null,
+            null,
+            null,
+            null
+        )
+
+        for (index in 0..1)
+            groupList.add(
+                GroupBuyXGetY(
+                    parentDisc_Id = disc._id,
+                    condition = if (index == 0) disc.Condition.CustomerBuys else disc.Condition.CustomerGets,
+                    type = if (index == 0) GroupType.BUY else GroupType.GET
+                )
+            )
+
+        buyXGetY.groupList = groupList
+
+        return buyXGetY
     }
 }

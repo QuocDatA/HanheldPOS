@@ -17,36 +17,44 @@ import com.hanheldpos.extension.notifyValueChange
 import com.hanheldpos.extension.setOnClickDebounce
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.OrderHelper
-import com.hanheldpos.model.product.buy_x_get_y.BuyXGetY
 import com.hanheldpos.model.cart.BaseProductInCart
 import com.hanheldpos.model.cart.Combo
 import com.hanheldpos.model.cart.DiscountCart
 import com.hanheldpos.model.cart.Regular
 import com.hanheldpos.model.cart.fee.FeeTip
-import com.hanheldpos.model.product.combo.ItemActionType
 import com.hanheldpos.model.discount.DiscApplyTo
 import com.hanheldpos.model.discount.DiscountUser
 import com.hanheldpos.model.payment.PaymentOrder
 import com.hanheldpos.model.product.ProductType
+import com.hanheldpos.model.product.buy_x_get_y.BuyXGetY
+import com.hanheldpos.model.product.combo.ItemActionType
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
-import com.hanheldpos.ui.screens.product.buy_x_get_y.BuyXGetYFragment
 import com.hanheldpos.ui.screens.cart.adapter.CartDiningOptionAdapter
 import com.hanheldpos.ui.screens.cart.adapter.CartDiscountAdapter
 import com.hanheldpos.ui.screens.cart.adapter.CartProductAdapter
 import com.hanheldpos.ui.screens.cart.adapter.CartTipAdapter
 import com.hanheldpos.ui.screens.cart.customer.add_customer.AddCustomerFragment
 import com.hanheldpos.ui.screens.cart.customer.detail_customer.CustomerDetailFragment
-import com.hanheldpos.ui.screens.product.combo.ComboFragment
 import com.hanheldpos.ui.screens.discount.DiscountFragment
 import com.hanheldpos.ui.screens.discount.discount_type.discount_code.DiscountCodeFragment
 import com.hanheldpos.ui.screens.home.order.OrderFragment
 import com.hanheldpos.ui.screens.payment.PaymentFragment
 import com.hanheldpos.ui.screens.payment.completed.PaymentCompletedFragment
+import com.hanheldpos.ui.screens.product.buy_x_get_y.BuyXGetYFragment
+import com.hanheldpos.ui.screens.product.combo.ComboFragment
 import com.hanheldpos.ui.screens.product.regular.RegularDetailFragment
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
-class CartFragment(private val listener: CartCallBack) :
+class CartFragment(
+    private val listener: CartCallBack,
+    private val discountCouponList: List<DiscountCoupon>? = null,
+    private val discount: DiscountResp? = null
+) :
     BaseFragment<FragmentCartBinding, CartVM>(), CartUV {
 
     private val cartDataVM by activityViewModels<CartDataVM>()
@@ -366,7 +374,7 @@ class CartFragment(private val listener: CartCallBack) :
             }
         }
 
-        val callbackEditBuyXGetY = object : DiscountCodeFragment.BuyXGetYListener {
+        val callbackEditBuyXGetY = object : DiscountCodeFragment.BuyXGetYCallBack {
             override fun onCartAdded(
                 item: BaseProductInCart,
                 action: ItemActionType
@@ -427,6 +435,51 @@ class CartFragment(private val listener: CartCallBack) :
 
     fun onUpdateBuyXGetYInCart() {
         cartDataVM.updateItemBuyXGetYInCart()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (discount != null) {
+            showLoading(true)
+            CoroutineScope(Dispatchers.IO).launch {
+                delay(1000)
+                val buyXGetY = cartDataVM.initDefaultBuyXGetY(discount)
+                launch(Dispatchers.Main) { showLoading(false) }
+                if (buyXGetY.isCompleted())
+                    cartDataVM.addBuyXGetY(discount, buyXGetY)
+                else
+                    launch(Dispatchers.Main) {
+                        navigator.goTo(BuyXGetYFragment(
+                                buyXGetY = cartDataVM.initDefaultBuyXGetY(discount),
+                                discount = discount,
+                                actionType = ItemActionType.Add,
+                                quantityCanChoose = 1,
+                                listener = object : DiscountCodeFragment.BuyXGetYCallBack {
+                                    override fun onCartAdded(
+                                        item: BaseProductInCart,
+                                        action: ItemActionType
+                                    ) {
+                                        // remove discount of buy x get y entire order when remove buy x get y out of cart
+                                        if (action == ItemActionType.Modify && item.quantity!! <= 0)
+                                            cartDataVM.removeDiscountById(
+                                                (item as BuyXGetY).disc?._id ?: ""
+                                            )
+
+                                        cartDataVM.addBuyXGetY(discount, buyXGetY)
+                                    }
+
+                                    override fun onDiscountBuyXGetYEntireOrder(discount: DiscountResp) {
+                                        cartDataVM.addDiscountServer(discount, DiscApplyTo.ORDER)
+                                    }
+                                }
+                            ),
+                        )
+                    }
+
+            }
+        } else if (!discountCouponList.isNullOrEmpty()) {
+            cartDataVM.updateDiscountCouponCode(discountCouponList)
+        }
     }
 
     interface CartCallBack {
