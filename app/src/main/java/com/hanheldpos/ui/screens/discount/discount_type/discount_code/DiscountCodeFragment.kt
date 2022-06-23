@@ -15,13 +15,11 @@ import com.hanheldpos.model.product.combo.ItemActionType
 import com.hanheldpos.model.discount.DiscApplyTo
 import com.hanheldpos.model.discount.DiscountTriggerType
 import com.hanheldpos.model.discount.DiscountTypeFor
-import com.hanheldpos.model.discount.DiscountUser
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.product.buy_x_get_y.BuyXGetYFragment
 import com.hanheldpos.ui.screens.discount.DiscountFragment
 import com.hanheldpos.ui.screens.discount.discount_detail.DiscountDetailFragment
 import com.hanheldpos.ui.screens.discount.discount_type.adapter.DiscountServerAdapter
-import com.hanheldpos.ui.screens.home.order.OrderFragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -32,16 +30,16 @@ class DiscountCodeFragment(
 ) : BaseFragment<FragmentDiscountCodeBinding, DiscountCodeVM>(), DiscountCodeUV {
     override fun layoutRes(): Int = R.layout.fragment_discount_code
 
-    private lateinit var discountCodeAdapter: DiscountServerAdapter;
+    private lateinit var discountCodeAdapter: DiscountServerAdapter
 
     override fun viewModelClass(): Class<DiscountCodeVM> {
-        return DiscountCodeVM::class.java;
+        return DiscountCodeVM::class.java
     }
 
     override fun initViewModel(viewModel: DiscountCodeVM) {
         viewModel.run {
-            init(this@DiscountCodeFragment);
-            binding.viewModel = this;
+            init(this@DiscountCodeFragment)
+            binding.viewModel = this
         }
 
     }
@@ -64,7 +62,7 @@ class DiscountCodeFragment(
                         viewModel.onApplyDiscount(item)
                 }
 
-            });
+            })
         binding.listDiscountCode.apply {
             addItemDecoration(
                 DividerItemDecoration(
@@ -79,15 +77,15 @@ class DiscountCodeFragment(
                     )
                 }
             )
-        };
-        binding.listDiscountCode.adapter = discountCodeAdapter;
+        }
+        binding.listDiscountCode.adapter = discountCodeAdapter
 
     }
 
     override fun initData() {
         if (applyToType == DiscApplyTo.ORDER)
             CoroutineScope(Dispatchers.IO).launch {
-                viewModel.initData();
+                viewModel.initData()
             }
 
     }
@@ -98,7 +96,7 @@ class DiscountCodeFragment(
                 buyXGetY = viewModel.initDefaultBuyXGetY(discount),
                 discount = discount,
                 actionType = ItemActionType.Add,
-                listener = object : BuyXGetYListener {
+                listener = object : BuyXGetYCallBack {
                     override fun onCartAdded(item: BaseProductInCart, action: ItemActionType) {
                         listener.addDiscountBuyXGetY(discount, item as BuyXGetY)
                     }
@@ -121,8 +119,8 @@ class DiscountCodeFragment(
     @SuppressLint("NotifyDataSetChanged")
     override fun loadDataDiscountCode(list: List<DiscountResp>) {
         CoroutineScope(Dispatchers.Main).launch {
-            discountCodeAdapter.submitList(list);
-            discountCodeAdapter.notifyDataSetChanged();
+            discountCodeAdapter.submitList(list)
+            discountCodeAdapter.notifyDataSetChanged()
         }
     }
 
@@ -149,7 +147,7 @@ class DiscountCodeFragment(
         listener.discountCodeChoose(discount)
     }
 
-    interface BuyXGetYListener {
+    interface BuyXGetYCallBack {
         fun onCartAdded(item: BaseProductInCart, action: ItemActionType)
         fun onDiscountBuyXGetYEntireOrder(discount: DiscountResp)
     }

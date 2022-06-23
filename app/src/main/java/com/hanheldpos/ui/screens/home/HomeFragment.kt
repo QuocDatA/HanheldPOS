@@ -7,6 +7,8 @@ import android.widget.AdapterView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.hanheldpos.R
+import com.hanheldpos.data.api.pojo.discount.DiscountCoupon
+import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.data.api.pojo.order.settings.DiningOption
 import com.hanheldpos.databinding.FragmentHomeBinding
 import com.hanheldpos.extension.avoidDropdownFocus
@@ -16,6 +18,8 @@ import com.hanheldpos.ui.base.dialog.AppAlertDialog
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.base.pager.FragmentPagerAdapter
 import com.hanheldpos.ui.screens.cart.CartDataVM
+import com.hanheldpos.ui.screens.cart.CartFragment
+import com.hanheldpos.ui.screens.cart.CurCartData
 import com.hanheldpos.ui.screens.cashdrawer.CashDrawerHelper
 import com.hanheldpos.ui.screens.home.adapter.DiningOptionSpinnerAdapter
 import com.hanheldpos.ui.screens.home.order.OrderFragment
@@ -43,17 +47,17 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
     private lateinit var subSpinnerAdapter: SubSpinnerAdapter
     private lateinit var diningOptionSpinnerAdapter: DiningOptionSpinnerAdapter
 
-    override fun layoutRes() = R.layout.fragment_home;
+    override fun layoutRes() = R.layout.fragment_home
 
     override fun viewModelClass(): Class<HomeVM> {
-        return HomeVM::class.java;
+        return HomeVM::class.java
     }
 
 
     override fun initViewModel(viewModel: HomeVM) {
         viewModel.run {
             init(this@HomeFragment)
-            binding.viewModel = this;
+            binding.viewModel = this
             binding.cartDataVM = cartDataVM
         }
         cartDataVM.initObserveData(requireActivity())
@@ -65,16 +69,16 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
             ViewTreeObserver.OnGlobalLayoutListener {
             override fun onGlobalLayout() {
                 if (CashDrawerHelper.isStartDrawer)
-                    CashDrawerHelper.showDrawerNotification(this@HomeFragment.requireActivity());
-                binding.root.viewTreeObserver.removeOnGlobalLayoutListener(this);
+                    CashDrawerHelper.showDrawerNotification(this@HomeFragment.requireActivity())
+                binding.root.viewTreeObserver.removeOnGlobalLayoutListener(this)
             }
         })
         // init fragment page
-        fragmentMap[HomePage.Table] = TableFragment();
-        fragmentMap[HomePage.Order] = OrderFragment();
-        paperAdapter = FragmentPagerAdapter(requireActivity().supportFragmentManager, lifecycle);
+        fragmentMap[HomePage.Table] = TableFragment()
+        fragmentMap[HomePage.Order] = OrderFragment()
+        paperAdapter = FragmentPagerAdapter(requireActivity().supportFragmentManager, lifecycle)
         binding.homeViewPager.apply {
-            adapter = paperAdapter;
+            adapter = paperAdapter
             paperAdapter.submitList(fragmentMap.values)
         }
 
@@ -82,7 +86,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
         }.setOnClickListener {
 
             val diningOptions: MutableList<DiningOption> =
-                (DataHelper.orderSettingLocalStorage?.ListDiningOptions as List<DiningOption>).toMutableList();
+                (DataHelper.orderSettingLocalStorage?.ListDiningOptions as List<DiningOption>).toMutableList()
 
             diningOptions.forEachIndexed { index, diningOption ->
                 if (cartDataVM.diningOptionLD.value?.Id == diningOption.Id) {
@@ -95,7 +99,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
                 }
             }
         }
-        initSpinner();
+        initSpinner()
     }
 
     override fun initData() {
@@ -146,7 +150,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
                     binding.toolbarLayout.spnDiningOptionBox.visibility = View.INVISIBLE
                 }
             }
-            binding.toolbarLayout.spinnerMain.setSelection(it.screen.pos);
+            binding.toolbarLayout.spinnerMain.setSelection(it.screen.pos)
         }
 
         binding.toolbarLayout.spnGroupBy.onItemSelectedListener =
@@ -157,13 +161,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
                     position: Int,
                     id: Long
                 ) {
-                    val item = parent?.getItemAtPosition(position) as DropDownItem;
+                    val item = parent?.getItemAtPosition(position) as DropDownItem
                     when (screenViewModel.screenEvent.value?.screen) {
-                        HomePage.Order -> OrderFragment.selectedSort = position;
-                        HomePage.Table -> TableFragment.selectedSort = position;
+                        HomePage.Order -> OrderFragment.selectedSort = position
+                        HomePage.Table -> TableFragment.selectedSort = position
                         else -> {}
                     }
-                    screenViewModel.onChangeDropdown(item);
+                    screenViewModel.onChangeDropdown(item)
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -178,18 +182,18 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
                     position: Int,
                     id: Long
                 ) {
-                    val item = parent?.getItemAtPosition(position) as HomePage;
+                    val item = parent?.getItemAtPosition(position) as HomePage
                     if (screenViewModel.screenEvent.value?.screen != item) {
                         screenViewModel.screenEvent.value = ScreenViewModel.ScreenEvent(item, null)
                     }
-                    switchToPage(item);
+                    switchToPage(item)
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>?) {}
             }
 
         // Init Page
-        screenViewModel.showTablePage();
+        screenViewModel.showTablePage()
 
     }
 
@@ -200,10 +204,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
             avoidDropdownFocus()
             adapter = tabSpinnerAdapter
         }
-        subSpinnerAdapter = SubSpinnerAdapter(requireContext());
+        subSpinnerAdapter = SubSpinnerAdapter(requireContext())
         binding.toolbarLayout.spnGroupBy.apply {
             avoidDropdownFocus()
-            adapter = subSpinnerAdapter;
+            adapter = subSpinnerAdapter
         }
 
         //init SubDiningOption
@@ -211,12 +215,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
     }
 
     private fun switchToPage(page: HomePage?) {
-        val listDropdown: MutableList<DropDownItem> = mutableListOf();
+        val listDropdown: MutableList<DropDownItem> = mutableListOf()
         when (page) {
             HomePage.Table -> {
-                Log.d("home", "switchPage: page_table");
-                binding.homeViewPager.currentItem = 0;
-                var i = 1;
+                Log.d("home", "switchPage: page_table")
+                binding.homeViewPager.currentItem = 0
+                var i = 1
                 DataHelper.floorLocalStorage?.Floor?.map {
                     DropDownItem(name = it.Name, realItem = it, position = i++)
                 }?.let {
@@ -226,8 +230,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
             }
             HomePage.Order -> {
                 Log.d("home", "switchPage: page_order")
-                binding.homeViewPager.currentItem = 1;
-                var i = 0;
+                binding.homeViewPager.currentItem = 1
+                var i = 0
                 DataHelper.menuLocalStorage?.MenuList?.map {
                     DropDownItem(name = it.Name, realItem = it, position = i++)
                 }?.let {
@@ -237,7 +241,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
             }
             else -> {}
         }
-        subSpinnerAdapter.submitList(listDropdown);
+        subSpinnerAdapter.submitList(listDropdown)
         binding.toolbarLayout.spnGroupBy.setSelection(
             when (page) {
                 HomePage.Order -> OrderFragment.selectedSort
@@ -248,7 +252,40 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
     }
 
     override fun openSelectMenu() {
-        navigator.goToWithAnimationEnterFromLeft(MenuFragment());
+        navigator.goToWithAnimationEnterFromLeft(MenuFragment(listener = object: MenuFragment.MenuCallBack{
+            override fun updateDiscountCouponCode(discountCouponList: List<DiscountCoupon>?) {
+                navigator.goTo(CartFragment(listener = object : CartFragment.CartCallBack {
+                    override fun onCartDelete() {
+
+                    }
+
+                    override fun onBillSuccess() {
+
+                    }
+
+                    override fun onOrderSuccess() {
+
+                    }
+                }, discountCouponList = discountCouponList))
+            }
+
+            override fun openBuyXGetY(discount: DiscountResp) {
+                navigator.goTo(CartFragment(listener = object : CartFragment.CartCallBack {
+                    override fun onCartDelete() {
+
+                    }
+
+                    override fun onBillSuccess() {
+
+                    }
+
+                    override fun onOrderSuccess() {
+
+                    }
+
+                }, discount = discount))
+            }
+        }))
     }
 
     override fun onFragmentBackPressed() {

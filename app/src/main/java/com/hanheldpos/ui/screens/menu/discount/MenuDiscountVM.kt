@@ -21,7 +21,7 @@ class MenuDiscountVM : BaseUiViewModel<MenuDiscountUV>() {
         uiCallback?.onFragmentBackPressed()
     }
     fun initListDiscountCode() {
-        val listDiscountCode = DataHelper.discountsLocalStorage?.filter { !it.DiscountAutomatic };
+        val listDiscountCode = DataHelper.discountsLocalStorage?.filter { !it.DiscountAutomatic }
         val sortList = listDiscountCode?.sortedBy { it.DiscountName }
         uiCallback?.loadDiscountCode(sortList ?: listOf())
     }
@@ -40,11 +40,12 @@ class MenuDiscountVM : BaseUiViewModel<MenuDiscountUV>() {
                     showError(PosApp.instance.getString(R.string.msg_error_maximum_selection_is_))
                     return
                 }
-                uiCallback?.openBuyXGetY(discSelected)
+                uiCallback?.openDiscountBuyXGetY(discSelected)
             }
             else -> {}
         }
     }
+
     private fun onApplyCouponCode(couponCode: String) {
         val body =
             GSonUtils.toServerJson(CartConverter.toOrder(CurCartData.cartModel!!, couponCode))
@@ -58,9 +59,9 @@ class MenuDiscountVM : BaseUiViewModel<MenuDiscountUV>() {
                         showError(
                             data?.ErrorMessage
                                 ?: PosApp.instance.getString(R.string.invalid_discount)
-                        );
+                        )
                     } else {
-                        //uiCallback?.updateDiscountCouponCode(data.Model)
+                        uiCallback?.updateDiscountCouponCode(data.Model)
                     }
                 }
 
