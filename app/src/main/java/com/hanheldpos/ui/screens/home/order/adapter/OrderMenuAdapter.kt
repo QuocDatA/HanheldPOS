@@ -40,7 +40,7 @@ class OrderMenuAdapter(
             viewType,
             parent, false
         ).also {
-            val height = ((parent.height) / 13) - parent.resources.getDimension(R.dimen._2sdp)
+            val height = ((parent.height) / 11.2) - parent.resources.getDimension(R.dimen._6sdp)
             when (it) {
                 is ItemOrderMenuBinding -> it.btnMain.layoutParams.height = height.toInt()
                 is ItemOrderMenuDirectionButtonBinding -> it.layoutMain.layoutParams.height = height.toInt()
@@ -54,11 +54,11 @@ class OrderMenuAdapter(
         holder: BaseBindingViewHolder<OrderMenuItem>,
         position: Int
     ) {
-        val item = getItem(position);
+        val item = getItem(position)
         when (item.uiType) {
             MenuModeViewType.Menu -> {
                 (holder.binding as ItemOrderMenuBinding).btnMain.setOnClickDebounce {
-                    baseListener.onItemClick(position, item);
+                    baseListener.onItemClick(position, item)
                 }
             }
             MenuModeViewType.Empty -> {
@@ -89,7 +89,7 @@ class OrderMenuAdapter(
                 view.btnNextPage.setOnClickDebounce { listener.onBtnNextClick() }
             }
         }
-        holder.bindItem(item);
+        holder.bindItem(item)
 
     }
 
@@ -105,7 +105,7 @@ class OrderMenuAdapter(
             oldItem: OrderMenuItem,
             newItem: OrderMenuItem
         ): Boolean {
-            return oldItem == newItem && (oldItem.uiType == MenuModeViewType.Menu || oldItem.uiType == MenuModeViewType.Empty);
+            return oldItem == newItem && (oldItem.uiType == MenuModeViewType.Menu || oldItem.uiType == MenuModeViewType.Empty)
         }
 
     }
