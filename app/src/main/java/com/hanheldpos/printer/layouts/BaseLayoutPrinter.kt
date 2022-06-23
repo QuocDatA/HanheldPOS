@@ -1,24 +1,24 @@
 package com.hanheldpos.printer.layouts
 
-import com.hanheldpos.printer.printer_setup.PrintOptions
+import com.hanheldpos.printer.printer_setup.PrintConfig
 import com.hanheldpos.printer.printer_setup.printer_manager.BasePrinterManager
 import com.hanheldpos.printer.wagu.Block
 
 abstract class BaseLayoutPrinter(
     protected val printer: BasePrinterManager,
-    protected val printOptions: PrintOptions
+    protected val printConfig: PrintConfig
 ) {
     /// region printer - layout values
-    protected val charPerLineLarge = printOptions.deviceInfo.charsPerLineLarge()
-    protected val charPerLineNormal = printOptions.deviceInfo.charsPerLineNormal()
+    protected val charPerLineLarge = printConfig.deviceInfo.charsPerLineLarge()
+    protected val charPerLineNormal = printConfig.deviceInfo.charsPerLineNormal()
     protected val columnOrderDetailAlign = mutableListOf(
         Block.DATA_MIDDLE_LEFT,
         Block.DATA_MIDDLE_LEFT,
         Block.DATA_MIDDLE_RIGHT
     )
-    protected open val leftColumn = printOptions.deviceInfo.leftColumnWidth()
-    protected open val rightColumn = printOptions.deviceInfo.rightColumnWidth()
-    protected open val centerColumn = printOptions.deviceInfo.centerColumnWidth()
+    protected open val leftColumn = printConfig.deviceInfo.leftColumnWidth()
+    protected open val rightColumn = printConfig.deviceInfo.rightColumnWidth()
+    protected open val centerColumn = printConfig.deviceInfo.centerColumnWidth()
 
     protected open fun columnSize() = mutableListOf(leftColumn, centerColumn, rightColumn)
     protected open fun columnExtraSize() = mutableListOf(2, centerColumn - 2)
@@ -34,7 +34,7 @@ abstract class BaseLayoutPrinter(
     abstract fun print()
 
     private fun setUpPage() {
-        printer.setupPage(printOptions.deviceInfo.paperWidth(), -1f)
+        printer.setupPage(printConfig.deviceInfo.paperWidth(), -1f)
     }
 
     protected fun printDivider() {

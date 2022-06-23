@@ -7,7 +7,6 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import com.hanheldpos.printer.PrintConstants
-import com.hanheldpos.printer.printer_setup.PrintOptions
 import com.hanheldpos.printer.printer_setup.printer_manager.BasePrinterManager
 import com.hanheldpos.printer.wagu.Block
 import com.hanheldpos.printer.wagu.WaguUtils
@@ -20,6 +19,7 @@ import com.hanheldpos.model.order.OrderModel
 import com.hanheldpos.model.order.ProductChosen
 import com.hanheldpos.model.product.ExtraConverter
 import com.hanheldpos.model.product.ProductType
+import com.hanheldpos.printer.printer_setup.PrintConfig
 import com.hanheldpos.utils.DrawableHelper
 import com.hanheldpos.utils.PriceUtils
 import com.hanheldpos.utils.StringUtils
@@ -28,17 +28,17 @@ import com.hanheldpos.utils.StringUtils
 class CashierLayout(
     order: OrderModel,
     printer: BasePrinterManager,
-    printOptions: PrintOptions,
+    printConfig: PrintConfig,
     isReprint: Boolean,
-) : BaseLayoutOrder(order, printer, printOptions, isReprint) {
+) : BaseLayoutOrder(order, printer, printConfig, isReprint) {
 
     override fun print() {
         // Order Meta Data
         printBillStatus()
-        feedLines(printOptions.deviceInfo.linesFeed(1))
+        feedLines(printConfig.deviceInfo.linesFeed(1))
         printBrandIcon()
         printAddress()
-        feedLines(printOptions.deviceInfo.linesFeed(1))
+        feedLines(printConfig.deviceInfo.linesFeed(1))
         printDeliveryAddress()
         printDivider()
 
@@ -70,14 +70,14 @@ class CashierLayout(
 
         // Payments - Change
         printPayments()
-        feedLines(printOptions.deviceInfo.linesFeed(1))
+        feedLines(printConfig.deviceInfo.linesFeed(1))
 
         // Thank you
         printThankYou()
 
         // End Print
 
-        feedLines(printOptions.deviceInfo.linesFeed(3))
+        feedLines(printConfig.deviceInfo.linesFeed(3))
         cutPaper()
 
         Log.d(PrintConstants.TAG, "Print succeeded.")
@@ -353,10 +353,10 @@ class CashierLayout(
         val feesList = mutableListOf<OrderFee>()
 
         order.OrderDetail.run {
-            feesList.addAll(this.ServiceFeeList ?: mutableListOf())
+            feesList.addAll(this.ServiceFeeList)
             feesList.addAll(this.ShippingFeeList ?: mutableListOf())
-            feesList.addAll(this.SurchargeFeeList ?: mutableListOf())
-            feesList.addAll(this.TaxFeeList ?: mutableListOf())
+            feesList.addAll(this.SurchargeFeeList)
+            feesList.addAll(this.TaxFeeList)
         }
 
         if (feesList.isEmpty()) return

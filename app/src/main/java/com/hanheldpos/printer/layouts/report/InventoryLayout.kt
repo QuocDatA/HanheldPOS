@@ -1,6 +1,5 @@
 package com.hanheldpos.printer.layouts.report
 
-import com.hanheldpos.printer.printer_setup.PrintOptions
 import com.hanheldpos.printer.printer_setup.printer_manager.BasePrinterManager
 import com.hanheldpos.printer.wagu.Block
 import com.hanheldpos.printer.wagu.WaguUtils
@@ -8,16 +7,17 @@ import com.hanheldpos.printer.wagu.WrapType
 import com.hanheldpos.data.api.pojo.report.ProductInventory
 import com.hanheldpos.data.api.pojo.report.ReportSalesResp
 import com.hanheldpos.model.report.SaleReportFilter
+import com.hanheldpos.printer.printer_setup.PrintConfig
 
 
 class InventoryLayout(
     printer: BasePrinterManager,
-    printOptions: PrintOptions,
+    printConfig: PrintConfig,
     reportSalesModel: ReportSalesResp?,
     filterOptionReportSale: SaleReportFilter?,
     private val inventories: Map<ProductInventory, List<ProductInventory>> = reportSalesModel?.mapInventorySaleReport() ?: emptyMap()
 ) : BaseLayoutReport(
-    printer, printOptions,
+    printer, printConfig,
     title = "Item Sales Report",
     reportSalesModel,
     filterOptionReportSale
