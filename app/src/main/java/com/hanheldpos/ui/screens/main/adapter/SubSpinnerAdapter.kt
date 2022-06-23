@@ -12,6 +12,7 @@ class SubSpinnerAdapter(context: Context) :
         context,
         R.layout.item_dropdown_spinner
     ) {
+
     override fun binding(binding: ItemDropdownSpinnerBinding?, item: Parcelable?) {
         if(item == null) return;
         if(item is DropDownItem){

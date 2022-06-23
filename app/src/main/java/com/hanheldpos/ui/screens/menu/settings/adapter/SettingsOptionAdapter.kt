@@ -31,38 +31,36 @@ class SettingsOptionAdapter(
         holder: BaseBindingViewHolder<ItemSettingOption>,
         position: Int
     ) {
-        val item = getItem(position);
+        val item = getItem(position)
         if (selectedItem.value == -1 && defaultSelection == item.value) {
             selectedItem.value = position
         }
         when (style) {
             SettingOptionType.RADIO -> (holder.binding as ItemRadioSettingOptionBinding).let { binding ->
-                binding.item = item;
+                binding.item = item
                 binding.btn.apply {
                     setOnClickListener {
-                        notifyItemChanged(selectedItem.value);
-                        selectedItem.value = position;
-                        notifyItemChanged(position);
-                        listener.onItemClick(position, item);
+                        notifyItemChanged(selectedItem.value)
+                        selectedItem.value = position
+                        notifyItemChanged(position)
+                        listener.onItemClick(position, item)
                     }
-                    isChecked = selectedItem.value == position;
+                    isChecked = selectedItem.value == position
                 }
             }
             SettingOptionType.BOX -> (holder.binding as ItemBoxSettingOptionBinding).let { binding ->
-                binding.item = item;
+                binding.item = item
                 binding.btn.apply {
                     setOnClickListener {
-                        notifyItemChanged(selectedItem.value);
-                        selectedItem.value = position;
-                        notifyItemChanged(position);
-                        listener.onItemClick(position, item);
+                        notifyItemChanged(selectedItem.value)
+                        selectedItem.value = position
+                        notifyItemChanged(position)
+                        listener.onItemClick(position, item)
                     }
-                    isChecked = selectedItem.value == position;
+                    isChecked = selectedItem.value == position
                 }
             }
         }
-
-
     }
 
     private class DiffCallBack : DiffUtil.ItemCallback<ItemSettingOption>() {

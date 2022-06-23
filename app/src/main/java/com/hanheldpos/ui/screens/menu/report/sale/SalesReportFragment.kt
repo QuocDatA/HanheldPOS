@@ -27,21 +27,21 @@ import java.util.*
 class SalesReportFragment(private val type: SaleOptionPage? = null, private val fragment: Fragment) :
     BaseFragment<FragmentSalesReportBinding, SalesReportVM>(),
     SalesReportUV {
-    private lateinit var numberDayReportAdapter: NumberDayReportAdapter;
+    private lateinit var numberDayReportAdapter: NumberDayReportAdapter
     private val saleReportCommon by activityViewModels<SaleReportCommonVM>()
 
     override fun layoutRes(): Int {
-        return R.layout.fragment_sales_report;
+        return R.layout.fragment_sales_report
     }
 
     override fun viewModelClass(): Class<SalesReportVM> {
-        return SalesReportVM::class.java;
+        return SalesReportVM::class.java
     }
 
     override fun initViewModel(viewModel: SalesReportVM) {
         viewModel.run {
-            init(this@SalesReportFragment);
-            binding.viewModel = this;
+            init(this@SalesReportFragment)
+            binding.viewModel = this
         }
         binding.saleReportCommonVM = saleReportCommon
     }
@@ -57,21 +57,21 @@ class SalesReportFragment(private val type: SaleOptionPage? = null, private val 
                         saleReportCommon.saleReportFillter.postValue(saleReportCommon.saleReportFillter.value!!.apply {
                             startDay = Date.from(
                                 endDay?.toInstant()?.minus(item.value.toLong(), ChronoUnit.DAYS)
-                            );
-                        });
+                            )
+                        })
                     }
                 },
-            );
-        binding.dayNumberAdapter.adapter = numberDayReportAdapter;
+            )
+        binding.dayNumberAdapter.adapter = numberDayReportAdapter
 
     }
 
     override fun initData() {
-        numberDayReportAdapter.submitList(viewModel.initNumberDaySelected());
+        numberDayReportAdapter.submitList(viewModel.initNumberDaySelected())
 
         saleReportCommon.saleReportFillter.observe(this) {
-            setUpDateTitle(it);
-        };
+            setUpDateTitle(it)
+        }
 
         val transaction: FragmentTransaction = childFragmentManager.beginTransaction()
         transaction.add(R.id.fragmentContainer, fragment)
@@ -125,7 +125,7 @@ class SalesReportFragment(private val type: SaleOptionPage? = null, private val 
             }
         }
 
-        var firstObserver: Boolean = true
+        var firstObserver = true
         saleReportCommon.saleReportFillter.observe(this) {
             if (firstObserver) {
                 firstObserver = false
@@ -146,11 +146,11 @@ class SalesReportFragment(private val type: SaleOptionPage? = null, private val 
             override fun onComplete(
                 saleReportCustomData: SaleReportFilter
             ) {
-                numberDayReportAdapter.clearSelected();
-                saleReportCommon.saleReportFillter.postValue(saleReportCustomData);
+                numberDayReportAdapter.clearSelected()
+                saleReportCommon.saleReportFillter.postValue(saleReportCustomData)
             }
 
-        }, saleReportCustomData = saleReportCommon.saleReportFillter.value!!));
+        }, saleReportCustomData = saleReportCommon.saleReportFillter.value!!))
     }
 
     override fun backPress() {
@@ -170,33 +170,15 @@ class SalesReportFragment(private val type: SaleOptionPage? = null, private val 
 
         if (saleReportCustomData.isAllDevice) {
             if (saleReportCustomData.isAllDay) {
-                binding.deviceApply.text = getString(R.string.all_device);
+                binding.deviceApply.text = getString(R.string.all_device)
             } else {
                 // Show Time Selected
             }
         } else {
-            binding.deviceApply.text = getString(R.string.this_device_only);
+            binding.deviceApply.text = getString(R.string.this_device_only)
         }
         if (saleReportCustomData.isCurrentDrawer) {
             binding.deviceApply.text = "${binding.deviceApply.text}, Current Drawer"
-        }
-    }
-
-    private enum class ReportOptionPage(val pos: Int) {
-        Overview(0),
-        PaymentSummary(1),
-        DiningOptions(2),
-        SectionSales(3);
-
-        companion object {
-            fun fromInt(value: Int): ReportOptionPage? {
-                values().forEach {
-                    if (it.pos == value) {
-                        return it
-                    }
-                }
-                return null
-            }
         }
     }
 

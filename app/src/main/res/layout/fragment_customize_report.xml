@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <import type="android.view.View" />
 
         <variable
@@ -68,9 +69,9 @@
             android:background="@color/color_10" />
 
         <ScrollView
-            android:fillViewport="true"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:fillViewport="true">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -85,7 +86,6 @@
                     android:layout_gravity="center"
                     android:layout_marginHorizontal="@dimen/_5sdp"
                     android:layout_marginTop="@dimen/_5sdp"
-                    app:mcv_tileHeight="@dimen/_30sdp"
                     app:mcv_arrowColor="@color/textPrimary"
                     app:mcv_dateTextAppearance="@style/TextAppearance.CalendarDates"
                     app:mcv_firstDayOfWeek="sunday"
@@ -93,9 +93,9 @@
                     app:mcv_selectionColor="@color/color_0"
                     app:mcv_selectionMode="range"
                     app:mcv_showOtherDates="all"
+                    app:mcv_tileHeight="@dimen/_30sdp"
                     app:mcv_weekDayLabels="@array/weekDayLabels"
                     app:mcv_weekDayTextAppearance="@style/TextAppearance" />
-
 
 
                 <LinearLayout
@@ -130,12 +130,12 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:onCheckedChanged="@{(view, checked) -> viewModel.onDrawerCheckChange()}"
                             android:layout_marginEnd="@dimen/_9sdp"
                             android:background="@drawable/bg_checkbox_selector"
                             android:button="@null"
                             android:minWidth="0dp"
-                            android:minHeight="0dp" />
+                            android:minHeight="0dp"
+                            android:onCheckedChanged="@{(view, checked) -> viewModel.onDrawerCheckChange()}" />
 
                         <com.diadiem.pos_components.PTextView
                             style="@style/CartTitle"
@@ -239,8 +239,8 @@
                                 app:useTextHeader="h5" />
 
                             <androidx.appcompat.widget.SwitchCompat
-                                style="@style/SCBSwitch"
                                 android:id="@+id/btnIsAllDay"
+                                style="@style/SCBSwitch"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
@@ -250,79 +250,83 @@
                                 app:track="@drawable/switch_track" />
                         </LinearLayout>
 
-                        <include
-                            layout="@layout/divider_vertical"
-                            android:background="@color/color_10" />
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:visibility="@{viewModel.isAllDay ? View.GONE : View.VISIBLE}">
+
+                            <include
+                                layout="@layout/divider_vertical"
+                                android:background="@color/color_10" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <com.diadiem.pos_components.PTextView
+                                    style="@style/CartTitle"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="start"
+                                    android:layout_weight="4"
+                                    android:paddingVertical="@dimen/_11sdp"
+                                    android:text="@string/start"
+                                    app:useFontStyle="normal"
+                                    app:useTextColor="color4"
+                                    app:useTextHeader="h5" />
+
+                                <androidx.appcompat.widget.AppCompatSpinner
+                                    android:id="@+id/spinnerStart"
+                                    style="@style/Spinner.dropdown.notBorderOverLap"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_weight="1"
+                                    tools:listitem="@layout/item_dropdown_spinner" />
+                            </LinearLayout>
+                        </LinearLayout>
+
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:orientation="vertical"
                             android:visibility="@{viewModel.isAllDay ? View.GONE : View.VISIBLE}">
 
-                            <com.diadiem.pos_components.PTextView
-                                style="@style/CartTitle"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="start"
-                                android:layout_weight="1"
-                                android:paddingVertical="@dimen/_11sdp"
-                                android:text="@string/start"
-                                app:useFontStyle="normal"
-                                app:useTextColor="color4"
-                                app:useTextHeader="h5" />
+                            <include
+                                layout="@layout/divider_vertical"
+                                android:background="@color/color_10" />
 
-                            <com.diadiem.pos_components.PTextView
-                                style="@style/CartTitle"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="start"
-                                android:layout_marginEnd="@dimen/_13sdp"
-                                android:paddingVertical="@dimen/_11sdp"
-                                android:text="00:00"
-                                app:useFontStyle="normal"
-                                app:useTextColor="color4"
-                                app:useTextHeader="h5" />
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <com.diadiem.pos_components.PTextView
+                                    style="@style/CartTitle"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="start"
+                                    android:layout_weight="4"
+                                    android:paddingVertical="@dimen/_11sdp"
+                                    android:text="@string/end"
+                                    app:useFontStyle="normal"
+                                    app:useTextColor="color4"
+                                    app:useTextHeader="h5" />
+
+                                <androidx.appcompat.widget.AppCompatSpinner
+                                    android:id="@+id/spinnerEnd"
+                                    style="@style/Spinner.dropdown.notBorderOverLap"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_weight="1"
+                                    tools:listitem="@layout/item_dropdown_spinner" />
+                            </LinearLayout>
                         </LinearLayout>
 
-                        <include
-                            layout="@layout/divider_vertical"
-                            android:background="@color/color_10"
-                            android:visibility="@{viewModel.isAllDay ? View.GONE : View.VISIBLE}" />
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:visibility="@{viewModel.isAllDay ? View.GONE : View.VISIBLE}">
-
-                            <com.diadiem.pos_components.PTextView
-                                style="@style/CartTitle"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="start"
-                                android:layout_weight="1"
-                                android:paddingVertical="@dimen/_11sdp"
-                                android:text="End"
-                                app:useFontStyle="normal"
-                                app:useTextColor="color4"
-                                app:useTextHeader="h5" />
-
-                            <com.diadiem.pos_components.PTextView
-                                style="@style/CartTitle"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="start"
-                                android:layout_marginEnd="@dimen/_13sdp"
-                                android:paddingVertical="@dimen/_11sdp"
-                                android:text="00:00"
-                                app:useFontStyle="normal"
-                                app:useTextColor="color4"
-                                app:useTextHeader="h5" />
-                        </LinearLayout>
-
-                        <include
-                            layout="@layout/divider_vertical"
-                            android:background="@color/color_10"
-                            android:visibility="@{viewModel.isAllDay ? View.GONE : View.VISIBLE}" />
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>

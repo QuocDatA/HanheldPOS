@@ -3,6 +3,8 @@ package com.hanheldpos.ui.screens.menu.report.sale.customize
 import androidx.lifecycle.MutableLiveData
 import com.hanheldpos.model.report.SaleReportFilter
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
+import com.hanheldpos.ui.screens.home.DropDownItem
+import com.hanheldpos.ui.screens.main.adapter.SubSpinnerAdapter
 import com.hanheldpos.utils.DateTimeUtils
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import java.util.*
@@ -11,10 +13,12 @@ class CustomizeReportVM : BaseUiViewModel<CustomizeReportUV>() {
 
     lateinit var startDay: CalendarDay
     lateinit var endDay: CalendarDay
-    var isCurrentDrawer = MutableLiveData<Boolean>(true);
-    var isAllDay = MutableLiveData<Boolean>(false);
-    var isAllDevice = MutableLiveData<Boolean>(false)
-    var isThisDevice = MutableLiveData<Boolean>(true)
+    val startTime  = MutableLiveData<String>()
+    val endTime  = MutableLiveData<String>()
+    var isCurrentDrawer = MutableLiveData(true)
+    var isAllDay = MutableLiveData(false)
+    var isAllDevice = MutableLiveData(false)
+    var isThisDevice = MutableLiveData(true)
 
     fun initCustomReportData(saleReportCustomData: SaleReportFilter) {
         val startDayInInt = splitDate(saleReportCustomData.startDay!!)
@@ -35,6 +39,14 @@ class CustomizeReportVM : BaseUiViewModel<CustomizeReportUV>() {
             dateInInt.add(element.toInt())
         }
         return dateInInt
+    }
+
+    fun getTimeDayList(): List<DropDownItem> {
+        return  (0..23).map {
+            val timeString = "${it.toString().padStart(2,'0')}:00"
+            val time = DateTimeUtils.strToDate(timeString,DateTimeUtils.Format.HH_mm)
+            DropDownItem(name = timeString, position = it, realItem = time)
+        }
     }
 
     fun onDrawerCheckChange() {
