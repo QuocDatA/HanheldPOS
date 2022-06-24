@@ -110,12 +110,11 @@ class TableFragment : BaseFragment<FragmentTableBinding, TableVM>(), TableUV {
         screenViewModel.dropDownSelected.observe(this) {
             val screen = screenViewModel.screenEvent.value?.screen;
             if (screen == HomeFragment.HomePage.Table) {
-                if (it != null)
-                    if (it.realItem == null)
-                        viewModel.getTableList()?.toMutableList()
-                            ?.let { it1 -> tableAdapterHelper.submitList(it1); };
-                    else if (it.realItem is Floor)
-                        viewModel.floorItemSelected.value = it.realItem;
+                if (it?.realItem == null)
+                    viewModel.getTableList()?.toMutableList()
+                        ?.let { it1 -> tableAdapterHelper.submitList(it1); };
+                else if (it.realItem is Floor)
+                    viewModel.floorItemSelected.value = it.realItem;
             }
         }
 

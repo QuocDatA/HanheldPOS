@@ -71,7 +71,7 @@ class DeviceCodeVM : BaseUiViewModel<DeviceCodeUV>() {
         syncDataService.fetchAllData(
             context,
             listener = object : SyncDataService.SyncDataServiceListener {
-                override fun onLoadedResources() {
+                override fun onLoadedResources(data: Any?) {
                     isDownloading = false
                     showLoading(false)
                     uiCallback?.openPinCode()

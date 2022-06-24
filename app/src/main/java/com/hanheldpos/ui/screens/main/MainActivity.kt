@@ -94,9 +94,9 @@ class MainActivity : BaseFragmentBindingActivity<ActivityMainBinding, MainVM>(),
                    Log.d("Printer","The printer is connected with config: $it")
                 },
                 onConnectionFailed = { ex ->
-                    launch(Dispatchers.Main) {
-                        showMessage(ex.message)
-                    }
+//                    launch(Dispatchers.Main) {
+//                        showMessage(ex.message)
+//                    }
 
                 }
             )

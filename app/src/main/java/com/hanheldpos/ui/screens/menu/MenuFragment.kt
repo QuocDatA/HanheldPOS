@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hanheldpos.BuildConfig
 import com.hanheldpos.R
+import com.hanheldpos.data.api.pojo.data.DataVersion
 import com.hanheldpos.data.api.pojo.discount.DiscountCoupon
 import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.databinding.FragmentMenuBinding
@@ -146,7 +147,7 @@ class MenuFragment(private val listener: MenuCallBack) : BaseFragment<FragmentMe
                     showLoading(true)
                     syncDataService.checkNewUpdateVersion(it,
                         object : SyncDataService.SyncDataServiceListener {
-                            override fun onLoadedResources() {
+                            override fun onLoadedResources(data: Any?) {
                                 showLoading(false)
                                 showAlert(
                                     getString(R.string.new_data_available),
@@ -160,7 +161,8 @@ class MenuFragment(private val listener: MenuCallBack) : BaseFragment<FragmentMe
                                         override fun onPositiveClick() {
                                             showLoading(true)
                                             syncDataService.fetchMenuDiscountData(it,object : SyncDataService.SyncDataServiceListener{
-                                                override fun onLoadedResources() {
+                                                override fun onLoadedResources(data: Any?) {
+                                                    DataHelper.dataVersionLocalStorage = data as DataVersion?
                                                     DataHelper.isNeedToUpdateNewData.postValue(false)
                                                     OrderFragment.selectedSort = 0
                                                     TableFragment.selectedSort = 0

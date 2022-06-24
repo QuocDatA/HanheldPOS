@@ -8,6 +8,7 @@ import android.widget.AdapterView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.hanheldpos.R
+import com.hanheldpos.data.api.pojo.data.DataVersion
 import com.hanheldpos.data.api.pojo.discount.DiscountCoupon
 import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.data.api.pojo.order.settings.DiningOption
@@ -134,7 +135,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
                                     showLoading(true)
                                     syncDataService.fetchMenuDiscountData(requireContext(),
                                         object : SyncDataService.SyncDataServiceListener {
-                                            override fun onLoadedResources() {
+                                            override fun onLoadedResources(data: Any?) {
+                                                DataHelper.dataVersionLocalStorage = data as DataVersion?
                                                 DataHelper.isNeedToUpdateNewData.postValue(false)
                                                 OrderFragment.selectedSort = 0
                                                 TableFragment.selectedSort = 0

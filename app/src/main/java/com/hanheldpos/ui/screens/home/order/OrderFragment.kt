@@ -100,11 +100,10 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
         screenViewModel.dropDownSelected.observe(this) {
             val screen = screenViewModel.screenEvent.value?.screen;
             if (screen == HomeFragment.HomePage.Order) {
-                if (it != null)
-                    if (it.realItem == null)
-                        dataVM.onMenuChange(0)
-                    else if (it.realItem is Menu)
-                        dataVM.onMenuChange(it.position);
+                if (it?.realItem == null)
+                    dataVM.onMenuChange(0)
+                else if (it.realItem is Menu)
+                    dataVM.onMenuChange(it.position)
 
             }
         }

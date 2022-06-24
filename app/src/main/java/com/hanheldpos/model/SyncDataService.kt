@@ -461,8 +461,7 @@ class SyncDataService : BaseViewModel() {
                                 ?: 0) || (DataHelper.dataVersionLocalStorage?.discount
                                 ?: 0) < (data.Model.discount ?: 0)
                         ) {
-                            DataHelper.dataVersionLocalStorage = data.Model
-                            listener.onLoadedResources()
+                            listener.onLoadedResources(data.Model)
 
                         } else {
                             listener.onError(context.getString(R.string.no_new_update_found))
@@ -478,7 +477,7 @@ class SyncDataService : BaseViewModel() {
     }
 
     interface SyncDataServiceListener {
-        fun onLoadedResources();
-        fun onError(message: String?);
+        fun onLoadedResources(data : Any?=null)
+        fun onError(message: String?)
     }
 }
