@@ -67,19 +67,6 @@ object DownloadService {
         binding = DialogProcessDownloadResourceBinding.inflate(LayoutInflater.from(context))
         binding.isLoading = true
         processDialog.setContentView(binding.root)
-        processDialog.showWithoutSystemUI()
-
-//        with(processDialog) {
-//            setCancelable(false)
-//            setButton(
-//                DialogInterface.BUTTON_NEGATIVE,
-//                context.getString(R.string.cancel)
-//            ) { dialog, _ ->
-//                PRDownloader.cancel(downloadId)
-//                dialog.dismiss()
-//            }
-//            show()
-//        }
     }
 
     @SuppressLint("SetTextI18n")
@@ -93,7 +80,13 @@ object DownloadService {
         var currentDownloadPos = 0
         var isGettingSpeed = false
         initDownloadService(context)
-        listResources.forEach { item ->
+        val listNeedDownload = listResources.filter { !checkFileExist(it.Name)}
+        if (listNeedDownload.isEmpty()) {
+            listener.onComplete()
+            return
+        }
+        processDialog.showWithoutSystemUI()
+        listNeedDownload.forEach { item ->
             if (item.Name.contains(".zip"))
                 listFileToExtract.add(item.Name)
             val downloadRequest = PRDownloader.download(item.Url, INTERNAL_PATH, item.Name)
@@ -154,14 +147,6 @@ object DownloadService {
 
                         override fun onError(error: com.downloader.Error?) {
                             Log.d("Download Resources", error.toString())
-//                            CoroutineScope(Dispatchers.Main).launch {
-//                                if(error?.connectionException?.message?.contains("Unacceptable certificate") == true){
-//                                    listener.onFail(PosApp.instance.getString(R.string.date_and_time_of_the_device_are_out_of_sync))
-//                                } else {
-//                                    listener.onFail()
-//                                }
-//
-//                            }
 
                         }
 
@@ -211,8 +196,8 @@ object DownloadService {
         ) == PackageManager.PERMISSION_GRANTED
     }
 
-    fun checkFileExist(filePath: String): Boolean {
-        val file = File(INTERNAL_PATH + filePath)
+    private fun checkFileExist(filePath: String): Boolean {
+        val file = File("$INTERNAL_PATH/$filePath")
         return file.exists()
     }
 

@@ -327,11 +327,7 @@ class SyncDataService : BaseViewModel() {
             DataHelper.deviceCodeLocalStorage?.ListSettingsId?.firstOrNull()?.NumberIncrement?.toLong()
                 ?: 0
         var isNeedToDownload = false
-        DataHelper.resourceLocalStorage?.filter { resourceResp ->
-            !DownloadService.checkFileExist(
-                resourceResp.Name
-            )
-        }?.let {
+        DataHelper.resourceLocalStorage?.let {
             if (it.isEmpty()) return@let
             isNeedToDownload = true
             DownloadService.downloadFile(context,
