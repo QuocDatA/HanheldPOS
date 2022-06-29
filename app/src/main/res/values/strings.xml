@@ -302,4 +302,6 @@
     <string name="done">Done!</string>
     <string name="new_data_have_been_updated_successfully">New data have been updated successfully</string>
     <string name="new_data_available_description">There are new data for your app./n Please update now</string>
+    <string name="reprint_bill">Reprint Bill</string>
+    <string name="all_devices">All devices</string>
 </resources>

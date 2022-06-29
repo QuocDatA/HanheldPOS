@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.hanheldpos.printer.dialogs.PrinterChooseModel" />
+    </data>
+
+    <LinearLayout
+        android:padding="@dimen/_10sdp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <CheckBox
+            android:id="@+id/checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginEnd="@dimen/_9sdp"
+            android:background="@drawable/bg_checkbox_selector"
+            android:button="@null"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            />
+
+        <com.diadiem.pos_components.PTextView
+            style="@style/CartTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@{item.printerName}"
+            app:useFontStyle="normal"
+            app:useTextColor="color4"
+            app:useTextHeader="h5" />
+
+    </LinearLayout>
+</layout>

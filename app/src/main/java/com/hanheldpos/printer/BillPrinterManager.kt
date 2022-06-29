@@ -36,7 +36,7 @@ class BillPrinterManager private constructor() {
 
         fun init(
             context: Context,
-            onConnectionFailed: (exception: PrinterException) -> Unit,
+            onConnectionFailed: ((exception: PrinterException) -> Unit)? = null,
             onConnectionSuccess: ((printConfig: PrintConfig) -> Unit)? = null
         ): BillPrinterManager {
             try {
@@ -57,18 +57,18 @@ class BillPrinterManager private constructor() {
                                 printers.add(printer)
                                 onConnectionSuccess?.invoke(printer.printConfig)
                             } else {
-                                onConnectionFailed(PrinterException(printer.printConfig.toString()))
+                                onConnectionFailed?.invoke(PrinterException(printer.printConfig.toString()))
                             }
                         }
                 }
 
             } catch (e: Exception) {
-                onConnectionFailed(PrinterException(e.message.toString()))
+                onConnectionFailed?.invoke(PrinterException(e.message.toString()))
             }
             return instance
         }
 
-        fun get(onConnectionFailed: (exception: PrinterException) -> Unit): BillPrinterManager {
+        fun get(onConnectionFailed: ((exception: PrinterException) -> Unit)? = null): BillPrinterManager {
             return if (this::instance.isInitialized && instance.isConnected())
                 instance
             else {
@@ -84,8 +84,24 @@ class BillPrinterManager private constructor() {
     fun printBill(
         order: OrderModel,
         isReprint: Boolean,
+        limitToThesePrinterId: List<String?>? = null
     ): BillPrinterManager {
-        printers.forEach {
+
+        val finalChosenPrinters = mutableListOf<Printer>()
+
+        if (limitToThesePrinterId != null) {
+            limitToThesePrinterId.forEach { limitedPrinter ->
+                val connectedPrinter =
+                    printers.find { limitedPrinter == it.printingSpecification.id }
+                if (connectedPrinter != null) {
+                    finalChosenPrinters.add(connectedPrinter)
+                }
+            }
+        } else {
+            finalChosenPrinters.addAll(printers)
+        }
+
+        finalChosenPrinters.forEach {
             it.printBill(order, isReprint)
         }
         return this
@@ -113,6 +129,10 @@ class BillPrinterManager private constructor() {
 
     fun isConnected(): Boolean {
         return printers.isNotEmpty() && printers.all { it.isConnected() }
+    }
+
+    fun printers() = mutableListOf<Printer>().apply {
+        addAll(printers)
     }
 
 // endregion

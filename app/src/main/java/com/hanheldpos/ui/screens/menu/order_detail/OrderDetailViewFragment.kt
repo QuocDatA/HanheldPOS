@@ -1,14 +1,25 @@
 package com.hanheldpos.ui.screens.menu.order_detail
 
 import android.annotation.SuppressLint
+import android.view.View
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.lifecycleScope
+import com.google.android.material.divider.MaterialDividerItemDecoration
 import com.hanheldpos.PosApp
 import com.hanheldpos.R
+import com.hanheldpos.databinding.DialogChoosePrinterBinding
 import com.hanheldpos.databinding.FragmentOrderDetailViewBinding
 import com.hanheldpos.extension.setOnClickDebounce
+import com.hanheldpos.extension.showWithoutSystemUI
+import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.order.OrderModel
 import com.hanheldpos.printer.BillPrinterManager
+import com.hanheldpos.printer.dialogs.PrinterChooseAdapter
+import com.hanheldpos.printer.dialogs.PrinterChooseModel
 import com.hanheldpos.printer.layouts.LayoutType
+import com.hanheldpos.printer.printer_devices.Printer
 import com.hanheldpos.printer.printer_setup.device_info.DeviceType
+import com.hanheldpos.ui.base.dialog.AppFunctionDialog
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.menu.order_detail.adapter.OrderDetailItemViewAdapter
 import com.hanheldpos.ui.screens.menu.order_detail.adapter.OrderDetailPaymentAdapter
@@ -51,20 +62,87 @@ class OrderDetailViewFragment(private val orderId: String) :
 
     override fun initAction() {
         binding.btnPrint.setOnClickDebounce {
-            CoroutineScope(Dispatchers.IO).launch {
-                try {
-                    BillPrinterManager.get { }.run {
-                        viewModel.orderModel.value?.let {
-                            printBill(it, true)
-                        }
-
-                    }
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-            }
+            showDialogChoosePrinter()
 
         }
+    }
+
+
+    private fun showDialogChoosePrinter() {
+        val binding = DataBindingUtil.inflate<DialogChoosePrinterBinding>(
+            layoutInflater,
+            R.layout.dialog_choose_printer,
+            null,
+            false
+        )
+
+        val printerList = DataHelper
+            .hardwareSettingLocalStorage?.printerList
+            ?.map { PrinterChooseModel(it.id, it.name) }
+            ?.toMutableList() ?: mutableListOf()
+
+        val adapter = PrinterChooseAdapter { position, checked ->
+            val printer = printerList[position]
+            printerList[position] = printer.copy(isChecked = checked)
+            binding.enableReprint = printerList.any { it.isChecked }
+            if (!checked) binding.allDeviceCheck.isChecked = false
+            else if (printerList.filter { it.isChecked }.size == printerList.size) {
+                binding.allDeviceCheck.isChecked = true
+            }
+        }
+
+        binding.rv.adapter = adapter
+        adapter.submitList(printerList)
+
+        binding.allDeviceCheck.setOnClickListener {
+            if (binding.allDeviceCheck.isChecked) binding.enableReprint = true
+            for ((index, value) in printerList.withIndex()) {
+                printerList[index] =
+                    value.copy(isChecked = binding.allDeviceCheck.isChecked)
+            }
+            adapter.notifyDataSetChanged()
+
+        }
+        binding.allDeviceCheck.performClick()
+
+        binding.rv.addItemDecoration(
+            MaterialDividerItemDecoration(
+                fragmentContext,
+                MaterialDividerItemDecoration.VERTICAL
+            )
+        )
+
+        val dialog = AppFunctionDialog.get()
+            .showCustomLayout(
+                binding,
+                maxWidth = 0.8,
+                maxHeight = 0.8
+            )
+
+        binding.okOnClick = View.OnClickListener { _ ->
+
+            val order = viewModel.orderModel.value
+
+            lifecycleScope.launch(Dispatchers.IO) {
+                BillPrinterManager.get().printBill(
+                    order ?: return@launch,
+                    isReprint = true,
+                    limitToThesePrinterId =
+                    printerList
+                        .filter { it.isChecked }
+                        .map { it.printerId }
+                        .toList()
+                )
+            }
+
+            dialog?.dismiss()
+            onFragmentBackPressed()
+        }
+
+        binding.dismissOnClick = View.OnClickListener {
+            dialog?.dismiss()
+        }
+
     }
 
     @SuppressLint("NotifyDataSetChanged")

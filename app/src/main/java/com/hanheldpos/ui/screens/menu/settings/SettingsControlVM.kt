@@ -1,7 +1,5 @@
 package com.hanheldpos.ui.screens.menu.settings
 
-import android.os.Handler
-import android.util.Log
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -12,9 +10,6 @@ import com.hanheldpos.model.menu.settings.GeneralPushType
 import com.hanheldpos.model.setting.GeneralSetting
 import com.hanheldpos.ui.base.viewmodel.BaseViewModel
 import kotlinx.coroutines.*
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
-import java.util.concurrent.Future
 
 class SettingsControlVM : BaseViewModel() {
     private var currentNotificationType: GeneralNotificationType? = null
@@ -41,7 +36,6 @@ class SettingsControlVM : BaseViewModel() {
                     currentPushOrderType = it.automaticallyPushOrdersTime
                     startAutomaticPushOrder(it.automaticallyPushOrdersTime?.value)
                 }
-
             } else {
                 disposeAutomaticPushOrder()
             }
@@ -75,7 +69,6 @@ class SettingsControlVM : BaseViewModel() {
     }
     private var notificationRunningTaskFuture: Job? = null
     private var pushOrderRunningTaskFuture: Job? = null
-
 
     private fun startNotification(value: Int?) {
         if (notificationRunningTaskFuture != null) {

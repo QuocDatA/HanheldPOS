@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="dismissOnClick"
+            type="android.view.View.OnClickListener" />
+
+        <variable
+            name="okOnClick"
+            type="android.view.View.OnClickListener" />
+
+        <variable
+            name="enableReprint"
+            type="Boolean" />
+    </data>
+
+    <LinearLayout
+        style="@style/RootLayout"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_35sdp"
+            android:background="@color/color_2">
+
+            <ImageButton
+                style="@style/MaterialButton.Icon"
+                android:layout_height="match_parent"
+                android:layout_gravity="center|start"
+                android:adjustViewBounds="true"
+                android:backgroundTint="@color/textPrimary"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClickDebounce="@{dismissOnClick}"
+                android:padding="@dimen/_12sdp"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_close"
+                tools:ignore="ContentDescription" />
+
+            <com.diadiem.pos_components.PTextView
+                style="@style/CartTitle"
+                app:useTextHeader="h4"
+                app:useFontStyle="normal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/reprint_bill" />
+
+            <com.diadiem.pos_components.PMaterialButton
+                android:enabled="@{enableReprint ? true : false}"
+                style="@style/Base.MaterialButton"
+                android:background="@drawable/bg_primary_button"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="end"
+                android:gravity="center"
+                android:onClickDebounce="@{okOnClick}"
+                android:paddingTop="0dp"
+                android:paddingBottom="0dp"
+                android:paddingStart="@dimen/_18sdp"
+                android:paddingEnd="@dimen/_18sdp"
+                android:text="@string/ok"
+                app:pbtn_useTextHeader="h5"
+                app:pbtn_useFontStyle="normal"
+                app:pbtn_useTextColor="color2"
+                />
+        </FrameLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_1sdp"
+            android:background="@color/color_10" />
+
+        <LinearLayout
+            android:padding="@dimen/_10sdp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <CheckBox
+                android:id="@+id/allDeviceCheck"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginEnd="@dimen/_9sdp"
+                android:background="@drawable/bg_checkbox_selector"
+                android:button="@null"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                />
+            <com.diadiem.pos_components.PTextView
+                style="@style/CartTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/all_devices"
+                app:useFontStyle="normal"
+                app:useTextColor="color4"
+                app:useTextHeader="h5" />
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:overScrollMode="never"
+            android:id="@+id/rv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:itemCount="4"
+            tools:listitem="@layout/item_printer_choose" />
+
+    </LinearLayout>
+</layout>

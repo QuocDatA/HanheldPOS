@@ -120,8 +120,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
                 CoroutineScope(Dispatchers.IO).launch {
                     if (isWaitingForNotification) return@launch
                     isWaitingForNotification = true
-                    while (navigator.activeFragment != this@HomeFragment) {
-                    }
+                    while (navigator.activeFragment != this@HomeFragment) { }
                     isWaitingForNotification = false
                     launch(Dispatchers.Main) {
                         showAlert(
@@ -136,7 +135,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
                                     syncDataService.fetchMenuDiscountData(requireContext(),
                                         object : SyncDataService.SyncDataServiceListener {
                                             override fun onLoadedResources(data: Any?) {
-                                                DataHelper.dataVersionLocalStorage = data as DataVersion?
+                                                DataHelper.dataVersionLocalStorage =
+                                                    data as DataVersion?
                                                 DataHelper.isNeedToUpdateNewData.postValue(false)
                                                 OrderFragment.selectedSort = 0
                                                 TableFragment.selectedSort = 0
@@ -324,7 +324,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
     }
 
     override fun openSelectMenu() {
-        navigator.goToWithAnimationEnterFromLeft(MenuFragment(listener = object: MenuFragment.MenuCallBack{
+        navigator.goToWithAnimationEnterFromLeft(MenuFragment(listener = object :
+            MenuFragment.MenuCallBack {
             override fun updateDiscountCouponCode(discountCouponList: List<DiscountCoupon>?) {
                 navigator.goTo(CartFragment(listener = object : CartFragment.CartCallBack {
                     override fun onCartDelete() {
