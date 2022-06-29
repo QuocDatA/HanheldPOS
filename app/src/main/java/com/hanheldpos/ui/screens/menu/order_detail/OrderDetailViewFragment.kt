@@ -63,7 +63,6 @@ class OrderDetailViewFragment(private val orderId: String) :
     override fun initAction() {
         binding.btnPrint.setOnClickDebounce {
             showDialogChoosePrinter()
-
         }
     }
 
