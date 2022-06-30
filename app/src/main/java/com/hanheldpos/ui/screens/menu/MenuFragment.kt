@@ -151,8 +151,7 @@ class MenuFragment(private val listener: MenuCallBack) :
                         object : SyncDataService.SyncDataServiceListener {
                             override fun onLoadedResources(data: Any?) {
                                 showLoading(false)
-                                DataHelper.dataVersionLocalStorage =
-                                    data as DataVersion?
+                                val dataVersion = data as DataVersion?
                                 showAlert(
                                     getString(R.string.new_data_available),
                                     getString(R.string.new_data_update_description),
@@ -164,6 +163,7 @@ class MenuFragment(private val listener: MenuCallBack) :
                                         AppAlertDialog.AlertDialogOnClickListener {
                                         override fun onPositiveClick() {
                                             showLoading(true)
+                                            DataHelper.dataVersionLocalStorage = dataVersion
                                             syncDataService.fetchMenuDiscountData(it,
                                                 object : SyncDataService.SyncDataServiceListener {
                                                     override fun onLoadedResources(data: Any?) {

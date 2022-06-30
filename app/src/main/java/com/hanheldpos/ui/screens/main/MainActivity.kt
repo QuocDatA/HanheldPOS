@@ -71,7 +71,8 @@ class MainActivity : BaseFragmentBindingActivity<ActivityMainBinding, MainVM>(),
         // Setup firebase
         DataHelper.firebaseSettingLocalStorage?.fireStorePath?.let {
             Firebase.firestore.collection(it.dataVersion ?: "")
-                .addSnapshotListener { value, error ->
+                .addSnapshotListener { value, _ ->
+                    Log.d("Data Version Firebase", value.toString())
                     GSonUtils.toObject<DataVersion>(value?.documents?.firstOrNull()?.data?.let { it1 ->
                         JSONObject(
                             it1
@@ -91,7 +92,7 @@ class MainActivity : BaseFragmentBindingActivity<ActivityMainBinding, MainVM>(),
             BillPrinterManager.init(
                 PosApp.instance.applicationContext,
                 onConnectionSuccess = {
-                   Log.d("Printer","The printer is connected with config: $it")
+                    Log.d("Printer", "The printer is connected with config: $it")
                 },
                 onConnectionFailed = { ex ->
 //                    launch(Dispatchers.Main) {

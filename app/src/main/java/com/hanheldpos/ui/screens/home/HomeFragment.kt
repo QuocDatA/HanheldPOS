@@ -135,12 +135,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
                                     syncDataService.checkNewUpdateVersion(requireContext(),
                                         object : SyncDataService.SyncDataServiceListener {
                                             override fun onLoadedResources(data: Any?) {
-                                                DataHelper.dataVersionLocalStorage =
-                                                    data as DataVersion?
+                                                val dataVersion = data as DataVersion?
                                                 syncDataService.fetchMenuDiscountData(requireContext(),
                                                     object :
                                                         SyncDataService.SyncDataServiceListener {
                                                         override fun onLoadedResources(data: Any?) {
+                                                            DataHelper.dataVersionLocalStorage = dataVersion
                                                             DataHelper.isNeedToUpdateNewData.postValue(
                                                                 false
                                                             )
