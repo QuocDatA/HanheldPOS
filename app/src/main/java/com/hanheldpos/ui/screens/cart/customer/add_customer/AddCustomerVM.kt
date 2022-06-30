@@ -16,7 +16,12 @@ class AddCustomerVM : BaseRepoViewModel<CustomerRepo, AddCustomerUV>() {
         return CustomerRepo()
     }
 
-    fun searchCustomer(keyword: String?, pageNo: Int? = 1, keyRequest: Int) {
+    fun searchCustomer(
+        keyword: String?,
+        pageNo: Int? = 1,
+        keyRequest: Int,
+        isScan: Boolean? = false
+    ) {
         val userGuid = UserHelper.getUserGuid()
         repo?.getCustomersFromSearch(
             userGuid = userGuid,
@@ -24,32 +29,46 @@ class AddCustomerVM : BaseRepoViewModel<CustomerRepo, AddCustomerUV>() {
             pageNo = pageNo,
             object : BaseRepoCallback<BaseResponse<List<CustomerSearchResp>>?> {
                 override fun apiRequesting(showLoading: Boolean) {
-                    isLoading.postValue(showLoading)
+                    if (isScan != true)
+                        isLoading.postValue(showLoading)
                 }
 
                 override fun apiResponse(data: BaseResponse<List<CustomerSearchResp>>?) {
                     if (data == null || data.DidError) {
-                        uiCallback?.loadCustomer(mutableListOf(), false, keyRequest)
+                        uiCallback?.onLoadedCustomerView(mutableListOf(), false, keyRequest)
                     } else {
                         data.Model?.firstOrNull()?.List?.let {
-                            uiCallback?.loadCustomer(
-                                it,
-                                true,
-                                keyRequest
-                            )
+                            if (isScan != true) {
+                                uiCallback?.onLoadedCustomerView(
+                                    it,
+                                    true,
+                                    keyRequest
+                                )
+                            } else {
+                                uiCallback?.onLoadedCustomerScan(
+                                    it,
+                                    true,
+                                    keyRequest,
+                                )
+                            }
                         }
                     }
                 }
 
                 override fun showMessage(message: String?) {
-                    uiCallback?.loadCustomer(mutableListOf(), false, keyRequest)
+                    uiCallback?.onLoadedCustomerView(mutableListOf(), false, keyRequest)
                 }
             })
     }
 
-    fun backPress() {
-        uiCallback?.getBack()
+    fun onFragmentBackPressed() {
+        uiCallback?.onFragmentBackPressed()
     }
+
+    fun onScanQrCode() {
+        uiCallback?.onScanQrCode()
+    }
+
 
     fun onAddNewCustomer() {
         uiCallback?.onAddNewCustomer()

@@ -9,10 +9,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.customer.CustomerResp
 import com.hanheldpos.databinding.FragmentAddCustomerBinding
+import com.hanheldpos.extension.navigateTo
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.cart.customer.add_customer.adapter.CustomerAdapter
 import com.hanheldpos.ui.screens.cart.customer.add_customer.adapter.CustomerAdapterHelper
+import com.hanheldpos.ui.screens.qrcode.ScanQrCodeFragment
+import kotlin.random.Random
 
 
 class AddCustomerFragment(
@@ -40,7 +43,7 @@ class AddCustomerFragment(
             override fun onItemClick(adapterPosition: Int, item: CustomerResp?) {
                 // Dealing with select customer
                 listener.onSelectedCustomer(item!!)
-                getBack()
+                onFragmentBackPressed()
             }
         })
         binding.customerContainer.apply {
@@ -87,7 +90,7 @@ class AddCustomerFragment(
                     }
                     if (keyword.trim().isBlank()) return
                 }
-                viewModel.searchCustomer(keyword, pageNo,keyRequest)
+                viewModel.searchCustomer(keyword, pageNo, keyRequest)
             }
 
             override fun onLoadingNextPage(customers: List<CustomerResp>) {
@@ -118,16 +121,40 @@ class AddCustomerFragment(
 
     }
 
-    override fun getBack() {
-        navigator.goOneBack()
+    override fun onLoadedCustomerView(
+        list: List<CustomerResp>,
+        isSuccess: Boolean,
+        keyRequest: Int
+    ) {
+        adapterCustomerHelper.loaded(list.toMutableList(), isSuccess, keyRequest)
     }
 
-    override fun loadCustomer(list: List<CustomerResp>, isSuccess: Boolean, keyRequest: Int) {
-        adapterCustomerHelper.loaded(list.toMutableList(), isSuccess,keyRequest)
+    override fun onLoadedCustomerScan(
+        list: List<CustomerResp>,
+        isSuccess: Boolean,
+        keyRequest: Int
+    ) {
+        showLoading(false)
+        // Dealing with select customer
+        if (list.isEmpty()) {
+            showMessage(getString(R.string.customer_does_not_exist))
+        } else
+            list.firstOrNull()?.let { item ->
+                listener.onSelectedCustomer(item)
+                onFragmentBackPressed()
+            }
+
     }
 
     override fun onAddNewCustomer() {
         navigator.goToWithCustomAnimation(AddNewCustomerFragment())
+    }
+
+    override fun onScanQrCode() {
+        navigator.goToWithCustomAnimation(ScanQrCodeFragment(onSuccess = {
+            showLoading(true)
+            viewModel.searchCustomer(it, keyRequest = Random.nextInt(100000, 999999), isScan = true)
+        }))
     }
 
     interface CustomerEvent {

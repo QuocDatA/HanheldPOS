@@ -18,6 +18,7 @@ data class DiscountUser(
             DiscountTypeEnum.PERCENT->{
                 return subtotal * (DiscountValue?: 0.0) / 100;
             }
+            else -> {}
         }
         return 0.0
     }

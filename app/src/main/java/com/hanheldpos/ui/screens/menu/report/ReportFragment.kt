@@ -13,7 +13,6 @@ import com.hanheldpos.ui.screens.menu.adapter.ItemOptionNav
 import com.hanheldpos.ui.screens.menu.adapter.OptionNavAdapter
 import com.hanheldpos.ui.screens.menu.report.current_drawer.CurrentDrawerFragment
 import com.hanheldpos.ui.screens.menu.report.sale.SaleReportsMenuFragment
-import com.hanheldpos.ui.screens.menu.report.sale.SalesReportFragment
 
 class ReportFragment : BaseFragment<FragmentReportBinding, ReportVM>(),
     ReportUV {

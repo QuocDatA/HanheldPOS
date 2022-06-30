@@ -120,7 +120,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
                 CoroutineScope(Dispatchers.IO).launch {
                     if (isWaitingForNotification) return@launch
                     isWaitingForNotification = true
-                    while (navigator.activeFragment != this@HomeFragment) { }
+//                    while (navigator.activeFragment != this@HomeFragment) { }
                     isWaitingForNotification = false
                     launch(Dispatchers.Main) {
                         showAlert(

@@ -304,4 +304,5 @@
     <string name="new_data_available_description">There are new data for your app./n Please update now</string>
     <string name="reprint_bill">Reprint Bill</string>
     <string name="all_devices">All devices</string>
+    <string name="customer_does_not_exist">Customer does not exist</string>
 </resources>

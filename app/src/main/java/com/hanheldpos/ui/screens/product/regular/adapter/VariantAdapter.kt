@@ -109,6 +109,7 @@ class VariantAdapter(
 
                 }
             }
+            else -> {}
         }
 
     }

@@ -163,13 +163,14 @@ class TableAdapter(
                 view.dirButton.setImageResource(R.drawable.ic_direction_up_disable)
                 view.dirButtonBackground.rippleColor = ColorStateList.valueOf(TRANSPARENT)
             }
+            else -> {}
         }
         holder.bindItem(item);
     }
 
     private class DiffCallBack : DiffUtil.ItemCallback<FloorTable>() {
         override fun areItemsTheSame(oldItem: FloorTable, newItem: FloorTable): Boolean {
-            return oldItem._Id.equals(newItem._Id) && ((oldItem.uiType == newItem.uiType) || (oldItem.uiType != TableModeViewType.Table && oldItem.uiType != TableModeViewType.Empty && newItem.uiType != TableModeViewType.Table && newItem.uiType != TableModeViewType.Empty))
+            return oldItem._Id == newItem._Id && ((oldItem.uiType == newItem.uiType) || (oldItem.uiType != TableModeViewType.Table && oldItem.uiType != TableModeViewType.Empty && newItem.uiType != TableModeViewType.Table && newItem.uiType != TableModeViewType.Empty))
         }
 
         override fun areContentsTheSame(oldItem: FloorTable, newItem: FloorTable): Boolean {

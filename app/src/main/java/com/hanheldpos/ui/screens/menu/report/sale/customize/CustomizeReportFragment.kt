@@ -10,7 +10,6 @@ import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.home.DropDownItem
 import com.hanheldpos.ui.screens.main.adapter.SubSpinnerAdapter
 import com.hanheldpos.utils.DateTimeUtils
-import kotlinx.coroutines.CoroutineScope
 
 class CustomizeReportFragment(
     private val saleReportCustomData: SaleReportFilter,

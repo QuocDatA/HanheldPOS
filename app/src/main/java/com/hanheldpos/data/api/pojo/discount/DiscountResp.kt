@@ -147,13 +147,15 @@ data class DiscountResp(
 
     private fun isValidDiningOption(diningOptionIdList: List<Int>): Boolean {
         val isValidDiningOption =
-            diningOptionIdList.intersect(DiningOption?.map { d -> d.Id }.toSet())?.size > 0;
+            diningOptionIdList.intersect(
+                DiningOption.map { d -> d.Id }.toSet().toSet()
+            ).isNotEmpty();
         return isValidDiningOption;
     }
 
     private fun isValidDate(curDateTime: Date): Boolean {
         try {
-            if (DateOn?.isNullOrEmpty() && DateOff?.isNullOrEmpty()) {
+            if (DateOn.isEmpty() && DateOff.isEmpty()) {
                 return true;
             }
 
@@ -337,6 +339,7 @@ data class DiscountResp(
 
             DiscApplyTo.ORDER ->
                 totalQtyDiscUsed = CurCartData.cartModel?.totalQtyDiscUsed(this._id) ?: 0;
+            else -> {}
         }
 
         return MaximumNumberOfUsedPerOrder && totalQtyDiscUsed >= MaximumNumberOfUsedPerOrderValue;
