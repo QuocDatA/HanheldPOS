@@ -1,18 +1,11 @@
 package com.hanheldpos.ui.screens.menu.settings.hardware.hardware_detail
 
-import androidx.lifecycle.ViewModelProvider
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import com.hanheldpos.PosApp
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.setting.hardware.HardwareConnection
 import com.hanheldpos.data.api.pojo.setting.hardware.HardwarePrinter
-import com.hanheldpos.databinding.FragmentHardwareBinding
 import com.hanheldpos.databinding.FragmentHardwareDetailBinding
 import com.hanheldpos.model.DataHelper
-import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.menu.settings.hardware.hardware_detail.adapter.HardwareConnectionAdapter
 
@@ -38,12 +31,20 @@ class HardwareDetailFragment(
 
     override fun initView() {
         hardwareConnectionAdapter = HardwareConnectionAdapter(listener = object :
-            BaseItemClickListener<HardwareConnection> {
-            override fun onItemClick(adapterPosition: Int, item: HardwareConnection) {
+            HardwareConnectionAdapter.HardwareConnectionCallBack {
+            override fun onItemClick(position: Int, item: HardwareConnection) {
                 DataHelper.hardwareSettingLocalStorage?.printerList?.forEach {
                     if (it.id == printer.id)
-                        it.connectionList?.get(adapterPosition)?.isChecked = item.isChecked
+                        it.connectionList?.get(position)?.isChecked = item.isChecked
                 }
+            }
+
+            override fun onSaveEnable() {
+                binding.isSave = true
+            }
+
+            override fun onSaveDisable() {
+                binding.isSave = false
             }
         })
         binding.listConnection.adapter = hardwareConnectionAdapter
@@ -51,7 +52,7 @@ class HardwareDetailFragment(
 
     override fun initData() {
         binding.subTitle.text = "(${printer.name})"
-        hardwareConnectionAdapter.submitList(listHardwareConnection)
+        hardwareConnectionAdapter.submitList(listHardwareConnection.toMutableList())
     }
 
     override fun initAction() {
