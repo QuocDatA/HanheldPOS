@@ -124,7 +124,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
                     while (true) {
                         if (navigator.activeFragment != null && navigator.activeFragment!!::class.java == HomeFragment::class.java)
                             break
-                        delay(1000)
+                        delay(2000)
                     }
                     isWaitingForNotification = false
                     launch(Dispatchers.Main) {

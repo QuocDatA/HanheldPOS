@@ -1,8 +1,10 @@
 package com.hanheldpos.ui.screens.menu.settings.adapter
 
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import com.hanheldpos.R
 import com.hanheldpos.databinding.ItemBoxSettingOptionBinding
+import com.hanheldpos.databinding.ItemPrinterConnectionStatusBinding
 import com.hanheldpos.databinding.ItemRadioSettingOptionBinding
 import com.hanheldpos.model.menu.settings.ItemSettingOption
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
@@ -11,7 +13,7 @@ import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 
 class SettingsOptionAdapter(
     private val defaultSelection: Any? = null,
-    private val style: SettingOptionType = SettingOptionType.RADIO,
+    private val style: SettingOptionType = SettingOptionType.STATUS,
     private val listener: BaseItemClickListener<ItemSettingOption>
 ) :
     BaseBindingListAdapter<ItemSettingOption>(DiffCallBack(), listener) {
@@ -22,7 +24,7 @@ class SettingsOptionAdapter(
 
     override fun getItemViewType(position: Int): Int {
         return when (style) {
-            SettingOptionType.RADIO -> R.layout.item_radio_setting_option
+            SettingOptionType.STATUS -> R.layout.item_printer_connection_status
             SettingOptionType.BOX -> R.layout.item_box_setting_option
         }
     }
@@ -36,7 +38,7 @@ class SettingsOptionAdapter(
             selectedItem.value = position
         }
         when (style) {
-            SettingOptionType.RADIO -> (holder.binding as ItemRadioSettingOptionBinding).let { binding ->
+            SettingOptionType.STATUS -> (holder.binding as ItemPrinterConnectionStatusBinding).let { binding ->
                 binding.item = item
                 binding.btn.apply {
                     setOnClickListener {
@@ -45,7 +47,6 @@ class SettingsOptionAdapter(
                         notifyItemChanged(position)
                         listener.onItemClick(position, item)
                     }
-                    isChecked = selectedItem.value == position
                 }
             }
             SettingOptionType.BOX -> (holder.binding as ItemBoxSettingOptionBinding).let { binding ->
@@ -57,7 +58,6 @@ class SettingsOptionAdapter(
                         notifyItemChanged(position)
                         listener.onItemClick(position, item)
                     }
-                    isChecked = selectedItem.value == position
                 }
             }
         }

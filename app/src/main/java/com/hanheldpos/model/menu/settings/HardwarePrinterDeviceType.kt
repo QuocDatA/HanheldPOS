@@ -1,6 +1,7 @@
 package com.hanheldpos.model.menu.settings
 
 enum class HardwarePrinterDeviceType {
-    UROVO,
-    BLUETOOTH
+    NO_CONNECTION,
+    CONNECTING,
+    CONNECTED,
 }

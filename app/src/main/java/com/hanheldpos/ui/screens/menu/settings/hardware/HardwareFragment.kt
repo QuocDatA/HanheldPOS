@@ -11,6 +11,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hanheldpos.R
+import com.hanheldpos.data.api.pojo.setting.hardware.HardwarePrinter
 import com.hanheldpos.databinding.FragmentHardwareBinding
 import com.hanheldpos.model.menu.settings.ItemSettingOption
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
@@ -19,6 +20,7 @@ import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.menu.settings.SettingsControlVM
 import com.hanheldpos.ui.screens.menu.settings.adapter.SettingOptionType
 import com.hanheldpos.ui.screens.menu.settings.adapter.SettingsOptionAdapter
+import com.hanheldpos.ui.screens.menu.settings.hardware.hardware_detail.HardwareDetailFragment
 
 class HardwareFragment : BaseFragment<FragmentHardwareBinding, HardwareVM>(), HardwareUV {
     private lateinit var printerStatusAdapter: SettingsOptionAdapter
@@ -46,7 +48,12 @@ class HardwareFragment : BaseFragment<FragmentHardwareBinding, HardwareVM>(), Ha
             null, style = SettingOptionType.BOX,
             object : BaseItemClickListener<ItemSettingOption> {
                 override fun onItemClick(adapterPosition: Int, item: ItemSettingOption) {
-
+                    navigator.goTo(
+                        HardwareDetailFragment(
+                            item.value as HardwarePrinter,
+                            (item.value).connectionList ?: listOf()
+                        )
+                    )
                 }
             })
         binding.printerStatus.listOption.apply {
@@ -77,25 +84,19 @@ class HardwareFragment : BaseFragment<FragmentHardwareBinding, HardwareVM>(), Ha
             adapter = deviceStatusAdapter
         }
 
-        selectPrinterAdapter = SettingsOptionAdapter(null,style = SettingOptionType.RADIO,
+        selectPrinterAdapter = SettingsOptionAdapter(null, style = SettingOptionType.STATUS,
             object : BaseItemClickListener<ItemSettingOption> {
                 override fun onItemClick(adapterPosition: Int, item: ItemSettingOption) {
 
                 }
             })
-        binding.selectPrinter.listOption.apply {
+        binding.printerConnectionStatus.apply {
             addItemDecoration(
-                DividerItemDecoration(
-                    context,
-                    LinearLayoutManager.VERTICAL
-                ).apply {
-                    setDrawable(
-                        ContextCompat.getDrawable(
-                            context,
-                            R.drawable.divider_vertical
-                        )!!
-                    )
-                }
+                GridSpacingItemDecoration(
+                    1,
+                    15,
+                    false
+                )
             )
             adapter = selectPrinterAdapter
         }

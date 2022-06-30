@@ -13,20 +13,22 @@
         android:id="@+id/btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:clickable="true"
-        android:focusable="true"
-        android:foreground="?attr/selectableItemBackground"
-        android:gravity="center"
+        android:gravity="start"
         android:orientation="horizontal">
 
+        <View
+            android:layout_gravity="center"
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:background="@{item.color}"/>
+
         <com.diadiem.pos_components.PTextView
-            android:background="@drawable/ic_box_unselected"
-            style="@style/BoxCustom"
             android:text="@{item.title}"
-            android:gravity="center"
+            android:gravity="start"
+            android:layout_marginStart="@dimen/_10sdp"
             android:paddingVertical="@dimen/_10sdp"
             tools:text="Title"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
     </LinearLayout>
 </layout>
