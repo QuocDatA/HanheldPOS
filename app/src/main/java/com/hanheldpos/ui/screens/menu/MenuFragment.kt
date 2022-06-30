@@ -41,7 +41,8 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
 
-class MenuFragment(private val listener: MenuCallBack) : BaseFragment<FragmentMenuBinding, MenuVM>(), MenuUV {
+class MenuFragment(private val listener: MenuCallBack) :
+    BaseFragment<FragmentMenuBinding, MenuVM>(), MenuUV {
     override fun layoutRes() = R.layout.fragment_menu
 
     private lateinit var menuAdapter: OptionNavAdapter
@@ -112,7 +113,8 @@ class MenuFragment(private val listener: MenuCallBack) : BaseFragment<FragmentMe
     fun onNavOptionClick(option: ItemOptionNav) {
         when (option.type as NavBarOptionType) {
             NavBarOptionType.DISCOUNT -> {
-                navigator.goToWithCustomAnimation(MenuDiscountFragment(listener = object: MenuDiscountFragment.MenuDiscountCallBack {
+                navigator.goToWithCustomAnimation(MenuDiscountFragment(listener = object :
+                    MenuDiscountFragment.MenuDiscountCallBack {
                     override fun updateDiscountCouponCode(discountCouponList: List<DiscountCoupon>?) {
                         onFragmentBackPressed()
                         listener.updateDiscountCouponCode(discountCouponList)
@@ -149,6 +151,8 @@ class MenuFragment(private val listener: MenuCallBack) : BaseFragment<FragmentMe
                         object : SyncDataService.SyncDataServiceListener {
                             override fun onLoadedResources(data: Any?) {
                                 showLoading(false)
+                                DataHelper.dataVersionLocalStorage =
+                                    data as DataVersion?
                                 showAlert(
                                     getString(R.string.new_data_available),
                                     getString(R.string.new_data_update_description),
@@ -160,31 +164,34 @@ class MenuFragment(private val listener: MenuCallBack) : BaseFragment<FragmentMe
                                         AppAlertDialog.AlertDialogOnClickListener {
                                         override fun onPositiveClick() {
                                             showLoading(true)
-                                            syncDataService.fetchMenuDiscountData(it,object : SyncDataService.SyncDataServiceListener{
-                                                override fun onLoadedResources(data: Any?) {
-                                                    DataHelper.dataVersionLocalStorage = data as DataVersion?
-                                                    DataHelper.isNeedToUpdateNewData.postValue(false)
-                                                    OrderFragment.selectedSort = 0
-                                                    TableFragment.selectedSort = 0
-                                                    menuAdapter.submitList(
-                                                        viewModel.initMenuItemList(
-                                                            requireContext()
-                                                        )
-                                                    )
-                                                    menuAdapter.notifyDataSetChanged()
-                                                    screenViewModel.showTablePage()
-                                                    showSuccessfully(
-                                                        getString(R.string.done),
-                                                        getString(R.string.new_data_have_been_updated_successfully)
-                                                    )
-                                                    onFragmentBackPressed()
-                                                }
+                                            syncDataService.fetchMenuDiscountData(it,
+                                                object : SyncDataService.SyncDataServiceListener {
+                                                    override fun onLoadedResources(data: Any?) {
 
-                                                override fun onError(message: String?) {
-                                                    showLoading(false)
-                                                    showMessage(message)
-                                                }
-                                            })
+                                                        DataHelper.isNeedToUpdateNewData.postValue(
+                                                            false
+                                                        )
+                                                        OrderFragment.selectedSort = 0
+                                                        TableFragment.selectedSort = 0
+                                                        menuAdapter.submitList(
+                                                            viewModel.initMenuItemList(
+                                                                requireContext()
+                                                            )
+                                                        )
+                                                        menuAdapter.notifyDataSetChanged()
+                                                        screenViewModel.showTablePage()
+                                                        showSuccessfully(
+                                                            getString(R.string.done),
+                                                            getString(R.string.new_data_have_been_updated_successfully)
+                                                        )
+                                                        onFragmentBackPressed()
+                                                    }
+
+                                                    override fun onError(message: String?) {
+                                                        showLoading(false)
+                                                        showMessage(message)
+                                                    }
+                                                })
 
                                         }
                                     }

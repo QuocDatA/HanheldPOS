@@ -132,19 +132,32 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
                                 AppAlertDialog.AlertDialogOnClickListener {
                                 override fun onPositiveClick() {
                                     showLoading(true)
-                                    syncDataService.fetchMenuDiscountData(requireContext(),
+                                    syncDataService.checkNewUpdateVersion(requireContext(),
                                         object : SyncDataService.SyncDataServiceListener {
                                             override fun onLoadedResources(data: Any?) {
                                                 DataHelper.dataVersionLocalStorage =
                                                     data as DataVersion?
-                                                DataHelper.isNeedToUpdateNewData.postValue(false)
-                                                OrderFragment.selectedSort = 0
-                                                TableFragment.selectedSort = 0
-                                                screenViewModel.showTablePage()
-                                                showSuccessfully(
-                                                    getString(R.string.done),
-                                                    getString(R.string.new_data_have_been_updated_successfully)
-                                                )
+                                                syncDataService.fetchMenuDiscountData(requireContext(),
+                                                    object :
+                                                        SyncDataService.SyncDataServiceListener {
+                                                        override fun onLoadedResources(data: Any?) {
+                                                            DataHelper.isNeedToUpdateNewData.postValue(
+                                                                false
+                                                            )
+                                                            OrderFragment.selectedSort = 0
+                                                            TableFragment.selectedSort = 0
+                                                            screenViewModel.showTablePage()
+                                                            showSuccessfully(
+                                                                getString(R.string.done),
+                                                                getString(R.string.new_data_have_been_updated_successfully)
+                                                            )
+                                                        }
+
+                                                        override fun onError(message: String?) {
+                                                            showLoading(false)
+                                                            showMessage(message)
+                                                        }
+                                                    })
                                             }
 
                                             override fun onError(message: String?) {
@@ -152,6 +165,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
                                                 showMessage(message)
                                             }
                                         })
+
 
                                 }
                             }
