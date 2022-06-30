@@ -298,8 +298,11 @@ class CartFragment(
     override fun onOpenAddCustomer() {
         navigator.goToWithCustomAnimation(AddCustomerFragment(listener = object :
             AddCustomerFragment.CustomerEvent {
-            override fun onSelectedCustomer(item: CustomerResp) {
+            override fun onSelectedCustomer(item: CustomerResp, openDetail: Boolean?) {
                 cartDataVM.addCustomerToCart(item)
+                if (openDetail == true){
+                    this@CartFragment.onShowCustomerDetail()
+                }
             }
         }))
     }

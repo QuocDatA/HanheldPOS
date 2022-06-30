@@ -35,6 +35,7 @@ import com.hanheldpos.ui.screens.menu.settings.SettingsControlVM
 import com.hanheldpos.utils.NetworkUtils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
@@ -120,7 +121,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
                 CoroutineScope(Dispatchers.IO).launch {
                     if (isWaitingForNotification) return@launch
                     isWaitingForNotification = true
-//                    while (navigator.activeFragment != this@HomeFragment) { }
+                    while (true) {
+                        if (navigator.activeFragment != null && navigator.activeFragment!!::class.java == HomeFragment::class.java)
+                            break
+                        delay(1000)
+                    }
                     isWaitingForNotification = false
                     launch(Dispatchers.Main) {
                         showAlert(
@@ -140,7 +145,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
                                                     object :
                                                         SyncDataService.SyncDataServiceListener {
                                                         override fun onLoadedResources(data: Any?) {
-                                                            DataHelper.dataVersionLocalStorage = dataVersion
+                                                            DataHelper.dataVersionLocalStorage =
+                                                                dataVersion
                                                             DataHelper.isNeedToUpdateNewData.postValue(
                                                                 false
                                                             )

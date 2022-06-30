@@ -34,8 +34,10 @@ class AddCustomerVM : BaseRepoViewModel<CustomerRepo, AddCustomerUV>() {
                 }
 
                 override fun apiResponse(data: BaseResponse<List<CustomerSearchResp>>?) {
-                    if (data == null || data.DidError) {
-                        uiCallback?.onLoadedCustomerView(mutableListOf(), false, keyRequest)
+                    if (data == null || data.DidError || data.Model == null) {
+                        if (isScan != true) {
+                            uiCallback?.onLoadedCustomerView(mutableListOf(), false, keyRequest)
+                        } else uiCallback?.onLoadedCustomerScan(mutableListOf(), false, keyRequest)
                     } else {
                         data.Model?.firstOrNull()?.List?.let {
                             if (isScan != true) {
@@ -56,7 +58,11 @@ class AddCustomerVM : BaseRepoViewModel<CustomerRepo, AddCustomerUV>() {
                 }
 
                 override fun showMessage(message: String?) {
-                    uiCallback?.onLoadedCustomerView(mutableListOf(), false, keyRequest)
+                    if (isScan != true) {
+                        uiCallback?.onLoadedCustomerView(mutableListOf(), false, keyRequest)
+                    } else {
+                        uiCallback?.onLoadedCustomerScan(mutableListOf(), false, keyRequest)
+                    }
                 }
             })
     }

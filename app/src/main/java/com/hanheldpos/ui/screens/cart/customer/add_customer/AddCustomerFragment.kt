@@ -140,8 +140,8 @@ class AddCustomerFragment(
             showMessage(getString(R.string.customer_does_not_exist))
         } else
             list.firstOrNull()?.let { item ->
-                listener.onSelectedCustomer(item)
                 onFragmentBackPressed()
+                listener.onSelectedCustomer(item,true)
             }
 
     }
@@ -158,8 +158,6 @@ class AddCustomerFragment(
     }
 
     interface CustomerEvent {
-        fun onSelectedCustomer(item: CustomerResp): Unit {
-            /* default implementation */
-        }
+        fun onSelectedCustomer(item: CustomerResp,openDetail : Boolean? = false)
     }
 }
