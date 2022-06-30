@@ -6,6 +6,10 @@
     <data>
 
         <variable
+            name="isSave"
+            type="Boolean" />
+
+        <variable
             name="viewModel"
             type="com.hanheldpos.ui.screens.menu.settings.hardware.hardware_detail.HardwareDetailVM" />
     </data>
@@ -58,13 +62,14 @@
             </LinearLayout>
 
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/btnSave"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="end"
-                android:backgroundTint="@color/color_0"
-                android:clickable="true"
+                android:backgroundTint="@{isSave ? @color/color_0 : @color/color_9}"
+                android:clickable="@{isSave}"
                 android:elevation="0dp"
-                android:focusable="true"
+                android:focusable="@{isSave}"
                 android:minWidth="@dimen/_75sdp"
                 app:cardCornerRadius="0dp"
                 app:cardElevation="0dp"
