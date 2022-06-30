@@ -1,6 +1,7 @@
 package com.hanheldpos.ui.screens.menu.settings.hardware
 
 import android.content.Context
+import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.menu.settings.HardwareDeviceStatusType
 import com.hanheldpos.model.menu.settings.HardwarePrinterDeviceType
 import com.hanheldpos.model.menu.settings.HardwarePrinterStatusType
@@ -13,24 +14,9 @@ class HardwareVM :BaseUiViewModel<HardwareUV>() {
     }
 
     fun getPrinterStatusOptions(context : Context) : List<ItemSettingOption>{
-        return mutableListOf(
-            ItemSettingOption(
-                "Cashier",
-                value = HardwarePrinterStatusType.CASHIER
-            ),
-            ItemSettingOption(
-                "Pho",
-                value = HardwarePrinterStatusType.PHO
-            ),
-            ItemSettingOption(
-                "Expo",
-                value = HardwarePrinterStatusType.EXPO
-            ),
-            ItemSettingOption(
-                "Kitchen",
-                value = HardwarePrinterStatusType.KITCHEN
-            ),
-        )
+        return DataHelper.hardwareSettingLocalStorage?.printerList?.map {
+            ItemSettingOption(it.name, it)
+        }?: mutableListOf()
     }
 
     fun getDeviceStatusOptions(context : Context) : List<ItemSettingOption> {
@@ -45,12 +31,16 @@ class HardwareVM :BaseUiViewModel<HardwareUV>() {
     fun getPrinterDeviceOptions(context : Context) : List<ItemSettingOption> {
         return mutableListOf(
             ItemSettingOption(
-                "Bluetooth",
-                value = HardwarePrinterDeviceType.BLUETOOTH
+                "No Connection",
+                value = HardwarePrinterDeviceType.NO_CONNECTION
             ),
             ItemSettingOption(
-                "Urovo",
-                value = HardwarePrinterDeviceType.UROVO
+                "Connecting",
+                value = HardwarePrinterDeviceType.CONNECTING
+            ),
+            ItemSettingOption(
+                "Connected",
+                value = HardwarePrinterDeviceType.CONNECTED
             )
         )
     }

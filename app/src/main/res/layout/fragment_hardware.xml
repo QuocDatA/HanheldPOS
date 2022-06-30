@@ -76,10 +76,24 @@
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/_18sdp" />
 
-                <include
-                    android:id="@+id/selectPrinter"
-                    layout="@layout/layout_radio_group_option"
-                    app:title="@{@string/other_device_status}" />
+                <com.diadiem.pos_components.PTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/status"
+                    app:useFontStyle="bold"
+                    app:useTextColor="color4"
+                    app:useTextHeader="h5"
+                    tools:text="Title" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:nestedScrollingEnabled="false"
+                    android:orientation="vertical"
+                    android:overScrollMode="never"
+                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                    android:id="@+id/printerConnectionStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:spanCount="1"/>
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
 

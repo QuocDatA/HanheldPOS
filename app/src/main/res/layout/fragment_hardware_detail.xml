@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.hanheldpos.ui.screens.menu.settings.hardware.hardware_detail.HardwareDetailVM" />
+    </data>
+
+    <LinearLayout
+        style="@style/RootLayout">
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_42sdp"
+            android:orientation="horizontal">
+
+            <ImageButton
+                style="@style/MaterialButton.Icon"
+                android:layout_height="match_parent"
+                android:layout_gravity="center|start"
+                android:adjustViewBounds="true"
+                android:backgroundTint="@color/textPrimary"
+                android:onClickDebounce="@{v -> viewModel.onFragmentBackPressed()}"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_baseline_arrow_back_ios_13"
+                tools:ignore="ContentDescription" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                >
+
+                <com.diadiem.pos_components.PTextView
+                    android:id="@+id/header_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/printer_detail"
+                    app:useFontStyle="bold"
+                    app:useTextColor="color4"
+                    app:useTextHeader="h4" />
+
+                <View
+                    android:layout_width="@dimen/_2sdp"
+                    android:layout_height="0dp"/>
+
+                <com.diadiem.pos_components.PTextView
+                    android:id="@+id/sub_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    app:useFontStyle="normal"
+                    app:useTextColor="color5"
+                    app:useTextHeader="h4" />
+            </LinearLayout>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="end"
+                android:backgroundTint="@color/color_0"
+                android:clickable="true"
+                android:elevation="0dp"
+                android:focusable="true"
+                android:minWidth="@dimen/_75sdp"
+                app:cardCornerRadius="0dp"
+                app:cardElevation="0dp"
+                app:rippleColor="@color/color_2">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="@dimen/_12sdp">
+
+                    <com.diadiem.pos_components.PTextView
+                        style="@style/ProductDetailText"
+                        android:textAllCaps="true"
+                        android:text="@string/save"
+                        app:useFontStyle="bold"
+                        app:useTextColor="color2"
+                        app:useTextHeader="h5" />
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+
+
+            <include
+                layout="@layout/divider_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_gravity="bottom" />
+        </FrameLayout>
+
+        <com.diadiem.pos_components.PTextView
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:text="@string/connection"
+            app:useTextHeader="h4"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_marginTop="@dimen/_10sdp"
+            android:nestedScrollingEnabled="false"
+            android:overScrollMode="never"
+            android:id="@+id/listConnection"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:spanCount="1"
+            tools:itemCount="5"
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            tools:listitem="@layout/item_hardware_connection" />
+    </LinearLayout>
+
+</layout>

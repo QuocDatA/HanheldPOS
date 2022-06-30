@@ -12,7 +12,7 @@ data class HardwareConnection(
     @SerializedName("_id")
     val id: String?,
     @SerializedName("IsChecked")
-    val isChecked: Boolean?,
+    var isChecked: Boolean?,
     @SerializedName("Name")
     val name: String?,
     @SerializedName("Port")

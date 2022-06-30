@@ -302,4 +302,7 @@
     <string name="done">Done!</string>
     <string name="new_data_have_been_updated_successfully">New data have been updated successfully</string>
     <string name="new_data_available_description">There are new data for your app./n Please update now</string>
+    <string name="printer_detail">Printer Detail</string>
+    <string name="connection">Connection</string>
+    <string name="status">Status</string>
 </resources>
