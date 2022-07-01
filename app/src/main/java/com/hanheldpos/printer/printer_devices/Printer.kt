@@ -96,11 +96,20 @@ class Printer private constructor(
         fun getInstance(printerConfig: HardwarePrinter): Printer {
 
             // TODO this is automatically assign to LAN connection
-            val printConfig = PrintConfig.lan(
-                ipAddress = printerConfig.connectionList?.first { connection -> connection.connectionTypeId == PrinterConnectionTypes.LAN.value }?.port
-                    ?: PrintConstants.LAN_ADDRESS,
-                deviceType = DeviceType.NO_SDK.Types.POS
-            )
+            val printConfig: PrintConfig =
+                when (printerConfig.connectionList?.firstOrNull { it.isChecked == true }?.connectionTypeId
+                    ?: 1) {
+                    3 -> PrintConfig.bluetooth(DeviceType.NO_SDK.Types.HANDHELD)
+                    4 -> PrintConfig.urovo()
+                    else -> {
+                        PrintConfig.lan(
+                            ipAddress = printerConfig.connectionList?.first { connection -> connection.connectionTypeId == PrinterConnectionTypes.LAN.value }?.port
+                                ?: PrintConstants.LAN_ADDRESS,
+                            deviceType = DeviceType.NO_SDK.Types.HANDHELD
+                        )
+                    }
+                }
+
 
 
             try {

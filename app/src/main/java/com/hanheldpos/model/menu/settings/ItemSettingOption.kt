@@ -7,14 +7,8 @@ import com.hanheldpos.R
 
 data class ItemSettingOption(
     val title: String?,
-    val value : Any
+    val value : Any,
+    var connectionStatus : HardwarePrinterDeviceType? = HardwarePrinterDeviceType.NO_CONNECTION,
 ) {
-    fun getColor(): Int {
-        return when(value as HardwarePrinterDeviceType) {
-            HardwarePrinterDeviceType.NO_CONNECTION -> { PosApp.instance.getColor(R.color.color_5)
-            }
-            HardwarePrinterDeviceType.CONNECTING -> Color.YELLOW
-            HardwarePrinterDeviceType.CONNECTED -> { PosApp.instance.getColor(R.color.color_0) }
-        }
-    }
+
 }

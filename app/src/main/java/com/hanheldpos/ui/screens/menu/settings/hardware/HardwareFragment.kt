@@ -8,12 +8,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.setting.hardware.HardwarePrinter
 import com.hanheldpos.databinding.FragmentHardwareBinding
+import com.hanheldpos.model.menu.settings.HardwarePrinterDeviceType
 import com.hanheldpos.model.menu.settings.ItemSettingOption
+import com.hanheldpos.printer.BillPrinterManager
+import com.hanheldpos.printer.PrinterException
+import com.hanheldpos.printer.printer_devices.Printer
+import com.hanheldpos.printer.printer_setup.PrintConfig
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.adapter.GridSpacingItemDecoration
 import com.hanheldpos.ui.base.fragment.BaseFragment
@@ -21,13 +27,16 @@ import com.hanheldpos.ui.screens.menu.settings.SettingsControlVM
 import com.hanheldpos.ui.screens.menu.settings.adapter.SettingOptionType
 import com.hanheldpos.ui.screens.menu.settings.adapter.SettingsOptionAdapter
 import com.hanheldpos.ui.screens.menu.settings.hardware.hardware_detail.HardwareDetailFragment
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class HardwareFragment : BaseFragment<FragmentHardwareBinding, HardwareVM>(), HardwareUV {
     private lateinit var printerStatusAdapter: SettingsOptionAdapter
     private lateinit var deviceStatusAdapter: SettingsOptionAdapter
     private lateinit var selectPrinterAdapter: SettingsOptionAdapter
     private val settingsControlVM by activityViewModels<SettingsControlVM>()
-
+    private val MILISECONDS_RECALL_CONECTION: Long = 20000
     override fun layoutRes(): Int {
         return R.layout.fragment_hardware
     }
@@ -106,11 +115,12 @@ class HardwareFragment : BaseFragment<FragmentHardwareBinding, HardwareVM>(), Ha
 
     @SuppressLint("NotifyDataSetChanged")
     override fun initData() {
-        viewModel.getPrinterStatusOptions(requireContext()).let {
+        viewModel.initData()
+        viewModel.getPrinterStatusOptions().let {
             printerStatusAdapter.submitList(it)
             printerStatusAdapter.notifyDataSetChanged()
         }
-        viewModel.getDeviceStatusOptions(requireContext()).let {
+        viewModel.getDeviceStatusOptions().let {
             deviceStatusAdapter.submitList(it)
             deviceStatusAdapter.notifyDataSetChanged()
         }
@@ -121,7 +131,51 @@ class HardwareFragment : BaseFragment<FragmentHardwareBinding, HardwareVM>(), Ha
     }
 
     override fun initAction() {
+        lifecycleScope.launch(Dispatchers.IO) {
+            while (true) {
+                checkConnectionStatus()
+                delay(MILISECONDS_RECALL_CONECTION)
+            }
+        }
+    }
 
+    private fun checkConnectionStatus() {
+
+        val onConnectionSuccess: (printer: Printer) -> Unit = {
+            lifecycleScope.launch(Dispatchers.Main) {
+
+                val updatedIndex = viewModel.updateDeviceStatus(
+                    printerId = it.printingSpecification.id ?: "",
+                    status = HardwarePrinterDeviceType.CONNECTED
+                )
+
+                if (updatedIndex >= 0) {
+                    printerStatusAdapter.notifyItemChanged(updatedIndex)
+                }
+            }
+        }
+
+        val onConnectionFailed: (exception: PrinterException) -> Unit = {
+
+            lifecycleScope.launch(Dispatchers.Main) {
+
+                val updatedIndex = viewModel.updateDeviceStatus(
+                    printerId = it.printer?.printingSpecification?.id ?: "",
+                    status = HardwarePrinterDeviceType.NO_CONNECTION
+                )
+
+                if (updatedIndex >= 0) {
+                    printerStatusAdapter.notifyItemChanged(updatedIndex)
+                }
+            }
+        }
+
+        BillPrinterManager
+            .init(
+                context = fragmentContext,
+                onConnectionSuccess = onConnectionSuccess,
+                onConnectionFailed = onConnectionFailed,
+            )
     }
 
 }

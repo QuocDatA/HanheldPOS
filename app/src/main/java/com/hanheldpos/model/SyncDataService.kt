@@ -1,8 +1,6 @@
 package com.hanheldpos.model
 
 import android.content.Context
-import androidx.lifecycle.viewModelScope
-import com.hanheldpos.PosApp
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.data.DataVersion
 import com.hanheldpos.data.api.pojo.discount.CouponResp
@@ -16,6 +14,7 @@ import com.hanheldpos.data.api.pojo.payment.PaymentMethodResp
 import com.hanheldpos.data.api.pojo.receipt.ReceiptCashier
 import com.hanheldpos.data.api.pojo.resource.ResourceResp
 import com.hanheldpos.data.api.pojo.setting.firebase.FirebaseSetting
+import com.hanheldpos.data.api.pojo.setting.hardware.HardwareConnection
 import com.hanheldpos.data.api.pojo.setting.hardware.HardwareSetting
 import com.hanheldpos.data.api.pojo.system.AddressTypeResp
 import com.hanheldpos.data.repository.BaseResponse
@@ -32,10 +31,7 @@ import com.hanheldpos.data.repository.resource.ResourceRepo
 import com.hanheldpos.data.repository.setting.SettingRepo
 import com.hanheldpos.data.repository.system.SystemRepo
 import com.hanheldpos.model.setting.GeneralSetting
-import com.hanheldpos.prefs.PrefKey
 import com.hanheldpos.ui.base.viewmodel.BaseViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 class SyncDataService : BaseViewModel() {
 
@@ -226,7 +222,7 @@ class SyncDataService : BaseViewModel() {
             callback = object : BaseRepoCallback<BaseResponse<List<ResourceResp>>?> {
                 override fun apiResponse(data: BaseResponse<List<ResourceResp>>?) {
                     if (data == null || data.DidError) {
-                        onDataFailure(context?.getString(R.string.failed_to_load_data), listener)
+                        onDataFailure(context.getString(R.string.failed_to_load_data), listener)
                     } else {
                         DataHelper.resourceLocalStorage = data.Model;
                         startMappingData(context, listener);
@@ -303,7 +299,29 @@ class SyncDataService : BaseViewModel() {
                     if (data == null || data.DidError) {
                         onDataFailure(context.getString(R.string.failed_to_load_data), listener)
                     } else {
-                        DataHelper.hardwareSettingLocalStorage = data.Model;
+                        DataHelper.hardwareSettingLocalStorage = data.Model.apply {
+                            this?.printerList?.forEach {
+                                (it.connectionList as MutableList?)?.addAll(
+                                    mutableListOf(
+                                        HardwareConnection(
+                                            3,
+                                            "Connection/3",
+                                            false,
+                                            "Handheld Bluetooth",
+                                            ""
+                                        ),
+                                        HardwareConnection(
+                                            4,
+                                            "Connection/4",
+                                            false,
+                                            "Handheld Urovo",
+                                            ""
+                                        )
+                                    )
+                                )
+                            }
+                        };
+                        DataHelper.hardwareSettingLocalStorage = DataHelper.hardwareSettingLocalStorage
                         startMappingData(context, listener);
                     }
                 }
@@ -473,7 +491,7 @@ class SyncDataService : BaseViewModel() {
     }
 
     interface SyncDataServiceListener {
-        fun onLoadedResources(data : Any?=null)
+        fun onLoadedResources(data: Any? = null)
         fun onError(message: String?)
     }
 }

@@ -1,11 +1,14 @@
 package com.hanheldpos.ui.screens.menu.settings.adapter
 
+import android.graphics.Color
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
+import com.hanheldpos.PosApp
 import com.hanheldpos.R
 import com.hanheldpos.databinding.ItemBoxSettingOptionBinding
 import com.hanheldpos.databinding.ItemPrinterConnectionStatusBinding
 import com.hanheldpos.databinding.ItemRadioSettingOptionBinding
+import com.hanheldpos.model.menu.settings.HardwarePrinterDeviceType
 import com.hanheldpos.model.menu.settings.ItemSettingOption
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
@@ -41,6 +44,17 @@ class SettingsOptionAdapter(
         when (style) {
             SettingOptionType.STATUS -> (holder.binding as ItemPrinterConnectionStatusBinding).let { binding ->
                 binding.item = item
+                binding.viewColor.setBackgroundColor(
+                    when (item.value as HardwarePrinterDeviceType) {
+                        HardwarePrinterDeviceType.NO_CONNECTION -> {
+                            PosApp.instance.getColor(R.color.color_5)
+                        }
+                        HardwarePrinterDeviceType.CONNECTING -> Color.YELLOW
+                        HardwarePrinterDeviceType.CONNECTED -> {
+                            PosApp.instance.getColor(R.color.color_0)
+                        }
+                    }
+                )
                 binding.btn.apply {
                     setOnClickListener {
                         notifyItemChanged(selectedItem.value)
@@ -59,6 +73,17 @@ class SettingsOptionAdapter(
                         notifyItemChanged(position)
                         listener.onItemClick(position, item)
                     }
+                    setBackgroundColor(
+                        when (item.connectionStatus as HardwarePrinterDeviceType) {
+                            HardwarePrinterDeviceType.NO_CONNECTION -> {
+                                PosApp.instance.getColor(R.color.color_5)
+                            }
+                            HardwarePrinterDeviceType.CONNECTING -> Color.YELLOW
+                            HardwarePrinterDeviceType.CONNECTED -> {
+                                PosApp.instance.getColor(R.color.color_0)
+                            }
+                        }
+                    )
                 }
             }
             SettingOptionType.RADIO -> (holder.binding as ItemRadioSettingOptionBinding).let { binding ->

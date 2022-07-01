@@ -17,10 +17,11 @@
         android:orientation="horizontal">
 
         <View
+            android:id="@+id/viewColor"
             android:layout_gravity="center"
             android:layout_width="@dimen/_20sdp"
             android:layout_height="@dimen/_20sdp"
-            android:background="@{item.color}"/>
+            />
 
         <com.diadiem.pos_components.PTextView
             android:text="@{item.title}"

@@ -1,6 +1,8 @@
 package com.hanheldpos.ui.screens.menu.settings.hardware
 
 import android.content.Context
+import androidx.lifecycle.MutableLiveData
+import com.hanheldpos.data.api.pojo.setting.hardware.HardwarePrinter
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.menu.settings.HardwareDeviceStatusType
 import com.hanheldpos.model.menu.settings.HardwarePrinterDeviceType
@@ -8,19 +10,16 @@ import com.hanheldpos.model.menu.settings.HardwarePrinterStatusType
 import com.hanheldpos.model.menu.settings.ItemSettingOption
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
 
-class HardwareVM :BaseUiViewModel<HardwareUV>() {
-    fun onFragmentBackPressed() {
-        uiCallback?.onFragmentBackPressed()
-    }
+class HardwareVM : BaseUiViewModel<HardwareUV>() {
 
-    fun getPrinterStatusOptions(context : Context) : List<ItemSettingOption>{
-        return DataHelper.hardwareSettingLocalStorage?.printerList?.map {
+    private var printerDevices: MutableList<ItemSettingOption> = mutableListOf()
+    private var otherDeviceSource: MutableList<ItemSettingOption> = mutableListOf()
+
+    fun initData() {
+        printerDevices = DataHelper.hardwareSettingLocalStorage?.printerList?.map {
             ItemSettingOption(it.name, it)
-        }?: mutableListOf()
-    }
-
-    fun getDeviceStatusOptions(context : Context) : List<ItemSettingOption> {
-        return mutableListOf(
+        }?.toMutableList() ?: mutableListOf()
+        otherDeviceSource = mutableListOf(
             ItemSettingOption(
                 "NFC",
                 value = HardwareDeviceStatusType.NFC
@@ -28,7 +27,19 @@ class HardwareVM :BaseUiViewModel<HardwareUV>() {
         )
     }
 
-    fun getPrinterDeviceOptions(context : Context) : List<ItemSettingOption> {
+    fun onFragmentBackPressed() {
+        uiCallback?.onFragmentBackPressed()
+    }
+
+    fun getPrinterStatusOptions(): List<ItemSettingOption> {
+        return printerDevices
+    }
+
+    fun getDeviceStatusOptions(): List<ItemSettingOption> {
+        return otherDeviceSource
+    }
+
+    fun getPrinterDeviceOptions(context: Context): List<ItemSettingOption> {
         return mutableListOf(
             ItemSettingOption(
                 "No Connection",
@@ -44,4 +55,19 @@ class HardwareVM :BaseUiViewModel<HardwareUV>() {
             )
         )
     }
+
+    fun updateDeviceStatus(printerId: String, status: HardwarePrinterDeviceType): Int {
+        val printerIndex =
+            printerDevices.indexOfFirst { (it.value as HardwarePrinter).id == printerId }
+
+        if (printerIndex >= 0) {
+            val currentPrinter =
+                printerDevices[printerIndex]
+
+            printerDevices[printerIndex] = currentPrinter.copy(connectionStatus = status)
+        }
+
+        return printerIndex
+    }
+
 }

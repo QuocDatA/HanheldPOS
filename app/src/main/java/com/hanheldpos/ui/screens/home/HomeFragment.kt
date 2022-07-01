@@ -7,6 +7,7 @@ import android.view.ViewTreeObserver
 import android.widget.AdapterView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.data.DataVersion
 import com.hanheldpos.data.api.pojo.discount.DiscountCoupon

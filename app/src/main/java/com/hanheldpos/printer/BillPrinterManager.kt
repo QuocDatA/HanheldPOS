@@ -37,34 +37,36 @@ class BillPrinterManager private constructor() {
         fun init(
             context: Context,
             onConnectionFailed: ((exception: PrinterException) -> Unit)? = null,
-            onConnectionSuccess: ((printConfig: PrintConfig) -> Unit)? = null
+            onConnectionSuccess: ((printConfig: Printer) -> Unit)? = null
         ): BillPrinterManager {
-            try {
-                instance = BillPrinterManager().apply {
-                    applicationContext = context
-                    printers.clear()
-                }
-                if (instance.isConnected()) return instance
 
-                instance.apply {
-                    (DataHelper
-                        .hardwareSettingLocalStorage
-                        ?.printerList
-                        ?: emptyList())
-                        .forEach {
-                            val printer = Printer.getInstance(it)
-                            if (printer.isConnected()) {
-                                printers.add(printer)
-                                onConnectionSuccess?.invoke(printer.printConfig)
-                            } else {
-                                onConnectionFailed?.invoke(PrinterException(printer.printConfig.toString()))
-                            }
-                        }
-                }
-
-            } catch (e: Exception) {
-                onConnectionFailed?.invoke(PrinterException(e.message.toString()))
+            instance = BillPrinterManager().apply {
+                applicationContext = context
+                printers.clear()
             }
+            if (instance.isConnected()) return instance
+
+            instance.apply {
+                (DataHelper
+                    .hardwareSettingLocalStorage
+                    ?.printerList
+                    ?: emptyList())
+                    .forEach {
+                        val printer = Printer.getInstance(it)
+                        if (printer.isConnected()) {
+                            printers.add(printer)
+                            onConnectionSuccess?.invoke(printer)
+                        } else {
+                            onConnectionFailed?.invoke(
+                                PrinterException(
+                                    printer,
+                                    printer.toString()
+                                )
+                            )
+                        }
+                    }
+            }
+
             return instance
         }
 
