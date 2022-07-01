@@ -26,6 +26,7 @@ class HardwareConnectionAdapter(
         SettingsOptionAdapter.SelectedItem(0)
 
     private var defaultSelectedPosition = -1
+    private var textChange = ""
 
     override fun getItemViewType(position: Int): Int {
         return R.layout.item_hardware_connection
@@ -54,8 +55,11 @@ class HardwareConnectionAdapter(
                 listener.onItemClick(position, item)
             }
             if (selectedItem.value == position) {
-                checkStatusSave(holder.absoluteAdapterPosition, binding.editTextIPAddress)
-                listener.onItemClick(position, item)
+                checkStatusSave(
+                    holder.absoluteAdapterPosition,
+                    binding.editTextIPAddress.text.toString()
+                )
+                //listener.onItemClick(position, item.apply { port = textChange })
             }
             isChecked = selectedItem.value == position
 
@@ -71,18 +75,25 @@ class HardwareConnectionAdapter(
             }
 
             override fun afterTextChanged(p0: Editable?) {
-                checkStatusSave(holder.absoluteAdapterPosition, binding.editTextIPAddress)
+                if (holder.absoluteAdapterPosition == selectedItem.value) {
+                    val connectionItem = getItem(holder.absoluteAdapterPosition).copy()
+                    if (connectionItem.port != p0.toString() && p0?.isNotBlank() == true)
+                        listener.onItemClick(holder.absoluteAdapterPosition, connectionItem.apply { port = p0.toString() })
+                }
+                checkStatusSave(
+                    holder.absoluteAdapterPosition,
+                    binding.editTextIPAddress.text.toString()
+                )
             }
         })
     }
 
-    fun checkStatusSave(position: Int, editor: TextInputEditText) {
-        if ((selectedItem.value == defaultSelectedPosition && editor.text?.isNotBlank() == true && editor.text.toString() != getItem(
+    fun checkStatusSave(position: Int, editorText: String) {
+        if ((selectedItem.value == defaultSelectedPosition && editorText.isNotBlank() && editorText != getItem(
                 position
             ).port) || selectedItem.value != defaultSelectedPosition
         ) {
             listener.onSaveEnable()
-
         } else {
             listener.onSaveDisable()
         }

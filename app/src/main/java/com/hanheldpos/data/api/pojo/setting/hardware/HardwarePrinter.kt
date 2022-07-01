@@ -8,7 +8,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class HardwarePrinter(
     @SerializedName("ConnectionList")
-    val connectionList: List<HardwareConnection>?,
+    var connectionList: List<HardwareConnection>?,
     @SerializedName("Enable")
     val enable: Boolean?,
     @SerializedName("_id")
