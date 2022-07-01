@@ -26,6 +26,7 @@ class SettingsOptionAdapter(
         return when (style) {
             SettingOptionType.STATUS -> R.layout.item_printer_connection_status
             SettingOptionType.BOX -> R.layout.item_box_setting_option
+            SettingOptionType.RADIO -> R.layout.item_radio_setting_option
         }
     }
 
@@ -58,6 +59,22 @@ class SettingsOptionAdapter(
                         notifyItemChanged(position)
                         listener.onItemClick(position, item)
                     }
+                }
+            }
+            SettingOptionType.RADIO -> (holder.binding as ItemRadioSettingOptionBinding).let { binding ->
+                binding.item = item
+                binding.btn.apply {
+                    setOnClickListener {
+                        notifyItemChanged(selectedItem.value)
+                        selectedItem.value = position
+                        notifyItemChanged(position)
+                        listener.onItemClick(position, item)
+                    }
+
+                    if (selectedItem.value == position) {
+                        listener.onItemClick(position, item)
+                    }
+                    isChecked = selectedItem.value == position
                 }
             }
         }

@@ -113,7 +113,8 @@ class BillPrinterManager private constructor() {
         filterOptions: SaleReportFilter?,
         printerTypes: PrinterTypes,
     ): BillPrinterManager {
-        printers.firstOrNull { it.printingSpecification.printerTypeId == printerTypes.value }
+        printers
+            .firstOrNull { it.printingSpecification.printerTypeId == printerTypes.value }
             ?.printReport(layoutType, report, filterOptions)
 
         return this

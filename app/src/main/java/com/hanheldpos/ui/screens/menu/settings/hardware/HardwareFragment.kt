@@ -51,7 +51,7 @@ class HardwareFragment : BaseFragment<FragmentHardwareBinding, HardwareVM>(), Ha
                     navigator.goTo(
                         HardwareDetailFragment(
                             item.value as HardwarePrinter,
-                            (item.value).connectionList ?: listOf()
+                            (item.value).connectionList?.map { it.copy() } ?: listOf()
                         )
                     )
                 }

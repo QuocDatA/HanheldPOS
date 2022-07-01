@@ -45,7 +45,7 @@ class GeneralFragment : BaseFragment<FragmentGeneralBinding, GeneralVM>(), Gener
     override fun initView() {
         notificationAdapter =
             SettingsOptionAdapter(defaultSelection = settingsControlVM.generalSetting.value?.notificationTime,
-                style = SettingOptionType.STATUS,
+                style = SettingOptionType.RADIO,
                 object : BaseItemClickListener<ItemSettingOption> {
                     override fun onItemClick(adapterPosition: Int, item: ItemSettingOption) {
                         settingsControlVM.generalSetting.postValue(settingsControlVM.generalSetting.value.apply {
@@ -74,8 +74,9 @@ class GeneralFragment : BaseFragment<FragmentGeneralBinding, GeneralVM>(), Gener
 
         pushAdapter =
             SettingsOptionAdapter(
-                settingsControlVM.generalSetting.value?.automaticallyPushOrdersTime,
-                style = SettingOptionType.STATUS, object : BaseItemClickListener<ItemSettingOption> {
+                defaultSelection = settingsControlVM.generalSetting.value?.automaticallyPushOrdersTime,
+                style = SettingOptionType.RADIO,
+                object : BaseItemClickListener<ItemSettingOption> {
                     override fun onItemClick(adapterPosition: Int, item: ItemSettingOption) {
                         settingsControlVM.generalSetting.postValue(settingsControlVM.generalSetting.value.apply {
                             this?.automaticallyPushOrdersTime = item.value as GeneralPushType
