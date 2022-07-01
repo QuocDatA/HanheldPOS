@@ -17,6 +17,7 @@ class HardwareDetailFragment(
     override fun layoutRes(): Int = R.layout.fragment_hardware_detail
 
     private lateinit var hardwareConnectionAdapter: HardwareConnectionAdapter
+    private lateinit var changedHardwareConnection: HardwareConnection
 
     override fun viewModelClass(): Class<HardwareDetailVM> {
         return HardwareDetailVM::class.java
@@ -33,10 +34,9 @@ class HardwareDetailFragment(
         hardwareConnectionAdapter = HardwareConnectionAdapter(listener = object :
             HardwareConnectionAdapter.HardwareConnectionCallBack {
             override fun onItemClick(position: Int, item: HardwareConnection) {
-                DataHelper.hardwareSettingLocalStorage?.printerList?.forEach {
-                    if (it.id == printer.id)
-                        it.connectionList?.get(position)?.isChecked = item.isChecked
-                }
+                listHardwareConnection.forEach { if (it.id != item.id) it.isChecked = false }
+                item.isChecked = true
+                changedHardwareConnection = item
             }
 
             override fun onSaveEnable() {
@@ -48,6 +48,22 @@ class HardwareDetailFragment(
             }
         })
         binding.listConnection.adapter = hardwareConnectionAdapter
+        binding.btnSave.setOnClickListener {
+            printer.apply {
+                connectionList?.forEach {
+                    if (it.id == changedHardwareConnection.id) {
+                        it.port = changedHardwareConnection.port
+                        it.isChecked = changedHardwareConnection.isChecked
+                    }
+                }
+            }
+            val changedPrinterList =
+                DataHelper.hardwareSettingLocalStorage?.printerList?.toMutableList()
+            changedPrinterList?.set(changedPrinterList.indexOf(printer), printer)
+            DataHelper.hardwareSettingLocalStorage?.printerList = changedPrinterList
+            DataHelper.hardwareSettingLocalStorage = DataHelper.hardwareSettingLocalStorage
+            onFragmentBackPressed()
+        }
     }
 
     override fun initData() {

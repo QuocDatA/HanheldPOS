@@ -10,11 +10,11 @@ data class HardwareConnection(
     @SerializedName("ConnectionTypeId")
     val connectionTypeId: Int?,
     @SerializedName("_id")
-    val id: String?,
+    var id: String?,
     @SerializedName("IsChecked")
     var isChecked: Boolean?,
     @SerializedName("Name")
     val name: String?,
     @SerializedName("Port")
-    val port: String?
+    var port: String?
 ) : Parcelable
