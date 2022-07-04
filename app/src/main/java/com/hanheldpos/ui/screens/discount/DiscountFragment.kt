@@ -43,8 +43,7 @@ class DiscountFragment(private val listener: DiscountCallback) :
 
     override fun initView() {
         viewModel.typeDiscountSelect.observe(this) {
-            binding.btnScanQrCode.visibility =
-                if (viewModel.isScannableTypeDiscount()) View.VISIBLE else View.GONE
+
         }
     }
 
