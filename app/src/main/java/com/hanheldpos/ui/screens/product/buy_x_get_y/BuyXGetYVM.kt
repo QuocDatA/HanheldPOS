@@ -22,6 +22,7 @@ import com.hanheldpos.ui.screens.cart.CurCartData
 class BuyXGetYVM : BaseUiViewModel<BuyXGetYUV>() {
     var buyXGetY = MutableLiveData<BuyXGetY>()
     var actionType = MutableLiveData<ItemActionType>();
+    val listItemBuyXGetYGroup : MutableList<ItemBuyXGetYGroup> = mutableListOf()
     var isGroupBuy = MutableLiveData(false)
     val totalPriceLD = MutableLiveData(0.0);
     var discountUser: DiscountUser? = null

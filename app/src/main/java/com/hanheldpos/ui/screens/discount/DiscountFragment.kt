@@ -8,13 +8,17 @@ import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.data.api.pojo.order.settings.Reason
 import com.hanheldpos.databinding.FragmentDiscountBinding
 import com.hanheldpos.extension.setOnClickDebounce
+import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.product.buy_x_get_y.BuyXGetY
 import com.hanheldpos.model.discount.DiscApplyTo
+import com.hanheldpos.model.discount.DiscountTypeEnum
 import com.hanheldpos.model.discount.DiscountTypeFor
 import com.hanheldpos.model.discount.DiscountUser
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.cart.CartDataVM
 import com.hanheldpos.ui.screens.discount.discount_type.DiscountTypeOrderFragment
+import com.hanheldpos.ui.screens.scanner.ScanQrCodeFragment
+import kotlin.random.Random
 
 
 class DiscountFragment(private val listener: DiscountCallback) :
@@ -53,13 +57,17 @@ class DiscountFragment(private val listener: DiscountCallback) :
                 listener = object : DiscountTypeListener {
                     override fun discountUserChoose(discount: DiscountUser, isBuyXGetY: Boolean?) {
                         listener.onDiscountUserChoose(discount);
-                        if(isBuyXGetY == false)
+                        if (isBuyXGetY == false)
                             onFragmentBackPressed()
                     }
 
-                    override fun discountServerChoose(discount: DiscountResp, discApplyTo: DiscApplyTo, isBuyXGetY: Boolean?) {
-                        listener.onDiscountServerChoose(discount,discApplyTo)
-                        if(isBuyXGetY == false)
+                    override fun discountServerChoose(
+                        discount: DiscountResp,
+                        discApplyTo: DiscApplyTo,
+                        isBuyXGetY: Boolean?
+                    ) {
+                        listener.onDiscountServerChoose(discount, discApplyTo)
+                        if (isBuyXGetY == false)
                             onFragmentBackPressed()
                     }
 
@@ -106,13 +114,18 @@ class DiscountFragment(private val listener: DiscountCallback) :
         binding.btnSave.setOnClickDebounce {
             requireActivity().supportFragmentManager.setFragmentResult(
                 "saveDiscount",
-                Bundle().apply { putSerializable("DiscountTypeFor", viewModel.typeDiscountSelect.value) });
+                Bundle().apply {
+                    putSerializable(
+                        "DiscountTypeFor",
+                        viewModel.typeDiscountSelect.value
+                    )
+                });
         }
     }
 
     interface DiscountCallback {
         fun onDiscountUserChoose(discount: DiscountUser);
-        fun onDiscountServerChoose(discount : DiscountResp,discApplyTo : DiscApplyTo)
+        fun onDiscountServerChoose(discount: DiscountResp, discApplyTo: DiscApplyTo)
         fun onDiscountCodeChoose(discount: List<DiscountCoupon>?)
         fun onCompReasonChoose(reason: Reason);
         fun onCompRemove();
@@ -122,14 +135,20 @@ class DiscountFragment(private val listener: DiscountCallback) :
 
     interface DiscountTypeListener {
         fun discountUserChoose(discount: DiscountUser, isBuyXGetY: Boolean? = false): Unit {}
-        fun discountServerChoose(discount : DiscountResp,discApplyTo: DiscApplyTo, isBuyXGetY: Boolean? = false) : Unit {}
-        fun discountCodeChoose(discount: List<DiscountCoupon>?): Unit{}
+        fun discountServerChoose(
+            discount: DiscountResp,
+            discApplyTo: DiscApplyTo,
+            isBuyXGetY: Boolean? = false
+        ): Unit {
+        }
+
+        fun discountCodeChoose(discount: List<DiscountCoupon>?): Unit {}
         fun compReasonChoose(item: Reason): Unit {}
         fun compRemoveAll(): Unit {}
-        fun clearAllDiscountCoupon() : Unit {}
-        fun discountFocus(type : DiscountTypeFor) : Unit{}
-        fun validDiscount(isValid : Boolean)
-        fun addDiscountBuyXGetY(discount: DiscountResp, buyXGetY: BuyXGetY): Unit{}
+        fun clearAllDiscountCoupon(): Unit {}
+        fun discountFocus(type: DiscountTypeFor): Unit {}
+        fun validDiscount(isValid: Boolean)
+        fun addDiscountBuyXGetY(discount: DiscountResp, buyXGetY: BuyXGetY): Unit {}
     }
 
     override fun backPress() {
@@ -137,6 +156,33 @@ class DiscountFragment(private val listener: DiscountCallback) :
     }
 
     override fun onScanner() {
+        navigator.goTo(ScanQrCodeFragment(onSuccess = {
+            showLoading(true)
+            when (viewModel.typeDiscountSelect.value) {
+                DiscountTypeFor.DISCOUNT_CODE -> {
+                    val discountScan =
+                        DataHelper.discountsLocalStorage?.find { disc -> !disc.DiscountAutomatic && disc.DiscountCode == it };
+                    when (DiscountTypeEnum.fromInt(discountScan?.DiscountType ?: 0)) {
+                        DiscountTypeEnum.BUYX_GETY -> {}
+                        DiscountTypeEnum.AMOUNT -> {
+                            viewModel.onApplyCouponCode(it ?: "")
+                        }
+                        DiscountTypeEnum.PERCENT -> {
+                            viewModel.onApplyCouponCode(it ?: "")
+                        }
+                        else -> {}
+                    }
+                }
+                DiscountTypeFor.AUTOMATIC -> {
 
+                }
+                else -> {}
+            }
+        }))
+    }
+
+    override fun onApplyDiscountCode(discount: List<DiscountCoupon>) {
+        listener.onDiscountCodeChoose(discount)
+        onFragmentBackPressed()
     }
 }

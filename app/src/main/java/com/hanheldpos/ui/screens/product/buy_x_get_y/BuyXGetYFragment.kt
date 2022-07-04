@@ -2,6 +2,7 @@ package com.hanheldpos.ui.screens.product.buy_x_get_y
 
 import android.annotation.SuppressLint
 import android.os.SystemClock
+import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,6 +17,7 @@ import com.hanheldpos.model.product.buy_x_get_y.GroupBuyXGetY
 import com.hanheldpos.model.cart.BaseProductInCart
 import com.hanheldpos.model.cart.Combo
 import com.hanheldpos.model.cart.Regular
+import com.hanheldpos.model.product.buy_x_get_y.ItemBuyXGetYGroup
 import com.hanheldpos.model.product.combo.ItemActionType
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.product.buy_x_get_y.adapter.BuyXGetYGroupAdapter
@@ -23,6 +25,9 @@ import com.hanheldpos.ui.screens.product.combo.ComboFragment
 import com.hanheldpos.ui.screens.discount.discount_type.discount_code.DiscountCodeFragment
 import com.hanheldpos.ui.screens.home.order.OrderFragment
 import com.hanheldpos.ui.screens.product.regular.RegularDetailFragment
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class BuyXGetYFragment(
     private val buyXGetY: BuyXGetY,
@@ -76,6 +81,7 @@ class BuyXGetYFragment(
                     )
                 }
             )
+            itemAnimator = null
         }
     }
 
@@ -83,8 +89,16 @@ class BuyXGetYFragment(
         viewModel.buyXGetY.value = buyXGetY
         viewModel.actionType.value = actionType
         viewModel.maxQuantity = quantityCanChoose
-        val listItemBuyXGetYGroup = viewModel.initDefaultList()
-        buyXGetYGroupAdapter.submitList(listItemBuyXGetYGroup)
+
+        binding.rvBuyXGetYGroup.visibility = View.GONE
+        CoroutineScope(Dispatchers.IO).launch {
+            while(!isVisible) {}
+            CoroutineScope(Dispatchers.Main).launch {
+                viewModel.listItemBuyXGetYGroup.addAll(viewModel.initDefaultList() ?: mutableListOf())
+                buyXGetYGroupAdapter.submitList(viewModel.listItemBuyXGetYGroup)
+                binding.rvBuyXGetYGroup.visibility = View.VISIBLE
+            }
+        }
     }
 
     override fun initAction() {
@@ -104,7 +118,7 @@ class BuyXGetYFragment(
                 if (baseItem is Regular) {
                     viewModel.onRegularSelect(group, baseItem, baseItem, action, discount)
                 } else if (baseItem is Combo) {
-                    viewModel.onBundleSelect(group, baseItem,baseItem , action, discount)
+                    viewModel.onBundleSelect(group, baseItem, baseItem, action, discount)
                 }
                 buyXGetYGroupAdapter.notifyDataSetChanged()
                 viewModel.buyXGetY.notifyValueChange()
@@ -135,7 +149,7 @@ class BuyXGetYFragment(
                                             baseItem,
                                             (item).clone(),
                                             action,
-                                            if(group.condition is CustomerGets) discount else null,
+                                            if (group.condition is CustomerGets) discount else null,
                                         )
                                         val isGroupBuy = group.condition is CustomerBuys
                                         viewModel.isGroupBuy.value = isGroupBuy
@@ -162,7 +176,7 @@ class BuyXGetYFragment(
                                         (item as Combo).clone(),
                                         baseItem,
                                         action,
-                                        if( group.condition is CustomerGets) discount else null
+                                        if (group.condition is CustomerGets) discount else null
                                     )
                                     buyXGetYGroupAdapter.notifyDataSetChanged()
                                     viewModel.buyXGetY.notifyValueChange()
@@ -178,7 +192,7 @@ class BuyXGetYFragment(
     }
 
     override fun cartAdded(item: BaseProductInCart, action: ItemActionType) {
-        listener.onCartAdded(item , action)
+        listener.onCartAdded(item, action)
         onFragmentBackPressed()
     }
 

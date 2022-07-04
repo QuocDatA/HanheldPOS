@@ -43,6 +43,7 @@ class BuyXGetYItemChosenAdapter(
                 CartComboGroupAdapter(productOrigin = item.proOriginal!!, isBuyXGetY = true)
             cartComboGroupAdapter.submitList(item.groupList)
             binding.productComboGroupRecyclerView.adapter = cartComboGroupAdapter
+            binding.productComboGroupRecyclerView.itemAnimator = null
 
             binding.itemComboModify.setOnClickListener {
                 listener.onComboItemChoose(action = ItemActionType.Modify, item);
