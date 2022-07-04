@@ -1,4 +1,4 @@
-package com.hanheldpos.ui.screens.qrcode
+package com.hanheldpos.ui.screens.scanner
 
 import android.annotation.SuppressLint
 import androidx.camera.core.ImageAnalysis

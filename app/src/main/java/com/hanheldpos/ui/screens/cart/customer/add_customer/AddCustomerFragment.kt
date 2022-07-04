@@ -9,12 +9,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.customer.CustomerResp
 import com.hanheldpos.databinding.FragmentAddCustomerBinding
-import com.hanheldpos.extension.navigateTo
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.cart.customer.add_customer.adapter.CustomerAdapter
 import com.hanheldpos.ui.screens.cart.customer.add_customer.adapter.CustomerAdapterHelper
-import com.hanheldpos.ui.screens.qrcode.ScanQrCodeFragment
+import com.hanheldpos.ui.screens.scanner.ScanQrCodeFragment
 import kotlin.random.Random
 
 

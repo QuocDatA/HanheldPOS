@@ -1,4 +1,4 @@
-package com.hanheldpos.ui.screens.qrcode
+package com.hanheldpos.ui.screens.scanner
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -16,7 +16,6 @@ import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentScanQrCodeBinding
 import com.hanheldpos.ui.base.activity.BaseActivity
 import com.hanheldpos.ui.base.fragment.BaseFragment
-import com.utils.helper.SystemHelper
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 

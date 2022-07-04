@@ -1,4 +1,4 @@
-package com.hanheldpos.ui.screens.qrcode
+package com.hanheldpos.ui.screens.scanner
 
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
 

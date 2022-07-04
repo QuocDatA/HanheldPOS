@@ -50,17 +50,11 @@ class HardwareDetailFragment(
         binding.listConnection.adapter = hardwareConnectionAdapter
         binding.btnSave.setOnClickListener {
             printer.apply {
-                connectionList?.forEach {
-                    if (it.id == changedHardwareConnection.id) {
-                        it.port = changedHardwareConnection.port
-                        it.isChecked = changedHardwareConnection.isChecked
-                    }
-                }
+                connectionList = listHardwareConnection
             }
             val changedPrinterList =
-                DataHelper.hardwareSettingLocalStorage?.printerList?.toMutableList()
+                DataHelper.hardwareSettingLocalStorage?.printerList as MutableList?
             changedPrinterList?.set(changedPrinterList.indexOf(printer), printer)
-            DataHelper.hardwareSettingLocalStorage?.printerList = changedPrinterList
             DataHelper.hardwareSettingLocalStorage = DataHelper.hardwareSettingLocalStorage
             onFragmentBackPressed()
         }

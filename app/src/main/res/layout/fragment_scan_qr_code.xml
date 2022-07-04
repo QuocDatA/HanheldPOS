@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.hanheldpos.ui.screens.qrcode.ScanQrCodeVM" />
+            type="com.hanheldpos.ui.screens.scanner.ScanQrCodeVM" />
     </data>
 
     <FrameLayout
