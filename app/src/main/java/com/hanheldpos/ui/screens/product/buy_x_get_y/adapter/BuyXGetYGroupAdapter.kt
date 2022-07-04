@@ -94,6 +94,7 @@ class BuyXGetYGroupAdapter(
             binding.itemForSelectAdapter.apply {
                 adapter = buyXGetYItemPickerAdapter
             }
+            binding.itemForSelectAdapter.itemAnimator = null
 
             // Set group that had already been selected
             val buyXGetYItemChosenAdapter = BuyXGetYItemChosenAdapter(
@@ -116,6 +117,7 @@ class BuyXGetYGroupAdapter(
             binding.itemSelectedAdapter.apply {
                 adapter = buyXGetYItemChosenAdapter
             }
+            binding.itemSelectedAdapter.itemAnimator = null
 
             //Set up tab layout
             val listTemp = getProductTypeTab(itemBuyXGetYGroup.listApplyTo?.toList())?.toList()
