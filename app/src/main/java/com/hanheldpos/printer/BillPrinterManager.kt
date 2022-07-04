@@ -73,10 +73,11 @@ class BillPrinterManager private constructor() {
                                 )
                             }
                         }
-
                     }
             }
-
+            do {
+              val isDone = printers.values.map { it?.isCompleted ?: true || it?.isCancelled  ?: true}
+            } while (isDone.none { !it })
             return instance
         }
 
