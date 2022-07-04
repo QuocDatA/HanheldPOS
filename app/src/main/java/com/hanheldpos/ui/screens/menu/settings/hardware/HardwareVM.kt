@@ -17,7 +17,7 @@ class HardwareVM : BaseUiViewModel<HardwareUV>() {
 
     fun initData() {
         printerDevices = DataHelper.hardwareSettingLocalStorage?.printerList?.map {
-            ItemSettingOption(it.name, it)
+            ItemSettingOption(it.name, it, connectionStatus = HardwarePrinterDeviceType.CONNECTING)
         }?.toMutableList() ?: mutableListOf()
         otherDeviceSource = mutableListOf(
             ItemSettingOption(

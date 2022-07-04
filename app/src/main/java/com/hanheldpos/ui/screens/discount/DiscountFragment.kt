@@ -137,6 +137,6 @@ class DiscountFragment(private val listener: DiscountCallback) :
     }
 
     override fun onScanner() {
-        
+
     }
 }
