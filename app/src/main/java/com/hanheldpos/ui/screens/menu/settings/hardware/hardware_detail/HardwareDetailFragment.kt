@@ -57,6 +57,7 @@ class HardwareDetailFragment(
                 DataHelper.hardwareSettingLocalStorage?.printerList as MutableList?
             changedPrinterList?.set(changedPrinterList.indexOf(printer), printer)
             DataHelper.hardwareSettingLocalStorage = DataHelper.hardwareSettingLocalStorage
+            onSaveSucceeded.invoke()
             onFragmentBackPressed()
         }
     }

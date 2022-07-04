@@ -25,10 +25,6 @@ class DiscountVM : BaseUiViewModel<DiscountUV>() {
         uiCallback?.onScanner()
     }
 
-    fun onScanQrCode() {
-        uiCallback?.onScanQrCode()
-    }
-
     fun onApplyCouponCode(couponCode: String) {
         val body =
             GSonUtils.toServerJson(CartConverter.toOrder(CurCartData.cartModel!!, couponCode))
