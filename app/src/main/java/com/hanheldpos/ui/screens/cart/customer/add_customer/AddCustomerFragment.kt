@@ -149,7 +149,7 @@ class AddCustomerFragment(
         navigator.goToWithCustomAnimation(AddNewCustomerFragment())
     }
 
-    override fun onScanQrCode() {
+    override fun onScanner() {
         navigator.goToWithCustomAnimation(ScanQrCodeFragment(onSuccess = {
             showLoading(true)
             viewModel.searchCustomer(it, keyRequest = Random.nextInt(100000, 999999), isScan = true)

@@ -9,6 +9,9 @@ class DiscountVM : BaseUiViewModel<DiscountUV>() {
     var typeDiscountSelect = MutableLiveData<DiscountTypeFor>();
 
     fun backPress(){
-        uiCallback?.backPress();
+        uiCallback?.backPress()
+    }
+    fun onScanner() {
+        uiCallback?.onScanner()
     }
 }

@@ -135,4 +135,8 @@ class DiscountFragment(private val listener: DiscountCallback) :
     override fun backPress() {
         navigator.goOneBack();
     }
+
+    override fun onScanner() {
+        
+    }
 }
