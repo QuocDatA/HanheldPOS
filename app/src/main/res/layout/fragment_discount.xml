@@ -43,7 +43,6 @@
                 android:text="@string/add_discount" />
 
             <ImageButton
-                android:id="@+id/btn_scan_qr_code"
                 style="@style/MaterialButton.Icon"
                 android:layout_height="match_parent"
                 android:layout_gravity="center|end"
