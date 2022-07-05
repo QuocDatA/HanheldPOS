@@ -5,7 +5,7 @@ import com.hanheldpos.printer.printer_setup.printer_manager.BasePrinterManager
 import com.hanheldpos.printer.wagu.Block
 
 abstract class BaseLayoutPrinter(
-    protected val printer: BasePrinterManager,
+    protected val device: BasePrinterManager,
     protected val printConfig: PrintConfig
 ) {
     /// region printer - layout values
@@ -34,18 +34,18 @@ abstract class BaseLayoutPrinter(
     abstract fun print()
 
     private fun setUpPage() {
-        printer.setupPage(printConfig.deviceInfo.paperWidth(), -1f)
+        device.setupPage(printConfig.deviceInfo.paperWidth(), -1f)
     }
 
     protected fun printDivider() {
-        printer.drawLine(charPerLineNormal)
+        device.drawLine(charPerLineNormal)
     }
 
     protected fun feedLines(line: Int) {
-        printer.feedLines(line)
+        device.feedLines(line)
     }
 
     protected fun cutPaper() {
-        printer.cutPaper()
+        device.cutPaper()
     }
 }

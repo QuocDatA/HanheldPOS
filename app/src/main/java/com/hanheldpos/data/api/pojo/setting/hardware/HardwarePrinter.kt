@@ -24,5 +24,5 @@ data class HardwarePrinter(
     @SerializedName("ReceiptList")
     val receiptList: List<HardwareReceipt>?,
     @SerializedName("Visible")
-    val visible: Int?
+    val visible: Int?,
 ) : Parcelable, Cloneable

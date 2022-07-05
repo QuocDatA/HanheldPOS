@@ -20,6 +20,7 @@ class MenuDiscountVM : BaseUiViewModel<MenuDiscountUV>() {
     fun onFragmentBackPress() {
         uiCallback?.onFragmentBackPressed()
     }
+
     fun initListDiscountCode() {
         val listDiscountCode = DataHelper.discountsLocalStorage?.filter { !it.DiscountAutomatic }
         val sortList = listDiscountCode?.sortedBy { it.DiscountName }
@@ -27,7 +28,6 @@ class MenuDiscountVM : BaseUiViewModel<MenuDiscountUV>() {
     }
 
     fun onApplyDiscount(discSelected: DiscountResp) {
-
         when (DiscountTypeEnum.fromInt(discSelected.DiscountType)) {
             DiscountTypeEnum.PERCENT -> {
                 onApplyCouponCode(discSelected.DiscountCode)
@@ -36,7 +36,7 @@ class MenuDiscountVM : BaseUiViewModel<MenuDiscountUV>() {
                 onApplyCouponCode(discSelected.DiscountCode)
             }
             DiscountTypeEnum.BUYX_GETY -> {
-                if(discSelected.isMaxNumberOfUsedPerOrder()) {
+                if (discSelected.isMaxNumberOfUsedPerOrder()) {
                     showError(PosApp.instance.getString(R.string.msg_error_maximum_selection_is_))
                     return
                 }
@@ -70,5 +70,19 @@ class MenuDiscountVM : BaseUiViewModel<MenuDiscountUV>() {
                     showError(message)
                 }
             })
+    }
+
+    fun onScanner() {
+        uiCallback?.onScanner()
+    }
+
+    fun onScanDiscountSuccess(discountCode: String) {
+        val discountScan: DiscountResp? =
+            DataHelper.discountsLocalStorage?.find { disc -> disc.DiscountCode == discountCode };
+        if (discountScan != null) {
+            onApplyCouponCode(discountCode)
+        } else {
+            showError(PosApp.instance.getString(R.string.invalid_discount))
+        }
     }
 }

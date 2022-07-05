@@ -45,7 +45,7 @@ abstract class BaseLayoutReport(
     }
 
     private fun printLogo() {
-        printer.drawText(
+        device.drawText(
             WaguUtils.columnListDataBlock(
                 charPerLineNormal,
                 mutableListOf(
@@ -60,7 +60,7 @@ abstract class BaseLayoutReport(
     }
 
     private fun printTitle() {
-        printer.drawText(
+        device.drawText(
             WaguUtils.columnListDataBlock(
                 charPerLineLarge,
                 mutableListOf(
@@ -76,7 +76,7 @@ abstract class BaseLayoutReport(
     }
 
     private fun printDate() {
-        printer.drawText(
+        device.drawText(
             WaguUtils.columnListDataBlock(
                 charPerLineNormal,
                 mutableListOf(
@@ -102,7 +102,7 @@ abstract class BaseLayoutReport(
     }
 
     private fun printEmployee() {
-        printer.drawText(
+        device.drawText(
             WaguUtils.columnListDataBlock(
                 charPerLineNormal,
                 mutableListOf(
@@ -117,7 +117,7 @@ abstract class BaseLayoutReport(
     }
 
     private fun printStaff() {
-        printer.drawText(
+        device.drawText(
             WaguUtils.columnListDataBlock(
                 charPerLineNormal,
                 mutableListOf(
@@ -132,7 +132,7 @@ abstract class BaseLayoutReport(
     }
 
     private fun printBillTime() {
-        printer.drawText(
+        device.drawText(
             WaguUtils.columnListDataBlock(
                 charPerLineNormal,
                 mutableListOf(

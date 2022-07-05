@@ -52,12 +52,12 @@ class HardwareConnectionAdapter(
                 selectedItem.value = position
                 notifyItemChanged(position)
                 binding.isSelected = (position == selectedItem.value)
-                listener.onItemClick(position, item)
             }
             if (selectedItem.value == position) {
                 checkStatusSave(
                     holder.absoluteAdapterPosition,
-                    binding.editTextIPAddress.text.toString()
+                    binding.editTextIPAddress.text.toString(),
+                    item
                 )
                 //listener.onItemClick(position, item.apply { port = textChange })
             }
@@ -75,24 +75,21 @@ class HardwareConnectionAdapter(
             }
 
             override fun afterTextChanged(p0: Editable?) {
-                if (holder.absoluteAdapterPosition == selectedItem.value) {
-                    val connectionItem = getItem(holder.absoluteAdapterPosition).copy()
-                    if (connectionItem.port != p0.toString() && p0?.isNotBlank() == true)
-                        listener.onItemClick(holder.absoluteAdapterPosition, connectionItem.apply { port = p0.toString() })
-                }
                 checkStatusSave(
                     holder.absoluteAdapterPosition,
-                    binding.editTextIPAddress.text.toString()
+                    binding.editTextIPAddress.text.toString(),
+                    item,
                 )
             }
         })
     }
 
-    fun checkStatusSave(position: Int, editorText: String) {
+    fun checkStatusSave(position: Int, editorText: String, connection: HardwareConnection) {
         if ((selectedItem.value == defaultSelectedPosition && editorText.isNotBlank() && editorText != getItem(
                 position
             ).port) || selectedItem.value != defaultSelectedPosition
         ) {
+            listener.onItemClick(position, connection.apply { port = editorText })
             listener.onSaveEnable()
         } else {
             listener.onSaveDisable()

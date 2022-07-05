@@ -50,7 +50,7 @@
                 android:backgroundTint="@color/textPrimary"
                 android:clickable="true"
                 android:focusable="true"
-                android:onClickDebounce="@{v -> viewModel.onScanQrCode()}"
+                android:onClickDebounce="@{v -> viewModel.onScanner()}"
                 android:padding="@dimen/_10sdp"
                 android:scaleType="centerInside"
                 android:src="@drawable/ic_scan_qr_code"

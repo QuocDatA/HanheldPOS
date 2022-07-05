@@ -13,7 +13,7 @@ import java.util.*
 
 class DiscountAutomaticVM : BaseUiViewModel<DiscountAutomaticUV>() {
 
-    val isLoading = MutableLiveData<Boolean>(false);
+    val isLoading = MutableLiveData(false);
 
     fun initData() {
         loadDiscountAutomatic()

@@ -133,7 +133,6 @@ class Regular() : BaseProductInCart(), Parcelable, Cloneable {
                 totalModifierPrice,
                 proOriginal?._id,
                 quantity,
-                isBuyXGetYGroupBuy = isGroupBuy
             ) ?: 0.0
         } ?: 0.0
 
@@ -162,7 +161,7 @@ class Regular() : BaseProductInCart(), Parcelable, Cloneable {
 
     private fun totalTemp(productPricing: Product, isGroupBuy: Boolean? = false): Double {
         val subtotal = subTotal(productPricing)
-        val totalDiscPrice = totalDiscount(productPricing, isGroupBuy)
+        val totalDiscPrice = totalDiscount(productPricing)
         val totalFeePrice = totalFee(subtotal, totalDiscPrice)
         var total = subtotal - totalDiscPrice + totalFeePrice
         total = if (total < 0) 0.0 else total
@@ -180,7 +179,7 @@ class Regular() : BaseProductInCart(), Parcelable, Cloneable {
         return telcomp
     }
 
-    private fun totalDiscount(productPricing: Product, isGroupBuy: Boolean? = false): Double {
+    private fun totalDiscount(productPricing: Product): Double {
         val totalPrice = totalPrice()
         val totalModifierPrice = totalModifier(productPricing)
 
@@ -192,7 +191,6 @@ class Regular() : BaseProductInCart(), Parcelable, Cloneable {
                 totalModifierPrice,
                 proOriginal?._id,
                 quantity,
-                isGroupBuy
             ) ?: 0.0
         } ?: 0.0
 

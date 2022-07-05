@@ -17,7 +17,8 @@ import com.hanheldpos.printer.layouts.report.OverviewLayout
 import com.hanheldpos.printer.printer_devices.Printer
 import com.hanheldpos.printer.printer_setup.PrintConfig
 import com.hanheldpos.printer.printer_setup.PrinterTypes
-import java.lang.Exception
+import kotlinx.coroutines.*
+import java.util.*
 
 class BillPrinterManager private constructor() {
 
@@ -30,7 +31,7 @@ class BillPrinterManager private constructor() {
 
         // region variables
 
-        private val printers = mutableListOf<Printer>()
+        private val printers = Collections.synchronizedMap(mutableMapOf<Printer, Job?>())
         private lateinit var applicationContext: Context
         // endregion
 
@@ -42,6 +43,10 @@ class BillPrinterManager private constructor() {
 
             instance = BillPrinterManager().apply {
                 applicationContext = context
+                // Cancel all Job Check Connection
+                printers.values.forEach {
+                    it?.cancel()
+                }
                 printers.clear()
             }
             if (instance.isConnected()) return instance
@@ -52,21 +57,38 @@ class BillPrinterManager private constructor() {
                     ?.printerList
                     ?: emptyList())
                     .forEach {
-                        val printer = Printer.getInstance(it)
-                        if (printer.isConnected()) {
-                            printers.add(printer)
-                            onConnectionSuccess?.invoke(printer)
-                        } else {
-                            onConnectionFailed?.invoke(
-                                PrinterException(
-                                    printer,
-                                    printer.toString()
+                        val job = Job()
+                        CoroutineScope(Dispatchers.IO + job).launch {
+                            try {
+                                val printer = Printer.getInstance(it)
+
+                                if (printer.isConnected()) {
+                                    printers[printer] = job
+                                    onConnectionSuccess?.invoke(printer)
+                                } else {
+                                    onConnectionFailed?.invoke(
+                                        PrinterException(
+                                            printer,
+                                            printer.toString()
+                                        )
+                                    )
+                                }
+                            } catch (ex: Exception) {
+                                onConnectionFailed?.invoke(
+                                    PrinterException(
+                                        null,
+                                        ex.message.toString(),
+                                    )
                                 )
-                            )
+                            }
+
                         }
                     }
             }
-
+            do {
+                val isDone =
+                    printers.values.map { it?.isCompleted ?: true || it?.isCancelled ?: true }
+            } while (isDone.none { !it })
             return instance
         }
 
@@ -94,13 +116,13 @@ class BillPrinterManager private constructor() {
         if (limitToThesePrinterId != null) {
             limitToThesePrinterId.forEach { limitedPrinter ->
                 val connectedPrinter =
-                    printers.find { limitedPrinter == it.printingSpecification.id }
+                    printers.keys.find { limitedPrinter == it.printingSpecification.id }
                 if (connectedPrinter != null) {
                     finalChosenPrinters.add(connectedPrinter)
                 }
             }
         } else {
-            finalChosenPrinters.addAll(printers)
+            finalChosenPrinters.addAll(printers.keys)
         }
 
         finalChosenPrinters.forEach {
@@ -115,7 +137,7 @@ class BillPrinterManager private constructor() {
         filterOptions: SaleReportFilter?,
         printerTypes: PrinterTypes,
     ): BillPrinterManager {
-        printers
+        printers.keys
             .firstOrNull { it.printingSpecification.printerTypeId == printerTypes.value }
             ?.printReport(layoutType, report, filterOptions)
 
@@ -124,18 +146,18 @@ class BillPrinterManager private constructor() {
 
 
     fun openCashDrawer(): BillPrinterManager {
-        printers
+        printers.keys
             .firstOrNull { it.printingSpecification.isConnectCashDrawer == true }
             ?.openCashDrawer()
         return this
     }
 
     fun isConnected(): Boolean {
-        return printers.isNotEmpty() && printers.all { it.isConnected() }
+        return printers.isNotEmpty() && printers.keys.all { it.isConnected() }
     }
 
     fun printers() = mutableListOf<Printer>().apply {
-        addAll(printers)
+        addAll(printers.keys)
     }
 
 // endregion

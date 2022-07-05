@@ -71,8 +71,8 @@ class AddCustomerVM : BaseRepoViewModel<CustomerRepo, AddCustomerUV>() {
         uiCallback?.onFragmentBackPressed()
     }
 
-    fun onScanQrCode() {
-        uiCallback?.onScanQrCode()
+    fun onScanner() {
+        uiCallback?.onScanner()
     }
 
 

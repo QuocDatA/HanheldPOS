@@ -9,5 +9,5 @@ interface AddCustomerUV : BaseUserView {
     fun onLoadedCustomerView(list : List<CustomerResp>, isSuccess : Boolean, keyRequest: Int)
     fun onLoadedCustomerScan(list : List<CustomerResp>, isSuccess : Boolean, keyRequest: Int)
     fun onAddNewCustomer()
-    fun onScanQrCode()
+    fun onScanner()
 }

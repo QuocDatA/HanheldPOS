@@ -3,8 +3,11 @@ package com.hanheldpos.model.order
 import android.os.Parcelable
 import android.util.Pair
 import com.hanheldpos.data.api.pojo.order.settings.DiningOption
+import com.hanheldpos.data.api.pojo.product.PrintingLocation
+import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.cart.VariantCart
 import com.hanheldpos.model.product.ProductType
+import com.hanheldpos.utils.GSonUtils
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -171,5 +174,18 @@ data class ProductChosen(
             ?: mutableListOf()
     }
 
+    // Check if this product is printable with the printer id
+    fun printable(printerTypeId: Int?): Boolean =
+        if (isExistsPrinter(printerTypeId))
+            true
+        else isExistsPrinterInChildProducts(printerTypeId)
+
+    private fun isExistsPrinterInChildProducts(printerTypeId: Int?): Boolean =
+        ProductChoosedList?.any { it.printable(printerTypeId) } ?: false
+
+    private fun isExistsPrinter(printerId: Int?): Boolean {
+        return GSonUtils.toList<List<PrintingLocation>>(DataHelper.menuLocalStorage?.ProductList?.firstOrNull { it._id == this._id }?.PrintingLocation)
+            ?.firstOrNull { it.id == printerId } != null
+    }
 }
 

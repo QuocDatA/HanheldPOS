@@ -1,6 +1,7 @@
 package com.hanheldpos.ui.screens.discount
 
 import android.os.Bundle
+import android.view.View
 import androidx.fragment.app.activityViewModels
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.discount.DiscountCoupon
@@ -42,7 +43,6 @@ class DiscountFragment(private val listener: DiscountCallback) :
 
     override fun initView() {
         viewModel.typeDiscountSelect.observe(this) {
-
 
         }
     }
@@ -155,34 +155,21 @@ class DiscountFragment(private val listener: DiscountCallback) :
         navigator.goOneBack();
     }
 
-    override fun onScanQrCode() {
+    override fun onScanner() {
         navigator.goTo(ScanQrCodeFragment(onSuccess = {
             showLoading(true)
-            when (viewModel.typeDiscountSelect.value) {
-                DiscountTypeFor.DISCOUNT_CODE -> {
-                    val discountScan =
-                        DataHelper.discountsLocalStorage?.find { disc -> !disc.DiscountAutomatic && disc.DiscountCode == it };
-                    when (DiscountTypeEnum.fromInt(discountScan?.DiscountType ?: 0)) {
-                        DiscountTypeEnum.BUYX_GETY -> {}
-                        DiscountTypeEnum.AMOUNT -> {
-                            viewModel.onApplyCouponCode(it ?: "")
-                        }
-                        DiscountTypeEnum.PERCENT -> {
-                            viewModel.onApplyCouponCode(it ?: "")
-                        }
-                        else -> {}
-                    }
-                }
-                DiscountTypeFor.AUTOMATIC -> {
-
-                }
-                else -> {}
-            }
+            viewModel.onScanDiscount(it ?: "")
         }))
     }
 
     override fun onApplyDiscountCode(discount: List<DiscountCoupon>) {
         listener.onDiscountCodeChoose(discount)
         onFragmentBackPressed()
+    }
+
+    override fun onApplyDiscountAuto(discount: DiscountResp, applyTo: DiscApplyTo) {
+        listener.onDiscountServerChoose(discount, applyTo)
+        onFragmentBackPressed()
+        showLoading(false)
     }
 }

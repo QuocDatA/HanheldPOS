@@ -16,6 +16,7 @@ class ImageAnalyzer(private val listener: ImageAnalyzerCallback) : ImageAnalysis
     @SuppressLint("UnsafeExperimentalUsageError")
     private fun scanBarcode(imageProxy: ImageProxy) {
         imageProxy.image?.let { image ->
+
             val inputImage = InputImage.fromMediaImage(image, imageProxy.imageInfo.rotationDegrees)
             val scanner = BarcodeScanning.getClient()
             scanner.process(inputImage)

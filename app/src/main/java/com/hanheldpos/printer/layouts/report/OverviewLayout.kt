@@ -64,7 +64,7 @@ class OverviewLayout(
 
     private fun printDevicesReport() {
 
-        printer.drawText(
+        device.drawText(
             WaguUtils.columnListDataBlock(
                 charPerLineNormal,
                 list = mutableListOf(
@@ -83,7 +83,7 @@ class OverviewLayout(
         )
 
         reportSalesModel?.Device?.forEach {
-            printer.drawText(
+            device.drawText(
                 WaguUtils.columnListDataBlock(
                     charPerLineNormal,
                     list = mutableListOf(
@@ -105,7 +105,7 @@ class OverviewLayout(
 
         printDivider()
 
-        printer.drawText(
+        device.drawText(
             WaguUtils.columnListDataBlock(
                 charPerLineNormal,
                 list = mutableListOf(
@@ -123,7 +123,7 @@ class OverviewLayout(
     }
 
     private fun printSectionHeader(sectionHeader: String) {
-        printer.drawText(
+        device.drawText(
             WaguUtils.columnListDataBlock(
                 charPerLineNormal,
                 mutableListOf(
@@ -143,7 +143,7 @@ class OverviewLayout(
 
         val saleSummaries = reportSalesModel?.SalesSummary
 
-        printer.drawText(
+        device.drawText(
             WaguUtils.columnListDataBlock(
                 charPerLineNormal,
                 mutableListOf(
@@ -236,7 +236,7 @@ class OverviewLayout(
         )
 
         printDivider()
-        printer.drawText(
+        device.drawText(
             WaguUtils.columnListDataBlock(
                 charPerLineNormal, mutableListOf(
                     mutableListOf(
@@ -255,7 +255,7 @@ class OverviewLayout(
 
         printSectionHeader("*** Cash Drawer ***")
 
-        printer.drawText(
+        device.drawText(
             WaguUtils.columnListDataBlock(
                 charPerLineNormal,
                 mutableListOf(
@@ -310,7 +310,7 @@ class OverviewLayout(
         )
 
         printDivider()
-        printer.drawText(
+        device.drawText(
             WaguUtils.columnListDataBlock(
                 charPerLineNormal, mutableListOf(
                     mutableListOf(
@@ -345,7 +345,7 @@ class OverviewLayout(
         }
 
 
-        printer.drawText(
+        device.drawText(
             WaguUtils.columnListDataBlock(
                 charPerLineNormal,
                 mutableListOf(
@@ -373,7 +373,7 @@ class OverviewLayout(
 
         printDivider()
 
-        printer.drawText(
+        device.drawText(
             WaguUtils.columnListDataBlock(
                 charPerLineNormal, mutableListOf(
                     mutableListOf(
@@ -437,7 +437,7 @@ class OverviewLayout(
             )
 
         reportList.forEach {
-            printer.drawText(
+            device.drawText(
                 WaguUtils.columnListDataBlock(
                     charPerLineNormal,
                     mutableListOf(
@@ -459,7 +459,7 @@ class OverviewLayout(
                 )
             } ?: emptyList()
 
-            printer.drawText(
+            device.drawText(
                 WaguUtils.columnListDataBlock(
                     charPerLineNormal,
                     mutableListOf(
@@ -477,7 +477,7 @@ class OverviewLayout(
 
             printDivider()
 
-            printer.drawText(
+            device.drawText(
                 WaguUtils.columnListDataBlock(
                     charPerLineNormal,
                     mutableListOf(
@@ -501,7 +501,7 @@ class OverviewLayout(
             feedLines(2)
         }
         printDivider()
-        printer.drawText(
+        device.drawText(
             WaguUtils.columnListDataBlock(
                 charPerLineNormal,
                 mutableListOf(
@@ -523,7 +523,7 @@ class OverviewLayout(
 
 
     private fun printBillTotal() {
-        printer.drawText(
+        device.drawText(
             WaguUtils.columnListDataBlock(
                 charPerLineNormal,
                 mutableListOf(

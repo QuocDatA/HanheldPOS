@@ -12,6 +12,7 @@ import com.hanheldpos.ui.screens.menu.settings.hardware.hardware_detail.adapter.
 class HardwareDetailFragment(
     private val printer: HardwarePrinter,
     private val listHardwareConnection: List<HardwareConnection>,
+    private val onSaveSucceeded : () -> Unit,
 ) : BaseFragment<FragmentHardwareDetailBinding, HardwareDetailVM>(),
     HardwareDetailUV {
     override fun layoutRes(): Int = R.layout.fragment_hardware_detail
@@ -56,6 +57,7 @@ class HardwareDetailFragment(
                 DataHelper.hardwareSettingLocalStorage?.printerList as MutableList?
             changedPrinterList?.set(changedPrinterList.indexOf(printer), printer)
             DataHelper.hardwareSettingLocalStorage = DataHelper.hardwareSettingLocalStorage
+            onSaveSucceeded.invoke()
             onFragmentBackPressed()
         }
     }
