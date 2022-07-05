@@ -13,7 +13,7 @@
             name="cartDataVM"
             type="com.hanheldpos.ui.screens.cart.CartDataVM" />
 
-        <import type="com.hanheldpos.model.cart.DeliveryType" />
+        <import type="com.hanheldpos.model.cart.DinningOptionType" />
 
         <variable
             name="isShowDiscount"
@@ -192,7 +192,7 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        visibleObject="@{cartDataVM.diningOptionLD.orderNo == DeliveryType.DiGiao.value}"
+                        visibleObject="@{cartDataVM.diningOptionLD.orderNo == DinningOptionType.DiGiao.value}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
@@ -488,7 +488,7 @@
                         android:layout_height="@dimen/_1sdp" />
 
                     <LinearLayout
-                        visibleObject="@{cartDataVM.diningOptionLD.orderNo == DeliveryType.DiGiao.value}"
+                        visibleObject="@{cartDataVM.diningOptionLD.orderNo == DinningOptionType.DiGiao.value}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
@@ -529,7 +529,7 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        visibleObject="@{cartDataVM.diningOptionLD.orderNo != DeliveryType.TaiBan.value}"
+                        visibleObject="@{cartDataVM.diningOptionLD.orderNo != DinningOptionType.TaiBan.value}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">

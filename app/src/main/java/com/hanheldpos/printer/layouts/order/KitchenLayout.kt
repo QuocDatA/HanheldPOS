@@ -1,5 +1,7 @@
 package com.hanheldpos.printer.layouts.order
 
+import com.hanheldpos.data.api.pojo.order.settings.DiningOption
+import com.hanheldpos.model.cart.DinningOptionType
 import com.hanheldpos.printer.printer_setup.printer_manager.BasePrinterManager
 import com.hanheldpos.printer.wagu.Block
 import com.hanheldpos.printer.wagu.WaguUtils
@@ -7,17 +9,18 @@ import com.hanheldpos.printer.wagu.WrapType
 import com.hanheldpos.model.order.OrderModel
 import com.hanheldpos.model.order.ProductChosen
 import com.hanheldpos.model.product.ExtraConverter
+import com.hanheldpos.model.product.ProductType
+import com.hanheldpos.printer.printer_devices.Printer
 import com.hanheldpos.printer.printer_setup.PrintConfig
 import com.hanheldpos.utils.StringUtils
 
 
 open class KitchenLayout(
     order: OrderModel,
-    printer: BasePrinterManager,
-    printConfig: PrintConfig,
+    private val printer: Printer,
     isReprint: Boolean,
 ) : BaseLayoutOrder(
-    order, printer, printConfig, isReprint
+    order, printer, isReprint
 ) {
 
 
@@ -51,75 +54,99 @@ open class KitchenLayout(
     private fun printOrderDetail() {
 
         order.OrderDetail.OrderProducts.forEach { productChosen ->
-            printer.drawText(
-                StringUtils.removeAccent(
-                    getProductDetailItemString(productChosen)
-                ),
-                bold = true,
-                size = BasePrinterManager.FontSize.Large
-            )
+            if (productChosen.printable(printer.printingSpecification.printerTypeId)) {
+                printProduct(productChosen, level = 0)
+            }
         }
     }
 
-    private fun getProductDetailItemString(productChosen: ProductChosen): String {
-
-        val quantity = "${productChosen.Quantity}x"
+    private fun printProduct(
+        productChosen: ProductChosen,
+        level: Int = 0,
+        parentQuantity: Int? = 1
+    ) {
+        val quantity = "${(productChosen.Quantity ?: 0) * (parentQuantity ?: 1)} "
         val diningOption = "(${productChosen.DiningOption?.Acronymn})"
-        val proName = productChosen.Name1
 
-        val productDetail = mutableListOf<MutableList<String>>()
-        productDetail.add(mutableListOf(proName ?: ""))
+        val isBundleOrBuyXGetY =
+            productChosen.ProductTypeId == ProductType.BUNDLE.value || productChosen.ProductTypeId == ProductType.BUYX_GETY_DISC.value
 
-        productChosen.VariantList?.takeIf { it.isNotEmpty() }?.let {
-            productDetail.add(
-                mutableListOf(
-                    "(${ExtraConverter.variantOrderStr(it, separator = " ").toString()})"
-                )
-            )
+
+        if (!productChosen.printable(printer.printingSpecification.printerTypeId)) {
+            return
         }
 
-        productChosen.ModifierList?.takeIf { it.isNotEmpty() }?.let {
-            productDetail.add(
-                mutableListOf(
-                    "(${ExtraConverter.modifierOrderStr(it, separator = " ").toString()})"
-                )
-            )
-        }
+        val productString =
 
-        productChosen.Note?.takeIf { it.isNotEmpty() }?.let {
-            productDetail.add(mutableListOf("(${it.trim()})"))
-        }
+            productChosen.Name1 +
+                    (if (isBundleOrBuyXGetY) ":" else "") +
+                    (if (productChosen.VariantList?.isNotEmpty() == true)
+                        ExtraConverter.variantStr(
+                            productChosen.VariantList,
+                            separator = " "
+                        )
+                    else "") +
+                    (if (productChosen.ModifierList?.isNotEmpty() == true) ExtraConverter.modifierOrderStr(
+                        productChosen.ModifierList,
+                        separator = " "
+                    ).toString() else "") +
+                    (if (productChosen.Note.isNullOrBlank()) ""
+                    else
+                        "(${productChosen.Note ?: "".trim()})")
 
-        var result = ""
 
-        StringUtils.removeAccent(
-            WaguUtils.columnListDataBlock(
-                centerColumn,
-                productDetail,
-                columnOrderDetailAlign,
-                columnExtraSize(),
-                wrapType = WrapType.SOFT_WRAP
-            )
-        ).toString().takeIf { it.isNotEmpty() }?.let {
-            result = WaguUtils.columnListDataBlock(
-                charPerLineLarge,
-                mutableListOf(
+        device.drawText(
+            StringUtils.removeAccent(
+                WaguUtils.columnListDataBlock(
+                    charPerLineLarge,
                     mutableListOf(
-                        quantity,
-                        it.trim(),
-                        diningOption
-                    )
-                ),
-                columnOrderDetailAlign,
-                columnSize(),
-            )
-        }
+                        mutableListOf(
+                            "",
+                            WaguUtils.columnListDataBlock(
+                                charPerLineLarge - 5 - level * 2,
+                                mutableListOf(
+                                    mutableListOf(
+                                        (if (level % 2 == 1) "-" else "") +
+                                                (if (isBundleOrBuyXGetY) "" else quantity) +
+                                                productString
+                                    )
+                                ),
+                                aligns = mutableListOf(Block.DATA_MIDDLE_LEFT),
+                                columnSize = mutableListOf(
+                                    charPerLineLarge - 5 - level * 2
+                                ),
+                                wrapType = WrapType.SOFT_WRAP
+                            ),
+                            if (level == 0)
+                                if (productChosen.DiningOption?.Id == DinningOptionType.TaiBan.value)
+                                    ""
+                                else
+                                    diningOption
+                            else "",
+                        ),
+                    ),
+                    mutableListOf(
+                        Block.DATA_MIDDLE_LEFT,
+                        Block.DATA_MIDDLE_LEFT,
+                        Block.DATA_MIDDLE_RIGHT,
+                    ),
+                    columnSize = mutableListOf(level * 2, charPerLineLarge - 5 - level * 2, 5),
 
-        return result
+                    )
+            ),
+            bold = true,
+            size = BasePrinterManager.FontSize.Large
+        )
+
+        if (isBundleOrBuyXGetY) {
+            productChosen.ProductChoosedList?.forEach {
+                printProduct(it, level + 1, parentQuantity = productChosen.Quantity)
+            }
+        }
     }
 
     private fun printTableNumber() {
-        printer.drawText(
+        device.drawText(
             StringUtils.removeAccent(
                 WaguUtils.columnListDataBlock(
                     charPerLineLarge,

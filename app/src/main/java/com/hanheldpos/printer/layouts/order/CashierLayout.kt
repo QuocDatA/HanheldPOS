@@ -19,7 +19,7 @@ import com.hanheldpos.model.order.OrderModel
 import com.hanheldpos.model.order.ProductChosen
 import com.hanheldpos.model.product.ExtraConverter
 import com.hanheldpos.model.product.ProductType
-import com.hanheldpos.printer.printer_setup.PrintConfig
+import com.hanheldpos.printer.printer_devices.Printer
 import com.hanheldpos.utils.DrawableHelper
 import com.hanheldpos.utils.PriceUtils
 import com.hanheldpos.utils.StringUtils
@@ -27,10 +27,9 @@ import com.hanheldpos.utils.StringUtils
 
 class CashierLayout(
     order: OrderModel,
-    printer: BasePrinterManager,
-    printConfig: PrintConfig,
+    private val printer: Printer,
     isReprint: Boolean,
-) : BaseLayoutOrder(order, printer, printConfig, isReprint) {
+) : BaseLayoutOrder(order, printer, isReprint) {
 
     override fun print() {
         // Order Meta Data
@@ -88,39 +87,39 @@ class CashierLayout(
             ContextCompat.getDrawable(PosApp.instance.applicationContext, R.drawable.ic_note)
         val wrappedDrawable: Drawable = DrawableCompat.wrap(drawable!!)
         DrawableCompat.setTint(wrappedDrawable, Color.BLACK)
-        printer.drawBitmap(
+        device.drawBitmap(
             DrawableHelper.drawableToBitmap(wrappedDrawable),
             BasePrinterManager.BitmapAlign.Center
         )
     }
 
     private fun printAddress() {
-        val device = DataHelper.recentDeviceCodeLocalStorage?.first()
+        val deviceInfo = DataHelper.recentDeviceCodeLocalStorage?.first()
         WaguUtils.columnListDataBlock(
             charPerLineNormal,
             mutableListOf(
                 mutableListOf(
                     "",
-                    device?.LocationAddress?.trim() ?: "",
+                    deviceInfo?.LocationAddress?.trim() ?: "",
 
                     ""
                 ),
-                mutableListOf("", "Tel: ${device?.Phone?.trim()}", "")
+                mutableListOf("", "Tel: ${deviceInfo?.Phone?.trim()}", "")
             ),
             mutableListOf(Block.DATA_CENTER, Block.DATA_CENTER, Block.DATA_CENTER),
             columnSize = mutableListOf(3, charPerLineNormal - 6, 3),
             wrapType = WrapType.SOFT_WRAP
         ).let {
-            printer.drawText(StringUtils.removeAccent(it))
+            device.drawText(StringUtils.removeAccent(it))
         }
     }
 
     private fun printDeliveryAddress() {
         order.OrderDetail.Billing?.let {
-            printer.drawText(StringUtils.removeAccent(it.FullName), true)
+            device.drawText(StringUtils.removeAccent(it.FullName), true)
             it.getFullAddressWithLineBreaker().takeIf { address -> address.isNotEmpty() }
                 ?.let { address ->
-                    printer.drawText(StringUtils.removeAccent(address))
+                    device.drawText(StringUtils.removeAccent(address))
                 }
             var addressType: String? = ""
             val phoneNumber = it.Phone
@@ -130,12 +129,12 @@ class CashierLayout(
                 }
 
             if (!addressType.isNullOrEmpty() || !phoneNumber.isNullOrEmpty())
-                printer.drawText(
+                device.drawText(
                     "$addressType${if (addressType.isNullOrEmpty() && phoneNumber.isNullOrEmpty()) "" else " | "}$phoneNumber",
                     true
                 )
             it.Note?.let { note ->
-                printer.drawText(note, true)
+                device.drawText(note, true)
             }
         }
     }
@@ -147,7 +146,7 @@ class CashierLayout(
             charPerLineNormal, mutableListOf(title), columnOrderDetailAlign,
             columnSize()
         )
-        printer.drawText(StringUtils.removeAccent(contentTitle), true)
+        device.drawText(StringUtils.removeAccent(contentTitle), true)
         order.OrderDetail.OrderProducts.forEach { productChosen ->
             printProduct(productChosen)
         }
@@ -190,7 +189,7 @@ class CashierLayout(
             )
         )
 
-        printer.drawText(
+        device.drawText(
             WaguUtils.columnListDataBlock(
                 charPerLineNormal,
                 mutableListOf(
@@ -282,7 +281,7 @@ class CashierLayout(
             )
         )
         if (contentExtra?.isNotEmpty() == true)
-            printer.drawText(
+            device.drawText(
                 WaguUtils.columnListDataBlock(
                     charPerLineNormal,
                     mutableListOf(
@@ -306,7 +305,7 @@ class CashierLayout(
                 mutableListOf(mutableListOf("Subtotal", PriceUtils.formatStringPrice(it))),
                 mutableListOf(Block.DATA_MIDDLE_LEFT, Block.DATA_MIDDLE_RIGHT)
             )
-            printer.drawText(content)
+            device.drawText(content)
         }
     }
 
@@ -334,7 +333,7 @@ class CashierLayout(
                 mutableListOf(Block.DATA_MIDDLE_LEFT, Block.DATA_MIDDLE_RIGHT)
             )
             View.GONE
-            printer.drawText(content)
+            device.drawText(content)
         }
         printDivider()
     }
@@ -355,7 +354,7 @@ class CashierLayout(
                 mutableListOf(Block.DATA_MIDDLE_LEFT, Block.DATA_MIDDLE_RIGHT)
             )
 
-            printer.drawText(content)
+            device.drawText(content)
         }
         printDivider()
     }
@@ -367,7 +366,7 @@ class CashierLayout(
                 mutableListOf(mutableListOf("Total", PriceUtils.formatStringPrice(it))),
                 mutableListOf(Block.DATA_MIDDLE_LEFT, Block.DATA_MIDDLE_RIGHT)
             )
-            printer.drawText(content, true, BasePrinterManager.FontSize.Large)
+            device.drawText(content, true, BasePrinterManager.FontSize.Large)
         }
     }
 
@@ -391,13 +390,13 @@ class CashierLayout(
                 charPerLineNormal, lines,
                 mutableListOf(Block.DATA_MIDDLE_LEFT, Block.DATA_MIDDLE_RIGHT)
             )
-            printer.drawText(content)
+            device.drawText(content)
         }
     }
 
     private fun printThankYou() {
         DataHelper.receiptCashierLocalStorage?.let {
-            printer.drawText(
+            device.drawText(
                 WaguUtils.columnListDataBlock(
                     charPerLineNormal,
                     mutableListOf(mutableListOf("", it.AdditionalText_ReturnPolicy.trim(), "")),
@@ -410,7 +409,7 @@ class CashierLayout(
                 BasePrinterManager.FontSize.Small
             )
             feedLines(3)
-            printer.drawText(
+            device.drawText(
                 WaguUtils.columnListDataBlock(
                     charPerLineLarge,
                     mutableListOf(mutableListOf(it.AdditionalText_CustomText)),

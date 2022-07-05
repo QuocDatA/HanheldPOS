@@ -38,7 +38,7 @@ class InventoryLayout(
     }
 
     private fun printSectionHeader() {
-        printer.drawText(
+        device.drawText(
             WaguUtils.columnListDataBlock(
                 charPerLineNormal,
                 mutableListOf(
@@ -107,7 +107,7 @@ class InventoryLayout(
             aligns.add(Block.DATA_MIDDLE_RIGHT)
         }
 
-        printer.drawText(
+        device.drawText(
             WaguUtils.columnListDataBlock(
                 width = charPerLineNormal,
                 mutableListOf(

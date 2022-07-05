@@ -8,16 +8,15 @@ import com.hanheldpos.printer.wagu.WrapType
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.order.OrderModel
 import com.hanheldpos.printer.layouts.BaseLayoutPrinter
-import com.hanheldpos.printer.printer_setup.PrintConfig
+import com.hanheldpos.printer.printer_devices.Printer
 import com.hanheldpos.utils.DateTimeUtils
 import com.hanheldpos.utils.StringUtils
 
 abstract class BaseLayoutOrder(
     protected val order: OrderModel,
-    printer: BasePrinterManager,
-    printConfig: PrintConfig,
+    printer: Printer,
     private val isReprint: Boolean,
-) : BaseLayoutPrinter(printer, printConfig) {
+) : BaseLayoutPrinter(printer.printer!!, printer.printConfig) {
     /// region print methods
 
     protected open fun printBillStatus() {
@@ -33,7 +32,7 @@ abstract class BaseLayoutOrder(
         statusColumns.add(Block.DATA_MIDDLE_RIGHT)
 
 
-        printer.drawText(
+        device.drawText(
             StringUtils.removeAccent(
                 WaguUtils.columnListDataBlock(
                     charPerLineLarge,
@@ -72,14 +71,14 @@ abstract class BaseLayoutOrder(
             charPerLineNormal, listPrintInfo,
             mutableListOf(Block.DATA_MIDDLE_LEFT, Block.DATA_MIDDLE_RIGHT), wrapType = WrapType.SOFT_WRAP
         )
-        printer.drawText(content)
+        device.drawText(content)
     }
 
     protected fun printNote(drawBottomLine: Boolean = true) {
         order.OrderDetail.Order.Note?.takeIf { it.isNotEmpty() }?.let {
-            printer.drawText(StringUtils.removeAccent("Note: $it"))
+            device.drawText(StringUtils.removeAccent("Note: $it"))
             if (drawBottomLine)
-                printer.drawLine(charPerLineNormal)
+                device.drawLine(charPerLineNormal)
         }
     }
 

@@ -22,7 +22,7 @@ import com.hanheldpos.printer.printer_setup.interfaces.UrovoPrinterManager
 import com.hanheldpos.printer.printer_setup.printer_manager.BasePrinterManager
 
 class Printer private constructor(
-    private val printer: BasePrinterManager?,
+    val printer: BasePrinterManager?,
     val printConfig: PrintConfig,
     val printingSpecification: HardwarePrinter,
 ) {
@@ -50,13 +50,13 @@ class Printer private constructor(
                 for (i in 0 until 1 /*(it.quantity ?: 0)*/) {
                     when (it.receiptTypeId) {
                         PrinterRecipeType.CASHIER.value -> CashierLayout(
-                            order, printer, printConfig, isReprint
+                            order, this, isReprint
                         )
                         PrinterRecipeType.KITCHEN.value -> KitchenLayout(
-                            order, printer, printConfig, isReprint
+                            order, this, isReprint
                         )
                         else -> CashierLayout(
-                            order, printer, printConfig, isReprint
+                            order, this, isReprint
                         )
                     }.print()
                 }
