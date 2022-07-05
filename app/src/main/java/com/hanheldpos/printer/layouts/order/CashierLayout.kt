@@ -149,141 +149,94 @@ class CashierLayout(
         )
         printer.drawText(StringUtils.removeAccent(contentTitle), true)
         order.OrderDetail.OrderProducts.forEach { productChosen ->
-            printItemDetailForOrder(productChosen)
+            printProduct(productChosen)
         }
     }
 
-    private fun printItemDetailForOrder(productChosen: ProductChosen) {
-        val quantity = "${productChosen.Quantity}x"
-        val amount = PriceUtils.formatStringPrice(productChosen.LineTotal ?: 0.0)
+    private fun printProduct(productChosen: ProductChosen, level: Int = 0) {
+        // Process detail product
+        val quantity = when (true) {
+            (level == 0) -> "${productChosen.Quantity}x"
+            else -> "(${productChosen.Quantity})"
+        }
+        val amount = if ((productChosen.LineTotal
+                ?: 0.0) > 0.0
+        ) ((if (level > 0) "+" else "") + PriceUtils.formatStringPrice(
+            productChosen.LineTotal ?: 0.0
+        )) else ""
+
         val proName = productChosen.Name1
         val subtotal = productChosen.Subtotal
-        val contentName = WaguUtils.columnListDataBlock(
-            charPerLineNormal,
-            mutableListOf(
+        val isBundleOrBuyXGetY =
+            productChosen.ProductTypeId == ProductType.BUNDLE.value || productChosen.ProductTypeId == ProductType.BUYX_GETY_DISC.value
+        // Print Header
+        val titleColumnSize = charPerLineNormal - rightColumn - level * leftColumn
+        val contentHeader = StringUtils.removeAccent(
+            WaguUtils.columnListDataBlock(
+                titleColumnSize,
                 mutableListOf(
-                    quantity,
-                    "$proName (${PriceUtils.formatStringPrice(subtotal ?: 0.0)})",
-                    amount
-                )
-            ),
-            columnOrderDetailAlign,
-            columnSize(),
-            wrapType = WrapType.SOFT_WRAP
+                    mutableListOf(
+                        quantity,
+                        "$proName " + if ((subtotal ?: 0.0) > 0) ("(${
+                            PriceUtils.formatStringPrice(
+                                subtotal ?: 0.0
+                            )
+                        })") else "",
+                    )
+                ),
+                columnOrderDetailAlign,
+                mutableListOf(leftColumn, titleColumnSize - leftColumn),
+                wrapType = WrapType.SOFT_WRAP
+            )
         )
-        printer.drawText(StringUtils.removeAccent(contentName), true)
 
-        if (productChosen.ProductTypeId == ProductType.BUNDLE.value)
-            productChosen.ProductChoosedList?.forEach { pro ->
-                StringUtils.removeAccent(
-                    WaguUtils.columnListDataBlock(
-                        centerColumn,
-                        mutableListOf(
-                            mutableListOf(
-                                "(${pro.Quantity})",
-                                pro.Name1 ?: ""
-                            )
-                        ),
-                        columnOrderDetailAlign,
-                        columnGroupBundle(),
+        printer.drawText(
+            WaguUtils.columnListDataBlock(
+                charPerLineNormal,
+                mutableListOf(
+                    mutableListOf(
+                        "",
+                        contentHeader.toString(),
+                        amount
                     )
-                ).toString().trim().let {
-                    WaguUtils.columnListDataBlock(
-                        charPerLineNormal,
-                        mutableListOf(
-                            mutableListOf(
-                                "",
-                                it,
-                                if ((pro.LineTotal ?: 0.0) <= 0) "" else "+${
-                                    PriceUtils.formatStringPrice(
-                                        pro.LineTotal ?: 0.0
-                                    )
-                                }"
-                            )
-                        ),
-                        columnOrderDetailAlign,
-                        columnSize(),
-                    ).let { line ->
-                        printer.drawText(
-                            line
-                        )
-                    }
+                ),
+                columnOrderDetailAlign,
+                mutableListOf(level * leftColumn, titleColumnSize, rightColumn)
+            ), true
+        )
 
-                }
-                val listInfoGroupExtra = mutableListOf<MutableList<String>>()
-                pro.VariantList?.takeIf { it.isNotEmpty() }?.let {
-                    listInfoGroupExtra.add(
-                        mutableListOf(
-                            "*",
-                            ExtraConverter.variantOrderStr(it).toString()
-                        )
-                    )
-                }
-                pro.ModifierList?.takeIf { it.isNotEmpty() }?.let {
-                    listInfoGroupExtra.add(
-                        mutableListOf(
-                            "*",
-                            ExtraConverter.modifierOrderStr(it).toString()
-                        )
-                    )
-                }
-                pro.Note?.takeIf { it.isNotEmpty() }?.let {
-                    listInfoGroupExtra.add(mutableListOf("+", "Note : ${it.trim()}"))
-                }
-                val contentExtraPro = StringUtils.removeAccent(
-                    WaguUtils.columnListDataBlock(
-                        centerColumn - 4,
-                        listInfoGroupExtra,
-                        columnOrderDetailAlign,
-                        columnGroupBundleExtra(),
-                        wrapType = WrapType.SOFT_WRAP
-                    )
-                ).toString()
-                StringUtils.removeAccent(
-                    WaguUtils.columnListDataBlock(
-                        centerColumn,
-                        mutableListOf(
-                            mutableListOf(
-                                "",
-                                contentExtraPro.trim()
-                            )
-                        ),
-                        columnOrderDetailAlign,
-                        columnGroupBundle(),
-                    )
-                ).toString().takeIf { it.isNotEmpty() }?.let {
-                    printer.drawText(
-                        WaguUtils.columnListDataBlock(
-                            charPerLineNormal,
-                            mutableListOf(
-                                mutableListOf(
-                                    "",
-                                    it,
-                                )
-                            ),
-                            columnOrderDetailAlign,
-                            columnSize(),
-                        )
-                    )
-                }
 
+
+
+        if (isBundleOrBuyXGetY) {
+            productChosen.ProductChoosedList?.forEach {
+                printProduct(it, level + 1)
             }
+        }
 
-
-        val listExtraInfo = mutableListOf<MutableList<String>>()
+        // Print Extra
+        val extraColumnSize =
+            charPerLineNormal - rightColumn - level * leftColumn - 2 // 2 is space from * to text
+        val listInfoGroupExtra = mutableListOf<MutableList<String>>()
         productChosen.VariantList?.takeIf { it.isNotEmpty() }?.let {
-            listExtraInfo.add(mutableListOf("*", ExtraConverter.variantOrderStr(it).toString()))
+            listInfoGroupExtra.add(
+                mutableListOf(
+                    "*",
+                    ExtraConverter.variantOrderStr(it).toString()
+                )
+            )
         }
         productChosen.ModifierList?.takeIf { it.isNotEmpty() }?.let {
-            listExtraInfo.add(
+            listInfoGroupExtra.add(
                 mutableListOf(
                     "*",
                     ExtraConverter.modifierOrderStr(it).toString()
                 )
             )
         }
+
         productChosen.TaxFeeList?.takeIf { it.isNotEmpty() }?.let {
-            listExtraInfo.add(
+            listInfoGroupExtra.add(
                 mutableListOf(
                     "*",
                     "Tax (${PriceUtils.formatStringPrice(it.sumOf { tax -> tax.TotalPrice })})"
@@ -291,7 +244,7 @@ class CashierLayout(
             )
         }
         productChosen.ServiceFeeList?.takeIf { it.isNotEmpty() }?.let {
-            listExtraInfo.add(
+            listInfoGroupExtra.add(
                 mutableListOf(
                     "*",
                     "Service (${PriceUtils.formatStringPrice(it.sumOf { ser -> ser.TotalPrice })})"
@@ -299,7 +252,7 @@ class CashierLayout(
             )
         }
         productChosen.SurchargeFeeList?.takeIf { it.isNotEmpty() }?.let {
-            listExtraInfo.add(
+            listInfoGroupExtra.add(
                 mutableListOf(
                     "*",
                     "Surcharge (${PriceUtils.formatStringPrice(it.sumOf { sur -> sur.TotalPrice })})"
@@ -307,38 +260,42 @@ class CashierLayout(
             )
         }
         productChosen.DiscountList?.takeIf { it.isNotEmpty() }?.let {
-            listExtraInfo.add(
+            listInfoGroupExtra.add(
                 mutableListOf(
                     "*",
                     "Discount (-${PriceUtils.formatStringPrice(it.sumOf { dis -> dis.DiscountTotalPrice })})"
                 )
             )
         }
+
         productChosen.Note?.takeIf { it.isNotEmpty() }?.let {
-            listExtraInfo.add(mutableListOf("+", "Note : ${it.trim()}"))
+            listInfoGroupExtra.add(mutableListOf("+", "Note : ${it.trim()}"))
         }
+
         val contentExtra = StringUtils.removeAccent(
             WaguUtils.columnListDataBlock(
-                centerColumn,
-                listExtraInfo,
+                extraColumnSize,
+                listInfoGroupExtra,
                 columnOrderDetailAlign,
-                columnExtraSize(),
+                mutableListOf(2, extraColumnSize - 2),
                 wrapType = WrapType.SOFT_WRAP
             )
-        ).toString()
-        contentExtra.takeIf { it.isNotEmpty() }?.let {
-            WaguUtils.columnListDataBlock(
-                charPerLineNormal,
-                mutableListOf(mutableListOf("", contentExtra.trim())),
-                columnOrderDetailAlign,
-                columnSize(),
-            ).let {
-                printer.drawText(
-                    it
-                )
-            }
-
-        }
+        )
+        if (contentExtra?.isNotEmpty() == true)
+            printer.drawText(
+                WaguUtils.columnListDataBlock(
+                    charPerLineNormal,
+                    mutableListOf(
+                        mutableListOf(
+                            "",
+                            contentExtra,
+                            ""
+                        )
+                    ),
+                    columnOrderDetailAlign,
+                    mutableListOf(level * leftColumn + 2, extraColumnSize, rightColumn)
+                ), true
+            )
     }
 
 

@@ -18,7 +18,7 @@ import com.hanheldpos.printer.printer_devices.Printer
 import com.hanheldpos.printer.printer_setup.PrintConfig
 import com.hanheldpos.printer.printer_setup.PrinterTypes
 import kotlinx.coroutines.*
-import java.lang.Exception
+import java.util.*
 
 class BillPrinterManager private constructor() {
 
@@ -31,7 +31,7 @@ class BillPrinterManager private constructor() {
 
         // region variables
 
-        private val printers = mutableMapOf<Printer,Job?>()
+        private val printers = Collections.synchronizedMap(mutableMapOf<Printer, Job?>())
         private lateinit var applicationContext: Context
         // endregion
 
@@ -59,24 +59,35 @@ class BillPrinterManager private constructor() {
                     .forEach {
                         val job = Job()
                         CoroutineScope(Dispatchers.IO + job).launch {
-                            val printer = Printer.getInstance(it)
+                            try {
+                                val printer = Printer.getInstance(it)
 
-                            if (printer.isConnected()) {
-                                printers[printer] = job
-                                onConnectionSuccess?.invoke(printer)
-                            } else {
+                                if (printer.isConnected()) {
+                                    printers[printer] = job
+                                    onConnectionSuccess?.invoke(printer)
+                                } else {
+                                    onConnectionFailed?.invoke(
+                                        PrinterException(
+                                            printer,
+                                            printer.toString()
+                                        )
+                                    )
+                                }
+                            } catch (ex: Exception) {
                                 onConnectionFailed?.invoke(
                                     PrinterException(
-                                        printer,
-                                        printer.toString()
+                                        null,
+                                        ex.message.toString(),
                                     )
                                 )
                             }
+
                         }
                     }
             }
             do {
-              val isDone = printers.values.map { it?.isCompleted ?: true || it?.isCancelled  ?: true}
+                val isDone =
+                    printers.values.map { it?.isCompleted ?: true || it?.isCancelled ?: true }
             } while (isDone.none { !it })
             return instance
         }
