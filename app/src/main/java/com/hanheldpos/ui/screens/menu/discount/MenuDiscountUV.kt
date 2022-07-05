@@ -9,4 +9,5 @@ interface MenuDiscountUV : BaseUserView {
     fun loadDiscountCode(list: List<DiscountResp>)
     fun updateDiscountCouponCode(discountCouponList: List<DiscountCoupon>?)
     fun openDiscountBuyXGetY(discount: DiscountResp)
+    fun onScanner()
 }

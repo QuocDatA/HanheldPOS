@@ -39,6 +39,20 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/discount" />
+
+            <ImageButton
+                style="@style/MaterialButton.Icon"
+                android:layout_height="match_parent"
+                android:layout_gravity="center|end"
+                android:adjustViewBounds="true"
+                android:backgroundTint="@color/textPrimary"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClickDebounce="@{v -> viewModel.onScanner()}"
+                android:padding="@dimen/_10sdp"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_scan_qr_code"
+                tools:ignore="ContentDescription" />
         </FrameLayout>
 
         <View
