@@ -51,10 +51,11 @@ open class CartModel(
     fun getBuyXGetYQuantity(discId: String): Int {
         var quantity = 0;
         productsList.forEach { baseProductInCart ->
-            if (baseProductInCart is BuyXGetY && baseProductInCart.disc?._id != discId)
-                quantity++
-            else if (baseProductInCart is Combo || baseProductInCart is Regular)
-                quantity++
+            if (baseProductInCart is BuyXGetY && baseProductInCart.disc?._id != discId) {
+                quantity += baseProductInCart.quantity ?: 0
+            } else if (baseProductInCart is Combo || baseProductInCart is Regular) {
+                quantity += baseProductInCart.quantity ?: 0
+            }
         }
         return quantity
     }
@@ -169,8 +170,12 @@ open class CartModel(
         }
     }
 
-    fun addDiscountCouponServer(discount: DiscountResp?, discApplyTo: DiscApplyTo , productApply : BaseProductInCart? = null) {
-        when(discApplyTo) {
+    fun addDiscountCouponServer(
+        discount: DiscountResp?,
+        discApplyTo: DiscApplyTo,
+        productApply: BaseProductInCart? = null
+    ) {
+        when (discApplyTo) {
             DiscApplyTo.UNKNOWN -> TODO()
             DiscApplyTo.ITEM -> {
                 if (productApply != null && productApply.discountServersList == null)
