@@ -17,6 +17,7 @@ import com.hanheldpos.ui.screens.product.buy_x_get_y.BuyXGetYFragment
 import com.hanheldpos.ui.screens.cart.CurCartData
 import com.hanheldpos.ui.screens.discount.discount_detail.DiscountDetailFragment
 import com.hanheldpos.ui.screens.discount.discount_type.adapter.MenuDiscountAdapter
+import com.hanheldpos.ui.screens.scanner.ScanQrCodeFragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -108,6 +109,20 @@ class MenuDiscountFragment(private val listener: MenuDiscountCallBack) : BaseFra
     override fun openDiscountBuyXGetY(discount: DiscountResp) {
         onFragmentBackPressed()
         listener.openDiscountBuyXGetY(discount)
+    }
+
+    override fun onScanner() {
+        navigator.goTo(ScanQrCodeFragment(onSuccess = {
+            showLoading(true)
+            if (CurCartData.cartModel != null) {
+                viewModel.onScanDiscountSuccess(it ?: "")
+            } else {
+                showAlert(
+                    PosApp.instance.getString(R.string.notification),
+                    PosApp.instance.getString(R.string.please_choose_table_first)
+                )
+            }
+        }))
     }
 
     interface MenuDiscountCallBack {
