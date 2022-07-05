@@ -84,7 +84,8 @@ class CashierLayout(
     }
 
     private fun printBrandIcon() {
-        val drawable = ContextCompat.getDrawable(PosApp.instance.applicationContext, R.drawable.ic_note)
+        val drawable =
+            ContextCompat.getDrawable(PosApp.instance.applicationContext, R.drawable.ic_note)
         val wrappedDrawable: Drawable = DrawableCompat.wrap(drawable!!)
         DrawableCompat.setTint(wrappedDrawable, Color.BLACK)
         printer.drawBitmap(
@@ -94,14 +95,17 @@ class CashierLayout(
     }
 
     private fun printAddress() {
+        val device = DataHelper.recentDeviceCodeLocalStorage?.first()
         WaguUtils.columnListDataBlock(
             charPerLineNormal,
             mutableListOf(
                 mutableListOf(
                     "",
-                    DataHelper.recentDeviceCodeLocalStorage?.first()?.LocationAddress?.trim() ?: "",
+                    device?.LocationAddress?.trim() ?: "",
+
                     ""
-                )
+                ),
+                mutableListOf("", "Tel: ${device?.Phone?.trim()}", "")
             ),
             mutableListOf(Block.DATA_CENTER, Block.DATA_CENTER, Block.DATA_CENTER),
             columnSize = mutableListOf(3, charPerLineNormal - 6, 3),
@@ -439,9 +443,9 @@ class CashierLayout(
             printer.drawText(
                 WaguUtils.columnListDataBlock(
                     charPerLineNormal,
-                    mutableListOf(mutableListOf("",it.AdditionalText_ReturnPolicy.trim(),"")),
+                    mutableListOf(mutableListOf("", it.AdditionalText_ReturnPolicy.trim(), "")),
                     mutableListOf(Block.DATA_CENTER, Block.DATA_CENTER, Block.DATA_CENTER),
-                    columnSize = mutableListOf(1,charPerLineNormal-2,1),
+                    columnSize = mutableListOf(1, charPerLineNormal - 2, 1),
                     wrapType = WrapType.SOFT_WRAP
 
                 ),
