@@ -84,14 +84,14 @@ data class DiscountResp(
     }
 
     fun isValid(cart: CartModel, curDateTime: Date): Boolean {
-        val subTotal = cart.getSubTotal();
+        val subTotal = cart.getSubTotal()
         val diningOptionList =
             cart.productsList.map { baseProductInCart -> baseProductInCart.diningOption?.Id ?: 0 }
-                .distinct().toList();
+                .distinct().toList()
         return isValidDiningOption(diningOptionList) &&
                 (DateRange == 0 || isValidDate(curDateTime)) &&
                 isValidMinRequired(
-                    subTotal, cart?.getTotalQuantity() ?: 0
+                    subTotal, cart.getTotalQuantity()
                 ) && isValidCtmEligibility(cart.customer)
     }
 
@@ -116,17 +116,17 @@ data class DiscountResp(
 
     private fun isValidProduct(baseProduct: BaseProductInCart): Boolean {
         val productApply =
-            Condition.CustomerBuys.getProductApply(baseProduct.proOriginal?._id);
+            Condition.CustomerBuys.getProductApply(baseProduct.proOriginal?._id)
 
         return if (Excluding == 1) productApply == null
         else productApply != null && (productApply.VariantsGroup?.isExistsVariant(baseProduct.variantList)
-            ?: false);
+            ?: false)
     }
 
     private fun isValidCtmEligibility(customer: CustomerResp?): Boolean {
         return when (CtmEligibilityType.fromInt(CustomerEligibility)) {
             CtmEligibilityType.EVERYONE ->
-                true;
+                true
 
             CtmEligibilityType.SPECIFIC_GROUP_CUSTOMERS ->
                 ((Gson().fromJson(
@@ -138,25 +138,23 @@ data class DiscountResp(
                     ?.isNotEmpty() == true
 
             CtmEligibilityType.SPECIFIC_CUSTOMER ->
-                CustomerEligibilityList.firstOrNull { c -> c._id == customer?._id } != null;
+                CustomerEligibilityList.firstOrNull { c -> c._id == customer?._id } != null
 
             else ->
-                false;
+                false
         }
     }
 
     private fun isValidDiningOption(diningOptionIdList: List<Int>): Boolean {
-        val isValidDiningOption =
-            diningOptionIdList.intersect(
-                DiningOption.map { d -> d.Id }.toSet().toSet()
-            ).isNotEmpty();
-        return isValidDiningOption;
+        return diningOptionIdList.intersect(
+            DiningOption.map { d -> d.Id }.toSet().toSet()
+        ).isNotEmpty()
     }
 
     private fun isValidDate(curDateTime: Date): Boolean {
         try {
             if (DateOn.isEmpty() && DateOff.isEmpty()) {
-                return true;
+                return true
             }
 
             if (curDateTime <=
@@ -170,24 +168,24 @@ data class DiscountResp(
                     DateTimeUtils.Format.YYYY_MM_DD_HH_MM_SS
                 )
             ) {
-                return isValidSchedule(curDateTime);
+                return isValidSchedule(curDateTime)
             }
-            return false;
+            return false
         } catch (error: Exception) {
-            return false;
+            return false
         }
     }
 
     private fun isValidSchedule(curDateTime: Date): Boolean {
         if (ScheduleList?.any() != true) {
-            return true;
+            return true
         }
         val c = Calendar.getInstance()
-        c.time = curDateTime;
+        c.time = curDateTime
         return isValidTime(
             ScheduleList.firstOrNull { schedule -> schedule.Id == c.get(Calendar.DAY_OF_WEEK) },
             curDateTime
-        );
+        )
     }
 
     private fun isValidTime(schedule: ListScheduleItem?, curDateTime: Date): Boolean {
@@ -197,7 +195,7 @@ data class DiscountResp(
                 time.TimeOn,
                 curDateTime
             )
-        } != null;
+        } != null
     }
 
     private fun isValidTime(
@@ -206,10 +204,10 @@ data class DiscountResp(
         curDateTime: Date
     ): Boolean {
         return try {
-            val timeOff = DateTimeUtils.strToDate(timeOffString, DateTimeUtils.Format.HH_mm);
-            val timeOn = DateTimeUtils.strToDate(timeOnString, DateTimeUtils.Format.HH_mm);
+            val timeOff = DateTimeUtils.strToDate(timeOffString, DateTimeUtils.Format.HH_mm)
+            val timeOn = DateTimeUtils.strToDate(timeOnString, DateTimeUtils.Format.HH_mm)
 
-            curDateTime <= timeOff && curDateTime >= timeOn;
+            curDateTime <= timeOff && curDateTime >= timeOn
         } catch (error: Exception) {
             false; }
     }
@@ -218,16 +216,16 @@ data class DiscountResp(
         return when (DiscMinRequiredType.fromInt(MinimumRequiredType)) {
 
             DiscMinRequiredType.NONE ->
-                true;
+                true
 
             DiscMinRequiredType.AMOUNT ->
-                MinimumRequiredValue <= subtotal;
+                MinimumRequiredValue <= subtotal
 
             DiscMinRequiredType.QUANTITY ->
-                MinimumRequiredValue <= quantity;
+                MinimumRequiredValue <= quantity
 
             else ->
-                false;
+                false
 
         }
     }
@@ -237,7 +235,6 @@ data class DiscountResp(
         totalModifier: Double?,
         productOriginal_id: String? = null,
         quantity: Int? = 1,
-        isBuyXGetYGroupBuy: Boolean? = false,
     ): Double? {
         val subtotal =
             if (Condition.CustomerBuys.isApplyModifier(productOriginal_id ?: "")) totalPrice?.plus(
@@ -289,22 +286,22 @@ data class DiscountResp(
         var discPrice = if (discountType == DiscountTypeEnum.PERCENT) proModSubtotal?.times(
             discountValue?.div(100) ?: 1.0
         ) else
-            (if (proModSubtotal ?: 0.0 > discountValue ?: 0.0) discountValue else proModSubtotal)
+            (if ((proModSubtotal ?: 0.0) > (discountValue ?: 0.0)) discountValue else proModSubtotal)
 
         // Quantity applied on the product must be smaller or equals to "MaxQuantity"
-        if (Condition?.CustomerBuys?.IsMaxQuantity == 1) quantity = quantityUsed ?: 1
+        if (Condition.CustomerBuys.IsMaxQuantity == 1) quantity = quantityUsed ?: 1
         // Amount reduced on the product must be smaller or equals to "MaxAmount"
-        if (Condition?.CustomerBuys?.IsMaxAmount == 1) {
-            discPrice = Condition?.CustomerBuys?.getMaxAmount(discPrice ?: 0.0, productOriginal_id);
+        if (Condition.CustomerBuys.IsMaxAmount == 1) {
+            discPrice = Condition.CustomerBuys.getMaxAmount(discPrice ?: 0.0, productOriginal_id)
         }
         // OnlyApplyDiscountApplyTo is 1: Discount is only allowed to apply the maximum for a product.
         discPrice =
-            if (OnlyApplyDiscountProductOncePerOrder == 0) (discPrice?.times(quantity)) else discPrice;
+            if (OnlyApplyDiscountProductOncePerOrder == 0) (discPrice?.times(quantity)) else discPrice
 
-        if (Condition?.CustomerBuys?.IsDiscountLimit == 1) {
-            return if (maxAmountUsed ?: 0.0 > discPrice ?: 0.0) discPrice else maxAmountUsed ?: 0.0;
+        if (Condition.CustomerBuys.IsDiscountLimit == 1) {
+            return if ((maxAmountUsed ?: 0.0) > (discPrice ?: 0.0)) discPrice else maxAmountUsed ?: 0.0
         }
-        return discPrice;
+        return discPrice
     }
 
     fun isAutoOnClick(): Boolean {
@@ -330,19 +327,19 @@ data class DiscountResp(
     }
 
     fun isMaxNumberOfUsedPerOrder(): Boolean {
-        var totalQtyDiscUsed = 0;
-        when (DiscApplyTo.fromInt(DiscountApplyTo ?: 0)) {
+        var totalQtyDiscUsed = 0
+        when (DiscApplyTo.fromInt(DiscountApplyTo)) {
             DiscApplyTo.ITEM ->
                 totalQtyDiscUsed = CurCartData.cartModel?.productsList?.sumOf { pro ->
                     pro.totalQtyDiscUsed(this._id)
-                } ?: 0;
+                } ?: 0
 
             DiscApplyTo.ORDER ->
-                totalQtyDiscUsed = CurCartData.cartModel?.totalQtyDiscUsed(this._id) ?: 0;
+                totalQtyDiscUsed = CurCartData.cartModel?.totalQtyDiscUsed(this._id) ?: 0
             else -> {}
         }
 
-        return MaximumNumberOfUsedPerOrder && totalQtyDiscUsed >= MaximumNumberOfUsedPerOrderValue;
+        return MaximumNumberOfUsedPerOrder && totalQtyDiscUsed >= MaximumNumberOfUsedPerOrderValue
     }
 
     public override fun clone(): DiscountResp {
@@ -499,10 +496,10 @@ data class CustomerBuys(
     ): Int {
         return when (MinimumType.fromInt(MinimumTypeId ?: 0)) {
             MinimumType.AMOUNT -> {
-                totalAmount.toInt() / MinimumValue!!.toInt() * 100
+                (totalAmount / MinimumValue!! * 100).toInt()
             }
             MinimumType.QUANTITY -> {
-                totalQuantity / MinimumValue!!.toInt() * 100
+                (totalQuantity / MinimumValue!! * 100).toInt()
             }
             else -> {
                 0
