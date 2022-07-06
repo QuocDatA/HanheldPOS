@@ -70,7 +70,8 @@
                     android:layout_width="@dimen/_14sdp"
                     android:layout_height="@dimen/_14sdp"
                     android:layout_gravity="center"
-                    android:src="@drawable/ic_delete" />
+                    android:src="@drawable/ic_delete"
+                    tools:ignore="ContentDescription" />
             </FrameLayout>
         </LinearLayout>
 
