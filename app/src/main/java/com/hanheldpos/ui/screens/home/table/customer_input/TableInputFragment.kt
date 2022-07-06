@@ -3,12 +3,16 @@ package com.hanheldpos.ui.screens.home.table.customer_input
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import androidx.lifecycle.lifecycleScope
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentTableInputBinding
 import com.hanheldpos.model.keyboard.KeyBoardType
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.input.KeyBoardVM
 import com.hanheldpos.utils.PriceUtils
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 class TableInputFragment(
@@ -16,7 +20,7 @@ class TableInputFragment(
 ) : BaseFragment<FragmentTableInputBinding, TableInputVM>(), TableInputUV {
 
     //ViewModel
-    private val keyBoardVM = KeyBoardVM(KeyBoardType.NumberOnly,7);
+    private val keyBoardVM = KeyBoardVM(KeyBoardType.NumberOnly, 7);
 
     override fun layoutRes() = R.layout.fragment_table_input
 
@@ -34,18 +38,30 @@ class TableInputFragment(
     }
 
     override fun initView() {
-        keyBoardVM.onListener(
-            this,
-            binding.numberCustomer,
-            listener = object : KeyBoardVM.KeyBoardCallBack {
-                override fun onComplete() {
-                    viewModel.onComplete();
+        lifecycleScope.launch(Dispatchers.IO) {
+            while (true) {
+                if (isVisible){
+                    break
                 }
+            }
+            launch(Dispatchers.Main) {
+                keyBoardVM.onListener(
+                    this@TableInputFragment,
+                    binding.numberCustomer,
+                    listener = object : KeyBoardVM.KeyBoardCallBack {
+                        override fun onComplete() {
+                            viewModel.onComplete()
+                        }
 
-                override fun onCancel() {
-                    viewModel.onCancel();
-                }
-            });
+                        override fun onCancel() {
+                            viewModel.onCancel()
+                        }
+                    })
+                binding.keyBoardContainer.root.visibility = View.VISIBLE
+            }
+
+        }
+
 
     }
 
@@ -82,11 +98,11 @@ class TableInputFragment(
     }
 
     override fun onCancel() {
-        navigator.goOneBack();
+        navigator.goOneBack()
     }
 
     override fun onComplete() {
-        navigator.goOneBack();
+        navigator.goOneBack()
         if (viewModel.numberCustomer > 0)
             listener?.onCompleteTable((viewModel.numberCustomer))
     }

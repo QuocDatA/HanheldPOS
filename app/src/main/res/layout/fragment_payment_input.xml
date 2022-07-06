@@ -27,6 +27,7 @@
         <androidx.cardview.widget.CardView
             android:clickable="true"
             android:focusable="true"
+            android:layout_centerInParent="true"
             android:background="@color/color_2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -103,6 +104,7 @@
         </androidx.cardview.widget.CardView>
 
         <include
+            android:visibility="gone"
             android:id="@+id/keyBoardContainer"
             layout="@layout/layout_keyboard"
             android:layout_width="match_parent"

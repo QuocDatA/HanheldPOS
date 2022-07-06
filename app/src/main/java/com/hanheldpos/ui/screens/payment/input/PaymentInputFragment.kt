@@ -3,12 +3,15 @@ package com.hanheldpos.ui.screens.payment.input
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import androidx.lifecycle.lifecycleScope
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentPaymentInputBinding
 import com.hanheldpos.model.keyboard.KeyBoardType
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.input.KeyBoardVM
 import com.hanheldpos.utils.PriceUtils
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class PaymentInputFragment(
     private val title: String,
@@ -63,21 +66,32 @@ class PaymentInputFragment(
                 "(${getString(R.string.balance)} : ${PriceUtils.formatStringPrice(balance)})"
         }
 
-
-        keyBoardVM.onListener(
-            this,
-            binding.numberPaymentInput,
-            initInput = PriceUtils.formatStringPrice(viewModel.inputAmount),
-            listener = object : KeyBoardVM.KeyBoardCallBack {
-                override fun onComplete() {
-                    onCancel()
-                    listener.onSave(viewModel.inputAmount,balance)
+        lifecycleScope.launch(Dispatchers.IO) {
+            while (true) {
+                if (isVisible){
+                    break
                 }
+            }
+            launch(Dispatchers.Main) {
+                keyBoardVM.onListener(
+                    this@PaymentInputFragment,
+                    binding.numberPaymentInput,
+                    initInput = PriceUtils.formatStringPrice(viewModel.inputAmount),
+                    listener = object : KeyBoardVM.KeyBoardCallBack {
+                        override fun onComplete() {
+                            onCancel()
+                            listener.onSave(viewModel.inputAmount,balance)
+                        }
 
-                override fun onCancel() {
-                    onFragmentBackPressed()
-                }
-            })
+                        override fun onCancel() {
+                            onFragmentBackPressed()
+                        }
+                    })
+                binding.keyBoardContainer.root.visibility = View.VISIBLE
+            }
+
+        }
+
         binding.numberPaymentInput.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
 

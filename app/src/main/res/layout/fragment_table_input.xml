@@ -20,6 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_above="@+id/keyBoardContainer"
+            android:layout_centerInParent="true"
             android:layout_marginBottom="@dimen/_80sdp"
             android:layout_marginHorizontal="@dimen/_15sdp"
             android:elevation="0dp"
@@ -64,11 +65,12 @@
 
 
         <include
-            app:keyboardVM="@{keyboardVM}"
+            android:visibility="gone"
             android:id="@+id/keyBoardContainer"
             layout="@layout/layout_keyboard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true" />
+            android:layout_alignParentBottom="true"
+            app:keyboardVM="@{keyboardVM}" />
     </RelativeLayout>
 </layout>
