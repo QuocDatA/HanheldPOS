@@ -4,24 +4,34 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="item"
             type="com.hanheldpos.ui.screens.menu.report.sale.adapter.NumberDayReportItem" />
     </data>
+
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    <com.diadiem.pos_components.PTextView
-        android:layout_margin="@dimen/_2sdp"
-        android:id="@+id/title"
-        android:layout_gravity="center"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:useTextColor="color4"
-        app:useFontStyle="normal"
-        android:text="@{item.title}"
-        app:useTextHeader="h5"
-        tools:text="1D"
-        />
+        android:layout_height="@dimen/_28sdp"
+        >
+
+        <com.diadiem.pos_components.PTextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@{item.title}"
+            app:useFontStyle="normal"
+            app:useTextColor="color4"
+            app:useTextHeader="h5"
+            tools:text="1D" />
+
+        <View
+            android:id="@+id/underLine"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_gravity="bottom"
+            android:background="@color/color_0"
+             />
     </FrameLayout>
 </layout>

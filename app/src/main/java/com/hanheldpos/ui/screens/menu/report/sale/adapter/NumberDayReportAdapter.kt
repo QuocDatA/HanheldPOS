@@ -1,6 +1,7 @@
 package com.hanheldpos.ui.screens.menu.report.sale.adapter
 
 import android.annotation.SuppressLint
+import android.view.View
 import androidx.recyclerview.widget.DiffUtil
 import com.hanheldpos.R
 import com.hanheldpos.databinding.ItemSalesReportDayNumberBinding
@@ -46,9 +47,11 @@ class NumberDayReportAdapter(private val listener : BaseItemClickListener<Number
 
             if(selectedItem == position){
                 binding.title.setTextColor(binding.root.context.getColor(R.color.color_0))
+                binding.underLine.visibility = View.VISIBLE
                 listener.onItemClick(position,item);
             }
             else {
+                binding.underLine.visibility = View.GONE
                 binding.title.setTextColor(binding.root.context.getColor(R.color.color_4));
             }
         }

@@ -8,9 +8,11 @@
         <variable
             name="viewModel"
             type="com.hanheldpos.ui.screens.menu.report.sale.SalesReportVM" />
+
         <variable
             name="saleReportCommonVM"
             type="com.hanheldpos.ui.screens.menu.report.sale.SaleReportCommonVM" />
+
         <import type="com.hanheldpos.model.DataHelper" />
 
     </data>
@@ -107,27 +109,29 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_34sdp"
-            android:background="@color/color_11">
+            android:layout_height="@dimen/_34sdp">
 
             <ImageView
                 android:layout_width="@dimen/_34sdp"
                 android:layout_height="match_parent"
-                android:contentDescription="TODO"
                 android:padding="@dimen/_9sdp"
                 android:src="@drawable/ic_discount_automatic_1"
-                app:tint="@color/color_4" />
+                app:tint="@color/color_4"
+                tools:ignore="ContentDescription" />
 
-            <include layout="@layout/divider_horizontal" android:layout_width="0.5dp" android:layout_height="match_parent" />
+            <include
+                layout="@layout/divider_horizontal"
+                android:layout_width="0.5dp"
+                android:layout_height="match_parent" />
 
             <LinearLayout
-                android:clickable="true"
-                android:focusable="true"
-                android:onClickDebounce="@{v->viewModel.onOpenCustomizeReport()}"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:clickable="true"
+                android:focusable="true"
                 android:gravity="center"
+                android:onClickDebounce="@{v->viewModel.onOpenCustomizeReport()}"
                 android:orientation="vertical">
 
                 <com.diadiem.pos_components.PTextView
@@ -135,28 +139,32 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:useFontStyle="bold"
-                    app:useTextHeader="h6"
                     app:useTextColor="color4"
-                    tools:text="04 Jan 2022 - 11 Jan 2022"/>
+                    app:useTextHeader="h6"
+                    tools:text="04 Jan 2022 - 11 Jan 2022" />
 
                 <com.diadiem.pos_components.PTextView
                     android:id="@+id/deviceApply"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    app:useFontStyle="normal"
                     app:useTextColor="color5"
                     app:useTextHeader="h7"
-                    app:useFontStyle="normal"
-                    tools:text="This device only"/>
+                    tools:text="This device only" />
             </LinearLayout>
 
-            <include layout="@layout/divider_horizontal" android:layout_width="0.5dp" android:layout_height="match_parent" />
+            <include
+                layout="@layout/divider_horizontal"
+                android:layout_width="0.5dp"
+                android:layout_height="match_parent" />
 
             <ImageView
                 android:layout_width="@dimen/_34sdp"
                 android:layout_height="match_parent"
-                android:contentDescription="TODO"
+
                 android:padding="@dimen/_9sdp"
-                android:src="@drawable/ic_sales_report_up" />
+                android:src="@drawable/ic_sales_report_up"
+                tools:ignore="ContentDescription" />
 
             <include layout="@layout/divider_horizontal" />
         </LinearLayout>
@@ -167,22 +175,27 @@
             android:layout_height="0.5dp" />
 
         <LinearLayout
-            android:background="@color/color_11"
-            android:paddingVertical="@dimen/_7sdp"
-            android:gravity="center"
+
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:gravity="center">
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/dayNumberAdapter"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                 android:layoutDirection="ltr"
-                tools:itemCount="5"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                 app:spanCount="5"
-                tools:listitem="@layout/item_sales_report_day_number"
-                />
+                tools:itemCount="5"
+                tools:listitem="@layout/item_sales_report_day_number" />
         </LinearLayout>
+
+        <include
+            layout="@layout/divider_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="1dp" />
+
         <FrameLayout
             android:id="@+id/fragmentContainer"
             android:layout_width="match_parent"
