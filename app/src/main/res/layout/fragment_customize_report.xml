@@ -55,11 +55,13 @@
                 android:paddingHorizontal="@dimen/_10sdp">
 
                 <com.diadiem.pos_components.PTextView
-                    style="@style/CartDelete"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="@string/done" />
+                    android:text="@string/done"
+                    app:useFontStyle="bold"
+                    app:useTextColor="color0"
+                    app:useTextHeader="h5" />
             </FrameLayout>
         </FrameLayout>
 

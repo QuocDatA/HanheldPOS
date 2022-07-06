@@ -10,7 +10,7 @@ object ExtraConverter {
     fun modifierStr(list: List<ModifierCart>): String? {
         return if (list.isEmpty()) null;
         else list.joinToString(separator = Const.SymBol.CommaSeparator) { item ->
-            (if (item.quantity > 1) "(${item.quantity}) " else "") + item.name
+            item.name + (if (item.quantity > 1) " (${item.quantity})" else "")
         }
     }
 
@@ -40,13 +40,6 @@ object ExtraConverter {
         return list.joinToString(
             separator = separator ?: Const.SymBol.CommaSeparator
         ) { item -> "(${item.Value})" }
-    }
-
-    fun variantOrderStr(list: List<VariantCart>?, separator: String? = null): String? {
-        list ?: return null;
-        return list.joinToString(
-            separator = separator?: Const.SymBol.SplashSeparator
-        ) { item -> item.Value }
     }
 
     fun variantOrderStr(list: List<VariantCart>?): String? {

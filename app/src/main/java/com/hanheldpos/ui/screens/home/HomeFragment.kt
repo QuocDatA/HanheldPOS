@@ -123,11 +123,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
                     if (isWaitingForNotification) return@launch
                     isWaitingForNotification = true
                     while (true) {
-                        if (navigator.activeFragment != null && navigator.activeFragment!!::class.java == HomeFragment::class.java)
+                        if (navigator.activeFragment != null && navigator.activeFragment!!::class.java == HomeFragment::class.java && isAdded)
                             break
                         delay(2000)
                     }
                     isWaitingForNotification = false
+                    delay(1000)
                     launch(Dispatchers.Main) {
                         showAlert(
                             title = getString(R.string.new_data_available),
