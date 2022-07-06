@@ -5,7 +5,7 @@
 
     <data>
 
-        <import type="com.hanheldpos.model.product.combo.ItemActionType"/>
+        <import type="com.hanheldpos.model.product.combo.ItemActionType" />
 
         <variable
             name="discount"
@@ -23,10 +23,10 @@
     <RelativeLayout style="@style/RootLayout">
 
         <FrameLayout
-            android:layout_alignParentTop="true"
             android:id="@+id/toolbarContainer"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_42sdp">
+            android:layout_height="@dimen/_42sdp"
+            android:layout_alignParentTop="true">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -106,14 +106,14 @@
         <RelativeLayout
             android:id="@+id/actionBar"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_40sdp"
+            android:layout_height="@dimen/_42sdp"
             android:layout_alignParentBottom="true">
 
             <include
                 android:id="@+id/vertical_divider"
                 layout="@layout/divider_vertical"
                 android:layout_width="match_parent"
-                android:layout_height="1dp" />
+                android:layout_height="0.5dp" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -176,7 +176,6 @@
                     <com.diadiem.pos_components.PTextView
                         style="@style/ProductDetailText"
                         android:text="@{viewModel.numberQuantity > 0 ? ( viewModel.actionType == ItemActionType.Add ? `Add` : `Update` ) : `Remove`}"
-                        android:textAllCaps="true"
                         app:useFontStyle="bold"
                         app:useTextColor="color2"
                         app:useTextHeader="h5" />

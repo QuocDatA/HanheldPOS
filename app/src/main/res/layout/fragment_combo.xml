@@ -204,14 +204,14 @@
             android:id="@+id/dividerAction"
             layout="@layout/divider_vertical"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_1sdp"
+            android:layout_height="0.5dp"
             android:layout_above="@id/actionBar" />
 
         <RelativeLayout
             android:id="@+id/actionBar"
             visibleObject="@{viewModel.isSelectedComplete()}"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_40sdp"
+            android:layout_height="@dimen/_42sdp"
             android:layout_alignParentBottom="true">
 
             <LinearLayout
@@ -275,7 +275,6 @@
                     <com.diadiem.pos_components.PTextView
                         style="@style/ProductDetailText"
                         android:text="@{viewModel.numberQuantity > 0 ? ( viewModel.actionType == ItemActionType.Add ? `Add` : `Update` ) : `Remove`}"
-                        android:textAllCaps="true"
                         app:useFontStyle="bold"
                         app:useTextColor="color2"
                         app:useTextHeader="h5" />
