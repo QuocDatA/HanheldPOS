@@ -56,23 +56,25 @@ class BuyXGetYGroupAdapter(
                 if (!itemBuyXGetYGroup.isMaxItemSelected()) {
                     positionFocus = index
                     if (position == 1 && positionFocus == position) {
-                        binding.topSpacer.visibility = View.VISIBLE
+                        if (itemBuyXGetYGroup.isApplyToEntireOrder == false)
+                            binding.topSpacer.visibility = View.VISIBLE
                     }
                     if (itemBuyXGetYGroup.groupBuyXGetY.condition is CustomerBuys) {
-                        val result = (itemBuyXGetYGroup.groupBuyXGetY.condition as CustomerBuys).getProgressValue(
-                            CurCartData.cartModel!!.total(),
-                            CurCartData.cartModel!!.getBuyXGetYQuantity(itemBuyXGetYGroup.groupBuyXGetY.parentDisc_Id)
-                        )
+                        val result =
+                            (itemBuyXGetYGroup.groupBuyXGetY.condition as CustomerBuys).getProgressValue(
+                                CurCartData.cartModel!!.total(),
+                                CurCartData.cartModel!!.getBuyXGetYQuantity(itemBuyXGetYGroup.groupBuyXGetY.parentDisc_Id)
+                            )
                         binding.linearProgress.linearProgressIndicator.progress = result
                     }
                     return@checkFocus
-                }
-                else if (itemBuyXGetYGroup.isApplyToEntireOrder == true) {
+                } else if (itemBuyXGetYGroup.isApplyToEntireOrder == true) {
                     if (itemBuyXGetYGroup.isBuyComplete == true && position == 0) {
-                        val result = (itemBuyXGetYGroup.groupBuyXGetY.condition as CustomerBuys).getProgressValue(
-                            CurCartData.cartModel!!.total(),
-                            CurCartData.cartModel!!.getBuyXGetYQuantity(itemBuyXGetYGroup.groupBuyXGetY.parentDisc_Id)
-                        )
+                        val result =
+                            (itemBuyXGetYGroup.groupBuyXGetY.condition as CustomerBuys).getProgressValue(
+                                CurCartData.cartModel!!.total(),
+                                CurCartData.cartModel!!.getBuyXGetYQuantity(itemBuyXGetYGroup.groupBuyXGetY.parentDisc_Id)
+                            )
                         binding.linearProgress.linearProgressIndicator.progress = result
                     }
                 }
