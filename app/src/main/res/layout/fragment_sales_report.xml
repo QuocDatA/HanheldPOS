@@ -163,7 +163,7 @@
                 android:layout_height="match_parent"
 
                 android:padding="@dimen/_9sdp"
-                android:src="@drawable/ic_sales_report_up"
+                android:src="@drawable/ic_history_report"
                 tools:ignore="ContentDescription" />
 
             <include layout="@layout/divider_horizontal" />
