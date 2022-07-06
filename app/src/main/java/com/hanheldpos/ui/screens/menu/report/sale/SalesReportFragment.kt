@@ -5,6 +5,7 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import com.hanheldpos.PosApp
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentSalesReportBinding
@@ -21,6 +22,8 @@ import com.hanheldpos.ui.screens.menu.report.sale.adapter.NumberDayReportAdapter
 import com.hanheldpos.ui.screens.menu.report.sale.adapter.NumberDayReportItem
 import com.hanheldpos.ui.screens.menu.report.sale.customize.CustomizeReportFragment
 import com.hanheldpos.utils.DateTimeUtils
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.time.temporal.ChronoUnit
 import java.util.*
 
@@ -94,27 +97,32 @@ class SalesReportFragment(
             })
         }
         binding.btnPrintReport.setOnClickDebounce {
-            when (type) {
-                SaleOptionPage.Overview -> {
-                    BillPrinterManager.get { }.printReport(
-                        LayoutType.Report.Overview,
-                        saleReportCommon.saleReport.value,
-                        saleReportCommon.saleReportFillter.value,
-                        PrinterTypes.CASHIER
-                    )
-                }
-                SaleOptionPage.InventorySales -> {
-                    BillPrinterManager.get { }.printReport(
-                        LayoutType.Report.Inventory,
-                        saleReportCommon.saleReport.value,
-                        saleReportCommon.saleReportFillter.value,
-                        PrinterTypes.CASHIER
-                    )
-                }
-                else -> {
 
+            lifecycleScope.launch(Dispatchers.IO) {
+                when (type) {
+                    SaleOptionPage.Overview -> {
+                        BillPrinterManager.get { }.printReport(
+                            LayoutType.Report.Overview,
+                            saleReportCommon.saleReport.value,
+                            saleReportCommon.saleReportFillter.value,
+                            PrinterTypes.CASHIER
+                        )
+                    }
+                    SaleOptionPage.InventorySales -> {
+                        BillPrinterManager.get { }.printReport(
+                            LayoutType.Report.Inventory,
+                            saleReportCommon.saleReport.value,
+                            saleReportCommon.saleReportFillter.value,
+                            PrinterTypes.CASHIER
+                        )
+                    }
+                    else -> {
+
+                    }
                 }
             }
+
+
         }
 
         var firstObserver = true
