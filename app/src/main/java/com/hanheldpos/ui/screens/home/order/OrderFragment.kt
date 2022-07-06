@@ -201,8 +201,8 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
             getString(R.string.added),
             item.name
         )
-        CartPresenter.showCartAnimation(item, binding.rootPopup, binding.imgCart) {
-            cartDataVM.addItemToCart(item);
+        CartPresenter.showCartAnimation(item, binding.rootPopup, binding.cartBtn) {
+            cartDataVM.addItemToCart(item)
         }
     }
 

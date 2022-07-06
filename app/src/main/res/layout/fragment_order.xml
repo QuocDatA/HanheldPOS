@@ -125,7 +125,7 @@
             <include
                 layout="@layout/divider_vertical"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_1sdp" />
+                android:layout_height="0.5dp" />
 
         </LinearLayout>
 
@@ -212,7 +212,6 @@
                     android:onClickDebounce="@{v->viewModel.showCart()}">
 
                     <ImageView
-                        android:id="@+id/imgCart"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@color/color_0"

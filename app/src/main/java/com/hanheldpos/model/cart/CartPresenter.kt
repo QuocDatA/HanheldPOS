@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.util.Size
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
@@ -97,7 +98,7 @@ object CartPresenter {
                 anchor,
                 0,
                 location[0] - size.width + anchor.width + (size.width - anchor.width) / 2,
-                location[1] - size.height/2
+                location[1] - size.height
             )
 
             val animTranslateIn =
