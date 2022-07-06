@@ -47,7 +47,7 @@ class Printer private constructor(
     ) {
         printer?.performPrinterAction {
             printingSpecification.receiptList?.forEach {
-                for (i in 0 until 1 /*(it.quantity ?: 0)*/) {
+                for (i in 0 until                                                                                                                                                                                                                                                                       (it.quantity ?: 0)) {
                     when (it.receiptTypeId) {
                         PrinterRecipeType.CASHIER.value -> CashierLayout(
                             order, this, isReprint
