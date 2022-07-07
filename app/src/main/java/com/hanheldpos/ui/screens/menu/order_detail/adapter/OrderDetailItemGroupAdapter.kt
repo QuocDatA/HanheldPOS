@@ -12,9 +12,10 @@ import com.hanheldpos.model.product.ProductType
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
 
-class OrderDetailItemGroupAdapter(val type : ProductType) : BaseBindingListAdapter<GroupProductChosen>(DiffCallBack()) {
+class OrderDetailItemGroupAdapter(val type: ProductType) :
+    BaseBindingListAdapter<GroupProductChosen>(DiffCallBack()) {
     override fun getItemViewType(position: Int): Int {
-        return R.layout.item_group_child_order_detail_view
+        return R.layout.item_buy_x_get_y_child_order_detail_view
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -25,7 +26,7 @@ class OrderDetailItemGroupAdapter(val type : ProductType) : BaseBindingListAdapt
         val item = getItem(position)
         holder.bindItem(item)
         val binding = holder.binding as ItemGroupChildOrderDetailViewBinding
-        when(type) {
+        when (type) {
             ProductType.BUNDLE -> {
                 val adapter = OrderDetailItemGroupBundleAdapter()
                 binding.groupChildOrderDetailItem.adapter = adapter

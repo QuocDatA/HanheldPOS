@@ -6,6 +6,7 @@ import com.hanheldpos.data.api.pojo.order.settings.DiningOption
 import com.hanheldpos.data.api.pojo.product.PrintingLocation
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.cart.VariantCart
+import com.hanheldpos.model.discount.DiscountTypeEnum
 import com.hanheldpos.model.product.ProductType
 import com.hanheldpos.utils.GSonUtils
 import kotlinx.parcelize.Parcelize

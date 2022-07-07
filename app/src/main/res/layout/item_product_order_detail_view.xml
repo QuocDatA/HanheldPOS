@@ -13,16 +13,24 @@
 
         <import type="com.hanheldpos.model.product.ExtraConverter" />
 
+        <import type="com.diadiem.pos_components.enumtypes.TextHeaderEnum" />
+
         <variable
             name="item"
-            type="com.hanheldpos.model.order.ProductChosen" />
+            type="com.hanheldpos.ui.screens.menu.order_detail.adapter_v2.ProductBuyItem" />
 
     </data>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_8sdp">
+        android:orientation="vertical">
+
+        <View
+            android:id="@+id/topSpacer"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_8sdp"
+            android:visibility="gone" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -30,10 +38,11 @@
             android:orientation="horizontal">
 
             <com.diadiem.pos_components.PTextView
+                android:id="@+id/tvQuantity"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="@dimen/_4sdp"
-                android:text="@{String.valueOf(item.quantity)+`x`}"
+                android:text="@{String.valueOf(item.chosenProduct.quantity)+`x`}"
                 app:useTextColor="color4"
                 app:useTextHeader="h5"
                 tools:text="1x" />
@@ -55,32 +64,38 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
+
                         <LinearLayout
-                            android:layout_marginEnd="@dimen/_20sdp"
                             android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/_20sdp"
+                            android:layout_weight="1">
+
                             <com.diadiem.pos_components.PTextView
+                                android:id="@+id/tvProductTitle"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@{item.name1}"
+                                android:text="@{item.chosenProduct.name1}"
                                 app:useTextColor="color4"
-                                app:useTextHeader="h5"
                                 tools:text="Pho Bo Tai" />
+
                             <com.diadiem.pos_components.PTextView
-                                visibleObject="@{!item.serviceFeeList.empty || !item.taxFeeList.empty || !item.surchargeFeeList.empty}"
+                                android:id="@+id/totalProductAddOn"
+                                visibleObject="@{(!item.chosenProduct.serviceFeeList.empty || !item.chosenProduct.taxFeeList.empty || !item.chosenProduct.surchargeFeeList.empty) &amp;&amp; item.chosenProduct.subtotal > 0 &amp;&amp; item.level == 0}"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@{`(` + PriceUtils.INSTANCE.formatStringPrice(item.subtotal) + `)`}"
+                                android:maxLines="1"
+                                android:text="@{`(` + PriceUtils.INSTANCE.formatStringPrice(item.chosenProduct.subtotal) + `)`}"
                                 app:useTextColor="color4"
                                 app:useTextHeader="h5"
-                                android:maxLines="1"
                                 tools:text="(10,000)" />
                         </LinearLayout>
 
 
                         <com.diadiem.pos_components.PTextView
-                            priceView="@{item.lineTotal}"
+                            android:id="@+id/totalProduct"
+                            visibleObject="@{item.chosenProduct.lineTotal > 0}"
+                            priceView="@{item.chosenProduct.lineTotal}"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textAlignment="textEnd"
@@ -91,11 +106,11 @@
 
 
                     <LinearLayout
-                        android:gravity="center_vertical"
                         android:id="@+id/priceTextView"
-                        visibleObject="@{item.productTypeId == ProductType.BUNDLE.value}"
+                        visibleObject="@{item.chosenProduct.productTypeId == ProductType.BUNDLE.value}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
                         android:orientation="horizontal">
 
                         <com.diadiem.pos_components.PTextView
@@ -112,7 +127,7 @@
                             android:layout_weight="1" />
 
                         <com.diadiem.pos_components.PTextView
-                            priceView="@{item.price}"
+                            priceView="@{item.chosenProduct.price}"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             app:useTextColor="color7"
@@ -130,7 +145,6 @@
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/productGroupRecyclerView"
-                        visibleObject="@{item.productTypeId == ProductType.BUNDLE.value || item.buyXGetY != null}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
@@ -141,45 +155,45 @@
 
                     <include
                         layout="@layout/order_product_detail_view_line"
-                        visibleObject="@{item.variantList != null &amp;&amp; !item.variantList.empty}"
-                        app:lineText="@{ExtraConverter.INSTANCE.variantStr(item.variantList)}" />
+                        visibleObject="@{item.chosenProduct.variantList != null &amp;&amp; !item.chosenProduct.variantList.empty}"
+                        app:lineText="@{ExtraConverter.INSTANCE.variantStr(item.chosenProduct.variantList)}" />
 
                     <include
                         layout="@layout/order_product_detail_view_line"
-                        visibleObject="@{item.modifierList != null &amp;&amp; !item.modifierList.empty}"
-                        app:lineText="@{ExtraConverter.INSTANCE.modifierOrderStr(item.modifierList)}" />
+                        visibleObject="@{item.chosenProduct.modifierList != null &amp;&amp; !item.chosenProduct.modifierList.empty}"
+                        app:lineText="@{ExtraConverter.INSTANCE.modifierOrderStr(item.chosenProduct.modifierList)}" />
 
                     <include
                         android:id="@+id/discountDetail"
                         layout="@layout/order_product_detail_view_line"
-                        visibleObject="@{(item.discountList != null &amp;&amp; !item.discountList.empty) || (item.compVoidList != null &amp;&amp; !item.compVoidList.empty ) }"
+                        visibleObject="@{(item.chosenProduct.discountList != null &amp;&amp; !item.chosenProduct.discountList.empty) || (item.chosenProduct.compVoidList != null &amp;&amp; !item.chosenProduct.compVoidList.empty ) }"
                         app:isDiscount="@{true}"
                         app:lineText="@{`Discount : ` }"
-                        app:priceDiscMinus="@{item.discountTotalPrice}" />
+                        app:priceDiscMinus="@{item.chosenProduct.discountTotalPrice}" />
 
                     <include
                         android:id="@+id/taxDetail"
                         layout="@layout/order_product_detail_view_line"
-                        visibleObject="@{(item.taxFeeList != null &amp;&amp; !item.taxFeeList.empty) }"
-                        app:lineText="@{`Tax (`+ PriceUtils.INSTANCE.formatStringPrice(item.taxTotalPrice) + `)` }" />
+                        visibleObject="@{(item.chosenProduct.taxFeeList != null &amp;&amp; !item.chosenProduct.taxFeeList.empty) }"
+                        app:lineText="@{`Tax (`+ PriceUtils.INSTANCE.formatStringPrice(item.chosenProduct.taxTotalPrice) + `)` }" />
 
                     <include
                         android:id="@+id/serviceDetail"
                         layout="@layout/order_product_detail_view_line"
-                        visibleObject="@{(item.serviceFeeList != null &amp;&amp; !item.serviceFeeList.empty) }"
-                        app:lineText="@{`Service (`+ PriceUtils.INSTANCE.formatStringPrice(item.taxTotalPrice) + `)` }" />
+                        visibleObject="@{(item.chosenProduct.serviceFeeList != null &amp;&amp; !item.chosenProduct.serviceFeeList.empty) }"
+                        app:lineText="@{`Service (`+ PriceUtils.INSTANCE.formatStringPrice(item.chosenProduct.taxTotalPrice) + `)` }" />
 
                     <include
                         android:id="@+id/surchargeDetail"
                         layout="@layout/order_product_detail_view_line"
-                        visibleObject="@{(item.surchargeFeeList != null &amp;&amp; !item.surchargeFeeList.empty) }"
-                        app:lineText="@{`Surcharge (`+ PriceUtils.INSTANCE.formatStringPrice(item.taxTotalPrice) + `)` }" />
+                        visibleObject="@{(item.chosenProduct.surchargeFeeList != null &amp;&amp; !item.chosenProduct.surchargeFeeList.empty) }"
+                        app:lineText="@{`Surcharge (`+ PriceUtils.INSTANCE.formatStringPrice(item.chosenProduct.taxTotalPrice) + `)` }" />
 
                     <include
                         layout="@layout/order_product_detail_view_line"
-                        visibleObject="@{item.note!=null &amp;&amp; !TextUtils.isEmpty(item.note) }"
+                        visibleObject="@{item.chosenProduct.note!=null &amp;&amp; !TextUtils.isEmpty(item.chosenProduct.note) }"
                         app:isNote="@{true}"
-                        app:lineText="@{item.note}" />
+                        app:lineText="@{item.chosenProduct.note}" />
                 </LinearLayout>
 
             </LinearLayout>
