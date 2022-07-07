@@ -17,10 +17,14 @@ class SalesReportVM : BaseUiViewModel<SalesReportUV>() {
     }
 
     fun onOpenCustomizeReport() {
-        uiCallback?.onOpenCustomizeReport();
+        uiCallback?.onOpenCustomizeReport()
+    }
+
+    fun onOpenHistoryRequest() {
+        uiCallback?.onOpenHistoryRequest()
     }
 
     fun backPress() {
-        uiCallback?.backPress();
+        uiCallback?.backPress()
     }
 }

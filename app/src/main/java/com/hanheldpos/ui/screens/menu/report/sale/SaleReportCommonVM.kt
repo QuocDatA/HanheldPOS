@@ -20,6 +20,7 @@ import com.hanheldpos.model.DatabaseHelper
 import com.hanheldpos.model.OrderHelper
 import com.hanheldpos.model.UserHelper
 import com.hanheldpos.model.order.OrderSubmitResp
+import com.hanheldpos.model.report.ReportModel
 import com.hanheldpos.model.report.SaleReportFilter
 import com.hanheldpos.model.setting.SettingDevicePut
 import com.hanheldpos.ui.base.dialog.AppAlertDialog
@@ -35,7 +36,7 @@ import kotlinx.coroutines.launch
 class SaleReportCommonVM : BaseViewModel() {
     private val reportRepo = ReportRepo()
 
-    var saleReportFillter = MutableLiveData(
+    var saleReportFilter = MutableLiveData(
         SaleReportFilter(
             startDay = DateTimeUtils.curDate,
             endDay = DateTimeUtils.curDate,
@@ -49,6 +50,7 @@ class SaleReportCommonVM : BaseViewModel() {
 
     var isSyncOrderToServer: Boolean = false
     var saleReport = MutableLiveData<ReportSalesResp?>()
+    val reportRequestHistory = MutableLiveData<List<ReportModel>>(mutableListOf())
 
     private val settingRepo = SettingRepo();
     private val orderAlterRepo = OrderAsyncRepo();
@@ -61,6 +63,9 @@ class SaleReportCommonVM : BaseViewModel() {
         return@map it.size
     }
 
+    val numberNewRequestHistory = Transformations.map(reportRequestHistory) {
+        return@map it.filter { report -> !(report.isRead ?: true) }.size
+    }
 
 
     fun onSyncOrders(view: View, succeed: () -> Unit, failed: () -> Unit) {
@@ -198,19 +203,19 @@ class SaleReportCommonVM : BaseViewModel() {
             cashDrawerGuid = DataHelper.currentDrawerId,
             day = "${
                 DateTimeUtils.dateToString(
-                    saleReportFillter.value?.startDay,
+                    saleReportFilter.value?.startDay,
                     DateTimeUtils.Format.YYYY_MM_DD_18
                 )
             }-${
                 DateTimeUtils.dateToString(
-                    saleReportFillter.value?.endDay,
+                    saleReportFilter.value?.endDay,
                     DateTimeUtils.Format.YYYY_MM_DD_18
                 )
             }",
-            startHour = saleReportFillter.value?.startTime,
-            endHour = saleReportFillter.value?.endTime,
-            isAllDevice = saleReportFillter.value?.isAllDevice,
-            isCurrentCashdrawer = saleReportFillter.value?.isCurrentDrawer,
+            startHour = saleReportFilter.value?.startTime,
+            endHour = saleReportFilter.value?.endTime,
+            isAllDevice = saleReportFilter.value?.isAllDevice,
+            isCurrentCashdrawer = saleReportFilter.value?.isCurrentDrawer,
             callback = object : BaseRepoCallback<BaseResponse<ReportSalesResp>?> {
                 override fun apiResponse(data: BaseResponse<ReportSalesResp>?) {
 

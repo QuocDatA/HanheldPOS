@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.hanheldpos.ui.screens.menu.report.sale.history.HistoryRequestVM" />
+    </data>
+
+    <LinearLayout style="@style/RootLayout">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_42sdp"
+            android:background="@color/color_2">
+
+            <ImageView
+                android:id="@+id/homeMenu"
+                style="@style/MaterialButton.Icon"
+                android:layout_width="@dimen/_48sdp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center|start"
+                android:adjustViewBounds="true"
+                android:backgroundTint="@color/textPrimary"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClickDebounce="@{v -> viewModel.onFragmentBackPressed()}"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_close"
+                tools:ignore="ContentDescription" />
+
+            <com.diadiem.pos_components.PTextView
+                style="@style/CartTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/request_history" />
+        </FrameLayout>
+
+        <include layout="@layout/divider_vertical" />
+
+        <com.hanheldpos.ui.widgets.TableLayoutFixedHeader
+            android:id="@+id/tableHistoryReportData"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+</layout>

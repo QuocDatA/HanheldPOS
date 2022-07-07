@@ -1,17 +1,21 @@
 package com.hanheldpos.ui.screens.menu.report.sale
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
-import com.hanheldpos.PosApp
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentSalesReportBinding
 import com.hanheldpos.extension.notifyValueChange
 import com.hanheldpos.extension.setOnClickDebounce
+import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.menu.report.SaleOptionPage
+import com.hanheldpos.model.report.ReportModel
 import com.hanheldpos.model.report.SaleReportFilter
 import com.hanheldpos.printer.BillPrinterManager
 import com.hanheldpos.printer.layouts.LayoutType
@@ -21,7 +25,9 @@ import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.menu.report.sale.adapter.NumberDayReportAdapter
 import com.hanheldpos.ui.screens.menu.report.sale.adapter.NumberDayReportItem
 import com.hanheldpos.ui.screens.menu.report.sale.customize.CustomizeReportFragment
+import com.hanheldpos.ui.screens.menu.report.sale.history.HistoryRequestFragment
 import com.hanheldpos.utils.DateTimeUtils
+import com.hanheldpos.utils.GSonUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.time.temporal.ChronoUnit
@@ -60,7 +66,7 @@ class SalesReportFragment(
                 listener = object : BaseItemClickListener<NumberDayReportItem> {
                     @RequiresApi(Build.VERSION_CODES.O)
                     override fun onItemClick(adapterPosition: Int, item: NumberDayReportItem) {
-                        saleReportCommon.saleReportFillter.postValue(saleReportCommon.saleReportFillter.value!!.apply {
+                        saleReportCommon.saleReportFilter.postValue(saleReportCommon.saleReportFilter.value!!.apply {
                             startDay = Date.from(
                                 endDay?.toInstant()?.minus(item.value.toLong(), ChronoUnit.DAYS)
                             )
@@ -73,9 +79,25 @@ class SalesReportFragment(
     }
 
     override fun initData() {
+
+        // Setup firebase
+        DataHelper.firebaseSettingLocalStorage?.fireStorePath?.let { path ->
+            Firebase.firestore.collection(path.reportList ?: "")
+                .addSnapshotListener { value, _ ->
+                    Log.d("Data Version Firebase", value.toString())
+                    value?.documents?.let {
+                        val list = it.map { data -> data.data }.mapNotNull { map ->
+                            GSonUtils.mapToObject(map, ReportModel::class.java)
+                        }
+                        saleReportCommon.reportRequestHistory.postValue(list)
+                    }
+
+                }
+        }
+
         numberDayReportAdapter.submitList(viewModel.initNumberDaySelected())
 
-        saleReportCommon.saleReportFillter.observe(this) {
+        saleReportCommon.saleReportFilter.observe(this) {
             setUpDateTitle(it)
         }
 
@@ -91,7 +113,7 @@ class SalesReportFragment(
             showLoading(true)
             saleReportCommon.onSyncOrders(this.requireView(), succeed = {
                 showLoading(false)
-                saleReportCommon.saleReportFillter.notifyValueChange()
+                saleReportCommon.saleReportFilter.notifyValueChange()
             }, failed = {
                 showLoading(false)
             })
@@ -104,7 +126,7 @@ class SalesReportFragment(
                         BillPrinterManager.get { }.printReport(
                             LayoutType.Report.Overview,
                             saleReportCommon.saleReport.value,
-                            saleReportCommon.saleReportFillter.value,
+                            saleReportCommon.saleReportFilter.value,
                             PrinterTypes.CASHIER
                         )
                     }
@@ -112,7 +134,7 @@ class SalesReportFragment(
                         BillPrinterManager.get { }.printReport(
                             LayoutType.Report.Inventory,
                             saleReportCommon.saleReport.value,
-                            saleReportCommon.saleReportFillter.value,
+                            saleReportCommon.saleReportFilter.value,
                             PrinterTypes.CASHIER
                         )
                     }
@@ -126,7 +148,7 @@ class SalesReportFragment(
         }
 
         var firstObserver = true
-        saleReportCommon.saleReportFillter.observe(this) {
+        saleReportCommon.saleReportFilter.observe(this) {
             if (firstObserver) {
                 firstObserver = false
                 return@observe
@@ -147,10 +169,14 @@ class SalesReportFragment(
                 saleReportCustomData: SaleReportFilter
             ) {
                 numberDayReportAdapter.clearSelected()
-                saleReportCommon.saleReportFillter.postValue(saleReportCustomData)
+                saleReportCommon.saleReportFilter.postValue(saleReportCustomData)
             }
 
-        }, saleReportCustomData = saleReportCommon.saleReportFillter.value!!))
+        }, saleReportCustomData = saleReportCommon.saleReportFilter.value!!))
+    }
+
+    override fun onOpenHistoryRequest() {
+        navigator.goToWithCustomAnimation(HistoryRequestFragment())
     }
 
     override fun backPress() {

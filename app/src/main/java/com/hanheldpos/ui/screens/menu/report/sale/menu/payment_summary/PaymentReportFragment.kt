@@ -73,7 +73,7 @@ class PaymentReportFragment : BaseFragment<FragmentPaymentReportBinding, Payment
 
                 binding.totalPayment.text = PriceUtils.formatStringPrice(it[0] as Double)
 
-                saleReportAdapter.submitList((it[1] as List<ReportItem>) .toMutableList())
+                saleReportAdapter.submitList((it[1] as List<ReportItem>).toMutableList())
                 saleReportAdapter.notifyDataSetChanged()
             }
         }

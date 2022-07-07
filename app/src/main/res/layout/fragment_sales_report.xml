@@ -158,13 +158,36 @@
                 android:layout_width="0.5dp"
                 android:layout_height="match_parent" />
 
-            <ImageView
-                android:layout_width="@dimen/_34sdp"
-                android:layout_height="match_parent"
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
 
-                android:padding="@dimen/_9sdp"
-                android:src="@drawable/ic_history_report"
-                tools:ignore="ContentDescription" />
+                <ImageView
+                    android:id="@+id/historyReportBtn"
+                    android:layout_width="@dimen/_34sdp"
+                    android:layout_height="match_parent"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:onClickDebounce="@{v->viewModel.onOpenHistoryRequest()}"
+                    android:padding="@dimen/_9sdp"
+                    android:src="@drawable/ic_history_report"
+                    tools:ignore="ContentDescription" />
+
+                <com.diadiem.pos_components.PTextView
+                    visibleObject="@{saleReportCommonVM.numberNewRequestHistory != null &amp;&amp; saleReportCommonVM.numberNewRequestHistory > 0}"
+                    android:layout_width="@dimen/_13sdp"
+                    android:layout_height="@dimen/_13sdp"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginBottom="@dimen/_7sdp"
+                    android:background="@drawable/bg_badge_counter"
+                    android:gravity="center"
+                    android:text="@{String.valueOf(saleReportCommonVM.numberNewRequestHistory)}"
+                    app:useFontStyle="normal"
+                    app:useTextColor="color2"
+                    app:useTextHeader="h7" />
+            </FrameLayout>
+
 
             <include layout="@layout/divider_horizontal" />
         </LinearLayout>

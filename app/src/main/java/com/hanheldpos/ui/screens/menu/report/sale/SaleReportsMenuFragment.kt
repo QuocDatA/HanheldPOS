@@ -3,6 +3,7 @@ package com.hanheldpos.ui.screens.menu.report.sale
 import android.annotation.SuppressLint
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hanheldpos.R
@@ -28,6 +29,8 @@ import com.hanheldpos.ui.screens.menu.report.sale.menu.services.ServicesReportFr
 import com.hanheldpos.ui.screens.menu.report.sale.menu.surcharges.SurchargesReportFragment
 import com.hanheldpos.ui.screens.menu.report.sale.menu.taxes.TaxesReportFragment
 import com.hanheldpos.utils.DateTimeUtils
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 class SaleReportsMenuFragment : BaseFragment<FragmentSaleReportsMenuBinding, SaleReportsMenuVM>(),
@@ -76,7 +79,7 @@ class SaleReportsMenuFragment : BaseFragment<FragmentSaleReportsMenuBinding, Sal
 
     @SuppressLint("NotifyDataSetChanged")
     override fun initData() {
-        saleReportCommon.saleReportFillter.postValue(
+        saleReportCommon.saleReportFilter.postValue(
             SaleReportFilter(
                 startDay = DateTimeUtils.curDate,
                 endDay = DateTimeUtils.curDate,
@@ -93,12 +96,22 @@ class SaleReportsMenuFragment : BaseFragment<FragmentSaleReportsMenuBinding, Sal
             saleReportMenuAdapter.notifyDataSetChanged()
         }
 
-        showLoading(true)
-        saleReportCommon.fetchDataSaleReport(succeed = {
-            showLoading(false)
-        }, failed = {
-            showLoading(false)
-        })
+
+        lifecycleScope.launch(Dispatchers.IO) {
+            while (true) {
+                if (isVisible) break
+            }
+            launch(Dispatchers.Main) {
+                showLoading(true)
+                saleReportCommon.fetchDataSaleReport(succeed = {
+                    showLoading(false)
+                }, failed = {
+                    showLoading(false)
+                })
+            }
+
+        }
+
     }
 
     override fun initAction() {

@@ -308,4 +308,12 @@
     <string name="reprint_bill">Reprint Bill</string>
     <string name="all_devices">All devices</string>
     <string name="customer_does_not_exist">Customer does not exist</string>
+    <string name="request_history">Request History</string>
+    <string name="request_date">Request Date</string>
+    <string name="start_day">Start Day</string>
+    <string name="end_day">End Day</string>
+    <string name="device">Device</string>
+    <string name="current_device">Current Device</string>
+    <string name="failed">Failed</string>
+    <string name="in_process">In Process</string>
 </resources>

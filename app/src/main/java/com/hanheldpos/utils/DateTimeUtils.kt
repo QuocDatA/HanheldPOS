@@ -172,7 +172,7 @@ object DateTimeUtils {
     object Format {
         const val FULL_DATE_UTC_NOT_MILI = "yyyy-MM-dd'T'HH:mm:ss"
         const val FULL_DATE_UTC_Z = "yyyy-MM-dd'T'HH:mm:ss'Z'"
-        const val FULL_DATE_UTC_TIMEZONE = "yyyy-MM-dd'T'HH:mm:ssZZZZZ"
+        const val FULL_DATE_UTC_TIMEZONE = "yyyy-MM-dd'T'HH:mm:ssZ"
         const val DD_MM_YYYY = "dd/MM/yyyy"
         const val DD_MM = "dd/MM"
         const val DD_MM_HH_MM_aa = "dd/MM HH:mm aa"
@@ -194,7 +194,7 @@ object DateTimeUtils {
         const val MM_DD_YYYY = "MM/dd/yyyy"
         const val YYYY_MM_DD = "yyyy-MM-dd"
         const val YYYY_MM_DD_18 = "yyyy/MM/dd"
-        const val REPORT_TIME = "MMM dd, yyyy, hh:mm aa"
+        const val REPORT_TIME = "MM/dd hh:mm aa"
         const val HH_MM = "HH:mm"
         const val DD_MMM_YYYY = "MMM dd YYYY"
         const val dd_MMM_YYYY = "dd MMM YYYY"
