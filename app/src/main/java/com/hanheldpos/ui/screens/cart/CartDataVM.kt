@@ -141,7 +141,7 @@ class CartDataVM : BaseViewModel() {
                         } else {
                             (baseProduct.groupList ?: mutableListOf()).forEach { groupBuyXGetY ->
                                 if (groupBuyXGetY.type == GroupType.GET) {
-                                    if((groupBuyXGetY.condition as CustomerGets).ApplyTo == CustomerDiscApplyTo.ENTIRE_ORDER.value) {
+                                    if ((groupBuyXGetY.condition as CustomerGets).ApplyTo == CustomerDiscApplyTo.ENTIRE_ORDER.value) {
                                         if (cartModelLD.value!!.discountServerList.find { disc -> disc._id == baseProduct.disc?._id } == null)
                                             addDiscountServer(
                                                 baseProduct.disc!!,
@@ -246,7 +246,7 @@ class CartDataVM : BaseViewModel() {
 
     fun addDiscountServer(discount: DiscountResp, applyTo: DiscApplyTo) {
         this.cartModelLD.value!!.addDiscountAutoServer(discount, applyTo)
-        notifyCartChange(DiscountTypeEnum.fromInt( discount.DiscountType) != DiscountTypeEnum.BUYX_GETY)
+        notifyCartChange(DiscountTypeEnum.fromInt(discount.DiscountType) != DiscountTypeEnum.BUYX_GETY)
     }
 
     fun addBuyXGetY(disc: DiscountResp, buyXGetY: BuyXGetY) {
@@ -269,6 +269,9 @@ class CartDataVM : BaseViewModel() {
     fun diningOptionChange(diningOption: DiningOption?) {
         diningOption?.let {
             cartModelLD.value?.diningOption = diningOption
+        }
+        cartModelLD.value?.productsList?.forEach {
+            it.diningOption = diningOption
         }
         updatePriceList(
             diningOption?.SubDiningOption?.firstOrNull()?.LocationGuid

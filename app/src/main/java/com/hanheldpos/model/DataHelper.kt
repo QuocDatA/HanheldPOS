@@ -37,8 +37,8 @@ object DataHelper {
 
     fun isValidData(): Boolean {
         hardwareSettingLocalStorage ?: return false
-        firebaseSettingLocalStorage ?: return  false
-        dataVersionLocalStorage ?: return  false
+        firebaseSettingLocalStorage ?: return false
+        dataVersionLocalStorage ?: return false
         receiptCashierLocalStorage ?: return false
         menuLocalStorage ?: return false
         orderSettingLocalStorage ?: return false
@@ -359,7 +359,8 @@ object DataHelper {
         timerServer: Date
     ): List<DiscountResp> {
         if (baseProductInCart == null) return listOf()
-        return findDiscountAutoList(DiscApplyTo.ITEM).filter { discount ->
+        val discountList = findDiscountAutoList(DiscApplyTo.ITEM)
+        return discountList.filter { discount ->
             discount.isValid(
                 CurCartData.cartModel?.getSubTotal() ?: 0.0,
                 baseProductInCart,
@@ -374,7 +375,8 @@ object DataHelper {
         timeServer: Date,
         triggerType: DiscountTriggerType = DiscountTriggerType.ALL
     ): List<DiscountResp> {
-        return findDiscountAutoList(DiscApplyTo.ORDER).filter { discount ->
+        val listDiscountOrder = findDiscountAutoList(DiscApplyTo.ORDER)
+        return listDiscountOrder.filter { discount ->
             discount.DiscountAutomatic && discount.isValid(
                 cart,
                 timeServer
