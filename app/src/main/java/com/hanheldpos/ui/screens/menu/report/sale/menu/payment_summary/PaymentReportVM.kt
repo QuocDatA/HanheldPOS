@@ -6,6 +6,7 @@ import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.report.OrderPayment
 import com.hanheldpos.model.menu.report.ReportItem
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
+import com.hanheldpos.ui.widgets.TableLayoutFixedHeader
 import com.hanheldpos.utils.PriceUtils
 
 class PaymentReportVM : BaseUiViewModel<PaymentReportUV>() {
@@ -24,28 +25,31 @@ class PaymentReportVM : BaseUiViewModel<PaymentReportUV>() {
                 )
             )
         }
-        return mutableListOf(total,items)
+        return mutableListOf(total, items)
     }
 
 
-    fun getPaymentHeaders(context: Context): Collection<String> {
+    fun getPaymentHeaders(context: Context): List<TableLayoutFixedHeader.Title> {
         return mutableListOf(
-            context.getString(R.string.name),
-            context.getString(R.string.qty),
-            context.getString(R.string.amount),
-            context.getString(R.string.r_qty),
-            context.getString(R.string.r_amount),
-            context.getString(R.string.total),
+            TableLayoutFixedHeader.Title(context.getString(R.string.name)),
+            TableLayoutFixedHeader.Title(context.getString(R.string.qty)),
+            TableLayoutFixedHeader.Title(context.getString(R.string.amount)),
+            TableLayoutFixedHeader.Title(context.getString(R.string.r_qty)),
+            TableLayoutFixedHeader.Title(context.getString(R.string.r_amount)),
+            TableLayoutFixedHeader.Title(context.getString(R.string.total)),
         )
     }
 
-    fun getPaymentRows(context: Context, payments: List<OrderPayment>?): Collection<Collection<String>> {
+    fun getPaymentRows(
+        context: Context,
+        payments: List<OrderPayment>?
+    ): List<TableLayoutFixedHeader.Row> {
         var totalQty = 0
         var totalAmount = 0.0
         var totalRQty = 0
         var totalRAmount = 0.0
         var total = 0.0
-        val rows = mutableListOf<Collection<String>>()
+        val rows = mutableListOf<TableLayoutFixedHeader.Row>()
 
         payments?.forEach { payment ->
             totalQty += payment.Quantity
@@ -55,25 +59,32 @@ class PaymentReportVM : BaseUiViewModel<PaymentReportUV>() {
             total += payment.PaymentAmount - payment.RefundAmount
 
             rows.add(
-                mutableListOf(
-                    payment.PaymentMethod,
-                    payment.Quantity.toString(),
-                    PriceUtils.formatStringPrice(payment.PaymentAmount),
-                    payment.QuantityRefund.toString(),
-                    PriceUtils.formatStringPrice(payment.RefundAmount),
-                    PriceUtils.formatStringPrice(payment.PaymentAmount - payment.RefundAmount)
+                TableLayoutFixedHeader.Row(
+                    mutableListOf(
+                        TableLayoutFixedHeader.Title(payment.PaymentMethod),
+                        TableLayoutFixedHeader.Title(payment.Quantity.toString()),
+                        TableLayoutFixedHeader.Title(
+                            PriceUtils.formatStringPrice(payment.PaymentAmount)
+                        ),
+                        TableLayoutFixedHeader.Title(payment.QuantityRefund.toString()),
+                        TableLayoutFixedHeader.Title(PriceUtils.formatStringPrice(payment.RefundAmount)),
+                        TableLayoutFixedHeader.Title(PriceUtils.formatStringPrice(payment.PaymentAmount - payment.RefundAmount))
+                    )
                 )
+
             )
         }
 
         rows.add(
-            mutableListOf(
-                context.getString(R.string.total),
-                totalQty.toString(),
-                PriceUtils.formatStringPrice(totalAmount),
-                totalRQty.toString(),
-                PriceUtils.formatStringPrice(totalRAmount),
-                PriceUtils.formatStringPrice(total)
+            TableLayoutFixedHeader.Row(
+                mutableListOf(
+                    TableLayoutFixedHeader.Title(context.getString(R.string.total)),
+                    TableLayoutFixedHeader.Title(totalQty.toString()),
+                    TableLayoutFixedHeader.Title(PriceUtils.formatStringPrice(totalAmount)),
+                    TableLayoutFixedHeader.Title(totalRQty.toString()),
+                    TableLayoutFixedHeader.Title(PriceUtils.formatStringPrice(totalRAmount)),
+                    TableLayoutFixedHeader.Title(PriceUtils.formatStringPrice(total))
+                )
             )
         )
         return rows

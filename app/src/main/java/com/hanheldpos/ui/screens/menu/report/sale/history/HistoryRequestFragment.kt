@@ -1,11 +1,13 @@
 package com.hanheldpos.ui.screens.menu.report.sale.history
 
+import android.util.Log
 import android.view.Gravity
 import androidx.fragment.app.activityViewModels
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentHistoryRequestBinding
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.menu.report.sale.SaleReportCommonVM
+import com.hanheldpos.utils.GSonUtils
 
 
 class HistoryRequestFragment : BaseFragment<FragmentHistoryRequestBinding, HistoryRequestVM>(),
@@ -46,12 +48,15 @@ class HistoryRequestFragment : BaseFragment<FragmentHistoryRequestBinding, Histo
         }
         viewModel.getRequestData(requireContext(), saleReportCommon.reportRequestHistory.value)
             .run {
-                binding.tableHistoryReportData.addRangeRows(this.map { p -> p.toMutableList() })
+                binding.tableHistoryReportData.addRangeRows(this)
             }
+
     }
 
     override fun initAction() {
-
+        binding.tableHistoryReportData.setOnClickRowListener {
+            Log.d("Row Click",GSonUtils.toJson(it))
+        }
     }
 
 }

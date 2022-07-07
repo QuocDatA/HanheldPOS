@@ -2,6 +2,7 @@ package com.hanheldpos.ui.widgets;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Color;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
@@ -20,7 +21,6 @@ import android.widget.TextView;
 
 import com.diadiem.pos_components.PTextView;
 import com.diadiem.pos_components.enumtypes.FontStyleEnum;
-import com.diadiem.pos_components.enumtypes.TextColorEnum;
 import com.diadiem.pos_components.enumtypes.TextHeaderEnum;
 import com.hanheldpos.R;
 
@@ -29,7 +29,38 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class TableLayoutFixedHeader extends RelativeLayout {
+
+    public static class Title {
+        String name;
+        int color;
+
+        public Title(String name, int color) {
+            this.name = name;
+            this.color = color;
+        }
+
+        public Title(String name) {
+            this.name = name;
+            this.color = Color.parseColor("#333333");
+        }
+    }
+
+    public static class Row {
+        Object value;
+        List<Title> titles;
+
+        public Row(List<Title> titles) {
+            this.titles = titles;
+        }
+
+        public Row(List<Title> titles, Object value) {
+            this.titles = titles;
+            this.value = value;
+        }
+    }
+
     TableLayout tableA;
     TableLayout tableB;
     TableLayout tableC;
@@ -48,9 +79,12 @@ public class TableLayoutFixedHeader extends RelativeLayout {
 
     Context context;
 
-    private final List<String> headers = new ArrayList<>();
+    @Nullable
+    OnRowClickListener onRowClickListener;
 
-    private final List<List<String>> rows = new ArrayList<>();
+    private final List<Title> headers = new ArrayList<>();
+
+    private final List<Row> rows = new ArrayList<>();
 
     private final List<Integer> columnAligns = new ArrayList<>();
 
@@ -83,8 +117,6 @@ public class TableLayoutFixedHeader extends RelativeLayout {
 
         // add the components to be part of the main layout
         this.addComponentToMainLayout();
-
-
     }
 
     public TableLayoutFixedHeader(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
@@ -109,13 +141,13 @@ public class TableLayoutFixedHeader extends RelativeLayout {
         super.requestLayout();
     }
 
-    public void addHeader(String header) {
+    public void addHeader(Title header) {
         headers.add(header);
         setupHeader();
     }
 
-    public void addRangeHeaders(List<String> headersAdd) {
-        headers.addAll(headersAdd);
+    public void addRangeHeaders(List<Title> headers) {
+        this.headers.addAll(headers);
         setupHeader();
     }
 
@@ -124,12 +156,12 @@ public class TableLayoutFixedHeader extends RelativeLayout {
         setupHeader();
     }
 
-    public void addRow(List<String> items) {
-        rows.add(items);
+    public void addRow(Row item) {
+        rows.add(item);
         setupRow();
     }
 
-    public void addRangeRows(List<List<String>> items) {
+    public void addRangeRows(List<Row> items) {
         rows.addAll(items);
         setupRow();
     }
@@ -144,6 +176,31 @@ public class TableLayoutFixedHeader extends RelativeLayout {
     public void clearRow() {
         rows.clear();
         setupRow();
+    }
+
+    public void setOnClickRowListener(@Nullable OnRowClickListener l) {
+        this.onRowClickListener = l;
+    }
+
+    private void setupOnClickListener() {
+        ViewGroup viewC = (ViewGroup) scrollViewC.getChildAt(0);
+        ViewGroup viewD = (ViewGroup) scrollViewD.getChildAt(0);
+        for (int i = 0; i < viewC.getChildCount(); i++) {
+            int finalI = i;
+            viewC.getChildAt(finalI).setOnClickListener(v -> {
+                assert onRowClickListener != null;
+                onRowClickListener.onClick(rows.get(finalI));
+            });
+        }
+
+        for (int i = 0; i < viewD.getChildCount(); i++) {
+            View view = viewD.getChildAt(i);
+            int finalI = i;
+            view.setOnClickListener(v -> {
+                assert onRowClickListener != null;
+                onRowClickListener.onClick(rows.get(finalI));
+            });
+        }
     }
 
     public void setNumberColumns(Integer numberColumns) {
@@ -183,6 +240,7 @@ public class TableLayoutFixedHeader extends RelativeLayout {
         this.generateTableC_AndTable_D();
         this.resizeBodyTableRowHeight();
         this.resizeDividerHorizontalHeight();
+        this.setupOnClickListener();
     }
 
     // initalized components
@@ -318,7 +376,6 @@ public class TableLayoutFixedHeader extends RelativeLayout {
         this.addView(this.scrollViewD, componentD_Params);
 
 
-
     }
 
     private void addTableRowToTableA() {
@@ -376,12 +433,13 @@ public class TableLayoutFixedHeader extends RelativeLayout {
     }
 
     // header standard TextView
-    TextView headerTextView(String label, int gravity) {
+    TextView headerTextView(Title header, int gravity) {
         PTextView headerTextView = new PTextView(this.context);
-        headerTextView.setText(label);
+        headerTextView.setText(header.name);
         headerTextView.setTextSize(TextHeaderEnum.H5);
         headerTextView.setTextStyle(FontStyleEnum.BOLD);
-        headerTextView.setTextColor(TextColorEnum.Color4);
+        headerTextView.setTextColor(header.color);
+//        headerTextView.setTextColor(TextColorEnum.Color4);
         headerTextView.setGravity(gravity);
         if (!this.wrapText) {
             headerTextView.setMaxLines(1);
@@ -393,12 +451,13 @@ public class TableLayoutFixedHeader extends RelativeLayout {
     }
 
     // table cell standard TextView
-    TextView bodyTextView(String label, int gravity) {
+    TextView bodyTextView(Title label, int gravity) {
         PTextView bodyTextView = new PTextView(this.context);
         bodyTextView.setTextSize(TextHeaderEnum.H5);
         bodyTextView.setTextStyle(FontStyleEnum.NORMAL);
-        bodyTextView.setTextColor(TextColorEnum.Color4);
-        bodyTextView.setText(label);
+        bodyTextView.setTextColor(label.color);
+//        bodyTextView.setTextColor(TextColorEnum.Color4);
+        bodyTextView.setText(label.name);
         bodyTextView.setGravity(gravity);
         if (!this.wrapText) {
             bodyTextView.setMaxLines(1);
@@ -412,9 +471,9 @@ public class TableLayoutFixedHeader extends RelativeLayout {
     // generate table row of table C and table D
     private void generateTableC_AndTable_D() {
 
-        for (List<String> row : this.rows) {
-            String rowHeader = row.size() > 0 ? row.get(0) : "";
-            List<String> rowInfo = row.size() > 1 ? row.subList(1, row.size()) : new ArrayList<>();
+        for (Row row : this.rows) {
+            Title rowHeader = row.titles.size() > 0 ? row.titles.get(0) : new Title("");
+            List<Title> rowInfo = row.titles.size() > 1 ? row.titles.subList(1, row.titles.size()) : new ArrayList<>();
             TableRow tableRowForTableC = this.tableRowForTableC(rowHeader);
             TableRow taleRowForTableD = this.taleRowForTableD(rowInfo);
             this.tableC.addView(tableRowForTableC);
@@ -423,7 +482,7 @@ public class TableLayoutFixedHeader extends RelativeLayout {
     }
 
     // a TableRow for table C
-    TableRow tableRowForTableC(String rowHeader) {
+    TableRow tableRowForTableC(Title rowHeader) {
         View dividerVertical1 = new View(this.context);
         RelativeLayout.LayoutParams componentDividerVertical = new RelativeLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
@@ -444,7 +503,7 @@ public class TableLayoutFixedHeader extends RelativeLayout {
         return tableRowForTableC;
     }
 
-    TableRow taleRowForTableD(List<String> row) {
+    TableRow taleRowForTableD(List<Title> row) {
         RelativeLayout.LayoutParams componentDividerVertical = new RelativeLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 0.5f, getResources().getDisplayMetrics())
@@ -461,7 +520,7 @@ public class TableLayoutFixedHeader extends RelativeLayout {
         LinearLayout linearLayout2 = new LinearLayout(this.context);
         linearLayout2.setOrientation(LinearLayout.VERTICAL);
         for (int x = 0; x < loopCount; x++) {
-            TextView textViewD = this.bodyTextView(x >= row.size() ? "" : row.get(x), x + 1 >= columnAligns.size() - 1 ? Gravity.CENTER : columnAligns.get(x + 1));
+            TextView textViewD = this.bodyTextView(x >= row.size() ? new Title("") : row.get(x), x + 1 >= columnAligns.size() - 1 ? Gravity.CENTER : columnAligns.get(x + 1));
             textViewD.setWidth(headerCellWidth);
             linearLayout1.addView(textViewD, params);
 
@@ -589,6 +648,10 @@ public class TableLayoutFixedHeader extends RelativeLayout {
                 scrollViewC.scrollTo(0, t);
             }
         }
+    }
+
+    public interface OnRowClickListener {
+        void onClick(Row row);
     }
 }
 

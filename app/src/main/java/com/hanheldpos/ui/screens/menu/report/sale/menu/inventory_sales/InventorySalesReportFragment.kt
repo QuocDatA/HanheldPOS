@@ -51,7 +51,7 @@ class InventorySalesReportFragment : BaseFragment<FragmentInventorySalesReportBi
             }
             viewModel.getInventoryRows(requireContext(), inventories).let {
                 binding.tableLayout.clearRow()
-                binding.tableLayout.addRangeRows(it.map { p -> p.toMutableList() })
+                binding.tableLayout.addRangeRows(it)
             }
             viewModel.getInventorySummary(requireContext(), inventories).let {
                 binding.totalGrossQty.text = it[0].toString()

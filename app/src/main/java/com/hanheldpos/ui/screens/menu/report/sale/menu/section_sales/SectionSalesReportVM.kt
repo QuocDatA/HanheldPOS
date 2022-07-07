@@ -6,6 +6,7 @@ import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.report.SectionReport
 import com.hanheldpos.model.menu.report.ReportItem
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
+import com.hanheldpos.ui.widgets.TableLayoutFixedHeader
 import com.hanheldpos.utils.PriceUtils
 
 class SectionSalesReportVM : BaseUiViewModel<SectionSalesReportUV>() {
@@ -18,28 +19,31 @@ class SectionSalesReportVM : BaseUiViewModel<SectionSalesReportUV>() {
             totalGrossSales += section.GrossSales
             totalNetSales += section.NetSale
         }
-        return mutableListOf(totalGrossSales,totalNetSales)
+        return mutableListOf(totalGrossSales, totalNetSales)
     }
 
 
-    fun getSectionSalesHeaders(context: Context): Collection<String> {
+    fun getSectionSalesHeaders(context: Context): List<TableLayoutFixedHeader.Title> {
         return mutableListOf(
-            context.getString(R.string.sections),
-            context.getString(R.string.bill),
-            context.getString(R.string.covers),
-            context.getString(R.string.gross_sales),
-            context.getString(R.string.net_sales),
-            context.getString(R.string.tips)
+            TableLayoutFixedHeader.Title(context.getString(R.string.sections)),
+            TableLayoutFixedHeader.Title(context.getString(R.string.bill)),
+            TableLayoutFixedHeader.Title(context.getString(R.string.covers)),
+            TableLayoutFixedHeader.Title(context.getString(R.string.gross_sales)),
+            TableLayoutFixedHeader.Title(context.getString(R.string.net_sales)),
+            TableLayoutFixedHeader.Title(context.getString(R.string.tips))
         )
     }
 
-    fun getSectionSalesRows(context: Context, sections: List<SectionReport>?): Collection<Collection<String>> {
+    fun getSectionSalesRows(
+        context: Context,
+        sections: List<SectionReport>?
+    ): List<TableLayoutFixedHeader.Row> {
         var totalBill = 0
         var totalCovers = 0
         var totalGrossSales = 0.0
         var totalNetSales = 0.0
         var totalTips = 0.0
-        val rows = mutableListOf<Collection<String>>()
+        val rows = mutableListOf<TableLayoutFixedHeader.Row>()
 
         sections?.forEach { section ->
             totalBill += section.Bill.toInt()
@@ -49,37 +53,49 @@ class SectionSalesReportVM : BaseUiViewModel<SectionSalesReportUV>() {
             totalTips += section.Tips
 
             rows.add(
-                mutableListOf(
-                    section.SectionName,
-                    section.Bill.toInt().toString(),
-                    section.Covers.toInt().toString(),
-                    PriceUtils.formatStringPrice(section.GrossSales),
-                    PriceUtils.formatStringPrice(section.NetSale),
-                    PriceUtils.formatStringPrice(section.Tips)
+                TableLayoutFixedHeader.Row(
+                    mutableListOf(
+                        TableLayoutFixedHeader.Title(
+                            section.SectionName
+                        ),
+                        TableLayoutFixedHeader.Title(section.Bill.toInt().toString()),
+                        TableLayoutFixedHeader.Title(section.Covers.toInt().toString()),
+                        TableLayoutFixedHeader.Title(PriceUtils.formatStringPrice(section.GrossSales)),
+                        TableLayoutFixedHeader.Title(PriceUtils.formatStringPrice(section.NetSale)),
+                        TableLayoutFixedHeader.Title(PriceUtils.formatStringPrice(section.Tips))
+                    )
                 )
+
             )
             rows.addAll(
-                section.FloorTable.map { floorTable->
-                    mutableListOf(
-                        "        ${floorTable.Name}",
-                        floorTable.Bill.toInt().toString(),
-                        floorTable.Covers.toInt().toString(),
-                        PriceUtils.formatStringPrice(floorTable.GrossSales),
-                        PriceUtils.formatStringPrice(floorTable.NetSale),
-                        PriceUtils.formatStringPrice(floorTable.Tips)
+                section.FloorTable.map { floorTable ->
+                    TableLayoutFixedHeader.Row(
+                        mutableListOf(
+                            TableLayoutFixedHeader.Title("\t${floorTable.Name}"),
+                            TableLayoutFixedHeader.Title(floorTable.Bill.toInt().toString()),
+                            TableLayoutFixedHeader.Title(floorTable.Covers.toInt().toString()),
+                            TableLayoutFixedHeader.Title(PriceUtils.formatStringPrice(floorTable.GrossSales)),
+                            TableLayoutFixedHeader.Title(PriceUtils.formatStringPrice(floorTable.NetSale)),
+                            TableLayoutFixedHeader.Title(PriceUtils.formatStringPrice(floorTable.Tips))
+                        )
                     )
+
                 }
             )
         }
 
         rows.add(
-            mutableListOf(
-                context.getString(R.string.total),
-                totalBill.toString(),
-                totalCovers.toString(),
-                PriceUtils.formatStringPrice(totalGrossSales),
-                PriceUtils.formatStringPrice(totalNetSales),
-                PriceUtils.formatStringPrice(totalTips)
+            TableLayoutFixedHeader.Row(
+                mutableListOf(
+                    TableLayoutFixedHeader.Title(
+                        context.getString(R.string.total)
+                    ),
+                    TableLayoutFixedHeader.Title(totalBill.toString()),
+                    TableLayoutFixedHeader.Title(totalCovers.toString()),
+                    TableLayoutFixedHeader.Title(PriceUtils.formatStringPrice(totalGrossSales)),
+                    TableLayoutFixedHeader.Title(PriceUtils.formatStringPrice(totalNetSales)),
+                    TableLayoutFixedHeader.Title(PriceUtils.formatStringPrice(totalTips))
+                )
             )
         )
         return rows

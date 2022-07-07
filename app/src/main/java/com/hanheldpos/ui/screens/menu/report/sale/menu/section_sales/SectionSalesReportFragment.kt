@@ -55,7 +55,7 @@ class SectionSalesReportFragment :
             }
             viewModel.getSectionSalesRows(requireContext(), sections).let {
                 binding.tableLayout.clearRow()
-                binding.tableLayout.addRangeRows(it.map { p -> p.toMutableList() })
+                binding.tableLayout.addRangeRows(it)
             }
             viewModel.getSectionSalesSummary(requireContext(), sections).let {
 

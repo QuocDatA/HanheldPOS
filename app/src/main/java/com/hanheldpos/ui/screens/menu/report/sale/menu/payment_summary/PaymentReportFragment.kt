@@ -58,16 +58,15 @@ class PaymentReportFragment : BaseFragment<FragmentPaymentReportBinding, Payment
 
     @SuppressLint("NotifyDataSetChanged")
     override fun initData() {
-
         saleReportCommon.saleReport.observe(this) { reportSalesResp ->
             val orderPayment = reportSalesResp?.OrderPayment
             viewModel.getPaymentHeaders(requireContext()).let {
                 binding.tableLayout.clearHeader()
-                binding.tableLayout.addRangeHeaders(it.toMutableList())
+                binding.tableLayout.addRangeHeaders(it)
             }
             viewModel.getPaymentRows(requireContext(), orderPayment).let {
                 binding.tableLayout.clearRow()
-                binding.tableLayout.addRangeRows(it.map { p -> p.toMutableList() })
+                binding.tableLayout.addRangeRows(it)
             }
             viewModel.getPaymentSummary(requireContext(), orderPayment).let {
 
