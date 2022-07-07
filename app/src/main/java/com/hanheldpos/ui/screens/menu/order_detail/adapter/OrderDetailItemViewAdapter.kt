@@ -28,7 +28,10 @@ class OrderDetailItemViewAdapter : BaseBindingListAdapter<ProductChosen>(DiffCal
                 adapter.submitList(item.groupProducts())
                 adapter.notifyDataSetChanged()
             }
-            ProductType.BUYX_GETY_DISC -> {}
+            ProductType.BUYX_GETY_DISC -> {
+                val buyXGetYAdapter = OrderDetailItemGroupAdapter(ProductType.BUYX_GETY_DISC)
+                binding.productGroupRecyclerView.adapter = buyXGetYAdapter
+            }
             else -> {}
         }
     }

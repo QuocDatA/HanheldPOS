@@ -23,6 +23,8 @@ import com.hanheldpos.ui.base.dialog.AppFunctionDialog
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.menu.order_detail.adapter.OrderDetailItemViewAdapter
 import com.hanheldpos.ui.screens.menu.order_detail.adapter.OrderDetailPaymentAdapter
+import com.hanheldpos.ui.screens.menu.order_detail.adapter_v2.ProductBuyItem
+import com.hanheldpos.ui.screens.menu.order_detail.adapter_v2.ProductBuyParentAdapter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -32,6 +34,7 @@ class OrderDetailViewFragment(private val orderId: String) :
     BaseFragment<FragmentOrderDetailViewBinding, OrderDetailViewVM>(), OrderDetailViewUV {
     private lateinit var orderDetailItemViewAdapter: OrderDetailItemViewAdapter
     private lateinit var orderDetailPaymentViewAdapter: OrderDetailPaymentAdapter
+    private lateinit var orderProductAdapter: ProductBuyParentAdapter
     override fun layoutRes(): Int {
         return R.layout.fragment_order_detail_view
     }
@@ -49,8 +52,10 @@ class OrderDetailViewFragment(private val orderId: String) :
     }
 
     override fun initView() {
-        orderDetailItemViewAdapter = OrderDetailItemViewAdapter()
-        binding.itemList.adapter = orderDetailItemViewAdapter
+        //orderDetailItemViewAdapter = OrderDetailItemViewAdapter()
+        orderProductAdapter = ProductBuyParentAdapter()
+        //binding.itemList.adapter = orderDetailItemViewAdapter
+        binding.itemList.adapter = orderProductAdapter
 
         orderDetailPaymentViewAdapter = OrderDetailPaymentAdapter()
         binding.paymentList.adapter = orderDetailPaymentViewAdapter
@@ -147,8 +152,14 @@ class OrderDetailViewFragment(private val orderId: String) :
     @SuppressLint("NotifyDataSetChanged")
     override fun onShowOrderDetail(order: OrderModel) {
         binding.order = order
-        orderDetailItemViewAdapter.submitList(order.OrderDetail.OrderProducts)
-        orderDetailItemViewAdapter.notifyDataSetChanged()
+//        orderDetailItemViewAdapter.submitList(order.OrderDetail.OrderProducts)
+//        orderDetailItemViewAdapter.notifyDataSetChanged()
+        orderProductAdapter.submitList(order.OrderDetail.OrderProducts.map {
+            ProductBuyItem(
+                chosenProduct = it,
+                level = 0
+            )
+        })
         orderDetailPaymentViewAdapter.submitList(order.OrderDetail.PaymentList)
         orderDetailPaymentViewAdapter.notifyDataSetChanged()
     }
