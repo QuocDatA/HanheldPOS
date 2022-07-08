@@ -5,7 +5,7 @@ import com.hanheldpos.PosApp
 import com.hanheldpos.data.api.pojo.report.ReportSalesResp
 import com.hanheldpos.data.api.pojo.setting.hardware.HardwarePrinter
 import com.hanheldpos.model.order.OrderModel
-import com.hanheldpos.model.report.SaleReportFilter
+import com.hanheldpos.model.report.ReportFilterModel
 import com.hanheldpos.printer.PrintConstants
 import com.hanheldpos.printer.layouts.LayoutType
 import com.hanheldpos.printer.layouts.order.CashierLayout
@@ -67,7 +67,7 @@ class Printer private constructor(
     fun printReport(
         layoutType: LayoutType.Report,
         report: ReportSalesResp?,
-        filterOptions: SaleReportFilter?,
+        filterOptions: ReportFilterModel?,
     ) {
         printer?.performPrinterAction {
             when (layoutType) {

@@ -1,7 +1,7 @@
 package com.hanheldpos.ui.screens.menu.report.sale.customize
 
 import androidx.lifecycle.MutableLiveData
-import com.hanheldpos.model.report.SaleReportFilter
+import com.hanheldpos.model.report.ReportFilterModel
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
 import com.hanheldpos.ui.screens.home.DropDownItem
 import com.hanheldpos.ui.screens.main.adapter.SubSpinnerAdapter
@@ -18,15 +18,13 @@ class CustomizeReportVM : BaseUiViewModel<CustomizeReportUV>() {
     var isCurrentDrawer = MutableLiveData(true)
     var isAllDay = MutableLiveData(false)
     var isAllDevice = MutableLiveData(false)
-    var isThisDevice = MutableLiveData(true)
 
-    fun initCustomReportData(saleReportCustomData: SaleReportFilter) {
-        val startDayInInt = splitDate(saleReportCustomData.startDay!!)
-        val endDayInInt = splitDate(saleReportCustomData.endDay!!)
-        this.isCurrentDrawer.postValue(saleReportCustomData.isCurrentDrawer)
-        this.isAllDay.postValue(saleReportCustomData.isAllDay)
+    fun initCustomReportData(saleReportCustomData: ReportFilterModel) {
+        val startDayInInt = splitDate(DateTimeUtils.strToDate(saleReportCustomData.startDay,DateTimeUtils.Format.YYYY_MM_DD)!!)
+        val endDayInInt = splitDate(DateTimeUtils.strToDate(saleReportCustomData.endDay,DateTimeUtils.Format.YYYY_MM_DD)!!)
+        this.isCurrentDrawer.postValue(saleReportCustomData.isCurrentCashDrawer)
+        this.isAllDay.postValue(saleReportCustomData.startHour.isNullOrEmpty() && saleReportCustomData.endHour.isNullOrEmpty())
         this.isAllDevice.postValue(saleReportCustomData.isAllDevice)
-        this.isThisDevice.postValue(!saleReportCustomData.isAllDevice)
         this.startDay = CalendarDay.from(startDayInInt[2], startDayInInt[1], startDayInInt[0])
         this.endDay = CalendarDay.from(endDayInInt[2], endDayInInt[1], endDayInInt[0])
     }
@@ -59,7 +57,6 @@ class CustomizeReportVM : BaseUiViewModel<CustomizeReportUV>() {
 
     fun onDeviceCheckChange() {
         isAllDevice.postValue(!isAllDevice.value!!)
-        isThisDevice.postValue(!isThisDevice.value!!)
     }
 
     fun backPress() {

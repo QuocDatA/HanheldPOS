@@ -6,7 +6,7 @@ import com.hanheldpos.printer.wagu.WaguUtils
 import com.hanheldpos.printer.wagu.WrapType
 import com.hanheldpos.data.api.pojo.report.ProductInventory
 import com.hanheldpos.data.api.pojo.report.ReportSalesResp
-import com.hanheldpos.model.report.SaleReportFilter
+import com.hanheldpos.model.report.ReportFilterModel
 import com.hanheldpos.printer.printer_setup.PrintConfig
 
 
@@ -14,7 +14,7 @@ class InventoryLayout(
     printer: BasePrinterManager,
     printConfig: PrintConfig,
     reportSalesModel: ReportSalesResp?,
-    filterOptionReportSale: SaleReportFilter?,
+    filterOptionReportSale: ReportFilterModel?,
     private val inventories: Map<ProductInventory, List<ProductInventory>> = reportSalesModel?.mapInventorySaleReport() ?: emptyMap()
 ) : BaseLayoutReport(
     printer, printConfig,

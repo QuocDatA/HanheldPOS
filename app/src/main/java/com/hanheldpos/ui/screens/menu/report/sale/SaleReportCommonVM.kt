@@ -20,8 +20,7 @@ import com.hanheldpos.model.DatabaseHelper
 import com.hanheldpos.model.OrderHelper
 import com.hanheldpos.model.UserHelper
 import com.hanheldpos.model.order.OrderSubmitResp
-import com.hanheldpos.model.report.ReportModel
-import com.hanheldpos.model.report.SaleReportFilter
+import com.hanheldpos.model.report.ReportFilterModel
 import com.hanheldpos.model.setting.SettingDevicePut
 import com.hanheldpos.ui.base.dialog.AppAlertDialog
 import com.hanheldpos.ui.base.viewmodel.BaseViewModel
@@ -36,20 +35,25 @@ import kotlinx.coroutines.launch
 class SaleReportCommonVM : BaseViewModel() {
     private val reportRepo = ReportRepo()
 
-    var saleReportFilter = MutableLiveData(
-        SaleReportFilter(
-            startDay = DateTimeUtils.curDate,
-            endDay = DateTimeUtils.curDate,
-            isCurrentDrawer = true,
-            isAllDevice = false,
-            isAllDay = true,
-            startTime = null,
-            endTime = null
-        )
+    private val defaultReportFilter = ReportFilterModel(
+        startDay = DateTimeUtils.dateToString(
+            DateTimeUtils.curDate,
+            DateTimeUtils.Format.YYYY_MM_DD
+        ),
+        endDay = DateTimeUtils.dateToString(DateTimeUtils.curDate, DateTimeUtils.Format.YYYY_MM_DD),
+        isCurrentCashDrawer = true,
+        isAllDevice = false,
+        startHour = null,
+        endHour = null
+    )
+    var reportFilter = MutableLiveData(
+        defaultReportFilter
     )
 
+    fun resetDefaultReport() = reportFilter.postValue(defaultReportFilter)
+
     var isSyncOrderToServer: Boolean = false
-    val reportRequestHistory = MutableLiveData<List<ReportModel>>(mutableListOf())
+    val reportRequestHistory = MutableLiveData<List<ReportFilterModel>>(mutableListOf())
 
     private val settingRepo = SettingRepo();
     private val orderAlterRepo = OrderAsyncRepo();
@@ -194,6 +198,7 @@ class SaleReportCommonVM : BaseViewModel() {
     }
 
     fun fetchDataSaleReport(
+        filter: ReportFilterModel?,
         succeed: (report: ReportSalesResp) -> Unit,
         failed: (message: String?) -> Unit
     ) {
@@ -204,20 +209,22 @@ class SaleReportCommonVM : BaseViewModel() {
             employeeGuid = UserHelper.getEmployeeGuid(),
             cashDrawerGuid = DataHelper.currentDrawerId,
             day = "${
-                DateTimeUtils.dateToString(
-                    saleReportFilter.value?.startDay,
+                DateTimeUtils.strToStr(
+                    filter?.startDay,
+                    DateTimeUtils.Format.YYYY_MM_DD,
                     DateTimeUtils.Format.YYYY_MM_DD_18
                 )
             }-${
-                DateTimeUtils.dateToString(
-                    saleReportFilter.value?.endDay,
+                DateTimeUtils.strToStr(
+                    filter?.endDay,
+                    DateTimeUtils.Format.YYYY_MM_DD,
                     DateTimeUtils.Format.YYYY_MM_DD_18
                 )
             }",
-            startHour = saleReportFilter.value?.startTime,
-            endHour = saleReportFilter.value?.endTime,
-            isAllDevice = saleReportFilter.value?.isAllDevice,
-            isCurrentCashdrawer = saleReportFilter.value?.isCurrentDrawer,
+            startHour = filter?.startHour,
+            endHour = filter?.endHour,
+            isAllDevice = filter?.isAllDevice,
+            isCurrentCashDrawer = filter?.isCurrentCashDrawer,
             callback = object : BaseRepoCallback<BaseResponse<ReportSalesResp>?> {
                 override fun apiResponse(data: BaseResponse<ReportSalesResp>?) {
                     if (data == null || data.DidError || data.Model == null) {

@@ -5,14 +5,14 @@ import android.widget.AdapterView
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentCustomizeReportBinding
 import com.hanheldpos.extension.setOnClickDebounce
-import com.hanheldpos.model.report.SaleReportFilter
+import com.hanheldpos.model.report.ReportFilterModel
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.home.DropDownItem
 import com.hanheldpos.ui.screens.main.adapter.SubSpinnerAdapter
 import com.hanheldpos.utils.DateTimeUtils
 
 class CustomizeReportFragment(
-    private val saleReportCustomData: SaleReportFilter,
+    private val saleReportCustomData: ReportFilterModel,
     private val listener: CustomizeReportCallBack
 ) :
     BaseFragment<FragmentCustomizeReportBinding, CustomizeReportVM>(), CustomizeReportUV {
@@ -50,20 +50,13 @@ class CustomizeReportFragment(
             }
         }
         listener.onComplete(
-            saleReportCustomData = SaleReportFilter(
-                startDay = (DateTimeUtils.strToDate(
-                    "${viewModel.startDay.year}-${viewModel.startDay.month}-${viewModel.startDay.day}T${viewModel.startTime.value ?: "00:00"}:00",
-                    DateTimeUtils.Format.FULL_DATE_UTC_NOT_MILI
-                )),
-                endDay = (DateTimeUtils.strToDate(
-                    "${viewModel.endDay.year}-${viewModel.endDay.month}-${viewModel.endDay.day}T${viewModel.endTime.value ?: "00:00"}:00",
-                    DateTimeUtils.Format.FULL_DATE_UTC_NOT_MILI
-                )),
-                isAllDay = viewModel.isAllDay.value!!,
+            saleReportCustomData = ReportFilterModel(
+                startDay = "${viewModel.startDay.year}-${viewModel.startDay.month}-${viewModel.startDay.day}",
+                endDay = "${viewModel.endDay.year}-${viewModel.endDay.month}-${viewModel.endDay.day}",
                 isAllDevice = viewModel.isAllDevice.value!!,
-                isCurrentDrawer = viewModel.isCurrentDrawer.value!!,
-                startTime = viewModel.startTime.value,
-                endTime = viewModel.endTime.value
+                isCurrentCashDrawer = viewModel.isCurrentDrawer.value!!,
+                startHour = viewModel.startTime.value,
+                endHour = viewModel.endTime.value
             )
         )
     }
@@ -74,9 +67,10 @@ class CustomizeReportFragment(
             saleReportCustomData
         )
 
-        binding.currentDrawerCheckbox.isChecked = saleReportCustomData.isCurrentDrawer
+        binding.currentDrawerCheckbox.isChecked = saleReportCustomData.isCurrentCashDrawer == true
 
-        binding.btnIsAllDay.isChecked = saleReportCustomData.isAllDay
+        binding.btnIsAllDay.isChecked =
+            saleReportCustomData.startHour.isNullOrEmpty() && saleReportCustomData.endHour.isNullOrEmpty()
 
         if (viewModel.startDay.isBefore(viewModel.endDay)) {
             binding.calendarView.selectRange(
@@ -100,11 +94,11 @@ class CustomizeReportFragment(
 
             }
             binding.spinnerStart.setSelection(
-                list.find { item -> item.name == saleReportCustomData.startTime }?.position ?: 0
+                list.find { item -> item.name == saleReportCustomData.startHour }?.position ?: 0
             )
 
             binding.spinnerEnd.setSelection(
-                list.find { item -> item.name == saleReportCustomData.endTime }?.position ?: 0
+                list.find { item -> item.name == saleReportCustomData.endHour }?.position ?: 0
             )
         }
     }
@@ -163,7 +157,7 @@ class CustomizeReportFragment(
 
     interface CustomizeReportCallBack {
         fun onComplete(
-            saleReportCustomData: SaleReportFilter
+            saleReportCustomData: ReportFilterModel
         )
 
     }

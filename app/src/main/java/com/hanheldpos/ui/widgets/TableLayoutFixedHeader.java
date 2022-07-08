@@ -3,6 +3,7 @@ package com.hanheldpos.ui.widgets;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
+import android.os.Parcelable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
@@ -22,6 +23,7 @@ import android.widget.TextView;
 import com.diadiem.pos_components.PTextView;
 import com.diadiem.pos_components.enumtypes.FontStyleEnum;
 import com.diadiem.pos_components.enumtypes.TextHeaderEnum;
+import com.google.protobuf.Any;
 import com.hanheldpos.R;
 
 import org.jetbrains.annotations.Nullable;
@@ -33,8 +35,8 @@ import java.util.List;
 public class TableLayoutFixedHeader extends RelativeLayout {
 
     public static class Title {
-        String name;
-        int color;
+        public String name;
+        public int color;
 
         public Title(String name, int color) {
             this.name = name;
@@ -48,8 +50,8 @@ public class TableLayoutFixedHeader extends RelativeLayout {
     }
 
     public static class Row {
-        Object value;
-        List<Title> titles;
+        public Object value;
+        public List<Title> titles;
 
         public Row(List<Title> titles) {
             this.titles = titles;
@@ -131,10 +133,11 @@ public class TableLayoutFixedHeader extends RelativeLayout {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         DisplayMetrics displayMetrics = getContext().getResources().getDisplayMetrics();
         this.headerCellWidth = displayMetrics.widthPixels / numberColumns;
-        setupHeader();
-        setupRow();
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
+
+
+
 
     @Override
     public void requestLayout() {
@@ -180,26 +183,23 @@ public class TableLayoutFixedHeader extends RelativeLayout {
 
     public void setOnClickRowListener(@Nullable OnRowClickListener l) {
         this.onRowClickListener = l;
+        setupOnClickListener();
     }
 
     private void setupOnClickListener() {
         ViewGroup viewC = (ViewGroup) scrollViewC.getChildAt(0);
-        ViewGroup viewD = (ViewGroup) scrollViewD.getChildAt(0);
+        if (viewC.getChildCount() <= 0) return;
+        ViewGroup viewD = (ViewGroup) ((ViewGroup) scrollViewD.getChildAt(0)).getChildAt(0);
         for (int i = 0; i < viewC.getChildCount(); i++) {
             int finalI = i;
-            viewC.getChildAt(finalI).setOnClickListener(v -> {
-                assert onRowClickListener != null;
-                onRowClickListener.onClick(rows.get(finalI));
-            });
-        }
-
-        for (int i = 0; i < viewD.getChildCount(); i++) {
-            View view = viewD.getChildAt(i);
-            int finalI = i;
-            view.setOnClickListener(v -> {
-                assert onRowClickListener != null;
-                onRowClickListener.onClick(rows.get(finalI));
-            });
+            if (onRowClickListener != null) {
+                viewC.getChildAt(finalI).setOnClickListener(v -> {
+                    onRowClickListener.onClick(rows.get(finalI));
+                });
+                viewD.getChildAt(finalI).setOnClickListener(v -> {
+                    onRowClickListener.onClick(rows.get(finalI));
+                });
+            }
         }
     }
 
@@ -228,19 +228,19 @@ public class TableLayoutFixedHeader extends RelativeLayout {
         this.addTableRowToTableB();
         this.resizeHeaderHeight();
         this.resizeDividerHorizontalHeight();
+        this.invalidate();
     }
 
     void setupRow() {
         if (tableC == null || tableD == null) return;
-        this.tableC.removeAllViews();
         this.tableC.removeAllViewsInLayout();
-        this.tableD.removeAllViews();
         this.tableD.removeAllViewsInLayout();
-
         this.generateTableC_AndTable_D();
         this.resizeBodyTableRowHeight();
         this.resizeDividerHorizontalHeight();
         this.setupOnClickListener();
+        this.invalidate();
+
     }
 
     // initalized components
@@ -470,7 +470,6 @@ public class TableLayoutFixedHeader extends RelativeLayout {
 
     // generate table row of table C and table D
     private void generateTableC_AndTable_D() {
-
         for (Row row : this.rows) {
             Title rowHeader = row.titles.size() > 0 ? row.titles.get(0) : new Title("");
             List<Title> rowInfo = row.titles.size() > 1 ? row.titles.subList(1, row.titles.size()) : new ArrayList<>();

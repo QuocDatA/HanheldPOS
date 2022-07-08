@@ -213,7 +213,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
-                                android:checked="@{viewModel.isThisDevice ? true : false}"
+                                android:checked="@{!viewModel.isAllDevice() ? true : false}"
                                 android:clickable="true"
                                 android:focusable="true"
                                 android:gravity="center"

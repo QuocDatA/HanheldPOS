@@ -4,7 +4,6 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.annotation.RequiresApi
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResult
@@ -18,8 +17,7 @@ import com.hanheldpos.extension.notifyValueChange
 import com.hanheldpos.extension.setOnClickDebounce
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.menu.report.SaleOptionPage
-import com.hanheldpos.model.report.ReportModel
-import com.hanheldpos.model.report.SaleReportFilter
+import com.hanheldpos.model.report.ReportFilterModel
 import com.hanheldpos.printer.BillPrinterManager
 import com.hanheldpos.printer.layouts.LayoutType
 import com.hanheldpos.printer.printer_setup.PrinterTypes
@@ -49,10 +47,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.time.temporal.ChronoUnit
 import java.util.*
-import kotlin.reflect.KClass
-import kotlin.reflect.full.createInstance
 
 class SalesReportFragment(
+    private var filter: ReportFilterModel?,
     private var saleReport: ReportSalesResp?,
     private val type: SaleOptionPage? = null,
     private val isPreviewHistory: Boolean = false,
@@ -86,11 +83,13 @@ class SalesReportFragment(
                 listener = object : BaseItemClickListener<NumberDayReportItem> {
                     @RequiresApi(Build.VERSION_CODES.O)
                     override fun onItemClick(adapterPosition: Int, item: NumberDayReportItem) {
-                        saleReportCommon.saleReportFilter.postValue(saleReportCommon.saleReportFilter.value!!.apply {
-                            startDay = Date.from(
-                                endDay?.toInstant()?.minus(item.value.toLong(), ChronoUnit.DAYS)
-                            )
-                        })
+                        val currentFilter = viewModel.saleReportFilter.value?.apply {
+                            startDay = DateTimeUtils.dateToString(Date.from(
+                                DateTimeUtils.strToDate(endDay,DateTimeUtils.Format.YYYY_MM_DD)?.toInstant()?.minus(item.value.toLong(), ChronoUnit.DAYS)
+                            ),DateTimeUtils.Format.YYYY_MM_DD )
+                        }
+                        viewModel.saleReportFilter.postValue(currentFilter)
+
                     }
                 },
             )
@@ -99,29 +98,35 @@ class SalesReportFragment(
     }
 
     override fun initData() {
+        viewModel.isPreviewHistory.postValue(isPreviewHistory)
 
-        // Setup firebase
-        DataHelper.firebaseSettingLocalStorage?.fireStorePath?.let { path ->
-            Firebase.firestore.collection(path.reportList ?: "")
-                .addSnapshotListener { value, _ ->
-                    Log.d("Data Version Firebase", value.toString())
-                    value?.documents?.let {
-                        val list = it.map { data -> data.data }.mapNotNull { map ->
-                            GSonUtils.mapToObject(map, ReportModel::class.java)
-                        }
-                        saleReportCommon.reportRequestHistory.postValue(list)
-                    }
-                }
-        }
 
         numberDayReportAdapter.submitList(viewModel.initNumberDaySelected())
 
-        saleReportCommon.saleReportFilter.observe(this) {
+        var firstObserver = true
+        viewModel.saleReportFilter.observe(this) {
             setUpDateTitle(it)
+            saleReportCommon.reportFilter.postValue(it)
+            if (firstObserver) {
+                firstObserver = false
+                return@observe
+            }
+            if (isPreviewHistory) return@observe
+            showLoading(true)
+            saleReportCommon.fetchDataSaleReport(it, succeed = { report ->
+                setFragmentResult(SaleReportsMenuFragment.SALE_REPORT_RESP, Bundle().apply {
+                    putParcelable("data", report)
+                })
+                this.saleReport = report
+                initializeFragmentChild()
+                showLoading(false)
+            }, failed = {
+                showLoading(false)
+            })
         }
 
         initializeFragmentChild()
-
+        updateDataFromReportFilter()
     }
 
     override fun initAction() {
@@ -130,7 +135,7 @@ class SalesReportFragment(
             showLoading(true)
             saleReportCommon.onSyncOrders(this.requireView(), succeed = {
                 showLoading(false)
-                saleReportCommon.saleReportFilter.notifyValueChange()
+                saleReportCommon.reportFilter.notifyValueChange()
             }, failed = {
                 showLoading(false)
             })
@@ -143,7 +148,7 @@ class SalesReportFragment(
                         BillPrinterManager.get { }.printReport(
                             LayoutType.Report.Overview,
                             saleReport,
-                            saleReportCommon.saleReportFilter.value,
+                            saleReportCommon.reportFilter.value,
                             PrinterTypes.CASHIER
                         )
                     }
@@ -151,7 +156,7 @@ class SalesReportFragment(
                         BillPrinterManager.get { }.printReport(
                             LayoutType.Report.Inventory,
                             saleReport,
-                            saleReportCommon.saleReportFilter.value,
+                            saleReportCommon.reportFilter.value,
                             PrinterTypes.CASHIER
                         )
                     }
@@ -164,60 +169,48 @@ class SalesReportFragment(
 
         }
 
-        var firstObserver = true
-        saleReportCommon.saleReportFilter.observe(this) {
-            if (firstObserver) {
-                firstObserver = false
-                return@observe
-            }
-            showLoading(true)
-            saleReportCommon.fetchDataSaleReport(succeed = {
-                setFragmentResult(SaleReportsMenuFragment.SALE_REPORT_RESP, Bundle().apply {
-                    putParcelable("data", it)
-                })
-                this.saleReport = it
-                initializeFragmentChild()
-                showLoading(false)
-            }, failed = {
-                showLoading(false)
-            })
-        }
+
     }
 
     override fun onOpenCustomizeReport() {
         navigator.goToWithCustomAnimation(CustomizeReportFragment(listener = object :
             CustomizeReportFragment.CustomizeReportCallBack {
             override fun onComplete(
-                saleReportCustomData: SaleReportFilter
+                saleReportCustomData: ReportFilterModel
             ) {
                 numberDayReportAdapter.clearSelected()
-                saleReportCommon.saleReportFilter.postValue(saleReportCustomData)
+                if (!isPreviewHistory) {
+                    viewModel.saleReportFilter.postValue(saleReportCustomData)
+                }
+
             }
 
-        }, saleReportCustomData = saleReportCommon.saleReportFilter.value!!))
+        }, saleReportCustomData = saleReportCommon.reportFilter.value!!))
     }
 
     override fun onOpenHistoryRequest() {
-        navigator.goToWithCustomAnimation(HistoryRequestFragment())
+        navigator.goTo(HistoryRequestFragment())
     }
 
     override fun backPress() {
         onFragmentBackPressed()
     }
 
-    private fun setUpDateTitle(saleReportCustomData: SaleReportFilter) {
+    private fun setUpDateTitle(saleReportCustomData: ReportFilterModel) {
 
-        val dateStr: String = DateTimeUtils.dateToString(
+        val dateStr: String = DateTimeUtils.strToStr(
             saleReportCustomData.startDay,
+            DateTimeUtils.Format.YYYY_MM_DD,
             DateTimeUtils.Format.dd_MMM_YYYY
-        ) + " - " + DateTimeUtils.dateToString(
+        ) + " - " + DateTimeUtils.strToStr(
             saleReportCustomData.endDay,
+            DateTimeUtils.Format.YYYY_MM_DD,
             DateTimeUtils.Format.dd_MMM_YYYY
         )
         binding.dateFromTo.text = dateStr
 
-        if (saleReportCustomData.isAllDevice) {
-            if (saleReportCustomData.isAllDay) {
+        if (saleReportCustomData.isAllDevice == true) {
+            if (saleReportCustomData.endHour.isNullOrEmpty() && saleReportCustomData.endHour.isNullOrEmpty()) {
                 binding.deviceApply.text = getString(R.string.all_device)
             } else {
                 // Show Time Selected
@@ -225,7 +218,7 @@ class SalesReportFragment(
         } else {
             binding.deviceApply.text = getString(R.string.this_device_only)
         }
-        if (saleReportCustomData.isCurrentDrawer) {
+        if (saleReportCustomData.isCurrentCashDrawer == true) {
             binding.deviceApply.text = "${binding.deviceApply.text}, Current Drawer"
         }
     }
@@ -258,4 +251,8 @@ class SalesReportFragment(
         transaction.commit()
     }
 
+
+    private fun updateDataFromReportFilter() {
+        viewModel.saleReportFilter.postValue(filter)
+    }
 }

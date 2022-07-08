@@ -1,41 +1,35 @@
 package com.hanheldpos.ui.screens.menu.report.sale
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.report.ReportSalesResp
 import com.hanheldpos.databinding.FragmentSaleReportsMenuBinding
+import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.menu.report.SaleOptionPage
-import com.hanheldpos.model.report.SaleReportFilter
+import com.hanheldpos.model.report.ReportFilterModel
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.menu.adapter.ItemOptionNav
 import com.hanheldpos.ui.screens.menu.adapter.OptionNavAdapter
-import com.hanheldpos.ui.screens.menu.report.sale.menu.cash_voucher.CashVoucherReportFragment
-import com.hanheldpos.ui.screens.menu.report.sale.menu.category_sales.CategorySalesReportFragment
-import com.hanheldpos.ui.screens.menu.report.sale.menu.comps.CompsReportFragment
-import com.hanheldpos.ui.screens.menu.report.sale.menu.dining_options.DiningOptionsFragment
-import com.hanheldpos.ui.screens.menu.report.sale.menu.discounts.DiscountsReportFragment
-import com.hanheldpos.ui.screens.menu.report.sale.menu.inventory_sales.InventorySalesReportFragment
-import com.hanheldpos.ui.screens.menu.report.sale.menu.item_sales.ItemSalesReportFragment
-import com.hanheldpos.ui.screens.menu.report.sale.menu.overview.SaleOverviewFragment
-import com.hanheldpos.ui.screens.menu.report.sale.menu.payment_summary.PaymentReportFragment
-import com.hanheldpos.ui.screens.menu.report.sale.menu.refund.RefundReportFragment
-import com.hanheldpos.ui.screens.menu.report.sale.menu.section_sales.SectionSalesReportFragment
-import com.hanheldpos.ui.screens.menu.report.sale.menu.services.ServicesReportFragment
-import com.hanheldpos.ui.screens.menu.report.sale.menu.surcharges.SurchargesReportFragment
-import com.hanheldpos.ui.screens.menu.report.sale.menu.taxes.TaxesReportFragment
 import com.hanheldpos.utils.DateTimeUtils
+import com.hanheldpos.utils.GSonUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
-class SaleReportsMenuFragment(private val isPreviewHistory: Boolean = false) :
+class SaleReportsMenuFragment(
+    private val isPreviewHistory: Boolean = false,
+    private var filterReport: ReportFilterModel? = null
+) :
     BaseFragment<FragmentSaleReportsMenuBinding, SaleReportsMenuVM>(),
     SaleReportsMenuUV {
 
@@ -83,45 +77,57 @@ class SaleReportsMenuFragment(private val isPreviewHistory: Boolean = false) :
 
     @SuppressLint("NotifyDataSetChanged")
     override fun initData() {
-        saleReportCommon.saleReportFilter.postValue(
-            SaleReportFilter(
-                startDay = DateTimeUtils.curDate,
-                endDay = DateTimeUtils.curDate,
-                isCurrentDrawer = true,
-                isAllDevice = false,
-                isAllDay = true,
-                startTime = null,
-                endTime = null
-            )
-        )
+        saleReportCommon.resetDefaultReport()
 
         viewModel.getListOptionPages(requireContext()).let {
             saleReportMenuAdapter.submitList(it)
             saleReportMenuAdapter.notifyDataSetChanged()
         }
 
-
-        lifecycleScope.launch(Dispatchers.IO) {
-            while (true) {
-                if (isVisible) break
+        if (!isPreviewHistory) {
+            lifecycleScope.launch(Dispatchers.IO) {
+                while (true) {
+                    if (isVisible) break
+                }
+                launch(Dispatchers.Main) {
+                    showLoading(true)
+                    saleReportCommon.fetchDataSaleReport(
+                        filter = filterReport ?: saleReportCommon.reportFilter.value, succeed = {
+                            viewModel.saleReport.postValue(it)
+                            showLoading(false)
+                        }, failed = {
+                            viewModel.saleReport.postValue(null)
+                            showLoading(false)
+                            showMessage(it)
+                        })
+                }
             }
-            launch(Dispatchers.Main) {
-                showLoading(true)
-                saleReportCommon.fetchDataSaleReport(succeed = {
-                    viewModel.saleReport.postValue(it)
-                    showLoading(false)
-                }, failed = {
-                    viewModel.saleReport.postValue(null)
-                    showLoading(false)
-                    showMessage(it)
-                })
-            }
-
+        } else {
+            showLoading(true)
+            val reportResult = GSonUtils.toObject<ReportSalesResp>(filterReport?.reportResult)
+            viewModel.saleReport.postValue(reportResult)
+            showLoading(false)
         }
+
 
     }
 
     override fun initAction() {
+
+        // Setup firebase
+        DataHelper.firebaseSettingLocalStorage?.fireStorePath?.let { path ->
+            Firebase.firestore.collection(path.reportList ?: "")
+                .addSnapshotListener { value, _ ->
+                    Log.d("Data Version Firebase", value.toString())
+                    value?.documents?.let {
+                        val list = it.map { data -> data.data }.mapNotNull { map ->
+                            GSonUtils.mapToObject(map, ReportFilterModel::class.java)
+                        }
+                        saleReportCommon.reportRequestHistory.postValue(list)
+                    }
+                }
+        }
+
         setFragmentResultListener(SALE_REPORT_RESP) { _, bundle ->
             viewModel.saleReport.postValue(bundle.get("data") as ReportSalesResp?)
         }
@@ -130,6 +136,7 @@ class SaleReportsMenuFragment(private val isPreviewHistory: Boolean = false) :
     fun onNavOptionClick(option: ItemOptionNav) {
         navigator.goToWithAnimationEnterFromRight(
             SalesReportFragment(
+                filterReport ?: saleReportCommon.reportFilter.value,
                 viewModel.saleReport.value,
                 type = option.type as SaleOptionPage,
                 isPreviewHistory = isPreviewHistory,
