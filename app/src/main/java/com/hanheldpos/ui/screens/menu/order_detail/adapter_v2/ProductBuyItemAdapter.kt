@@ -57,7 +57,7 @@ class ProductBuyParentAdapter : BaseBindingListAdapter<ProductBuyItem>(DiffCallB
                         if (chosenProduct.ProductTypeId == ProductType.BUNDLE.value)
                             it.Parent_id
                         else
-                            it.ProductTypeId
+                            it.ProductApplyTo
                     }
 
                 val products = productGroup?.map {
