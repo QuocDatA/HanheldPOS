@@ -49,7 +49,6 @@ class SaleReportCommonVM : BaseViewModel() {
     )
 
     var isSyncOrderToServer: Boolean = false
-    var saleReport = MutableLiveData<ReportSalesResp?>()
     val reportRequestHistory = MutableLiveData<List<ReportModel>>(mutableListOf())
 
     private val settingRepo = SettingRepo();
@@ -194,7 +193,10 @@ class SaleReportCommonVM : BaseViewModel() {
 
     }
 
-    fun fetchDataSaleReport(succeed: () -> Unit, failed: () -> Unit) {
+    fun fetchDataSaleReport(
+        succeed: (report: ReportSalesResp) -> Unit,
+        failed: (message: String?) -> Unit
+    ) {
         reportRepo.getSalesReport(
             userGuid = UserHelper.getUserGuid(),
             locationGuid = UserHelper.getLocationGuid(),
@@ -218,18 +220,15 @@ class SaleReportCommonVM : BaseViewModel() {
             isCurrentCashdrawer = saleReportFilter.value?.isCurrentDrawer,
             callback = object : BaseRepoCallback<BaseResponse<ReportSalesResp>?> {
                 override fun apiResponse(data: BaseResponse<ReportSalesResp>?) {
-
-                    if (data == null || data.DidError) {
-                        saleReport.postValue(null)
-                        failed()
+                    if (data == null || data.DidError || data.Model == null) {
+                        failed.invoke(data?.Message)
                     } else {
-                        saleReport.postValue(data.Model)
-                        succeed()
+                        succeed.invoke(data.Model)
                     }
                 }
 
                 override fun showMessage(message: String?) {
-                    failed()
+                    failed.invoke(message)
                 }
             }
         )

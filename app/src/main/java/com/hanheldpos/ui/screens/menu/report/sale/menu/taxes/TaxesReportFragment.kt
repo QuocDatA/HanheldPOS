@@ -6,6 +6,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hanheldpos.R
+import com.hanheldpos.data.api.pojo.report.ReportSalesResp
 import com.hanheldpos.databinding.FragmentTaxesReportBinding
 import com.hanheldpos.extension.setOnClickDebounce
 import com.hanheldpos.model.menu.report.ReportItem
@@ -17,7 +18,8 @@ import com.hanheldpos.ui.screens.menu.report.sale.adapter.SaleReportDetailAdapte
 import com.hanheldpos.utils.PriceUtils
 
 
-class TaxesReportFragment : BaseFragment<FragmentTaxesReportBinding,TaxesReportVM>(), TaxesReportUV{
+class TaxesReportFragment(private val salesReport: ReportSalesResp?) :
+    BaseFragment<FragmentTaxesReportBinding, TaxesReportVM>(), TaxesReportUV {
     private lateinit var saleReportAdapter: SaleReportAdapter
     private lateinit var saleReportDetailAdapter: SaleReportDetailAdapter
     private val saleReportCommon by activityViewModels<SaleReportCommonVM>()
@@ -72,22 +74,22 @@ class TaxesReportFragment : BaseFragment<FragmentTaxesReportBinding,TaxesReportV
 
     @SuppressLint("NotifyDataSetChanged")
     override fun initData() {
-        saleReportCommon.saleReport.observe(this) { reportSalesResp ->
-            val taxes = reportSalesResp?.ListTaxFee
-            viewModel.getTaxesSummary(taxes).let {
-                binding.totalPayment.text = PriceUtils.formatStringPrice(it[0].toString())
-                with(saleReportAdapter) {
-                    submitList(it[1] as List<ReportItem>)
-                    notifyDataSetChanged()
-                }
-            }
-            viewModel.getTaxesDetail(requireContext(), taxes).let {
-                with(saleReportDetailAdapter){
-                    submitList(it)
-                    notifyDataSetChanged()
-                }
+
+        val taxes = salesReport?.ListTaxFee
+        viewModel.getTaxesSummary(taxes).let {
+            binding.totalPayment.text = PriceUtils.formatStringPrice(it[0].toString())
+            with(saleReportAdapter) {
+                submitList(it[1] as List<ReportItem>)
+                notifyDataSetChanged()
             }
         }
+        viewModel.getTaxesDetail(requireContext(), taxes).let {
+            with(saleReportDetailAdapter) {
+                submitList(it)
+                notifyDataSetChanged()
+            }
+        }
+
     }
 
     override fun initAction() {

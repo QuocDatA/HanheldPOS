@@ -3,10 +3,12 @@ package com.hanheldpos.ui.screens.menu.report.sale
 import android.annotation.SuppressLint
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hanheldpos.R
+import com.hanheldpos.data.api.pojo.report.ReportSalesResp
 import com.hanheldpos.databinding.FragmentSaleReportsMenuBinding
 import com.hanheldpos.model.menu.report.SaleOptionPage
 import com.hanheldpos.model.report.SaleReportFilter
@@ -33,8 +35,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
-class SaleReportsMenuFragment : BaseFragment<FragmentSaleReportsMenuBinding, SaleReportsMenuVM>(),
+class SaleReportsMenuFragment(private val isPreviewHistory: Boolean = false) :
+    BaseFragment<FragmentSaleReportsMenuBinding, SaleReportsMenuVM>(),
     SaleReportsMenuUV {
+
     private lateinit var saleReportMenuAdapter: OptionNavAdapter
     private val saleReportCommon by activityViewModels<SaleReportCommonVM>()
     override fun layoutRes(): Int {
@@ -104,9 +108,12 @@ class SaleReportsMenuFragment : BaseFragment<FragmentSaleReportsMenuBinding, Sal
             launch(Dispatchers.Main) {
                 showLoading(true)
                 saleReportCommon.fetchDataSaleReport(succeed = {
+                    viewModel.saleReport.postValue(it)
                     showLoading(false)
                 }, failed = {
+                    viewModel.saleReport.postValue(null)
                     showLoading(false)
+                    showMessage(it)
                 })
             }
 
@@ -115,84 +122,24 @@ class SaleReportsMenuFragment : BaseFragment<FragmentSaleReportsMenuBinding, Sal
     }
 
     override fun initAction() {
-
+        setFragmentResultListener(SALE_REPORT_RESP) { _, bundle ->
+            viewModel.saleReport.postValue(bundle.get("data") as ReportSalesResp?)
+        }
     }
 
     fun onNavOptionClick(option: ItemOptionNav) {
-        when (option.type as SaleOptionPage) {
-            SaleOptionPage.Overview -> navigator.goToWithAnimationEnterFromRight(
-                SalesReportFragment(
-                    SaleOptionPage.Overview,
-                    fragment = SaleOverviewFragment()
-                )
+        navigator.goToWithAnimationEnterFromRight(
+            SalesReportFragment(
+                viewModel.saleReport.value,
+                type = option.type as SaleOptionPage,
+                isPreviewHistory = isPreviewHistory,
             )
-            SaleOptionPage.PaymentSummary -> navigator.goToWithAnimationEnterFromRight(
-                SalesReportFragment(
-                    fragment = PaymentReportFragment()
-                )
-            )
-            SaleOptionPage.DiningOptions -> navigator.goToWithAnimationEnterFromRight(
-                SalesReportFragment(
-                    fragment = DiningOptionsFragment()
-                )
-            )
-            SaleOptionPage.CashVoucher -> navigator.goToWithAnimationEnterFromRight(
-                SalesReportFragment(
-                    fragment = CashVoucherReportFragment()
-                )
-            )
-            SaleOptionPage.ItemSales -> navigator.goToWithAnimationEnterFromRight(
-                SalesReportFragment(
-                    fragment = ItemSalesReportFragment()
-                )
-            )
-            SaleOptionPage.Discounts -> navigator.goToWithAnimationEnterFromRight(
-                SalesReportFragment(
-                    fragment = DiscountsReportFragment()
-                )
-            )
-            SaleOptionPage.Comps -> navigator.goToWithAnimationEnterFromRight(
-                SalesReportFragment(
-                    fragment = CompsReportFragment()
-                )
-            )
-            SaleOptionPage.SectionSales -> navigator.goToWithAnimationEnterFromRight(
-                SalesReportFragment(
-                    fragment = SectionSalesReportFragment()
-                )
-            )
-            SaleOptionPage.InventorySales -> navigator.goToWithAnimationEnterFromRight(
-                SalesReportFragment(
-                    SaleOptionPage.InventorySales,
-                    fragment = InventorySalesReportFragment()
-                )
-            )
-            SaleOptionPage.CategorySales -> navigator.goToWithAnimationEnterFromRight(
-                SalesReportFragment(
-                    fragment = CategorySalesReportFragment()
-                )
-            )
-            SaleOptionPage.Refund -> navigator.goToWithAnimationEnterFromRight(
-                SalesReportFragment(
-                    fragment = RefundReportFragment()
-                )
-            )
-            SaleOptionPage.Taxes -> navigator.goToWithAnimationEnterFromRight(
-                SalesReportFragment(
-                    fragment = TaxesReportFragment()
-                )
-            )
-            SaleOptionPage.Service -> navigator.goToWithAnimationEnterFromRight(
-                SalesReportFragment(
-                    fragment = ServicesReportFragment()
-                )
-            )
-            SaleOptionPage.Surcharge -> navigator.goToWithAnimationEnterFromRight(
-                SalesReportFragment(
-                    fragment = SurchargesReportFragment()
-                )
-            )
-        }
+        )
+
+    }
+
+    companion object {
+        const val SALE_REPORT_RESP: String = "SALE_REPORT_RESP";
     }
 
 }

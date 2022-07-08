@@ -1,15 +1,18 @@
 package com.hanheldpos.ui.screens.menu.report.sale
 
 import android.os.Build
+import android.os.Bundle
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.setFragmentResult
 import androidx.lifecycle.lifecycleScope
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.hanheldpos.R
+import com.hanheldpos.data.api.pojo.report.ReportSalesResp
 import com.hanheldpos.databinding.FragmentSalesReportBinding
 import com.hanheldpos.extension.notifyValueChange
 import com.hanheldpos.extension.setOnClickDebounce
@@ -26,16 +29,33 @@ import com.hanheldpos.ui.screens.menu.report.sale.adapter.NumberDayReportAdapter
 import com.hanheldpos.ui.screens.menu.report.sale.adapter.NumberDayReportItem
 import com.hanheldpos.ui.screens.menu.report.sale.customize.CustomizeReportFragment
 import com.hanheldpos.ui.screens.menu.report.sale.history.HistoryRequestFragment
+import com.hanheldpos.ui.screens.menu.report.sale.menu.cash_voucher.CashVoucherReportFragment
+import com.hanheldpos.ui.screens.menu.report.sale.menu.category_sales.CategorySalesReportFragment
+import com.hanheldpos.ui.screens.menu.report.sale.menu.comps.CompsReportFragment
+import com.hanheldpos.ui.screens.menu.report.sale.menu.dining_options.DiningOptionsFragment
+import com.hanheldpos.ui.screens.menu.report.sale.menu.discounts.DiscountsReportFragment
+import com.hanheldpos.ui.screens.menu.report.sale.menu.inventory_sales.InventorySalesReportFragment
+import com.hanheldpos.ui.screens.menu.report.sale.menu.item_sales.ItemSalesReportFragment
+import com.hanheldpos.ui.screens.menu.report.sale.menu.overview.SaleOverviewFragment
+import com.hanheldpos.ui.screens.menu.report.sale.menu.payment_summary.PaymentReportFragment
+import com.hanheldpos.ui.screens.menu.report.sale.menu.refund.RefundReportFragment
+import com.hanheldpos.ui.screens.menu.report.sale.menu.section_sales.SectionSalesReportFragment
+import com.hanheldpos.ui.screens.menu.report.sale.menu.services.ServicesReportFragment
+import com.hanheldpos.ui.screens.menu.report.sale.menu.surcharges.SurchargesReportFragment
+import com.hanheldpos.ui.screens.menu.report.sale.menu.taxes.TaxesReportFragment
 import com.hanheldpos.utils.DateTimeUtils
 import com.hanheldpos.utils.GSonUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.time.temporal.ChronoUnit
 import java.util.*
+import kotlin.reflect.KClass
+import kotlin.reflect.full.createInstance
 
 class SalesReportFragment(
+    private var saleReport: ReportSalesResp?,
     private val type: SaleOptionPage? = null,
-    private val fragment: Fragment
+    private val isPreviewHistory: Boolean = false,
 ) :
     BaseFragment<FragmentSalesReportBinding, SalesReportVM>(),
     SalesReportUV {
@@ -91,7 +111,6 @@ class SalesReportFragment(
                         }
                         saleReportCommon.reportRequestHistory.postValue(list)
                     }
-
                 }
         }
 
@@ -101,9 +120,7 @@ class SalesReportFragment(
             setUpDateTitle(it)
         }
 
-        val transaction: FragmentTransaction = childFragmentManager.beginTransaction()
-        transaction.add(R.id.fragmentContainer, fragment)
-        transaction.commit()
+        initializeFragmentChild()
 
     }
 
@@ -125,7 +142,7 @@ class SalesReportFragment(
                     SaleOptionPage.Overview -> {
                         BillPrinterManager.get { }.printReport(
                             LayoutType.Report.Overview,
-                            saleReportCommon.saleReport.value,
+                            saleReport,
                             saleReportCommon.saleReportFilter.value,
                             PrinterTypes.CASHIER
                         )
@@ -133,7 +150,7 @@ class SalesReportFragment(
                     SaleOptionPage.InventorySales -> {
                         BillPrinterManager.get { }.printReport(
                             LayoutType.Report.Inventory,
-                            saleReportCommon.saleReport.value,
+                            saleReport,
                             saleReportCommon.saleReportFilter.value,
                             PrinterTypes.CASHIER
                         )
@@ -155,6 +172,11 @@ class SalesReportFragment(
             }
             showLoading(true)
             saleReportCommon.fetchDataSaleReport(succeed = {
+                setFragmentResult(SaleReportsMenuFragment.SALE_REPORT_RESP, Bundle().apply {
+                    putParcelable("data", it)
+                })
+                this.saleReport = it
+                initializeFragmentChild()
                 showLoading(false)
             }, failed = {
                 showLoading(false)
@@ -206,6 +228,34 @@ class SalesReportFragment(
         if (saleReportCustomData.isCurrentDrawer) {
             binding.deviceApply.text = "${binding.deviceApply.text}, Current Drawer"
         }
+    }
+
+    private fun initializeFragmentChild() {
+        binding.fragmentContainer.removeAllViews()
+        val transaction: FragmentTransaction = childFragmentManager.beginTransaction()
+
+        val fragment = when (type as SaleOptionPage) {
+            SaleOptionPage.Overview -> SaleOverviewFragment::class.java
+            SaleOptionPage.PaymentSummary -> PaymentReportFragment::class.java
+            SaleOptionPage.DiningOptions -> DiningOptionsFragment::class.java
+            SaleOptionPage.CashVoucher -> CashVoucherReportFragment::class.java
+            SaleOptionPage.ItemSales -> ItemSalesReportFragment::class.java
+            SaleOptionPage.Discounts -> DiscountsReportFragment::class.java
+            SaleOptionPage.Comps -> CompsReportFragment::class.java
+            SaleOptionPage.SectionSales -> SectionSalesReportFragment::class.java
+            SaleOptionPage.InventorySales -> InventorySalesReportFragment::class.java
+            SaleOptionPage.CategorySales -> CategorySalesReportFragment::class.java
+            SaleOptionPage.Refund -> RefundReportFragment::class.java
+            SaleOptionPage.Taxes -> TaxesReportFragment::class.java
+            SaleOptionPage.Service -> ServicesReportFragment::class.java
+            SaleOptionPage.Surcharge -> SurchargesReportFragment::class.java
+        }
+
+        transaction.add(
+            R.id.fragmentContainer,
+            fragment.getConstructor(ReportSalesResp::class.java).newInstance(saleReport)
+        )
+        transaction.commit()
     }
 
 }

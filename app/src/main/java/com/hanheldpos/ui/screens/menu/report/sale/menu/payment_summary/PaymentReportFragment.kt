@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.view.Gravity
 import androidx.fragment.app.activityViewModels
 import com.hanheldpos.R
+import com.hanheldpos.data.api.pojo.report.ReportSalesResp
 import com.hanheldpos.databinding.FragmentPaymentReportBinding
 import com.hanheldpos.extension.setOnClickDebounce
 import com.hanheldpos.model.menu.report.ReportItem
@@ -14,7 +15,8 @@ import com.hanheldpos.ui.screens.menu.report.sale.adapter.SaleReportAdapter
 import com.hanheldpos.utils.PriceUtils
 
 
-class PaymentReportFragment : BaseFragment<FragmentPaymentReportBinding, PaymentReportVM>(),
+class PaymentReportFragment(private val salesReport: ReportSalesResp?) :
+    BaseFragment<FragmentPaymentReportBinding, PaymentReportVM>(),
     PaymentReportUV {
     private lateinit var saleReportAdapter: SaleReportAdapter
     private val saleReportCommon by activityViewModels<SaleReportCommonVM>()
@@ -46,36 +48,38 @@ class PaymentReportFragment : BaseFragment<FragmentPaymentReportBinding, Payment
                 )
             )
         }
-        binding.tableLayout.setColumnAligns(mutableListOf(
-            Gravity.START,
-            Gravity.CENTER,
-            Gravity.CENTER,
-            Gravity.CENTER,
-            Gravity.CENTER,
-            Gravity.END,
-        ))
+        binding.tableLayout.setColumnAligns(
+            mutableListOf(
+                Gravity.START,
+                Gravity.CENTER,
+                Gravity.CENTER,
+                Gravity.CENTER,
+                Gravity.CENTER,
+                Gravity.END,
+            )
+        )
     }
 
     @SuppressLint("NotifyDataSetChanged")
     override fun initData() {
-        saleReportCommon.saleReport.observe(this) { reportSalesResp ->
-            val orderPayment = reportSalesResp?.OrderPayment
-            viewModel.getPaymentHeaders(requireContext()).let {
-                binding.tableLayout.clearHeader()
-                binding.tableLayout.addRangeHeaders(it)
-            }
-            viewModel.getPaymentRows(requireContext(), orderPayment).let {
-                binding.tableLayout.clearRow()
-                binding.tableLayout.addRangeRows(it)
-            }
-            viewModel.getPaymentSummary(requireContext(), orderPayment).let {
 
-                binding.totalPayment.text = PriceUtils.formatStringPrice(it[0] as Double)
-
-                saleReportAdapter.submitList((it[1] as List<ReportItem>).toMutableList())
-                saleReportAdapter.notifyDataSetChanged()
-            }
+        val orderPayment = salesReport?.OrderPayment
+        viewModel.getPaymentHeaders(requireContext()).let {
+            binding.tableLayout.clearHeader()
+            binding.tableLayout.addRangeHeaders(it)
         }
+        viewModel.getPaymentRows(requireContext(), orderPayment).let {
+            binding.tableLayout.clearRow()
+            binding.tableLayout.addRangeRows(it)
+        }
+        viewModel.getPaymentSummary(requireContext(), orderPayment).let {
+
+            binding.totalPayment.text = PriceUtils.formatStringPrice(it[0] as Double)
+
+            saleReportAdapter.submitList((it[1] as List<ReportItem>).toMutableList())
+            saleReportAdapter.notifyDataSetChanged()
+        }
+
     }
 
     override fun initAction() {

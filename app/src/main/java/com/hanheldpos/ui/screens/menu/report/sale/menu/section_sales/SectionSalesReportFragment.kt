@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.view.Gravity
 import androidx.fragment.app.activityViewModels
 import com.hanheldpos.R
+import com.hanheldpos.data.api.pojo.report.ReportSalesResp
 import com.hanheldpos.databinding.FragmentSectionSalesReportBinding
 import com.hanheldpos.extension.setOnClickDebounce
 import com.hanheldpos.model.menu.report.ReportItem
@@ -13,7 +14,7 @@ import com.hanheldpos.ui.screens.menu.report.sale.SaleReportCommonVM
 import com.hanheldpos.ui.screens.menu.report.sale.adapter.SaleReportAdapter
 import com.hanheldpos.utils.PriceUtils
 
-class SectionSalesReportFragment :
+class SectionSalesReportFragment(private val salesReport: ReportSalesResp?) :
     BaseFragment<FragmentSectionSalesReportBinding, SectionSalesReportVM>(), SectionSalesReportUV {
     private val saleReportCommon by activityViewModels<SaleReportCommonVM>()
     override fun layoutRes(): Int {
@@ -46,24 +47,24 @@ class SectionSalesReportFragment :
 
     @SuppressLint("NotifyDataSetChanged")
     override fun initData() {
-        saleReportCommon.saleReport.observe(this) { reportSalesResp ->
-            val sections = reportSalesResp?.ListSection
 
-            viewModel.getSectionSalesHeaders(requireContext()).let {
-                binding.tableLayout.clearHeader()
-                binding.tableLayout.addRangeHeaders(it.toMutableList())
-            }
-            viewModel.getSectionSalesRows(requireContext(), sections).let {
-                binding.tableLayout.clearRow()
-                binding.tableLayout.addRangeRows(it)
-            }
-            viewModel.getSectionSalesSummary(requireContext(), sections).let {
+        val sections = salesReport?.ListSection
 
-                binding.totalGrossSales.text = PriceUtils.formatStringPrice(it[0] as Double)
-
-                binding.totalNetSales.text = PriceUtils.formatStringPrice(it[1] as Double)
-            }
+        viewModel.getSectionSalesHeaders(requireContext()).let {
+            binding.tableLayout.clearHeader()
+            binding.tableLayout.addRangeHeaders(it.toMutableList())
         }
+        viewModel.getSectionSalesRows(requireContext(), sections).let {
+            binding.tableLayout.clearRow()
+            binding.tableLayout.addRangeRows(it)
+        }
+        viewModel.getSectionSalesSummary(requireContext(), sections).let {
+
+            binding.totalGrossSales.text = PriceUtils.formatStringPrice(it[0] as Double)
+
+            binding.totalNetSales.text = PriceUtils.formatStringPrice(it[1] as Double)
+        }
+
     }
 
     override fun initAction() {
