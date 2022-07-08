@@ -6,6 +6,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hanheldpos.R
+import com.hanheldpos.data.api.pojo.report.ReportSalesResp
 import com.hanheldpos.databinding.FragmentDiscountsReportBinding
 import com.hanheldpos.extension.setOnClickDebounce
 import com.hanheldpos.model.menu.report.ReportItem
@@ -17,7 +18,7 @@ import com.hanheldpos.ui.screens.menu.report.sale.adapter.SaleReportDetailAdapte
 import com.hanheldpos.utils.PriceUtils
 
 
-class DiscountsReportFragment : BaseFragment<FragmentDiscountsReportBinding,DiscountsReportVM>() , DiscountsReportUV {
+class DiscountsReportFragment(private val salesReport: ReportSalesResp?) : BaseFragment<FragmentDiscountsReportBinding,DiscountsReportVM>() , DiscountsReportUV {
     private lateinit var saleReportAdapter: SaleReportAdapter
     private lateinit var saleReportDetailAdapter: SaleReportDetailAdapter
     private val saleReportCommon by activityViewModels<SaleReportCommonVM>()
@@ -72,8 +73,7 @@ class DiscountsReportFragment : BaseFragment<FragmentDiscountsReportBinding,Disc
 
     @SuppressLint("NotifyDataSetChanged")
     override fun initData() {
-        saleReportCommon.saleReport.observe(this) { reportSalesResp ->
-            val discounts = reportSalesResp?.DiscountOrder
+            val discounts = salesReport?.DiscountOrder
             viewModel.getDiscountsSummary(discounts).let {
                 binding.totalPayment.text = PriceUtils.formatStringPrice(it[0].toString())
                 with(saleReportAdapter) {
@@ -88,7 +88,7 @@ class DiscountsReportFragment : BaseFragment<FragmentDiscountsReportBinding,Disc
                 }
             }
 
-        }
+
     }
 
     override fun initAction() {

@@ -1,6 +1,7 @@
 package com.hanheldpos.ui.screens.menu.report.sale
 
 import android.content.Context
+import androidx.lifecycle.MutableLiveData
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.report.ReportSalesResp
 import com.hanheldpos.data.repository.BaseResponse
@@ -14,6 +15,8 @@ import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
 import com.hanheldpos.ui.screens.menu.adapter.ItemOptionNav
 
 class SaleReportsMenuVM : BaseUiViewModel<SaleReportsMenuUV>() {
+
+    val saleReport = MutableLiveData<ReportSalesResp>()
 
     fun onFragmentBackPressed() {
         uiCallback?.onFragmentBackPressed()

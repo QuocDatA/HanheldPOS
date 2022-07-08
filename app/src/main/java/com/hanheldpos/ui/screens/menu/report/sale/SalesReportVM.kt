@@ -1,10 +1,14 @@
 package com.hanheldpos.ui.screens.menu.report.sale
 
+import androidx.lifecycle.MutableLiveData
+import com.hanheldpos.model.report.ReportFilterModel
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
 import com.hanheldpos.ui.screens.menu.report.sale.adapter.NumberDayReportItem
 
 class SalesReportVM : BaseUiViewModel<SalesReportUV>() {
 
+    val isPreviewHistory = MutableLiveData(false)
+    val saleReportFilter = MutableLiveData<ReportFilterModel>()
 
     fun initNumberDaySelected(): MutableList<NumberDayReportItem> {
         return mutableListOf(

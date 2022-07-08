@@ -17,6 +17,7 @@ import com.hanheldpos.model.product.combo.ItemActionType
 import com.hanheldpos.model.discount.DiscApplyTo
 import com.hanheldpos.model.home.order.ProductModeViewType
 import com.hanheldpos.model.home.order.menu.ProductMenuItem
+import com.hanheldpos.model.order.OrderModel
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.cart.CartDataVM
@@ -42,8 +43,8 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
     private val cartDataVM by activityViewModels<CartDataVM>()
 
     //Adapter
-    private lateinit var productAdapter: OrderProductAdapter;
-    private lateinit var productAdapterHelper: OrderProductAdapterHelper;
+    private lateinit var productAdapter: OrderProductAdapter
+    private lateinit var productAdapterHelper: OrderProductAdapterHelper
 
     override fun viewModelClass(): Class<OrderVM> {
         return OrderVM::class.java
@@ -72,12 +73,12 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
 
                 }
             }
-        );
+        )
 
         productAdapter = OrderProductAdapter(
             listener = object : BaseItemClickListener<ProductMenuItem> {
                 override fun onItemClick(adapterPosition: Int, item: ProductMenuItem) {
-                    Log.d("OrderFragment", "Product Selected");
+                    Log.d("OrderFragment", "Product Selected")
                     onProductMenuSelected(item)
                 }
             }
@@ -98,7 +99,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
     @SuppressLint("NotifyDataSetChanged")
     override fun initAction() {
         screenViewModel.dropDownSelected.observe(this) {
-            val screen = screenViewModel.screenEvent.value?.screen;
+            val screen = screenViewModel.screenEvent.value?.screen
             if (screen == HomeFragment.HomePage.Order) {
                 if (it?.realItem == null)
                     dataVM.onMenuChange(0)
@@ -109,14 +110,14 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
         }
 
         dataVM.selectedMenu.observe(this) { orderMenuItemModel ->
-            val list = dataVM.getProductByMenu(orderMenuItemModel);
-            if (list == null) productAdapterHelper.submitList(mutableListOf());
+            val list = dataVM.getProductByMenu(orderMenuItemModel)
+            if (list == null) productAdapterHelper.submitList(mutableListOf())
             else {
-                val rs: MutableList<ProductMenuItem> = mutableListOf();
+                val rs: MutableList<ProductMenuItem> = mutableListOf()
                 list.forEach {
                     rs.add(it)
                 }
-                productAdapterHelper.submitList(rs.toMutableList());
+                productAdapterHelper.submitList(rs.toMutableList())
             }
         }
 
@@ -135,9 +136,9 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
                 val onCartAdded = object : OrderMenuListener {
                     override fun onCartAdded(item: BaseProductInCart, action: ItemActionType) {
                         showCartAnimation(item)
-                        CurCartData.cartModel?.productsList?.forEachIndexed { index,
+                        CurCartData.cartModel?.productsList?.forEachIndexed { _,
                                                                               baseProduct ->
-                            onBuyXGetYInCart(index, baseProduct)
+                            onBuyXGetYInCart(baseProduct)
                         }
                     }
                 }
@@ -245,7 +246,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
         var selectedSort: Int = 0
     }
 
-    private fun onBuyXGetYInCart(index: Int, baseProduct: BaseProductInCart) {
+    private fun onBuyXGetYInCart(baseProduct: BaseProductInCart) {
         if (baseProduct is BuyXGetY) {
             baseProduct.groupList?.forEach { group ->
                 if (group.condition is CustomerBuys) {
@@ -254,11 +255,11 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
                             CurCartData.cartModel?.getTotalQuantity() ?: 0
                         )
                     ) {
-                        cartDataVM.updateBuyXGetYInCart(index, baseProduct)
+                        cartDataVM.updateBuyXGetYInCart(baseProduct)
                     } else {
-                        (baseProduct.groupList ?: mutableListOf()).forEach { group ->
-                            if (group.type == GroupType.GET) {
-                                if ((group.condition as CustomerGets).ApplyTo == CustomerDiscApplyTo.ENTIRE_ORDER.value) {
+                        (baseProduct.groupList ?: mutableListOf()).forEach { groupProduct ->
+                            if (groupProduct.type == GroupType.GET) {
+                                if ((groupProduct.condition as CustomerGets).ApplyTo == CustomerDiscApplyTo.ENTIRE_ORDER.value) {
                                     if (cartDataVM.cartModelLD.value!!.discountServerList.find { disc -> disc._id == baseProduct.disc?._id } == null)
                                         cartDataVM.addDiscountServer(
                                             baseProduct.disc!!,

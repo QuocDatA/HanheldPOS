@@ -18,6 +18,7 @@ import com.hanheldpos.extension.avoidDropdownFocus
 import com.hanheldpos.extension.notifyValueChange
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.SyncDataService
+import com.hanheldpos.model.order.OrderModel
 import com.hanheldpos.ui.base.dialog.AppAlertDialog
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.base.pager.FragmentPagerAdapter
@@ -62,7 +63,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
 
     // Value
     private var isWaitingForNotification: Boolean = false
-    override fun layoutRes() = R.layout.fragment_home;
+    override fun layoutRes() = R.layout.fragment_home
 
     override fun viewModelClass(): Class<HomeVM> {
         return HomeVM::class.java
@@ -349,38 +350,30 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
         navigator.goToWithAnimationEnterFromLeft(MenuFragment(listener = object :
             MenuFragment.MenuCallBack {
             override fun updateDiscountCouponCode(discountCouponList: List<DiscountCoupon>?) {
-                navigator.goTo(CartFragment(listener = object : CartFragment.CartCallBack {
-                    override fun onCartDelete() {
-
-                    }
-
-                    override fun onBillSuccess() {
-
-                    }
-
-                    override fun onOrderSuccess() {
-
-                    }
-                }, discountCouponList = discountCouponList))
+                openCartFragment(null)
             }
 
             override fun openBuyXGetY(discount: DiscountResp) {
-                navigator.goTo(CartFragment(listener = object : CartFragment.CartCallBack {
-                    override fun onCartDelete() {
-
-                    }
-
-                    override fun onBillSuccess() {
-
-                    }
-
-                    override fun onOrderSuccess() {
-
-                    }
-
-                }, discount = discount))
+                openCartFragment(discount)
             }
         }))
+    }
+
+    fun openCartFragment(discount: DiscountResp? = null) {
+        navigator.goTo(CartFragment(listener = object : CartFragment.CartCallBack {
+            override fun onCartDelete() {
+
+            }
+
+            override fun onBillSuccess() {
+
+            }
+
+            override fun onOrderSuccess() {
+
+            }
+
+        }, discount = discount))
     }
 
     override fun onFragmentBackPressed() {
