@@ -24,6 +24,7 @@ import com.hanheldpos.model.cart.Regular
 import com.hanheldpos.model.cart.fee.FeeTip
 import com.hanheldpos.model.discount.DiscApplyTo
 import com.hanheldpos.model.discount.DiscountUser
+import com.hanheldpos.model.order.OrderModel
 import com.hanheldpos.model.payment.PaymentOrder
 import com.hanheldpos.model.product.ProductType
 import com.hanheldpos.model.product.buy_x_get_y.BuyXGetY
@@ -307,12 +308,13 @@ class CartFragment(
         }))
     }
 
-    override fun onBillSuccess() {
+    override fun onBillSuccess(orderModel: OrderModel) {
         listener.onBillSuccess()
         if (!OrderHelper.isPaymentSuccess(cartDataVM.cartModelLD.value!!)) {
             val totalNeedPay = cartDataVM.cartModelLD.value!!.getTotalPrice()
             this.openSelectPayment(true, totalNeedPay, CurCartData.cartModel!!.paymentsList)
         } else {
+            cartDataVM.getLoyaltyPoint(orderModel)
             this.onFinishOrder(true)
         }
 

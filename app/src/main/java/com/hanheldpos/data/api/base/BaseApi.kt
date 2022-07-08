@@ -8,36 +8,38 @@ import com.hanheldpos.data.api.services.*
 abstract class BaseApi : BaseApiError() {
 
     // Retrofit
-    private val retrofit = RetrofitService.get();
-    private val retrofitAsync = RetrofitServiceAsync.get();
+    private val retrofit = RetrofitService.get()
+    private val retrofitAsync = RetrofitServiceAsync.get()
 
     // Services
-    protected val orderService: OrderService = retrofit.createService(OrderService::class.java);
+    protected val orderService: OrderService = retrofit.createService(OrderService::class.java)
     protected val employeeService: EmployeeService =
-        retrofit.createService(EmployeeService::class.java);
-    protected val deviceService: DeviceService = retrofit.createService(DeviceService::class.java);
-    protected val feeService: FeeService = retrofit.createService(FeeService::class.java);
-    protected val floorService: FloorService = retrofit.createService(FloorService::class.java);
-    protected val menuService: MenuService = retrofit.createService(MenuService::class.java);
+        retrofit.createService(EmployeeService::class.java)
+    protected val deviceService: DeviceService = retrofit.createService(DeviceService::class.java)
+    protected val feeService: FeeService = retrofit.createService(FeeService::class.java)
+    protected val floorService: FloorService = retrofit.createService(FloorService::class.java)
+    protected val menuService: MenuService = retrofit.createService(MenuService::class.java)
     protected val discountService: DiscountService =
-        retrofit.createService(DiscountService::class.java);
+        retrofit.createService(DiscountService::class.java)
     protected val customerService: CustomerService =
-        retrofit.createService(CustomerService::class.java);
+        retrofit.createService(CustomerService::class.java)
     protected val paymentService: PaymentService =
-        retrofit.createService(PaymentService::class.java);
+        retrofit.createService(PaymentService::class.java)
     protected val settingService: SettingService =
-        retrofit.createService(SettingService::class.java);
+        retrofit.createService(SettingService::class.java)
     protected val cashDrawerService: CashDrawerService =
-        retrofit.createService(CashDrawerService::class.java);
-    protected val systemService: SystemService = retrofit.createService(SystemService::class.java);
+        retrofit.createService(CashDrawerService::class.java)
+    protected val systemService: SystemService = retrofit.createService(SystemService::class.java)
     protected val welcomeService: WelcomeService =
         retrofit.createService(WelcomeService::class.java)
-    protected val receiptService: ReceiptService = retrofit.createService(ReceiptService::class.java)
+    protected val receiptService: ReceiptService =
+        retrofit.createService(ReceiptService::class.java)
     protected val dataService: DataService = retrofit.createService(DataService::class.java)
     protected val resourceService: ResourceService =
         retrofit.createService(ResourceService::class.java)
     protected val reportService: ReportService = retrofit.createService(ReportService::class.java)
     protected val orderAsyncService: OrdersAsyncService =
-        retrofitAsync.createService(OrdersAsyncService::class.java);
-
+        retrofitAsync.createService(OrdersAsyncService::class.java)
+    protected val loyaltyPointService: LoyaltyPointService =
+        retrofit.createService(LoyaltyPointService::class.java)
 }

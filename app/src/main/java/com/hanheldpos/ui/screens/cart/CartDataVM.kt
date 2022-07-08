@@ -1,5 +1,6 @@
 package com.hanheldpos.ui.screens.cart
 
+import android.util.Log
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -10,10 +11,17 @@ import com.hanheldpos.data.api.pojo.discount.DiscountCoupon
 import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.data.api.pojo.fee.CustomerGets
 import com.hanheldpos.data.api.pojo.floor.FloorTable
+import com.hanheldpos.data.api.pojo.loyalty.LoyaltyReqModel
+import com.hanheldpos.data.api.pojo.loyalty.LoyaltyResp
 import com.hanheldpos.data.api.pojo.order.settings.DiningOption
 import com.hanheldpos.data.api.pojo.order.settings.Reason
+import com.hanheldpos.data.repository.BaseResponse
+import com.hanheldpos.data.repository.base.BaseRepoCallback
+import com.hanheldpos.data.repository.loyalty.LoyaltyPointRepo
+import com.hanheldpos.database.DatabaseMapper
 import com.hanheldpos.extension.notifyValueChange
 import com.hanheldpos.model.DataHelper
+import com.hanheldpos.model.DatabaseHelper
 import com.hanheldpos.model.OrderHelper
 import com.hanheldpos.model.UserHelper
 import com.hanheldpos.model.product.buy_x_get_y.BuyXGetY
@@ -24,10 +32,15 @@ import com.hanheldpos.model.discount.DiscApplyTo
 import com.hanheldpos.model.discount.DiscountTypeEnum
 import com.hanheldpos.model.discount.DiscountUser
 import com.hanheldpos.model.home.table.TableSummary
+import com.hanheldpos.model.order.OrderModel
 import com.hanheldpos.model.payment.PaymentOrder
 import com.hanheldpos.model.product.buy_x_get_y.GroupBuyXGetY
 import com.hanheldpos.ui.base.dialog.AppAlertDialog
 import com.hanheldpos.ui.base.viewmodel.BaseViewModel
+import com.hanheldpos.utils.GSonUtils
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class CartDataVM : BaseViewModel() {
 
@@ -340,5 +353,41 @@ class CartDataVM : BaseViewModel() {
         buyXGetY.groupList = groupList
 
         return buyXGetY
+    }
+
+
+    private val loyaltyRepo = LoyaltyPointRepo()
+
+    fun getLoyaltyPoint(orderModel: OrderModel) {
+        if (orderModel.OrderDetail.Billing != null) { // Exist customer
+            val loyaltyReqModel = LoyaltyReqModel(
+                DataHelper.userGuid(),
+                orderModel.Order.Code ?: "",
+                DataHelper.locationGuid(),
+                DataHelper.deviceGuid(),
+                orderModel.Order.EmployeeGuid,
+                orderModel.OrderDetail.Billing?._id ?: "",
+                orderModel.OrderDetail.Order.Grandtotal,
+            )
+            loyaltyRepo.postLoyaltyAsync(
+                body = GSonUtils.toServerJson(loyaltyReqModel),
+                callback = object : BaseRepoCallback<BaseResponse<LoyaltyResp>> {
+                    override fun apiResponse(data: BaseResponse<LoyaltyResp>?) {
+                        CoroutineScope(Dispatchers.IO).launch {
+                            orderModel.OrderDetail.Order.Points = data?.Model?.receivable
+                            DatabaseHelper.ordersCompleted.update(
+                                DatabaseMapper.mappingOrderCompletedReqToEntity(
+                                    orderModel
+                                )
+                            )
+                        }
+                    }
+
+                    override fun showMessage(message: String?) {
+                        showError(message)
+                    }
+                }
+            )
+        }
     }
 }
