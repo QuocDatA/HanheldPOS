@@ -136,9 +136,9 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
                 val onCartAdded = object : OrderMenuListener {
                     override fun onCartAdded(item: BaseProductInCart, action: ItemActionType) {
                         showCartAnimation(item)
-                        CurCartData.cartModel?.productsList?.forEachIndexed { index,
+                        CurCartData.cartModel?.productsList?.forEachIndexed { _,
                                                                               baseProduct ->
-                            onBuyXGetYInCart(index, baseProduct)
+                            onBuyXGetYInCart(baseProduct)
                         }
                     }
                 }
@@ -246,7 +246,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
         var selectedSort: Int = 0
     }
 
-    private fun onBuyXGetYInCart(index: Int, baseProduct: BaseProductInCart) {
+    private fun onBuyXGetYInCart(baseProduct: BaseProductInCart) {
         if (baseProduct is BuyXGetY) {
             baseProduct.groupList?.forEach { group ->
                 if (group.condition is CustomerBuys) {
@@ -255,7 +255,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
                             CurCartData.cartModel?.getTotalQuantity() ?: 0
                         )
                     ) {
-                        cartDataVM.updateBuyXGetYInCart(index, baseProduct)
+                        cartDataVM.updateBuyXGetYInCart(baseProduct)
                     } else {
                         (baseProduct.groupList ?: mutableListOf()).forEach { groupProduct ->
                             if (groupProduct.type == GroupType.GET) {
