@@ -41,6 +41,10 @@ class ProductBuyParentAdapter : BaseBindingListAdapter<ProductBuyItem>(DiffCallB
 
         setHeader(holder,item.level)
 
+        if((item.chosenProduct.DiscountTotalPrice ?: 0.0) <= 0.0) {
+            binding.discountDetailContainer.visibility = View.GONE
+        }
+
         if (chosenProduct.ProductTypeId == ProductType.BUNDLE.value || chosenProduct.ProductTypeId == ProductType.BUYX_GETY_DISC.value) {
 
             if ((chosenProduct.ProductChoosedList?.isNotEmpty() == true)) {

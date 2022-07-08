@@ -84,9 +84,10 @@
                                 visibleObject="@{(!item.chosenProduct.serviceFeeList.empty || !item.chosenProduct.taxFeeList.empty || !item.chosenProduct.surchargeFeeList.empty) &amp;&amp; item.chosenProduct.subtotal > 0 &amp;&amp; item.level == 0}"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/_5sdp"
                                 android:maxLines="1"
                                 android:text="@{`(` + PriceUtils.INSTANCE.formatStringPrice(item.chosenProduct.subtotal) + `)`}"
-                                app:useTextColor="color4"
+                                app:useTextColor="color7"
                                 app:useTextHeader="h5"
                                 tools:text="(10,000)" />
                         </LinearLayout>
@@ -94,8 +95,8 @@
 
                         <com.diadiem.pos_components.PTextView
                             android:id="@+id/totalProduct"
-                            visibleObject="@{item.chosenProduct.lineTotal > 0}"
                             priceView="@{item.chosenProduct.lineTotal}"
+                            visibleObject="@{item.chosenProduct.lineTotal > 0}"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textAlignment="textEnd"
@@ -163,13 +164,18 @@
                         visibleObject="@{item.chosenProduct.modifierList != null &amp;&amp; !item.chosenProduct.modifierList.empty}"
                         app:lineText="@{ExtraConverter.INSTANCE.modifierOrderStr(item.chosenProduct.modifierList)}" />
 
-                    <include
-                        android:id="@+id/discountDetail"
-                        layout="@layout/order_product_detail_view_line"
-                        visibleObject="@{(item.chosenProduct.discountList != null &amp;&amp; !item.chosenProduct.discountList.empty) || (item.chosenProduct.compVoidList != null &amp;&amp; !item.chosenProduct.compVoidList.empty ) }"
-                        app:isDiscount="@{true}"
-                        app:lineText="@{`Discount : ` }"
-                        app:priceDiscMinus="@{item.chosenProduct.discountTotalPrice}" />
+                    <FrameLayout
+                        android:id="@+id/discountDetailContainer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                        <include
+                            android:id="@+id/discountDetail"
+                            layout="@layout/order_product_detail_view_line"
+                            visibleObject="@{(item.chosenProduct.discountList != null &amp;&amp; !item.chosenProduct.discountList.empty) || (item.chosenProduct.compVoidList != null &amp;&amp; !item.chosenProduct.compVoidList.empty ) &amp;&amp; item.chosenProduct.discountTotalPrice > 0.0 }"
+                            app:isDiscount="@{true}"
+                            app:lineText="@{`Discount : ` }"
+                            app:priceDiscMinus="@{item.chosenProduct.discountTotalPrice}" />
+                    </FrameLayout>
 
                     <include
                         android:id="@+id/taxDetail"
