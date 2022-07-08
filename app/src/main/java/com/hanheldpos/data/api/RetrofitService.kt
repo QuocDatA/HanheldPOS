@@ -71,7 +71,7 @@ class RetrofitService private constructor() {
             .build()
 
         return Retrofit.Builder()
-            .baseUrl(ApiConst.BASE_URL)
+            .baseUrl(ApiConst.BASE_URL?:"")
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .addConverterFactory(ScalarsConverterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())
