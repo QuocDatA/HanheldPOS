@@ -5,34 +5,26 @@ import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.divider.MaterialDividerItemDecoration
-import com.hanheldpos.PosApp
 import com.hanheldpos.R
 import com.hanheldpos.databinding.DialogChoosePrinterBinding
 import com.hanheldpos.databinding.FragmentOrderDetailViewBinding
 import com.hanheldpos.extension.setOnClickDebounce
-import com.hanheldpos.extension.showWithoutSystemUI
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.order.OrderModel
 import com.hanheldpos.printer.BillPrinterManager
 import com.hanheldpos.printer.dialogs.PrinterChooseAdapter
 import com.hanheldpos.printer.dialogs.PrinterChooseModel
-import com.hanheldpos.printer.layouts.LayoutType
-import com.hanheldpos.printer.printer_devices.Printer
-import com.hanheldpos.printer.printer_setup.device_info.DeviceType
 import com.hanheldpos.ui.base.dialog.AppFunctionDialog
 import com.hanheldpos.ui.base.fragment.BaseFragment
-import com.hanheldpos.ui.screens.menu.order_detail.adapter.OrderDetailItemViewAdapter
 import com.hanheldpos.ui.screens.menu.order_detail.adapter.OrderDetailPaymentAdapter
-import com.hanheldpos.ui.screens.menu.order_detail.adapter_v2.ProductBuyItem
-import com.hanheldpos.ui.screens.menu.order_detail.adapter_v2.ProductBuyParentAdapter
-import kotlinx.coroutines.CoroutineScope
+import com.hanheldpos.ui.screens.menu.order_detail.adapter.ProductBuyItem
+import com.hanheldpos.ui.screens.menu.order_detail.adapter.ProductBuyParentAdapter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
 class OrderDetailViewFragment(private val orderId: String) :
     BaseFragment<FragmentOrderDetailViewBinding, OrderDetailViewVM>(), OrderDetailViewUV {
-    private lateinit var orderDetailItemViewAdapter: OrderDetailItemViewAdapter
     private lateinit var orderDetailPaymentViewAdapter: OrderDetailPaymentAdapter
     private lateinit var orderProductAdapter: ProductBuyParentAdapter
     override fun layoutRes(): Int {
@@ -52,9 +44,7 @@ class OrderDetailViewFragment(private val orderId: String) :
     }
 
     override fun initView() {
-        //orderDetailItemViewAdapter = OrderDetailItemViewAdapter()
         orderProductAdapter = ProductBuyParentAdapter()
-        //binding.itemList.adapter = orderDetailItemViewAdapter
         binding.itemList.adapter = orderProductAdapter
 
         orderDetailPaymentViewAdapter = OrderDetailPaymentAdapter()

@@ -138,7 +138,7 @@ class CartDataVM : BaseViewModel() {
         notifyCartChange()
     }
 
-    fun updateItemBuyXGetYInCart() {
+    fun updateItemBuyXGetYInCart() { // the same function with onBuyXGetYInCart but used for update buy x get y when update quantity of product in cart ( not add new product to cart)
         cartModelLD.value?.productsList?.forEachIndexed { _, baseProduct ->
             if (baseProduct is BuyXGetY) {
                 baseProduct.groupList?.forEach { group ->
@@ -172,10 +172,10 @@ class CartDataVM : BaseViewModel() {
 
     fun updateBuyXGetYInCart(item: BaseProductInCart) {
         if (item.quantity!! > 0) {
-            cartModelLD.value!!.productsList.removeIf{it == item}
+            cartModelLD.value!!.productsList.removeIf { it == item }
             cartModelLD.value!!.productsList.add(item)
         } else {
-            cartModelLD.value!!.productsList.removeIf{it == item}
+            cartModelLD.value!!.productsList.removeIf { it == item }
         }
         notifyCartChange()
     }

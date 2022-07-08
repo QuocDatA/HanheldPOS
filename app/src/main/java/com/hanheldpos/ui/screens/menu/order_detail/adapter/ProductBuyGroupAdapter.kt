@@ -1,14 +1,9 @@
-package com.hanheldpos.ui.screens.menu.order_detail.adapter_v2
+package com.hanheldpos.ui.screens.menu.order_detail.adapter
 
-import android.widget.ListAdapter
-import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.RecyclerView
-import com.diadiem.pos_components.enumtypes.TextColorEnum
 import com.diadiem.pos_components.enumtypes.TextHeaderEnum
 import com.hanheldpos.R
 import com.hanheldpos.databinding.ItemGroupChildOrderDetailViewBinding
-import com.hanheldpos.model.order.GroupProductChosen
 import com.hanheldpos.model.order.ProductChosen
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
