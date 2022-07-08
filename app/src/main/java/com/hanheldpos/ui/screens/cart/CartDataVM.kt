@@ -81,7 +81,7 @@ class CartDataVM : BaseViewModel() {
                     TableName = table.TableName,
                     PeopleQuantity = numberCustomer
                 ),
-                fees = OrderHelper.findFeeOrderList() ?: mutableListOf(),
+                fees = DataHelper.feeLocalStorage?.Fees ?: mutableListOf(),
                 productsList = mutableListOf(),
                 discountUserList = mutableListOf(),
                 discountServerList = mutableListOf(),
