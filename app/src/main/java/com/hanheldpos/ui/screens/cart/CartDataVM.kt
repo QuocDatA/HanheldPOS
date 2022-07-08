@@ -139,7 +139,7 @@ class CartDataVM : BaseViewModel() {
     }
 
     fun updateItemBuyXGetYInCart() {
-        cartModelLD.value?.productsList?.forEachIndexed { index, baseProduct ->
+        cartModelLD.value?.productsList?.forEachIndexed { _, baseProduct ->
             if (baseProduct is BuyXGetY) {
                 baseProduct.groupList?.forEach { group ->
                     if (group.condition is CustomerBuys) {
@@ -170,12 +170,12 @@ class CartDataVM : BaseViewModel() {
         }
     }
 
-    fun updateBuyXGetYInCart(index: Int, item: BaseProductInCart) {
+    fun updateBuyXGetYInCart(item: BaseProductInCart) {
         if (item.quantity!! > 0) {
-            cartModelLD.value!!.productsList.removeAt(index)
+            cartModelLD.value!!.productsList.removeIf{it == item}
             cartModelLD.value!!.productsList.add(item)
         } else {
-            cartModelLD.value!!.productsList.removeAt(index)
+            cartModelLD.value!!.productsList.removeIf{it == item}
         }
         notifyCartChange()
     }
