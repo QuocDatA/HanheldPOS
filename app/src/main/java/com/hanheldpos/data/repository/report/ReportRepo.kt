@@ -1,6 +1,5 @@
 package com.hanheldpos.data.repository.report
 
-import com.hanheldpos.data.api.pojo.floor.FloorResp
 import com.hanheldpos.data.api.pojo.report.ReportSalesResp
 import com.hanheldpos.data.repository.BaseResponse
 import com.hanheldpos.data.repository.base.BaseRepo
@@ -8,7 +7,6 @@ import com.hanheldpos.data.repository.base.BaseRepoCallback
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.http.Query
 
 class ReportRepo : BaseRepo() {
     fun getSalesReport(
@@ -21,7 +19,7 @@ class ReportRepo : BaseRepo() {
         cashDrawerGuid: String?,
         endHour: String?,
         isAllDevice: Boolean? = false,
-        isCurrentCashdrawer: Boolean? = false,
+        isCurrentCashDrawer: Boolean? = false,
         callback: BaseRepoCallback<BaseResponse<ReportSalesResp>?>
     ) {
         callback.apiRequesting(true);
@@ -35,7 +33,7 @@ class ReportRepo : BaseRepo() {
             cashDrawerGuid,
             endHour,
             isAllDevice,
-            isCurrentCashdrawer,
+            isCurrentCashDrawer,
         ).enqueue(object : Callback<BaseResponse<ReportSalesResp>?> {
             override fun onResponse(
                 call: Call<BaseResponse<ReportSalesResp>?>,

@@ -8,7 +8,7 @@ import com.hanheldpos.printer.printer_setup.printer_manager.BasePrinterManager
 import com.hanheldpos.data.api.pojo.report.ReportSalesResp
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.order.OrderModel
-import com.hanheldpos.model.report.SaleReportFilter
+import com.hanheldpos.model.report.ReportFilterModel
 import com.hanheldpos.printer.layouts.LayoutType
 import com.hanheldpos.printer.layouts.order.CashierLayout
 import com.hanheldpos.printer.layouts.order.KitchenLayout
@@ -134,7 +134,7 @@ class BillPrinterManager private constructor() {
     fun printReport(
         layoutType: LayoutType.Report,
         report: ReportSalesResp?,
-        filterOptions: SaleReportFilter?,
+        filterOptions: ReportFilterModel?,
         printerTypes: PrinterTypes,
     ): BillPrinterManager {
         printers.keys

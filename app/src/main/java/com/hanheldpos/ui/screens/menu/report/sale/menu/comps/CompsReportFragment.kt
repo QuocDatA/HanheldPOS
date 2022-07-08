@@ -6,6 +6,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hanheldpos.R
+import com.hanheldpos.data.api.pojo.report.ReportSalesResp
 import com.hanheldpos.databinding.FragmentCompsReportBinding
 import com.hanheldpos.extension.setOnClickDebounce
 import com.hanheldpos.model.menu.report.ReportItem
@@ -16,7 +17,8 @@ import com.hanheldpos.ui.screens.menu.report.sale.adapter.SaleReportAdapter
 import com.hanheldpos.ui.screens.menu.report.sale.adapter.SaleReportDetailAdapter
 import com.hanheldpos.utils.PriceUtils
 
-class CompsReportFragment : BaseFragment<FragmentCompsReportBinding,CompsReportVM>(), CompsReportUV {
+class CompsReportFragment(private val salesReport: ReportSalesResp?) : BaseFragment<FragmentCompsReportBinding, CompsReportVM>(),
+    CompsReportUV {
     private lateinit var saleReportAdapter: SaleReportAdapter
     private lateinit var saleReportDetailAdapter: SaleReportDetailAdapter
     private val saleReportCommon by activityViewModels<SaleReportCommonVM>()
@@ -71,22 +73,22 @@ class CompsReportFragment : BaseFragment<FragmentCompsReportBinding,CompsReportV
 
     @SuppressLint("NotifyDataSetChanged")
     override fun initData() {
-        saleReportCommon.saleReport.observe(this) { reportSalesResp ->
-            val comps = reportSalesResp?.Comp
-            viewModel.getCompsSummary(comps).let {
-                binding.totalPayment.text = PriceUtils.formatStringPrice(it[0].toString())
-                with(saleReportAdapter) {
-                    submitList(it[1] as List<ReportItem>)
-                    notifyDataSetChanged()
-                }
-            }
-            viewModel.getCompsDetail(requireContext(), comps).let {
-                with(saleReportDetailAdapter){
-                    submitList(it)
-                    notifyDataSetChanged()
-                }
+
+        val comps = salesReport?.Comp
+        viewModel.getCompsSummary(comps).let {
+            binding.totalPayment.text = PriceUtils.formatStringPrice(it[0].toString())
+            with(saleReportAdapter) {
+                submitList(it[1] as List<ReportItem>)
+                notifyDataSetChanged()
             }
         }
+        viewModel.getCompsDetail(requireContext(), comps).let {
+            with(saleReportDetailAdapter) {
+                submitList(it)
+                notifyDataSetChanged()
+            }
+        }
+
     }
 
     override fun initAction() {

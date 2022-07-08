@@ -6,7 +6,7 @@ import com.hanheldpos.printer.wagu.WaguUtils
 import com.hanheldpos.data.api.pojo.report.ReportSalesResp
 import com.hanheldpos.model.menu.report.ReportHelper
 import com.hanheldpos.model.menu.report.SaleOptionPage
-import com.hanheldpos.model.report.SaleReportFilter
+import com.hanheldpos.model.report.ReportFilterModel
 import com.hanheldpos.printer.printer_setup.PrintConfig
 import com.hanheldpos.utils.PriceUtils
 
@@ -15,7 +15,7 @@ class OverviewLayout(
     printer: BasePrinterManager,
     printConfig: PrintConfig,
     reportSalesModel: ReportSalesResp?,
-    filterOptionReportSale: SaleReportFilter?
+    filterOptionReportSale: ReportFilterModel?
 ) : BaseLayoutReport(
     printer,
     printConfig,

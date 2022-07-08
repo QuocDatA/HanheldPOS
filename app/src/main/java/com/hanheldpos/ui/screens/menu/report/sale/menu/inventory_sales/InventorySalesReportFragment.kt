@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.view.Gravity
 import androidx.fragment.app.activityViewModels
 import com.hanheldpos.R
+import com.hanheldpos.data.api.pojo.report.ReportSalesResp
 import com.hanheldpos.databinding.FragmentInventorySalesReportBinding
 import com.hanheldpos.extension.setOnClickDebounce
 import com.hanheldpos.model.menu.report.ReportItem
@@ -14,7 +15,9 @@ import com.hanheldpos.ui.screens.menu.report.sale.adapter.SaleReportAdapter
 import com.hanheldpos.utils.PriceUtils
 
 
-class InventorySalesReportFragment : BaseFragment<FragmentInventorySalesReportBinding,InventorySalesReportVM>() , InventorySalesReportUV {
+class InventorySalesReportFragment(private val salesReport: ReportSalesResp?) :
+    BaseFragment<FragmentInventorySalesReportBinding, InventorySalesReportVM>(),
+    InventorySalesReportUV {
 
     private val saleReportCommon by activityViewModels<SaleReportCommonVM>()
     override fun layoutRes(): Int {
@@ -33,31 +36,33 @@ class InventorySalesReportFragment : BaseFragment<FragmentInventorySalesReportBi
     }
 
     override fun initView() {
-        binding.tableLayout.setColumnAligns(mutableListOf(
-            Gravity.START,
-            Gravity.CENTER,
-            Gravity.CENTER,
-            Gravity.CENTER,
-        ))
+        binding.tableLayout.setColumnAligns(
+            mutableListOf(
+                Gravity.START,
+                Gravity.CENTER,
+                Gravity.CENTER,
+                Gravity.CENTER,
+            )
+        )
     }
 
     @SuppressLint("NotifyDataSetChanged")
     override fun initData() {
-        saleReportCommon.saleReport.observe(this) { reportSalesResp ->
-            val inventories = reportSalesResp?.ListInventory
-            viewModel.getInventoryHeaders(requireContext()).let {
-                binding.tableLayout.clearHeader()
-                binding.tableLayout.addRangeHeaders(it.toMutableList())
-            }
-            viewModel.getInventoryRows(requireContext(), inventories).let {
-                binding.tableLayout.clearRow()
-                binding.tableLayout.addRangeRows(it)
-            }
-            viewModel.getInventorySummary(requireContext(), inventories).let {
-                binding.totalGrossQty.text = it[0].toString()
-                binding.totalNetQty.text = it[1].toString()
-            }
+
+        val inventories = salesReport?.ListInventory
+        viewModel.getInventoryHeaders(requireContext()).let {
+            binding.tableLayout.clearHeader()
+            binding.tableLayout.addRangeHeaders(it.toMutableList())
         }
+        viewModel.getInventoryRows(requireContext(), inventories).let {
+            binding.tableLayout.clearRow()
+            binding.tableLayout.addRangeRows(it)
+        }
+        viewModel.getInventorySummary(requireContext(), inventories).let {
+            binding.totalGrossQty.text = it[0].toString()
+            binding.totalNetQty.text = it[1].toString()
+        }
+
     }
 
     override fun initAction() {

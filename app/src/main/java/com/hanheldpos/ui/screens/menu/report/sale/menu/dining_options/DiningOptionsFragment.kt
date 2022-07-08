@@ -11,6 +11,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hanheldpos.R
+import com.hanheldpos.data.api.pojo.report.ReportSalesResp
 import com.hanheldpos.databinding.FragmentDiningOptionsBinding
 import com.hanheldpos.extension.setOnClickDebounce
 import com.hanheldpos.model.menu.report.ReportItem
@@ -21,7 +22,8 @@ import com.hanheldpos.ui.screens.menu.report.sale.adapter.SaleReportAdapter
 import com.hanheldpos.ui.screens.menu.report.sale.adapter.SaleReportDetailAdapter
 import com.hanheldpos.utils.PriceUtils
 
-class DiningOptionsFragment : BaseFragment<FragmentDiningOptionsBinding,DiningOptionsVM>() , DiningOptionsUV {
+class DiningOptionsFragment(private val salesReport: ReportSalesResp?) :
+    BaseFragment<FragmentDiningOptionsBinding, DiningOptionsVM>(), DiningOptionsUV {
     private lateinit var saleReportAdapter: SaleReportAdapter
     private lateinit var saleReportDetailAdapter: SaleReportDetailAdapter
     private val saleReportCommon by activityViewModels<SaleReportCommonVM>()
@@ -76,22 +78,22 @@ class DiningOptionsFragment : BaseFragment<FragmentDiningOptionsBinding,DiningOp
 
     @SuppressLint("NotifyDataSetChanged")
     override fun initData() {
-        saleReportCommon.saleReport.observe(this) { reportSalesResp ->
-            val diningOptions = reportSalesResp?.DinningOption
-            viewModel.getDiningOptionsSummary(diningOptions).let {
-                binding.totalPayment.text = PriceUtils.formatStringPrice(it[0].toString())
-                with(saleReportAdapter) {
-                    submitList(it[1] as List<ReportItem>)
-                    notifyDataSetChanged()
-                }
-            }
-            viewModel.getDinningOptionsDetail(requireContext(), diningOptions).let {
-                with(saleReportDetailAdapter){
-                    submitList(it)
-                    notifyDataSetChanged()
-                }
+
+        val diningOptions = salesReport?.DinningOption
+        viewModel.getDiningOptionsSummary(diningOptions).let {
+            binding.totalPayment.text = PriceUtils.formatStringPrice(it[0].toString())
+            with(saleReportAdapter) {
+                submitList(it[1] as List<ReportItem>)
+                notifyDataSetChanged()
             }
         }
+        viewModel.getDinningOptionsDetail(requireContext(), diningOptions).let {
+            with(saleReportDetailAdapter) {
+                submitList(it)
+                notifyDataSetChanged()
+            }
+        }
+
 
     }
 

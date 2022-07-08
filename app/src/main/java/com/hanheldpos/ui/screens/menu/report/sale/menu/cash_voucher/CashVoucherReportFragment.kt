@@ -11,6 +11,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hanheldpos.R
+import com.hanheldpos.data.api.pojo.report.ReportSalesResp
 import com.hanheldpos.databinding.FragmentCashVoucherReportBinding
 import com.hanheldpos.extension.setOnClickDebounce
 import com.hanheldpos.model.menu.report.ReportItem
@@ -21,7 +22,8 @@ import com.hanheldpos.ui.screens.menu.report.sale.adapter.SaleReportAdapter
 import com.hanheldpos.ui.screens.menu.report.sale.adapter.SaleReportDetailAdapter
 import com.hanheldpos.utils.PriceUtils
 
-class CashVoucherReportFragment : BaseFragment<FragmentCashVoucherReportBinding,CashVoucherReportVM>() , CashVoucherReportUV {
+class CashVoucherReportFragment(private val salesReport: ReportSalesResp?) :
+    BaseFragment<FragmentCashVoucherReportBinding, CashVoucherReportVM>(), CashVoucherReportUV {
     private lateinit var saleReportAdapter: SaleReportAdapter
     private lateinit var saleReportDetailAdapter: SaleReportDetailAdapter
     private val saleReportCommon by activityViewModels<SaleReportCommonVM>()
@@ -76,23 +78,23 @@ class CashVoucherReportFragment : BaseFragment<FragmentCashVoucherReportBinding,
 
     @SuppressLint("NotifyDataSetChanged")
     override fun initData() {
-        saleReportCommon.saleReport.observe(this) { reportSalesResp ->
-            val cashVoucher = reportSalesResp?.CashVoucher
-            viewModel.getCashVoucherSummary(cashVoucher).let {
-                binding.totalPayment.text = PriceUtils.formatStringPrice(it[0].toString())
-                with(saleReportAdapter) {
-                    submitList(it[1] as List<ReportItem>)
-                    notifyDataSetChanged()
-                }
-            }
-            viewModel.getCashVoucherDetail(requireContext(), cashVoucher).let {
-                with(saleReportDetailAdapter){
-                    submitList(it)
-                    notifyDataSetChanged()
-                }
-            }
 
+        val cashVoucher = salesReport?.CashVoucher
+        viewModel.getCashVoucherSummary(cashVoucher).let {
+            binding.totalPayment.text = PriceUtils.formatStringPrice(it[0].toString())
+            with(saleReportAdapter) {
+                submitList(it[1] as List<ReportItem>)
+                notifyDataSetChanged()
+            }
         }
+        viewModel.getCashVoucherDetail(requireContext(), cashVoucher).let {
+            with(saleReportDetailAdapter) {
+                submitList(it)
+                notifyDataSetChanged()
+            }
+        }
+
+
     }
 
     override fun initAction() {

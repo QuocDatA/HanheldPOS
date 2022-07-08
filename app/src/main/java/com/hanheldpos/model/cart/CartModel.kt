@@ -8,6 +8,7 @@ import com.hanheldpos.data.api.pojo.order.settings.Reason
 import com.hanheldpos.data.api.pojo.product.Product
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.OrderHelper
+import com.hanheldpos.model.cart.fee.FeeApplyToType
 import com.hanheldpos.model.product.buy_x_get_y.BuyXGetY
 import com.hanheldpos.model.discount.*
 import com.hanheldpos.model.home.table.TableSummary
@@ -78,9 +79,10 @@ open class CartModel(
     }
 
     fun totalFee(subTotal: Double, totalDiscount: Double): Double {
-        return fees.sumOf { fee ->
-            fee.price(subTotal, totalDiscount)
-        }
+        return fees.filter { FeeApplyToType.fromInt(it.Id) != FeeApplyToType.Included }
+            .sumOf { fee ->
+                fee.price(subTotal, totalDiscount)
+            }
     }
 
     fun totalGross(subTotal: Double, totalDiscount: Double): Double {

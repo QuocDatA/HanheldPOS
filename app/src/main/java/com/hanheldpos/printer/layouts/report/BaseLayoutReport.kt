@@ -4,7 +4,7 @@ import com.hanheldpos.printer.printer_setup.printer_manager.BasePrinterManager
 import com.hanheldpos.printer.wagu.Block
 import com.hanheldpos.printer.wagu.WaguUtils
 import com.hanheldpos.data.api.pojo.report.ReportSalesResp
-import com.hanheldpos.model.report.SaleReportFilter
+import com.hanheldpos.model.report.ReportFilterModel
 import com.hanheldpos.printer.layouts.BaseLayoutPrinter
 import com.hanheldpos.printer.printer_setup.PrintConfig
 import com.hanheldpos.utils.DateTimeUtils
@@ -16,16 +16,18 @@ abstract class BaseLayoutReport(
     printConfig: PrintConfig,
     private val title: String,
     protected val reportSalesModel: ReportSalesResp?,
-    protected val filterOptionReportSale: SaleReportFilter?,
+    protected val filterOptionReportSale: ReportFilterModel?,
 ) :
     BaseLayoutPrinter(printer, printConfig) {
 
-    private val startDate: String = DateTimeUtils.dateToString(
+    private val startDate: String = DateTimeUtils.strToStr(
         filterOptionReportSale?.startDay,
+        DateTimeUtils.Format.YYYY_MM_DD,
         DateTimeUtils.Format.EEEE_dd_MMM_yyyy
     )
-    private val endDate: String = DateTimeUtils.dateToString(
+    private val endDate: String = DateTimeUtils.strToStr(
         filterOptionReportSale?.endDay,
+        DateTimeUtils.Format.YYYY_MM_DD,
         DateTimeUtils.Format.EEEE_dd_MMM_yyyy
     )
 
@@ -138,10 +140,10 @@ abstract class BaseLayoutReport(
                 mutableListOf(
                     mutableListOf(
                         "Bill Time",
-                        if (filterOptionReportSale?.isAllDay == true)
+                        if (filterOptionReportSale?.startHour?.isEmpty() == true && filterOptionReportSale.endHour?.isEmpty() == true)
                             "All Day"
                         else
-                            "${filterOptionReportSale?.startTime ?: ""} - ${filterOptionReportSale?.endTime ?: ""}"
+                            "${filterOptionReportSale?.startHour ?: ""} - ${filterOptionReportSale?.endHour ?: ""}"
                     )
                 ),
                 aligns = mutableListOf(Block.DATA_MIDDLE_LEFT, Block.DATA_MIDDLE_RIGHT),
