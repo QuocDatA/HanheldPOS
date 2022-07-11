@@ -1,12 +1,7 @@
-package com.hanheldpos.ui.screens.menu.order_detail.adapter_v2
+package com.hanheldpos.ui.screens.menu.order_detail.adapter
 
 import android.view.View
-import android.view.ViewGroup
-import androidx.core.view.marginTop
-import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.RecyclerView
-import com.diadiem.pos_components.enumtypes.TextColorEnum
 import com.diadiem.pos_components.enumtypes.TextHeaderEnum
 import com.hanheldpos.R
 import com.hanheldpos.databinding.ItemProductOrderDetailViewBinding

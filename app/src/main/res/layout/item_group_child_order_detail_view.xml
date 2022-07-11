@@ -6,7 +6,7 @@
     <data>
         <variable
             name="item"
-            type="com.hanheldpos.ui.screens.menu.order_detail.adapter_v2.ProductBuyGroup" />
+            type="com.hanheldpos.ui.screens.menu.order_detail.adapter.ProductBuyGroup" />
 
         <variable
             name="position"

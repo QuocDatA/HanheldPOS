@@ -17,7 +17,7 @@
 
         <variable
             name="item"
-            type="com.hanheldpos.ui.screens.menu.order_detail.adapter_v2.ProductBuyItem" />
+            type="com.hanheldpos.ui.screens.menu.order_detail.adapter.ProductBuyItem" />
 
     </data>
 
