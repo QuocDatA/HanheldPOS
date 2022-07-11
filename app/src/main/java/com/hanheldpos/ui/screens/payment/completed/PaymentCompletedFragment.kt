@@ -1,6 +1,5 @@
 package com.hanheldpos.ui.screens.payment.completed
 
-import com.hanheldpos.PosApp
 import com.hanheldpos.R
 import com.hanheldpos.binding.setPriceView
 import com.hanheldpos.database.DatabaseMapper
@@ -8,7 +7,6 @@ import com.hanheldpos.databinding.FragmentPaymentCompletedBinding
 import com.hanheldpos.extension.setOnClickDebounce
 import com.hanheldpos.model.DatabaseHelper
 import com.hanheldpos.printer.BillPrinterManager
-import com.hanheldpos.printer.layouts.LayoutType
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -40,7 +38,7 @@ class PaymentCompletedFragment(
     override fun initView() {
         showLoading(true)
         CoroutineScope(Dispatchers.IO).launch {
-            DatabaseHelper.ordersCompleted.getAll().take(1).collectLatest {
+            DatabaseHelper.ordersCompleted.getAllLiveData().take(1).collectLatest {
                 it.lastOrNull()?.let { completedEntity ->
 
                     launch(Dispatchers.IO) {

@@ -82,7 +82,7 @@ class CurrentDrawerFragment : BaseFragment<FragmentCurrentDrawerBinding, Current
 
     override fun onOpenEndDrawer() {
         CoroutineScope(Dispatchers.IO).launch {
-            val ordersCompletedFlow = DatabaseHelper.ordersCompleted.getAll();
+            val ordersCompletedFlow = DatabaseHelper.ordersCompleted.getAllLiveData();
             ordersCompletedFlow.take(1).collectLatest { ordersCompleted ->
                 val listOrder = ordersCompleted.filter { OrderHelper.isValidOrderPush(it) }
                 if (!listOrder.isNullOrEmpty()) {

@@ -55,10 +55,10 @@ class SaleReportCommonVM : BaseViewModel() {
     var isSyncOrderToServer: Boolean = false
     val reportRequestHistory = MutableLiveData<List<ReportFilterModel>>(mutableListOf())
 
-    private val settingRepo = SettingRepo();
-    private val orderAlterRepo = OrderAsyncRepo();
+    private val settingRepo = SettingRepo()
+    private val orderAlterRepo = OrderAsyncRepo()
 
-    val orderCompleted = Transformations.map(DatabaseHelper.ordersCompleted.getAll().asLiveData()) {
+    val orderCompleted = Transformations.map(DatabaseHelper.ordersCompleted.getAllLiveData().asLiveData()) {
         return@map it.filter { order -> OrderHelper.isValidOrderPush(order) }
     }
 
@@ -119,7 +119,7 @@ class SaleReportCommonVM : BaseViewModel() {
 
     private fun pushOrder(context: Context, succeed: () -> Unit, failed: () -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
-            val listOrdersFlow = DatabaseHelper.ordersCompleted.getAll()
+            val listOrdersFlow = DatabaseHelper.ordersCompleted.getAllLiveData()
             var countOrderPush = 0
             listOrdersFlow.take(1).collectLatest { listOrders ->
                 listOrders.filter { OrderHelper.isValidOrderPush(it) }.let { listNeedPush ->

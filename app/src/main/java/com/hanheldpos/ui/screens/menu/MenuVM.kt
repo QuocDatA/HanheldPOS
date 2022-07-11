@@ -2,12 +2,25 @@ package com.hanheldpos.ui.screens.menu
 
 import android.content.Context
 import com.hanheldpos.R
+import com.hanheldpos.data.repository.BaseResponse
+import com.hanheldpos.data.repository.base.BaseRepoCallback
+import com.hanheldpos.data.repository.setting.SettingRepo
 import com.hanheldpos.model.DataHelper
+import com.hanheldpos.model.UserHelper
+import com.hanheldpos.model.menu.LogoutType
 import com.hanheldpos.ui.screens.menu.adapter.ItemOptionNav
 import com.hanheldpos.model.menu.NavBarOptionType
+import com.hanheldpos.model.setting.SettingDevicePut
+import com.hanheldpos.ui.base.dialog.AppAlertDialog
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
+import com.hanheldpos.ui.screens.welcome.WelcomeFragment
+import com.hanheldpos.utils.GSonUtils
+import com.hanheldpos.utils.NetworkUtils
+import com.hanheldpos.utils.StringUtils
 
 class MenuVM : BaseUiViewModel<MenuUV>() {
+    private val settingRepo = SettingRepo()
+
     fun backPress() {
         uiCallback?.getBack()
     }
@@ -62,8 +75,8 @@ class MenuVM : BaseUiViewModel<MenuUV>() {
         )
     }
 
-    private fun getNameMenu(type : NavBarOptionType, context: Context): String {
-        return when(type){
+    private fun getNameMenu(type: NavBarOptionType, context: Context): String {
+        return when (type) {
             NavBarOptionType.ORDERS -> context.getString(R.string.orders)
             NavBarOptionType.TRANSACTIONS -> context.getString(R.string.transactions)
             NavBarOptionType.REPORTS -> context.getString(R.string.reports)
@@ -76,5 +89,34 @@ class MenuVM : BaseUiViewModel<MenuUV>() {
             NavBarOptionType.UPDATE_DATA -> context.getString(R.string.update_data)
             NavBarOptionType.DISCOUNT -> context.getString(R.string.discount)
         }
+    }
+
+    fun onLogoutDevice(context: Context, onPushSucceeded: () -> Unit) {
+        val json = GSonUtils.toServerJson(
+            SettingDevicePut(
+                MaxChar = DataHelper.numberIncreaseOrder.toString().length.toLong(),
+                NumberIncrement = DataHelper.numberIncreaseOrder.toString(),
+                UserGuid = UserHelper.getUserGuid(),
+                LocationGuid = UserHelper.getLocationGuid(),
+                DeviceGuid = UserHelper.getDeviceGuid(),
+                Device_key = DataHelper.deviceCodeLocalStorage?.Device?.firstOrNull()?._key!!.toString(),
+                uuid = StringUtils.getAndroidDeviceId(context = context)
+            )
+        )
+        settingRepo.putSettingDeviceIds(
+            json,
+            callback = object : BaseRepoCallback<BaseResponse<String>> {
+                override fun apiResponse(data: BaseResponse<String>?) {
+                    if (data == null || data.DidError) {
+                        onPushSucceeded.invoke()
+                    } else {
+                        onPushSucceeded.invoke()
+                    }
+                }
+
+                override fun showMessage(message: String?) {
+                    onPushSucceeded.invoke()
+                }
+            })
     }
 }

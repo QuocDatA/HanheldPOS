@@ -1,6 +1,7 @@
 package com.hanheldpos.ui.screens.menu
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -37,6 +38,7 @@ import com.hanheldpos.ui.screens.welcome.WelcomeFragment
 import com.hanheldpos.utils.NetworkUtils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
@@ -145,68 +147,7 @@ class MenuFragment(private val listener: MenuCallBack) :
 
             }
             NavBarOptionType.UPDATE_DATA -> {
-                context?.let {
-                    showLoading(true)
-                    syncDataService.checkNewUpdateVersion(it,
-                        object : SyncDataService.SyncDataServiceListener {
-                            override fun onLoadedResources(data: Any?) {
-                                showLoading(false)
-                                val dataVersion = data as DataVersion?
-                                showAlert(
-                                    getString(R.string.new_data_available),
-                                    getString(R.string.new_data_update_description),
-                                    negativeText = getString(
-                                        R.string.later
-                                    ),
-                                    positiveText = getString(R.string.update),
-                                    onClickListener = object :
-                                        AppAlertDialog.AlertDialogOnClickListener {
-                                        override fun onPositiveClick() {
-                                            showLoading(true)
-                                            DataHelper.dataVersionLocalStorage = dataVersion
-                                            syncDataService.fetchMenuDiscountData(it,
-                                                object : SyncDataService.SyncDataServiceListener {
-                                                    override fun onLoadedResources(data: Any?) {
-
-                                                        DataHelper.isNeedToUpdateNewData.postValue(
-                                                            false
-                                                        )
-                                                        OrderFragment.selectedSort = 0
-                                                        TableFragment.selectedSort = 0
-                                                        menuAdapter.submitList(
-                                                            viewModel.initMenuItemList(
-                                                                requireContext()
-                                                            )
-                                                        )
-                                                        menuAdapter.notifyDataSetChanged()
-                                                        screenViewModel.showTablePage()
-                                                        showSuccessfully(
-                                                            getString(R.string.done),
-                                                            getString(R.string.new_data_have_been_updated_successfully)
-                                                        )
-                                                        onFragmentBackPressed()
-                                                    }
-
-                                                    override fun onError(message: String?) {
-                                                        showLoading(false)
-                                                        showMessage(message)
-                                                    }
-                                                })
-
-                                        }
-                                    }
-                                )
-
-                            }
-
-                            override fun onError(message: String?) {
-                                showLoading(false)
-                                showMessage(message)
-                            }
-
-                        })
-                }
-
+                onUpdateData()
             }
         }
     }
@@ -214,24 +155,39 @@ class MenuFragment(private val listener: MenuCallBack) :
     private fun onLogoutOption(typeLogout: LogoutType, title: String?, message: String?) {
         CoroutineScope(Dispatchers.IO).launch {
             val ordersCompletedFlow = DatabaseHelper.ordersCompleted.getAll()
-            ordersCompletedFlow.take(1).collectLatest { ordersCompleted ->
+            ordersCompletedFlow.let { ordersCompleted ->
+                // Check to valid number increase
+                var isCallingApi = false
+                val orderEnhances = ordersCompleted.filter { OrderHelper.isValidOrderLogout(it) }
+                if (orderEnhances.isNotEmpty()) {
+                    isCallingApi = true
+                    showLoading(true)
+                    viewModel.onLogoutDevice(requireContext()) {
+                        showLoading(false)
+                        isCallingApi = false
+                    }
+                }
+                while (true) {
+                    if (!isCallingApi) break
+                    delay(200)
+                }
                 val listOrder = ordersCompleted.filter { OrderHelper.isValidOrderPush(it) }
                 if (listOrder.isNotEmpty()) {
                     launch(Dispatchers.Main) {
-                        AppAlertDialog.get().show(
+                        showAlert(
                             getString(R.string.notification),
                             getString(R.string.please_sync_local_data_before_logging_out_of_this_account)
                         )
                     }
-                    return@collectLatest
+                    return@let
                 }
                 launch(Dispatchers.Main) {
-                    //TODO : syncing local data orders.
+
                     showAlert(
                         title = title,
                         message = message,
-                        positiveText = getString(R.string.ok),
-                        negativeText = getString(R.string.cancel),
+                        positiveText = getString(R.string.yes),
+                        negativeText = getString(R.string.no),
                         onClickListener = object : AppAlertDialog.AlertDialogOnClickListener {
                             override fun onPositiveClick() {
                                 DataHelper.clearData()
@@ -264,6 +220,70 @@ class MenuFragment(private val listener: MenuCallBack) :
                     NetworkUtils.enableNetworkCheck()
                 }
             })
+    }
+
+    private fun onUpdateData() {
+        context?.let {
+            showLoading(true)
+            syncDataService.checkNewUpdateVersion(it,
+                object : SyncDataService.SyncDataServiceListener {
+                    override fun onLoadedResources(data: Any?) {
+                        showLoading(false)
+                        val dataVersion = data as DataVersion?
+                        showAlert(
+                            getString(R.string.new_data_available),
+                            getString(R.string.new_data_update_description),
+                            negativeText = getString(
+                                R.string.later
+                            ),
+                            positiveText = getString(R.string.update),
+                            onClickListener = object :
+                                AppAlertDialog.AlertDialogOnClickListener {
+                                override fun onPositiveClick() {
+                                    showLoading(true)
+                                    DataHelper.dataVersionLocalStorage = dataVersion
+                                    syncDataService.fetchMenuDiscountData(it,
+                                        object : SyncDataService.SyncDataServiceListener {
+                                            override fun onLoadedResources(data: Any?) {
+
+                                                DataHelper.isNeedToUpdateNewData.postValue(
+                                                    false
+                                                )
+                                                OrderFragment.selectedSort = 0
+                                                TableFragment.selectedSort = 0
+                                                menuAdapter.submitList(
+                                                    viewModel.initMenuItemList(
+                                                        requireContext()
+                                                    )
+                                                )
+                                                menuAdapter.notifyDataSetChanged()
+                                                screenViewModel.showTablePage()
+                                                showSuccessfully(
+                                                    getString(R.string.done),
+                                                    getString(R.string.new_data_have_been_updated_successfully)
+                                                )
+                                                onFragmentBackPressed()
+                                            }
+
+                                            override fun onError(message: String?) {
+                                                showLoading(false)
+                                                showMessage(message)
+                                            }
+                                        })
+
+                                }
+                            }
+                        )
+
+                    }
+
+                    override fun onError(message: String?) {
+                        showLoading(false)
+                        showMessage(message)
+                    }
+
+                })
+        }
     }
 
     interface MenuCallBack {

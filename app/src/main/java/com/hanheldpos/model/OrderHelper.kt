@@ -74,6 +74,10 @@ object OrderHelper {
         return (orderEntity.isSync != true) && orderEntity.statusId == OrderStatus.COMPLETED
     }
 
+    fun isValidOrderLogout(orderEntity: OrderCompletedEntity):Boolean {
+        return (orderEntity.isSync != true) || orderEntity.statusId == OrderStatus.ORDER
+    }
+
 
 
 }
