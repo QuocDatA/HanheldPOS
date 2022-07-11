@@ -316,4 +316,5 @@
     <string name="current_device">Current Device</string>
     <string name="failed">Failed</string>
     <string name="in_process">In Process</string>
+    <string name="all_the_request_will_be_deleted_after_the_drawer_ended">All the request will be deleted after the drawer ended.</string>
 </resources>

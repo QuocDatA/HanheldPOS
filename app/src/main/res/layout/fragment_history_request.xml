@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
@@ -9,7 +10,9 @@
             type="com.hanheldpos.ui.screens.menu.report.sale.history.HistoryRequestVM" />
     </data>
 
-    <LinearLayout style="@style/RootLayout">
+    <LinearLayout
+        style="@style/RootLayout"
+        android:orientation="vertical">
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -43,6 +46,17 @@
         <com.hanheldpos.ui.widgets.TableLayoutFixedHeader
             android:id="@+id/tableHistoryReportData"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <com.diadiem.pos_components.PTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:layout_marginVertical="@dimen/_25sdp"
+            android:text="@string/all_the_request_will_be_deleted_after_the_drawer_ended"
+            app:useFontStyle="normal"
+            app:useTextColor="color6"
+            app:useTextHeader="h7" />
     </LinearLayout>
 </layout>
