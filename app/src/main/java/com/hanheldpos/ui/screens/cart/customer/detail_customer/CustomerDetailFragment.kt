@@ -34,7 +34,7 @@ class CustomerDetailFragment(private val customer : CustomerResp?) : BaseFragmen
                 viewModel.addressType.postValue(address)
             }
         }
-
+        viewModel.getCustomerProfileDetail()
     }
 
     override fun initData() {
