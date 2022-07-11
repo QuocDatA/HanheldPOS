@@ -5,14 +5,19 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <import type="com.hanheldpos.model.product.ExtraConverter"/>
-        <import type="android.text.TextUtils"/>
+
+        <import type="com.hanheldpos.model.product.ExtraConverter" />
+
+        <import type="android.text.TextUtils" />
+
         <variable
             name="item"
             type="com.hanheldpos.model.cart.Regular" />
+
         <variable
             name="productBundle"
             type="com.hanheldpos.data.api.pojo.product.Product" />
+
         <variable
             name="groupBundle"
             type="com.hanheldpos.model.cart.GroupBundle" />
@@ -22,106 +27,107 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/_2sdp"
-        android:orientation="vertical">
+        android:orientation="horizontal">
+
+        <com.diadiem.pos_components.PTextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="@dimen/_4sdp"
+            android:text="@{`(`+String.valueOf(item.quantity)+`x)`}"
+            app:useTextColor="color5"
+            app:useTextHeader="h6"
+            tools:text="(1x)" />
+
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <com.diadiem.pos_components.PTextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="@dimen/_4sdp"
-                android:text="@{`(`+String.valueOf(item.quantity)+`x)`}"
-                app:useTextColor="color5"
-                app:useTextHeader="h6"
-                tools:text="(1x)" />
-
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:baselineAligned="false">
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:baselineAligned="false">
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <com.diadiem.pos_components.PTextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@{item.name}"
-                            app:useTextColor="color5"
-                            app:useTextHeader="h6"
-                            tools:text="Pho Bo Tai" />
-
-
-                    </LinearLayout>
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
                     <com.diadiem.pos_components.PTextView
-                        android:id="@+id/priceTextView"
-                        pricePlusView="@{productBundle != null ? item.total(groupBundle,productBundle) : 0.0}"
-                        visibleObject="@{(productBundle != null ? item.total(groupBundle,productBundle) : 0.0) != 0}"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textAlignment="textEnd"
+                        android:text="@{item.name}"
                         app:useTextColor="color5"
                         app:useTextHeader="h6"
-                        tools:text="137.000" />
+                        tools:text="Pho Bo Tai" />
+
 
                 </LinearLayout>
-                <LinearLayout
-                    visibleObject="@{item.variantList != null &amp;&amp; !item.variantList.empty}"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-                    <androidx.legacy.widget.Space
-                        android:layout_width="wrap_content"
-                        android:layout_height="@dimen/_2sdp" />
-                    <include
-                        layout="@layout/cart_product_detail_line"
-                        app:isHeaderH6="@{false}"
-                        app:lineText="@{ExtraConverter.INSTANCE.variantStr(item.variantList)}" />
-                </LinearLayout>
 
-                <LinearLayout
-                    visibleObject="@{!item.modifierList.empty}"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-                    <androidx.legacy.widget.Space
-                        android:layout_width="wrap_content"
-                        android:layout_height="@dimen/_2sdp" />
-                    <include
-                        layout="@layout/cart_product_detail_line"
-                        app:isHeaderH6="@{false}"
-                        app:lineText="@{ExtraConverter.INSTANCE.modifierStr(item.modifierList)}" />
-                </LinearLayout>
-
-                <LinearLayout
-                    visibleObject="@{item.note!=null &amp;&amp; !TextUtils.isEmpty(item.note)}"
+                <com.diadiem.pos_components.PTextView
+                    android:id="@+id/priceTextView"
+                    pricePlusView="@{productBundle != null ? item.total(groupBundle,productBundle) : 0.0}"
+                    visibleObject="@{(productBundle != null ? item.total(groupBundle,productBundle) : 0.0) != 0}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
-                    <androidx.legacy.widget.Space
-                        android:layout_width="wrap_content"
-                        android:layout_height="@dimen/_2sdp" />
-                    <include
-                        layout="@layout/cart_product_detail_line"
-                        app:isNote="@{true}"
-                        app:lineText="@{item.note}" />
-                </LinearLayout>
+                    android:textAlignment="textEnd"
+                    app:useTextColor="color5"
+                    app:useTextHeader="h6"
+                    tools:text="137.000" />
 
             </LinearLayout>
 
-        </LinearLayout>
+            <LinearLayout
+                visibleObject="@{item.variantList != null &amp;&amp; !item.variantList.empty}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
+                <androidx.legacy.widget.Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_2sdp" />
+
+                <include
+                    layout="@layout/cart_product_detail_line"
+                    app:isHeaderH6="@{false}"
+                    app:lineText="@{ExtraConverter.INSTANCE.variantStr(item.variantList)}" />
+            </LinearLayout>
+
+            <LinearLayout
+                visibleObject="@{!item.modifierList.empty}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <androidx.legacy.widget.Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_2sdp" />
+
+                <include
+                    layout="@layout/cart_product_detail_line"
+                    app:isHeaderH6="@{false}"
+                    app:lineText="@{ExtraConverter.INSTANCE.modifierStr(item.modifierList)}" />
+            </LinearLayout>
+
+            <LinearLayout
+                visibleObject="@{item.note!=null &amp;&amp; !TextUtils.isEmpty(item.note)}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <androidx.legacy.widget.Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_2sdp" />
+
+                <include
+                    layout="@layout/cart_product_detail_line"
+                    app:isNote="@{true}"
+                    app:lineText="@{item.note}" />
+            </LinearLayout>
+
+        </LinearLayout>
 
     </LinearLayout>
 

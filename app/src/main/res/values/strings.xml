@@ -316,4 +316,6 @@
     <string name="current_device">Current Device</string>
     <string name="failed">Failed</string>
     <string name="in_process">In Process</string>
+    <string name="change">CHANGE</string>
+    <string name="edit">EDIT</string>
 </resources>
