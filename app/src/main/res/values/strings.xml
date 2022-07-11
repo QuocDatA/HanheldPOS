@@ -319,4 +319,6 @@
     <string name="all_the_request_will_be_deleted_after_the_drawer_ended">All the request will be deleted after the drawer ended.</string>
     <string name="no">No</string>
     <string name="yes">Yes</string>
+    <string name="change">CHANGE</string>
+    <string name="edit">EDIT</string>
 </resources>

@@ -4,6 +4,7 @@
 
     <data>
         <import type="com.hanheldpos.model.product.ExtraConverter"/>
+        <import type="android.text.TextUtils"/>
         <variable
             name="item"
             type="com.hanheldpos.model.cart.Regular" />
@@ -48,7 +49,7 @@
                 android:background="@drawable/bg_combo_action_remove"
                 android:paddingHorizontal="@dimen/_7sdp"
                 android:paddingVertical="@dimen/_2sdp"
-                android:text="CHANGE"
+                android:text="@string/change"
                 android:textAllCaps="true"
                 app:useFontStyle="bold"
                 app:useTextColor="color2"
@@ -67,7 +68,7 @@
                 android:background="@drawable/bg_combo_action_modifier"
                 android:paddingHorizontal="@dimen/_15sdp"
                 android:paddingVertical="@dimen/_2sdp"
-                android:text="EDIT"
+                android:text="@string/edit"
                 android:textAllCaps="true"
                 app:useFontStyle="bold"
                 app:useTextColor="color2"
@@ -97,5 +98,19 @@
             app:useFontStyle="normal"
             app:useTextColor="color6"
             app:useTextHeader="h7" />
+
+        <LinearLayout
+            visibleObject="@{item.note!=null &amp;&amp; !TextUtils.isEmpty(item.note)}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <androidx.legacy.widget.Space
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/_2sdp" />
+            <include
+                layout="@layout/cart_product_detail_line"
+                app:isNote="@{true}"
+                app:lineText="@{item.note}" />
+        </LinearLayout>
     </LinearLayout>
 </layout>
