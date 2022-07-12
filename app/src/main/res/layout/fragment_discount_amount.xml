@@ -89,22 +89,35 @@
             <androidx.legacy.widget.Space
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/_8sdp" />
-
-            <com.diadiem.pos_components.PTextInputEditText
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_outline_round"
-                android:focusableInTouchMode="true"
-                android:imeOptions="actionDone"
-                android:hint="@string/title"
-                android:inputType="text"
-                android:paddingHorizontal="@dimen/_10sdp"
-                android:paddingVertical="@dimen/_12sdp"
-                android:text="@={viewModel.title}"
-                android:textColorHint="@color/color_4"
-                app:ipt_useFontStyle="normal"
-                app:ipt_useTextColor="color4"
-                app:ipt_useTextHeader="h5" />
+                android:layout_height="wrap_content">
+                <com.diadiem.pos_components.PTextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_outline_round"
+                    android:focusableInTouchMode="true"
+                    android:imeOptions="actionDone"
+                    android:hint="@string/title"
+                    android:inputType="text"
+                    android:paddingHorizontal="@dimen/_10sdp"
+                    android:paddingVertical="@dimen/_12sdp"
+                    android:text="@={viewModel.title}"
+                    android:textColorHint="@color/color_4"
+                    app:ipt_useFontStyle="normal"
+                    app:ipt_useTextColor="color4"
+                    app:ipt_useTextHeader="h5" />
+                <com.diadiem.pos_components.PTextView
+                    android:layout_margin="@dimen/_10sdp"
+                    android:layout_gravity="bottom|end"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/optional"
+                    app:useFontStyle="normal"
+                    app:useTextHeader="h7"
+                    app:useTextColor="color6"/>
+            </FrameLayout>
+
         </LinearLayout>
 
     </LinearLayout>

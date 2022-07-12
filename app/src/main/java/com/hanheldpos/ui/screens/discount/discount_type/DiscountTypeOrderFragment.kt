@@ -142,7 +142,7 @@ class DiscountTypeOrderFragment(
         viewModel.typeDiscountSelect.observe(this) { type ->
             fragmentMap[type]?.view?.findViewById<PTextView>(R.id.btnClearDiscount)
                 ?.setOnClickDebounce {
-                    if (!product?.discountUsersList.isNullOrEmpty() || !product?.discountServersList.isNullOrEmpty()) {
+                    if (cart.discountUserList.isNotEmpty() || cart.discountServerList.isNotEmpty()) {
                         listener.clearAllDiscountCoupon()
                         viewModel.isAlreadyExistDiscountSelect.postValue(false)
                     }
@@ -171,8 +171,8 @@ class DiscountTypeOrderFragment(
         tab?: return
         viewModel.typeDiscountSelect.postValue(listTab[tab.position].type)
         viewModel.isAlreadyExistDiscountSelect.postValue(
-            !product?.discountUsersList.isNullOrEmpty() ||
-                    !product?.discountServersList.isNullOrEmpty()
+            cart.discountUserList.isNotEmpty() ||
+                    cart.discountServerList.isNotEmpty()
         )
         listener.discountFocus(listTab[tab.position].type)
     }
