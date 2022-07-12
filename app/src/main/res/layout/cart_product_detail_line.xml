@@ -125,7 +125,8 @@
                     android:layout_height="@dimen/_14sdp"
                     android:layout_gravity="center"
                     android:scaleType="fitXY"
-                    android:src="@{isDiscount?@drawable/ic_delete: @drawable/ic_info,default=@drawable/ic_info}" />
+                    android:src="@{ isDiscount ? @drawable/ic_delete : @drawable/ic_info,default=@drawable/ic_info}"
+                    tools:ignore="ContentDescription" />
             </FrameLayout>
 
         </LinearLayout>
