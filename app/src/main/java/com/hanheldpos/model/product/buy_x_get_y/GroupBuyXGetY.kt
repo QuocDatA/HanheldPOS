@@ -34,7 +34,7 @@ data class GroupBuyXGetY(
     val requireQuantity
         get() = if (condition is CustomerBuys) (condition as CustomerBuys).requireQuantity?.minus(
             totalQuantity
-        ) else (condition as CustomerGets).Quantity.minus(totalQuantity);
+        ) else (condition as CustomerGets).Quantity.minus(totalQuantity)
     val totalPrice get() = productList.sumOf { basePro -> basePro.lineTotalValue }
     val groupName get() = getGroupName(type)
     val isCompleted get() = getIsCompleted()
@@ -126,14 +126,14 @@ data class GroupBuyXGetY(
             1,
             product.skuDefault,
             product.variantDefault,
-            null
+            null,
         )
         if(discount != null) {
             if(bundle.discountServersList == null) bundle.discountServersList = mutableListOf()
             bundle.discountServersList?.add(discount)
         }
+        bundle.note = baseProduct.note
         productList.add(bundle)
-        productList
     }
 
     private fun addRegular(product: Product, diningOption: DiningOption, discount: DiscountResp?, baseProductInCart: BaseProductInCart?) {
@@ -152,6 +152,7 @@ data class GroupBuyXGetY(
             if(regular.discountServersList == null) regular.discountServersList = mutableListOf()
             regular.discountServersList?.add(discount)
         }
+        regular.note = baseProductInCart.note
         productList.add(regular)
     }
 
