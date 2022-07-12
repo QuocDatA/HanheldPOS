@@ -130,6 +130,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
                     }
                     isWaitingForNotification = false
                     delay(1000)
+                    if (DataHelper.isNeedToUpdateNewData.value != true) return@launch
                     launch(Dispatchers.Main) {
                         showAlert(
                             title = getString(R.string.new_data_available),
