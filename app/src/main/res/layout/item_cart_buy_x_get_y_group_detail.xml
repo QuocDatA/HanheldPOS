@@ -10,7 +10,7 @@
 
         <import type="android.text.TextUtils" />
 
-        <import type="com.hanheldpos.utils.PriceUtils"/>
+        <import type="com.hanheldpos.utils.PriceUtils" />
 
         <variable
             name="isGroupBuy"
@@ -46,16 +46,16 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/_4sdp"
             android:text="@{`(`+String.valueOf(item.quantity)+`x)`}"
+            app:useFontStyle="normal"
             app:useTextColor="color4"
             app:useTextHeader="h6"
-            app:useFontStyle="normal"
             tools:text="(1x)" />
 
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:orientation="vertical">
 
 
@@ -64,16 +64,17 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="top"
                 android:gravity="top"
+                android:padding="0dp"
                 android:text="@{item.name}"
                 app:useTextColor="color4"
                 app:useTextHeader="h6"
-                android:padding="0dp"
                 tools:text="Pho Bo Tai" />
 
             <LinearLayout
                 visibleObject="@{item.variantList != null &amp;&amp; !item.variantList.empty &amp;&amp; isShowDetail == true}"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
                 <androidx.legacy.widget.Space
                     android:layout_width="wrap_content"
@@ -88,7 +89,8 @@
             <LinearLayout
                 visibleObject="@{!item.modifierList.empty &amp;&amp; isShowDetail == true}"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
                 <androidx.legacy.widget.Space
                     android:layout_width="wrap_content"
@@ -100,8 +102,17 @@
                     app:lineText="@{ExtraConverter.INSTANCE.modifierStr(item.modifierList)}" />
             </LinearLayout>
 
+            <include
+                android:id="@+id/discountDetail"
+                layout="@layout/cart_product_detail_line"
+                visibleObject="@{(item.discountServersList != null &amp;&amp; !item.discountServersList.empty &amp;&amp; isGroupBuy == false &amp;&amp; isShowDetail == true) }"
+                app:hasIcon="@{false}"
+                app:isDiscount="@{true}"
+                app:lineText="@{`Discount : ` }"
+                app:priceDiscMinus="@{item.totalDiscount()}" />
+
             <LinearLayout
-                visibleObject="@{item.note!=null &amp;&amp; !TextUtils.isEmpty(item.note) &amp;&amp; isShowDetail == true}"
+                visibleObject="@{item.note!=null &amp;&amp; !TextUtils.isEmpty(item.note)  &amp;&amp; isShowDetail == true}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="start"
@@ -117,23 +128,14 @@
                     app:lineText="@{item.note}" />
             </LinearLayout>
 
-            <include
-                android:id="@+id/discountDetail"
-                layout="@layout/cart_product_detail_line"
-                app:isDiscount="@{true}"
-                app:hasIcon="@{false}"
-                visibleObject="@{(item.discountServersList != null &amp;&amp; !item.discountServersList.empty &amp;&amp; isGroupBuy == false &amp;&amp; isShowDetail == true) }"
-                app:lineText="@{`Discount : ` }"
-                app:priceDiscMinus="@{item.totalDiscount()}" />
-
         </LinearLayout>
 
         <com.diadiem.pos_components.PTextView
             android:id="@+id/priceTextView"
-            android:text="@{ '+' + PriceUtils.INSTANCE.formatStringPrice(item.total(isGroupBuy))}"
             visibleObject="@{item.total(isGroupBuy) != 0}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@{ '+' + PriceUtils.INSTANCE.formatStringPrice(item.total(isGroupBuy))}"
             android:textAlignment="textEnd"
             app:useTextColor="color4"
             app:useTextHeader="h6"

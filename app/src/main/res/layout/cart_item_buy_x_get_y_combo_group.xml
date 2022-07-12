@@ -5,6 +5,7 @@
 
     <data>
         <import type="com.hanheldpos.utils.PriceUtils"/>
+        <import type="android.text.TextUtils"/>
 
         <variable
             name="item"
@@ -74,6 +75,24 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:itemCount="3"
             tools:listitem="@layout/item_buy_x_get_y_combo_group_detail" />
+
+        <LinearLayout
+            visibleObject="@{item.note!=null &amp;&amp; !TextUtils.isEmpty(item.note)  &amp;&amp; isShowDetail == true}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:gravity="start"
+            android:orientation="vertical">
+
+            <androidx.legacy.widget.Space
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/_2sdp" />
+
+            <include
+                layout="@layout/cart_product_detail_line"
+                app:isNote="@{true}"
+                app:lineText="@{item.note}" />
+        </LinearLayout>
 
     </LinearLayout>
 </layout>

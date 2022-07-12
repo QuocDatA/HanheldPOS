@@ -8,6 +8,7 @@
         <variable
             name="item"
             type="com.hanheldpos.model.cart.Combo" />
+        <import type="android.text.TextUtils"/>
     </data>
 
     <LinearLayout
@@ -87,5 +88,22 @@
             tools:itemCount="1"
             tools:listitem="@layout/buy_x_get_y_item_combo_group"
             />
+
+        <LinearLayout
+            visibleObject="@{item.note!=null &amp;&amp; !TextUtils.isEmpty(item.note)}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:orientation="vertical">
+
+            <androidx.legacy.widget.Space
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/_2sdp" />
+
+            <include
+                layout="@layout/cart_product_detail_line"
+                app:isNote="@{true}"
+                app:lineText="@{item.note}" />
+        </LinearLayout>
     </LinearLayout>
 </layout>
