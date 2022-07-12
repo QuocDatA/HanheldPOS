@@ -26,7 +26,7 @@ abstract class BasePrinterManager {
 //            override fun urovo() = 28
 //        },
         Large() {
-            override fun urovo() = 28
+            override fun urovo() = 35
         }
 //,
 //        Wide() {
@@ -34,7 +34,7 @@ abstract class BasePrinterManager {
 //        }
         ;
 
-        abstract fun urovo(): Int;
+        abstract fun urovo(): Int
     }
 
     enum class BitmapAlign {
