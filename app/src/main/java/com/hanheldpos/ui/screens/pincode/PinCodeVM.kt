@@ -16,6 +16,7 @@ import com.hanheldpos.model.UserHelper
 import com.hanheldpos.model.cashdrawer.CashDrawerStatusReq
 import com.hanheldpos.model.cashdrawer.DrawerStatus
 import com.hanheldpos.ui.base.viewmodel.BaseRepoViewModel
+import com.hanheldpos.ui.base.viewmodel.ViewState
 import com.hanheldpos.utils.GSonUtils
 import java.util.*
 
@@ -25,7 +26,7 @@ class PinCodeVM : BaseRepoViewModel<EmployeeRepo, PinCodeUV>() {
     private val lstResultLD = MutableLiveData<MutableList<String>?>(mutableListOf())
     private var displayClockState = MutableLiveData(false)
 
-    private val cashDrawerRepo = CashDrawerRepo();
+    private val cashDrawerRepo = CashDrawerRepo()
 
     val listSize: MutableLiveData<Int> =
         Transformations.map(lstResultLD) { listResult: List<String>? ->
@@ -38,11 +39,11 @@ class PinCodeVM : BaseRepoViewModel<EmployeeRepo, PinCodeUV>() {
 
 
     fun backPress() {
-        uiCallback?.goBack();
+        uiCallback?.goBack()
     }
 
     fun initNumberPadList(): List<PinCodeRecyclerElement> {
-        val list: MutableList<PinCodeRecyclerElement> = mutableListOf();
+        val list: MutableList<PinCodeRecyclerElement> = mutableListOf()
         // Line 1
         list.add(PinCodeRecyclerElement("3", null))
         list.add(PinCodeRecyclerElement("2", null))
@@ -59,13 +60,13 @@ class PinCodeVM : BaseRepoViewModel<EmployeeRepo, PinCodeUV>() {
         list.add(PinCodeRecyclerElement(null, R.drawable.ic_baseline_arrow_back_l, false))
         list.add(PinCodeRecyclerElement("0", null, false))
 
-        return list;
+        return list
     }
 
     private fun addItem(item: Int) {
         if (lstResultLD.value != null) {
             lstResultLD.value!!.add(item.toString() + "")
-            lstResultLD.notifyValueChange();
+            lstResultLD.notifyValueChange()
         }
         if (listSize.value != null && listSize.value == PIN_MAX_LENGTH) {
 
@@ -76,8 +77,8 @@ class PinCodeVM : BaseRepoViewModel<EmployeeRepo, PinCodeUV>() {
 
     private fun removeItem() {
         if (!lstResultLD.value.isNullOrEmpty()) {
-            lstResultLD.value!!.removeAt(lstResultLD.value!!.size.minus(1));
-            lstResultLD.notifyValueChange();
+            lstResultLD.value!!.removeAt(lstResultLD.value!!.size.minus(1))
+            lstResultLD.notifyValueChange()
         }
     }
 
@@ -91,15 +92,15 @@ class PinCodeVM : BaseRepoViewModel<EmployeeRepo, PinCodeUV>() {
                 }
             }
             // Fetch data
-            showLoading(true);
-            fetchDataEmployee(passCodeBuilder.toString());
+            showLoading(true)
+            fetchDataEmployee(passCodeBuilder.toString())
 
         }
     }
 
     private fun fetchDataEmployee(passCode: String) {
-        val userGuid = UserHelper.getUserGuid();
-        val locationGuid = UserHelper.getLocationGuid();
+        val userGuid = UserHelper.getUserGuid()
+        val locationGuid = UserHelper.getLocationGuid()
         repo?.getDataEmployee(
             userGuid,
             passCode,
@@ -110,7 +111,7 @@ class PinCodeVM : BaseRepoViewModel<EmployeeRepo, PinCodeUV>() {
                         showError(
                             data?.Message ?: data?.ErrorMessage
                             ?: PosApp.instance.getString(R.string.an_error_occur)
-                        );
+                        )
                         onEmployeeError()
                     } else {
                         onEmployeeSuccess(data.Model.first())
@@ -131,14 +132,14 @@ class PinCodeVM : BaseRepoViewModel<EmployeeRepo, PinCodeUV>() {
         if (displayClockState.value == true) {
             /*checkClockInOut()*/
         } else {
-            checkDrawerStatus();
+            checkDrawerStatus()
         }
         /*changeClockState()*/
     }
 
     fun onEmployeeError() {
-        lstResultLD.value?.clear();
-        lstResultLD.notifyValueChange();
+        lstResultLD.value?.clear()
+        lstResultLD.notifyValueChange()
     }
 
     fun onClick(item: PinCodeRecyclerElement?) {
@@ -146,7 +147,7 @@ class PinCodeVM : BaseRepoViewModel<EmployeeRepo, PinCodeUV>() {
             removeItem()
             return
         }
-        if (listSize.value != null && listSize.value!! < PIN_MAX_LENGTH) {
+        if (listSize.value != null && listSize.value!! < PIN_MAX_LENGTH && this.viewState.value != ViewState.SHOW_LOADING) {
             for (i in 0..9) {
                 if (item?.text == i.toString() + "") {
                     addItem(i)
@@ -164,31 +165,33 @@ class PinCodeVM : BaseRepoViewModel<EmployeeRepo, PinCodeUV>() {
                 LocationGuid = UserHelper.getLocationGuid(),
                 EmployeeGuid = UserHelper.getEmployeeGuid()
             )
-        );
+        )
 
-        cashDrawerRepo.getStatusCashDrawer(body, callback = object  : BaseRepoCallback<BaseResponse<List<CashDrawerStatusResp>>?>{
-            override fun apiResponse(data: BaseResponse<List<CashDrawerStatusResp>>?) {
-                showLoading(false)
-                if (data == null || data.DidError || data.Model.isNullOrEmpty()) {
-                    showError(data?.ErrorMessage ?:  "Have some error.");
-                    lstResultLD.value?.clear();
-                    lstResultLD.notifyValueChange();
-                } else {
-                    when(DrawerStatus.fromInt(data.Model.first().StatusId)) {
-                        DrawerStatus.NOT_FOUND -> uiCallback?.goStartDrawer();
-                        else->{
-                            DataHelper.currentDrawerId = data.Model.first().CashDrawerGuid;
-                            uiCallback?.goHome()
-                        };
+        cashDrawerRepo.getStatusCashDrawer(
+            body,
+            callback = object : BaseRepoCallback<BaseResponse<List<CashDrawerStatusResp>>?> {
+                override fun apiResponse(data: BaseResponse<List<CashDrawerStatusResp>>?) {
+                    showLoading(false)
+                    if (data == null || data.DidError || data.Model.isNullOrEmpty()) {
+                        showError(data?.ErrorMessage ?: "Have some error.")
+                        lstResultLD.value?.clear()
+                        lstResultLD.notifyValueChange()
+                    } else {
+                        when (DrawerStatus.fromInt(data.Model.first().StatusId)) {
+                            DrawerStatus.NOT_FOUND -> uiCallback?.goStartDrawer()
+                            else -> {
+                                DataHelper.currentDrawerId = data.Model.first().CashDrawerGuid
+                                uiCallback?.goHome()
+                            }
+                        }
                     }
                 }
-            }
 
-            override fun showMessage(message: String?) {
-                showLoading(false)
-                showError(message);
-            }
-        });
+                override fun showMessage(message: String?) {
+                    showLoading(false)
+                    showError(message)
+                }
+            })
 
     }
 
@@ -197,7 +200,7 @@ class PinCodeVM : BaseRepoViewModel<EmployeeRepo, PinCodeUV>() {
     }
 
     override fun createRepo(): EmployeeRepo {
-        return EmployeeRepo();
+        return EmployeeRepo()
     }
 
 
