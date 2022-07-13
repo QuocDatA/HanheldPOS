@@ -7,6 +7,7 @@ import android.graphics.Bitmap
 import android.os.Handler
 import android.os.Looper
 import android.os.Message
+import android.util.Log
 import com.hanheldpos.printer.printer_setup.printer_manager.BasePrinterManager
 
 class UrovoPrinterManager : BasePrinterManager() {
@@ -40,6 +41,7 @@ class UrovoPrinterManager : BasePrinterManager() {
             object : Handler() {
                 //2.Bind handler to looper object of customthread instance
                 override fun handleMessage(msg: Message) {   //3.Define how messages are processed
+                    Log.d("Printer Status", printer.status.toString())
                     when (msg.what) {
                         PrintType.PRINT_TEXT.value,
                         PrintType.PRINT_BITMAP.value,
@@ -118,9 +120,8 @@ class UrovoPrinterManager : BasePrinterManager() {
     }
 
     override fun drawText(data: String?, bold: Boolean, size: FontSize) {
-        val dataContent = data?.replace(" ", "  ")
         val msg = mPrintHandler!!.obtainMessage(PrintType.PRINT_TEXT.value)
-        msg.obj = TextValuePrint(dataContent, bold, size)
+        msg.obj = TextValuePrint(data, bold, size)
         msg.sendToTarget()
     }
 
@@ -153,7 +154,7 @@ class UrovoPrinterManager : BasePrinterManager() {
                     val value = content as TextValuePrint
                     var height: Int = 0
                     val fontSize = value.size.urovo()
-                    val fontName = "simsun"
+                    val fontName = "monospace"
                     val texts = value.data?.split("\n", "\n\r")
                     if (texts != null) {
                         for (text in texts) {
