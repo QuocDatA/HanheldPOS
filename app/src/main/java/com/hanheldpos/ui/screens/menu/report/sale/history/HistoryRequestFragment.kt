@@ -14,6 +14,7 @@ import com.hanheldpos.utils.GSonUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 class HistoryRequestFragment : BaseFragment<FragmentHistoryRequestBinding, HistoryRequestVM>(),
@@ -48,25 +49,26 @@ class HistoryRequestFragment : BaseFragment<FragmentHistoryRequestBinding, Histo
     }
 
     override fun initData() {
-        showLoading(true)
+
         lifecycleScope.launch(Dispatchers.IO) {
             while (true) {
-                if (!isVisible) {
+                if (isVisible) {
                     break
                 }
+                delay(200)
             }
-            delay(500)
-            launch(Dispatchers.Main) {
-                viewModel.getRequestHeaders(requireContext()).run {
-                    binding.tableHistoryReportData.addRangeHeaders(this)
+            withContext(Dispatchers.Main) {
+                context?.let { it->
+                    viewModel.getRequestHeaders(it).run {
+                        binding.tableHistoryReportData.addRangeHeaders(this)
+                    }
+                    viewModel.getRequestData(
+                        it,
+                        saleReportCommon.reportRequestHistory.value
+                    ).run {
+                        binding.tableHistoryReportData.addRangeRows(this)
+                    }
                 }
-                viewModel.getRequestData(
-                    requireContext(),
-                    saleReportCommon.reportRequestHistory.value
-                ).run {
-                    binding.tableHistoryReportData.addRangeRows(this)
-                }
-                showLoading(false)
             }
 
         }
