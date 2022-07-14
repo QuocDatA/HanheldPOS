@@ -320,5 +320,7 @@
     <string name="no">No</string>
     <string name="yes">Yes</string>
     <string name="change">CHANGE</string>
+    <string name="change_lower_case">Change</string>
     <string name="edit">EDIT</string>
+    <string name="congratulations_you_earned">Congratulations, you earned </string>
 </resources>

@@ -2,6 +2,8 @@ package com.hanheldpos.data.api.pojo.customer
 
 import android.os.Parcelable
 import com.hanheldpos.model.DataHelper
+import com.hanheldpos.model.customer.ListGroupCustomer
+import com.hanheldpos.utils.GSonUtils
 import kotlinx.parcelize.Parcelize
 
 
@@ -85,7 +87,7 @@ data class CustomerResp(
     private fun getFullAddress(isLineBreaked: Boolean = false): String {
 
         return StringBuilder().apply {
-            if (!Name.isNullOrEmpty()){
+            if (!Name.isEmpty()){
                 append(Name)
                 if (isLineBreaked) {
                     append("\n")
@@ -93,7 +95,7 @@ data class CustomerResp(
                     append(", ")
                 }
             }
-            if (!Address1.isNullOrEmpty()) {
+            if (!Address1.isEmpty()) {
                 append(Address1)
                 if (isLineBreaked) {
                     append("\n")
@@ -101,7 +103,7 @@ data class CustomerResp(
                     append(", ")
                 }
             }
-            if (!Address2.isNullOrEmpty()) {
+            if (!Address2.isEmpty()) {
                 append(Address2)
                 if (isLineBreaked) {
                     append("\n")
@@ -109,7 +111,7 @@ data class CustomerResp(
                     append(", ")
                 }
             }
-            if (!WardName.isNullOrEmpty()) {
+            if (!WardName.isEmpty()) {
                 append(WardName)
                 if (isLineBreaked) {
                     append("\n")
@@ -117,7 +119,7 @@ data class CustomerResp(
                     append(", ")
                 }
             }
-            if (!CityName.isNullOrEmpty()) {
+            if (!CityName.isEmpty()) {
                 append(CityName)
                 if (isLineBreaked) {
                     append("\n")
@@ -125,7 +127,7 @@ data class CustomerResp(
                     append(", ")
                 }
             }
-            if (!Company.isNullOrEmpty()) {
+            if (!Company.isEmpty()) {
                 append(Company)
 //                if (isLineBreaked) {
 //                    append("\n")
@@ -134,6 +136,10 @@ data class CustomerResp(
 //                }
             }
         }.toString().trim()
+    }
+
+    fun getCustomerListGroup(): ListGroupCustomer? {
+        return  GSonUtils.toObject<ListGroupCustomer>(this.ListGroups)
     }
 }
 

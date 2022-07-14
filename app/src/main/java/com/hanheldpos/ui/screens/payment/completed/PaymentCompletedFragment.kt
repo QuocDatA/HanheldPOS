@@ -1,13 +1,19 @@
 package com.hanheldpos.ui.screens.payment.completed
 
+import android.view.View
 import com.hanheldpos.R
 import com.hanheldpos.binding.setPriceView
+import com.hanheldpos.data.api.pojo.customer.CustomerProfileResp
+import com.hanheldpos.data.api.pojo.customer.CustomerResp
+import com.hanheldpos.data.api.pojo.loyalty.LoyaltyResp
 import com.hanheldpos.database.DatabaseMapper
 import com.hanheldpos.databinding.FragmentPaymentCompletedBinding
 import com.hanheldpos.extension.setOnClickDebounce
 import com.hanheldpos.model.DatabaseHelper
+import com.hanheldpos.model.customer.ListGroupCustomer
 import com.hanheldpos.printer.BillPrinterManager
 import com.hanheldpos.ui.base.fragment.BaseFragment
+import com.hanheldpos.utils.GSonUtils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
@@ -16,6 +22,8 @@ import kotlinx.coroutines.launch
 
 class PaymentCompletedFragment(
     private val isHasEmployee: Boolean,
+    private val loyaltyResp: LoyaltyResp?,
+    private val customer: CustomerResp?,
     private val payable: Double,
     private val overPay: Double,
     private val listener: PaymentCompletedCallBack,
@@ -36,6 +44,12 @@ class PaymentCompletedFragment(
     }
 
     override fun initView() {
+        binding.isHasEmployee = isHasEmployee
+        if (isHasEmployee) {
+            viewModel.customer.value = customer
+            viewModel.loyaltyResp.value = loyaltyResp
+        }
+
         showLoading(true)
         CoroutineScope(Dispatchers.IO).launch {
             DatabaseHelper.ordersCompleted.getAllLiveData().take(1).collectLatest {
@@ -43,8 +57,11 @@ class PaymentCompletedFragment(
 
                     launch(Dispatchers.IO) {
                         try {
-                            BillPrinterManager.get {  }.run {
-                                printBill(DatabaseMapper.mappingOrderReqFromEntity(completedEntity),false)
+                            BillPrinterManager.get { }.run {
+                                printBill(
+                                    DatabaseMapper.mappingOrderReqFromEntity(completedEntity),
+                                    false
+                                )
                             }
                         } catch (e: Exception) {
                             e.printStackTrace()
@@ -52,7 +69,7 @@ class PaymentCompletedFragment(
                     }
 
                     launch(Dispatchers.Main) {
-                        showLoading(false)
+                            showLoading(false)
                     }
                 }
             }
@@ -63,8 +80,6 @@ class PaymentCompletedFragment(
     }
 
     override fun initData() {
-        viewModel.isAlreadyHasEmployee.postValue(isHasEmployee)
-
     }
 
     override fun initAction() {

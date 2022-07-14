@@ -5,6 +5,9 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
+import com.hanheldpos.PosApp
+import com.hanheldpos.R
+import com.hanheldpos.data.api.pojo.customer.CustomerProfileResp
 import com.hanheldpos.data.api.pojo.customer.CustomerResp
 import com.hanheldpos.data.api.pojo.discount.CustomerBuys
 import com.hanheldpos.data.api.pojo.discount.DiscountCoupon
@@ -41,6 +44,7 @@ import com.hanheldpos.utils.GSonUtils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class CartDataVM : BaseViewModel() {
 
@@ -358,7 +362,7 @@ class CartDataVM : BaseViewModel() {
 
     private val loyaltyRepo = LoyaltyPointRepo()
 
-    fun getLoyaltyPoint(orderModel: OrderModel) {
+    fun getLoyaltyPoint(orderModel: OrderModel, listener: LoyaltyPointCallback) {
         if (orderModel.OrderDetail.Billing != null) { // Exist customer
             val loyaltyReqModel = LoyaltyReqModel(
                 DataHelper.userGuid(),
@@ -375,6 +379,11 @@ class CartDataVM : BaseViewModel() {
                     override fun apiResponse(data: BaseResponse<LoyaltyResp>?) {
                         CoroutineScope(Dispatchers.IO).launch {
                             orderModel.OrderDetail.Order.Points = data?.Model?.receivable
+                            withContext(Dispatchers.Main) {
+                                if (data?.Model != null)
+                                    listener.onSuccess(data.Model)
+                                else listener.onFail(PosApp.instance.getString(R.string.failed_to_load_data))
+                            }
                             DatabaseHelper.ordersCompleted.update(
                                 DatabaseMapper.mappingOrderCompletedReqToEntity(
                                     orderModel
@@ -385,9 +394,17 @@ class CartDataVM : BaseViewModel() {
 
                     override fun showMessage(message: String?) {
                         showError(message)
+                        listener.onFail(message)
                     }
                 }
             )
+        } else {
+            listener.onSuccess(null)
         }
+    }
+
+    interface LoyaltyPointCallback {
+        fun onSuccess(loyaltyResp: LoyaltyResp?)
+        fun onFail(message: String?)
     }
 }
