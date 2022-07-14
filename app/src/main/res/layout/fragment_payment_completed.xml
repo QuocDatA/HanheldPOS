@@ -4,13 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="isHasEmployee"
+            type="Boolean" />
         <variable
             name="viewModel"
             type="com.hanheldpos.ui.screens.payment.completed.PaymentCompletedVM" />
     </data>
 
     <LinearLayout
+        android:id="@+id/rootLayout"
         style="@style/RootLayout"
         android:orientation="vertical">
 
@@ -22,7 +25,7 @@
 
             <FrameLayout
                 android:id="@+id/customerInfo"
-                visibleObject="@{viewModel.isAlreadyHasEmployee()}"
+                visibleObject="@{isHasEmployee}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
@@ -111,7 +114,8 @@
                         android:background="@color/color_2">
 
                         <ImageView
-                            visibleObject="@{!viewModel.isAlreadyHasEmployee()}"
+                            visibleObject="@{!isHasEmployee}"
+                            android:visibility="gone"
                             android:layout_width="@dimen/_83sdp"
                             android:layout_height="@dimen/_83sdp"
                             android:layout_gravity="center"
@@ -120,8 +124,9 @@
                             tools:ignore="ContentDescription" />
 
                         <ProgressBar
-                            visibleObject="@{viewModel.isAlreadyHasEmployee()}"
+                            visibleObject="@{isHasEmployee}"
                             android:layout_gravity="center"
+                            android:visibility="gone"
                             android:id="@+id/progressBar"
                             android:layout_width="@dimen/_83sdp"
                             android:layout_height="@dimen/_83sdp"
@@ -134,8 +139,9 @@
                             tools:progress = "65"/>
 
                         <LinearLayout
-                            visibleObject="@{viewModel.isAlreadyHasEmployee()}"
+                            visibleObject="@{isHasEmployee}"
                             android:layout_width="wrap_content"
+                            android:visibility="gone"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:gravity="center"
@@ -151,7 +157,7 @@
                                 tools:text = "11"/>
 
                             <com.diadiem.pos_components.PTextView
-                                visibleObject="@{viewModel.isAlreadyHasEmployee()}"
+                                visibleObject="@{isHasEmployee}"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/points"
@@ -176,7 +182,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="@dimen/_22sdp"
                         android:layout_marginVertical="@dimen/_10sdp"
-                        android:text="@{viewModel.isAlreadyHasEmployee() ? viewModel.customerEarnedPoint : @string/become_a_new_member_to_earn_points_and_rewards}"
+                        android:text="@{isHasEmployee ? viewModel.customerEarnedPoint : @string/become_a_new_member_to_earn_points_and_rewards}"
                         app:useFontStyle="normal"
                         app:useTextColor="color4"
                         app:useTextHeader="h5" />
@@ -253,14 +259,14 @@
             <com.diadiem.pos_components.PMaterialButton
                 android:id="@+id/btnBecomeAMember"
                 style="@style/Base.MaterialButton"
-                visibleObject="@{!viewModel.isAlreadyHasEmployee()}"
+                visibleObject="@{!isHasEmployee}"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_9sdp"
                 android:layout_marginTop="@dimen/_9sdp"
                 android:backgroundTint="@color/color_11"
                 android:elevation="0dp"
-                android:gravity="center"
                 android:stateListAnimator="@null"
                 android:text="@string/become_a_member"
                 app:elevation="0dp"

@@ -1,5 +1,6 @@
 package com.hanheldpos.ui.screens.payment.completed
 
+import android.view.View
 import com.hanheldpos.R
 import com.hanheldpos.binding.setPriceView
 import com.hanheldpos.data.api.pojo.customer.CustomerProfileResp
@@ -43,11 +44,12 @@ class PaymentCompletedFragment(
     }
 
     override fun initView() {
-        viewModel.isAlreadyHasEmployee.postValue(isHasEmployee)
-        if(isHasEmployee) {
+        binding.isHasEmployee = isHasEmployee
+        if (isHasEmployee) {
             viewModel.customer.value = customer
             viewModel.loyaltyResp.value = loyaltyResp
         }
+
         showLoading(true)
         CoroutineScope(Dispatchers.IO).launch {
             DatabaseHelper.ordersCompleted.getAllLiveData().take(1).collectLatest {
@@ -55,8 +57,11 @@ class PaymentCompletedFragment(
 
                     launch(Dispatchers.IO) {
                         try {
-                            BillPrinterManager.get {  }.run {
-                                printBill(DatabaseMapper.mappingOrderReqFromEntity(completedEntity),false)
+                            BillPrinterManager.get { }.run {
+                                printBill(
+                                    DatabaseMapper.mappingOrderReqFromEntity(completedEntity),
+                                    false
+                                )
                             }
                         } catch (e: Exception) {
                             e.printStackTrace()
@@ -64,7 +69,7 @@ class PaymentCompletedFragment(
                     }
 
                     launch(Dispatchers.Main) {
-                        showLoading(false)
+                            showLoading(false)
                     }
                 }
             }
