@@ -7,9 +7,11 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hanheldpos.R
+import com.hanheldpos.data.api.pojo.customer.CustomerProfileResp
 import com.hanheldpos.data.api.pojo.customer.CustomerResp
 import com.hanheldpos.data.api.pojo.discount.DiscountCoupon
 import com.hanheldpos.data.api.pojo.discount.DiscountResp
+import com.hanheldpos.data.api.pojo.loyalty.LoyaltyResp
 import com.hanheldpos.data.api.pojo.order.settings.DiningOption
 import com.hanheldpos.data.api.pojo.order.settings.Reason
 import com.hanheldpos.databinding.FragmentCartBinding
@@ -170,7 +172,6 @@ class CartFragment(
     override fun initData() {
 
 
-
         //init dining option data
         val diningOptions: MutableList<DiningOption> =
             (DataHelper.orderSettingLocalStorage?.ListDiningOptions as List<DiningOption>).toMutableList()
@@ -240,8 +241,11 @@ class CartFragment(
                     cartDataVM.addDiscountUser(discount)
                 }
 
-                override fun onDiscountServerChoose(discount: DiscountResp ,discApplyTo: DiscApplyTo) {
-                    cartDataVM.addDiscountServer(discount,discApplyTo)
+                override fun onDiscountServerChoose(
+                    discount: DiscountResp,
+                    discApplyTo: DiscApplyTo
+                ) {
+                    cartDataVM.addDiscountServer(discount, discApplyTo)
                 }
 
                 override fun onDiscountCodeChoose(discount: List<DiscountCoupon>?) {
@@ -301,7 +305,7 @@ class CartFragment(
             AddCustomerFragment.CustomerEvent {
             override fun onSelectedCustomer(item: CustomerResp, openDetail: Boolean?) {
                 cartDataVM.addCustomerToCart(item)
-                if (openDetail == true){
+                if (openDetail == true) {
                     this@CartFragment.onShowCustomerDetail()
                 }
             }
@@ -309,18 +313,34 @@ class CartFragment(
     }
 
     override fun onBillSuccess(orderModel: OrderModel) {
-        listener.onBillSuccess()
         if (!OrderHelper.isPaymentSuccess(cartDataVM.cartModelLD.value!!)) {
+            listener.onBillSuccess()
             val totalNeedPay = cartDataVM.cartModelLD.value!!.getTotalPrice()
             this.openSelectPayment(true, totalNeedPay, CurCartData.cartModel!!.paymentsList)
         } else {
-            cartDataVM.getLoyaltyPoint(orderModel)
-            this.onFinishOrder(true)
+            showLoading(true)
+            cartDataVM.getLoyaltyPoint(
+                orderModel,
+                listener = object : CartDataVM.LoyaltyPointCallback {
+                    override fun onSuccess(loyaltyResp: LoyaltyResp?) {
+                        listener.onBillSuccess()
+                        this@CartFragment.onFinishOrder(true, loyaltyResp)
+                    }
+
+                    override fun onFail(message: String?) {
+                        showMessage(message)
+                    }
+
+                })
+
         }
 
     }
 
-    override fun onFinishOrder(isSuccess: Boolean) {
+    override fun onFinishOrder(
+        isSuccess: Boolean,
+        loyaltyResp: LoyaltyResp?,
+    ) {
         navigator.goOneBack()
         if (isSuccess) {
 
@@ -329,6 +349,8 @@ class CartFragment(
                 navigator.goTo(
                     PaymentCompletedFragment(
                         it.customer != null,
+                        loyaltyResp,
+                        it.customer,
                         it.paymentsList?.sumOf { payment ->
                             payment.Payable ?: 0.0
                         } ?: 0.0,
@@ -355,7 +377,7 @@ class CartFragment(
         navigator.goToWithCustomAnimation(CustomerDetailFragment(cartDataVM.cartModelLD.value?.customer))
     }
 
-    private fun onBillCart(onPaymentSelected : Boolean = false) {
+    private fun onBillCart(onPaymentSelected: Boolean = false) {
         viewModel.billCart(
             requireContext(),
             CurCartData.cartModel!!,
@@ -454,7 +476,8 @@ class CartFragment(
                     cartDataVM.addBuyXGetY(discount, buyXGetY)
                 else
                     launch(Dispatchers.Main) {
-                        navigator.goTo(BuyXGetYFragment(
+                        navigator.goTo(
+                            BuyXGetYFragment(
                                 buyXGetY = cartDataVM.initDefaultBuyXGetY(discount),
                                 discount = discount,
                                 actionType = ItemActionType.Add,

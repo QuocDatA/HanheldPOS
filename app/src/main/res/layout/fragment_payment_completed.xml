@@ -14,135 +14,271 @@
         style="@style/RootLayout"
         android:orientation="vertical">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:gravity="center"
             android:orientation="vertical">
 
-            <ImageView
-                android:layout_width="@dimen/_83sdp"
-                android:layout_height="@dimen/_83sdp"
-                android:layout_gravity="center"
-                android:layout_marginVertical="@dimen/_11sdp"
-                android:src="@drawable/ic_clockinout_ic_check_big"
-                tools:ignore="ContentDescription" />
-
-            <com.diadiem.pos_components.PTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/payment_completed"
-                app:useFontStyle="bold"
-                app:useTextColor="color4"
-                app:useTextHeader="h3" />
-
-            <com.diadiem.pos_components.PTextView
-                visibleObject="@{!viewModel.isAlreadyHasEmployee()}"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_22sdp"
-                android:layout_marginVertical="@dimen/_10sdp"
-                android:text="@string/become_a_new_member_to_earn_points_and_rewards"
-                app:useFontStyle="normal"
-                app:useTextColor="color4"
-                app:useTextHeader="h5" />
-
-            <include
-                layout="@layout/divider_vertical"
+            <FrameLayout
+                android:id="@+id/customerInfo"
+                visibleObject="@{viewModel.isAlreadyHasEmployee()}"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_1sdp"
-                android:layout_marginVertical="@dimen/_11sdp"
-                android:layout_marginHorizontal="@dimen/_29sdp" />
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:background="@color/color_11"
+                android:paddingHorizontal="@dimen/_14sdp"
+                android:paddingVertical="@dimen/_11sdp">
 
-            <com.diadiem.pos_components.PTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:useTextColor="color4"
-                app:useTextHeader="h5"
-                app:useFontStyle="normal"
-                android:text="@string/change"
-                />
-            <androidx.legacy.widget.Space
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/_4sdp"
-                />
-            <com.diadiem.pos_components.PTextView
-                android:id="@+id/textChangeValue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:useFontStyle="bold"
-                app:useTextHeader="h1"
-                app:useTextColor="color1"
-                tools:text="45,000"
-                />
-            <include
-                layout="@layout/divider_vertical"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_1sdp"
-                android:layout_marginVertical="@dimen/_11sdp"
-                android:layout_marginHorizontal="@dimen/_29sdp" />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="@dimen/_34sdp"
+                        android:layout_height="@dimen/_34sdp"
+                        android:elevation="0dp"
+                        app:cardBackgroundColor="@color/color_1"
+                        app:cardCornerRadius="@dimen/_17sdp"
+                        app:cardElevation="0dp">
+
+                        <com.diadiem.pos_components.PTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:text="@{viewModel.customer.nameAcronymn}"
+                            android:textAllCaps="true"
+                            app:useFontStyle="bold"
+                            app:useTextColor="color2"
+                            app:useTextHeader="h6"
+                            tools:text="QN" />
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.legacy.widget.Space
+                        android:layout_width="@dimen/_6sdp"
+                        android:layout_height="wrap_content" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:orientation="vertical">
+
+                        <com.diadiem.pos_components.PTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{viewModel.customer.fullName}"
+                            app:useFontStyle="bold"
+                            app:useTextColor="color4"
+                            app:useTextHeader="h5"
+                            tools:text="Quan Nguyen" />
+
+                        <com.diadiem.pos_components.PTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{viewModel.customerGroupName}"
+                            app:useFontStyle="normal"
+                            app:useTextColor="color4"
+                            app:useTextHeader="h5"
+                            tools:text="Silver" />
+                    </LinearLayout>
+                </LinearLayout>
+            </FrameLayout>
+
             <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="wrap_content"
+                android:id="@+id/text_container"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                >
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/progress_bar_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:paddingBottom="@dimen/_14sdp"
+                        android:background="@color/color_2">
+
+                        <ImageView
+                            visibleObject="@{!viewModel.isAlreadyHasEmployee()}"
+                            android:layout_width="@dimen/_83sdp"
+                            android:layout_height="@dimen/_83sdp"
+                            android:layout_gravity="center"
+                            android:layout_marginVertical="@dimen/_11sdp"
+                            android:src="@drawable/ic_clockinout_ic_check_big"
+                            tools:ignore="ContentDescription" />
+
+                        <ProgressBar
+                            visibleObject="@{viewModel.isAlreadyHasEmployee()}"
+                            android:layout_gravity="center"
+                            android:id="@+id/progressBar"
+                            android:layout_width="@dimen/_83sdp"
+                            android:layout_height="@dimen/_83sdp"
+                            android:indeterminate="false"
+                            android:progress="@{viewModel.progress}"
+                            android:progressDrawable="@drawable/bg_circular_progress_bar"
+                            android:background="@drawable/layout_progress_bar_circular_shape"
+                            style="?android:attr/progressBarStyleHorizontal"
+                            android:max="100"
+                            tools:progress = "65"/>
+
+                        <LinearLayout
+                            visibleObject="@{viewModel.isAlreadyHasEmployee()}"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <com.diadiem.pos_components.PTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@{viewModel.point}"
+                                app:useFontStyle="bold"
+                                app:useTextColor="color4"
+                                app:useTextHeader="h3"
+                                tools:text = "11"/>
+
+                            <com.diadiem.pos_components.PTextView
+                                visibleObject="@{viewModel.isAlreadyHasEmployee()}"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/points"
+                                app:useFontStyle="bold"
+                                app:useTextColor="color4"
+                                app:useTextHeader="h3"
+                                tools:text = "point"/>
+                        </LinearLayout>
+
+                    </FrameLayout>
+
+                    <com.diadiem.pos_components.PTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/payment_completed"
+                        app:useFontStyle="bold"
+                        app:useTextColor="color4"
+                        app:useTextHeader="h3" />
+
+                    <com.diadiem.pos_components.PTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/_22sdp"
+                        android:layout_marginVertical="@dimen/_10sdp"
+                        android:text="@{viewModel.isAlreadyHasEmployee() ? viewModel.customerEarnedPoint : @string/become_a_new_member_to_earn_points_and_rewards}"
+                        app:useFontStyle="normal"
+                        app:useTextColor="color4"
+                        app:useTextHeader="h5" />
+                </LinearLayout>
+
+
+                <include
+                    layout="@layout/divider_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_1sdp"
+                    android:layout_marginHorizontal="@dimen/_29sdp"
+                    android:layout_marginVertical="@dimen/_11sdp" />
+
                 <com.diadiem.pos_components.PTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="@string/change_lower_case"
                     app:useFontStyle="normal"
-                    app:useTextHeader="h5"
                     app:useTextColor="color4"
-                    android:text="@string/received"
-                    />
+                    app:useTextHeader="h5" />
+
+                <androidx.legacy.widget.Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_4sdp" />
+
                 <com.diadiem.pos_components.PTextView
-                    android:id="@+id/textReceived"
-                    android:layout_marginStart="@dimen/_2sdp"
+                    android:id="@+id/textChangeValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:useFontStyle="bold"
-                    app:useTextHeader="h5"
-                    app:useTextColor="color4"
-                    tools:text="45,000"
-                    />
+                    app:useTextColor="color1"
+                    app:useTextHeader="h1"
+                    tools:text="45,000" />
+
+                <include
+                    layout="@layout/divider_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_1sdp"
+                    android:layout_marginHorizontal="@dimen/_29sdp"
+                    android:layout_marginVertical="@dimen/_11sdp" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <com.diadiem.pos_components.PTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/received"
+                        app:useFontStyle="normal"
+                        app:useTextColor="color4"
+                        app:useTextHeader="h5" />
+
+                    <com.diadiem.pos_components.PTextView
+                        android:id="@+id/textReceived"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_2sdp"
+                        app:useFontStyle="bold"
+                        app:useTextColor="color4"
+                        app:useTextHeader="h5"
+                        tools:text="45,000" />
+                </LinearLayout>
             </LinearLayout>
 
+        </RelativeLayout>
 
-
-
-        </LinearLayout>
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
             <com.diadiem.pos_components.PMaterialButton
-                visibleObject="@{!viewModel.isAlreadyHasEmployee()}"
-                android:layout_marginTop="@dimen/_9sdp"
                 android:id="@+id/btnBecomeAMember"
                 style="@style/Base.MaterialButton"
-                android:stateListAnimator="@null"
+                visibleObject="@{!viewModel.isAlreadyHasEmployee()}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_9sdp"
+                android:layout_marginTop="@dimen/_9sdp"
                 android:backgroundTint="@color/color_11"
-                android:gravity="center"
-                android:text="@string/become_a_member"
                 android:elevation="0dp"
+                android:gravity="center"
+                android:stateListAnimator="@null"
+                android:text="@string/become_a_member"
                 app:elevation="0dp"
                 app:pbtn_useFontStyle="bold"
                 app:pbtn_useTextColor="color0"
                 app:pbtn_useTextHeader="h5" />
+
             <com.diadiem.pos_components.PMaterialButton
                 android:id="@+id/btnNewSale"
                 style="@style/Base.MaterialButton"
-                android:stateListAnimator="@null"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/_9sdp"
                 android:background="@drawable/bg_primary_button"
-                android:gravity="center"
-                android:text="@string/new_sale"
                 android:elevation="0dp"
+                android:gravity="center"
+                android:stateListAnimator="@null"
+                android:text="@string/new_sale"
                 app:elevation="0dp"
                 app:pbtn_useFontStyle="bold"
                 app:pbtn_useTextColor="color2"

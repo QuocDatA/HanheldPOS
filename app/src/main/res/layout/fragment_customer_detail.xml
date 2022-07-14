@@ -154,6 +154,7 @@
                                 app:useFontStyle="normal"
                                 app:useTextHeader="h5"
                                 app:useTextColor="color6"
+                                android:text="@{viewModel.customerProfile.memberText}"
                                 tools:text="Silver"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
