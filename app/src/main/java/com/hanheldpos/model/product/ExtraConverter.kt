@@ -17,15 +17,25 @@ object ExtraConverter {
     fun modifierOrderStr(list: List<OrderModifier>?, separator: String? = null): String? {
         return if (list?.isEmpty() == true) null;
         else list?.joinToString(separator = separator ?: Const.SymBol.CommaSeparator) { item ->
-            (if ((item.ModifierQuantity ?: 0) > 1) "(${item.ModifierQuantity}) " else "") + item.Name
+            (if ((item.ModifierQuantity
+                    ?: 0) > 1
+            ) "(${item.ModifierQuantity}) " else "") + item.Name
         }
     }
 
     fun modifierOrderStr(list: List<OrderModifier>?): String? {
         return if (list?.isEmpty() == true) null;
         else list?.joinToString(separator = Const.SymBol.CommaSeparator) { item ->
-            (if ((item.ModifierQuantity ?: 0) > 1) "(${item.ModifierQuantity}) " else "") + item.Name
+            (if ((item.ModifierQuantity
+                    ?: 0) > 1
+            ) "(${item.ModifierQuantity}) " else "") + item.Name
         }
+    }
+
+    fun modifierOrderSingleStr(item: OrderModifier?): String? {
+        return (if ((item?.ModifierQuantity
+                ?: 0) > 1
+        ) "(${item?.ModifierQuantity}) " else "") + item?.Name
     }
 
     fun variantStr(list: List<VariantCart>?): String? {

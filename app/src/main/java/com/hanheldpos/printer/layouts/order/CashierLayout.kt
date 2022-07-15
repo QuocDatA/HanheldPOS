@@ -225,11 +225,11 @@ class CashierLayout(
                 )
             )
         }
-        productChosen.ModifierList?.takeIf { it.isNotEmpty() }?.let {
+        productChosen.ModifierList?.takeIf { it.isNotEmpty() }?.forEach { item->
             listInfoGroupExtra.add(
                 mutableListOf(
                     "*",
-                    ExtraConverter.modifierOrderStr(it).toString()
+                    ExtraConverter.modifierOrderSingleStr(item).toString()
                 )
             )
         }
