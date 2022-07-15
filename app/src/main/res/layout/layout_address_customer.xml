@@ -25,6 +25,7 @@
             tools:text="Quan Nguyen" />
 
         <com.diadiem.pos_components.PTextView
+            visibleObject="@{customer.getFullAddressWithLineBreaker().length() > 0}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{customer.getFullAddressWithLineBreaker()}"
@@ -37,6 +38,7 @@ Block A3, Floor 5, Room 404
 An Loi Dong Ward, District 2" />
 
         <com.diadiem.pos_components.PTextView
+            visibleObject="@{customer.getContactInfo().length() > 0}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{customer.getContactInfo()}"
