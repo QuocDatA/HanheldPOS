@@ -153,6 +153,7 @@ class CashierLayout(
     }
 
     private fun printProduct(productChosen: ProductChosen, level: Int = 0) {
+        if(productChosen.ProductTypeId == ProductType.UNKNOWN.value) return
         // Process detail product
         val quantity = when (true) {
             (level == 0) -> "${productChosen.Quantity}x"
