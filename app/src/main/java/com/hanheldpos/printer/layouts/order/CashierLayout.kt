@@ -327,7 +327,7 @@ class CashierLayout(
                 mutableListOf(
                     mutableListOf(
                         fee.FeeName.toString(),
-                        PriceUtils.formatStringPrice(fee.FeeValue ?: 0.0)
+                        PriceUtils.formatStringPrice(fee.TotalPrice ?: 0.0)
                     ),
                 ),
                 mutableListOf(Block.DATA_MIDDLE_LEFT, Block.DATA_MIDDLE_RIGHT)
