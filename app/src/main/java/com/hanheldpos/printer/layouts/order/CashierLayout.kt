@@ -169,7 +169,10 @@ class CashierLayout(
         val isBundleOrBuyXGetY =
             productChosen.ProductTypeId == ProductType.BUNDLE.value || productChosen.ProductTypeId == ProductType.BUYX_GETY_DISC.value
         // Print Header
-        val titleColumnSize = charPerLineNormal - rightColumn - level * leftColumn
+        val spaceFromQuantityToTitle = if (level == 0) leftColumn else 4
+        val spaceFromStartToContentHeader = (level * leftColumn)
+        val spaceFromStartToExtra = spaceFromStartToContentHeader + spaceFromQuantityToTitle + 2
+        val titleColumnSize = charPerLineNormal - rightColumn - spaceFromStartToContentHeader
         val contentHeader = StringUtils.removeAccent(
             WaguUtils.columnListDataBlock(
                 titleColumnSize,
@@ -184,7 +187,7 @@ class CashierLayout(
                     )
                 ),
                 columnOrderDetailAlign,
-                mutableListOf(leftColumn, titleColumnSize - leftColumn),
+                mutableListOf(spaceFromQuantityToTitle, titleColumnSize - spaceFromQuantityToTitle),
                 wrapType = WrapType.SOFT_WRAP
             )
         )
@@ -200,7 +203,11 @@ class CashierLayout(
                     )
                 ),
                 columnOrderDetailAlign,
-                mutableListOf(level * leftColumn, titleColumnSize, rightColumn)
+                mutableListOf(
+                    spaceFromStartToContentHeader,
+                    titleColumnSize,
+                    rightColumn
+                )
             ), true
         )
 
@@ -215,7 +222,7 @@ class CashierLayout(
 
         // Print Extra
         val extraColumnSize =
-            charPerLineNormal - rightColumn - level * leftColumn - 2 // 2 is space from * to text
+            charPerLineNormal - rightColumn - spaceFromStartToExtra
         val listInfoGroupExtra = mutableListOf<MutableList<String>>()
         productChosen.VariantList?.takeIf { it.isNotEmpty() }?.let {
             listInfoGroupExtra.add(
@@ -225,7 +232,7 @@ class CashierLayout(
                 )
             )
         }
-        productChosen.ModifierList?.takeIf { it.isNotEmpty() }?.forEach { item->
+        productChosen.ModifierList?.takeIf { it.isNotEmpty() }?.forEach { item ->
             listInfoGroupExtra.add(
                 mutableListOf(
                     "*",
@@ -292,7 +299,11 @@ class CashierLayout(
                         )
                     ),
                     columnOrderDetailAlign,
-                    mutableListOf(level * leftColumn + 2, extraColumnSize, rightColumn)
+                    mutableListOf(
+                        spaceFromStartToExtra,
+                        extraColumnSize,
+                        rightColumn
+                    )
                 ), true
             )
     }
