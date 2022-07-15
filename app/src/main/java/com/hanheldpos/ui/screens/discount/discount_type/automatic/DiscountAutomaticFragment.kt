@@ -12,6 +12,7 @@ import com.hanheldpos.databinding.FragmentDiscountAutomaticBinding
 import com.hanheldpos.model.cart.BaseProductInCart
 import com.hanheldpos.model.cart.CartModel
 import com.hanheldpos.model.discount.DiscApplyTo
+import com.hanheldpos.model.discount.DiscountTriggerType
 import com.hanheldpos.model.discount.DiscountTypeFor
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.discount.DiscountFragment
@@ -28,18 +29,18 @@ class DiscountAutomaticFragment(
     BaseFragment<FragmentDiscountAutomaticBinding, DiscountAutomaticVM>(), DiscountAutomaticUV {
 
     override fun layoutRes(): Int {
-        return R.layout.fragment_discount_automatic;
+        return R.layout.fragment_discount_automatic
     }
 
     private lateinit var discountAutoAdapter: DiscountServerAdapter;
 
     override fun viewModelClass(): Class<DiscountAutomaticVM> {
-        return DiscountAutomaticVM::class.java;
+        return DiscountAutomaticVM::class.java
     }
 
     override fun initViewModel(viewModel: DiscountAutomaticVM) {
         viewModel.run {
-            init(this@DiscountAutomaticFragment);
+            init(this@DiscountAutomaticFragment)
         }
         binding.viewModel = viewModel;
     }
@@ -55,10 +56,11 @@ class DiscountAutomaticFragment(
                 }
 
                 override fun onItemClick(item: DiscountResp) {
-                    viewModel.onApplyDiscountAuto(item)
+                    if (item.isExistsTrigger(DiscountTriggerType.ON_CLICK))
+                        viewModel.onApplyDiscountAuto(item)
                 }
 
-            });
+            })
         binding.listDiscountCode.apply {
             addItemDecoration(
                 DividerItemDecoration(
@@ -73,8 +75,8 @@ class DiscountAutomaticFragment(
                     )
                 }
             )
-        };
-        binding.listDiscountCode.adapter = discountAutoAdapter;
+        }
+        binding.listDiscountCode.adapter = discountAutoAdapter
 
     }
 
@@ -117,8 +119,7 @@ class DiscountAutomaticFragment(
                 }
                 if (discountSelect != null) {
                     viewModel.onApplyDiscountAuto(discountSelect)
-                }
-                else showMessage(getString(R.string.code_doesnt_exist))
+                } else showMessage(getString(R.string.code_doesnt_exist))
 
             }
         }

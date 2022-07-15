@@ -28,7 +28,6 @@ class DiscountDetailFragment(
     override fun initView() {
         binding.discountName.text = discountResp.DiscountName
         binding.isDiscTriggerInCart = viewModel.isDiscTriggerInCart(discountResp)
-        binding.isDiscTriggerInCart
     }
 
     override fun initData() {

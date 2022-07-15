@@ -42,6 +42,7 @@
                 android:layout_marginEnd="@dimen/_29sdp"
                 />
             <ImageView
+                android:id="@+id/customerInfo"
                 android:layout_width="@dimen/_12sdp"
                 android:layout_height="@dimen/_12sdp"
                 android:src="@drawable/ic_info"

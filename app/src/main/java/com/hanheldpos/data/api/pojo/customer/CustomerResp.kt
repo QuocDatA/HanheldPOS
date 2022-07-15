@@ -87,7 +87,7 @@ data class CustomerResp(
     private fun getFullAddress(isLineBreaked: Boolean = false): String {
 
         return StringBuilder().apply {
-            if (!Name.isEmpty()){
+            if (!Name.isNullOrEmpty()){
                 append(Name)
                 if (isLineBreaked) {
                     append("\n")
@@ -95,7 +95,7 @@ data class CustomerResp(
                     append(", ")
                 }
             }
-            if (!Address1.isEmpty()) {
+            if (!Address1.isNullOrEmpty()) {
                 append(Address1)
                 if (isLineBreaked) {
                     append("\n")
@@ -103,7 +103,7 @@ data class CustomerResp(
                     append(", ")
                 }
             }
-            if (!Address2.isEmpty()) {
+            if (!Address2.isNullOrEmpty()) {
                 append(Address2)
                 if (isLineBreaked) {
                     append("\n")
@@ -111,7 +111,7 @@ data class CustomerResp(
                     append(", ")
                 }
             }
-            if (!WardName.isEmpty()) {
+            if (!WardName.isNullOrEmpty()) {
                 append(WardName)
                 if (isLineBreaked) {
                     append("\n")
@@ -119,7 +119,7 @@ data class CustomerResp(
                     append(", ")
                 }
             }
-            if (!CityName.isEmpty()) {
+            if (!CityName.isNullOrEmpty()) {
                 append(CityName)
                 if (isLineBreaked) {
                     append("\n")
@@ -127,7 +127,7 @@ data class CustomerResp(
                     append(", ")
                 }
             }
-            if (!Company.isEmpty()) {
+            if (!Company.isNullOrEmpty()) {
                 append(Company)
 //                if (isLineBreaked) {
 //                    append("\n")

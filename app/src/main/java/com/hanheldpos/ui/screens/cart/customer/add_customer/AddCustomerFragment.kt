@@ -13,6 +13,7 @@ import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.cart.customer.add_customer.adapter.CustomerAdapter
 import com.hanheldpos.ui.screens.cart.customer.add_customer.adapter.CustomerAdapterHelper
+import com.hanheldpos.ui.screens.menu.customers.customer_detail.CustomerMenuDetailFragment
 import com.hanheldpos.ui.screens.scanner.ScanQrCodeFragment
 import kotlin.random.Random
 
@@ -38,11 +39,15 @@ class AddCustomerFragment(
     }
 
     override fun initView() {
-        adapterCustomer = CustomerAdapter(listener = object : BaseItemClickListener<CustomerResp?> {
-            override fun onItemClick(adapterPosition: Int, item: CustomerResp?) {
+        adapterCustomer = CustomerAdapter(listener = object : CustomerAdapter.CustomerAdapterCallback {
+            override fun onCustomerSelect(adapterPosition: Int, customer: CustomerResp?) {
                 // Dealing with select customer
-                listener.onSelectedCustomer(item!!)
+                listener.onSelectedCustomer(customer!!)
                 onFragmentBackPressed()
+            }
+
+            override fun onCustomerDetail(customer: CustomerResp?) {
+                navigator.goTo(CustomerMenuDetailFragment(customer!!))
             }
         })
         binding.customerContainer.apply {
