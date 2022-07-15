@@ -15,7 +15,8 @@ class InventoryLayout(
     printConfig: PrintConfig,
     reportSalesModel: ReportSalesResp?,
     filterOptionReportSale: ReportFilterModel?,
-    private val inventories: Map<ProductInventory, List<ProductInventory>> = reportSalesModel?.mapInventorySaleReport() ?: emptyMap()
+    private val inventories: Map<ProductInventory, List<ProductInventory>> = reportSalesModel?.mapInventorySaleReport()
+        ?: emptyMap()
 ) : BaseLayoutReport(
     printer, printConfig,
     title = "Item Sales Report",
@@ -55,7 +56,8 @@ class InventoryLayout(
                     Block.DATA_MIDDLE_RIGHT,
                     Block.DATA_MIDDLE_RIGHT
                 ),
-                columnSize = inventoryColumnSize
+                columnSize = inventoryColumnSize,
+                wrapType = WrapType.SOFT_WRAP,
             ), bold = true
         )
     }
@@ -68,7 +70,7 @@ class InventoryLayout(
                 printInventoryColumns = false
             )
             inventory.value.forEach {
-                printInventory(it, header = it.Name.toString(), printInventoryColumns = true)
+                printInventory(it, header = it.Name, printInventoryColumns = true)
             }
             printDivider()
             printInventory(
@@ -90,7 +92,7 @@ class InventoryLayout(
         printInventoryColumns: Boolean
     ) {
 
-        val line = mutableListOf<String>(
+        val line = mutableListOf(
             header
         )
         val aligns = mutableListOf(
@@ -114,12 +116,12 @@ class InventoryLayout(
                     line
                 ),
                 aligns = aligns,
-                columnSize = inventoryColumnSize
-            , wrapType = WrapType.ELLIPSIS
+                columnSize = inventoryColumnSize,
+                wrapType = WrapType.SOFT_WRAP,
             ),
             size = BasePrinterManager.FontSize.Small,
 
-        )
+            )
     }
 
     private fun printOverview() {
