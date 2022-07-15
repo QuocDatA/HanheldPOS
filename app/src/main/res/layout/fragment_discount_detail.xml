@@ -12,6 +12,10 @@
         <variable
             name="discountDetail"
             type="com.hanheldpos.data.api.pojo.discount.CouponResp" />
+
+        <variable
+            name="isDiscTriggerInCart"
+            type="Boolean" />
     </data>
 
     <LinearLayout
@@ -598,6 +602,8 @@
 
         </androidx.core.widget.NestedScrollView>
         <com.diadiem.pos_components.PMaterialButton
+            visibleObject="@{!isDiscTriggerInCart}"
+            android:visibility="gone"
             android:id="@+id/btnApplyDiscount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
