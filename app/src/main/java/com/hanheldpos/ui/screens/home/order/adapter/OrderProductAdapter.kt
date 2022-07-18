@@ -68,7 +68,6 @@ class OrderProductAdapter(
 
 
         if (item.uiType != ProductModeViewType.Empty) {
-
             holder.binding.root.setOnClickDebounce { listener.onItemClick(position, item); }
         }
     }
