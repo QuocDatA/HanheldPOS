@@ -14,6 +14,9 @@
         <variable
             name="isShownDetail"
             type="Boolean" />
+        <variable
+            name="isDiscountRemovable"
+            type="Boolean" />
 
     </data>
 
@@ -161,7 +164,7 @@
                             android:id="@+id/discountDetail"
                             layout="@layout/cart_product_detail_line"
                             app:isDiscount="@{true}"
-                            app:hasIcon="@{true}"
+                            app:hasIcon="@{isDiscountRemovable}"
                             visibleObject="@{(item.discountUsersList != null &amp;&amp; !item.discountUsersList.empty) || (item.discountServersList != null &amp;&amp; !item.discountServersList.empty) }"
                             app:lineText="@{`Discount : ` }"
                             app:priceDiscMinus="@{item.totalDiscount()}"
