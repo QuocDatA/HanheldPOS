@@ -32,6 +32,7 @@ class CustomizeReportFragment(
     }
 
     override fun initView() {
+
         startSpinnerAdapter = SubSpinnerAdapter(requireContext())
         binding.spinnerStart.adapter = startSpinnerAdapter
         endSpinnerAdapter = SubSpinnerAdapter(requireContext())

@@ -125,7 +125,7 @@
     <string name="actual_amount">Actual Amount</string>
     <string name="enter_amount">Enter Amount</string>
     <string name="total_paid_in_out">Total Paid In/Out</string>
-
+    // Day of Week
     <string name="material_calendar_monday">Mo</string>
     <string name="material_calendar_tuesday">Tu</string>
     <string name="material_calendar_wednesday">We</string>
@@ -133,6 +133,19 @@
     <string name="material_calendar_friday">Fr</string>
     <string name="material_calendar_saturday">Sa</string>
     <string name="material_calendar_sunday">Su</string>
+    // Month of Year
+    <string name="material_calendar_jan">Jan</string>
+    <string name="material_calendar_feb">Feb</string>
+    <string name="material_calendar_march">March</string>
+    <string name="material_calendar_april">April</string>
+    <string name="material_calendar_may">May</string>
+    <string name="material_calendar_june">June</string>
+    <string name="material_calendar_july">July</string>
+    <string name="material_calendar_aug">Aug</string>
+    <string name="material_calendar_sept">Sept</string>
+    <string name="material_calendar_oct">Oct</string>
+    <string name="material_calendar_nov">Nov</string>
+    <string name="material_calendar_dec">Dec</string>
     <string name="drawer">Drawer</string>
     <string name="all_device">All Device</string>
     <string name="this_device_only">This Device only</string>
@@ -146,6 +159,20 @@
         <item>@string/material_calendar_friday</item>
         <item>@string/material_calendar_saturday</item>
         <item>@string/material_calendar_sunday</item>
+    </string-array>
+    <string-array name="monthLabels">
+        <item>@string/material_calendar_jan</item>
+        <item>@string/material_calendar_feb</item>
+        <item>@string/material_calendar_march</item>
+        <item>@string/material_calendar_april</item>
+        <item>@string/material_calendar_may</item>
+        <item>@string/material_calendar_june</item>
+        <item>@string/material_calendar_july</item>
+        <item>@string/material_calendar_aug</item>
+        <item>@string/material_calendar_sept</item>
+        <item>@string/material_calendar_oct</item>
+        <item>@string/material_calendar_nov</item>
+        <item>@string/material_calendar_dec</item>
     </string-array>
     <string name="notification">Notification</string>
     <string name="please_choose_payment_method">Please choose payment method</string>
