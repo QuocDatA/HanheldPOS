@@ -433,13 +433,13 @@ class OverviewLayout(
 
     private fun printCategorySales() {
         val aligns = mutableListOf(
-            Block.DATA_MIDDLE_LEFT,
-            Block.DATA_MIDDLE_RIGHT,
-            Block.DATA_MIDDLE_RIGHT,
-            Block.DATA_MIDDLE_RIGHT
+            Block.DATA_TOP_LEFT,
+            Block.DATA_CENTER,
+            Block.DATA_TOP_RIGHT,
+            Block.DATA_TOP_RIGHT
         )
 
-        val columnSize = mutableListOf(charPerLineNormal - 5 - 11 - 7, 5, 11, 7)
+        val columnSize = mutableListOf(charPerLineNormal - 4 - 9 - 7, 4, 9, 7)
 
 
         val reportList =
@@ -458,7 +458,7 @@ class OverviewLayout(
                 mutableListOf(
                     mutableListOf(
                         "Name",
-                        "Quantity",
+                        "Qty",
                         "Amount",
                         "Rate"
                     )
