@@ -154,10 +154,12 @@ class PayInPayOutFragment(private val listener : PayInOutCallback) : BaseFragmen
 
     }
 
-    override fun getBack() {
-        listener.onLoadReport();
-        onFragmentBackPressed()
+    override fun onFragmentBackPressed() {
+        listener.onLoadReport()
+        super.onFragmentBackPressed()
     }
+
+
 
     @SuppressLint("NotifyDataSetChanged")
     override fun onLoadPaidInOutListToUI(list: List<PaidInOutListResp>?) {

@@ -1,7 +1,6 @@
 package com.hanheldpos.ui.screens.menu
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -39,8 +38,6 @@ import com.hanheldpos.utils.NetworkUtils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
 
 class MenuFragment(private val listener: MenuCallBack) :

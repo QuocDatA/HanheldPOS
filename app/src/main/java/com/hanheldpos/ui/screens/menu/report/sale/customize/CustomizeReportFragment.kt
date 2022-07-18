@@ -9,7 +9,6 @@ import com.hanheldpos.model.report.ReportFilterModel
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.home.DropDownItem
 import com.hanheldpos.ui.screens.main.adapter.SubSpinnerAdapter
-import com.hanheldpos.utils.DateTimeUtils
 
 class CustomizeReportFragment(
     private val saleReportCustomData: ReportFilterModel,

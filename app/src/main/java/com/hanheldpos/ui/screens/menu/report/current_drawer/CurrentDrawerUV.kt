@@ -4,7 +4,7 @@ import com.hanheldpos.data.api.pojo.cashdrawer.report.ReportCashDrawerResp
 import com.hanheldpos.ui.base.BaseUserView
 
 interface CurrentDrawerUV: BaseUserView {
-    fun getBack()
+    fun onFragmentBackPressed()
     fun onOpenEndDrawer()
     fun onOpenPayInPayOut()
     fun showInfoCurrentDrawer(report : ReportCashDrawerResp?);

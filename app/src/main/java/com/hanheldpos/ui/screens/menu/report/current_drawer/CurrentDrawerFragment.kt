@@ -75,9 +75,9 @@ class CurrentDrawerFragment : BaseFragment<FragmentCurrentDrawerBinding, Current
     override fun initAction() {
     }
 
-    override fun getBack() {
+    override fun onFragmentBackPressed() {
         showLoading(false);
-        onFragmentBackPressed()
+        super.onFragmentBackPressed()
     }
 
     override fun onOpenEndDrawer() {
@@ -85,7 +85,7 @@ class CurrentDrawerFragment : BaseFragment<FragmentCurrentDrawerBinding, Current
             val ordersCompletedFlow = DatabaseHelper.ordersCompleted.getAllLiveData();
             ordersCompletedFlow.take(1).collectLatest { ordersCompleted ->
                 val listOrder = ordersCompleted.filter { OrderHelper.isValidOrderPush(it) }
-                if (!listOrder.isNullOrEmpty()) {
+                if (listOrder.isNotEmpty()) {
                     launch(Dispatchers.Main) {
                         AppAlertDialog.get().show(
                             getString(R.string.notification),

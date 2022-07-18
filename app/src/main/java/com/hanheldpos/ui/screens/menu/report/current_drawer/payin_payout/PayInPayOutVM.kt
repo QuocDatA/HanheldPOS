@@ -3,10 +3,8 @@ package com.hanheldpos.ui.screens.menu.report.current_drawer.payin_payout
 
 import android.content.Context
 import android.view.View
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.cashdrawer.pay_in_out.PaidInOutListResp
 import com.hanheldpos.data.api.pojo.cashdrawer.pay_in_out.PayInOutResp
@@ -19,11 +17,8 @@ import com.hanheldpos.model.UserHelper
 import com.hanheldpos.model.payinout.PaidInOutListCashDrawerReq
 import com.hanheldpos.model.payinout.PayInOutCashDrawerReq
 import com.hanheldpos.ui.base.dialog.AppAlertDialog
-import com.hanheldpos.ui.base.viewmodel.BaseRepoViewModel
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
 import com.hanheldpos.utils.GSonUtils
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 class PayInPayOutVM : BaseUiViewModel<PayInPayOutUV>() {
 
@@ -181,7 +176,7 @@ class PayInPayOutVM : BaseUiViewModel<PayInPayOutUV>() {
     }
 
     fun backPress() {
-        uiCallback?.getBack()
+        uiCallback?.onFragmentBackPressed()
     }
 
 

@@ -16,8 +16,8 @@ class CurrentDrawerVM : BaseUiViewModel<CurrentDrawerUV>() {
 
     private val cashDrawerRepo = CashDrawerRepo();
 
-    fun backPress() {
-        uiCallback?.getBack()
+    fun onFragmentBackPressed() {
+        uiCallback?.onFragmentBackPressed()
     }
 
     fun onOpenEndDrawer() {
