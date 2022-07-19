@@ -10,24 +10,23 @@ import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.Window
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.downloader.OnDownloadListener
 import com.downloader.PRDownloader
 import com.downloader.PRDownloaderConfig
 import com.downloader.Status
 import com.downloader.request.DownloadRequest
-import com.hanheldpos.BuildConfig
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.resource.ResourceResp
 import com.hanheldpos.databinding.DialogProcessDownloadResourceBinding
 import com.hanheldpos.extension.showWithoutSystemUI
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import java.io.*
+import java.lang.Runnable
 import java.util.*
 import java.util.zip.ZipEntry
+import java.util.zip.ZipFile
 import java.util.zip.ZipInputStream
 
 
@@ -80,7 +79,7 @@ object DownloadService {
         var currentDownloadPos = 0
         var isGettingSpeed = false
         initDownloadService(context)
-        val listNeedDownload = listResources.filter { !checkFileExist(it.Name)}
+        val listNeedDownload = listResources.filter { !checkFileExist(it.Name) }
         if (listNeedDownload.isEmpty()) {
             listener.onComplete()
             return
@@ -134,7 +133,7 @@ object DownloadService {
                     val runnable = Runnable {
                         binding.tvDownloadSpeed.text = toMegaByte(currentByte) + "/s | "
                     }
-                    mainHandler.post(runnable);
+                    mainHandler.post(runnable)
                 } else isGettingSpeed = false
             }
         }
@@ -172,28 +171,65 @@ object DownloadService {
                 ) Log.d("Download Resources", "Failed")
                 if (isDownloading && currentDownloadPos >= listResources.size) {
                     isDownloading = false
-                    processDialog.dismiss()
-                    CoroutineScope(Dispatchers.IO).launch {
+                    CoroutineScope(Dispatchers.Main).launch {
+//                        listFileToExtract.forEach { file ->
+//                            unpackZip(INTERNAL_PATH, file, object : UnZipCallback {
+//                                override fun onStart() {
+//                                    binding.isLoading = true
+//                                }
+//
+//                                override fun onFinish() {
+//                                    CoroutineScope(Dispatchers.Main).launch {
+//                                        processDialog.dismiss()
+//                                        listener.onComplete()
+//                                    }
+//                                }
+//                            })
+//
+//                        }
                         listFileToExtract.forEach { file ->
-                            unpackZip(INTERNAL_PATH, file)
-                        }
-                        CoroutineScope(Dispatchers.Main).launch {
-                            listener.onComplete()
-                        }
+                            unZip(
+                                "$INTERNAL_PATH/$file",
+                                INTERNAL_PATH,
+                                file,
+                                object : UnZipCallback {
+                                    override fun onStart(zipFileName: String, zipFileSize: Int) {
+                                        binding.itemName.text = zipFileName
+                                        binding.processBar.max = zipFileSize
+                                        binding.processBar.progress = 0
+                                        binding.tvProgressCount.text = "0%"
+                                        binding.downloadTitle.text = "Extracting..."
+                                        binding.tvDownloadSpeed.text = "0/${zipFileSize}"
+                                        binding.tvStoreCount.text = " Files"
+                                    }
 
+                                    override fun onProgress(
+                                        counter: Int,
+                                        progress: Float,
+                                        zipFileSize: Int
+                                    ) {
+//                                        val mainHandler = Handler(Looper.getMainLooper())
+//                                        val runnable = Runnable {
+                                            binding.processBar.progress = counter
+                                            binding.tvProgressCount.text = "${progress.toInt()}%"
+                                            binding.tvDownloadSpeed.text = "$counter/$zipFileSize"
+//                                        }
+//                                        mainHandler.post(runnable)
+                                    }
+
+                                    override fun onFinish() {
+                                        processDialog.dismiss()
+                                        listener.onComplete()
+                                    }
+                                }
+                            )
+                        }
                     }
                     return@launch
                 }
             }
         }
 
-    }
-
-    private fun checkForPermission(context: Context): Boolean {
-        return ContextCompat.checkSelfPermission(
-            context,
-            android.Manifest.permission.WRITE_EXTERNAL_STORAGE
-        ) == PackageManager.PERMISSION_GRANTED
     }
 
     private fun checkFileExist(filePath: String): Boolean {
@@ -205,36 +241,91 @@ object DownloadService {
         return String.format(Locale.ENGLISH, "%.2fMB", bytes / (1024.00 * 1024.00))
     }
 
-    private fun unpackZip(path: String, zipName: String): Boolean {
-        val inputStream: InputStream
-        val zipInputStream: ZipInputStream
+    private fun unZip(filePath: String, desPath: String, fileExtractName: String, listener: UnZipCallback) {
+        val file = File(filePath)
+        UnzipUtils.unzip(file, desPath, binding, object : UnzipUtils.UnZipCallback{
+            override fun onStart(zipFileName: String, zipFileSize: Int) {
+                listener.onStart(fileExtractName, zipFileSize)
+            }
+
+            override fun onProgress(counter: Int, progress: Float, zipFileSize: Int) {
+                listener.onProgress(counter, progress, zipFileSize)
+            }
+
+            override fun onFinish() {
+                listener.onFinish()
+            }
+        })
+    }
+
+    private fun unpackZip(
+        path: String,
+        zipName: String,
+        //listener: UnZipCallback
+    ): Boolean {
+        var inputStream: InputStream
+        var zipInputStream: ZipInputStream
+        var counter = 0
         try {
+            //listener.onStart()
             var filePath: String
-            inputStream = FileInputStream(path + zipName)
-            zipInputStream = ZipInputStream(BufferedInputStream(inputStream))
+
             var zipEntry: ZipEntry?
             val buffer = ByteArray(1024)
             var count: Int
-            while (zipInputStream.nextEntry.also { zipEntry = it } != null) {
-                filePath = (zipEntry!!.name).replace("\\", "/")
 
-                val fileName = filePath.split("/").last()
+            val zipFile = ZipFile("$path/$zipName")
+            val zipFileSize = zipFile.size()
 
-                val fileDirs = filePath.substring(0, filePath.length - fileName.length)
+            binding.itemName.text = zipName
+            binding.processBar.max = zipFileSize
+            binding.processBar.progress = 0
+            binding.tvProgressCount.text = "0%"
+            binding.downloadTitle.text = "Extracting..."
+            binding.tvDownloadSpeed.text = "$counter/$zipFileSize"
+            binding.tvStoreCount.text = " Files"
 
-                File(path + fileDirs).run {
-                    if (!exists())
-                        mkdirs()
+            var progressText = 0f
+            binding.isLoading = false
+
+            CoroutineScope(Dispatchers.IO).launch {
+                inputStream = FileInputStream("$path/$zipName")
+                zipInputStream = ZipInputStream(BufferedInputStream(inputStream))
+                while (zipInputStream.nextEntry.also { zipEntry = it } != null) {
+
+                    filePath = (zipEntry!!.name).replace("\\", "/")
+
+                    val fileName = filePath.split("/").last()
+
+                    val fileDirs = filePath.substring(0, filePath.length - fileName.length)
+
+                    File(path + fileDirs).run {
+                        if (!exists())
+                            mkdirs()
+                    }
+
+                    val fileOutputStream = FileOutputStream(path + filePath)
+                    while (zipInputStream.read(buffer).also { count = it } != -1) {
+                        fileOutputStream.write(buffer, 0, count)
+                    }
+
+                    val mainHandler = Handler(Looper.getMainLooper())
+                    val runnable = Runnable {
+                        binding.processBar.progress = counter
+                        binding.tvProgressCount.text = "${progressText.toInt()}%"
+                        binding.tvDownloadSpeed.text = "$counter/$zipFileSize"
+                    }
+                    mainHandler.post(runnable)
+
+                    counter++
+                    progressText = (counter.toFloat() / zipFileSize.toFloat()) * 100
+                    fileOutputStream.close()
+                    zipInputStream.closeEntry()
                 }
-
-                val fileOutputStream = FileOutputStream(path + filePath)
-                while (zipInputStream.read(buffer).also { count = it } != -1) {
-                    fileOutputStream.write(buffer, 0, count)
-                }
-                fileOutputStream.close()
-                zipInputStream.closeEntry()
+                zipInputStream.close()
+                //listener.onFinish()
             }
-            zipInputStream.close()
+
         } catch (e: IOException) {
             e.printStackTrace()
             return false
@@ -249,5 +340,11 @@ object DownloadService {
         fun onCancel()
         fun onFail(errorMessage: String? = null)
         fun onComplete()
+    }
+
+    interface UnZipCallback {
+        fun onStart(zipFileName: String, zipFileSize: Int)
+        fun onProgress(counter: Int, progress: Float, zipFileSize: Int)
+        fun onFinish()
     }
 }
