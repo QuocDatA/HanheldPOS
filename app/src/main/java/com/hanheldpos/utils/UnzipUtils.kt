@@ -1,4 +1,4 @@
-package com.hanheldpos.model
+package com.hanheldpos.utils
 
 import android.os.Handler
 import android.os.Looper
@@ -18,7 +18,7 @@ object UnzipUtils {
      * @throws IOException
      */
     @Throws(IOException::class)
-    fun unzip(zipFilePath: File, destDirectory: String, binding: DialogProcessDownloadResourceBinding, listener: UnZipCallback) {
+    fun unzip(zipFilePath: File, destDirectory: String, listener: UnZipCallback) {
         var counter = 0
         var progress = 0f
         File(destDirectory).run {
@@ -31,10 +31,12 @@ object UnzipUtils {
             val zipFileSize = zip.size()
 
             val mainHandler = Handler(Looper.getMainLooper())
-            val runnable = Runnable {
-                listener.onStart("", zipFileSize)
+            CoroutineScope(Dispatchers.IO).launch {
+                delay(100)
+                withContext(Dispatchers.Main) {
+                    listener.onStart("", zipFileSize)
+                }
             }
-            mainHandler.post(runnable)
 
             zip.entries().asSequence().forEach { entry ->
 
