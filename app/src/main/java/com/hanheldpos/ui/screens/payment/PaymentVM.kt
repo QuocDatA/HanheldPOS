@@ -9,6 +9,7 @@ import com.hanheldpos.data.api.pojo.payment.WalletCardResp
 import com.hanheldpos.data.repository.BaseResponse
 import com.hanheldpos.data.repository.base.BaseRepoCallback
 import com.hanheldpos.data.repository.payment.PaymentRepo
+import com.hanheldpos.extension.CombinedLiveData
 import com.hanheldpos.extension.notifyValueChange
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.UserHelper
@@ -28,6 +29,14 @@ class PaymentVM : BaseUiViewModel<PaymentUV>() {
         return@map it.sumOf { paymentOrder ->
             paymentOrder.OverPay ?: 0.0
         }
+    }
+    val balanceRemain = CombinedLiveData<Double?>(balance, totalPay) {
+        val balanceL = it[0] as Double?
+        val totalPayL = it[1] as Double?
+        val remain = (balanceL)?.minus(totalPayL ?: 0.0)
+        if (remain != null) {
+            return@CombinedLiveData if (remain > 0.0) remain else 0.0
+        } else return@CombinedLiveData null
     }
 
     fun backPress() {

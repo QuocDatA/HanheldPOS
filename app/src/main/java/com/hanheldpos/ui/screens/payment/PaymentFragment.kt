@@ -214,7 +214,7 @@ class PaymentFragment(
     }
 
     override fun initAction() {
-        viewModel.balance.observe(this) {
+        viewModel.balanceRemain.observe(this) {
             if (it != null && it <= 0) {
                 viewModel.completedPayment(alreadyBill, listener)
             }
@@ -259,8 +259,7 @@ class PaymentFragment(
     }
 
     override fun paymentChosenSuccess(payment: BasePayment, amount: Double) {
-        val balance = viewModel.balance.value!!
-        viewModel.balance.postValue(balance - amount)
+        val balance = viewModel.balanceRemain.value!!
         val payable = payment.getPayable(amount, balance)
         viewModel.addPaymentChosen(
             PaymentOrder(
