@@ -18,10 +18,11 @@ import com.hanheldpos.model.discount.DiscountTypeEnum
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
 import com.hanheldpos.ui.screens.cart.CurCartData
 import com.hanheldpos.utils.GSonUtils
+import com.hanheldpos.utils.StringUtils
 
 class DiscountCodeVM : BaseUiViewModel<DiscountCodeUV>() {
 
-    val isLoading = MutableLiveData<Boolean>(false);
+    val isLoading = MutableLiveData(false)
     var buyXGetY = MutableLiveData<BuyXGetY>()
     private val discountRepo = DiscountRepo()
     fun initData() {
@@ -29,7 +30,7 @@ class DiscountCodeVM : BaseUiViewModel<DiscountCodeUV>() {
     }
 
     fun searchDiscountCode(keyword: String = "") {
-        val listDiscountCode = DataHelper.discountsLocalStorage?.filter { !it.DiscountAutomatic };
+        val listDiscountCode = DataHelper.discountsLocalStorage?.filter { !it.DiscountAutomatic }
         val searchList = listDiscountCode?.sortedBy { it.DiscountName }
             ?.filter { it.DiscountCode.uppercase().contains(keyword.uppercase()) }
         searchList?.let {
@@ -46,7 +47,7 @@ class DiscountCodeVM : BaseUiViewModel<DiscountCodeUV>() {
                 onApplyCouponCode(discSelected.DiscountCode)
             }
             DiscountTypeEnum.BUYX_GETY -> {
-                if(discSelected.isMaxNumberOfUsedPerOrder()) {
+                if (discSelected.isMaxNumberOfUsedPerOrder()) {
                     showError(PosApp.instance.getString(R.string.msg_error_maximum_selection_is_))
                     return
                 }
@@ -67,11 +68,13 @@ class DiscountCodeVM : BaseUiViewModel<DiscountCodeUV>() {
                     showLoading(false)
                     if (data == null || data.DidError) {
                         showError(
-                            data?.ErrorMessage
-                                ?: PosApp.instance.getString(R.string.invalid_discount)
-                        );
+                            StringUtils.htmlParse(
+                                data?.ErrorMessage
+                                    ?: PosApp.instance.getString(R.string.invalid_discount)
+                            )
+                        )
                     } else {
-                            uiCallback?.updateDiscountCouponCode(data.Model)
+                        uiCallback?.updateDiscountCouponCode(data.Model)
                     }
                 }
 

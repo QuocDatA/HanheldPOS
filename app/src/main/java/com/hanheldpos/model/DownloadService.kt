@@ -3,15 +3,11 @@ package com.hanheldpos.model
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Context
-import android.content.pm.PackageManager
-import android.os.Environment
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.Window
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import com.downloader.OnDownloadListener
 import com.downloader.PRDownloader
 import com.downloader.PRDownloaderConfig
@@ -21,13 +17,11 @@ import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.resource.ResourceResp
 import com.hanheldpos.databinding.DialogProcessDownloadResourceBinding
 import com.hanheldpos.extension.showWithoutSystemUI
+import com.hanheldpos.utils.UnzipUtils
 import kotlinx.coroutines.*
 import java.io.*
 import java.lang.Runnable
 import java.util.*
-import java.util.zip.ZipEntry
-import java.util.zip.ZipFile
-import java.util.zip.ZipInputStream
 
 
 object DownloadService {
@@ -228,7 +222,7 @@ object DownloadService {
 
     private fun unZip(filePath: String, desPath: String, fileExtractName: String, listener: UnZipCallback) {
         val file = File(filePath)
-        UnzipUtils.unzip(file, desPath, binding, object : UnzipUtils.UnZipCallback{
+        UnzipUtils.unzip(file, desPath, object : UnzipUtils.UnZipCallback{
             override fun onStart(zipFileName: String, zipFileSize: Int) {
                 listener.onStart(fileExtractName, zipFileSize)
             }
