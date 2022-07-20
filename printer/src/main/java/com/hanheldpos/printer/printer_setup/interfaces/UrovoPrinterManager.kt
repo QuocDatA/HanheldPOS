@@ -51,7 +51,7 @@ class UrovoPrinterManager : BasePrinterManager() {
                             msg.obj
                         ) //Print
                         PrintType.PRINT_FORWARD.value -> {
-                            printer.paperFeed(20)
+                            printer.paperFeed( msg.obj as? Int ?: 0)
                         }
                         else -> {}
                     }
@@ -132,7 +132,7 @@ class UrovoPrinterManager : BasePrinterManager() {
     }
 
     override fun drawLine(widthLine: Int) {
-        val dataContent = "".padEnd(widthLine * 2, '-')
+        val dataContent = "".padEnd(widthLine, '-')
         val msg = mPrintHandler!!.obtainMessage(PrintType.PRINT_TEXT.value)
         msg.obj = TextValuePrint(dataContent, false, FontSize.Small)
         msg.sendToTarget()
@@ -143,7 +143,9 @@ class UrovoPrinterManager : BasePrinterManager() {
     }
 
     override fun feedLines(line: Int) {
-
+        val msg = mPrintHandler!!.obtainMessage(PrintType.PRINT_FORWARD.value)
+        msg.obj = line
+        msg.sendToTarget()
     }
 
     private fun doPrint(printerManager: PrinterManager, type: Int, content: Any) {
