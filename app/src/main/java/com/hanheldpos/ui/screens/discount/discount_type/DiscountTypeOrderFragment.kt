@@ -1,6 +1,5 @@
 package com.hanheldpos.ui.screens.discount.discount_type
 
-import android.widget.Button
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -36,23 +35,23 @@ class DiscountTypeOrderFragment(
 ) : BaseFragment<FragmentDiscountTypeOrderBinding, DiscountTypeVM>(),
     DiscountTypeUV {
     // Adapter
-    private lateinit var optionsPagerAdapter: OptionsPagerAdapter;
+    private lateinit var optionsPagerAdapter: OptionsPagerAdapter
 
     // Fragment child
     private val fragmentMap: MutableMap<DiscountTypeFor, Fragment> = mutableMapOf()
     private val listTab: MutableList<DiscountTypeTab> = mutableListOf()
 
-    override fun layoutRes(): Int = R.layout.fragment_discount_type_order;
+    override fun layoutRes(): Int = R.layout.fragment_discount_type_order
 
     override fun viewModelClass(): Class<DiscountTypeVM> {
-        return DiscountTypeVM::class.java;
+        return DiscountTypeVM::class.java
     }
 
     override fun initViewModel(viewModel: DiscountTypeVM) {
         viewModel.run {
-            init(this@DiscountTypeOrderFragment);
-            binding.viewModel = this;
-            binding.discountType = applyToType;
+            init(this@DiscountTypeOrderFragment)
+            binding.viewModel = this
+            binding.discountType = applyToType
         }
     }
 
@@ -60,9 +59,9 @@ class DiscountTypeOrderFragment(
 
 
         // Container Fragment Type For Adapter
-        optionsPagerAdapter = OptionsPagerAdapter(childFragmentManager, lifecycle);
+        optionsPagerAdapter = OptionsPagerAdapter(childFragmentManager, lifecycle)
         binding.discountFragmentContainer.apply {
-            adapter = optionsPagerAdapter;
+            adapter = optionsPagerAdapter
         }
 
 
@@ -75,22 +74,22 @@ class DiscountTypeOrderFragment(
             DiscountAmountFragment(
                 listener = listener,
                 applyToType = applyToType
-            );
+            )
         fragmentMap[DiscountTypeFor.PERCENTAGE] =
             DiscountPercentageFragment(
                 applyToType,
                 listener = listener
-            );
+            )
         fragmentMap[DiscountTypeFor.DISCOUNT_CODE] = DiscountCodeFragment(
             applyToType,
             listener
-        );
+        )
         fragmentMap[DiscountTypeFor.AUTOMATIC] = DiscountAutomaticFragment(
             applyToType,
             cart,
             product,
             listener
-        );
+        )
         fragmentMap[DiscountTypeFor.COMP] =
             DiscountCompFragment(
                 comp = when (applyToType) {
@@ -108,12 +107,12 @@ class DiscountTypeOrderFragment(
                     }
 
                     override fun validDiscount(isValid: Boolean) {
-                        listener.validDiscount(isValid);
+                        listener.validDiscount(isValid)
                     }
                 }, applyToType = applyToType
             )
 
-        optionsPagerAdapter.submitList(fragmentMap.values);
+        optionsPagerAdapter.submitList(fragmentMap.values)
 
         // Tab
         listTab.addAll(
@@ -134,7 +133,7 @@ class DiscountTypeOrderFragment(
     }
 
     override fun initAction() {
-        viewModel.isAlreadyExistDiscountSelect.observe(this) {
+        viewModel.isExistDiscountToClear.observe(this) {
             viewModel.typeDiscountSelect.value?.let { type ->
                 lifecycleScope.launch(Dispatchers.IO) {
                     do {
@@ -154,7 +153,7 @@ class DiscountTypeOrderFragment(
                         setOnClickDebounce {
                             if (cart.discountUserList.isNotEmpty() || cart.discountServerList.isNotEmpty()) {
                                 listener.clearAllDiscountCoupon()
-                                viewModel.isAlreadyExistDiscountSelect.postValue(false)
+                                viewModel.isExistDiscountToClear.postValue(false)
                             }
                         }
                     }
@@ -184,7 +183,7 @@ class DiscountTypeOrderFragment(
     private fun tabSelected(tab: TabLayout.Tab?) {
         tab ?: return
         viewModel.typeDiscountSelect.postValue(listTab[tab.position].type)
-        viewModel.isAlreadyExistDiscountSelect.postValue(
+        viewModel.isExistDiscountToClear.postValue(
             cart.discountUserList.isNotEmpty() ||
                     cart.discountServerList.isNotEmpty()
         )
