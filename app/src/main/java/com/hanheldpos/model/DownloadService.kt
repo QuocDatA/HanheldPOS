@@ -17,6 +17,7 @@ import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.resource.ResourceResp
 import com.hanheldpos.databinding.DialogProcessDownloadResourceBinding
 import com.hanheldpos.extension.showWithoutSystemUI
+import com.hanheldpos.utils.StringUtils
 import com.hanheldpos.utils.UnzipUtils
 import kotlinx.coroutines.*
 import java.io.*
@@ -133,22 +134,26 @@ object DownloadService {
         }
         CoroutineScope(Dispatchers.IO).launch {
             while (isDownloading) {
-                downloadId =
-                    downloadRequestList[currentDownloadPos].start(object : OnDownloadListener {
-                        override fun onDownloadComplete() {
-                        }
+                if(currentDownloadPos < downloadRequestList.size){
+                    downloadId =
+                        downloadRequestList[currentDownloadPos].start(object : OnDownloadListener {
+                            override fun onDownloadComplete() {
+                            }
 
-                        override fun onError(error: com.downloader.Error?) {
-                            Log.d("Download Resources", error.toString())
-
-                        }
-
-                    })
-                while (PRDownloader.getStatus(downloadId) in mutableListOf(
-                        Status.QUEUED,
-                        Status.RUNNING
-                    )
-                ) {
+                            override fun onError(error: com.downloader.Error?) {
+                                if(error?.isConnectionError == true) {
+                                    Log.d("[Download Resources] Response code: ${error.responseCode}", error.toString())
+                                } else if(error?.isServerError == true) {
+                                    Log.d("[Download Resources] Response code: ${error.responseCode}", StringUtils.htmlParse(error.serverErrorMessage))
+                                }
+                            }
+                        })
+                    while (PRDownloader.getStatus(downloadId) in mutableListOf(
+                            Status.QUEUED,
+                            Status.RUNNING
+                        )
+                    ) {
+                    }
                 }
                 currentDownloadPos++
                 if (PRDownloader.getStatus(downloadId) in mutableListOf(
@@ -166,42 +171,48 @@ object DownloadService {
                 if (isDownloading && currentDownloadPos >= listResources.size) {
                     isDownloading = false
                     CoroutineScope(Dispatchers.Main).launch {
+                        var isUnzip = false
                         listFileToExtract.forEach { file ->
-                            unZip(
-                                "$INTERNAL_PATH/$file",
-                                INTERNAL_PATH,
-                                file,
-                                object : UnZipCallback {
-                                    override fun onStart(zipFileName: String, zipFileSize: Int) {
-                                        binding.itemName.text = zipFileName
-                                        binding.processBar.max = zipFileSize
-                                        binding.processBar.progress = 0
-                                        binding.tvProgressCount.text = "0%"
-                                        binding.downloadTitle.text = "Extracting..."
-                                        binding.tvDownloadSpeed.text = "0/${zipFileSize}"
-                                        binding.tvStoreCount.text = " Files"
-                                    }
 
-                                    override fun onProgress(
-                                        counter: Int,
-                                        progress: Float,
-                                        zipFileSize: Int
-                                    ) {
-//                                        val mainHandler = Handler(Looper.getMainLooper())
-//                                        val runnable = Runnable {
+                            // if file exist then extract zip file
+                            if(checkFileExist(file)) {
+                                isUnzip = true
+                                unZip(
+                                    "$INTERNAL_PATH/$file",
+                                    INTERNAL_PATH,
+                                    file,
+                                    object : UnZipCallback {
+                                        override fun onStart(zipFileName: String, zipFileSize: Int) {
+                                            binding.itemName.text = zipFileName
+                                            binding.processBar.max = zipFileSize
+                                            binding.processBar.progress = 0
+                                            binding.tvProgressCount.text = "0%"
+                                            binding.downloadTitle.text = "Extracting..."
+                                            binding.tvDownloadSpeed.text = "0/${zipFileSize}"
+                                            binding.tvStoreCount.text = " Files"
+                                        }
+
+                                        override fun onProgress(
+                                            counter: Int,
+                                            progress: Float,
+                                            zipFileSize: Int
+                                        ) {
                                             binding.processBar.progress = counter
                                             binding.tvProgressCount.text = "${progress.toInt()}%"
                                             binding.tvDownloadSpeed.text = "$counter/$zipFileSize"
-//                                        }
-//                                        mainHandler.post(runnable)
-                                    }
+                                        }
 
-                                    override fun onFinish() {
-                                        processDialog.dismiss()
-                                        listener.onComplete()
+                                        override fun onFinish() {
+                                            processDialog.dismiss()
+                                            listener.onComplete()
+                                        }
                                     }
-                                }
-                            )
+                                )
+                            }
+                        }
+                        if(!isUnzip) {
+                            processDialog.dismiss()
+                            listener.onComplete()
                         }
                     }
                     return@launch
