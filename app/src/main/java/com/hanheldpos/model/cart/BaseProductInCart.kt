@@ -61,7 +61,7 @@ abstract class BaseProductInCart {
     abstract fun isCompleted(): Boolean
     abstract fun isMatching(productItem: Product): Boolean
 
-    abstract fun totalBuyXGetYDiscount(isGroupBuy: Boolean) : Double
+    abstract fun totalBuyXGetYDiscount(isGroupBuy: Boolean): Double
 
     abstract fun clone(): BaseProductInCart
 
@@ -144,8 +144,15 @@ abstract class BaseProductInCart {
             .map { fee -> OrderFee(fee, subtotal ?: 0.0, totalDiscounts ?: 0.0) }
     }
 
-    open fun clearAllDiscountCoupon() {
-        this.discountServersList?.clear()
+    open fun clearAllDiscountCoupon(isReview: Boolean = false) {
+
+        if (isReview)
+            this.discountServersList?.removeIf { discount ->
+                discount.isExistsTrigger(
+                    DiscountTriggerType.ON_CLICK
+                )
+            }
+        else this.discountServersList?.clear()
         this.discountUsersList?.clear()
     }
 
@@ -180,7 +187,7 @@ abstract class BaseProductInCart {
 
         // Check if the discount exists in quantity or amount.
         // The allowed amount of the discount must not exceed the allowable limit.
-        if (condition.CustomerBuys.IsDiscountLimit == 0 || discountAuto.maxAmountUsed?: 0.0 > 0) {
+        if (condition.CustomerBuys.IsDiscountLimit == 0 || discountAuto.maxAmountUsed ?: 0.0 > 0) {
             if (condition.CustomerBuys.IsMaxQuantity == 1) {
                 val totalQtyUsed = baseProductList.sumOf { product ->
                     product.totalQtyUsed(
@@ -248,7 +255,7 @@ abstract class BaseProductInCart {
         return listOf()
     }
 
-    fun addRangeDiscountAutomatic(
+    private fun addRangeDiscountAutomatic(
         discountList: List<DiscountResp>,
         baseProductList: List<BaseProductInCart>
     ) {
@@ -286,7 +293,15 @@ abstract class BaseProductInCart {
         compReason = null
     }
 
-    fun isBuyXGetY() : Boolean {
+    fun isBuyXGetY(): Boolean {
         return productType == ProductType.BUYX_GETY_DISC
+    }
+
+    open fun isExistDiscountToDelete(): Boolean {
+        return !discountUsersList.isNullOrEmpty() ||
+                (!discountServersList.isNullOrEmpty() &&
+                        (discountServersList?.any { discountResp ->
+                            discountResp.isExistsTrigger(DiscountTriggerType.ON_CLICK)
+                        } ?: false))
     }
 }

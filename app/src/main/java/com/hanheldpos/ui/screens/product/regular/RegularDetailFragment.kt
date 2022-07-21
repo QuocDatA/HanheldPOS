@@ -131,7 +131,7 @@ class RegularDetailFragment(
                         }
 
                         override fun clearAllDiscountCoupon() {
-                            viewModel.regularInCart.value?.clearAllDiscountCoupon()
+                            viewModel.regularInCart.value?.clearAllDiscountCoupon(true)
                             viewModel.regularInCart.notifyValueChange()
                         }
                     })

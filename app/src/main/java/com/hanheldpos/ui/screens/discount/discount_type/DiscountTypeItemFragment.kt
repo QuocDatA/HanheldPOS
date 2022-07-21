@@ -174,15 +174,8 @@ class DiscountTypeItemFragment(
         tab ?: return
         viewModel.typeDiscountSelect.postValue(listTab[tab.position].type)
         viewModel.isExistDiscountToClear.postValue(
-           isValidToClearDiscount()
+           product?.isExistDiscountToDelete() ?: false
         )
         listener.discountFocus(listTab[tab.position].type)
-    }
-
-    private fun isValidToClearDiscount(): Boolean {
-        return !product?.discountUsersList.isNullOrEmpty() ||
-                (!product?.discountServersList.isNullOrEmpty() &&
-                (product?.discountServersList?.any { discountResp ->
-                    discountResp.isExistsTrigger(DiscountTriggerType.ON_CLICK) } ?: false))
     }
 }
