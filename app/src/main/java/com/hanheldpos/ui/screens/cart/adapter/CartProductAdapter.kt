@@ -83,8 +83,7 @@ class CartProductAdapter(
         binding.isDiscountRemovable = false
         if (!item.discountServersList.isNullOrEmpty()) {
             binding.isDiscountRemovable = item.discountServersList?.any { discountResp ->
-                (!discountResp.isExistsTrigger(DiscountTriggerType.ON_CLICK)
-                        && discountResp.DiscountType == DiscountTypeFor.AUTOMATIC.value)
+                (discountResp.isExistsTrigger(DiscountTriggerType.ON_CLICK))
             }
             binding.isDiscountRemovable
         }
