@@ -1,11 +1,7 @@
 package com.hanheldpos.ui.screens.discount.discount_type
 
 import android.util.Log
-import android.widget.Button
-import android.widget.TextView
 import androidx.core.content.ContextCompat
-import androidx.databinding.DataBindingUtil
-import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.diadiem.pos_components.PTextView
@@ -18,6 +14,7 @@ import com.hanheldpos.extension.setOnClickDebounce
 import com.hanheldpos.model.cart.BaseProductInCart
 import com.hanheldpos.model.cart.CartModel
 import com.hanheldpos.model.discount.DiscApplyTo
+import com.hanheldpos.model.discount.DiscountTriggerType
 import com.hanheldpos.model.discount.DiscountTypeFor
 import com.hanheldpos.model.discount.DiscountTypeTab
 import com.hanheldpos.ui.base.fragment.BaseFragment
@@ -40,23 +37,23 @@ class DiscountTypeItemFragment(
     BaseFragment<FragmentDiscountTypeItemBinding, DiscountTypeVM>(),
     DiscountTypeUV {
     // Adapter
-    private lateinit var optionsPagerAdapter: OptionsPagerAdapter;
+    private lateinit var optionsPagerAdapter: OptionsPagerAdapter
 
     // Fragment child
     private val fragmentMap: MutableMap<DiscountTypeFor, Fragment> = mutableMapOf()
     private val listTab: MutableList<DiscountTypeTab> = mutableListOf()
 
-    override fun layoutRes(): Int = R.layout.fragment_discount_type_item;
+    override fun layoutRes(): Int = R.layout.fragment_discount_type_item
 
     override fun viewModelClass(): Class<DiscountTypeVM> {
-        return DiscountTypeVM::class.java;
+        return DiscountTypeVM::class.java
     }
 
     override fun initViewModel(viewModel: DiscountTypeVM) {
         viewModel.run {
-            init(this@DiscountTypeItemFragment);
-            binding.viewModel = this;
-            binding.discountType = applyToType;
+            init(this@DiscountTypeItemFragment)
+            binding.viewModel = this
+            binding.discountType = applyToType
         }
     }
 
@@ -64,9 +61,9 @@ class DiscountTypeItemFragment(
 
 
         // Container Fragment Type For Adapter
-        optionsPagerAdapter = OptionsPagerAdapter(childFragmentManager, lifecycle);
+        optionsPagerAdapter = OptionsPagerAdapter(childFragmentManager, lifecycle)
         binding.discountFragmentContainer.apply {
-            adapter = optionsPagerAdapter;
+            adapter = optionsPagerAdapter
         }
     }
 
@@ -92,15 +89,15 @@ class DiscountTypeItemFragment(
                 },
                 listener = object : DiscountFragment.DiscountTypeListener {
                     override fun compReasonChoose(item: Reason) {
-                        listener.compReasonChoose(item);
+                        listener.compReasonChoose(item)
                     }
 
                     override fun compRemoveAll() {
-                        listener.compRemoveAll();
+                        listener.compRemoveAll()
                     }
 
                     override fun validDiscount(isValid: Boolean) {
-                        listener.validDiscount(isValid);
+                        listener.validDiscount(isValid)
                     }
                 }, applyToType = applyToType
             )
@@ -124,7 +121,7 @@ class DiscountTypeItemFragment(
     }
 
     override fun initAction() {
-        viewModel.isAlreadyExistDiscountSelect.observe(this) {
+        viewModel.isExistDiscountToClear.observe(this) {
             viewModel.typeDiscountSelect.value?.let { type ->
                 Log.d("Tab Selection", fragmentMap[type].toString())
                 lifecycleScope.launch(Dispatchers.IO) {
@@ -144,9 +141,9 @@ class DiscountTypeItemFragment(
                                 )
                             )
                             setOnClickDebounce {
-                                if (!product?.discountUsersList.isNullOrEmpty() || !product?.discountServersList.isNullOrEmpty()) {
+                                if (it) {
                                     listener.clearAllDiscountCoupon()
-                                    viewModel.isAlreadyExistDiscountSelect.postValue(false)
+                                    viewModel.isExistDiscountToClear.postValue(false)
                                 }
                             }
                         }
@@ -176,10 +173,16 @@ class DiscountTypeItemFragment(
     private fun tabSelected(tab: TabLayout.Tab?) {
         tab ?: return
         viewModel.typeDiscountSelect.postValue(listTab[tab.position].type)
-        viewModel.isAlreadyExistDiscountSelect.postValue(
-            !product?.discountUsersList.isNullOrEmpty() ||
-                    !product?.discountServersList.isNullOrEmpty()
+        viewModel.isExistDiscountToClear.postValue(
+           isValidToClearDiscount()
         )
         listener.discountFocus(listTab[tab.position].type)
+    }
+
+    private fun isValidToClearDiscount(): Boolean {
+        return !product?.discountUsersList.isNullOrEmpty() ||
+                (!product?.discountServersList.isNullOrEmpty() &&
+                (product?.discountServersList?.any { discountResp ->
+                    discountResp.isExistsTrigger(DiscountTriggerType.ON_CLICK) } ?: false))
     }
 }
