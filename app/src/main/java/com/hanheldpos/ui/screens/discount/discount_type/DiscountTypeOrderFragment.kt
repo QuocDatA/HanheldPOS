@@ -3,6 +3,7 @@ package com.hanheldpos.ui.screens.discount.discount_type
 import android.widget.Button
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.diadiem.pos_components.PTextView
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -23,6 +24,8 @@ import com.hanheldpos.ui.screens.discount.discount_type.automatic.DiscountAutoma
 import com.hanheldpos.ui.screens.discount.discount_type.comp.DiscountCompFragment
 import com.hanheldpos.ui.screens.discount.discount_type.discount_code.DiscountCodeFragment
 import com.hanheldpos.ui.screens.discount.discount_type.percentage.DiscountPercentageFragment
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 class DiscountTypeOrderFragment(
@@ -54,23 +57,13 @@ class DiscountTypeOrderFragment(
     }
 
     override fun initView() {
-        viewModel.isAlreadyExistDiscountSelect.observe(this) {
-            viewModel.typeDiscountSelect.value?.let { type ->
-                fragmentMap[type]?.view?.findViewById<PTextView>(R.id.btnClearDiscount)?.setTextColor(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        if (it) R.color.color_0 else R.color.color_8
-                    )
-                )
-            }
-        }
+
 
         // Container Fragment Type For Adapter
         optionsPagerAdapter = OptionsPagerAdapter(childFragmentManager, lifecycle);
         binding.discountFragmentContainer.apply {
             adapter = optionsPagerAdapter;
         }
-
 
 
     }
@@ -123,13 +116,15 @@ class DiscountTypeOrderFragment(
         optionsPagerAdapter.submitList(fragmentMap.values);
 
         // Tab
-        listTab.addAll(mutableListOf(
-            DiscountTypeTab(title = "Amount (đ)", type = DiscountTypeFor.AMOUNT),
-            DiscountTypeTab(title = "Percentage (%)", type = DiscountTypeFor.PERCENTAGE),
-            DiscountTypeTab(title = "Discount Code", type = DiscountTypeFor.DISCOUNT_CODE),
-            DiscountTypeTab(title = "Automatic", type = DiscountTypeFor.AUTOMATIC),
-            DiscountTypeTab(title = "Comp", type = DiscountTypeFor.COMP),
-        ))
+        listTab.addAll(
+            mutableListOf(
+                DiscountTypeTab(title = "Amount (đ)", type = DiscountTypeFor.AMOUNT),
+                DiscountTypeTab(title = "Percentage (%)", type = DiscountTypeFor.PERCENTAGE),
+                DiscountTypeTab(title = "Discount Code", type = DiscountTypeFor.DISCOUNT_CODE),
+                DiscountTypeTab(title = "Automatic", type = DiscountTypeFor.AUTOMATIC),
+                DiscountTypeTab(title = "Comp", type = DiscountTypeFor.COMP),
+            )
+        )
 
         TabLayoutMediator(
             binding.tabDiscountType, binding.discountFragmentContainer
@@ -139,14 +134,33 @@ class DiscountTypeOrderFragment(
     }
 
     override fun initAction() {
-        viewModel.typeDiscountSelect.observe(this) { type ->
-            fragmentMap[type]?.view?.findViewById<PTextView>(R.id.btnClearDiscount)
-                ?.setOnClickDebounce {
-                    if (cart.discountUserList.isNotEmpty() || cart.discountServerList.isNotEmpty()) {
-                        listener.clearAllDiscountCoupon()
-                        viewModel.isAlreadyExistDiscountSelect.postValue(false)
+        viewModel.isAlreadyExistDiscountSelect.observe(this) {
+            viewModel.typeDiscountSelect.value?.let { type ->
+                lifecycleScope.launch(Dispatchers.IO) {
+                    do {
+                        if (fragmentMap[type]?.isVisible == true) {
+                            break
+                        }
+                    } while (true)
+                    val btn =
+                        fragmentMap[type]?.view?.findViewById<PTextView>(R.id.btnClearDiscount)
+                    btn?.run {
+                        setTextColor(
+                            ContextCompat.getColor(
+                                requireContext(),
+                                if (it) R.color.color_0 else R.color.color_8
+                            )
+                        )
+                        setOnClickDebounce {
+                            if (cart.discountUserList.isNotEmpty() || cart.discountServerList.isNotEmpty()) {
+                                listener.clearAllDiscountCoupon()
+                                viewModel.isAlreadyExistDiscountSelect.postValue(false)
+                            }
+                        }
                     }
                 }
+
+            }
         }
 
         binding.tabDiscountType.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
@@ -167,8 +181,8 @@ class DiscountTypeOrderFragment(
         binding.tabDiscountType.getTabAt(0)?.select()
     }
 
-    private fun tabSelected(tab : TabLayout.Tab?){
-        tab?: return
+    private fun tabSelected(tab: TabLayout.Tab?) {
+        tab ?: return
         viewModel.typeDiscountSelect.postValue(listTab[tab.position].type)
         viewModel.isAlreadyExistDiscountSelect.postValue(
             cart.discountUserList.isNotEmpty() ||
