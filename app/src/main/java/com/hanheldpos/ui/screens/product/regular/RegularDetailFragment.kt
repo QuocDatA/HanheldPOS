@@ -177,8 +177,9 @@ class RegularDetailFragment(
             }
         }
         CoroutineScope(Dispatchers.IO).launch {
-            while (!isVisible) {
-            }
+            do {
+                if (isVisible) break
+            } while (true)
             launch(Dispatchers.Main) {
                 groupVariantAdapter.submitList(viewModel.listVariantGroups)
                 groupModifierAdapter.submitList(viewModel.listModifierGroups)
@@ -195,7 +196,7 @@ class RegularDetailFragment(
 
     fun onSelectedVariant(item: VariantsGroup.OptionValueVariantsGroup) {
         // Add variant selected
-        if (viewModel.regularInCart.value!!.variantList?.size ?: 0 >= item.Level) {
+        if ((viewModel.regularInCart.value!!.variantList?.size ?: 0) >= item.Level) {
             viewModel.regularInCart.value!!.variantList!![item.Level - 1] =
                 VariantCart(item.Id, item.Value)
         } else {

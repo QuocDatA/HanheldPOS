@@ -67,7 +67,6 @@ class MainActivity : BaseFragmentBindingActivity<ActivityMainBinding, MainVM>(),
     }
 
     override fun initAction() {
-
         // Setup firebase
         DataHelper.firebaseSettingLocalStorage?.fireStorePath?.let {
             Firebase.firestore.collection(it.dataVersion ?: "")

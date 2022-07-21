@@ -1,11 +1,13 @@
 package com.hanheldpos.ui.screens.discount.discount_type
 
+import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.diadiem.pos_components.PTextView
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -24,6 +26,9 @@ import com.hanheldpos.ui.screens.discount.adapter.OptionsPagerAdapter
 import com.hanheldpos.ui.screens.discount.discount_type.amount.DiscountAmountFragment
 import com.hanheldpos.ui.screens.discount.discount_type.comp.DiscountCompFragment
 import com.hanheldpos.ui.screens.discount.discount_type.percentage.DiscountPercentageFragment
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 class DiscountTypeItemFragment(
@@ -56,29 +61,13 @@ class DiscountTypeItemFragment(
     }
 
     override fun initView() {
-        viewModel.isAlreadyExistDiscountSelect.observe(this) {
-            viewModel.typeDiscountSelect.value?.let { type ->
-                fragmentMap[type]?.view?.findViewById<PTextView>(R.id.btnClearDiscount)?.setTextColor(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        if (it) R.color.color_0 else R.color.color_8
-                    )
-                )
-            }
 
-        }
 
         // Container Fragment Type For Adapter
         optionsPagerAdapter = OptionsPagerAdapter(childFragmentManager, lifecycle);
         binding.discountFragmentContainer.apply {
             adapter = optionsPagerAdapter;
         }
-
-
-
-
-
-
     }
 
     override fun initData() {
@@ -135,14 +124,36 @@ class DiscountTypeItemFragment(
     }
 
     override fun initAction() {
-        viewModel.typeDiscountSelect.observe(this) { type ->
-            fragmentMap[type]?.view?.findViewById<TextView>(R.id.btnClearDiscount)
-                ?.setOnClickDebounce {
-                    if (!product?.discountUsersList.isNullOrEmpty() || !product?.discountServersList.isNullOrEmpty()) {
-                        listener.clearAllDiscountCoupon()
-                        viewModel.isAlreadyExistDiscountSelect.postValue(false)
+        viewModel.isAlreadyExistDiscountSelect.observe(this) {
+            viewModel.typeDiscountSelect.value?.let { type ->
+                Log.d("Tab Selection", fragmentMap[type].toString())
+                lifecycleScope.launch(Dispatchers.IO) {
+                    do {
+                        if (fragmentMap[type]?.isVisible == true) {
+                            break
+                        }
+                    } while (true)
+                    withContext(Dispatchers.Main) {
+                        val btn =
+                            fragmentMap[type]?.view?.findViewById<PTextView>(R.id.btnClearDiscount)
+                        btn?.run {
+                            setTextColor(
+                                ContextCompat.getColor(
+                                    requireContext(),
+                                    if (it) R.color.color_0 else R.color.color_8
+                                )
+                            )
+                            setOnClickDebounce {
+                                if (!product?.discountUsersList.isNullOrEmpty() || !product?.discountServersList.isNullOrEmpty()) {
+                                    listener.clearAllDiscountCoupon()
+                                    viewModel.isAlreadyExistDiscountSelect.postValue(false)
+                                }
+                            }
+                        }
                     }
                 }
+            }
+
         }
 
         binding.tabDiscountType.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
@@ -162,8 +173,8 @@ class DiscountTypeItemFragment(
         binding.tabDiscountType.getTabAt(0)?.select()
     }
 
-    private fun tabSelected(tab : TabLayout.Tab?){
-        tab?: return
+    private fun tabSelected(tab: TabLayout.Tab?) {
+        tab ?: return
         viewModel.typeDiscountSelect.postValue(listTab[tab.position].type)
         viewModel.isAlreadyExistDiscountSelect.postValue(
             !product?.discountUsersList.isNullOrEmpty() ||
