@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.os.SystemClock
 import android.util.Log
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.discount.CustomerBuys
 import com.hanheldpos.data.api.pojo.fee.CustomerGets
@@ -66,7 +67,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
             callBack = object : OrderProductAdapterHelper.AdapterCallBack {
                 @SuppressLint("NotifyDataSetChanged")
                 override fun onListSplitCallBack(list: List<ProductMenuItem>) {
-                    CoroutineScope(Dispatchers.Main).launch {
+                    lifecycleScope.launch(Dispatchers.Main) {
                         productAdapter.submitList(list)
                         productAdapter.notifyDataSetChanged()
                     }
@@ -185,12 +186,12 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderVM>(), OrderUV {
                 }
             }
             ProductModeViewType.PrevButtonEnable -> {
-                CoroutineScope(Dispatchers.IO).launch {
+                lifecycleScope.launch(Dispatchers.IO) {
                     productAdapterHelper.previous()
                 }
             }
             ProductModeViewType.NextButtonEnable -> {
-                CoroutineScope(Dispatchers.IO).launch {
+                lifecycleScope.launch(Dispatchers.IO) {
                     productAdapterHelper.next()
                 }
             }

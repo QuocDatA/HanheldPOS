@@ -120,7 +120,7 @@ object DownloadService {
             downloadRequestList.add(downloadRequest)
         }
         CoroutineScope(Dispatchers.IO).launch {
-            while (isDownloading) {
+            while (isDownloading && processDialog.isShowing) {
                 delay(700)
                 if (!isGettingSpeed) {
                     currentByte = 0L
@@ -133,7 +133,7 @@ object DownloadService {
             }
         }
         CoroutineScope(Dispatchers.IO).launch {
-            while (isDownloading) {
+            while (isDownloading && processDialog.isShowing) {
                 if(currentDownloadPos < downloadRequestList.size){
                     downloadId =
                         downloadRequestList[currentDownloadPos].start(object : OnDownloadListener {

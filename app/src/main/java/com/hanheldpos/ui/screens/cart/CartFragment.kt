@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hanheldpos.R
@@ -467,7 +468,7 @@ class CartFragment(
         super.onResume()
         if (discount != null) {
             showLoading(true)
-            CoroutineScope(Dispatchers.IO).launch {
+            lifecycleScope.launch(Dispatchers.IO) {
                 delay(1000)
                 val buyXGetY = cartDataVM.initDefaultBuyXGetY(discount)
                 launch(Dispatchers.Main) { showLoading(false) }

@@ -3,6 +3,7 @@ package com.hanheldpos.ui.screens.menu.discount
 import android.annotation.SuppressLint
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hanheldpos.PosApp
@@ -95,7 +96,7 @@ class MenuDiscountFragment(private val listener: MenuDiscountCallBack) : BaseFra
 
     @SuppressLint("NotifyDataSetChanged")
     override fun loadDiscountCode(list: List<DiscountResp>) {
-        CoroutineScope(Dispatchers.Main).launch {
+        lifecycleScope.launch(Dispatchers.Main) {
             discountMenuAdapter.submitList(list)
             discountMenuAdapter.notifyDataSetChanged()
         }

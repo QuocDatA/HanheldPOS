@@ -1,6 +1,7 @@
 package com.hanheldpos.ui.screens.payment.completed
 
 import android.view.View
+import androidx.lifecycle.lifecycleScope
 import com.hanheldpos.R
 import com.hanheldpos.binding.setPriceView
 import com.hanheldpos.data.api.pojo.customer.CustomerProfileResp
@@ -51,7 +52,7 @@ class PaymentCompletedFragment(
         }
 
         showLoading(true)
-        CoroutineScope(Dispatchers.IO).launch {
+        lifecycleScope.launch(Dispatchers.IO) {
             DatabaseHelper.ordersCompleted.getAllLiveData().take(1).collectLatest {
                 it.lastOrNull()?.let { completedEntity ->
 

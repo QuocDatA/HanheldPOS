@@ -3,6 +3,7 @@ package com.hanheldpos.ui.screens.devicecode
 import android.text.InputFilter
 import android.view.View
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hanheldpos.R
@@ -93,7 +94,7 @@ class DeviceCodeFragment : BaseFragment<FragmentDeviceCodeBinding, DeviceCodeVM>
     }
 
     override fun openPinCode() {
-        CoroutineScope(Dispatchers.Main).launch {
+        lifecycleScope.launch(Dispatchers.Main) {
             navigator.goTo(PinCodeFragment())
         }
 

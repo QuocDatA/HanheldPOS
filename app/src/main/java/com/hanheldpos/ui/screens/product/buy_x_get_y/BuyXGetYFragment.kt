@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.os.SystemClock
 import android.view.View
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hanheldpos.R
@@ -91,9 +92,9 @@ class BuyXGetYFragment(
         viewModel.maxQuantity = quantityCanChoose
 
         binding.rvBuyXGetYGroup.visibility = View.GONE
-        CoroutineScope(Dispatchers.IO).launch {
+        lifecycleScope.launch(Dispatchers.IO) {
             while(!isVisible) {}
-            CoroutineScope(Dispatchers.Main).launch {
+            lifecycleScope.launch(Dispatchers.Main) {
                 viewModel.listItemBuyXGetYGroup.addAll(viewModel.initDefaultList() ?: mutableListOf())
                 buyXGetYGroupAdapter.submitList(viewModel.listItemBuyXGetYGroup)
                 binding.rvBuyXGetYGroup.visibility = View.VISIBLE

@@ -5,6 +5,7 @@ import android.os.SystemClock
 import android.util.Log
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.floor.Floor
 import com.hanheldpos.data.api.pojo.floor.FloorTable
@@ -29,7 +30,7 @@ import kotlinx.coroutines.launch
 
 
 class TableFragment : BaseFragment<FragmentTableBinding, TableVM>(), TableUV {
-    override fun layoutRes() = R.layout.fragment_table;
+    override fun layoutRes() = R.layout.fragment_table
 
     // Adapter
     private lateinit var tableAdapter: TableAdapter
@@ -41,14 +42,14 @@ class TableFragment : BaseFragment<FragmentTableBinding, TableVM>(), TableUV {
     private val orderDataVM by activityViewModels<OrderDataVM>()
 
     override fun viewModelClass(): Class<TableVM> {
-        return TableVM::class.java;
+        return TableVM::class.java
     }
 
     override fun initViewModel(viewModel: TableVM) {
         viewModel.run {
             init(this@TableFragment)
-            binding.viewModel = this;
-            initLifecycle(this@TableFragment);
+            binding.viewModel = this
+            initLifecycle(this@TableFragment)
         }
     }
 
@@ -59,8 +60,8 @@ class TableFragment : BaseFragment<FragmentTableBinding, TableVM>(), TableUV {
             TableAdapterHelper(callback = object : TableAdapterHelper.AdapterCallBack {
                 @SuppressLint("NotifyDataSetChanged")
                 override fun onListSplitCallBack(list: List<FloorTable>) {
-                    tableAdapter.submitList(list);
-                    tableAdapter.notifyDataSetChanged();
+                    tableAdapter.submitList(list)
+                    tableAdapter.notifyDataSetChanged()
                 }
 
             })
@@ -68,18 +69,18 @@ class TableFragment : BaseFragment<FragmentTableBinding, TableVM>(), TableUV {
         tableAdapter = TableAdapter(
             listener = object : BaseItemClickListener<FloorTable> {
                 override fun onItemClick(adapterPosition: Int, item: FloorTable) {
-                    Log.d("TableFragment", "Table Selected");
+                    Log.d("TableFragment", "Table Selected")
                     if (SystemClock.elapsedRealtime() - viewModel.mLastTimeClick < 500) return
                     viewModel.mLastTimeClick = SystemClock.elapsedRealtime()
                     when (item.uiType) {
                         TableModeViewType.Table -> {
-                            onTableChosen(adapterPosition, item);
+                            onTableChosen(adapterPosition, item)
                         }
                         TableModeViewType.PrevButtonEnable -> {
-                            tableAdapterHelper.previous();
+                            tableAdapterHelper.previous()
                         }
                         TableModeViewType.NextButtonEnable -> {
-                            tableAdapterHelper.next();
+                            tableAdapterHelper.next()
                         }
                         else -> {
                         }
@@ -89,7 +90,7 @@ class TableFragment : BaseFragment<FragmentTableBinding, TableVM>(), TableUV {
             }
         ).also {
             binding.recyclerTable.apply {
-                adapter = it;
+                adapter = it
                 itemAnimator = null
             }
         }
@@ -108,27 +109,27 @@ class TableFragment : BaseFragment<FragmentTableBinding, TableVM>(), TableUV {
             tableAdapter.notifyDataSetChanged()
         }
         screenViewModel.dropDownSelected.observe(this) {
-            val screen = screenViewModel.screenEvent.value?.screen;
+            val screen = screenViewModel.screenEvent.value?.screen
             if (screen == HomeFragment.HomePage.Table) {
                 if (it?.realItem == null)
                     viewModel.getTableList()?.toMutableList()
-                        ?.let { it1 -> tableAdapterHelper.submitList(it1); };
+                        ?.let { it1 -> tableAdapterHelper.submitList(it1) }
                 else if (it.realItem is Floor)
-                    viewModel.floorItemSelected.value = it.realItem;
+                    viewModel.floorItemSelected.value = it.realItem
             }
         }
 
         viewModel.floorItemSelected.observe(this) {
-            viewModel.floorTableList.value = viewModel.getTableListByFloor(it)?.toMutableList();
-            viewModel.floorTableList.value?.let { it1 -> tableAdapterHelper.submitList(it1) };
-        };
+            viewModel.floorTableList.value = viewModel.getTableListByFloor(it)?.toMutableList()
+            viewModel.floorTableList.value?.let { it1 -> tableAdapterHelper.submitList(it1) }
+        }
 
         binding.root.viewTreeObserver.addOnGlobalLayoutListener(object :
             OnGlobalLayoutListener {
             override fun onGlobalLayout() {
                 if (binding.recyclerTable.height > 0) {
-                    binding.root.viewTreeObserver.removeOnGlobalLayoutListener(this);
-                    viewModel.initData();
+                    binding.root.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                    viewModel.initData()
                 }
             }
         })
@@ -144,7 +145,7 @@ class TableFragment : BaseFragment<FragmentTableBinding, TableVM>(), TableUV {
                 // Check list has any pending table, if has change to available
                 tableAdapter.currentList.filter { it.tableStatus == TableStatusType.Pending }.let {
                     if (it.isNotEmpty()) {
-                        it.forEach { table -> table.tableStatus = TableStatusType.Available };
+                        it.forEach { table -> table.tableStatus = TableStatusType.Available }
                         cartDataVM.removeCart()
                         tableAdapter.notifyDataSetChanged()
                         return
@@ -165,17 +166,17 @@ class TableFragment : BaseFragment<FragmentTableBinding, TableVM>(), TableUV {
                         }
 
                         orderDataVM.onMenuChange(0)
-                        item.updateTableStatus(TableStatusType.Pending);
+                        item.updateTableStatus(TableStatusType.Pending)
 
-                        screenViewModel.showOrderPage();
+                        screenViewModel.showOrderPage()
                     }
                 }))
 
             }
             TableStatusType.Pending -> {
-                item.tableStatus = TableStatusType.Available;
+                item.tableStatus = TableStatusType.Available
                 cartDataVM.removeCart()
-                tableAdapter.notifyItemChanged(adapterPosition);
+                tableAdapter.notifyItemChanged(adapterPosition)
             }
             TableStatusType.Unavailable -> {
                 tableAdapter.currentList.filter { it.tableStatus == TableStatusType.Pending }.let {
@@ -192,7 +193,7 @@ class TableFragment : BaseFragment<FragmentTableBinding, TableVM>(), TableUV {
     }
 
     private fun checkExistOrderOnTable(table: FloorTable) {
-        CoroutineScope(Dispatchers.IO).launch {
+        lifecycleScope.launch(Dispatchers.IO) {
             table.orderSummary?.let {
                 try {
                     val orderReq = DatabaseMapper.mappingOrderReqFromEntity(
@@ -213,7 +214,7 @@ class TableFragment : BaseFragment<FragmentTableBinding, TableVM>(), TableUV {
     }
 
     companion object {
-        var selectedSort: Int = 0;
+        var selectedSort: Int = 0
     }
 
 }

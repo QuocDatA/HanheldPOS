@@ -1,6 +1,7 @@
 package com.hanheldpos.ui.screens.main
 
 import android.util.Log
+import androidx.lifecycle.lifecycleScope
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.hanheldpos.PosApp
@@ -43,7 +44,7 @@ class MainActivity : BaseFragmentBindingActivity<ActivityMainBinding, MainVM>(),
 
     override fun initView() {
         binding.root.viewTreeObserver.addOnGlobalLayoutListener {
-            SystemHelper.hideSystemUI(window);
+            SystemHelper.hideSystemUI(window)
         }
         viewModel.initView()
     }
@@ -56,7 +57,7 @@ class MainActivity : BaseFragmentBindingActivity<ActivityMainBinding, MainVM>(),
             }
 
             override fun onLost() {
-                CoroutineScope(Dispatchers.Main).launch {
+                lifecycleScope.launch(Dispatchers.Main) {
                     showAlert(
                         title = getString(R.string.notification),
                         message = getString(R.string.no_network_connection)
@@ -87,7 +88,7 @@ class MainActivity : BaseFragmentBindingActivity<ActivityMainBinding, MainVM>(),
                 }
         }
         // Setup Printer
-        CoroutineScope(Dispatchers.IO).launch {
+        lifecycleScope.launch(Dispatchers.IO) {
             BillPrinterManager.init(
                 PosApp.instance.applicationContext,
                 onConnectionSuccess = {
@@ -114,7 +115,7 @@ class MainActivity : BaseFragmentBindingActivity<ActivityMainBinding, MainVM>(),
     }
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
-        SystemHelper.hideSystemUI(window);
+        SystemHelper.hideSystemUI(window)
         super.onWindowFocusChanged(hasFocus)
     }
 }

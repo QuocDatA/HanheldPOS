@@ -4,6 +4,7 @@ package com.hanheldpos.ui.screens.menu.report.current_drawer
 import android.annotation.SuppressLint
 import android.view.View
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hanheldpos.R
@@ -26,9 +27,9 @@ import kotlinx.coroutines.launch
 class CurrentDrawerFragment : BaseFragment<FragmentCurrentDrawerBinding, CurrentDrawerVM>(),
     CurrentDrawerUV {
 
-    private lateinit var reportDrawerInfoAdapter: ReportDrawerInfoAdapter;
+    private lateinit var reportDrawerInfoAdapter: ReportDrawerInfoAdapter
 
-    private lateinit var report: ReportCashDrawerResp;
+    private lateinit var report: ReportCashDrawerResp
 
     override fun layoutRes() = R.layout.fragment_current_drawer
 
@@ -38,21 +39,21 @@ class CurrentDrawerFragment : BaseFragment<FragmentCurrentDrawerBinding, Current
 
     override fun initViewModel(viewModel: CurrentDrawerVM) {
         viewModel.run {
-            init(this@CurrentDrawerFragment);
-            binding.viewModel = this;
+            init(this@CurrentDrawerFragment)
+            binding.viewModel = this
         }
     }
 
     override fun initView() {
 
         if (DataHelper.currentDrawerId != null) {
-            binding.currentDrawerText.text = "(${DataHelper.currentDrawerId})";
-        } else binding.currentDrawerText.visibility = View.GONE;
+            binding.currentDrawerText.text = "(${DataHelper.currentDrawerId})"
+        } else binding.currentDrawerText.visibility = View.GONE
 
-        reportDrawerInfoAdapter = ReportDrawerInfoAdapter();
+        reportDrawerInfoAdapter = ReportDrawerInfoAdapter()
 
         binding.currentDrawerRecycle.apply {
-            adapter = reportDrawerInfoAdapter;
+            adapter = reportDrawerInfoAdapter
             addItemDecoration(DividerItemDecoration(
                 context,
                 LinearLayoutManager.VERTICAL
@@ -63,26 +64,26 @@ class CurrentDrawerFragment : BaseFragment<FragmentCurrentDrawerBinding, Current
                         R.drawable.divider_vertical
                     )!!
                 )
-            });
+            })
         }
 
     }
 
     override fun initData() {
-        viewModel.getCashDrawerDetail(requireContext());
+        viewModel.getCashDrawerDetail(requireContext())
     }
 
     override fun initAction() {
     }
 
     override fun onFragmentBackPressed() {
-        showLoading(false);
+        showLoading(false)
         super.onFragmentBackPressed()
     }
 
     override fun onOpenEndDrawer() {
-        CoroutineScope(Dispatchers.IO).launch {
-            val ordersCompletedFlow = DatabaseHelper.ordersCompleted.getAllLiveData();
+        lifecycleScope.launch(Dispatchers.IO) {
+            val ordersCompletedFlow = DatabaseHelper.ordersCompleted.getAllLiveData()
             ordersCompletedFlow.take(1).collectLatest { ordersCompleted ->
                 val listOrder = ordersCompleted.filter { OrderHelper.isValidOrderPush(it) }
                 if (listOrder.isNotEmpty()) {
@@ -96,7 +97,7 @@ class CurrentDrawerFragment : BaseFragment<FragmentCurrentDrawerBinding, Current
 
                     if (this@CurrentDrawerFragment::report.isInitialized) {
                         launch(Dispatchers.Main) {
-                            navigator.goTo(EndDrawerFragment(report = report));
+                            navigator.goTo(EndDrawerFragment(report = report))
                         }
 
                     }
@@ -113,7 +114,7 @@ class CurrentDrawerFragment : BaseFragment<FragmentCurrentDrawerBinding, Current
         navigator.goTo(PayInPayOutFragment(listener = object :
             PayInPayOutFragment.PayInOutCallback {
             override fun onLoadReport() {
-                viewModel.getCashDrawerDetail(requireContext());
+                viewModel.getCashDrawerDetail(requireContext())
             }
         }))
     }
@@ -122,9 +123,9 @@ class CurrentDrawerFragment : BaseFragment<FragmentCurrentDrawerBinding, Current
     override fun showInfoCurrentDrawer(report: ReportCashDrawerResp?) {
 
         report?.let {
-            this.report = report;
-            reportDrawerInfoAdapter.submitList(report.Reports);
-            reportDrawerInfoAdapter.notifyDataSetChanged();
+            this.report = report
+            reportDrawerInfoAdapter.submitList(report.Reports)
+            reportDrawerInfoAdapter.notifyDataSetChanged()
         }
     }
 

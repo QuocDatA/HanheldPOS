@@ -8,6 +8,7 @@ import android.widget.AdapterView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.data.DataVersion
 import com.hanheldpos.data.api.pojo.discount.DiscountCoupon
@@ -120,7 +121,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeVM>(), HomeUV {
     override fun initData() {
         settingsControlVM.init(this, listener = object : SettingsControlVM.SettingListener {
             override fun onNotification() {
-                CoroutineScope(Dispatchers.IO).launch {
+                lifecycleScope.launch(Dispatchers.IO) {
                     if (isWaitingForNotification) return@launch
                     isWaitingForNotification = true
                     while (true) {

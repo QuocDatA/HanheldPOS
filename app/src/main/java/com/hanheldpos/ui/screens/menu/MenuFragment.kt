@@ -3,6 +3,7 @@ package com.hanheldpos.ui.screens.menu
 import android.annotation.SuppressLint
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hanheldpos.BuildConfig
@@ -150,7 +151,7 @@ class MenuFragment(private val listener: MenuCallBack) :
     }
 
     private fun onLogoutOption(typeLogout: LogoutType, title: String?, message: String?) {
-        CoroutineScope(Dispatchers.IO).launch {
+        lifecycleScope.launch(Dispatchers.IO) {
             val ordersCompletedFlow = DatabaseHelper.ordersCompleted.getAll()
             ordersCompletedFlow.let { ordersCompleted ->
                 // Check to valid number increase

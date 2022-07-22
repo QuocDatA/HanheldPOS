@@ -9,8 +9,6 @@ import com.hanheldpos.databinding.FragmentTableInputBinding
 import com.hanheldpos.model.keyboard.KeyBoardType
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.input.KeyBoardVM
-import com.hanheldpos.utils.PriceUtils
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -20,19 +18,19 @@ class TableInputFragment(
 ) : BaseFragment<FragmentTableInputBinding, TableInputVM>(), TableInputUV {
 
     //ViewModel
-    private val keyBoardVM = KeyBoardVM(KeyBoardType.NumberOnly, 7);
+    private val keyBoardVM = KeyBoardVM(KeyBoardType.NumberOnly, 7)
 
     override fun layoutRes() = R.layout.fragment_table_input
 
     override fun viewModelClass(): Class<TableInputVM> {
-        return TableInputVM::class.java;
+        return TableInputVM::class.java
     }
 
     override fun initViewModel(viewModel: TableInputVM) {
         viewModel.run {
-            init(this@TableInputFragment);
-            binding.viewModel = this;
-            binding.keyboardVM = keyBoardVM;
+            init(this@TableInputFragment)
+            binding.viewModel = this
+            binding.keyboardVM = keyBoardVM
         }
 
     }

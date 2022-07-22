@@ -3,6 +3,7 @@ package com.hanheldpos.ui.screens.intro
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.OnLifecycleEvent
+import androidx.lifecycle.viewModelScope
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
 import kotlinx.coroutines.*
 
@@ -20,7 +21,7 @@ class IntroVM : BaseUiViewModel<IntroUV>() {
      */
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     fun startIntro() {
-        introJob = CoroutineScope(Dispatchers.IO).launch {
+        introJob = viewModelScope.launch(Dispatchers.IO) {
             delay(introDelay)
             withContext(Dispatchers.Main) {
                 uiCallback?.finishIntro()

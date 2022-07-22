@@ -1,10 +1,7 @@
 package com.hanheldpos.ui.screens.cart
 
 import android.util.Log
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
+import androidx.lifecycle.*
 import com.hanheldpos.PosApp
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.customer.CustomerProfileResp
@@ -377,7 +374,7 @@ class CartDataVM : BaseViewModel() {
                 body = GSonUtils.toServerJson(loyaltyReqModel),
                 callback = object : BaseRepoCallback<BaseResponse<LoyaltyResp>> {
                     override fun apiResponse(data: BaseResponse<LoyaltyResp>?) {
-                        CoroutineScope(Dispatchers.IO).launch {
+                        viewModelScope.launch(Dispatchers.IO) {
                             orderModel.OrderDetail.Order.Points = data?.Model?.receivable
                             withContext(Dispatchers.Main) {
                                 if (data?.Model != null)

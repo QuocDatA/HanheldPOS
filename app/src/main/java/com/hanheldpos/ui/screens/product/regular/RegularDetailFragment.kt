@@ -3,6 +3,7 @@ package com.hanheldpos.ui.screens.product.regular
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.order.settings.Reason
 import com.hanheldpos.data.api.pojo.product.Product
@@ -176,7 +177,7 @@ class RegularDetailFragment(
                     })
             }
         }
-        CoroutineScope(Dispatchers.IO).launch {
+        lifecycleScope.launch(Dispatchers.IO) {
             do {
                 if (isVisible) break
             } while (true)

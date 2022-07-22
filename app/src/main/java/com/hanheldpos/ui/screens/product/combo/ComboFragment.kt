@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.os.SystemClock
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hanheldpos.R
@@ -39,18 +40,18 @@ class ComboFragment(
 
     private val cartDataVM by activityViewModels<CartDataVM>()
     
-    override fun layoutRes() = R.layout.fragment_combo;
+    override fun layoutRes() = R.layout.fragment_combo
 
     override fun viewModelClass(): Class<ComboVM> {
-        return ComboVM::class.java;
+        return ComboVM::class.java
     }
 
-    private lateinit var comboGroupAdapter: ComboGroupAdapter;
+    private lateinit var comboGroupAdapter: ComboGroupAdapter
 
     override fun initViewModel(viewModel: ComboVM) {
         viewModel.run {
-            init(this@ComboFragment);
-            initLifeCycle(this@ComboFragment);
+            init(this@ComboFragment)
+            initLifeCycle(this@ComboFragment)
             binding.viewModel = viewModel
             binding
         }
@@ -70,10 +71,10 @@ class ComboFragment(
             ) {
                 openProductDetail(maxQuantity, group, item,actionType)
             }
-        });
+        })
 
         binding.comboGroupAdapter.apply {
-            adapter = comboGroupAdapter;
+            adapter = comboGroupAdapter
             addItemDecoration(
                 DividerItemDecoration(
                     context,
@@ -101,28 +102,28 @@ class ComboFragment(
                             discount: DiscountUser,
                             isBuyXGetY: Boolean?
                         ) {
-                            if (viewModel.isValidDiscount.value != true) return;
+                            if (viewModel.isValidDiscount.value != true) return
                             viewModel.bundleInCart.value?.addDiscountUser(discount)
-                            viewModel.bundleInCart.notifyValueChange();
+                            viewModel.bundleInCart.notifyValueChange()
                         }
 
                         override fun compReasonChoose(item: Reason) {
-                            if (viewModel.isValidDiscount.value != true) return;
+                            if (viewModel.isValidDiscount.value != true) return
                             viewModel.bundleInCart.value?.addCompReason(item)
-                            viewModel.bundleInCart.notifyValueChange();
+                            viewModel.bundleInCart.notifyValueChange()
                         }
 
                         override fun compRemoveAll() {
                             viewModel.bundleInCart.value?.clearCompReason()
-                            viewModel.bundleInCart.notifyValueChange();
+                            viewModel.bundleInCart.notifyValueChange()
                         }
 
                         override fun discountFocus(type: DiscountTypeFor) {
-                            viewModel.typeDiscountSelect = type;
+                            viewModel.typeDiscountSelect = type
                         }
 
                         override fun validDiscount(isValid: Boolean) {
-                            viewModel.isValidDiscount.postValue(isValid);
+                            viewModel.isValidDiscount.postValue(isValid)
                         }
 
                         override fun clearAllDiscountCoupon() {
@@ -131,14 +132,14 @@ class ComboFragment(
                         }
 
                     })
-            ).commit();
+            ).commit()
     }
 
     override fun initData() {
-        viewModel.bundleInCart.value = combo;
-        viewModel.actionType.value = action;
-        viewModel.maxQuantity = quantityCanChoose;
-        CoroutineScope(Dispatchers.IO).launch {
+        viewModel.bundleInCart.value = combo
+        viewModel.actionType.value = action
+        viewModel.maxQuantity = quantityCanChoose
+        lifecycleScope.launch(Dispatchers.IO) {
             while(!isVisible){}
             viewModel.getCombo()?.let {
                 viewModel.initDefaultComboList(
@@ -146,7 +147,7 @@ class ComboFragment(
                     cartDataVM.diningOptionLD.value!!,
                     UserHelper.getLocationGuid()
                 )
-            };
+            }
         }
     }
 
@@ -154,7 +155,7 @@ class ComboFragment(
     }
 
     override fun onBack() {
-        navigator.goOneBack();
+        navigator.goOneBack()
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -164,8 +165,8 @@ class ComboFragment(
         item: Regular,
         action: ItemActionType
     ) {
-        if (SystemClock.elapsedRealtime() - viewModel.mLastTimeClick <= 500) return;
-        viewModel.mLastTimeClick = SystemClock.elapsedRealtime();
+        if (SystemClock.elapsedRealtime() - viewModel.mLastTimeClick <= 500) return
+        viewModel.mLastTimeClick = SystemClock.elapsedRealtime()
         when(action){
             ItemActionType.Remove -> {
                 viewModel.onRegularSelect(group.groupBundle, item, item , action)
@@ -195,17 +196,17 @@ class ComboFragment(
     override fun cartAdded(item: BaseProductInCart, action: ItemActionType) {
         if ((viewModel.numberQuantity.value
                 ?: 0) > 0 && (viewModel.isValidDiscount.value == false && action == ItemActionType.Modify) && !isDiscountBuyXGetY!!
-        ) return;
-        requireActivity().supportFragmentManager.setFragmentResult("saveDiscount", Bundle().apply { putSerializable("DiscountTypeFor", viewModel.typeDiscountSelect) });
-        onBack();
-        listener.onCartAdded(item, action);
+        ) return
+        requireActivity().supportFragmentManager.setFragmentResult("saveDiscount", Bundle().apply { putSerializable("DiscountTypeFor", viewModel.typeDiscountSelect) })
+        onBack()
+        listener.onCartAdded(item, action)
     }
 
     @SuppressLint("NotifyDataSetChanged")
     override fun onLoadComboSuccess(list: List<ItemComboGroup>) {
-        CoroutineScope(Dispatchers.Main).launch {
-            comboGroupAdapter.submitList(list.toMutableList());
-            comboGroupAdapter.notifyDataSetChanged();
+        lifecycleScope.launch(Dispatchers.Main) {
+            comboGroupAdapter.submitList(list.toMutableList())
+            comboGroupAdapter.notifyDataSetChanged()
         }
     }
 

@@ -3,6 +3,7 @@ package com.hanheldpos.ui.screens.discount.discount_type.discount_code
 import android.annotation.SuppressLint
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hanheldpos.R
@@ -84,7 +85,7 @@ class DiscountCodeFragment(
 
     override fun initData() {
         if (applyToType == DiscApplyTo.ORDER)
-            CoroutineScope(Dispatchers.IO).launch {
+            lifecycleScope.launch(Dispatchers.IO) {
                 viewModel.initData()
             }
 
@@ -118,7 +119,7 @@ class DiscountCodeFragment(
 
     @SuppressLint("NotifyDataSetChanged")
     override fun loadDataDiscountCode(list: List<DiscountResp>) {
-        CoroutineScope(Dispatchers.Main).launch {
+        lifecycleScope.launch(Dispatchers.Main) {
             discountCodeAdapter.submitList(list)
             discountCodeAdapter.notifyDataSetChanged()
         }
