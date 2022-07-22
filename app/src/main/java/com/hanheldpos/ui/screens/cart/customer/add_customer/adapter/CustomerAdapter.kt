@@ -7,7 +7,6 @@ import com.hanheldpos.databinding.ItemCustomerBinding
 import com.hanheldpos.extension.setOnClickDebounce
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
-import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 
 
 class CustomerAdapter(private val listener: CustomerAdapterCallback) :

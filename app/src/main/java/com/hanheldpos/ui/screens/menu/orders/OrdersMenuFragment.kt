@@ -1,26 +1,18 @@
 package com.hanheldpos.ui.screens.menu.orders
 
 import android.annotation.SuppressLint
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentOrdersMenuBinding
 import com.hanheldpos.model.menu.orders.OrdersOptionType
-import com.hanheldpos.model.menu.report.ReportOptionType
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.menu.adapter.ItemOptionNav
 import com.hanheldpos.ui.screens.menu.adapter.OptionNavAdapter
 import com.hanheldpos.ui.screens.menu.orders.synced.SyncedOrdersFragment
 import com.hanheldpos.ui.screens.menu.orders.unsync.UnsyncOrdersFragment
-import com.hanheldpos.ui.screens.menu.report.current_drawer.CurrentDrawerFragment
-import com.hanheldpos.ui.screens.menu.report.sale.SaleReportsMenuFragment
 
 
 class OrdersMenuFragment : BaseFragment<FragmentOrdersMenuBinding,OrdersMenuVM>() , OrdersMenuUV {
@@ -45,10 +37,10 @@ class OrdersMenuFragment : BaseFragment<FragmentOrdersMenuBinding,OrdersMenuVM>(
         menuAdapter = OptionNavAdapter(
             onMenuItemClickListener = object : BaseItemClickListener<ItemOptionNav> {
                 override fun onItemClick(adapterPosition: Int, item: ItemOptionNav) {
-                    onNavOptionClick(item);
+                    onNavOptionClick(item)
                 }
             },
-        );
+        )
         binding.menuItemContainer.apply {
             addItemDecoration(
                 DividerItemDecoration(
@@ -63,7 +55,7 @@ class OrdersMenuFragment : BaseFragment<FragmentOrdersMenuBinding,OrdersMenuVM>(
                     )
                 }
             )
-        };
+        }
         binding.menuItemContainer.adapter = menuAdapter
         //endregion
     }

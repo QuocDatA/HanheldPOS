@@ -1,6 +1,5 @@
 package com.hanheldpos.ui.screens.menu.settings.hardware.hardware_detail
 
-import com.hanheldpos.PosApp
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.setting.hardware.HardwareConnection
 import com.hanheldpos.data.api.pojo.setting.hardware.HardwarePrinter

@@ -13,7 +13,6 @@ import com.hanheldpos.model.cart.CartConverter
 import com.hanheldpos.model.discount.DiscApplyTo
 import com.hanheldpos.model.discount.DiscountTypeEnum
 import com.hanheldpos.model.discount.DiscountTypeFor
-import com.hanheldpos.model.product.buy_x_get_y.CustomerDiscApplyTo
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
 import com.hanheldpos.ui.screens.cart.CurCartData
 import com.hanheldpos.utils.GSonUtils
@@ -21,7 +20,7 @@ import java.util.*
 
 class DiscountVM : BaseUiViewModel<DiscountUV>() {
 
-    var typeDiscountSelect = MutableLiveData<DiscountTypeFor>();
+    var typeDiscountSelect = MutableLiveData<DiscountTypeFor>()
     private var discountRepo = DiscountRepo()
 
     fun backPress() {
@@ -45,7 +44,7 @@ class DiscountVM : BaseUiViewModel<DiscountUV>() {
                         showError(
                             data?.ErrorMessage
                                 ?: PosApp.instance.getString(R.string.invalid_discount)
-                        );
+                        )
                     } else {
                         uiCallback?.onApplyDiscountCode(data.Model ?: mutableListOf())
                     }
@@ -60,15 +59,15 @@ class DiscountVM : BaseUiViewModel<DiscountUV>() {
 
     private fun onApplyDiscountAuto(discount: DiscountResp) {
         // Re-check the validity of the discount.
-        if (discount.isBuyXGetY() || !discount.isValid(CurCartData.cartModel!!, Date()) ?: false) {
+        if (discount.isBuyXGetY() || !discount.isValid(CurCartData.cartModel!!, Date())) {
             showError(PosApp.instance.getString(R.string.invalid_discount))
-            return;
+            return
         }
 
         // Check limit for discount.
         if (discount.isMaxNumberOfUsedPerOrder()) {
             showError(PosApp.instance.getString(R.string.maxium_usage_limited))
-            return;
+            return
         }
 
         when (DiscApplyTo.fromInt(discount.DiscountApplyTo)) {
@@ -83,7 +82,7 @@ class DiscountVM : BaseUiViewModel<DiscountUV>() {
     }
 
     fun onScanDiscount(discountCode: String) {
-        val discountScan: DiscountResp? = DataHelper.discountsLocalStorage?.find { disc -> disc.DiscountCode == discountCode };
+        val discountScan: DiscountResp? = DataHelper.discountsLocalStorage?.find { disc -> disc.DiscountCode == discountCode }
         if (discountScan != null) {
             when (DiscountTypeEnum.fromInt( discountScan.DiscountType)) {
                 DiscountTypeEnum.BUYX_GETY -> {

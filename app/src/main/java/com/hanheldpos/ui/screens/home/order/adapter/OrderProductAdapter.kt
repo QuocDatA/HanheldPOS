@@ -15,7 +15,6 @@ import com.hanheldpos.model.home.order.menu.ProductMenuItem
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
-import com.hanheldpos.ui.screens.cart.CartDataVM
 import com.hanheldpos.ui.screens.cart.CurCartData
 
 class OrderProductAdapter(
@@ -24,8 +23,8 @@ class OrderProductAdapter(
 
     override fun getItemViewType(position: Int): Int {
         return when (getItem(position).uiType) {
-            ProductModeViewType.Product -> R.layout.item_order_product;
-            else -> R.layout.item_order_product_direction_button;
+            ProductModeViewType.Product -> R.layout.item_order_product
+            else -> R.layout.item_order_product_direction_button
         }
     }
 
@@ -81,7 +80,7 @@ class OrderProductAdapter(
             oldItem: ProductMenuItem,
             newItem: ProductMenuItem
         ): Boolean {
-            return oldItem == newItem && oldItem.uiType == newItem.uiType;
+            return oldItem == newItem && oldItem.uiType == newItem.uiType
         }
 
     }

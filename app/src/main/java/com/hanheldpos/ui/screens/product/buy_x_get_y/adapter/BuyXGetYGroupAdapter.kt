@@ -7,10 +7,10 @@ import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.discount.CustomerBuys
 import com.hanheldpos.data.api.pojo.product.Product
 import com.hanheldpos.databinding.ItemBuyXGetYGroupBinding
+import com.hanheldpos.model.cart.BaseProductInCart
 import com.hanheldpos.model.product.buy_x_get_y.GroupBuyXGetY
 import com.hanheldpos.model.product.buy_x_get_y.ItemBuyXGetYGroup
 import com.hanheldpos.model.product.buy_x_get_y.ProductTypeTab
-import com.hanheldpos.model.cart.BaseProductInCart
 import com.hanheldpos.model.product.combo.ItemActionType
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder

@@ -1,6 +1,8 @@
 package com.hanheldpos.model.home.order.menu
 
-import com.hanheldpos.data.api.pojo.order.menu.*
+import com.hanheldpos.data.api.pojo.order.menu.Category
+import com.hanheldpos.data.api.pojo.order.menu.Group
+import com.hanheldpos.data.api.pojo.order.menu.MenuResp
 
 /**
  * Get Category Info
@@ -34,7 +36,7 @@ internal fun OrderMenuItem.setCategoryOrderItem(
  */
 internal fun OrderMenuItem.setGroupOrderItem(menuResp: MenuResp, groupGuid: String) {
 
-    val groupItem = menuResp.GroupList?.find { it._Id == groupGuid };
+    val groupItem = menuResp.GroupList?.find { it._Id == groupGuid }
 
     groupItem?.let {
         this.setGroupOrderItem(menuResp, it)

@@ -2,7 +2,6 @@ package com.hanheldpos.ui.screens.cashdrawer.startdrawer
 
 import android.content.Context
 import android.util.Log
-import androidx.lifecycle.MutableLiveData
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.cashdrawer.CreateCashDrawerResp
 import com.hanheldpos.data.repository.BaseResponse
@@ -21,8 +20,8 @@ class StartDrawerVM : BaseRepoViewModel<CashDrawerRepo, StartDrawerUV>() {
     var amount : Double = 0.0
 
     fun startDrawer(context: Context) {
-        showLoading(true);
-        val startingCash = amount;
+        showLoading(true)
+        val startingCash = amount
         val startDrawerReq = CreateCashDrawerReq(
             UserGuid = UserHelper.getUserGuid(),
             LocationGuid = UserHelper.getLocationGuid(),
@@ -32,25 +31,25 @@ class StartDrawerVM : BaseRepoViewModel<CashDrawerRepo, StartDrawerUV>() {
             StartingCash = startingCash,
             ActualInDrawer = 0.0,
             DrawerDescription = ""
-        );
-        Log.d("Data Pass",GSonUtils.toServerJson(startDrawerReq));
+        )
+        Log.d("Data Pass",GSonUtils.toServerJson(startDrawerReq))
         repo?.createCashDrawer(
             GSonUtils.toServerJson(startDrawerReq),object : BaseRepoCallback<BaseResponse<List<CreateCashDrawerResp>>?> {
                 override fun apiResponse(data: BaseResponse<List<CreateCashDrawerResp>>?) {
                     showLoading(false)
                     if (data == null || data.DidError) {
-                        CashDrawerHelper.isStartDrawer = false;
-                        showError(data?.ErrorMessage ?: context.getString(R.string.failed_to_load_data));
+                        CashDrawerHelper.isStartDrawer = false
+                        showError(data?.ErrorMessage ?: context.getString(R.string.failed_to_load_data))
                     } else {
-                        DataHelper.currentDrawerId = data.Model?.first()?.CashDrawerGuid;
-                        CashDrawerHelper.isStartDrawer = true;
-                        uiCallback?.goHome();
+                        DataHelper.currentDrawerId = data.Model?.first()?.CashDrawerGuid
+                        CashDrawerHelper.isStartDrawer = true
+                        uiCallback?.goHome()
                     }
                 }
 
                 override fun showMessage(message: String?) {
                     showLoading(false)
-                    showError(message?: "Some thing error.");
+                    showError(message?: "Some thing error.")
                 }
 
             }
@@ -58,7 +57,7 @@ class StartDrawerVM : BaseRepoViewModel<CashDrawerRepo, StartDrawerUV>() {
     }
 
     override fun createRepo(): CashDrawerRepo {
-        return CashDrawerRepo();
+        return CashDrawerRepo()
     }
 
 }

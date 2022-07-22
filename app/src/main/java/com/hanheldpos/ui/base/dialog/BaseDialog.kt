@@ -1,7 +1,6 @@
 package com.hanheldpos.ui.base.dialog
 
 import android.content.Context
-import android.view.Window
 import androidx.appcompat.app.AlertDialog
 
 abstract class BaseDialog {

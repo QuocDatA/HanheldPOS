@@ -1,6 +1,5 @@
 package com.hanheldpos.extension
 
-import android.app.AlertDialog
 import android.app.Dialog
 import android.view.View
 import android.view.WindowManager

@@ -22,7 +22,7 @@ class ReportRepo : BaseRepo() {
         isCurrentCashDrawer: Boolean? = false,
         callback: BaseRepoCallback<BaseResponse<ReportSalesResp>?>
     ) {
-        callback.apiRequesting(true);
+        callback.apiRequesting(true)
         reportService.getSalesReport(
             userGuid = userGuid,
             locationGuid = locationGuid,
@@ -39,14 +39,14 @@ class ReportRepo : BaseRepo() {
                 call: Call<BaseResponse<ReportSalesResp>?>,
                 response: Response<BaseResponse<ReportSalesResp>?>
             ) {
-                callback.apiRequesting(false);
+                callback.apiRequesting(false)
                 callback.apiResponse(getBodyResponse(response))
             }
 
             override fun onFailure(call: Call<BaseResponse<ReportSalesResp>?>, t: Throwable) {
-                callback.apiRequesting(false);
-                t.printStackTrace();
-                callback.showMessage(t.message);
+                callback.apiRequesting(false)
+                t.printStackTrace()
+                callback.showMessage(t.message)
             }
         })
     }

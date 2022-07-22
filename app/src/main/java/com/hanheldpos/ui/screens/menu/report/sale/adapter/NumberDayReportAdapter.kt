@@ -13,46 +13,46 @@ class NumberDayReportAdapter(private val listener : BaseItemClickListener<Number
     DiffCallback()
 ) {
 
-    private var selectedItem : Int = -1;
+    private var selectedItem : Int = -1
 
     override fun submitList(list: MutableList<NumberDayReportItem>?) {
-        this.selectedItem = -1;
+        this.selectedItem = -1
         super.submitList(list)
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    public fun clearSelected() {
-        this.selectedItem = -1;
+    fun clearSelected() {
+        this.selectedItem = -1
         notifyDataSetChanged()
     }
 
     override fun getItemViewType(position: Int): Int {
-        return R.layout.item_sales_report_day_number;
+        return R.layout.item_sales_report_day_number
     }
 
     override fun onBindViewHolder(
         holder: BaseBindingViewHolder<NumberDayReportItem>,
         position: Int
     ) {
-        val item = getItem(position);
-        holder.bindItem(item);
-        val binding = holder.binding as ItemSalesReportDayNumberBinding;
+        val item = getItem(position)
+        holder.bindItem(item)
+        val binding = holder.binding as ItemSalesReportDayNumberBinding
         binding.root.apply {
 
             setOnClickListener {
-                notifyItemChanged(selectedItem);
-                selectedItem = holder.bindingAdapterPosition;
-                notifyItemChanged(position);
+                notifyItemChanged(selectedItem)
+                selectedItem = holder.bindingAdapterPosition
+                notifyItemChanged(position)
             }
 
             if(selectedItem == position){
                 binding.title.setTextColor(binding.root.context.getColor(R.color.color_0))
                 binding.underLine.visibility = View.VISIBLE
-                listener.onItemClick(position,item);
+                listener.onItemClick(position,item)
             }
             else {
                 binding.underLine.visibility = View.GONE
-                binding.title.setTextColor(binding.root.context.getColor(R.color.color_4));
+                binding.title.setTextColor(binding.root.context.getColor(R.color.color_4))
             }
         }
     }
@@ -62,14 +62,14 @@ class NumberDayReportAdapter(private val listener : BaseItemClickListener<Number
             oldItem: NumberDayReportItem,
             newItem: NumberDayReportItem
         ): Boolean {
-            return oldItem == newItem;
+            return oldItem == newItem
         }
 
         override fun areContentsTheSame(
             oldItem: NumberDayReportItem,
             newItem: NumberDayReportItem
         ): Boolean {
-            return oldItem == newItem;
+            return oldItem == newItem
         }
 
     }

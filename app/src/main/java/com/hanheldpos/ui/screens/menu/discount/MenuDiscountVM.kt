@@ -1,6 +1,5 @@
 package com.hanheldpos.ui.screens.menu.discount
 
-import androidx.lifecycle.ViewModel
 import com.hanheldpos.PosApp
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.discount.DiscountCoupon
@@ -78,7 +77,7 @@ class MenuDiscountVM : BaseUiViewModel<MenuDiscountUV>() {
 
     fun onScanDiscountSuccess(discountCode: String) {
         val discountScan: DiscountResp? =
-            DataHelper.discountsLocalStorage?.find { disc -> disc.DiscountCode == discountCode };
+            DataHelper.discountsLocalStorage?.find { disc -> disc.DiscountCode == discountCode }
         if (discountScan != null) {
             onApplyCouponCode(discountCode)
         } else {

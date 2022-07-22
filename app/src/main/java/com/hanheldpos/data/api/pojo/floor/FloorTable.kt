@@ -32,9 +32,9 @@ data class FloorTable(
     @IgnoredOnParcel
     var uiType : TableModeViewType = TableModeViewType.Table
 
-    public fun updateTableStatus(tableStatus : TableStatusType, orderSummary : OrderSummaryPrimary? = null) {
-        this.tableStatus = tableStatus;
-        this.orderSummary = orderSummary;
+    fun updateTableStatus(tableStatus : TableStatusType, orderSummary : OrderSummaryPrimary? = null) {
+        this.tableStatus = tableStatus
+        this.orderSummary = orderSummary
     }
 
 }

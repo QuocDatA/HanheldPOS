@@ -1,7 +1,6 @@
 package com.hanheldpos.ui.screens.menu.customers
 
 import com.hanheldpos.data.api.pojo.customer.CustomerResp
-import com.hanheldpos.data.api.pojo.customer.CustomerSearchResp
 import com.hanheldpos.ui.base.BaseUserView
 
 interface CustomerMenuUV : BaseUserView {

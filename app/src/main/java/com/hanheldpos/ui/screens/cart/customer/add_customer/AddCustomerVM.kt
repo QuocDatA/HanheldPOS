@@ -39,7 +39,7 @@ class AddCustomerVM : BaseRepoViewModel<CustomerRepo, AddCustomerUV>() {
                             uiCallback?.onLoadedCustomerView(mutableListOf(), false, keyRequest)
                         } else uiCallback?.onLoadedCustomerScan(mutableListOf(), false, keyRequest)
                     } else {
-                        data.Model?.firstOrNull()?.List?.let {
+                        data.Model.firstOrNull()?.List?.let {
                             if (isScan != true) {
                                 uiCallback?.onLoadedCustomerView(
                                     it,

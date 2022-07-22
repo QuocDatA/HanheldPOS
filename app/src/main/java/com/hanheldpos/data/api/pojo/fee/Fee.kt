@@ -3,7 +3,6 @@ package com.hanheldpos.data.api.pojo.fee
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import com.hanheldpos.model.cart.fee.FeeApplyToType
-import com.hanheldpos.model.cart.fee.FeeType
 import kotlinx.parcelize.Parcelize
 
 
@@ -33,13 +32,13 @@ data class Fee(
 
     fun price(subtotal : Double, totalDisc : Double) : Double {
 
-        var subIncDisc = totalDisc.let { subtotal.minus(it) };
+        var subIncDisc = totalDisc.let { subtotal.minus(it) }
 
-        subIncDisc = if (subIncDisc < 0.0) 0.0 else subIncDisc;
+        subIncDisc = if (subIncDisc < 0.0) 0.0 else subIncDisc
 
         return when(FeeApplyToType.fromInt(Id)) {
             FeeApplyToType.NotIncluded-> {
-                subIncDisc * (Value / 100);
+                subIncDisc * (Value / 100)
             }
             FeeApplyToType.Included -> {
                 subIncDisc - (subIncDisc/((Value + 100)/100))
@@ -47,7 +46,7 @@ data class Fee(
             FeeApplyToType.Order -> {
                 subIncDisc * (Value / 100)
             }
-            else-> 0.0;
+            else-> 0.0
         }
 
     }

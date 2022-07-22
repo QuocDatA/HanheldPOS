@@ -14,5 +14,4 @@ data class DiscountUsed(
     val DiscountCode: String,
 
     val DiscountQuantity: Int? = null,
-) : Parcelable {
-}
+) : Parcelable

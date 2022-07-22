@@ -5,14 +5,14 @@ import java.text.DecimalFormatSymbols
 
 object PriceUtils {
     fun formatStringPrice(price: String): String {
-        if (price.isEmpty() || price.isBlank()) return "";
+        if (price.isEmpty() || price.isBlank()) return ""
         val dfSymbols = DecimalFormatSymbols()
         dfSymbols.decimalSeparator = '.'
         dfSymbols.groupingSeparator = ','
         val df = DecimalFormat("###", dfSymbols)
         df.groupingSize = 3
         df.isGroupingUsed = true
-        return df.format(price.replace(",", "").toDouble());
+        return df.format(price.replace(",", "").toDouble())
     }
 
     @JvmOverloads
@@ -20,8 +20,8 @@ object PriceUtils {
 
         var finalAmount = price
 
-        if (limitLength && (price ?: 0.0) >= 1000000000) {
-            finalAmount = (price ?: 0.0) / 1000
+        if (limitLength && price >= 1000000000) {
+            finalAmount = price / 1000
         }
         val dfSymbols = DecimalFormatSymbols()
         dfSymbols.decimalSeparator = '.'
@@ -33,6 +33,6 @@ object PriceUtils {
         finalAmount.let {
             result += (if (finalAmount != price) "K" else "")
         }
-        return result;
+        return result
     }
 }

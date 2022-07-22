@@ -3,21 +3,13 @@ package com.hanheldpos.ui.base.dialog
 import android.app.Activity
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.os.Build
 import android.view.LayoutInflater
-import android.view.View
-import android.view.WindowManager
 import androidx.appcompat.app.AlertDialog
-import androidx.core.view.WindowCompat
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import com.hanheldpos.R
 import com.hanheldpos.databinding.DialogLoadingBinding
 import com.hanheldpos.databinding.DialogProgressBinding
 import com.hanheldpos.extension.showWithoutSystemUI
-import com.hanheldpos.ui.base.activity.BaseActivity
-import com.hanheldpos.ui.base.fragment.BaseFragment
-import com.utils.helper.SystemHelper
 
 class AppLoadingDialog : BaseDialog() {
 

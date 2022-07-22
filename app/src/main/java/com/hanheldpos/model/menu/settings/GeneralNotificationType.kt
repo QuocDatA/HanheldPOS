@@ -1,7 +1,5 @@
 package com.hanheldpos.model.menu.settings
 
-import com.hanheldpos.model.discount.DiscountEntireType
-
 enum class GeneralNotificationType(var value: Int? = null) {
     DEFAULT(30), TIME_1M(60), TIME_5M(5 * 60), FOREVER(0);
 

@@ -1,12 +1,10 @@
 package com.hanheldpos.ui.screens.menu.settings.hardware
 
 import android.content.Context
-import androidx.lifecycle.MutableLiveData
 import com.hanheldpos.data.api.pojo.setting.hardware.HardwarePrinter
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.menu.settings.HardwareDeviceStatusType
 import com.hanheldpos.model.menu.settings.HardwarePrinterDeviceType
-import com.hanheldpos.model.menu.settings.HardwarePrinterStatusType
 import com.hanheldpos.model.menu.settings.ItemSettingOption
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
 

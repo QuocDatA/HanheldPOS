@@ -6,9 +6,9 @@ import com.hanheldpos.model.home.order.menu.OrderMenuItem
 class OrderMenuAdapterHelper( private val callBack: AdapterCallBack) {
 
     private var currentIndex: Int = 1
-    private var list: MutableList<OrderMenuItem?> = mutableListOf();
-    private var listOfMenuCategoryPage: MutableList<List<OrderMenuItem?>> = mutableListOf();
-    private val maxItemViewCate: Int = itemPerCol * 2 - 1;
+    private var list: MutableList<OrderMenuItem?> = mutableListOf()
+    private var listOfMenuCategoryPage: MutableList<List<OrderMenuItem?>> = mutableListOf()
+    private val maxItemViewCate: Int = itemPerCol * 2 - 1
 
     fun submitList(list: MutableList<OrderMenuItem?>) {
         this.list.clear()
@@ -35,7 +35,7 @@ class OrderMenuAdapterHelper( private val callBack: AdapterCallBack) {
 
     fun next() {
         if ((currentIndex * maxItemViewCate) < list.size) {
-            currentIndex = currentIndex.plus(1);
+            currentIndex = currentIndex.plus(1)
             callBack.onListSplitCallBack(listOfMenuCategoryPage[currentIndex - 1])
         }
 
@@ -43,21 +43,21 @@ class OrderMenuAdapterHelper( private val callBack: AdapterCallBack) {
 
     fun previous() {
         if (currentIndex > 1) {
-            currentIndex = currentIndex.minus(1);
+            currentIndex = currentIndex.minus(1)
             callBack.onListSplitCallBack(listOfMenuCategoryPage[currentIndex - 1])
         }
 
     }
 
     private fun split(pagePosition: Int): MutableList<OrderMenuItem?> {
-        val rs: MutableList<OrderMenuItem> = mutableListOf();
+        val rs: MutableList<OrderMenuItem> = mutableListOf()
 
         list.let {
             if (it.size != 0) {
-                val start: Int = (pagePosition - 1) * maxItemViewCate;
+                val start: Int = (pagePosition - 1) * maxItemViewCate
                 val end: Int =
-                    if (it.size > maxItemViewCate * pagePosition) maxItemViewCate * pagePosition else it.size;
-                rs.addAll(it.toList().subList(start, end) as List<OrderMenuItem>);
+                    if (it.size > maxItemViewCate * pagePosition) maxItemViewCate * pagePosition else it.size
+                rs.addAll(it.toList().subList(start, end) as List<OrderMenuItem>)
             }
         }
 
@@ -83,10 +83,10 @@ class OrderMenuAdapterHelper( private val callBack: AdapterCallBack) {
 
         rs.add(OrderMenuItem().apply { uiType = dirBtn })
 
-        val sub1 = rs.subList(0, itemPerCol);
-        val sub2 = rs.subList(itemPerCol, rs.size);
+        val sub1 = rs.subList(0, itemPerCol)
+        val sub2 = rs.subList(itemPerCol, rs.size)
 
-        val lastrs: MutableList<OrderMenuItem?> = mutableListOf();
+        val lastrs: MutableList<OrderMenuItem?> = mutableListOf()
 
         for (i in 0..itemPerCol.minus(1)) {
             lastrs.addAll(
@@ -106,6 +106,6 @@ class OrderMenuAdapterHelper( private val callBack: AdapterCallBack) {
 
     companion object {
         @JvmStatic
-        val itemPerCol: Int = 10;
+        val itemPerCol: Int = 10
     }
 }

@@ -17,10 +17,10 @@ class TableAdapterHelper(private val callback: AdapterCallBack) {
         fun onListSplitCallBack(list: List<FloorTable>)
     }
 
-    private var currentIndex: Int = 1;
+    private var currentIndex: Int = 1
 
-    private var list: MutableList<FloorTable> = mutableListOf();
-    private var listOfTablePage: MutableList<List<FloorTable>> = mutableListOf();
+    private var list: MutableList<FloorTable> = mutableListOf()
+    private var listOfTablePage: MutableList<List<FloorTable>> = mutableListOf()
 
     fun submitList(list: MutableList<FloorTable>) {
 
@@ -55,7 +55,7 @@ class TableAdapterHelper(private val callback: AdapterCallBack) {
 
     fun next() {
         if ((currentIndex * maxItemViewProduct) < list.size) {
-            currentIndex = currentIndex.plus(1);
+            currentIndex = currentIndex.plus(1)
             callback.onListSplitCallBack(listOfTablePage[currentIndex - 1])
         }
 
@@ -63,27 +63,27 @@ class TableAdapterHelper(private val callback: AdapterCallBack) {
 
     fun previous() {
         if (currentIndex > 1) {
-            currentIndex = currentIndex.minus(1);
+            currentIndex = currentIndex.minus(1)
             callback.onListSplitCallBack(listOfTablePage[currentIndex - 1])
         }
 
     }
 
     private fun split(pagePosition: Int): MutableList<FloorTable> {
-        val rs: MutableList<FloorTable> = mutableListOf();
+        val rs: MutableList<FloorTable> = mutableListOf()
         list.let {
             if (it.size != 0) {
-                val start: Int = (pagePosition - 1) * maxItemViewProduct;
+                val start: Int = (pagePosition - 1) * maxItemViewProduct
                 val end: Int =
-                    if (it.size > maxItemViewProduct * pagePosition) maxItemViewProduct * pagePosition else it.size;
-                rs.addAll(it.toList().subList(start, end) as List<FloorTable>);
+                    if (it.size > maxItemViewProduct * pagePosition) maxItemViewProduct * pagePosition else it.size
+                rs.addAll(it.toList().subList(start, end))
             }
         }
 
         // Add Empty
         for (i in rs.size until maxItemViewProduct) {
             rs.add(FloorTable("", "", 0.0, 0.0, 0, 0, "", "", 0, 0.0, "", 0, 0.0, "", 0, "").apply {
-                uiType = TableModeViewType.Empty;
+                uiType = TableModeViewType.Empty
             })
         }
 
@@ -130,6 +130,6 @@ class TableAdapterHelper(private val callback: AdapterCallBack) {
 
     companion object {
         @JvmStatic
-        val maxItemViewProduct: Int = 13;
+        val maxItemViewProduct: Int = 13
     }
 }

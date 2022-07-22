@@ -31,5 +31,4 @@ data class ProductBuyXGetY(
     val Url: String,
     val Variant: String?,
     val _id: String,
-) : Parcelable {
-}
+) : Parcelable

@@ -1,21 +1,16 @@
 package com.hanheldpos.ui.screens.payment.completed
 
-import android.view.View
 import androidx.lifecycle.lifecycleScope
 import com.hanheldpos.R
 import com.hanheldpos.binding.setPriceView
-import com.hanheldpos.data.api.pojo.customer.CustomerProfileResp
 import com.hanheldpos.data.api.pojo.customer.CustomerResp
 import com.hanheldpos.data.api.pojo.loyalty.LoyaltyResp
 import com.hanheldpos.database.DatabaseMapper
 import com.hanheldpos.databinding.FragmentPaymentCompletedBinding
 import com.hanheldpos.extension.setOnClickDebounce
 import com.hanheldpos.model.DatabaseHelper
-import com.hanheldpos.model.customer.ListGroupCustomer
 import com.hanheldpos.printer.BillPrinterManager
 import com.hanheldpos.ui.base.fragment.BaseFragment
-import com.hanheldpos.utils.GSonUtils
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.take

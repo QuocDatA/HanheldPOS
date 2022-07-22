@@ -19,9 +19,11 @@ import com.hanheldpos.databinding.DialogProcessDownloadResourceBinding
 import com.hanheldpos.extension.showWithoutSystemUI
 import com.hanheldpos.utils.StringUtils
 import com.hanheldpos.utils.UnzipUtils
-import kotlinx.coroutines.*
-import java.io.*
-import java.lang.Runnable
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import java.io.File
 import java.util.*
 
 

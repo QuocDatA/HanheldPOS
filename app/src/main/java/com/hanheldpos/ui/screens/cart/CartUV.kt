@@ -1,6 +1,5 @@
 package com.hanheldpos.ui.screens.cart
 
-import com.hanheldpos.data.api.pojo.customer.CustomerProfileResp
 import com.hanheldpos.data.api.pojo.loyalty.LoyaltyResp
 import com.hanheldpos.model.order.OrderModel
 import com.hanheldpos.model.payment.PaymentOrder

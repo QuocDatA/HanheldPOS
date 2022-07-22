@@ -1,7 +1,5 @@
 package com.hanheldpos.model.cashdrawer
 
-import com.hanheldpos.model.product.combo.ItemActionType
-
 enum class DrawerStatus(val value: Int) {
     NOT_FOUND(0),
     DRAWER_STARTED(1),

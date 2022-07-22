@@ -5,7 +5,6 @@ import android.animation.AnimatorListenerAdapter
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.util.Size
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
@@ -78,10 +77,10 @@ object CartPresenter {
             }
             setBackgroundDrawable(null)
 
-            val circle: View = contentView.findViewById(R.id.circleCartAnimation);
-            setBackColor(circle, item.proOriginal?.Color);
-            val txt: PTextView = contentView.findViewById(R.id.txtProductAdded);
-            txt.text = item.proOriginal?.Acronymn;
+            val circle: View = contentView.findViewById(R.id.circleCartAnimation)
+            setBackColor(circle, item.proOriginal?.Color)
+            val txt: PTextView = contentView.findViewById(R.id.txtProductAdded)
+            txt.text = item.proOriginal?.Acronymn
 
         }.also { popupWindow ->
             val location = IntArray(2).apply {

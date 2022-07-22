@@ -34,11 +34,9 @@ data class ReportSalesResp(
         ListInventory.forEach { item ->
             result[ProductInventory(
                 Name = item.CategoryName,
-                GrossQuantity = item.Product?.sumOf { product -> product.GrossQuantity ?: 0 }
-                    ?: 0,
-                RefundQuantity = item.Product?.sumOf { product -> product.RefundQuantity ?: 0 }
-                    ?: 0,
-                NetQuantity = item.Product?.sumOf { product -> product.NetQuantity ?: 0 } ?: 0,
+                GrossQuantity = item.Product.sumOf { product -> product.GrossQuantity },
+                RefundQuantity = item.Product.sumOf { product -> product.RefundQuantity },
+                NetQuantity = item.Product.sumOf { product -> product.NetQuantity },
                 ProductGuid = item.CategoryGuid
             )] = item.Product
         }
@@ -46,11 +44,11 @@ data class ReportSalesResp(
     }
     fun getInventoryOverview(inventories: Map<ProductInventory, List<ProductInventory>>) : ProductInventory {
         return ProductInventory(
-            GrossQuantity = inventories.keys.sumOf { inventory -> inventory.GrossQuantity ?: 0 },
+            GrossQuantity = inventories.keys.sumOf { inventory -> inventory.GrossQuantity },
             RefundQuantity = inventories.keys.sumOf { inventory ->
-                inventory.RefundQuantity ?: 0
+                inventory.RefundQuantity
             },
-            NetQuantity = inventories.keys.sumOf { inventory -> inventory.NetQuantity ?: 0 },
+            NetQuantity = inventories.keys.sumOf { inventory -> inventory.NetQuantity },
             ProductGuid = "",
             Name = ""
         )

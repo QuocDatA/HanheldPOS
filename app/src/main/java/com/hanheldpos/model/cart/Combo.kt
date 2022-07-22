@@ -181,7 +181,7 @@ class Combo() : BaseProductInCart() {
         val pricingMethodType = proOriginal?.PricingMethodType ?: 1
 
         val modSubtotal = modSubTotal()
-        val proSubtotal = priceOverride ?: 0.0
+        val proSubtotal = priceOverride
 
         return when (PricingMethodType.fromInt(pricingMethodType)) {
             PricingMethodType.BasePrice -> proSubtotal.plus(modSubtotal)

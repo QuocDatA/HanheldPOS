@@ -7,6 +7,4 @@ import kotlinx.parcelize.Parcelize
 data class VariantCart(
     val Id: Int,
     val Value: String,
-) : Parcelable {
-
-}
+) : Parcelable

@@ -9,22 +9,22 @@ import java.util.*
 class OrderCompletedLocalRepo(private val orderCompletedDao: OrderCompletedDao) {
 
     fun insert(orderCompletedEntity: OrderCompletedEntity) =
-        orderCompletedDao.insert(orderCompletedEntity);
+        orderCompletedDao.insert(orderCompletedEntity)
 
     fun insertAll(ordersCompleted: List<OrderCompletedEntity>) =
-        orderCompletedDao.insertAll(ordersCompleted);
+        orderCompletedDao.insertAll(ordersCompleted)
 
     fun update(orderCompletedEntity: OrderCompletedEntity) =
         orderCompletedDao.update(orderCompletedEntity.apply {
             modifierAt =
                 DateTimeUtils.dateToString(Date(), DateTimeUtils.Format.YYYY_MM_DD_HH_MM_SS)
-        });
+        })
 
     fun delete(id: String) = orderCompletedDao.delete(id)
 
-    fun deleteAll() = orderCompletedDao.deleteAll();
+    fun deleteAll() = orderCompletedDao.deleteAll()
 
-    fun get(id: String?): OrderCompletedEntity? = orderCompletedDao.get(id);
+    fun get(id: String?): OrderCompletedEntity? = orderCompletedDao.get(id)
 
     fun getAllLiveData(): Flow<MutableList<OrderCompletedEntity>> = orderCompletedDao.getAllLiveData()
 

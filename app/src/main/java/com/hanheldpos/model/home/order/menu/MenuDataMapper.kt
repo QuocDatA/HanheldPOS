@@ -1,7 +1,10 @@
 package com.hanheldpos.model.home.order.menu
 
 
-import com.hanheldpos.data.api.pojo.order.menu.*
+import com.hanheldpos.data.api.pojo.order.menu.Category
+import com.hanheldpos.data.api.pojo.order.menu.Group
+import com.hanheldpos.data.api.pojo.order.menu.Hierarchy
+import com.hanheldpos.data.api.pojo.order.menu.MenuResp
 
 object MenuDataMapper {
     /**
@@ -62,9 +65,9 @@ object MenuDataMapper {
                 menuResp.ProductList?.find { p -> p._id  == product._id}.let {
                     pFind -> ProductMenuItem(pFind)
                 }
-            };
+            }
             rs.addAll(listProductInCategory)
-        };
+        }
         return rs
     }
 
@@ -83,7 +86,7 @@ object MenuDataMapper {
                 menuResp.ProductList?.find { p -> p._id == product._id }.let {
                     pFind -> ProductMenuItem(pFind)
                 }
-            };
+            }
             rs.addAll(listProductInGroup.toMutableList())
         }
         return rs
@@ -107,7 +110,7 @@ object MenuDataMapper {
         }
 
         rs.forEach {
-            it.childList = it.getChildList(menuResp);
+            it.childList = it.getChildList(menuResp)
         }
 
         return rs
@@ -126,7 +129,7 @@ object MenuDataMapper {
 
         orderItem.nodeItem = hierarchyItem
 
-        val groupGuid = hierarchyItem.GroupGuid ?: return null
+        val groupGuid = hierarchyItem.GroupGuid
         when (MenusType.fromInt(hierarchyItem.MenusType)) {
             MenusType.SYSTEM_GROUP -> { // SystemGroupItem
                 return null

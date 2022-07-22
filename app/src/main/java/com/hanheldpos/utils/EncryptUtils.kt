@@ -1,12 +1,6 @@
 package com.hanheldpos.utils
 
-import android.util.Log
-import java.io.ByteArrayInputStream
-import java.io.ByteArrayOutputStream
-import java.io.ObjectInputStream
-import java.io.ObjectOutputStream
 import java.security.MessageDigest
-import java.security.NoSuchAlgorithmException
 
 class EncryptUtils {
     companion object {

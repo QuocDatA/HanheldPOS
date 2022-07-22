@@ -21,7 +21,7 @@ class RequirementProductAdapter : BaseBindingListAdapter<Any>(DiffCallBack()) {
             }
             Pair::class.java -> {
                 binding.title = (item as Pair<*, *>).first as String?
-                binding.end = (item as Pair<*, *>).second as String?
+                binding.end = item.second as String?
             }
         }
     }

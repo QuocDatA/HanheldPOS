@@ -14,7 +14,7 @@ import java.util.List;
  */
 public final class Table {
     
-    private Board board;
+    private final Board board;
 
     private final int tableWidth;
 
@@ -191,11 +191,7 @@ public final class Table {
             String headerValue = headersList.get(i);
             int columnWidth = colWidthsList.get(i);
             Block block = new Block(board, columnWidth, headerHeight, headerValue);
-            if (getGridMode() == GRID_NON) {
-                block.allowGrid(false);
-            } else {
-                block.allowGrid(true);
-            }
+            block.allowGrid(getGridMode() != GRID_NON);
             int alignIndex = colAlignsList.get(i);
             block.setDataAlign(alignIndex);
             if (initialTableBlock == null) {
@@ -212,11 +208,7 @@ public final class Table {
                     String rowValue = row.get(j);
                     int columnWidth = colWidthsList.get(j);
                     Block block = new Block(board, columnWidth, rowHeight, rowValue);
-                    if (getGridMode() == GRID_NON) {
-                        block.allowGrid(false);
-                    } else {
-                        block.allowGrid(true);
-                    }
+                    block.allowGrid(getGridMode() != GRID_NON);
                     int alignIndex = colAlignsList.get(j);
                     block.setDataAlign(alignIndex);
 

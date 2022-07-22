@@ -13,9 +13,9 @@ class BillLanguageOptionSpinner(context: Context) :
         R.layout.item_dropdown_spinner_align_left
     ) {
     override fun binding(binding: ItemDropdownSpinnerAlignLeftBinding?, item: Parcelable?) {
-        if (item == null) return;
+        if (item == null) return
         if (item is DropDownItem) {
-            binding?.text = item.name;
+            binding?.text = item.name
         }
     }
 }

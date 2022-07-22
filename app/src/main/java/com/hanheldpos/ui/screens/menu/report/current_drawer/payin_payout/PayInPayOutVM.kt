@@ -22,46 +22,46 @@ import com.hanheldpos.utils.GSonUtils
 
 class PayInPayOutVM : BaseUiViewModel<PayInPayOutUV>() {
 
-    private val repo = CashDrawerRepo();
+    private val repo = CashDrawerRepo()
 
-    val amountString = MutableLiveData<String>();
-    var amount: Double? = null;
-    var description = MutableLiveData<String>();
+    val amountString = MutableLiveData<String>()
+    var amount: Double? = null
+    var description = MutableLiveData<String>()
 
     val isValid = MediatorLiveData<Boolean>().apply {
-        value = false;
-    };
+        value = false
+    }
 
     enum class ActiveButton {
         PayIn,
         PayOut,
     }
 
-    val isActiveButton = MutableLiveData<ActiveButton?>();
+    val isActiveButton = MutableLiveData<ActiveButton?>()
 
     init {
         isValid.addSource(amountString) {
             amount = if (it.isNullOrEmpty()) {
-                null;
+                null
             } else
-                it.replace(",", "").toDouble();
+                it.replace(",", "").toDouble()
             isValid.value = if (amount == null || description.value == null) {
                 false
             } else {
-                amount!! > 0.0 && !description.value?.trim().isNullOrEmpty();
+                amount!! > 0.0 && !description.value?.trim().isNullOrEmpty()
             }
         }
         isValid.addSource(description) {
             isValid.value = if (amount == null || description.value == null) {
                 false
             } else {
-                amount!! > 0.0 && !description.value?.trim().isNullOrEmpty();
+                amount!! > 0.0 && !description.value?.trim().isNullOrEmpty()
             }
         }
     }
 
     fun loadPaidInOut(context: Context) {
-        showLoading(true);
+        showLoading(true)
         val bodyJson = GSonUtils.toServerJson(
             PaidInOutListCashDrawerReq(
                 UserGuid = OrderHelper.getUserGuidByDeviceCode(),
@@ -70,32 +70,32 @@ class PayInPayOutVM : BaseUiViewModel<PayInPayOutUV>() {
                 EmployeeGuid = UserHelper.getEmployeeGuid(),
                 CashDrawerGuid = DataHelper.currentDrawerId,
             )
-        );
+        )
         repo.getPaidInOutList(
             bodyJson,
             callback = object : BaseRepoCallback<BaseResponse<List<PaidInOutListResp>>?> {
                 override fun apiResponse(data: BaseResponse<List<PaidInOutListResp>>?) {
-                    showLoading(false);
+                    showLoading(false)
                     if (data == null || data.DidError) {
                         AppAlertDialog.get()
                             .show(
                                 context.resources.getString(R.string.notification),
                                 message = data?.ErrorMessage
                                     ?: context.resources.getString(R.string.alert_msg_an_error_has_occurred),
-                            );
+                            )
                     } else {
-                        uiCallback?.onLoadPaidInOutListToUI(data.Model);
+                        uiCallback?.onLoadPaidInOutListToUI(data.Model)
                     }
                 }
 
                 override fun showMessage(message: String?) {
-                    showLoading(false);
+                    showLoading(false)
                     AppAlertDialog.get()
                         .show(
                             context.resources.getString(R.string.notification),
                             message = message
                                 ?: context.resources.getString(R.string.alert_msg_an_error_has_occurred),
-                        );
+                        )
                 }
             },
         )
@@ -107,13 +107,13 @@ class PayInPayOutVM : BaseUiViewModel<PayInPayOutUV>() {
         if (isValid.value == true)
         when (isActiveButton.value) {
             ActiveButton.PayIn -> {
-                postPayInOut(ActiveButton.PayIn,view.context);
+                postPayInOut(ActiveButton.PayIn,view.context)
             }
             ActiveButton.PayOut -> {
-                isActiveButton.postValue(null);
+                isActiveButton.postValue(null)
             }
             null -> {
-                isActiveButton.postValue(ActiveButton.PayIn);
+                isActiveButton.postValue(ActiveButton.PayIn)
             }
         }
     }
@@ -122,19 +122,19 @@ class PayInPayOutVM : BaseUiViewModel<PayInPayOutUV>() {
         if (isValid.value == true)
         when (isActiveButton.value) {
             ActiveButton.PayIn -> {
-                isActiveButton.postValue(null);
+                isActiveButton.postValue(null)
             }
             ActiveButton.PayOut -> {
-                postPayInOut(ActiveButton.PayOut,view.context);
+                postPayInOut(ActiveButton.PayOut,view.context)
             }
             null -> {
-                isActiveButton.postValue(ActiveButton.PayOut);
+                isActiveButton.postValue(ActiveButton.PayOut)
             }
         }
     }
 
     private fun postPayInOut(button : ActiveButton,context: Context){
-        showLoading(true);
+        showLoading(true)
         val bodyJson = GSonUtils.toServerJson(PayInOutCashDrawerReq(
             UserGuid = OrderHelper.getUserGuidByDeviceCode(),
             LocationGuid = OrderHelper.getLocationGuidByDeviceCode(),
@@ -154,24 +154,24 @@ class PayInPayOutVM : BaseUiViewModel<PayInPayOutUV>() {
                             context.resources.getString(R.string.notification),
                             message = data?.ErrorMessage
                                 ?: context.resources.getString(R.string.alert_msg_an_error_has_occurred),
-                        );
+                        )
                 } else {
-                    description.postValue("");
-                    amountString.postValue("");
-                    loadPaidInOut(context);
+                    description.postValue("")
+                    amountString.postValue("")
+                    loadPaidInOut(context)
                 }
             }
 
             override fun showMessage(message: String?) {
-                showLoading(false);
+                showLoading(false)
                 AppAlertDialog.get()
                     .show(
                         context.resources.getString(R.string.notification),
                         message = message
                             ?: context.resources.getString(R.string.alert_msg_an_error_has_occurred),
-                    );
+                    )
             }
-        });
+        })
 
     }
 

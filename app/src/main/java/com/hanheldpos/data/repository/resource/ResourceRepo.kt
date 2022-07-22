@@ -14,21 +14,21 @@ class ResourceRepo: BaseRepo() {
         locationGuid: String?,
         callback: BaseRepoCallback<BaseResponse<List<ResourceResp>>?>
     ) {
-        callback.apiRequesting(true);
+        callback.apiRequesting(true)
         resourceService.getResourceModel(userGuid = userGuid, location = locationGuid).enqueue(object :
             Callback<BaseResponse<List<ResourceResp>>?> {
             override fun onResponse(
                 call: Call<BaseResponse<List<ResourceResp>>?>,
                 response: Response<BaseResponse<List<ResourceResp>>?>
             ) {
-                callback.apiRequesting(false);
-                callback.apiResponse(getBodyResponse(response));
+                callback.apiRequesting(false)
+                callback.apiResponse(getBodyResponse(response))
             }
 
             override fun onFailure(call: Call<BaseResponse<List<ResourceResp>>?>, t: Throwable) {
-                callback.apiRequesting(false);
-                t.printStackTrace();
-                callback.showMessage(t.message);
+                callback.apiRequesting(false)
+                t.printStackTrace()
+                callback.showMessage(t.message)
             }
 
         })

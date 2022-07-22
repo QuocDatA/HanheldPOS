@@ -4,7 +4,6 @@ import androidx.lifecycle.MutableLiveData
 import com.hanheldpos.model.report.ReportFilterModel
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
 import com.hanheldpos.ui.screens.home.DropDownItem
-import com.hanheldpos.ui.screens.main.adapter.SubSpinnerAdapter
 import com.hanheldpos.utils.DateTimeUtils
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import java.util.*

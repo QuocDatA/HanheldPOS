@@ -2,7 +2,6 @@ package com.hanheldpos.model.product.combo
 
 import com.hanheldpos.model.cart.GroupBundle
 import com.hanheldpos.model.cart.Regular
-import com.hanheldpos.model.home.order.menu.ProductMenuItem
 
 /**
  *  Hold essential info of items in combo separated by group

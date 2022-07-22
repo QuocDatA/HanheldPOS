@@ -3,8 +3,6 @@ package com.hanheldpos.data.api.pojo.cashdrawer.report
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
-import java.util.*
-import kotlin.reflect.jvm.internal.impl.load.kotlin.JvmType
 
 @Parcelize
 data class Report(

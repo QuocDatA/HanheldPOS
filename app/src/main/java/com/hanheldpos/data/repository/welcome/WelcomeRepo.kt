@@ -10,7 +10,7 @@ import retrofit2.Response
 
 class WelcomeRepo : BaseRepo() {
     fun getWelcomeModel(callback: BaseRepoCallback<BaseResponse<List<WelcomeRespModel>>>) {
-        callback.apiRequesting(true);
+        callback.apiRequesting(true)
         welcomeService.getWelcomeModel().enqueue(object :
             Callback<BaseResponse<List< WelcomeRespModel>>> {
 
@@ -18,14 +18,14 @@ class WelcomeRepo : BaseRepo() {
                 call: Call<BaseResponse<List<WelcomeRespModel>>>,
                 response: Response<BaseResponse<List<WelcomeRespModel>>>
             ) {
-                callback.apiRequesting(false);
-                callback.apiResponse(getBodyResponse(response));
+                callback.apiRequesting(false)
+                callback.apiResponse(getBodyResponse(response))
             }
 
             override fun onFailure(call: Call<BaseResponse<List<WelcomeRespModel>>>, t: Throwable) {
-                callback.apiRequesting(false);
-                t.printStackTrace();
-                callback.showMessage(t.message);
+                callback.apiRequesting(false)
+                t.printStackTrace()
+                callback.showMessage(t.message)
             }
 
         })

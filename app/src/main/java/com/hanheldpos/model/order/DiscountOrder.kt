@@ -28,7 +28,7 @@ data class DiscountOrder(
     ) : this(
         _id = src._id,
         DiscountName = src.DiscountName,
-        DiscountCode = if (src.DiscountAutomatic ?: false) "" else src.DiscountCode,
+        DiscountCode = if (src.DiscountAutomatic) "" else src.DiscountCode,
         DiscountType = if (src.DiscountType == DiscountTypeEnum.BUYX_GETY.value) src.Condition.CustomerGets.DiscountValueType else src.DiscountType,
         DiscountValue = if (src.DiscountType == DiscountTypeEnum.BUYX_GETY.value) src.Condition.CustomerGets.DiscountValue else src.Condition.DiscountValue,
         ParentTypeId = src.DiscountType,

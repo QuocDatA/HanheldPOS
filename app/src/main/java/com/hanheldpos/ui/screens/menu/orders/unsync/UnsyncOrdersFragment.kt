@@ -1,13 +1,7 @@
 package com.hanheldpos.ui.screens.menu.orders.unsync
 
 import android.annotation.SuppressLint
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
-import androidx.recyclerview.widget.DividerItemDecoration
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentUnsyncOrdersBinding
 import com.hanheldpos.extension.setOnClickDebounce

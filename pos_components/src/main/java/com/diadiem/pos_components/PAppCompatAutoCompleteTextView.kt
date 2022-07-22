@@ -162,7 +162,7 @@ class PAppCompatAutoCompleteTextView @JvmOverloads constructor(
                                         appConfig?.styles?.fonts?.sizes?.h1?.toInt() ?: 0
                                     )
                                 )
-                            );
+                            )
                         }
                         TextHeaderEnum.H2 -> {
                             setTextSize(
@@ -171,7 +171,7 @@ class PAppCompatAutoCompleteTextView @JvmOverloads constructor(
                                         appConfig?.styles?.fonts?.sizes?.h2?.toInt() ?: 0
                                     )
                                 )
-                            );
+                            )
                         }
                         TextHeaderEnum.H3 -> {
                             setTextSize(
@@ -180,7 +180,7 @@ class PAppCompatAutoCompleteTextView @JvmOverloads constructor(
                                         appConfig?.styles?.fonts?.sizes?.h3?.toInt() ?: 0
                                     )
                                 )
-                            );
+                            )
                         }
                         TextHeaderEnum.H4 -> {
                             setTextSize(
@@ -189,7 +189,7 @@ class PAppCompatAutoCompleteTextView @JvmOverloads constructor(
                                         appConfig?.styles?.fonts?.sizes?.h4?.toInt() ?: 0
                                     )
                                 )
-                            );
+                            )
                         }
                         TextHeaderEnum.H5 -> {
                             setTextSize(
@@ -198,7 +198,7 @@ class PAppCompatAutoCompleteTextView @JvmOverloads constructor(
                                         appConfig?.styles?.fonts?.sizes?.h5?.toInt() ?: 0
                                     )
                                 )
-                            );
+                            )
                         }
                         TextHeaderEnum.H6 -> {
                             setTextSize(
@@ -207,7 +207,7 @@ class PAppCompatAutoCompleteTextView @JvmOverloads constructor(
                                         appConfig?.styles?.fonts?.sizes?.h6?.toInt() ?: 0
                                     )
                                 )
-                            );
+                            )
                         }
                         TextHeaderEnum.H7 -> {
                             setTextSize(
@@ -216,7 +216,7 @@ class PAppCompatAutoCompleteTextView @JvmOverloads constructor(
                                         appConfig?.styles?.fonts?.sizes?.h7?.toInt() ?: 0
                                     )
                                 )
-                            );
+                            )
                         }
                         TextHeaderEnum.H8 -> {
                             setTextSize(
@@ -225,7 +225,7 @@ class PAppCompatAutoCompleteTextView @JvmOverloads constructor(
                                         appConfig?.styles?.fonts?.sizes?.h8?.toInt() ?: 0
                                     )
                                 )
-                            );
+                            )
                         }
                         else -> {
                         }
@@ -380,7 +380,7 @@ class PAppCompatAutoCompleteTextView @JvmOverloads constructor(
             else -> R.dimen._16ssp
         }
 
-        return result;
+        return result
 
     }
 }

@@ -23,8 +23,8 @@ class SettingsVM  : BaseUiViewModel<SettingsUV>(){
 
     private fun getNameMenu(type : SettingsOptionType, context: Context): String {
         return when(type){
-            SettingsOptionType.GENERAL -> context.getString(R.string.general);
-            SettingsOptionType.HARDWARE -> context.getString(R.string.hardware);
+            SettingsOptionType.GENERAL -> context.getString(R.string.general)
+            SettingsOptionType.HARDWARE -> context.getString(R.string.hardware)
         }
     }
 

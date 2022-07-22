@@ -8,6 +8,4 @@ data class OrderModel(
     val Order : Order,
     val OrderDetail : OrderDetail,
     val OrderSummary: OrderSummaryPrimary,
-) : Parcelable {
-
-}
+) : Parcelable

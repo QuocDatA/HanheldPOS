@@ -18,5 +18,5 @@ data class CompVoid(
         CompVoidTitle = src.Title,
         CompVoidValue = src.CompVoidValue,
         CompVoidTotalPrice = totalPrice
-    );
+    )
 }

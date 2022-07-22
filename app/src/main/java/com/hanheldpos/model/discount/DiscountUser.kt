@@ -13,10 +13,10 @@ data class DiscountUser(
     fun total(subtotal : Double) : Double {
         when (DiscountTypeEnum.fromInt(DiscountType)) {
             DiscountTypeEnum.AMOUNT->{
-                return DiscountValue ?: 0.0
+                return DiscountValue
             }
             DiscountTypeEnum.PERCENT->{
-                return subtotal * (DiscountValue?: 0.0) / 100;
+                return subtotal * DiscountValue / 100
             }
             else -> {}
         }

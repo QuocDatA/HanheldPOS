@@ -1,15 +1,8 @@
 package com.hanheldpos.printer.dialogs
 
-import android.view.LayoutInflater
-import android.view.ViewGroup
-import android.widget.CompoundButton
-import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
-import androidx.recyclerview.widget.RecyclerView
 import com.hanheldpos.R
 import com.hanheldpos.databinding.ItemPrinterChooseBinding
-import com.hanheldpos.printer.printer_devices.Printer
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
 

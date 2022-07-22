@@ -8,32 +8,32 @@ import com.hanheldpos.data.api.pojo.discount.CustomerBuys
 import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.data.api.pojo.fee.CustomerGets
 import com.hanheldpos.extension.notifyValueChange
+import com.hanheldpos.model.cart.Combo
+import com.hanheldpos.model.cart.Regular
+import com.hanheldpos.model.discount.DiscountUser
 import com.hanheldpos.model.product.buy_x_get_y.BuyXGetY
 import com.hanheldpos.model.product.buy_x_get_y.CustomerDiscApplyTo
 import com.hanheldpos.model.product.buy_x_get_y.GroupBuyXGetY
 import com.hanheldpos.model.product.buy_x_get_y.ItemBuyXGetYGroup
-import com.hanheldpos.model.cart.Combo
-import com.hanheldpos.model.cart.Regular
 import com.hanheldpos.model.product.combo.ItemActionType
-import com.hanheldpos.model.discount.DiscountUser
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
 import com.hanheldpos.ui.screens.cart.CurCartData
 
 class BuyXGetYVM : BaseUiViewModel<BuyXGetYUV>() {
     var buyXGetY = MutableLiveData<BuyXGetY>()
-    var actionType = MutableLiveData<ItemActionType>();
+    var actionType = MutableLiveData<ItemActionType>()
     val listItemBuyXGetYGroup : MutableList<ItemBuyXGetYGroup> = mutableListOf()
     var isGroupBuy = MutableLiveData(false)
-    val totalPriceLD = MutableLiveData(0.0);
+    val totalPriceLD = MutableLiveData(0.0)
     var discountUser: DiscountUser? = null
-    var maxQuantity = -1;
+    var maxQuantity = -1
     var minQuantity: LiveData<Int> = Transformations.map(actionType) {
         return@map when (actionType.value) {
-            ItemActionType.Modify -> 0;
-            ItemActionType.Add -> 1;
-            else -> 1;
-        };
-    };
+            ItemActionType.Modify -> 0
+            ItemActionType.Add -> 1
+            else -> 1
+        }
+    }
 
     var mLastTimeClick: Long = 0
     fun getBack() {
@@ -41,11 +41,11 @@ class BuyXGetYVM : BaseUiViewModel<BuyXGetYUV>() {
     }
 
     fun initLifeCycle(owner: LifecycleOwner) {
-        owner.lifecycle.addObserver(this);
+        owner.lifecycle.addObserver(this)
 
         buyXGetY.observe(owner) {
-            updateTotalPrice(this.isGroupBuy.value);
-        };
+            updateTotalPrice(this.isGroupBuy.value)
+        }
     }
 
     private fun updateTotalPrice(isGroupBuy: Boolean? = false) {
@@ -96,17 +96,17 @@ class BuyXGetYVM : BaseUiViewModel<BuyXGetYUV>() {
             }
             ItemActionType.Modify -> {
                 if ((itemAfter.quantity ?: 0) <= 0) {
-                    group.productList.remove(itemPrev);
+                    group.productList.remove(itemPrev)
                 } else {
                     group.productList.find { it == itemPrev }?.let { regular ->
                         val index = group.productList.indexOf(regular)
-                        group.productList[index] = itemAfter;
+                        group.productList[index] = itemAfter
                     }
                 }
 
             }
             ItemActionType.Remove -> {
-                group.productList.remove(itemPrev);
+                group.productList.remove(itemPrev)
             }
         }
     }
@@ -133,7 +133,7 @@ class BuyXGetYVM : BaseUiViewModel<BuyXGetYUV>() {
                 } else {
                     group.productList.find { it.proOriginal?._id == itemPrev.proOriginal?._id }?.let { regular ->
                         val index = group.productList.indexOf(regular)
-                        group.productList[index] = itemAfter;
+                        group.productList[index] = itemAfter
                     }
                 }
 
@@ -145,23 +145,23 @@ class BuyXGetYVM : BaseUiViewModel<BuyXGetYUV>() {
     }
 
     val isSelectedComplete: MutableLiveData<Boolean> = Transformations.map(buyXGetY) {
-        return@map it?.isCompleted();
+        return@map it?.isCompleted()
     } as MutableLiveData<Boolean>
 
     val numberQuantity = Transformations.map(buyXGetY) {
-        return@map it.quantity;
+        return@map it.quantity
     }
 
     fun onAddQuantity() {
         if (numberQuantity.value!! < maxQuantity)
-            buyXGetY.value?.plusOrderQuantity(1);
+            buyXGetY.value?.plusOrderQuantity(1)
         buyXGetY.notifyValueChange()
     }
 
     fun onRemoveQuantity() {
         if (minQuantity.value!! < numberQuantity.value!!)
-            buyXGetY.value?.minusOrderQuantity(1);
-        buyXGetY.notifyValueChange();
+            buyXGetY.value?.minusOrderQuantity(1)
+        buyXGetY.notifyValueChange()
     }
 
     fun onAddCart() {
@@ -174,7 +174,7 @@ class BuyXGetYVM : BaseUiViewModel<BuyXGetYUV>() {
                 }
             }
         }
-        uiCallback?.cartAdded(buyXGetY.value!!, actionType.value!!);
+        uiCallback?.cartAdded(buyXGetY.value!!, actionType.value!!)
     }
 
     private fun initItemGroupBuyXGetY(

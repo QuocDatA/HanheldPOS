@@ -7,15 +7,11 @@ import com.hanheldpos.data.repository.base.BaseRepoCallback
 import com.hanheldpos.data.repository.setting.SettingRepo
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.UserHelper
-import com.hanheldpos.model.menu.LogoutType
-import com.hanheldpos.ui.screens.menu.adapter.ItemOptionNav
 import com.hanheldpos.model.menu.NavBarOptionType
 import com.hanheldpos.model.setting.SettingDevicePut
-import com.hanheldpos.ui.base.dialog.AppAlertDialog
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
-import com.hanheldpos.ui.screens.welcome.WelcomeFragment
+import com.hanheldpos.ui.screens.menu.adapter.ItemOptionNav
 import com.hanheldpos.utils.GSonUtils
-import com.hanheldpos.utils.NetworkUtils
 import com.hanheldpos.utils.StringUtils
 
 class MenuVM : BaseUiViewModel<MenuUV>() {

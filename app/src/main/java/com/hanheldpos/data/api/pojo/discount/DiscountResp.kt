@@ -8,12 +8,12 @@ import com.hanheldpos.data.api.pojo.customer.CustomerResp
 import com.hanheldpos.data.api.pojo.fee.CustomerGets
 import com.hanheldpos.data.api.pojo.product.Product
 import com.hanheldpos.data.api.pojo.product.VariantsGroup
-import com.hanheldpos.model.product.buy_x_get_y.CustomerDiscApplyTo
-import com.hanheldpos.model.product.buy_x_get_y.ItemBuyXGetYGroup
-import com.hanheldpos.model.product.buy_x_get_y.MinimumType
 import com.hanheldpos.model.cart.BaseProductInCart
 import com.hanheldpos.model.cart.CartModel
 import com.hanheldpos.model.discount.*
+import com.hanheldpos.model.product.buy_x_get_y.CustomerDiscApplyTo
+import com.hanheldpos.model.product.buy_x_get_y.ItemBuyXGetYGroup
+import com.hanheldpos.model.product.buy_x_get_y.MinimumType
 import com.hanheldpos.ui.screens.cart.CurCartData
 import com.hanheldpos.utils.DateTimeUtils
 import kotlinx.parcelize.Parcelize
@@ -79,7 +79,7 @@ data class DiscountResp(
         get() = if (Condition.CustomerBuys.IsMaxQuantity == 1) quantityUsed ?: 0 else 1
 
     fun getAmountUsed(productId: String?): Double? {
-        return if (Condition?.CustomerBuys?.IsMaxAmount == 1) Condition?.CustomerBuys?.ListApplyTo?.firstOrNull()?.ProductList?.firstOrNull { p -> p._id == productId }?.MaxAmount
+        return if (Condition.CustomerBuys?.IsMaxAmount == 1) Condition.CustomerBuys.ListApplyTo?.firstOrNull()?.ProductList?.firstOrNull { p -> p._id == productId }?.MaxAmount
             ?: 0.0 else 0.0
     }
 
@@ -103,7 +103,7 @@ data class DiscountResp(
     ): Boolean {
         return isValidDiningOption(
             mutableListOf(
-                baseProduct?.diningOption?.Id ?: 0
+                baseProduct.diningOption?.Id ?: 0
             )
         ) && (DateRange == 0 || isValidDate(curDateTime)) &&
                 isValidProduct(baseProduct) &&
@@ -352,9 +352,7 @@ data class Condition(
     val CustomerBuys: CustomerBuys,
     val CustomerGets: CustomerGets,
     val DiscountValue: Double
-) : Parcelable {
-
-}
+) : Parcelable
 
 @Parcelize
 data class DiningOptionDiscount(
@@ -526,7 +524,8 @@ data class CustomerBuys(
         }
     }
     fun getProductApply(productId: String?) : Product? {
-        val productApplyList = if (ApplyTo == CustomerDiscApplyTo.PRODUCT.value)  ListApplyTo else ListApplyTo.map { pro-> pro?.ProductList ?: emptyList()}.flatten()
+        val productApplyList = if (ApplyTo == CustomerDiscApplyTo.PRODUCT.value)  ListApplyTo else ListApplyTo.map { pro-> pro.ProductList
+            ?: emptyList()}.flatten()
         return productApplyList.firstOrNull { p-> p._id == productId }
     }
 }
@@ -544,7 +543,7 @@ data class ListApplyTo(
     val Quantity: Int,
     val Url: String,
     val _id: String,
-) : Parcelable {}
+) : Parcelable
 
 @Parcelize
 data class DiscountsApplyToItem(

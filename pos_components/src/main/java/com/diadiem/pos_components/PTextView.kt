@@ -113,28 +113,28 @@ class PTextView @JvmOverloads constructor(
                     when (TextHeaderEnum.fromInt(it)) {
 
                         TextHeaderEnum.H1 -> {
-                            setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(getDimenSize(appConfig?.styles?.fonts?.sizes?.h1?.toInt() ?: 0)));
+                            setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(getDimenSize(appConfig?.styles?.fonts?.sizes?.h1?.toInt() ?: 0)))
                         }
                         TextHeaderEnum.H2 -> {
-                            setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(getDimenSize(appConfig?.styles?.fonts?.sizes?.h2?.toInt() ?: 0)));
+                            setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(getDimenSize(appConfig?.styles?.fonts?.sizes?.h2?.toInt() ?: 0)))
                         }
                         TextHeaderEnum.H3 -> {
-                            setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(getDimenSize(appConfig?.styles?.fonts?.sizes?.h3?.toInt() ?: 0)));
+                            setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(getDimenSize(appConfig?.styles?.fonts?.sizes?.h3?.toInt() ?: 0)))
                         }
                         TextHeaderEnum.H4 -> {
-                            setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(getDimenSize(appConfig?.styles?.fonts?.sizes?.h4?.toInt() ?: 0)));
+                            setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(getDimenSize(appConfig?.styles?.fonts?.sizes?.h4?.toInt() ?: 0)))
                         }
                         TextHeaderEnum.H5 -> {
-                            setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(getDimenSize(appConfig?.styles?.fonts?.sizes?.h5?.toInt() ?: 0)));
+                            setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(getDimenSize(appConfig?.styles?.fonts?.sizes?.h5?.toInt() ?: 0)))
                         }
                         TextHeaderEnum.H6 -> {
-                            setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(getDimenSize(appConfig?.styles?.fonts?.sizes?.h6?.toInt() ?: 0)));
+                            setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(getDimenSize(appConfig?.styles?.fonts?.sizes?.h6?.toInt() ?: 0)))
                         }
                         TextHeaderEnum.H7 -> {
-                            setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(getDimenSize(appConfig?.styles?.fonts?.sizes?.h7?.toInt() ?: 0)));
+                            setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(getDimenSize(appConfig?.styles?.fonts?.sizes?.h7?.toInt() ?: 0)))
                         }
                         TextHeaderEnum.H8 -> {
-                            setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(getDimenSize(appConfig?.styles?.fonts?.sizes?.h8?.toInt() ?: 0)));
+                            setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(getDimenSize(appConfig?.styles?.fonts?.sizes?.h8?.toInt() ?: 0)))
                         }
                         else -> {
                         }
@@ -189,28 +189,28 @@ class PTextView @JvmOverloads constructor(
         when (type) {
 
             TextHeaderEnum.H1 -> {
-                setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(getDimenSize(appConfig?.styles?.fonts?.sizes?.h1?.toInt() ?: 0)));
+                setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(getDimenSize(appConfig?.styles?.fonts?.sizes?.h1?.toInt() ?: 0)))
             }
             TextHeaderEnum.H2 -> {
-                setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(getDimenSize(appConfig?.styles?.fonts?.sizes?.h2?.toInt() ?: 0)));
+                setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(getDimenSize(appConfig?.styles?.fonts?.sizes?.h2?.toInt() ?: 0)))
             }
             TextHeaderEnum.H3 -> {
-                setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(getDimenSize(appConfig?.styles?.fonts?.sizes?.h3?.toInt() ?: 0)));
+                setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(getDimenSize(appConfig?.styles?.fonts?.sizes?.h3?.toInt() ?: 0)))
             }
             TextHeaderEnum.H4 -> {
-                setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(getDimenSize(appConfig?.styles?.fonts?.sizes?.h4?.toInt() ?: 0)));
+                setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(getDimenSize(appConfig?.styles?.fonts?.sizes?.h4?.toInt() ?: 0)))
             }
             TextHeaderEnum.H5 -> {
-                setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(getDimenSize(appConfig?.styles?.fonts?.sizes?.h5?.toInt() ?: 0)));
+                setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(getDimenSize(appConfig?.styles?.fonts?.sizes?.h5?.toInt() ?: 0)))
             }
             TextHeaderEnum.H6 -> {
-                setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(getDimenSize(appConfig?.styles?.fonts?.sizes?.h6?.toInt() ?: 0)));
+                setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(getDimenSize(appConfig?.styles?.fonts?.sizes?.h6?.toInt() ?: 0)))
             }
             TextHeaderEnum.H7 -> {
-                setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(getDimenSize(appConfig?.styles?.fonts?.sizes?.h7?.toInt() ?: 0)));
+                setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(getDimenSize(appConfig?.styles?.fonts?.sizes?.h7?.toInt() ?: 0)))
             }
             TextHeaderEnum.H8 -> {
-                setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(getDimenSize(appConfig?.styles?.fonts?.sizes?.h8?.toInt() ?: 0)));
+                setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(getDimenSize(appConfig?.styles?.fonts?.sizes?.h8?.toInt() ?: 0)))
             }
             else -> {
             }
@@ -423,7 +423,7 @@ class PTextView @JvmOverloads constructor(
             else -> R.dimen._16ssp
         }
 
-        return result;
+        return result
 
     }
 }

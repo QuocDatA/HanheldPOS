@@ -27,8 +27,8 @@ class ReportVM : BaseUiViewModel<ReportUV>() {
 
     private fun getNameMenu(type : ReportOptionType, context: Context): String {
         return when(type){
-            ReportOptionType.CURRENT_DRAWER -> context.getString(R.string.current_drawer);
-            ReportOptionType.SALES_REPORT -> context.getString(R.string.sales_report);
+            ReportOptionType.CURRENT_DRAWER -> context.getString(R.string.current_drawer)
+            ReportOptionType.SALES_REPORT -> context.getString(R.string.sales_report)
         }
     }
 }

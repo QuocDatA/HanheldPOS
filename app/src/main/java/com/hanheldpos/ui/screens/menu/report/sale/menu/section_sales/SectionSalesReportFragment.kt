@@ -7,11 +7,8 @@ import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.report.ReportSalesResp
 import com.hanheldpos.databinding.FragmentSectionSalesReportBinding
 import com.hanheldpos.extension.setOnClickDebounce
-import com.hanheldpos.model.menu.report.ReportItem
-import com.hanheldpos.ui.base.adapter.GridSpacingItemDecoration
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.menu.report.sale.SaleReportCommonVM
-import com.hanheldpos.ui.screens.menu.report.sale.adapter.SaleReportAdapter
 import com.hanheldpos.utils.PriceUtils
 
 class SectionSalesReportFragment(private val salesReport: ReportSalesResp?) :

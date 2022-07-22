@@ -14,7 +14,7 @@ import com.hanheldpos.utils.GSonUtils
 
 class CurrentDrawerVM : BaseUiViewModel<CurrentDrawerUV>() {
 
-    private val cashDrawerRepo = CashDrawerRepo();
+    private val cashDrawerRepo = CashDrawerRepo()
 
     fun onFragmentBackPressed() {
         uiCallback?.onFragmentBackPressed()
@@ -29,7 +29,7 @@ class CurrentDrawerVM : BaseUiViewModel<CurrentDrawerUV>() {
     }
 
     fun getCashDrawerDetail(context: Context) {
-        showLoading(true);
+        showLoading(true)
         val bodyJson = GSonUtils.toServerJson(
             CashDrawerStatusReq(
                 UserGuid = UserHelper.getUserGuid(),
@@ -42,26 +42,26 @@ class CurrentDrawerVM : BaseUiViewModel<CurrentDrawerUV>() {
             bodyJson,
             object : BaseRepoCallback<BaseResponse<List<ReportCashDrawerResp>>?> {
                 override fun apiResponse(data: BaseResponse<List<ReportCashDrawerResp>>?) {
-                    showLoading(false);
+                    showLoading(false)
                     if (data == null || data.DidError) {
                         AppAlertDialog.get()
                             .show(
                                 context.resources.getString(R.string.notification),
                                 message = data?.ErrorMessage
                                     ?: context.resources.getString(R.string.alert_msg_an_error_has_occurred),
-                            );
+                            )
                     } else
-                        uiCallback?.showInfoCurrentDrawer(data.Model?.firstOrNull());
+                        uiCallback?.showInfoCurrentDrawer(data.Model?.firstOrNull())
                 }
 
                 override fun showMessage(message: String?) {
-                    showLoading(false);
+                    showLoading(false)
                     AppAlertDialog.get()
                         .show(
                             context.resources.getString(R.string.notification),
                             message = message
                                 ?: context.resources.getString(R.string.alert_msg_an_error_has_occurred),
-                        );
+                        )
                 }
             },
         )

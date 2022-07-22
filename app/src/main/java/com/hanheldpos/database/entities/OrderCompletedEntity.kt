@@ -1,11 +1,9 @@
 package com.hanheldpos.database.entities
 
 import androidx.room.ColumnInfo
-import androidx.room.Dao
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.hanheldpos.model.order.OrderStatus
-import java.util.*
 
 @Entity (tableName = "order_completed")
 data class OrderCompletedEntity(
@@ -29,5 +27,4 @@ data class OrderCompletedEntity(
     var modifierAt : String?,
     @ColumnInfo(name = "request_log_json" , defaultValue = "")
     var requestLogJson : String? = null,
-): BaseEntity() {
-}
+): BaseEntity()

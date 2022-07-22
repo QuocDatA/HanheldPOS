@@ -27,8 +27,8 @@ class ReportFragment : BaseFragment<FragmentReportBinding, ReportVM>(),
 
     override fun initViewModel(viewModel: ReportVM) {
         viewModel.run {
-            init(this@ReportFragment);
-            binding.viewModel = this;
+            init(this@ReportFragment)
+            binding.viewModel = this
         }
     }
 
@@ -38,10 +38,10 @@ class ReportFragment : BaseFragment<FragmentReportBinding, ReportVM>(),
         menuAdapter = OptionNavAdapter(
             onMenuItemClickListener = object : BaseItemClickListener<ItemOptionNav> {
                 override fun onItemClick(adapterPosition: Int, item: ItemOptionNav) {
-                    onNavOptionClick(item);
+                    onNavOptionClick(item)
                 }
             },
-        );
+        )
         binding.menuItemContainer.apply {
             addItemDecoration(
                 DividerItemDecoration(
@@ -56,15 +56,15 @@ class ReportFragment : BaseFragment<FragmentReportBinding, ReportVM>(),
                     )
                 }
             )
-        };
+        }
         binding.menuItemContainer.adapter = menuAdapter
         //endregion
     }
 
     @SuppressLint("NotifyDataSetChanged")
     override fun initData() {
-        menuAdapter.submitList(viewModel.initReportItemList(requireContext()));
-        menuAdapter.notifyDataSetChanged();
+        menuAdapter.submitList(viewModel.initReportItemList(requireContext()))
+        menuAdapter.notifyDataSetChanged()
     }
 
     override fun initAction() {
@@ -76,10 +76,10 @@ class ReportFragment : BaseFragment<FragmentReportBinding, ReportVM>(),
 
     fun onNavOptionClick(option: ItemOptionNav) {
         when (option.type as ReportOptionType) {
-            ReportOptionType.CURRENT_DRAWER -> navigator.goToWithAnimationEnterFromRight(CurrentDrawerFragment());
+            ReportOptionType.CURRENT_DRAWER -> navigator.goToWithAnimationEnterFromRight(CurrentDrawerFragment())
             ReportOptionType.SALES_REPORT -> navigator.goToWithAnimationEnterFromRight(
                 SaleReportsMenuFragment()
-            );
+            )
         }
     }
 }

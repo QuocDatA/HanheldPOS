@@ -20,7 +20,6 @@ import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.menu.adapter.ItemOptionNav
 import com.hanheldpos.ui.screens.menu.adapter.OptionNavAdapter
-import com.hanheldpos.utils.DateTimeUtils
 import com.hanheldpos.utils.GSonUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -146,7 +145,7 @@ class SaleReportsMenuFragment(
     }
 
     companion object {
-        const val SALE_REPORT_RESP: String = "SALE_REPORT_RESP";
+        const val SALE_REPORT_RESP: String = "SALE_REPORT_RESP"
     }
 
 }

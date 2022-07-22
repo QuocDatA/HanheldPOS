@@ -2,12 +2,8 @@ package com.hanheldpos.utils
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.os.Build
 import android.provider.Settings
 import android.text.Html
-import java.security.AccessController.getContext
-import java.text.Normalizer
-import java.util.regex.Pattern
 
 object StringUtils {
     fun removeAccent(s: String?): String? {

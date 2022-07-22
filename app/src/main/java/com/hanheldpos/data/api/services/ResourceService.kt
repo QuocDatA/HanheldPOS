@@ -4,7 +4,6 @@ import com.hanheldpos.data.api.pojo.resource.ResourceResp
 import com.hanheldpos.data.repository.BaseResponse
 import retrofit2.Call
 import retrofit2.http.GET
-import retrofit2.http.Headers
 import retrofit2.http.Query
 
 interface ResourceService {

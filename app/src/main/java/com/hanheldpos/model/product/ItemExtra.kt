@@ -14,17 +14,17 @@ data class ItemExtra(
     var maxExtraQuantity : Int = 100,
 ) : Parcelable {
     @IgnoredOnParcel
-    val price: Double = modifier.pricing(productPricing);
+    val price: Double = modifier.pricing(productPricing)
 
     fun addQuantity(num : Int) {
         if(extraQuantity < maxExtraQuantity){
-            extraQuantity = extraQuantity.plus(num);
+            extraQuantity = extraQuantity.plus(num)
         }
     }
 
     fun deleteQuantity(num: Int){
         if (extraQuantity > 0) {
-            extraQuantity = extraQuantity.minus(1);
+            extraQuantity = extraQuantity.minus(1)
         }
     }
 }

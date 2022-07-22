@@ -14,5 +14,4 @@ data class CreateCashDrawerReq(
     val StartingCash: Double? = 0.0,
     val ActualInDrawer: Double?,
     val DrawerDescription: String,
-) : Parcelable {
-}
+) : Parcelable

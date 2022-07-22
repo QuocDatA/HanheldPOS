@@ -2,10 +2,10 @@ package com.hanheldpos.utils
 
 import android.os.Handler
 import android.os.Looper
-import com.hanheldpos.databinding.DialogProcessDownloadResourceBinding
 import kotlinx.coroutines.*
 import java.io.*
 import java.util.zip.ZipFile
+
 /**
  * UnzipUtils class extracts files and sub-directories of a standard zip file to
  * a destination directory.

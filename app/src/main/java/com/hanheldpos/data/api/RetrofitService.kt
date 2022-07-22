@@ -1,7 +1,6 @@
 package com.hanheldpos.data.api
 
 import com.hanheldpos.data.api.helper.ApiLogger
-import com.hanheldpos.data.api.helper.BearerTokenInterceptor
 import com.utils.constants.Const
 import okhttp3.OkHttpClient
 import okhttp3.Protocol
@@ -53,7 +52,7 @@ class RetrofitService private constructor() {
         val sslContext: SSLContext = SSLContext.getInstance("SSL")
         sslContext.init(null, trustAllCerts, SecureRandom())
         // Create an ssl socket factory with our all-trusting manager
-        val socketFactory: SSLSocketFactory = sslContext.socketFactory;
+        val socketFactory: SSLSocketFactory = sslContext.socketFactory
 
         val okHttpBuilder = OkHttpClient.Builder()
             .readTimeout(REQ_TIME_OUT, TimeUnit.SECONDS)

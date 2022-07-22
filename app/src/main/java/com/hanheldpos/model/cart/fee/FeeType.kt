@@ -1,7 +1,6 @@
 package com.hanheldpos.model.cart.fee
 
 import com.fasterxml.jackson.annotation.JsonValue
-import com.hanheldpos.model.fee.ChooseProductApplyTo
 
 enum class FeeType (@JsonValue val value:Int ){
     ServiceFee(1),
@@ -10,7 +9,7 @@ enum class FeeType (@JsonValue val value:Int ){
     ShippingFee(4);
     companion object {
         fun fromInt(value: Int): FeeType? {
-            FeeType.values().forEach {
+            values().forEach {
                 if (it.value == value) {
                     return it
                 }

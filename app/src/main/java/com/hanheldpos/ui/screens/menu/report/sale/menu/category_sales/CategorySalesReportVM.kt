@@ -15,10 +15,10 @@ class CategorySalesReportVM : BaseUiViewModel<CategorySalesReportUV>() {
     fun getCategorySalesSummary(category: List<CategoryReport>?): List<Any> {
         var total = 0.0
         val list = category?.map { i ->
-            total += i.SubTotal ?: 0.0
+            total += i.SubTotal
             i.AllCategory.map { item ->
                 ReportItem(
-                    PriceUtils.formatStringPrice(item.SubTotal ?: 0.0),
+                    PriceUtils.formatStringPrice(item.SubTotal),
                     item.CateName
                 )
             }

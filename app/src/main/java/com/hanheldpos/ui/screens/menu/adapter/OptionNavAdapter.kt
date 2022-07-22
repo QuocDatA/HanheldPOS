@@ -36,14 +36,14 @@ class OptionNavAdapter(
             oldItem: ItemOptionNav,
             newItem: ItemOptionNav,
         ): Boolean {
-            return oldItem.type == newItem.type;
+            return oldItem.type == newItem.type
         }
 
         override fun areContentsTheSame(
             oldItem: ItemOptionNav,
             newItem: ItemOptionNav
         ): Boolean {
-            return oldItem == newItem;
+            return oldItem == newItem
         }
     }
 }

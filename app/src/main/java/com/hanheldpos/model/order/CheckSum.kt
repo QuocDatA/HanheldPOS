@@ -10,5 +10,4 @@ data class CheckSum(
     val Device_id: String,
 
     val Guid: String = EncryptUtils.getHash(UUID.randomUUID().toString()),
-) : Serializable {
-}
+) : Serializable

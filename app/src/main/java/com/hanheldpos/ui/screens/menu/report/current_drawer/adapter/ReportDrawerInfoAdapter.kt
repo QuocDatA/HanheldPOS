@@ -11,28 +11,28 @@ import com.hanheldpos.utils.PriceUtils
 class ReportDrawerInfoAdapter : BaseBindingListAdapter<Report>(DiffCallBack()) {
 
     override fun getItemViewType(position: Int): Int {
-        return R.layout.item_current_drawer_info;
+        return R.layout.item_current_drawer_info
     }
 
     override fun onBindViewHolder(holder: BaseBindingViewHolder<Report>, position: Int) {
-        val item = getItem(position);
+        val item = getItem(position)
         val binding = holder.binding as ItemCurrentDrawerInfoBinding
 
-        binding.titleReport.text = item.Title;
+        binding.titleReport.text = item.Title
 
         if (item.Value is Double){
-            binding.valueReport.text = PriceUtils.formatStringPrice(item.Value.toString());
+            binding.valueReport.text = PriceUtils.formatStringPrice(item.Value.toString())
         }
-        else binding.valueReport.text = item.Value.toString();
+        else binding.valueReport.text = item.Value.toString()
     }
 
     private class DiffCallBack : DiffUtil.ItemCallback<Report>() {
         override fun areItemsTheSame(oldItem: Report, newItem: Report): Boolean {
-            return oldItem == newItem;
+            return oldItem == newItem
         }
 
         override fun areContentsTheSame(oldItem: Report, newItem: Report): Boolean {
-            return oldItem == newItem;
+            return oldItem == newItem
         }
 
     }

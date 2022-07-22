@@ -25,24 +25,24 @@ class CategoryMenuFragment(
     BaseFragment<FragmentCategoryMenuBinding, CategoryMenuVM>(),
     CategoryMenuUV {
 
-    override fun layoutRes() = R.layout.fragment_category_menu;
+    override fun layoutRes() = R.layout.fragment_category_menu
 
     //Adapter
-    private lateinit var menuAdapter: OrderMenuAdapter;
-    private lateinit var menuAdapHelper: OrderMenuAdapterHelper;
+    private lateinit var menuAdapter: OrderMenuAdapter
+    private lateinit var menuAdapHelper: OrderMenuAdapterHelper
 
     //View Model
     private val dataVM by activityViewModels<OrderDataVM>()
 
 
     override fun viewModelClass(): Class<CategoryMenuVM> {
-        return CategoryMenuVM::class.java;
+        return CategoryMenuVM::class.java
     }
 
     override fun initViewModel(viewModel: CategoryMenuVM) {
         viewModel.run {
             init(this@CategoryMenuFragment)
-            binding.viewModel = this;
+            binding.viewModel = this
         }
     }
 
@@ -53,10 +53,10 @@ class CategoryMenuFragment(
             OrderMenuAdapterHelper.AdapterCallBack {
             @SuppressLint("NotifyDataSetChanged")
             override fun onListSplitCallBack(list: List<OrderMenuItem?>) {
-                menuAdapter.submitList(list);
+                menuAdapter.submitList(list)
                 menuAdapter.notifyDataSetChanged()
             }
-        });
+        })
 
         menuAdapter = OrderMenuAdapter(
             space = resources.getDimension(R.dimen._12sdp).toInt(),
@@ -74,7 +74,7 @@ class CategoryMenuFragment(
                 override fun onItemClick(adapterPosition: Int, item: OrderMenuItem) {
                     when (item.uiType) {
                         MenuModeViewType.Menu -> {
-                            menuItemSelected(item);
+                            menuItemSelected(item)
                             getBack()
                         }
                         else -> {}
@@ -129,6 +129,6 @@ class CategoryMenuFragment(
     }
 
     interface CategoryMenuCallBack {
-        fun onMenuClose();
+        fun onMenuClose()
     }
 }

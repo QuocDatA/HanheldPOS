@@ -51,11 +51,11 @@ class TableAdapter(
             parent, false
         ).also {
             //Log.d("TableAdapter","RecycleView Height:" + parent.height);
-            val height = ((parent.height) / 5) - parent.resources.getDimension(R.dimen._6sdp);
+            val height = ((parent.height) / 5) - parent.resources.getDimension(R.dimen._6sdp)
             val params: FrameLayout.LayoutParams =
-                FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, height.toInt());
+                FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, height.toInt())
             when (viewType) {
-                R.layout.item_table -> (it as ItemTableBinding).layoutMain.layoutParams = params;
+                R.layout.item_table -> (it as ItemTableBinding).layoutMain.layoutParams = params
                 R.layout.item_table_direction_button -> (it as ItemTableDirectionButtonBinding).layoutMain.layoutParams =
                     params
                 else -> {
@@ -69,7 +69,7 @@ class TableAdapter(
     }
 
     override fun onBindViewHolder(holder: BaseBindingViewHolder<FloorTable>, position: Int) {
-        val item = getItem(position);
+        val item = getItem(position)
 
         //Color for the Relative Layout Background
         val availableColor = Color.parseColor("#EEEEEE")
@@ -125,7 +125,7 @@ class TableAdapter(
                                     TimeUnit.MILLISECONDS.toHours(time),
                                     TimeUnit.MILLISECONDS.toMinutes(time) -
                                             TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(time))
-                                );
+                                )
 
                             }
 
@@ -165,7 +165,7 @@ class TableAdapter(
             }
             else -> {}
         }
-        holder.bindItem(item);
+        holder.bindItem(item)
     }
 
     private class DiffCallBack : DiffUtil.ItemCallback<FloorTable>() {

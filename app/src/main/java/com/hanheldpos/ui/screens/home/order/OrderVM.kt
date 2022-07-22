@@ -2,9 +2,6 @@ package com.hanheldpos.ui.screens.home.order
 
 import android.os.SystemClock
 import android.util.Log
-import android.view.View
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.MutableLiveData
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
 
 class OrderVM : BaseUiViewModel<OrderUV>() {
@@ -21,10 +18,10 @@ class OrderVM : BaseUiViewModel<OrderUV>() {
     }
 
     fun showCategoryDialog() {
-        uiCallback?.showCategoryDialog();
+        uiCallback?.showCategoryDialog()
     }
 
     fun showCart() {
-        uiCallback?.showCart();
+        uiCallback?.showCart()
     }
 }

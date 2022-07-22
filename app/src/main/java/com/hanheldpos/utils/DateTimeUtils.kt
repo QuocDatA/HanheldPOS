@@ -2,7 +2,6 @@ package com.hanheldpos.utils
 
 
 import android.text.TextUtils
-import java.lang.Exception
 import java.text.DateFormat
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -131,7 +130,7 @@ object DateTimeUtils {
      * @return
      */
     fun dateToString(date: Date?, dateFormat: String?): String {
-        date?:return "";
+        date?:return ""
         val sdf = SimpleDateFormat(dateFormat, Locale.ENGLISH)
         return sdf.format(date)
     }

@@ -1,16 +1,10 @@
 package com.hanheldpos.ui.screens.menu.customers.customer_detail
 
 import android.annotation.SuppressLint
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.customer.CustomerResp
 import com.hanheldpos.databinding.FragmentCustomerMenuDetailBinding
 import com.hanheldpos.extension.addItemDecorationWithoutLastDivider
-import com.hanheldpos.extension.notifyValueChange
 import com.hanheldpos.extension.setOnClickDebounce
 import com.hanheldpos.model.order.OrderSummaryPrimary
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener

@@ -1,7 +1,6 @@
 package com.hanheldpos.model.menu.report
 
 import com.hanheldpos.data.api.pojo.report.ReportSalesResp
-import com.hanheldpos.utils.PriceUtils
 
 object ReportHelper {
 
@@ -35,7 +34,7 @@ object ReportHelper {
                         qty = it.Quantity.toInt(),
                         amount = it.DiscountAmount ?: 0.0
                     )
-                } ?: mutableListOf()
+                }
             }
             SaleOptionPage.CashVoucher -> {
                 reportSalesModel.CashVoucher.map {
@@ -44,23 +43,23 @@ object ReportHelper {
                         qty = it.Quantity?.toInt(),
                         amount = it.PaymentAmount ?: 0.0
                     )
-                } ?: mutableListOf()
+                }
             }
             SaleOptionPage.CategorySales -> {
                 reportSalesModel.Category.firstOrNull()?.AllCategory?.map {
                     ReportItemDetail(
                         name = it.CateName,
                         qty = it.Quantity.toInt(),
-                        amount = it.SubTotal ?: 0.0,
+                        amount = it.SubTotal,
                         list = it.Product.map { product ->
                             ReportItemDetail(
                                 name = product.ProductName,
                                 qty = product.Quantity.toInt(),
                                 amount = product.SubTotal,
-                                subValue = "%.2f".format(product.PercentLineTotal ?: 0.0) + "%"
+                                subValue = "%.2f".format(product.PercentLineTotal) + "%"
                             )
                         },
-                        subValue = "%.2f".format(it.PercentTotalCategory ?: 0.0) + "%"
+                        subValue = "%.2f".format(it.PercentTotalCategory) + "%"
                     )
                 } ?: mutableListOf()
             }
@@ -71,7 +70,7 @@ object ReportHelper {
                         qty = it.Quantity.toInt(),
                         amount = it.SubTotal,
                     )
-                } ?: mutableListOf()
+                }
             }
             SaleOptionPage.Comps -> {
                 reportSalesModel.Comp.map {
@@ -80,7 +79,7 @@ object ReportHelper {
                         qty = it.Quantity?.toInt(),
                         amount = it.Amount ?: 0.0
                     )
-                } ?: mutableListOf()
+                }
             }
             SaleOptionPage.Refund -> {
                 reportSalesModel.Refund.map {
@@ -89,7 +88,7 @@ object ReportHelper {
                         qty = it.Quantity?.toInt(),
                         amount = it.RefundAmount ?: 0.0,
                     )
-                } ?: mutableListOf()
+                }
             }
             SaleOptionPage.Taxes -> {
                 reportSalesModel.ListTaxFee.map {
@@ -98,7 +97,7 @@ object ReportHelper {
                         qty = it.Quantity?.toInt(),
                         amount = it.Amount ?: 0.0,
                     )
-                } ?: mutableListOf()
+                }
             }
             SaleOptionPage.Service -> {
                 reportSalesModel.ListServiceFee.map {
@@ -107,7 +106,7 @@ object ReportHelper {
                         qty = it.Quantity?.toInt(),
                         amount = it.Amount ?: 0.0,
                     )
-                } ?: mutableListOf()
+                }
             }
             SaleOptionPage.Surcharge -> {
                 reportSalesModel.ListSurchargeFee.map {
@@ -116,7 +115,7 @@ object ReportHelper {
                         qty = it.Quantity?.toInt(),
                         amount = it.Amount ?: 0.0
                     )
-                } ?: mutableListOf()
+                }
             }
             else -> {
                 listOf()

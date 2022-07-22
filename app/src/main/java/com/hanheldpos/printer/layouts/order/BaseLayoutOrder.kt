@@ -1,14 +1,14 @@
 package com.hanheldpos.printer.layouts.order
 
 
-import com.hanheldpos.printer.printer_setup.printer_manager.BasePrinterManager
-import com.hanheldpos.printer.wagu.Block
-import com.hanheldpos.printer.wagu.WaguUtils
-import com.hanheldpos.printer.wagu.WrapType
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.order.OrderModel
 import com.hanheldpos.printer.layouts.BaseLayoutPrinter
 import com.hanheldpos.printer.printer_devices.Printer
+import com.hanheldpos.printer.printer_setup.printer_manager.BasePrinterManager
+import com.hanheldpos.printer.wagu.Block
+import com.hanheldpos.printer.wagu.WaguUtils
+import com.hanheldpos.printer.wagu.WrapType
 import com.hanheldpos.utils.DateTimeUtils
 import com.hanheldpos.utils.StringUtils
 

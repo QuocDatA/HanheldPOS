@@ -12,6 +12,4 @@ data class AddressTypeResp(
     @SerializedName("OrderNo") var OrderNo: Int? = null,
     @SerializedName("Visible") var Visible: Int? = null,
     @SerializedName("Default") var Default: Int? = null
-) : Parcelable {
-
-}
+) : Parcelable

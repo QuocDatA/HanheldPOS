@@ -13,9 +13,9 @@ data class GroupBundle(
     var productList: MutableList<Regular>,
 ) : Cloneable {
     val totalQuantity get() = productList.sumOf { it.quantity?: 0 }
-    val requireQuantity get() = comboInfo.Quantity?.minus(totalQuantity);
-    val groupName get() = MenuDataMapper.getGroupNameFromGroupGuid(comboInfo.ComboGuid,DataHelper.menuLocalStorage!!);
-    fun isComplete() = totalQuantity >= (comboInfo.Quantity ?: 0);
+    val requireQuantity get() = comboInfo.Quantity?.minus(totalQuantity)
+    val groupName get() = MenuDataMapper.getGroupNameFromGroupGuid(comboInfo.ComboGuid,DataHelper.menuLocalStorage!!)
+    fun isComplete() = totalQuantity >= (comboInfo.Quantity ?: 0)
 
     fun addRegular(regular: Regular){
         productList.add(regular)
@@ -33,7 +33,7 @@ data class GroupBundle(
                 .map {
                     return@map Regular(it, diningOption, 1, it.skuDefault, it.Variants, null)
                 }
-        return listRegular;
+        return listRegular
     }
 
 

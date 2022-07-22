@@ -1,25 +1,17 @@
 package com.hanheldpos.ui.screens.menu.orders.synced.filter
 
 import android.annotation.SuppressLint
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.AdapterView
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.order.settings.DiningOption
 import com.hanheldpos.databinding.FragmentFilterSyncedOrdersBinding
-import com.hanheldpos.databinding.ItemDiningOptionFilterBinding
 import com.hanheldpos.extension.addItemDecorationWithoutLastDivider
 import com.hanheldpos.extension.setOnClickDebounce
 import com.hanheldpos.model.menu.orders.SyncedOrdersFilterData
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.home.DropDownItem
-import com.hanheldpos.ui.screens.home.HomeFragment
-import com.hanheldpos.ui.screens.home.order.OrderFragment
-import com.hanheldpos.ui.screens.home.table.TableFragment
 import com.hanheldpos.ui.screens.main.adapter.SubSpinnerAdapter
 import com.hanheldpos.ui.screens.menu.orders.synced.filter.adapter.DiningOptionFilterAdapter
 import com.hanheldpos.utils.DateTimeUtils

@@ -91,7 +91,7 @@ class SaleReportCommonVM : BaseViewModel() {
                 Device_key = DataHelper.deviceCodeLocalStorage?.Device?.firstOrNull()?._key!!.toString(),
                 uuid = StringUtils.getAndroidDeviceId(context = view.context)
             )
-        );
+        )
         settingRepo.putSettingDeviceIds(
             json,
             callback = object : BaseRepoCallback<BaseResponse<String>> {
@@ -105,14 +105,14 @@ class SaleReportCommonVM : BaseViewModel() {
                                     ?: view.context.getString(R.string.alert_msg_an_error_has_occurred),
                             )
                     } else {
-                        pushOrder(view.context, succeed, failed);
+                        pushOrder(view.context, succeed, failed)
                     }
                 }
 
                 override fun showMessage(message: String?) {
                     failed()
                 }
-            });
+            })
 
 
     }
@@ -129,7 +129,7 @@ class SaleReportCommonVM : BaseViewModel() {
                         subListNeedPush.forEach { orderEntity ->
                             val orderReq = DatabaseMapper.mappingOrderReqFromEntity(orderEntity)
                             // TODO : check if cart is pay or not
-                            val orderJson = GSonUtils.toServerJson(orderReq);
+                            val orderJson = GSonUtils.toServerJson(orderReq)
                             orderAlterRepo.postOrderSubmit(orderJson, callback = object :
                                 BaseRepoCallback<BaseResponse<OrderSubmitResp>> {
                                 override fun apiResponse(data: BaseResponse<OrderSubmitResp>?) {

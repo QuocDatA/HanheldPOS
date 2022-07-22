@@ -3,15 +3,14 @@ package com.hanheldpos.ui.screens.menu.settings.general
 import android.annotation.SuppressLint
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentGeneralBinding
-import com.hanheldpos.model.menu.settings.ItemSettingOption
 import com.hanheldpos.model.menu.settings.BillLanguageOption
 import com.hanheldpos.model.menu.settings.GeneralNotificationType
 import com.hanheldpos.model.menu.settings.GeneralPushType
+import com.hanheldpos.model.menu.settings.ItemSettingOption
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.home.DropDownItem

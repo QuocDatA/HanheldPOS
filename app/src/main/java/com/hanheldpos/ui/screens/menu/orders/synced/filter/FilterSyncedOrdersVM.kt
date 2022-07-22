@@ -2,7 +2,6 @@ package com.hanheldpos.ui.screens.menu.orders.synced.filter
 
 import android.content.Context
 import androidx.lifecycle.MutableLiveData
-import com.fasterxml.jackson.core.Version
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.order.settings.DiningOption
 import com.hanheldpos.model.DataHelper

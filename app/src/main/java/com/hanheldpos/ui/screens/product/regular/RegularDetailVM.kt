@@ -8,33 +8,33 @@ import com.hanheldpos.data.api.pojo.product.VariantsGroup
 import com.hanheldpos.extension.notifyValueChange
 import com.hanheldpos.model.cart.GroupBundle
 import com.hanheldpos.model.cart.Regular
-import com.hanheldpos.model.product.combo.ItemActionType
 import com.hanheldpos.model.discount.DiscountTypeFor
 import com.hanheldpos.model.product.GroupExtra
+import com.hanheldpos.model.product.combo.ItemActionType
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
 
 class RegularDetailVM : BaseUiViewModel<RegularDetailUV>() {
 
-    val isValidDiscount = MutableLiveData<Boolean>(false);
-    var typeDiscountSelect: DiscountTypeFor? = null;
+    val isValidDiscount = MutableLiveData<Boolean>(false)
+    var typeDiscountSelect: DiscountTypeFor? = null
 
-    val listVariantGroups: MutableList<VariantsGroup> = mutableListOf();
-    val listModifierGroups: MutableList<GroupExtra> = mutableListOf();
+    val listVariantGroups: MutableList<VariantsGroup> = mutableListOf()
+    val listModifierGroups: MutableList<GroupExtra> = mutableListOf()
 
     var isGroupBuy : Boolean ? = false
 
     // Product Detail
-    var productBundle: Product? = null;
-    var groupBundle: GroupBundle? = null;
-    val regularInCart = MutableLiveData<Regular>();
+    var productBundle: Product? = null
+    var groupBundle: GroupBundle? = null
+    val regularInCart = MutableLiveData<Regular>()
 
     // Action With Product
-    val actionType = MutableLiveData<ItemActionType>();
+    val actionType = MutableLiveData<ItemActionType>()
 
 
     val numberQuantity = Transformations.map(regularInCart) {
-        return@map it.quantity;
-    };
+        return@map it.quantity
+    }
 
     val totalPriceLD = Transformations.map(regularInCart) {
         return@map if (productBundle == null)
@@ -43,34 +43,34 @@ class RegularDetailVM : BaseUiViewModel<RegularDetailUV>() {
             regularInCart.value?.total(groupBundle!!, productBundle!!) ?: 0.0
     }
 
-    var maxQuantity = -1;
+    var maxQuantity = -1
 
     var minQuantity: LiveData<Int> = Transformations.map(actionType) {
         return@map when (actionType.value) {
-            ItemActionType.Modify -> 0;
-            ItemActionType.Add -> 1;
-            else -> 1;
+            ItemActionType.Modify -> 0
+            ItemActionType.Add -> 1
+            else -> 1
         }
     }
 
     fun onQuantityAdded() {
         if (numberQuantity.value ?: 0 < maxQuantity)
-            regularInCart.value?.plusOrderQuantity(1);
-        regularInCart.notifyValueChange();
+            regularInCart.value?.plusOrderQuantity(1)
+        regularInCart.notifyValueChange()
     }
 
     fun onQuantityRemoved() {
-        if (minQuantity.value == numberQuantity.value) return;
-        regularInCart.value?.minusOrderQuantity(1);
-        regularInCart.notifyValueChange();
+        if (minQuantity.value == numberQuantity.value) return
+        regularInCart.value?.minusOrderQuantity(1)
+        regularInCart.notifyValueChange()
     }
 
     fun onAddCart() {
-        uiCallback?.onAddCart(regularInCart.value!!);
+        uiCallback?.onAddCart(regularInCart.value!!)
     }
 
     fun onGetBack() {
-        uiCallback?.getBack();
+        uiCallback?.getBack()
     }
 
 

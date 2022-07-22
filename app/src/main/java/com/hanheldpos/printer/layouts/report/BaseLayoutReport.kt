@@ -1,12 +1,12 @@
 package com.hanheldpos.printer.layouts.report
 
-import com.hanheldpos.printer.printer_setup.printer_manager.BasePrinterManager
-import com.hanheldpos.printer.wagu.Block
-import com.hanheldpos.printer.wagu.WaguUtils
 import com.hanheldpos.data.api.pojo.report.ReportSalesResp
 import com.hanheldpos.model.report.ReportFilterModel
 import com.hanheldpos.printer.layouts.BaseLayoutPrinter
 import com.hanheldpos.printer.printer_setup.PrintConfig
+import com.hanheldpos.printer.printer_setup.printer_manager.BasePrinterManager
+import com.hanheldpos.printer.wagu.Block
+import com.hanheldpos.printer.wagu.WaguUtils
 import com.hanheldpos.utils.DateTimeUtils
 import java.util.*
 

@@ -10,10 +10,10 @@ data class Fullfillments(
     val Title_en: String
 ) : Parcelable {
     fun findTextOrderStatus(diningOptionId : Int,orderStatusId : Int) : String? {
-        return ListDinningOptions?.firstOrNull{ option -> option.Id == diningOptionId }?.ListOrderSettingStatus?.firstOrNull()?.ListDicOrderStatus?.firstOrNull{status -> status.OrderStatusId == orderStatusId}?.Title_en;
+        return ListDinningOptions?.firstOrNull{ option -> option.Id == diningOptionId }?.ListOrderSettingStatus?.firstOrNull()?.ListDicOrderStatus?.firstOrNull{status -> status.OrderStatusId == orderStatusId}?.Title_en
     }
 
     fun findColorOrderStatus(diningOptionId : Int,orderStatusId : Int) : String? {
-        return ListDinningOptions?.firstOrNull{option -> option.Id == diningOptionId}?.ListOrderSettingStatus?.firstOrNull()?.ListDicOrderStatus?.firstOrNull{status -> status.OrderStatusId == orderStatusId}?.Color;
+        return ListDinningOptions?.firstOrNull{option -> option.Id == diningOptionId}?.ListOrderSettingStatus?.firstOrNull()?.ListDicOrderStatus?.firstOrNull{status -> status.OrderStatusId == orderStatusId}?.Color
     }
 }

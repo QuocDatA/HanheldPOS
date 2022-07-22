@@ -11,12 +11,12 @@ import com.hanheldpos.data.api.pojo.product.VariantsGroup
 import com.hanheldpos.databinding.FragmentRegularDetailBinding
 import com.hanheldpos.extension.notifyValueChange
 import com.hanheldpos.model.cart.*
-import com.hanheldpos.model.product.combo.ItemActionType
 import com.hanheldpos.model.discount.DiscApplyTo
 import com.hanheldpos.model.discount.DiscountTypeFor
 import com.hanheldpos.model.discount.DiscountUser
 import com.hanheldpos.model.product.GroupExtra
 import com.hanheldpos.model.product.ItemExtra
+import com.hanheldpos.model.product.combo.ItemActionType
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.cart.CartDataVM
@@ -25,7 +25,6 @@ import com.hanheldpos.ui.screens.discount.discount_type.DiscountTypeItemFragment
 import com.hanheldpos.ui.screens.home.order.OrderFragment
 import com.hanheldpos.ui.screens.product.regular.adapter.GroupModifierAdapter
 import com.hanheldpos.ui.screens.product.regular.adapter.GroupVariantAdapter
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 

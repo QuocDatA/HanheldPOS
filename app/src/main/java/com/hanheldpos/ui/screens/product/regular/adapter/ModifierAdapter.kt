@@ -12,7 +12,7 @@ import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 class ModifierAdapter(private val productOrigin : Product, private val listener: BaseItemClickListener<ItemExtra>) :
     BaseBindingListAdapter<ItemExtra>(DiffCallback()) {
     override fun getItemViewType(position: Int): Int {
-        return R.layout.item_product_modifier;
+        return R.layout.item_product_modifier
     }
 
 
@@ -20,26 +20,26 @@ class ModifierAdapter(private val productOrigin : Product, private val listener:
         holder: BaseBindingViewHolder<ItemExtra>,
         position: Int
     ) {
-        val item = getItem(position);
-        holder.bindItem(item);
-        val binding = (holder.binding as ItemProductModifierBinding);
+        val item = getItem(position)
+        holder.bindItem(item)
+        val binding = (holder.binding as ItemProductModifierBinding)
 
-        binding.parentItem = productOrigin;
+        binding.parentItem = productOrigin
 
         binding.btnAddQuantity.setOnClickListener {
-            item.addQuantity(1);
+            item.addQuantity(1)
             notifyItemChanged(position)
             listener.onItemClick(position, item)
 
         }
         binding.itemModifierTextBackground.setOnClickListener {
-            item.addQuantity(1);
+            item.addQuantity(1)
             notifyItemChanged(position)
             listener.onItemClick(position, item)
 
         }
         binding.btnRemoveQuantity.setOnClickListener {
-            item.deleteQuantity(1);
+            item.deleteQuantity(1)
             notifyItemChanged(position)
             listener.onItemClick(position, item)
         }
@@ -50,14 +50,14 @@ class ModifierAdapter(private val productOrigin : Product, private val listener:
             oldItem: ItemExtra,
             newItem: ItemExtra
         ): Boolean {
-            return oldItem == newItem;
+            return oldItem == newItem
         }
 
         override fun areContentsTheSame(
             oldItem: ItemExtra,
             newItem: ItemExtra
         ): Boolean {
-            return oldItem == newItem;
+            return oldItem == newItem
         }
 
     }

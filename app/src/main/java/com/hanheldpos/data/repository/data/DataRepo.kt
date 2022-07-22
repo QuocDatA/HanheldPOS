@@ -1,7 +1,6 @@
 package com.hanheldpos.data.repository.data
 
 import com.hanheldpos.data.api.pojo.data.DataVersion
-import com.hanheldpos.data.api.pojo.device.DeviceCodeResp
 import com.hanheldpos.data.repository.BaseResponse
 import com.hanheldpos.data.repository.base.BaseRepo
 import com.hanheldpos.data.repository.base.BaseRepoCallback
@@ -19,14 +18,14 @@ class DataRepo : BaseRepo() {
                 call: Call<BaseResponse<DataVersion>>,
                 response: Response<BaseResponse<DataVersion>>
             ) {
-                callback.apiRequesting(false);
-                callback.apiResponse(getBodyResponse(response));
+                callback.apiRequesting(false)
+                callback.apiResponse(getBodyResponse(response))
             }
 
             override fun onFailure(call: Call<BaseResponse<DataVersion>>, t: Throwable) {
-                callback.apiRequesting(false);
-                t.printStackTrace();
-                callback.showMessage(t.message);
+                callback.apiRequesting(false)
+                t.printStackTrace()
+                callback.showMessage(t.message)
             }
         })
     }

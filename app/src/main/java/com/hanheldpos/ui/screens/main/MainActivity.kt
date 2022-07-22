@@ -10,8 +10,6 @@ import com.hanheldpos.data.api.pojo.data.DataVersion
 import com.hanheldpos.databinding.ActivityMainBinding
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.printer.BillPrinterManager
-import com.hanheldpos.printer.PrinterException
-import com.hanheldpos.printer.layouts.LayoutType
 import com.hanheldpos.ui.base.activity.BaseFragmentBindingActivity
 import com.hanheldpos.ui.base.fragment.FragmentNavigator
 import com.hanheldpos.ui.screens.pincode.PinCodeFragment
@@ -19,7 +17,6 @@ import com.hanheldpos.ui.screens.welcome.WelcomeFragment
 import com.hanheldpos.utils.GSonUtils
 import com.hanheldpos.utils.NetworkUtils
 import com.utils.helper.SystemHelper
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.json.JSONObject

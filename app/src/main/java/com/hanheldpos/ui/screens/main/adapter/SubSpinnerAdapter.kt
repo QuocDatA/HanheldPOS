@@ -14,9 +14,9 @@ class SubSpinnerAdapter(context: Context) :
     ) {
 
     override fun binding(binding: ItemDropdownSpinnerBinding?, item: Parcelable?) {
-        if(item == null) return;
+        if(item == null) return
         if(item is DropDownItem){
-            binding?.text = item.name;
+            binding?.text = item.name
         }
     }
 }

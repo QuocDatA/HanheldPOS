@@ -5,7 +5,6 @@ import com.hanheldpos.PosApp
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.customer.CustomerResp
 import com.hanheldpos.data.api.pojo.loyalty.LoyaltyResp
-import com.hanheldpos.model.customer.ListGroupCustomer
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
 
 class PaymentCompletedVM : BaseUiViewModel<PaymentCompletedUV>() {

@@ -7,5 +7,4 @@ import kotlinx.parcelize.Parcelize
 data class Voucher(
     val Money: Double,
     val Title: String
-) : Parcelable {
-}
+) : Parcelable

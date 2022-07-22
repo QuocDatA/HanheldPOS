@@ -21,17 +21,17 @@ class DeviceRepo :  BaseRepo() {
                     call: Call<BaseResponse<List<DeviceCodeResp>>>,
                     response: Response<BaseResponse<List<DeviceCodeResp>>>
                 ) {
-                    callback.apiRequesting(false);
-                    callback.apiResponse(getBodyResponse(response));
+                    callback.apiRequesting(false)
+                    callback.apiResponse(getBodyResponse(response))
                 }
 
                 override fun onFailure(
                     call: Call<BaseResponse<List<DeviceCodeResp>>>,
                     t: Throwable
                 ) {
-                    callback.apiRequesting(false);
-                    t.printStackTrace();
-                    callback.showMessage(t.message);
+                    callback.apiRequesting(false)
+                    t.printStackTrace()
+                    callback.showMessage(t.message)
                 }
             })
     }

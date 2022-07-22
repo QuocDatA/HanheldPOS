@@ -1,16 +1,8 @@
 package com.hanheldpos.ui.screens.menu.settings.hardware
 
 import android.annotation.SuppressLint
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.setting.hardware.HardwarePrinter
 import com.hanheldpos.databinding.FragmentHardwareBinding
@@ -19,7 +11,6 @@ import com.hanheldpos.model.menu.settings.ItemSettingOption
 import com.hanheldpos.printer.BillPrinterManager
 import com.hanheldpos.printer.PrinterException
 import com.hanheldpos.printer.printer_devices.Printer
-import com.hanheldpos.printer.printer_setup.PrintConfig
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.adapter.GridSpacingItemDecoration
 import com.hanheldpos.ui.base.fragment.BaseFragment

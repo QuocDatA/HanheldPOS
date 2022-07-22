@@ -1,13 +1,13 @@
 package com.hanheldpos.printer.layouts.report
 
-import com.hanheldpos.printer.printer_setup.printer_manager.BasePrinterManager
-import com.hanheldpos.printer.wagu.Block
-import com.hanheldpos.printer.wagu.WaguUtils
 import com.hanheldpos.data.api.pojo.report.ReportSalesResp
 import com.hanheldpos.model.menu.report.ReportHelper
 import com.hanheldpos.model.menu.report.SaleOptionPage
 import com.hanheldpos.model.report.ReportFilterModel
 import com.hanheldpos.printer.printer_setup.PrintConfig
+import com.hanheldpos.printer.printer_setup.printer_manager.BasePrinterManager
+import com.hanheldpos.printer.wagu.Block
+import com.hanheldpos.printer.wagu.WaguUtils
 import com.hanheldpos.printer.wagu.WrapType
 import com.hanheldpos.utils.PriceUtils
 
@@ -114,7 +114,7 @@ class OverviewLayout(
                         "Total",
                         PriceUtils.formatStringPrice(reportSalesModel.Device.sumOf { device ->
                             device.Total
-                        } ?: 0.0)
+                        })
                     )
                 ),
                 aligns = mutableListOf(Block.DATA_MIDDLE_LEFT, Block.DATA_MIDDLE_RIGHT),
@@ -210,7 +210,7 @@ class OverviewLayout(
                         "Service Fee",
                         "",
                         PriceUtils.formatStringPrice(
-                            saleSummaries?.sumOf { it.ServiceFee ?: 0.0 } ?: 0.0,
+                            saleSummaries.sumOf { it.ServiceFee },
                             limitLength = true
                         )
                     ),
@@ -218,7 +218,7 @@ class OverviewLayout(
                         "Surcharge Fee",
                         "",
                         PriceUtils.formatStringPrice(
-                            saleSummaries?.sumOf { it.SurchargeFee ?: 0.0 } ?: 0.0,
+                            saleSummaries.sumOf { it.SurchargeFee },
                             limitLength = true
                         )
                     ),
@@ -226,7 +226,7 @@ class OverviewLayout(
                         "Total Sales",
                         "",
                         PriceUtils.formatStringPrice(
-                            saleSummaries?.sumOf { it.TotalSales ?: 0.0 } ?: 0.0,
+                            saleSummaries.sumOf { it.TotalSales },
                             limitLength = true
                         )
                     ),
@@ -242,8 +242,7 @@ class OverviewLayout(
                 charPerLineNormal, mutableListOf(
                     mutableListOf(
                         "Total",
-                        PriceUtils.formatStringPrice(saleSummaries?.sumOf { it.BillCount ?: 0.0 }
-                            ?: 0.0)
+                        PriceUtils.formatStringPrice(saleSummaries.sumOf { it.BillCount })
                     )
                 ),
                 aligns = mutableListOf(Block.DATA_MIDDLE_LEFT, Block.DATA_MIDDLE_RIGHT),
@@ -263,43 +262,43 @@ class OverviewLayout(
                     mutableListOf(
                         "Starting Cash",
                         PriceUtils.formatStringPrice(
-                            reportSalesModel.Cash.sumOf { it.StartingCash ?: 0.0 } ?: 0.0,
+                            reportSalesModel.Cash.sumOf { it.StartingCash },
                         )
                     ),
                     mutableListOf(
                         "Paid In",
                         PriceUtils.formatStringPrice(
-                            reportSalesModel.Cash.sumOf { it.PaidIn ?: 0.0 } ?: 0.0,
+                            reportSalesModel.Cash.sumOf { it.PaidIn },
                         )
                     ),
                     mutableListOf(
                         "Paid Out",
                         PriceUtils.formatStringPrice(
-                            reportSalesModel.Cash.sumOf { it.PaidOut ?: 0.0 } ?: 0.0,
+                            reportSalesModel.Cash.sumOf { it.PaidOut },
                         )
                     ),
                     mutableListOf(
                         "Cash Sales",
                         PriceUtils.formatStringPrice(
-                            reportSalesModel.Cash.sumOf { it.CashSales ?: 0.0 } ?: 0.0,
+                            reportSalesModel.Cash.sumOf { it.CashSales },
                         )
                     ),
                     mutableListOf(
                         "Cash Refunds",
                         PriceUtils.formatStringPrice(
-                            reportSalesModel.Cash.sumOf { it.CashRefunds ?: 0.0 } ?: 0.0,
+                            reportSalesModel.Cash.sumOf { it.CashRefunds },
                         )
                     ),
                     mutableListOf(
                         "Expected In Drawer",
                         PriceUtils.formatStringPrice(
-                            reportSalesModel?.Cash.sumOf { it.ExpectedInDrawer ?: 0.0 } ?: 0.0,
+                            reportSalesModel.Cash.sumOf { it.ExpectedInDrawer },
                         )
                     ),
                     mutableListOf(
                         "Actual In Drawer",
                         PriceUtils.formatStringPrice(
-                            reportSalesModel.Cash.sumOf { it.ActualInDrawer ?: 0.0 } ?: 0.0,
+                            reportSalesModel.Cash.sumOf { it.ActualInDrawer },
                         )
                     ),
                 ),
@@ -316,8 +315,8 @@ class OverviewLayout(
                 charPerLineNormal, mutableListOf(
                     mutableListOf(
                         "Differences",
-                        PriceUtils.formatStringPrice(reportSalesModel?.Cash?.sumOf {
-                            it.Difference ?: 0.0
+                        PriceUtils.formatStringPrice(reportSalesModel.Cash.sumOf {
+                            it.Difference
                         } ?: 0.0)
                     )
                 ),
@@ -341,7 +340,7 @@ class OverviewLayout(
 
         val rows = reportItems.map {
             mutableListOf(
-                it.name ?: "",
+                it.name,
                 (it.qty ?: 0).toString(),
                 PriceUtils.formatStringPrice(it.amount, true)
             )
@@ -382,7 +381,7 @@ class OverviewLayout(
                 charPerLineNormal, mutableListOf(
                     mutableListOf(
                         "Total",
-                        PriceUtils.formatStringPrice(reportItems.sumOf { it.amount ?: 0.0 })
+                        PriceUtils.formatStringPrice(reportItems.sumOf { it.amount })
                     )
                 ),
                 aligns = mutableListOf(Block.DATA_MIDDLE_LEFT, Block.DATA_MIDDLE_RIGHT),
@@ -476,7 +475,7 @@ class OverviewLayout(
                     charPerLineNormal,
                     mutableListOf(
                         mutableListOf(
-                            it.name ?: ""
+                            it.name
                         )
                     ),
                     aligns = mutableListOf(Block.DATA_MIDDLE_LEFT)
@@ -486,7 +485,7 @@ class OverviewLayout(
 
             val productList = it.list?.map { productReport ->
                 mutableListOf(
-                    productReport.name ?: "",
+                    productReport.name,
                     (productReport.qty ?: 0).toString(),
                     PriceUtils.formatStringPrice(productReport.amount, limitLength = true),
                     productReport.subValue.toString()
@@ -532,8 +531,7 @@ class OverviewLayout(
                 mutableListOf(
                     mutableListOf(
                         "Category Total",
-                        PriceUtils.formatStringPrice(reportList.sumOf { it.amount }
-                            ?: 0.0)
+                        PriceUtils.formatStringPrice(reportList.sumOf { it.amount })
                     )
                 ),
                 aligns = mutableListOf(Block.DATA_MIDDLE_LEFT, Block.DATA_MIDDLE_RIGHT),
@@ -547,9 +545,9 @@ class OverviewLayout(
 
     private fun printBillTotal() {
         val orderGrandTotal =
-            reportSalesModel?.OrderInfo?.sumOf { it.OrderGrandTotal ?: 0.0 } ?: 0.0
+            reportSalesModel?.OrderInfo?.sumOf { it.OrderGrandTotal } ?: 0.0
         val orderNumber = reportSalesModel?.OrderInfo?.sumOf {
-            it.OrderNumber ?: 0
+            it.OrderNumber
         } ?: 1
         device.drawText(
             WaguUtils.columnListDataBlock(

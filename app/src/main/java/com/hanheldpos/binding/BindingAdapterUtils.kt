@@ -32,7 +32,7 @@ fun setUseInputEnable(view: ViewPager2, isSwipe: Boolean) {
                 }
             }
         }
-        view.setPageTransformer(NoPageTransformer());
+        view.setPageTransformer(NoPageTransformer())
     }
 }
 
@@ -46,12 +46,12 @@ fun setVisibleObject(view: View, `object`: Any?) {
 @BindingAdapter("marquee")
 fun setTextViewMarquee(textView: TextView, isMarquee: Boolean) {
     if (isMarquee) {
-        textView.isSingleLine = true;
-        textView.ellipsize = TextUtils.TruncateAt.MARQUEE;
-        textView.isHorizontalFadingEdgeEnabled = true;
-        textView.marqueeRepeatLimit = -1;
-        textView.canScrollHorizontally(1);
-        textView.isSelected = true;
+        textView.isSingleLine = true
+        textView.ellipsize = TextUtils.TruncateAt.MARQUEE
+        textView.isHorizontalFadingEdgeEnabled = true
+        textView.marqueeRepeatLimit = -1
+        textView.canScrollHorizontally(1)
+        textView.isSelected = true
     }
 }
 
@@ -209,7 +209,7 @@ private fun getCustomInputFilter(
 
 @BindingAdapter("backColor")
 fun setBackColor(view: View?, colorHex: String?) {
-    if (view == null || colorHex == null) return;
+    if (view == null || colorHex == null) return
     if (!TextUtils.isEmpty(colorHex)) {
         try {
             val color = Color.parseColor(colorHex)
@@ -217,13 +217,13 @@ fun setBackColor(view: View?, colorHex: String?) {
                 view.setCardBackgroundColor(ColorStateList.valueOf(color))
                 view.backgroundTintList = ColorStateList.valueOf(color)
             } else
-                view.backgroundTintList = ColorStateList.valueOf(color);
+                view.backgroundTintList = ColorStateList.valueOf(color)
         } catch (e: Exception) {
-            val color = Color.parseColor("#8f8f8f");
+            val color = Color.parseColor("#8f8f8f")
             if (view is CardView) {
                 view.setCardBackgroundColor(ColorStateList.valueOf(color))
             } else
-                view.backgroundTintList = ColorStateList.valueOf(color);
+                view.backgroundTintList = ColorStateList.valueOf(color)
         }
         /*view.setBackgroundColor(color);*/
     }
@@ -232,7 +232,7 @@ fun setBackColor(view: View?, colorHex: String?) {
 
 @BindingAdapter("android:onClickDebounce")
 fun setOnClickDebounce(view: View?, action: View.OnClickListener?) {
-    if (view == null || action == null) return;
+    if (view == null || action == null) return
     view.setOnClickDebounce {
         action.onClick(view)
     }

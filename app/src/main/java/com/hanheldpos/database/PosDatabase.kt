@@ -11,7 +11,7 @@ import com.hanheldpos.database.entities.TableStatusEntity
 
 
 @Database(entities = [ OrderCompletedEntity::class,TableStatusEntity::class ], version = 1, exportSchema = false)
-public abstract class PosDatabase : RoomDatabase() {
+abstract class PosDatabase : RoomDatabase() {
 
     abstract fun orderCompleted() : OrderCompletedDao
 

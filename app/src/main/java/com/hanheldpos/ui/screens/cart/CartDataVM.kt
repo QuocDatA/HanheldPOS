@@ -1,10 +1,8 @@
 package com.hanheldpos.ui.screens.cart
 
-import android.util.Log
 import androidx.lifecycle.*
 import com.hanheldpos.PosApp
 import com.hanheldpos.R
-import com.hanheldpos.data.api.pojo.customer.CustomerProfileResp
 import com.hanheldpos.data.api.pojo.customer.CustomerResp
 import com.hanheldpos.data.api.pojo.discount.CustomerBuys
 import com.hanheldpos.data.api.pojo.discount.DiscountCoupon
@@ -24,9 +22,6 @@ import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.DatabaseHelper
 import com.hanheldpos.model.OrderHelper
 import com.hanheldpos.model.UserHelper
-import com.hanheldpos.model.product.buy_x_get_y.BuyXGetY
-import com.hanheldpos.model.product.buy_x_get_y.CustomerDiscApplyTo
-import com.hanheldpos.model.product.buy_x_get_y.GroupType
 import com.hanheldpos.model.cart.*
 import com.hanheldpos.model.discount.DiscApplyTo
 import com.hanheldpos.model.discount.DiscountTypeEnum
@@ -34,11 +29,13 @@ import com.hanheldpos.model.discount.DiscountUser
 import com.hanheldpos.model.home.table.TableSummary
 import com.hanheldpos.model.order.OrderModel
 import com.hanheldpos.model.payment.PaymentOrder
+import com.hanheldpos.model.product.buy_x_get_y.BuyXGetY
+import com.hanheldpos.model.product.buy_x_get_y.CustomerDiscApplyTo
 import com.hanheldpos.model.product.buy_x_get_y.GroupBuyXGetY
+import com.hanheldpos.model.product.buy_x_get_y.GroupType
 import com.hanheldpos.ui.base.dialog.AppAlertDialog
 import com.hanheldpos.ui.base.viewmodel.BaseViewModel
 import com.hanheldpos.utils.GSonUtils
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

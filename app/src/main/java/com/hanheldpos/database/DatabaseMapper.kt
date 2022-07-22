@@ -1,11 +1,12 @@
 package com.hanheldpos.database
 
 import com.hanheldpos.data.api.pojo.floor.FloorTable
-import com.hanheldpos.database.entities.*
+import com.hanheldpos.database.entities.OrderCompletedEntity
+import com.hanheldpos.database.entities.TableStatusEntity
 import com.hanheldpos.model.order.OrderModel
 import com.hanheldpos.model.order.OrderStatus
-import com.hanheldpos.utils.GSonUtils
 import com.hanheldpos.utils.DateTimeUtils
+import com.hanheldpos.utils.GSonUtils
 import java.util.*
 
 object DatabaseMapper {
@@ -24,7 +25,7 @@ object DatabaseMapper {
     }
 
     fun mappingOrderReqFromEntity(orderCompletedEntity: OrderCompletedEntity): OrderModel {
-        return GSonUtils.toObject<OrderModel>(orderCompletedEntity.orderDetailsJson)!!;
+        return GSonUtils.toObject<OrderModel>(orderCompletedEntity.orderDetailsJson)!!
     }
 
     fun mappingTableToEntity(table: FloorTable): TableStatusEntity {

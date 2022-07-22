@@ -14,20 +14,20 @@ class MenuRepo : BaseRepo() {
         locationGuid: String?,
         callback: BaseRepoCallback<BaseResponse<MenuResp>>
     ) {
-        callback.apiRequesting(true);
+        callback.apiRequesting(true)
         menuService.getOrderMenu(
             userGuid = userGuid,
             location = locationGuid
         ).enqueue(object : Callback<BaseResponse<MenuResp>> {
             override fun onResponse(call: Call<BaseResponse<MenuResp>>, response: Response<BaseResponse<MenuResp>>) {
-                callback.apiRequesting(false);
+                callback.apiRequesting(false)
                 callback.apiResponse(getBodyResponse(response))
             }
 
             override fun onFailure(call: Call<BaseResponse<MenuResp>>, t: Throwable) {
-                callback.apiRequesting(false);
-                t.printStackTrace();
-                callback.showMessage(t.message);
+                callback.apiRequesting(false)
+                t.printStackTrace()
+                callback.showMessage(t.message)
             }
         })
     }

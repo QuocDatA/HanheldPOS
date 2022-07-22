@@ -13,22 +13,23 @@ import com.hanheldpos.data.api.pojo.order.settings.Reason
 import com.hanheldpos.databinding.FragmentComboBinding
 import com.hanheldpos.extension.notifyValueChange
 import com.hanheldpos.model.UserHelper
+import com.hanheldpos.model.cart.BaseProductInCart
 import com.hanheldpos.model.cart.Combo
 import com.hanheldpos.model.cart.Regular
-import com.hanheldpos.model.product.combo.ItemActionType
-import com.hanheldpos.model.product.combo.ItemComboGroup
+import com.hanheldpos.model.discount.DiscApplyTo
 import com.hanheldpos.model.discount.DiscountTypeFor
 import com.hanheldpos.model.discount.DiscountUser
-import com.hanheldpos.model.cart.BaseProductInCart
-import com.hanheldpos.model.discount.DiscApplyTo
+import com.hanheldpos.model.product.combo.ItemActionType
+import com.hanheldpos.model.product.combo.ItemComboGroup
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.cart.CartDataVM
-import com.hanheldpos.ui.screens.product.combo.adapter.ComboGroupAdapter
 import com.hanheldpos.ui.screens.discount.DiscountFragment
 import com.hanheldpos.ui.screens.discount.discount_type.DiscountTypeItemFragment
 import com.hanheldpos.ui.screens.home.order.OrderFragment
+import com.hanheldpos.ui.screens.product.combo.adapter.ComboGroupAdapter
 import com.hanheldpos.ui.screens.product.regular.RegularDetailFragment
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class ComboFragment(
     private val combo: Combo,

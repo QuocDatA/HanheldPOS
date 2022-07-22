@@ -3,7 +3,6 @@ package com.hanheldpos.ui.screens.menu.report.sale.menu.refund
 import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import com.hanheldpos.R
-import com.hanheldpos.data.api.pojo.report.CompReport
 import com.hanheldpos.data.api.pojo.report.RefundReport
 import com.hanheldpos.model.menu.report.ReportItem
 import com.hanheldpos.model.menu.report.ReportItemDetail

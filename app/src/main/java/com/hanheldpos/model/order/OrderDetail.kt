@@ -3,8 +3,8 @@ package com.hanheldpos.model.order
 import android.os.Parcelable
 import com.hanheldpos.data.api.pojo.customer.CustomerResp
 import com.hanheldpos.data.api.pojo.discount.DiscountUsed
-import com.hanheldpos.model.payment.PaymentOrder
 import com.hanheldpos.model.home.table.TableSummary
+import com.hanheldpos.model.payment.PaymentOrder
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -26,5 +26,4 @@ data class OrderDetail(
     var CompVoidList: List<CompVoid>,
     var OrderProducts: List<ProductChosen>,
     // comment => already has class
-) : Parcelable {
-}
+) : Parcelable

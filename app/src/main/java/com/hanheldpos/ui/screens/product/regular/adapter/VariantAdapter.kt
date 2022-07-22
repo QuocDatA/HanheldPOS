@@ -21,10 +21,10 @@ class VariantAdapter(
 
     override fun getItemViewType(position: Int): Int {
         return when(variantViewType) {
-            VariantGroupType.ButtonStyle-> R.layout.item_product_variant_button_style;
-            VariantGroupType.RadioStyle-> R.layout.item_product_variant_radio_style;
-            else -> R.layout.item_product_variant_button_style;
-        } ;
+            VariantGroupType.ButtonStyle-> R.layout.item_product_variant_button_style
+            VariantGroupType.RadioStyle-> R.layout.item_product_variant_radio_style
+            else -> R.layout.item_product_variant_button_style
+        }
     }
 
     override fun submitList(list: MutableList<VariantsGroup.OptionValueVariantsGroup>?) {
@@ -36,11 +36,11 @@ class VariantAdapter(
         holder: BaseBindingViewHolder<VariantsGroup.OptionValueVariantsGroup>,
         position: Int
     ) {
-        val item = getItem(position);
-        holder.bindItem(item);
+        val item = getItem(position)
+        holder.bindItem(item)
         when(variantViewType){
             VariantGroupType.ButtonStyle -> {
-                val binding = (holder.binding as ItemProductVariantButtonStyleBinding);
+                val binding = (holder.binding as ItemProductVariantButtonStyleBinding)
                 binding.optionBtn.apply {
                     if (item.Visible == PosConst.IN_VISIBLE) {
                         if(selectedItem == position) {
@@ -52,11 +52,11 @@ class VariantAdapter(
                                 R.color.color_8
                             )
                         )
-                        return;
+                        return
                     }
                     setOnClickListener {
                         notifyItemChanged(selectedItem)
-                        selectedItem = holder.absoluteAdapterPosition;
+                        selectedItem = holder.absoluteAdapterPosition
                         notifyItemChanged(holder.absoluteAdapterPosition)
                     }
                     if (selectedItem == position) {
@@ -67,7 +67,7 @@ class VariantAdapter(
                                 R.color.color_2
                             )
                         )
-                        listener.onItemClick(position, item);
+                        listener.onItemClick(position, item)
                     } else {
                         isChecked = false
                         binding.optionBtn.setTextColor(
@@ -80,7 +80,7 @@ class VariantAdapter(
                 }
             }
             VariantGroupType.RadioStyle -> {
-                val binding = holder.binding as ItemProductVariantRadioStyleBinding;
+                val binding = holder.binding as ItemProductVariantRadioStyleBinding
                 binding.btnProductItem.apply {
                     if (item.Visible == PosConst.IN_VISIBLE) {
                         if(selectedItem == position) {
@@ -92,19 +92,19 @@ class VariantAdapter(
                                 R.color.color_8
                             )
                         )
-                        return;
+                        return
                     }
                     setOnClickListener {
-                        notifyItemChanged(selectedItem);
-                        selectedItem = holder.absoluteAdapterPosition;
-                        notifyItemChanged(holder.absoluteAdapterPosition);
+                        notifyItemChanged(selectedItem)
+                        selectedItem = holder.absoluteAdapterPosition
+                        notifyItemChanged(holder.absoluteAdapterPosition)
 
                     }
                     if (selectedItem == position) {
                         isChecked = true
-                        listener.onItemClick(position, item);
+                        listener.onItemClick(position, item)
                     } else {
-                        isChecked = false;
+                        isChecked = false
                     }
 
                 }
@@ -119,14 +119,14 @@ class VariantAdapter(
             oldItem: VariantsGroup.OptionValueVariantsGroup,
             newItem: VariantsGroup.OptionValueVariantsGroup
         ): Boolean {
-            return oldItem.Id == newItem.Id;
+            return oldItem.Id == newItem.Id
         }
 
         override fun areContentsTheSame(
             oldItem: VariantsGroup.OptionValueVariantsGroup,
             newItem: VariantsGroup.OptionValueVariantsGroup
         ): Boolean {
-            return true;
+            return true
         }
 
     }

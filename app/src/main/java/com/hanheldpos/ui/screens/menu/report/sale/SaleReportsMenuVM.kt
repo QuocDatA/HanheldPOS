@@ -4,13 +4,7 @@ import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.report.ReportSalesResp
-import com.hanheldpos.data.repository.BaseResponse
-import com.hanheldpos.data.repository.base.BaseRepoCallback
-import com.hanheldpos.data.repository.report.ReportRepo
-import com.hanheldpos.model.DataHelper
-import com.hanheldpos.model.UserHelper
 import com.hanheldpos.model.menu.report.SaleOptionPage
-import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
 import com.hanheldpos.ui.screens.menu.adapter.ItemOptionNav
 

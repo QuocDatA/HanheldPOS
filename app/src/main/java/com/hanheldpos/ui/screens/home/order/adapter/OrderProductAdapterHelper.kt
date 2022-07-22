@@ -12,9 +12,9 @@ class OrderProductAdapterHelper(
         fun onListSplitCallBack(list: List<ProductMenuItem>)
     }
 
-    private var currentIndex: Int = 1;
+    private var currentIndex: Int = 1
 
-    private var list: MutableList<ProductMenuItem> = mutableListOf();
+    private var list: MutableList<ProductMenuItem> = mutableListOf()
     private var listOfProductPage: MutableList<List<ProductMenuItem>> = mutableListOf()
 
     fun submitList(list: MutableList<ProductMenuItem>) {
@@ -42,7 +42,7 @@ class OrderProductAdapterHelper(
 
     fun next() {
         if ((currentIndex * maxItemViewProduct) < list.size) {
-            currentIndex = currentIndex.plus(1);
+            currentIndex = currentIndex.plus(1)
             callBack.onListSplitCallBack(listOfProductPage[currentIndex - 1])
         }
 
@@ -50,27 +50,27 @@ class OrderProductAdapterHelper(
 
     fun previous() {
         if (currentIndex > 1) {
-            currentIndex = currentIndex.minus(1);
+            currentIndex = currentIndex.minus(1)
             callBack.onListSplitCallBack(listOfProductPage[currentIndex - 1])
         }
 
     }
 
     private fun split(pagePosition: Int): MutableList<ProductMenuItem> {
-        val rs: MutableList<ProductMenuItem> = mutableListOf();
+        val rs: MutableList<ProductMenuItem> = mutableListOf()
         list.let {
             if (it.size != 0) {
-                val start: Int = (pagePosition - 1) * maxItemViewProduct;
+                val start: Int = (pagePosition - 1) * maxItemViewProduct
                 val end: Int =
-                    if (it.size > maxItemViewProduct * pagePosition) maxItemViewProduct * pagePosition else it.size;
-                rs.addAll(it.toList().subList(start, end));
+                    if (it.size > maxItemViewProduct * pagePosition) maxItemViewProduct * pagePosition else it.size
+                rs.addAll(it.toList().subList(start, end))
             }
         }
 
         // Add Empty
         for (i in rs.size until maxItemViewProduct) {
             rs.add(ProductMenuItem().apply {
-                uiType = ProductModeViewType.Empty;
+                uiType = ProductModeViewType.Empty
             })
         }
 
@@ -102,6 +102,6 @@ class OrderProductAdapterHelper(
 
     companion object {
         @JvmStatic
-        val maxItemViewProduct: Int = 22;
+        val maxItemViewProduct: Int = 22
     }
 }

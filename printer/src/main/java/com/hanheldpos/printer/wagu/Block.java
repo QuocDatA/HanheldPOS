@@ -17,7 +17,7 @@ public final class Block {
 
     protected static int nextIndex = 0;
 
-    private Board board;
+    private final Board board;
 
     private final int index;
 
@@ -74,7 +74,7 @@ public final class Block {
         if (width <= board.boardWidth) {
             this.width = width;
         } else {
-            throw new RuntimeException("Block " + toString() + " exceeded the board width " + board.boardWidth);
+            throw new RuntimeException("Block " + this + " exceeded the board width " + board.boardWidth);
         }
         this.height = height;
         this.allowGrid = true;
@@ -186,7 +186,7 @@ public final class Block {
         if (x + getWidth() + (isGridAllowed() ? 2 : 0) <= board.boardWidth) {
             this.x = x;
         } else {
-            throw new RuntimeException("Block " + toString() + " exceeded the board width " + board.boardWidth);
+            throw new RuntimeException("Block " + this + " exceeded the board width " + board.boardWidth);
         }
         return this;
     }
@@ -276,7 +276,7 @@ public final class Block {
                 if (dataLine.length() > getWidth()) {
                     dataInLines.set(i, dataLine.substring(0, getWidth()));
                     if (i + 1 != dataInLines.size()) {
-                        String prifix = dataLine.substring(getWidth(), dataLine.length());
+                        String prifix = dataLine.substring(getWidth());
                         String suffix = dataInLines.get(i + 1);
                         String combinedValue = prifix.concat((suffix.length() > 0 ? String.valueOf(Charr.S) : "")).concat(suffix);
                         dataInLines.set(i + 1, combinedValue);

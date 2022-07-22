@@ -1,13 +1,11 @@
 package com.hanheldpos.ui.screens.home
 
-import android.app.Activity
 import android.util.Log
 import android.view.View
 import android.view.ViewTreeObserver
 import android.widget.AdapterView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.data.DataVersion
@@ -19,13 +17,11 @@ import com.hanheldpos.extension.avoidDropdownFocus
 import com.hanheldpos.extension.notifyValueChange
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.SyncDataService
-import com.hanheldpos.model.order.OrderModel
 import com.hanheldpos.ui.base.dialog.AppAlertDialog
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.base.pager.FragmentPagerAdapter
 import com.hanheldpos.ui.screens.cart.CartDataVM
 import com.hanheldpos.ui.screens.cart.CartFragment
-import com.hanheldpos.ui.screens.cart.CurCartData
 import com.hanheldpos.ui.screens.cashdrawer.CashDrawerHelper
 import com.hanheldpos.ui.screens.home.adapter.DiningOptionSpinnerAdapter
 import com.hanheldpos.ui.screens.home.order.OrderFragment
@@ -36,7 +32,6 @@ import com.hanheldpos.ui.screens.menu.MenuFragment
 import com.hanheldpos.ui.screens.menu.report.sale.SaleReportCommonVM
 import com.hanheldpos.ui.screens.menu.settings.SettingsControlVM
 import com.hanheldpos.utils.NetworkUtils
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch

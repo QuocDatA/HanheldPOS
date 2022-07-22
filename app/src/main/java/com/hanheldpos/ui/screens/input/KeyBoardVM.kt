@@ -11,9 +11,9 @@ import com.hanheldpos.model.keyboard.KeyBoardType
 class KeyBoardVM(type: KeyBoardType, private val maxLength: Int? = null) : ViewModel() {
 
     private val input = MutableLiveData<String>()
-    var listener: KeyBoardCallBack? = null;
-    var keyBoardType = MutableLiveData<KeyBoardType>(KeyBoardType.Number);
-    var isCapLock = MutableLiveData<Boolean>(false);
+    var listener: KeyBoardCallBack? = null
+    var keyBoardType = MutableLiveData<KeyBoardType>(KeyBoardType.Number)
+    var isCapLock = MutableLiveData<Boolean>(false)
 
     init {
         keyBoardType.postValue(type)
@@ -109,12 +109,12 @@ class KeyBoardVM(type: KeyBoardType, private val maxLength: Int? = null) : ViewM
             view.setText(it)
         }
         input.postValue(initInput)
-        this.listener = listener;
+        this.listener = listener
     }
 
 
     interface KeyBoardCallBack {
-        fun onComplete();
-        fun onCancel();
+        fun onComplete()
+        fun onCancel()
     }
 }

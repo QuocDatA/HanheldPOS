@@ -20,26 +20,26 @@ import com.hanheldpos.utils.GSonUtils
 class EndDrawerVM : BaseRepoViewModel<CashDrawerRepo,EndDrawerUV>() {
 
     override fun createRepo(): CashDrawerRepo {
-        return CashDrawerRepo();
+        return CashDrawerRepo()
     }
 
-    val amountExpected = MutableLiveData<Double>();
-    val amountString = MutableLiveData<String>("0");
-    val amount = MutableLiveData<Double>();
-    val description = MutableLiveData<String>();
+    val amountExpected = MutableLiveData<Double>()
+    val amountString = MutableLiveData<String>("0")
+    val amount = MutableLiveData<Double>()
+    val description = MutableLiveData<String>()
 
     fun initLifeCycle(owner : LifecycleOwner) {
         amountString.observe(owner, {
             if(it.isNullOrEmpty()){
-                amount.postValue(0.0);
+                amount.postValue(0.0)
             }
             else
-            amount.postValue(it.replace(",","").toDouble());
+            amount.postValue(it.replace(",","").toDouble())
         })
     }
 
     fun endDrawer(context : Context) {
-        showLoading(true);
+        showLoading(true)
         val endDrawerReq = CreateCashDrawerReq(
             UserGuid = UserHelper.getUserGuid(),
             LocationGuid = UserHelper.getLocationGuid(),
@@ -49,26 +49,26 @@ class EndDrawerVM : BaseRepoViewModel<CashDrawerRepo,EndDrawerUV>() {
             StartingCash = 0.0,
             ActualInDrawer = amountExpected.value?.minus(amount.value?:0.0)?:0.0,
             DrawerDescription = description.value.toString(),
-        );
-        Log.d("Data Pass", GSonUtils.toServerJson(endDrawerReq));
+        )
+        Log.d("Data Pass", GSonUtils.toServerJson(endDrawerReq))
         repo?.createCashDrawer(
             GSonUtils.toServerJson(endDrawerReq),object :
                 BaseRepoCallback<BaseResponse<List<CreateCashDrawerResp>>?> {
                 override fun apiResponse(data: BaseResponse<List<CreateCashDrawerResp>>?) {
                     showLoading(false)
                     if (data == null || data.DidError) {
-                        CashDrawerHelper.isEndDrawer = false;
-                        showError(data?.ErrorMessage ?: context.getString(R.string.failed_to_load_data));
+                        CashDrawerHelper.isEndDrawer = false
+                        showError(data?.ErrorMessage ?: context.getString(R.string.failed_to_load_data))
                     } else {
-                        DataHelper.currentDrawerId = null;
-                        CashDrawerHelper.isEndDrawer = true;
-                        uiCallback?.onEndDrawer();
+                        DataHelper.currentDrawerId = null
+                        CashDrawerHelper.isEndDrawer = true
+                        uiCallback?.onEndDrawer()
                     }
                 }
 
                 override fun showMessage(message: String?) {
                     showLoading(false)
-                    showError(message?: "Some thing error.");
+                    showError(message?: "Some thing error.")
                 }
 
             }
@@ -76,7 +76,7 @@ class EndDrawerVM : BaseRepoViewModel<CashDrawerRepo,EndDrawerUV>() {
     }
 
     fun backPress(){
-        uiCallback?.backPress();
+        uiCallback?.backPress()
     }
 
 

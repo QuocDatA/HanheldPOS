@@ -5,5 +5,5 @@ import com.hanheldpos.data.api.pojo.order.settings.Reason
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
 
 class DiscountCompVM : BaseUiViewModel<DiscountCompUV>() {
-    var reasonChosen = MutableLiveData<Reason?>();
+    var reasonChosen = MutableLiveData<Reason?>()
 }

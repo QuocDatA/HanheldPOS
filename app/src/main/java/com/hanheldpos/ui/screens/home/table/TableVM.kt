@@ -13,34 +13,34 @@ class TableVM : BaseUiViewModel<TableUV>() {
     var mLastTimeClick: Long = 0
 
     fun initLifecycle(owner: LifecycleOwner){
-        owner.lifecycle.addObserver(this);
+        owner.lifecycle.addObserver(this)
     }
 
     // Value
-    private var floorResp: FloorResp? = null;
-    private val floorList = MutableLiveData<MutableList<Floor>>(mutableListOf());
-    val floorItemSelected = MutableLiveData<Floor>();
-    val floorTableList = MutableLiveData<MutableList<FloorTable>>(mutableListOf());
+    private var floorResp: FloorResp? = null
+    private val floorList = MutableLiveData<MutableList<Floor>>(mutableListOf())
+    val floorItemSelected = MutableLiveData<Floor>()
+    val floorTableList = MutableLiveData<MutableList<FloorTable>>(mutableListOf())
 
 
     fun initData() {
         floorResp = DataHelper.floorLocalStorage
-        initFloor();
+        initFloor()
         /*floorItemSelected.value = floorList.value?.firstOrNull();*/
     }
 
 
     private fun initFloor() {
-        floorList.value = floorResp?.Floor?.toMutableList();
+        floorList.value = floorResp?.Floor?.toMutableList()
     }
 
 
     fun getTableListByFloor(floorItem : Floor) : List<FloorTable>?{
-        return floorResp?.FloorTable?.filter { it.FloorGuid == floorItem._Id };
+        return floorResp?.FloorTable?.filter { it.FloorGuid == floorItem._Id }
     }
 
     fun getTableList() :List<FloorTable>?{
-        return floorResp?.FloorTable;
+        return floorResp?.FloorTable
     }
 
     fun onTableClick(item : FloorTable){

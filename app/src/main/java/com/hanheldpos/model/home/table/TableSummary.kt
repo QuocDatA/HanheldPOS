@@ -8,5 +8,4 @@ data class TableSummary(
     var _id: String,
     var TableName: String,
     var PeopleQuantity: Long,
-) : Parcelable {
-}
+) : Parcelable

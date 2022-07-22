@@ -1,7 +1,5 @@
 package com.hanheldpos.model.discount
 
-import com.hanheldpos.model.fee.ChooseProductApplyTo
-
 enum class DiscountTypeFor(val value: Int) {
     AMOUNT(0),
     PERCENTAGE(1),

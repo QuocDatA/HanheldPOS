@@ -2,7 +2,6 @@ package com.hanheldpos.data.api.base
 
 import com.hanheldpos.data.api.RetrofitService
 import com.hanheldpos.data.api.RetrofitServiceAsync
-import com.hanheldpos.data.api.pojo.welcome.Welcome
 import com.hanheldpos.data.api.services.*
 
 abstract class BaseApi : BaseApiError() {

@@ -1,23 +1,17 @@
 package com.hanheldpos.printer
 
 import android.content.Context
-import android.os.StrictMode
-import android.util.Log
-import com.hanheldpos.printer.printer_setup.device_info.DeviceType
-import com.hanheldpos.printer.printer_setup.printer_manager.BasePrinterManager
 import com.hanheldpos.data.api.pojo.report.ReportSalesResp
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.order.OrderModel
 import com.hanheldpos.model.report.ReportFilterModel
 import com.hanheldpos.printer.layouts.LayoutType
-import com.hanheldpos.printer.layouts.order.CashierLayout
-import com.hanheldpos.printer.layouts.order.KitchenLayout
-import com.hanheldpos.printer.layouts.report.InventoryLayout
-import com.hanheldpos.printer.layouts.report.OverviewLayout
 import com.hanheldpos.printer.printer_devices.Printer
-import com.hanheldpos.printer.printer_setup.PrintConfig
 import com.hanheldpos.printer.printer_setup.PrinterTypes
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import java.util.*
 
 class BillPrinterManager private constructor() {

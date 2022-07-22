@@ -1,6 +1,5 @@
 package com.hanheldpos.ui.screens.devicecode
 
-import android.text.InputFilter
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
@@ -13,7 +12,6 @@ import com.hanheldpos.model.DataHelper
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.devicecode.adapter.RecentDeviceAdapter
 import com.hanheldpos.ui.screens.pincode.PinCodeFragment
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 

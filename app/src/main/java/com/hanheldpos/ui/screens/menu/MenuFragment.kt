@@ -36,7 +36,6 @@ import com.hanheldpos.ui.screens.menu.settings.SettingsFragment
 import com.hanheldpos.ui.screens.pincode.PinCodeFragment
 import com.hanheldpos.ui.screens.welcome.WelcomeFragment
 import com.hanheldpos.utils.NetworkUtils
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch

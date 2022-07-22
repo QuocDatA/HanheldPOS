@@ -1,9 +1,5 @@
 package com.hanheldpos.ui.screens.product.combo.adapter
 
-import android.view.LayoutInflater
-import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
-import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.DiffUtil
 import com.hanheldpos.R
 import com.hanheldpos.databinding.ItemComboPickedBinding
@@ -25,14 +21,14 @@ class ComboItemChosenAdapter(
         holder: BaseBindingViewHolder<Regular>,
         position: Int
     ) {
-        val item = getItem(position);
-        val binding = holder.binding as ItemComboPickedBinding;
-        binding.item = item;
+        val item = getItem(position)
+        val binding = holder.binding as ItemComboPickedBinding
+        binding.item = item
         binding.itemComboModify.setOnClickDebounce {
-            listener.onComboItemChoose(action = ItemActionType.Modify, item);
+            listener.onComboItemChoose(action = ItemActionType.Modify, item)
         }
         binding.itemComboRemove.setOnClickDebounce {
-            listener.onComboItemChoose(action = ItemActionType.Remove, item);
+            listener.onComboItemChoose(action = ItemActionType.Remove, item)
         }
     }
 
@@ -45,7 +41,7 @@ class ComboItemChosenAdapter(
             oldItem: Regular,
             newItem: Regular
         ): Boolean {
-            return oldItem == newItem;
+            return oldItem == newItem
         }
 
         override fun areContentsTheSame(

@@ -17,7 +17,7 @@ class ReportOptionPageAdapter(fragmentManager: FragmentManager,
         collection?.let {
             fragmentList.addAll(it)
         }
-        notifyDataSetChanged();
+        notifyDataSetChanged()
     }
 
     /**

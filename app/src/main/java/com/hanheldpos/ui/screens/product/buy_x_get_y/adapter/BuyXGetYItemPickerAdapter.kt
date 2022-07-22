@@ -10,9 +10,7 @@ import androidx.recyclerview.widget.DiffUtil
 import com.hanheldpos.R
 import com.hanheldpos.binding.setPricePlusView
 import com.hanheldpos.databinding.ItemComboRegularBinding
-import com.hanheldpos.extension.setOnClickDebounce
 import com.hanheldpos.model.cart.BaseProductInCart
-import com.hanheldpos.model.cart.Regular
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
@@ -22,7 +20,7 @@ class BuyXGetYItemPickerAdapter(
 ) : BaseBindingListAdapter<BaseProductInCart>(DiffCallBack()) {
 
     override fun getItemViewType(position: Int): Int {
-        return R.layout.item_combo_regular;
+        return R.layout.item_combo_regular
     }
 
     override fun onCreateViewHolder(
@@ -34,39 +32,39 @@ class BuyXGetYItemPickerAdapter(
             viewType,
             parent, false
         ).also {
-            val height = parent.resources.getDimension(R.dimen._75sdp);
+            val height = parent.resources.getDimension(R.dimen._75sdp)
             val params: FrameLayout.LayoutParams = FrameLayout.LayoutParams(
                 FrameLayout.LayoutParams.MATCH_PARENT,
                 height.toInt()
-            );
-            (it as ItemComboRegularBinding).layoutMain.layoutParams = params;
+            )
+            (it as ItemComboRegularBinding).layoutMain.layoutParams = params
             return BaseBindingViewHolder(it)
         }
     }
 
     override fun onBindViewHolder(holder: BaseBindingViewHolder<BaseProductInCart>, position: Int) {
-        val item = getItem(position);
-        holder.bindItem(item);
-        val binding = holder.binding as ItemComboRegularBinding;
+        val item = getItem(position)
+        holder.bindItem(item)
+        val binding = holder.binding as ItemComboRegularBinding
         val price = item.proOriginal?.Price ?: 0.0
         if (price > 0) {
             setPricePlusView(binding.priceProduct, price)
         } else binding.priceProduct.visibility = View.GONE
         holder.binding.root.setOnClickListener {
-            listener.onItemClick(position, item);
+            listener.onItemClick(position, item)
         }
     }
 
     private class DiffCallBack : DiffUtil.ItemCallback<BaseProductInCart>() {
         override fun areItemsTheSame(oldItem: BaseProductInCart, newItem: BaseProductInCart): Boolean {
-            return false;
+            return false
         }
 
         override fun areContentsTheSame(
             oldItem: BaseProductInCart,
             newItem: BaseProductInCart
         ): Boolean {
-            return false;
+            return false
         }
 
     }

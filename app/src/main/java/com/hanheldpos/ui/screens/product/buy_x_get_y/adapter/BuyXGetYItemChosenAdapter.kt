@@ -4,8 +4,6 @@ import androidx.recyclerview.widget.DiffUtil
 import com.hanheldpos.R
 import com.hanheldpos.databinding.ItemBuyXGetYComboPickedBinding
 import com.hanheldpos.databinding.ItemComboPickedBinding
-import com.hanheldpos.extension.setOnClickDebounce
-import com.hanheldpos.model.DownloadService.binding
 import com.hanheldpos.model.cart.BaseProductInCart
 import com.hanheldpos.model.cart.Combo
 import com.hanheldpos.model.cart.Regular
@@ -26,19 +24,19 @@ class BuyXGetYItemChosenAdapter(
         holder: BaseBindingViewHolder<BaseProductInCart>,
         position: Int
     ) {
-        val item = getItem(position);
+        val item = getItem(position)
         if (!item.proOriginal?.isBundle()!!) {
-            val binding = holder.binding as ItemComboPickedBinding;
-            binding.item = item as Regular;
+            val binding = holder.binding as ItemComboPickedBinding
+            binding.item = item as Regular
             binding.itemComboModify.setOnClickListener {
-                listener.onComboItemChoose(action = ItemActionType.Modify, item);
+                listener.onComboItemChoose(action = ItemActionType.Modify, item)
             }
             binding.itemComboRemove.setOnClickListener {
-                listener.onComboItemChoose(action = ItemActionType.Remove, item);
+                listener.onComboItemChoose(action = ItemActionType.Remove, item)
             }
         } else {
             val binding = holder.binding as ItemBuyXGetYComboPickedBinding
-            binding.item = item as Combo;
+            binding.item = item as Combo
             val cartComboGroupAdapter =
                 CartComboGroupAdapter(productOrigin = item.proOriginal!!, isBuyXGetY = true)
             cartComboGroupAdapter.submitList(item.groupList)
@@ -46,10 +44,10 @@ class BuyXGetYItemChosenAdapter(
             binding.productComboGroupRecyclerView.itemAnimator = null
 
             binding.itemComboModify.setOnClickListener {
-                listener.onComboItemChoose(action = ItemActionType.Modify, item);
+                listener.onComboItemChoose(action = ItemActionType.Modify, item)
             }
             binding.itemComboRemove.setOnClickListener {
-                listener.onComboItemChoose(action = ItemActionType.Remove, item);
+                listener.onComboItemChoose(action = ItemActionType.Remove, item)
             }
         }
     }
@@ -63,7 +61,7 @@ class BuyXGetYItemChosenAdapter(
             oldItem: BaseProductInCart,
             newItem: BaseProductInCart
         ): Boolean {
-            return oldItem == newItem;
+            return oldItem == newItem
         }
 
         override fun areContentsTheSame(

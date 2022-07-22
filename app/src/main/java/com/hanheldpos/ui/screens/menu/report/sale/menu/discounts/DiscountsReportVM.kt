@@ -3,7 +3,6 @@ package com.hanheldpos.ui.screens.menu.report.sale.menu.discounts
 import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import com.hanheldpos.R
-import com.hanheldpos.data.api.pojo.report.CashVoucherReport
 import com.hanheldpos.data.api.pojo.report.DiscountOrderReport
 import com.hanheldpos.model.menu.report.ReportItem
 import com.hanheldpos.model.menu.report.ReportItemDetail
@@ -33,7 +32,7 @@ class DiscountsReportVM : BaseUiViewModel<DiscountsReportUV>() {
         var totalAmount = 0.0
         val rows = mutableListOf<ReportItemDetail>()
         discounts?.map { discount ->
-            totalQty += discount.Quantity.toInt() ?: 0
+            totalQty += discount.Quantity.toInt()
             totalAmount += discount.DiscountAmount ?: 0.0
             ReportItemDetail(
                 discount.DiscountName,

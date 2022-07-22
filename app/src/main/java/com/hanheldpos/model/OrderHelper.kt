@@ -14,21 +14,21 @@ object OrderHelper {
     }
 
     fun generateOrderIdByFormat(): String {
-        var numberIncrement: Long = DataHelper.numberIncreaseOrder;
-        numberIncrement = numberIncrement.plus(1);
-        DataHelper.numberIncreaseOrder = numberIncrement;
+        var numberIncrement: Long = DataHelper.numberIncreaseOrder
+        numberIncrement = numberIncrement.plus(1)
+        DataHelper.numberIncreaseOrder = numberIncrement
         val prefix = DataHelper.deviceCodeLocalStorage?.ListSettingsId?.firstOrNull()?.Prefix ?: ""
         val deviceAcronymn =
             DataHelper.deviceCodeLocalStorage?.Device?.firstOrNull()?.Acronymn ?: ""
         val minimumNumber =
             DataHelper.deviceCodeLocalStorage?.ListSettingsId?.firstOrNull()?.MinimumNumber ?: 0
-        return "${prefix}${deviceAcronymn}${numberIncrement.toString().padEnd(minimumNumber, '0')}";
+        return "${prefix}${deviceAcronymn}${numberIncrement.toString().padEnd(minimumNumber, '0')}"
     }
 
     fun getDiningOptionItem(diningOptionId: Int?) =
         DataHelper.orderSettingLocalStorage?.ListDiningOptions?.find { it.Id == diningOptionId }
 
-    fun getDeviceCodeEmployee() = DataHelper.deviceCodeLocalStorage?.Employees;
+    fun getDeviceCodeEmployee() = DataHelper.deviceCodeLocalStorage?.Employees
 
     private fun getDeviceByDeviceCode() = DataHelper.deviceCodeLocalStorage?.Device?.firstOrNull()
 

@@ -9,8 +9,7 @@ data class GroupPriceItem(
     val GroupTypeId: Int,
     val GroupGuid: String,
     val Product: List<GroupPriceProductItem>
-) : Parcelable {
-}
+) : Parcelable
 
 @Parcelize
 data class GroupPriceProductItem(
@@ -28,9 +27,7 @@ data class GroupPriceProductItem(
 
     @field:SerializedName("Variants")
     val Variants: List<GroupPriceProductVariantItem>
-) : Parcelable {
-
-}
+) : Parcelable
 
 @Parcelize
 data class GroupPriceProductVariantItem(
@@ -45,6 +42,4 @@ data class GroupPriceProductVariantItem(
 
     @field:SerializedName("GroupAmount")
     val GroupAmount: Double
-) : Parcelable {
-
-}
+) : Parcelable

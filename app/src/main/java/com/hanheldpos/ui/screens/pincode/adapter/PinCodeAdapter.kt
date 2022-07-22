@@ -7,7 +7,6 @@ import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
 import com.hanheldpos.R
 import com.hanheldpos.databinding.ItemPinCodeBinding
-import com.hanheldpos.extension.setOnClickDebounce
 import com.hanheldpos.ui.screens.pincode.PinCodeRecyclerElement
 
 class PinCodeAdapter(
@@ -22,29 +21,29 @@ class PinCodeAdapter(
             R.layout.item_pin_code,
             parent,
             false
-        );
-        return PinCodeVH(dataBinding);
+        )
+        return PinCodeVH(dataBinding)
     }
 
 
 
     override fun onBindViewHolder(holder: PinCodeVH, position: Int) {
-        val item = elements[position];
-        holder.bind(item);
+        val item = elements[position]
+        holder.bind(item)
 
     }
 
     override fun getItemCount(): Int {
-        return elements.size;
+        return elements.size
     }
 
     inner class PinCodeVH(var dataBinding: ViewDataBinding) : RecyclerView.ViewHolder(dataBinding.root) {
-        private val binding = dataBinding as ItemPinCodeBinding;
+        private val binding = dataBinding as ItemPinCodeBinding
         fun bind(item: PinCodeRecyclerElement) {
-            binding.item = item;
+            binding.item = item
             binding.btnPinItem.setOnClickListener {
-                listener?.onClick(item);
-            };
+                listener?.onClick(item)
+            }
         }
     }
 

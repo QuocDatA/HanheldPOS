@@ -9,5 +9,4 @@ data class OrderDiningOption(
     var Title: String?,
     var TypeId: Int,
     var Acronymn: String?,
-) : Parcelable {
-}
+) : Parcelable

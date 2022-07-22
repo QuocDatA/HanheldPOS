@@ -7,5 +7,5 @@ interface CurrentDrawerUV: BaseUserView {
     fun onFragmentBackPressed()
     fun onOpenEndDrawer()
     fun onOpenPayInPayOut()
-    fun showInfoCurrentDrawer(report : ReportCashDrawerResp?);
+    fun showInfoCurrentDrawer(report : ReportCashDrawerResp?)
 }

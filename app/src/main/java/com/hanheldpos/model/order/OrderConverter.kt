@@ -10,21 +10,21 @@ import com.hanheldpos.data.api.pojo.order.settings.Reason
 import com.hanheldpos.data.api.pojo.product.Product
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.OrderHelper
-import com.hanheldpos.model.product.buy_x_get_y.BuyXGetY
-import com.hanheldpos.model.product.buy_x_get_y.GroupBuyXGetY
-import com.hanheldpos.model.product.buy_x_get_y.GroupType
 import com.hanheldpos.model.cart.*
 import com.hanheldpos.model.cart.fee.FeeType
 import com.hanheldpos.model.discount.DiscountUser
 import com.hanheldpos.model.product.ProductComboItem
 import com.hanheldpos.model.product.ProductType
+import com.hanheldpos.model.product.buy_x_get_y.BuyXGetY
+import com.hanheldpos.model.product.buy_x_get_y.GroupBuyXGetY
+import com.hanheldpos.model.product.buy_x_get_y.GroupType
 
 object OrderConverter {
 
     fun toCart(orderModel: OrderModel, orderGuid: String?): CartModel {
-        val orderPayment = orderModel.OrderDetail.PaymentList;
-        val orderData = orderModel.OrderDetail;
-        val order = orderModel.Order;
+        val orderPayment = orderModel.OrderDetail.PaymentList
+        val orderData = orderModel.OrderDetail
+        val order = orderModel.Order
 
         return CartModel(
             order = orderModel.Order,

@@ -1,19 +1,13 @@
 package com.hanheldpos.ui.screens.menu.settings.hardware.hardware_detail.adapter
 
 import android.text.Editable
-import android.text.InputFilter
-import android.text.Spanned
 import android.text.TextWatcher
-import androidx.core.graphics.blue
-import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.DiffUtil
-import com.google.android.material.textfield.TextInputEditText
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.setting.hardware.HardwareConnection
 import com.hanheldpos.databinding.ItemHardwareConnectionBinding
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
-import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.screens.menu.settings.adapter.SettingsOptionAdapter
 
 class HardwareConnectionAdapter(

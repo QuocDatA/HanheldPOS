@@ -1,11 +1,5 @@
 package com.hanheldpos.ui.screens.payment.voucher
 
-import androidx.lifecycle.ViewModelProvider
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.payment.Voucher
 import com.hanheldpos.databinding.FragmentVoucherBinding

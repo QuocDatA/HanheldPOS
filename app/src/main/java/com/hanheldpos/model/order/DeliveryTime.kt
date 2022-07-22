@@ -12,5 +12,4 @@ data class DeliveryTime(
     var IsNow: Boolean,
     var OrderWait: Int,
     var EstimateTime: Int,
-) : Parcelable {
-}
+) : Parcelable

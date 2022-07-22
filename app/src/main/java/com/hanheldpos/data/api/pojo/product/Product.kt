@@ -117,9 +117,9 @@ data class Product(
             ProductPriceOverrideList?.firstOrNull { p_override -> p_override.LocationGuid == locationIdLast }
 
         return if (sku.isNullOrEmpty() || VariantsGroup == null) (productPriceOverride?.Price
-            ?: (Price ?: 0.0)) else
-            productPriceOverride?.VariantPriceOverrideList?.firstOrNull { variantPriceOverride -> variantPriceOverride.Sku == sku ?: false }?.Price
-                ?: 0.0;
+            ?: Price) else
+            productPriceOverride?.VariantPriceOverrideList?.firstOrNull { variantPriceOverride -> variantPriceOverride.Sku == sku }?.Price
+                ?: 0.0
     }
 }
 

@@ -1,7 +1,5 @@
 package com.hanheldpos.model.discount
 
-import com.hanheldpos.model.product.combo.ItemActionType
-
 enum class DiscountTypeEnum(val value: Int) {
     PERCENT(1),
     AMOUNT (2),

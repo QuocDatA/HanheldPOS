@@ -4,7 +4,6 @@ import androidx.recyclerview.widget.DiffUtil
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.order.settings.DiningOption
 import com.hanheldpos.databinding.ItemDiningOptionFilterBinding
-import com.hanheldpos.databinding.ItemDiscountCompBinding
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
@@ -24,17 +23,17 @@ class DiningOptionFilterAdapter(private val listener: BaseItemClickListener<Dini
     }
 
     override fun onBindViewHolder(holder: BaseBindingViewHolder<DiningOption>, position: Int) {
-        val item = getItem(position);
-        val binding = holder.binding as ItemDiningOptionFilterBinding;
-        binding.item = item;
+        val item = getItem(position)
+        val binding = holder.binding as ItemDiningOptionFilterBinding
+        binding.item = item
         binding.btn.apply {
             setOnClickListener {
-                notifyItemChanged(selectedItem);
-                selectedItem = position;
-                notifyItemChanged(position);
-                listener.onItemClick(position, item);
+                notifyItemChanged(selectedItem)
+                selectedItem = holder.absoluteAdapterPosition
+                notifyItemChanged(holder.absoluteAdapterPosition)
+                listener.onItemClick(holder.absoluteAdapterPosition, item)
             }
-            isChecked = selectedItem == position;
+            isChecked = selectedItem == position
         }
     }
 

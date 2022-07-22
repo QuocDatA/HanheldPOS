@@ -2,8 +2,6 @@ package com.hanheldpos.ui.screens.home
 
 import android.os.Parcelable
 import androidx.lifecycle.MutableLiveData
-import com.hanheldpos.R
-import com.hanheldpos.ui.base.dialog.AppAlertDialog
 import com.hanheldpos.ui.base.viewmodel.BaseViewModel
 
 class ScreenViewModel : BaseViewModel() {
@@ -25,11 +23,10 @@ class ScreenViewModel : BaseViewModel() {
     }
 
     //Sub Spinner Sort
-    val dropDownSelected = MutableLiveData<DropDownItem>();
+    val dropDownSelected = MutableLiveData<DropDownItem>()
     fun onChangeDropdown(item: DropDownItem) {
-        dropDownSelected.value = item;
+        dropDownSelected.value = item
     }
 
-    interface ScreenListener {
-    }
+    interface ScreenListener
 }

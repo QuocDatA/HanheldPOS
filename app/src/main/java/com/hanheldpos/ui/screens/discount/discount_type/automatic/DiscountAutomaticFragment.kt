@@ -1,7 +1,6 @@
 package com.hanheldpos.ui.screens.discount.discount_type.automatic
 
 import android.annotation.SuppressLint
-import android.text.InputFilter
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -32,7 +31,7 @@ class DiscountAutomaticFragment(
         return R.layout.fragment_discount_automatic
     }
 
-    private lateinit var discountAutoAdapter: DiscountServerAdapter;
+    private lateinit var discountAutoAdapter: DiscountServerAdapter
 
     override fun viewModelClass(): Class<DiscountAutomaticVM> {
         return DiscountAutomaticVM::class.java
@@ -42,7 +41,7 @@ class DiscountAutomaticFragment(
         viewModel.run {
             init(this@DiscountAutomaticFragment)
         }
-        binding.viewModel = viewModel;
+        binding.viewModel = viewModel
     }
 
     override fun initView() {
@@ -94,8 +93,8 @@ class DiscountAutomaticFragment(
 
     @SuppressLint("NotifyDataSetChanged")
     override fun loadDataDiscountCode(list: List<DiscountResp>) {
-        discountAutoAdapter.submitList(list);
-        discountAutoAdapter.notifyDataSetChanged();
+        discountAutoAdapter.submitList(list)
+        discountAutoAdapter.notifyDataSetChanged()
     }
 
     override fun onApplyDiscountForOrder(discount: DiscountResp) {

@@ -6,11 +6,6 @@ import android.util.Log
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
-import com.hanheldpos.printer.PrintConstants
-import com.hanheldpos.printer.printer_setup.printer_manager.BasePrinterManager
-import com.hanheldpos.printer.wagu.Block
-import com.hanheldpos.printer.wagu.WaguUtils
-import com.hanheldpos.printer.wagu.WrapType
 import com.hanheldpos.PosApp
 import com.hanheldpos.R
 import com.hanheldpos.model.DataHelper
@@ -19,7 +14,12 @@ import com.hanheldpos.model.order.OrderModel
 import com.hanheldpos.model.order.ProductChosen
 import com.hanheldpos.model.product.ExtraConverter
 import com.hanheldpos.model.product.ProductType
+import com.hanheldpos.printer.PrintConstants
 import com.hanheldpos.printer.printer_devices.Printer
+import com.hanheldpos.printer.printer_setup.printer_manager.BasePrinterManager
+import com.hanheldpos.printer.wagu.Block
+import com.hanheldpos.printer.wagu.WaguUtils
+import com.hanheldpos.printer.wagu.WrapType
 import com.hanheldpos.utils.DrawableHelper
 import com.hanheldpos.utils.PriceUtils
 import com.hanheldpos.utils.StringUtils
@@ -339,7 +339,7 @@ class CashierLayout(
                 mutableListOf(
                     mutableListOf(
                         fee.FeeName.toString(),
-                        PriceUtils.formatStringPrice(fee.TotalPrice ?: 0.0)
+                        PriceUtils.formatStringPrice(fee.TotalPrice)
                     ),
                 ),
                 mutableListOf(Block.DATA_MIDDLE_LEFT, Block.DATA_MIDDLE_RIGHT)
@@ -360,7 +360,7 @@ class CashierLayout(
                 mutableListOf(
                     mutableListOf(
                         discount.DiscountName,
-                        PriceUtils.formatStringPrice(-(discount.DiscountTotalPrice ?: 0.0))
+                        PriceUtils.formatStringPrice(-discount.DiscountTotalPrice)
                     ),
                 ),
                 mutableListOf(Block.DATA_MIDDLE_LEFT, Block.DATA_MIDDLE_RIGHT)

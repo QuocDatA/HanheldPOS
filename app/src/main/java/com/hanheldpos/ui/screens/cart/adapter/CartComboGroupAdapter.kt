@@ -3,7 +3,9 @@ package com.hanheldpos.ui.screens.cart.adapter
 import androidx.recyclerview.widget.DiffUtil
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.product.Product
-import com.hanheldpos.databinding.*
+import com.hanheldpos.databinding.BuyXGetYItemComboGroupBinding
+import com.hanheldpos.databinding.CartItemComboGroupBinding
+import com.hanheldpos.databinding.ItemCartBuyXGetYComboGroupDetailBinding
 import com.hanheldpos.model.cart.BaseProductInCart
 import com.hanheldpos.model.cart.GroupBundle
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter

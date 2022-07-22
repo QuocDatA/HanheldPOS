@@ -23,28 +23,28 @@ data class ModifierItem(
 
     fun pricing(productPricing : Product?) : Double{
 
-        val pricingType = productPricing?.ModifierPricingType ?: -1;
-        val pricingValue = productPricing?.ModifierPricingValue ?: 0.0;
+        val pricingType = productPricing?.ModifierPricingType ?: -1
+        val pricingValue = productPricing?.ModifierPricingValue ?: 0.0
         when (ModPricingType.fromInt(pricingType)) {
             ModPricingType.FIX_AMOUNT -> {
-                return pricingValue;
+                return pricingValue
             }
             ModPricingType.USED_DEFAULT_PRICE -> {
-                return Price ?: 0.0;
+                return Price
             }
             ModPricingType.DISCOUNT_AMOUNT -> {
-                val pricingPrice = (Price ?: 0.0).minus(pricingValue);
-                return if (pricingPrice < 0) 0.0 else pricingPrice;
+                val pricingPrice = Price.minus(pricingValue)
+                return if (pricingPrice < 0) 0.0 else pricingPrice
             }
             ModPricingType.DISCOUNT_PERCENT -> {
-                val pricingPrice = (Price ?: 0.0).minus((Price ?: 0.0) * pricingValue / 100);
-                return pricingPrice;
+                val pricingPrice = Price.minus(Price * pricingValue / 100)
+                return pricingPrice
             }
             ModPricingType.NONE -> {
-                return 0.0;
+                return 0.0
             }
             else -> {
-                return Price ?: 0.0;
+                return Price
             }
         }
     }

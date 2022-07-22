@@ -33,8 +33,8 @@ data class VariantsGroup(
             if (Variant == null) {
                 return true; }
 
-            val isExists = variantList?.firstOrNull { v -> v.Id == Id } != null;
-            return if (isExists) Variant.isExistsVariant(variantList) else isExists;
+            val isExists = variantList?.firstOrNull { v -> v.Id == Id } != null
+            return if (isExists) Variant.isExistsVariant(variantList) else isExists
         }
     }
 
@@ -48,7 +48,7 @@ data class VariantsGroup(
         if (variantList?.any() != true) {
             return true; }
         val isExists =
-            OptionValueList?.firstOrNull { option -> option.isExistsVariant(variantList) } != null;
-        return isExists;
+            OptionValueList?.firstOrNull { option -> option.isExistsVariant(variantList) } != null
+        return isExists
     }
 }

@@ -13,13 +13,13 @@ class MenuDiscountAdapter(private val listener : DiscountItemCallBack)  : BaseBi
 ) {
 
     override fun getItemViewType(position: Int): Int {
-        return R.layout.item_discount_code;
+        return R.layout.item_discount_code
     }
 
     override fun onBindViewHolder(holder: BaseBindingViewHolder<DiscountResp>, position: Int) {
         val item = getItem(position)
 
-        holder.bindItem(item);
+        holder.bindItem(item)
         val binding = holder.binding as ItemDiscountCodeBinding
         binding.btnViewDetail.setOnClickDebounce {
             listener.onViewDetailClick(item)
@@ -32,12 +32,12 @@ class MenuDiscountAdapter(private val listener : DiscountItemCallBack)  : BaseBi
 
     private class DiffCallBack : DiffUtil.ItemCallback<DiscountResp>() {
         override fun areItemsTheSame(oldItem: DiscountResp, newItem: DiscountResp): Boolean {
-            return oldItem == newItem;
+            return oldItem == newItem
 
         }
 
         override fun areContentsTheSame(oldItem: DiscountResp, newItem: DiscountResp): Boolean {
-            return oldItem == newItem;
+            return oldItem == newItem
         }
 
     }

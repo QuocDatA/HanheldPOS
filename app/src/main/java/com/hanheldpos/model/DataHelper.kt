@@ -33,7 +33,7 @@ import java.util.*
 
 object DataHelper {
     var isNeedToUpdateNewData = MutableLiveData<Boolean>(false)
-    var currentDrawerId: String? = null;
+    var currentDrawerId: String? = null
 
     fun isValidData(): Boolean {
         hardwareSettingLocalStorage ?: return false
@@ -189,7 +189,7 @@ object DataHelper {
             if (field == null) {
                 field = GSonUtils.toList(
                     AppPreferences.get().getString(PrefKey.Discount.DISCOUNT_RESP)
-                );
+                )
             }
             return field
         }

@@ -36,13 +36,13 @@ import com.hanheldpos.ui.base.viewmodel.BaseViewModel
 class SyncDataService : BaseViewModel() {
 
 
-    private var menuRepo: MenuRepo = MenuRepo();
-    private var orderRepo: OrderRepo = OrderRepo();
-    private var floorRepo: FloorRepo = FloorRepo();
-    private var feeRepo: FeeRepo = FeeRepo();
-    private var discountRepo: DiscountRepo = DiscountRepo();
-    private var paymentRepo: PaymentRepo = PaymentRepo();
-    private var systemRepo: SystemRepo = SystemRepo();
+    private var menuRepo: MenuRepo = MenuRepo()
+    private var orderRepo: OrderRepo = OrderRepo()
+    private var floorRepo: FloorRepo = FloorRepo()
+    private var feeRepo: FeeRepo = FeeRepo()
+    private var discountRepo: DiscountRepo = DiscountRepo()
+    private var paymentRepo: PaymentRepo = PaymentRepo()
+    private var systemRepo: SystemRepo = SystemRepo()
     private var resourceRepo: ResourceRepo = ResourceRepo()
     private var receiptRepo: ReceiptRepo = ReceiptRepo()
     private var dataRepo: DataRepo = DataRepo()
@@ -58,17 +58,17 @@ class SyncDataService : BaseViewModel() {
             callback = object : BaseRepoCallback<BaseResponse<MenuResp>> {
                 override fun apiResponse(data: BaseResponse<MenuResp>?) {
                     if (data == null || data.DidError) {
-                        onDataFailure(context.getString(R.string.failed_to_load_data), listener);
+                        onDataFailure(context.getString(R.string.failed_to_load_data), listener)
                     } else {
-                        DataHelper.menuLocalStorage = data.Model;
-                        startMappingData(context, listener);
+                        DataHelper.menuLocalStorage = data.Model
+                        startMappingData(context, listener)
                     }
                 }
 
                 override fun showMessage(message: String?) {
-                    onDataFailure(message, listener);
+                    onDataFailure(message, listener)
                 }
-            });
+            })
 
         orderRepo.getOrderSetting(
             userGuid = userGuid,
@@ -76,15 +76,15 @@ class SyncDataService : BaseViewModel() {
             callback = object : BaseRepoCallback<BaseResponse<List<OrderSettingResp>>?> {
                 override fun apiResponse(data: BaseResponse<List<OrderSettingResp>>?) {
                     if (data == null || data.DidError) {
-                        onDataFailure(context.getString(R.string.failed_to_load_data), listener);
+                        onDataFailure(context.getString(R.string.failed_to_load_data), listener)
                     } else {
-                        DataHelper.orderSettingLocalStorage = data.Model?.firstOrNull();
-                        startMappingData(context, listener);
+                        DataHelper.orderSettingLocalStorage = data.Model?.firstOrNull()
+                        startMappingData(context, listener)
                     }
                 }
 
                 override fun showMessage(message: String?) {
-                    onDataFailure(message, listener);
+                    onDataFailure(message, listener)
                 }
             }
         )
@@ -94,15 +94,15 @@ class SyncDataService : BaseViewModel() {
             callback = object : BaseRepoCallback<BaseResponse<List<OrderStatusResp>>?> {
                 override fun apiResponse(data: BaseResponse<List<OrderStatusResp>>?) {
                     if (data == null || data.DidError) {
-                        onDataFailure(context.getString(R.string.failed_to_load_data), listener);
+                        onDataFailure(context.getString(R.string.failed_to_load_data), listener)
                     } else {
-                        DataHelper.orderStatusLocalStorage = data.Model?.firstOrNull();
-                        startMappingData(context, listener);
+                        DataHelper.orderStatusLocalStorage = data.Model?.firstOrNull()
+                        startMappingData(context, listener)
                     }
                 }
 
                 override fun showMessage(message: String?) {
-                    onDataFailure(message, listener);
+                    onDataFailure(message, listener)
                 }
             }
         )
@@ -112,17 +112,17 @@ class SyncDataService : BaseViewModel() {
             callback = object : BaseRepoCallback<BaseResponse<List<FloorResp>>?> {
                 override fun apiResponse(data: BaseResponse<List<FloorResp>>?) {
                     if (data == null || data.DidError) {
-                        onDataFailure(context.getString(R.string.failed_to_load_data), listener);
+                        onDataFailure(context.getString(R.string.failed_to_load_data), listener)
                     } else {
-                        DataHelper.floorLocalStorage = data.Model?.firstOrNull();
-                        startMappingData(context, listener);
+                        DataHelper.floorLocalStorage = data.Model?.firstOrNull()
+                        startMappingData(context, listener)
                     }
                 }
 
                 override fun showMessage(message: String?) {
-                    onDataFailure(message, listener);
+                    onDataFailure(message, listener)
                 }
-            });
+            })
 
         feeRepo.getFees(
             userGuid = userGuid,
@@ -130,20 +130,20 @@ class SyncDataService : BaseViewModel() {
             callback = object : BaseRepoCallback<BaseResponse<FeeResp>?> {
                 override fun apiResponse(data: BaseResponse<FeeResp>?) {
                     if (data == null || data.DidError) {
-                        onDataFailure(context.getString(R.string.failed_to_load_data), listener);
+                        onDataFailure(context.getString(R.string.failed_to_load_data), listener)
                     } else {
-                        DataHelper.feeLocalStorage = data.Model;
-                        startMappingData(context, listener);
+                        DataHelper.feeLocalStorage = data.Model
+                        startMappingData(context, listener)
                     }
                 }
 
                 override fun showMessage(message: String?) {
 
-                    onDataFailure(message, listener);
+                    onDataFailure(message, listener)
                 }
 
             },
-        );
+        )
 
         discountRepo.getDiscountList(
             userGuid = userGuid,
@@ -151,18 +151,18 @@ class SyncDataService : BaseViewModel() {
             callback = object : BaseRepoCallback<BaseResponse<List<DiscountResp>>> {
                 override fun apiResponse(data: BaseResponse<List<DiscountResp>>?) {
                     if (data == null || data.DidError) {
-                        onDataFailure(context.getString(R.string.failed_to_load_data), listener);
+                        onDataFailure(context.getString(R.string.failed_to_load_data), listener)
                     } else {
-                        DataHelper.discountsLocalStorage = data.Model;
-                        startMappingData(context, listener);
+                        DataHelper.discountsLocalStorage = data.Model
+                        startMappingData(context, listener)
                     }
                 }
 
                 override fun showMessage(message: String?) {
-                    onDataFailure(message, listener);
+                    onDataFailure(message, listener)
                 }
             },
-        );
+        )
 
         discountRepo.getDiscountDetailList(
             userGuid = userGuid,
@@ -170,32 +170,32 @@ class SyncDataService : BaseViewModel() {
             callback = object : BaseRepoCallback<BaseResponse<List<CouponResp>>> {
                 override fun apiResponse(data: BaseResponse<List<CouponResp>>?) {
                     if (data == null || data.DidError) {
-                        onDataFailure(context.getString(R.string.failed_to_load_data), listener);
+                        onDataFailure(context.getString(R.string.failed_to_load_data), listener)
                     } else {
-                        DataHelper.discountDetailsLocalStorage = data.Model;
-                        startMappingData(context, listener);
+                        DataHelper.discountDetailsLocalStorage = data.Model
+                        startMappingData(context, listener)
                     }
                 }
 
                 override fun showMessage(message: String?) {
-                    onDataFailure(message, listener);
+                    onDataFailure(message, listener)
                 }
             },
-        );
+        )
 
         paymentRepo.getPaymentMethods(userGuid = userGuid, callback = object :
             BaseRepoCallback<BaseResponse<List<PaymentMethodResp>>> {
             override fun apiResponse(data: BaseResponse<List<PaymentMethodResp>>?) {
                 if (data == null || data.DidError) {
-                    onDataFailure(context.getString(R.string.failed_to_load_data), listener);
+                    onDataFailure(context.getString(R.string.failed_to_load_data), listener)
                 } else {
-                    DataHelper.paymentMethodsLocalStorage = data.Model;
-                    startMappingData(context, listener);
+                    DataHelper.paymentMethodsLocalStorage = data.Model
+                    startMappingData(context, listener)
                 }
             }
 
             override fun showMessage(message: String?) {
-                onDataFailure(message, listener);
+                onDataFailure(message, listener)
             }
         })
 
@@ -203,10 +203,10 @@ class SyncDataService : BaseViewModel() {
             BaseRepoCallback<BaseResponse<List<AddressTypeResp>>> {
             override fun apiResponse(data: BaseResponse<List<AddressTypeResp>>?) {
                 if (data == null || data.DidError) {
-                    onDataFailure(context.getString(R.string.failed_to_load_data), listener);
+                    onDataFailure(context.getString(R.string.failed_to_load_data), listener)
                 } else {
-                    DataHelper.addressTypesLocalStorage = data.Model;
-                    startMappingData(context, listener);
+                    DataHelper.addressTypesLocalStorage = data.Model
+                    startMappingData(context, listener)
                 }
             }
 
@@ -224,8 +224,8 @@ class SyncDataService : BaseViewModel() {
                     if (data == null || data.DidError) {
                         onDataFailure(context.getString(R.string.failed_to_load_data), listener)
                     } else {
-                        DataHelper.resourceLocalStorage = data.Model;
-                        startMappingData(context, listener);
+                        DataHelper.resourceLocalStorage = data.Model
+                        startMappingData(context, listener)
                     }
                 }
 
@@ -244,8 +244,8 @@ class SyncDataService : BaseViewModel() {
                     if (data == null || data.DidError) {
                         onDataFailure(context.getString(R.string.failed_to_load_data), listener)
                     } else {
-                        DataHelper.receiptCashierLocalStorage = data.Model?.firstOrNull();
-                        startMappingData(context, listener);
+                        DataHelper.receiptCashierLocalStorage = data.Model?.firstOrNull()
+                        startMappingData(context, listener)
                     }
                 }
 
@@ -263,8 +263,8 @@ class SyncDataService : BaseViewModel() {
                     if (data == null || data.DidError) {
                         onDataFailure(context.getString(R.string.failed_to_load_data), listener)
                     } else {
-                        DataHelper.dataVersionLocalStorage = data.Model;
-                        startMappingData(context, listener);
+                        DataHelper.dataVersionLocalStorage = data.Model
+                        startMappingData(context, listener)
                     }
                 }
 
@@ -281,8 +281,8 @@ class SyncDataService : BaseViewModel() {
                     if (data == null || data.DidError) {
                         onDataFailure(context.getString(R.string.failed_to_load_data), listener)
                     } else {
-                        DataHelper.firebaseSettingLocalStorage = data.Model;
-                        startMappingData(context, listener);
+                        DataHelper.firebaseSettingLocalStorage = data.Model
+                        startMappingData(context, listener)
                     }
                 }
 
@@ -320,9 +320,9 @@ class SyncDataService : BaseViewModel() {
                                     )
                                 )
                             }
-                        };
+                        }
                         DataHelper.hardwareSettingLocalStorage = DataHelper.hardwareSettingLocalStorage
-                        startMappingData(context, listener);
+                        startMappingData(context, listener)
                     }
                 }
 
@@ -331,7 +331,7 @@ class SyncDataService : BaseViewModel() {
                 }
             })
 
-        DataHelper.generalSettingLocalStorage = GeneralSetting();
+        DataHelper.generalSettingLocalStorage = GeneralSetting()
     }
 
     private fun onDataFailure(message: String?, listener: SyncDataServiceListener) {
@@ -371,7 +371,7 @@ class SyncDataService : BaseViewModel() {
                     }
 
                     override fun onComplete() {
-                        listener.onLoadedResources();
+                        listener.onLoadedResources()
                     }
                 })
             return
@@ -394,20 +394,20 @@ class SyncDataService : BaseViewModel() {
                     if (data == null || data.DidError || data.Model == null) {
                         listener.onError(
                             context.getString(R.string.failed_to_load_data)
-                        );
+                        )
                     } else {
-                        DataHelper.menuLocalStorage = data.Model;
+                        DataHelper.menuLocalStorage = data.Model
                         succeededCount++
                         if (succeededCount >= 3) {
-                            listener.onLoadedResources();
+                            listener.onLoadedResources()
                         }
                     }
                 }
 
                 override fun showMessage(message: String?) {
-                    listener.onError(message);
+                    listener.onError(message)
                 }
-            });
+            })
         discountRepo.getDiscountList(
             userGuid = userGuid,
             locationGuid = location,
@@ -416,21 +416,21 @@ class SyncDataService : BaseViewModel() {
                     if (data == null || data.DidError || data.Model == null) {
                         listener.onError(
                             context.getString(R.string.failed_to_load_data)
-                        );
+                        )
                     } else {
-                        DataHelper.discountsLocalStorage = data.Model;
+                        DataHelper.discountsLocalStorage = data.Model
                         succeededCount++
                         if (succeededCount >= 3) {
-                            listener.onLoadedResources();
+                            listener.onLoadedResources()
                         }
                     }
                 }
 
                 override fun showMessage(message: String?) {
-                    listener.onError(message);
+                    listener.onError(message)
                 }
             },
-        );
+        )
 
         discountRepo.getDiscountDetailList(
             userGuid = userGuid,
@@ -440,21 +440,21 @@ class SyncDataService : BaseViewModel() {
                     if (data == null || data.DidError || data.Model == null) {
                         listener.onError(
                             context.getString(R.string.failed_to_load_data),
-                        );
+                        )
                     } else {
-                        DataHelper.discountDetailsLocalStorage = data.Model;
+                        DataHelper.discountDetailsLocalStorage = data.Model
                         succeededCount++
                         if (succeededCount >= 3) {
-                            listener.onLoadedResources();
+                            listener.onLoadedResources()
                         }
                     }
                 }
 
                 override fun showMessage(message: String?) {
-                    listener.onError(message);
+                    listener.onError(message)
                 }
             },
-        );
+        )
 
     }
 

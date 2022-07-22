@@ -15,20 +15,20 @@ class FeeRepo : BaseRepo() {
         callback: BaseRepoCallback<BaseResponse<FeeResp>?>
     )
     {
-        callback.apiRequesting(true);
+        callback.apiRequesting(true)
         feeService.getFees(
             userGuid = userGuid,
             location = locationGuid
         ).enqueue(object : Callback<BaseResponse<FeeResp>?> {
             override fun onResponse(call: Call<BaseResponse<FeeResp>?>, response: Response<BaseResponse<FeeResp>?>) {
-                callback.apiRequesting(false);
+                callback.apiRequesting(false)
                 callback.apiResponse(getBodyResponse(response))
             }
 
             override fun onFailure(call: Call<BaseResponse<FeeResp>?>, t: Throwable) {
-                callback.apiRequesting(false);
-                t.printStackTrace();
-                callback.showMessage(t.message);
+                callback.apiRequesting(false)
+                t.printStackTrace()
+                callback.showMessage(t.message)
             }
 
         })

@@ -2,9 +2,9 @@ package com.hanheldpos.data.api.services
 
 import com.hanheldpos.data.api.pojo.cashdrawer.CashDrawerStatusResp
 import com.hanheldpos.data.api.pojo.cashdrawer.CreateCashDrawerResp
-import com.hanheldpos.data.api.pojo.cashdrawer.report.ReportCashDrawerResp
 import com.hanheldpos.data.api.pojo.cashdrawer.pay_in_out.PaidInOutListResp
 import com.hanheldpos.data.api.pojo.cashdrawer.pay_in_out.PayInOutResp
+import com.hanheldpos.data.api.pojo.cashdrawer.report.ReportCashDrawerResp
 import com.hanheldpos.data.repository.BaseResponse
 import retrofit2.Call
 import retrofit2.http.Body

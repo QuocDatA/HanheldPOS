@@ -6,13 +6,11 @@ import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.customer.CustomerProfileResp
 import com.hanheldpos.data.api.pojo.customer.CustomerResp
 import com.hanheldpos.data.api.pojo.system.AddressTypeResp
-import com.hanheldpos.data.api.services.CustomerService
 import com.hanheldpos.data.repository.BaseResponse
 import com.hanheldpos.data.repository.base.BaseRepoCallback
 import com.hanheldpos.data.repository.customer.CustomerRepo
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
-import com.hanheldpos.ui.screens.cart.CurCartData
 
 class CustomerDetailVM : BaseUiViewModel<CustomerDetailUV>() {
 

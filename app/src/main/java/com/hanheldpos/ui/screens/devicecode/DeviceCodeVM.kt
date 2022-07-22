@@ -44,7 +44,7 @@ class DeviceCodeVM : BaseUiViewModel<DeviceCodeUV>() {
         } else {
             getPinWithSymbol(pinTextLD.value.toString())
         }
-        Log.d("Uuid",StringUtils.getAndroidDeviceId(context = view.context));
+        Log.d("Uuid",StringUtils.getAndroidDeviceId(context = view.context))
         repo.getDataByAppCode(result,StringUtils.getAndroidDeviceId(context = view.context) ,object : BaseRepoCallback<BaseResponse<List<DeviceCodeResp>>> {
             override fun apiResponse(data: BaseResponse<List<DeviceCodeResp>>?) {
                 if (data == null || data.DidError) {

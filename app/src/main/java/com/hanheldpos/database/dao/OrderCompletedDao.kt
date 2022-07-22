@@ -1,6 +1,9 @@
 package com.hanheldpos.database.dao
 
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.Query
+import androidx.room.Update
 import com.hanheldpos.database.entities.OrderCompletedEntity
 import kotlinx.coroutines.flow.Flow
 

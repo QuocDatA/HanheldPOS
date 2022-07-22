@@ -3,7 +3,6 @@ package com.hanheldpos.ui.widgets;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
-import android.os.Parcelable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
@@ -23,7 +22,6 @@ import android.widget.TextView;
 import com.diadiem.pos_components.PTextView;
 import com.diadiem.pos_components.enumtypes.FontStyleEnum;
 import com.diadiem.pos_components.enumtypes.TextHeaderEnum;
-import com.google.protobuf.Any;
 import com.hanheldpos.R;
 
 import org.jetbrains.annotations.Nullable;

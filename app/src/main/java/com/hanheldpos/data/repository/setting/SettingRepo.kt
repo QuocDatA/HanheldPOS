@@ -14,21 +14,21 @@ class SettingRepo : BaseRepo() {
         body: String,
         callback: BaseRepoCallback<BaseResponse<String>>
     ) {
-        callback.apiRequesting(true);
+        callback.apiRequesting(true)
         settingService.putSettingsDevice(body).enqueue(object :
             Callback<BaseResponse<String>> {
             override fun onResponse(
                 call: Call<BaseResponse<String>>,
                 response: Response<BaseResponse<String>>
             ) {
-                callback.apiRequesting(false);
-                callback.apiResponse(getBodyResponse(response));
+                callback.apiRequesting(false)
+                callback.apiResponse(getBodyResponse(response))
             }
 
             override fun onFailure(call: Call<BaseResponse<String>>, t: Throwable) {
-                callback.apiRequesting(false);
-                t.printStackTrace();
-                callback.showMessage(t.message);
+                callback.apiRequesting(false)
+                t.printStackTrace()
+                callback.showMessage(t.message)
             }
 
         })
@@ -47,14 +47,14 @@ class SettingRepo : BaseRepo() {
                 call: Call<BaseResponse<FirebaseSetting>>,
                 response: Response<BaseResponse<FirebaseSetting>>
             ) {
-                callback.apiRequesting(false);
-                callback.apiResponse(getBodyResponse(response));
+                callback.apiRequesting(false)
+                callback.apiResponse(getBodyResponse(response))
             }
 
             override fun onFailure(call: Call<BaseResponse<FirebaseSetting>>, t: Throwable) {
-                callback.apiRequesting(false);
-                t.printStackTrace();
-                callback.showMessage(t.message);
+                callback.apiRequesting(false)
+                t.printStackTrace()
+                callback.showMessage(t.message)
             }
         })
     }
@@ -72,14 +72,14 @@ class SettingRepo : BaseRepo() {
                 call: Call<BaseResponse<HardwareSetting>>,
                 response: Response<BaseResponse<HardwareSetting>>
             ) {
-                callback.apiRequesting(false);
-                callback.apiResponse(getBodyResponse(response));
+                callback.apiRequesting(false)
+                callback.apiResponse(getBodyResponse(response))
             }
 
             override fun onFailure(call: Call<BaseResponse<HardwareSetting>>, t: Throwable) {
-                callback.apiRequesting(false);
-                t.printStackTrace();
-                callback.showMessage(t.message);
+                callback.apiRequesting(false)
+                t.printStackTrace()
+                callback.showMessage(t.message)
             }
         })
     }

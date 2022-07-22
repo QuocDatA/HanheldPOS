@@ -2,7 +2,6 @@ package com.hanheldpos.data.api.pojo.fee
 
 import android.os.Parcelable
 import com.hanheldpos.data.api.pojo.discount.DiningOptionDiscount
-import com.hanheldpos.data.api.pojo.order.settings.DiningOption
 import kotlinx.parcelize.Parcelize
 
 @Parcelize

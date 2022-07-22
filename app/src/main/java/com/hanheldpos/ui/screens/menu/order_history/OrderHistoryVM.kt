@@ -5,15 +5,11 @@ import com.hanheldpos.R
 import com.hanheldpos.data.repository.BaseResponse
 import com.hanheldpos.data.repository.base.BaseRepoCallback
 import com.hanheldpos.data.repository.order.OrderRepo
-import com.hanheldpos.database.DatabaseMapper
-import com.hanheldpos.database.entities.OrderCompletedEntity
-import com.hanheldpos.model.OrderHelper
 import com.hanheldpos.model.UserHelper
 import com.hanheldpos.model.menu.orders.OrderMenuGroupItem
 import com.hanheldpos.model.order.OrderSummaryPrimary
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
 import com.hanheldpos.utils.DateTimeUtils
-import kotlin.random.Random
 
 class OrderHistoryVM : BaseUiViewModel<OrderHistoryUV>() {
     private var isRequest : Boolean = false

@@ -19,5 +19,4 @@ data class OrderSummary(
     val PaymentAmount: Double?,
     var Note: String? = null,
     val OtherFee: Double,
-) : Parcelable {
-}
+) : Parcelable

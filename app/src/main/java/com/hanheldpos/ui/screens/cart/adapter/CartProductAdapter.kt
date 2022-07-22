@@ -4,11 +4,10 @@ import androidx.recyclerview.widget.DiffUtil
 import com.hanheldpos.R
 import com.hanheldpos.databinding.ItemCartProductBinding
 import com.hanheldpos.extension.setOnClickDebounce
-import com.hanheldpos.model.product.buy_x_get_y.BuyXGetY
 import com.hanheldpos.model.cart.BaseProductInCart
 import com.hanheldpos.model.cart.Combo
 import com.hanheldpos.model.discount.DiscountTriggerType
-import com.hanheldpos.model.discount.DiscountTypeFor
+import com.hanheldpos.model.product.buy_x_get_y.BuyXGetY
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
 

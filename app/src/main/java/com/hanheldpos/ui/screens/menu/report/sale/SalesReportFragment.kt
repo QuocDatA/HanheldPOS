@@ -2,20 +2,16 @@ package com.hanheldpos.ui.screens.menu.report.sale
 
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResult
 import androidx.lifecycle.lifecycleScope
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.report.ReportSalesResp
 import com.hanheldpos.databinding.FragmentSalesReportBinding
 import com.hanheldpos.extension.notifyValueChange
 import com.hanheldpos.extension.setOnClickDebounce
-import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.menu.report.SaleOptionPage
 import com.hanheldpos.model.report.ReportFilterModel
 import com.hanheldpos.printer.BillPrinterManager
@@ -42,7 +38,6 @@ import com.hanheldpos.ui.screens.menu.report.sale.menu.services.ServicesReportFr
 import com.hanheldpos.ui.screens.menu.report.sale.menu.surcharges.SurchargesReportFragment
 import com.hanheldpos.ui.screens.menu.report.sale.menu.taxes.TaxesReportFragment
 import com.hanheldpos.utils.DateTimeUtils
-import com.hanheldpos.utils.GSonUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.time.temporal.ChronoUnit

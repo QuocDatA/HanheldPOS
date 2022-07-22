@@ -4,11 +4,8 @@ import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.report.InventoryReport
-import com.hanheldpos.data.api.pojo.report.SectionReport
-import com.hanheldpos.model.menu.report.ReportItem
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
 import com.hanheldpos.ui.widgets.TableLayoutFixedHeader
-import com.hanheldpos.utils.PriceUtils
 
 class InventorySalesReportVM : BaseUiViewModel<InventorySalesReportUV>() {
     val isShowDetail = MutableLiveData(false)

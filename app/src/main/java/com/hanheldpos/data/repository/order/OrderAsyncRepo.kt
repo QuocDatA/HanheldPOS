@@ -13,7 +13,7 @@ class OrderAsyncRepo : BaseRepo() {
         body : String,
         callback: BaseRepoCallback<BaseResponse<OrderSubmitResp>>
     ) {
-        callback.apiRequesting(true);
+        callback.apiRequesting(true)
         orderAsyncService.postOrderSubmit(body).enqueue(object :
             Callback<BaseResponse<OrderSubmitResp>> {
             override fun onResponse(
@@ -21,14 +21,14 @@ class OrderAsyncRepo : BaseRepo() {
                 response: Response<BaseResponse<OrderSubmitResp>?>
             ) {
 
-                callback.apiRequesting(false);
-                callback.apiResponse(getBodyResponse(response));
+                callback.apiRequesting(false)
+                callback.apiResponse(getBodyResponse(response))
             }
 
             override fun onFailure(call: Call<BaseResponse<OrderSubmitResp>>, t: Throwable) {
-                callback.apiRequesting(false);
-                t.printStackTrace();
-                callback.showMessage(t.message);
+                callback.apiRequesting(false)
+                t.printStackTrace()
+                callback.showMessage(t.message)
             }
 
         })

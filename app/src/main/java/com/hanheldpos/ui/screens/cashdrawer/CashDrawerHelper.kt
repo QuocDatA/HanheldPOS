@@ -2,20 +2,16 @@ package com.hanheldpos.ui.screens.cashdrawer
 
 import android.app.Activity
 import android.app.AlertDialog
-import android.content.Context
 import android.os.CountDownTimer
 import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.view.WindowManager
-import androidx.core.content.ContextCompat
 import com.hanheldpos.R
 import com.hanheldpos.extension.setOnClickDebounce
 import com.hanheldpos.extension.showWithoutSystemUI
 import kotlin.system.exitProcess
 
 object CashDrawerHelper {
-    var isStartDrawer : Boolean = false;
+    var isStartDrawer : Boolean = false
     var isEndDrawer: Boolean = false
 
     fun showDrawerNotification(activity: Activity, isOnStarting: Boolean = true) {
@@ -32,8 +28,8 @@ object CashDrawerHelper {
         val close =
             notificationView.findViewById<View>(if (isOnStarting) R.id.btn_close_notification else R.id.btn_start_again)
         close.setOnClickDebounce {
-            isStartDrawer = false;
-            isEndDrawer = false;
+            isStartDrawer = false
+            isEndDrawer = false
             alert.dismiss()
         }
 
@@ -51,7 +47,7 @@ object CashDrawerHelper {
             quit.setOnClickDebounce {
                 alert.dismiss()
                 activity.finishAffinity()
-                exitProcess(0);
+                exitProcess(0)
             }
         }
 

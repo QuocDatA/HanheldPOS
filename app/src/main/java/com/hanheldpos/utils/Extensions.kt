@@ -20,7 +20,7 @@ fun File.writeBitmap(bitmap: Bitmap, format: Bitmap.CompressFormat, quality: Int
 
 fun drawableToBitmap(drawable: Drawable): Bitmap? {
     if (drawable is BitmapDrawable) {
-        return (drawable as BitmapDrawable).bitmap
+        return drawable.bitmap
     }
     var width: Int = drawable.intrinsicWidth
     width = if (width > 0) width else 1

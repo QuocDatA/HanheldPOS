@@ -7,13 +7,13 @@ import com.hanheldpos.data.api.pojo.order.settings.Reason
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.OrderHelper
 import com.hanheldpos.model.UserHelper
-import com.hanheldpos.model.product.buy_x_get_y.BuyXGetY
 import com.hanheldpos.model.cart.fee.FeeType
 import com.hanheldpos.model.discount.DiscountUser
 import com.hanheldpos.model.order.*
 import com.hanheldpos.model.payment.PaymentOrder
 import com.hanheldpos.model.payment.PaymentStatus
 import com.hanheldpos.model.product.ProductType
+import com.hanheldpos.model.product.buy_x_get_y.BuyXGetY
 import com.hanheldpos.utils.DateTimeUtils
 import com.hanheldpos.utils.EncryptUtils
 import java.util.*

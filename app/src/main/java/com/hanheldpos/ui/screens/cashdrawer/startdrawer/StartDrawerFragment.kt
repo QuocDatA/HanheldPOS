@@ -15,16 +15,16 @@ class StartDrawerFragment : BaseFragment<FragmentStartDrawerBinding, StartDrawer
     StartDrawerUV {
 
 
-    override fun layoutRes(): Int = R.layout.fragment_start_drawer;
+    override fun layoutRes(): Int = R.layout.fragment_start_drawer
 
-    private val keyBoardVM = KeyBoardVM(KeyBoardType.NumberOnly,15);
+    private val keyBoardVM = KeyBoardVM(KeyBoardType.NumberOnly,15)
 
     override fun initViewModel(viewModel: StartDrawerVM) {
         viewModel.run {
-            init(this@StartDrawerFragment);
-            binding.viewModel = this;
+            init(this@StartDrawerFragment)
+            binding.viewModel = this
         }
-        binding.keyboardVM = keyBoardVM;
+        binding.keyboardVM = keyBoardVM
 
     }
 
@@ -73,12 +73,12 @@ class StartDrawerFragment : BaseFragment<FragmentStartDrawerBinding, StartDrawer
 
             })
         binding.btnStartDrawer.setOnClickDebounce {
-            viewModel.startDrawer(requireContext());
+            viewModel.startDrawer(requireContext())
         }
     }
 
     override fun viewModelClass(): Class<StartDrawerVM> {
-        return StartDrawerVM::class.java;
+        return StartDrawerVM::class.java
     }
 
     override fun goHome() {

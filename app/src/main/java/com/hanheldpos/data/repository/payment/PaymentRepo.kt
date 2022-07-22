@@ -16,24 +16,24 @@ class PaymentRepo : BaseRepo() {
         userGuid: String?,
         callback: BaseRepoCallback<BaseResponse<List<PaymentMethodResp>>>
     ) {
-        callback.apiRequesting(true);
+        callback.apiRequesting(true)
         paymentService.getPaymentMethods(userGuid = userGuid).enqueue(object :
             Callback<BaseResponse<List<PaymentMethodResp>>> {
             override fun onResponse(
                 call: Call<BaseResponse<List<PaymentMethodResp>>>,
                 response: Response<BaseResponse<List<PaymentMethodResp>>>
             ) {
-                callback.apiRequesting(false);
-                callback.apiResponse(getBodyResponse(response));
+                callback.apiRequesting(false)
+                callback.apiResponse(getBodyResponse(response))
             }
 
             override fun onFailure(
                 call: Call<BaseResponse<List<PaymentMethodResp>>>,
                 t: Throwable
             ) {
-                callback.apiRequesting(false);
-                t.printStackTrace();
-                callback.showMessage(t.message);
+                callback.apiRequesting(false)
+                t.printStackTrace()
+                callback.showMessage(t.message)
             }
 
         })
@@ -44,42 +44,42 @@ class PaymentRepo : BaseRepo() {
         codeCard: String?,
         callback: BaseRepoCallback<BaseResponse<GiftCardResp>>
     ) {
-        callback.apiRequesting(true);
+        callback.apiRequesting(true)
         paymentService.getValidGiftCard(userGuid = userGuid, codeCard = codeCard).enqueue(object :
             Callback<BaseResponse<GiftCardResp>> {
             override fun onResponse(
                 call: Call<BaseResponse<GiftCardResp>>,
                 response: Response<BaseResponse<GiftCardResp>>
             ) {
-                callback.apiRequesting(false);
-                callback.apiResponse(getBodyResponse(response));
+                callback.apiRequesting(false)
+                callback.apiResponse(getBodyResponse(response))
             }
 
             override fun onFailure(call: Call<BaseResponse<GiftCardResp>>, t: Throwable) {
-                callback.apiRequesting(false);
-                t.printStackTrace();
-                callback.showMessage(t.message);
+                callback.apiRequesting(false)
+                t.printStackTrace()
+                callback.showMessage(t.message)
             }
 
         })
     }
 
     fun getValidWallet(keyWallet : String,callback: BaseRepoCallback<BaseResponse<WalletCardResp>> ) {
-        callback.apiRequesting(true);
+        callback.apiRequesting(true)
         paymentService.getValidWallet(keyWallet).enqueue(object :
             Callback<BaseResponse<WalletCardResp>> {
             override fun onResponse(
                 call: Call<BaseResponse<WalletCardResp>>,
                 response: Response<BaseResponse<WalletCardResp>>
             ) {
-                callback.apiRequesting(false);
-                callback.apiResponse(getBodyResponse(response));
+                callback.apiRequesting(false)
+                callback.apiResponse(getBodyResponse(response))
             }
 
             override fun onFailure(call: Call<BaseResponse<WalletCardResp>>, t: Throwable) {
-                callback.apiRequesting(false);
-                t.printStackTrace();
-                callback.showMessage(t.message);
+                callback.apiRequesting(false)
+                t.printStackTrace()
+                callback.showMessage(t.message)
             }
 
         })
@@ -93,14 +93,14 @@ class PaymentRepo : BaseRepo() {
                 call: Call<BaseResponse<@RawValue Any>>,
                 response: Response<BaseResponse<@RawValue Any>>
             ) {
-                callback.apiRequesting(false);
-                callback.apiResponse(getBodyResponse(response));
+                callback.apiRequesting(false)
+                callback.apiResponse(getBodyResponse(response))
             }
 
             override fun onFailure(call: Call<BaseResponse<@RawValue Any>>, t: Throwable) {
-                callback.apiRequesting(false);
-                t.printStackTrace();
-                callback.showMessage(t.message);
+                callback.apiRequesting(false)
+                t.printStackTrace()
+                callback.showMessage(t.message)
             }
 
         })

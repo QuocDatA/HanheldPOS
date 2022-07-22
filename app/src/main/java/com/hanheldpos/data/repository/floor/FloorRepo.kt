@@ -14,20 +14,20 @@ class FloorRepo : BaseRepo() {
         locationGuid: String?,
         callback: BaseRepoCallback<BaseResponse<List<FloorResp>>?>
     ) {
-        callback.apiRequesting(true);
+        callback.apiRequesting(true)
         floorService.getPosFloor(
             userGuid = userGuid,
             location = locationGuid
         ).enqueue(object : Callback<BaseResponse<List<FloorResp>>?> {
             override fun onResponse(call: Call<BaseResponse<List<FloorResp>>?>, response: Response<BaseResponse<List<FloorResp>>?>) {
-                callback.apiRequesting(false);
+                callback.apiRequesting(false)
                 callback.apiResponse(getBodyResponse(response))
             }
 
             override fun onFailure(call: Call<BaseResponse<List<FloorResp>>?>, t: Throwable) {
-                callback.apiRequesting(false);
-                t.printStackTrace();
-                callback.showMessage(t.message);
+                callback.apiRequesting(false)
+                t.printStackTrace()
+                callback.showMessage(t.message)
             }
         })
     }

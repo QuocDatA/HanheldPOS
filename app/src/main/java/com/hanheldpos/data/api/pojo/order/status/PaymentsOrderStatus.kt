@@ -10,10 +10,10 @@ data class PaymentsOrderStatus(
     val Title_en: String
 ) : Parcelable {
     fun findTextPaymentStatus(paymentStatusId : Int) :String? {
-        return ListDicOrderStatus?.firstOrNull{status -> status.OrderStatusId == paymentStatusId}?.Title_en;
+        return ListDicOrderStatus?.firstOrNull{status -> status.OrderStatusId == paymentStatusId}?.Title_en
     }
 
     fun findColorPaymentStatus(paymentStatusId : Int) : String? {
-        return ListDicOrderStatus?.firstOrNull{status -> status.OrderStatusId == paymentStatusId}?.Color;
+        return ListDicOrderStatus?.firstOrNull{status -> status.OrderStatusId == paymentStatusId}?.Color
     }
 }

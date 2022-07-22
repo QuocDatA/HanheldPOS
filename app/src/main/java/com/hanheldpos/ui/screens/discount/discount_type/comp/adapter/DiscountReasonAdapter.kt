@@ -20,38 +20,38 @@ class DiscountReasonAdapter(
     override fun submitList(list: MutableList<Reason>?) {
         if (comp != null)
         list?.find { it.Id == comp.Id }.let{
-            selectedItem.value =  list?.indexOf(it)?: -1;
+            selectedItem.value =  list?.indexOf(it)?: -1
         }
         super.submitList(list)
     }
 
-    override fun getItemViewType(position: Int): Int = R.layout.item_discount_comp;
+    override fun getItemViewType(position: Int): Int = R.layout.item_discount_comp
 
     override fun onBindViewHolder(holder: BaseBindingViewHolder<Reason>, position: Int) {
-        val item = getItem(position);
-        val binding = holder.binding as ItemDiscountCompBinding;
-        binding.item = item;
+        val item = getItem(position)
+        val binding = holder.binding as ItemDiscountCompBinding
+        binding.item = item
         binding.btn.apply {
             setOnClickListener {
-                notifyItemChanged(selectedItem.value);
-                selectedItem.value = position;
-                notifyItemChanged(position);
-                listener.onItemClick(position, item);
+                notifyItemChanged(selectedItem.value)
+                selectedItem.value = position
+                notifyItemChanged(position)
+                listener.onItemClick(position, item)
             }
-            isChecked = selectedItem.value == position;
+            isChecked = selectedItem.value == position
         }
     }
 
     private class DiffCallback : DiffUtil.ItemCallback<Reason>() {
         override fun areItemsTheSame(oldItem: Reason, newItem: Reason): Boolean {
-            return oldItem.Id == newItem.Id;
+            return oldItem.Id == newItem.Id
         }
 
         override fun areContentsTheSame(
             oldItem: Reason,
             newItem: Reason
         ): Boolean {
-            return oldItem == newItem;
+            return oldItem == newItem
         }
 
     }

@@ -26,5 +26,4 @@ data class Shipping(
     var Latitude: Double,
     var Longitude: Double,
     var Company: String,
-) : Parcelable {
-}
+) : Parcelable

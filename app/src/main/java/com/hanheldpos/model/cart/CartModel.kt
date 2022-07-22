@@ -9,13 +9,13 @@ import com.hanheldpos.data.api.pojo.product.Product
 import com.hanheldpos.model.DataHelper
 import com.hanheldpos.model.OrderHelper
 import com.hanheldpos.model.cart.fee.FeeApplyToType
-import com.hanheldpos.model.product.buy_x_get_y.BuyXGetY
 import com.hanheldpos.model.discount.*
 import com.hanheldpos.model.home.table.TableSummary
 import com.hanheldpos.model.order.DeliveryTime
 import com.hanheldpos.model.order.Order
 import com.hanheldpos.model.order.Shipping
 import com.hanheldpos.model.payment.PaymentOrder
+import com.hanheldpos.model.product.buy_x_get_y.BuyXGetY
 import java.util.*
 
 open class CartModel(
@@ -42,7 +42,7 @@ open class CartModel(
         it.total()
     }
 
-    fun getDiscountPrice() = totalDiscount(getSubTotal());
+    fun getDiscountPrice() = totalDiscount(getSubTotal())
 
     fun getTotalQuantity() = productsList.sumOf {
         it.quantity ?: 0
@@ -50,7 +50,7 @@ open class CartModel(
 
     // minus itself because buy x get y cant count itself as an item in order
     fun getBuyXGetYQuantity(discId: String): Int {
-        var quantity = 0;
+        var quantity = 0
         productsList.forEach { baseProductInCart ->
             if (baseProductInCart is BuyXGetY && baseProductInCart.disc?._id != discId) {
                 quantity += baseProductInCart.quantity ?: 0
@@ -61,17 +61,17 @@ open class CartModel(
         return quantity
     }
 
-    fun getTotalPrice() = total();
+    fun getTotalPrice() = total()
 
     fun updatePriceList(menuLocation_id: String) {
-        this.menuLocationGuid = menuLocation_id;
+        this.menuLocationGuid = menuLocation_id
     }
 
     fun totalDiscount(subTotal: Double): Double {
-        val totalDiscUser = discountUserList.sumOf { it.total(subTotal) };
+        val totalDiscUser = discountUserList.sumOf { it.total(subTotal) }
         val totalDiscServer = discountServerList.sumOf { it.total(subTotal, 0.0) ?: 0.0 }
-        val total = totalDiscUser + totalDiscServer;
-        return total;
+        val total = totalDiscUser + totalDiscServer
+        return total
     }
 
     private fun anyProductList(): Boolean {
@@ -86,54 +86,54 @@ open class CartModel(
     }
 
     fun totalGross(subTotal: Double, totalDiscount: Double): Double {
-        return subTotal + totalDiscount;
+        return subTotal + totalDiscount
     }
 
     fun totalTemp(): Double {
-        val totalDiscPrice = totalDiscount(getSubTotal());
-        val totalFeePrice = totalFee(getSubTotal(), totalDiscPrice);
-        var total = getSubTotal() + totalFeePrice - totalDiscPrice;
-        total = if (total < 0) 0.0 else total;
-        return total;
+        val totalDiscPrice = totalDiscount(getSubTotal())
+        val totalFeePrice = totalFee(getSubTotal(), totalDiscPrice)
+        var total = getSubTotal() + totalFeePrice - totalDiscPrice
+        total = if (total < 0) 0.0 else total
+        return total
     }
 
     fun totalComp(totalTemp: Double): Double {
-        val comp = compReason?.total(totalTemp);
-        return comp ?: 0.0;
+        val comp = compReason?.total(totalTemp)
+        return comp ?: 0.0
     }
 
     fun totalComp(): Double {
-        val totalTemp = totalTemp();
-        val comp = compReason?.total(totalTemp);
-        return comp ?: 0.0;
+        val totalTemp = totalTemp()
+        val comp = compReason?.total(totalTemp)
+        return comp ?: 0.0
     }
 
     fun total(): Double {
-        val totalTemp = totalTemp();
-        val totalComp = totalComp(totalTemp);
+        val totalTemp = totalTemp()
+        val totalComp = totalComp(totalTemp)
 
-        val lineTotal = totalTemp - totalComp;
+        val lineTotal = totalTemp - totalComp
         return lineTotal
     }
 
     fun addRegular(regular: Regular) {
-        val listFee = OrderHelper.findFeeProductList(regular.proOriginal!!._id);
-        regular.fees = listFee;
-        productsList.add(regular);
+        val listFee = OrderHelper.findFeeProductList(regular.proOriginal!!._id)
+        regular.fees = listFee
+        productsList.add(regular)
     }
 
     fun addBundle(combo: Combo) {
-        val listFee = OrderHelper.findFeeProductList(combo.proOriginal!!._id);
-        combo.fees = listFee;
-        productsList.add(combo);
+        val listFee = OrderHelper.findFeeProductList(combo.proOriginal!!._id)
+        combo.fees = listFee
+        productsList.add(combo)
     }
 
     fun addCompReason(reason: Reason) {
-        compReason = reason;
+        compReason = reason
     }
 
     fun addDiscountUser(discount: DiscountUser) {
-        discountUserList = mutableListOf(discount);
+        discountUserList = mutableListOf(discount)
     }
 
     fun addDiscountAutoServer(discount: DiscountResp, discApplyTo: DiscApplyTo) {
@@ -168,7 +168,7 @@ open class CartModel(
                     Date()
                 ) && !baseProductInCart.isExistDiscount(discountId = discount._id)
             )
-                baseProductInCart.addDiscountAutomatic(discount, productsList);
+                baseProductInCart.addDiscountAutomatic(discount, productsList)
         }
     }
 
@@ -196,12 +196,12 @@ open class CartModel(
     }
 
     fun addPayment(payment: List<PaymentOrder>) {
-        paymentsList = payment.toMutableList();
+        paymentsList = payment.toMutableList()
     }
 
     fun clearCart() {
-        productsList.clear();
-        customer = null;
+        productsList.clear()
+        customer = null
     }
 
     fun clearAllDiscounts() {
@@ -349,8 +349,8 @@ open class CartModel(
     fun totalQtyDiscUsed(discountId: String): Int {
         val totalQty = discountServerList.count { disc ->
             disc._id == discountId
-        };
-        return totalQty ?: 0;
+        }
+        return totalQty
     }
 
     fun removeDiscountById(discountGuid: String) {

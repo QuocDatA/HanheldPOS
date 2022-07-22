@@ -1,11 +1,6 @@
 package com.hanheldpos.ui.screens.menu.order_history
 
 import android.annotation.SuppressLint
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentOrderHistoryBinding

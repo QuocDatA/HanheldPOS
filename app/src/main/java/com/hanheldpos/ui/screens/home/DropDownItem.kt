@@ -9,6 +9,4 @@ class DropDownItem(
     val name: String,
     val position : Int,
     val realItem: @RawValue Any? = null,
-) : Parcelable {
-
-}
+) : Parcelable

@@ -16,21 +16,21 @@ import com.hanheldpos.utils.PriceUtils
 
 class EndDrawerFragment(private val report: ReportCashDrawerResp?) : BaseFragment<FragmentEndDrawerBinding,EndDrawerVM>() , EndDrawerUV {
 
-    private lateinit var reportDrawerInfoAdapter: ReportDrawerInfoAdapter;
+    private lateinit var reportDrawerInfoAdapter: ReportDrawerInfoAdapter
 
     override fun layoutRes(): Int {
-        return R.layout.fragment_end_drawer;
+        return R.layout.fragment_end_drawer
     }
 
     override fun viewModelClass(): Class<EndDrawerVM> {
-        return EndDrawerVM::class.java;
+        return EndDrawerVM::class.java
     }
 
     override fun initViewModel(viewModel: EndDrawerVM) {
         viewModel.run {
-            init(this@EndDrawerFragment);
-            initLifeCycle(this@EndDrawerFragment);
-            binding.viewModel = this;
+            init(this@EndDrawerFragment)
+            initLifeCycle(this@EndDrawerFragment)
+            binding.viewModel = this
         }
     }
 
@@ -38,19 +38,19 @@ class EndDrawerFragment(private val report: ReportCashDrawerResp?) : BaseFragmen
 
         // Init Amount
         val price = report?.Reports?.find { it.Id == 6 }?.Value as Double?
-        viewModel.amountExpected.postValue(price?:0.0);
-        viewModel.amountString.postValue(PriceUtils.formatStringPrice((price?:0.0).toString()));
+        viewModel.amountExpected.postValue(price?:0.0)
+        viewModel.amountString.postValue(PriceUtils.formatStringPrice((price?:0.0).toString()))
 
         // Listener Click
         binding.btnEndDrawer.setOnClickDebounce {
-            viewModel.endDrawer(requireContext());
+            viewModel.endDrawer(requireContext())
         }
 
         // Init Adatper
-        reportDrawerInfoAdapter = ReportDrawerInfoAdapter();
+        reportDrawerInfoAdapter = ReportDrawerInfoAdapter()
 
         binding.currentDrawerRecycle.apply {
-            adapter = reportDrawerInfoAdapter;
+            adapter = reportDrawerInfoAdapter
             addItemDecoration(
                 DividerItemDecoration(
                 context,
@@ -62,7 +62,7 @@ class EndDrawerFragment(private val report: ReportCashDrawerResp?) : BaseFragmen
                         R.drawable.divider_vertical
                     )!!
                 )
-            });
+            })
         }
     }
 
@@ -72,20 +72,20 @@ class EndDrawerFragment(private val report: ReportCashDrawerResp?) : BaseFragmen
         binding.amountInput.let { input->
             var isEditing = false
             input.doAfterTextChanged {
-                if (isEditing) return@doAfterTextChanged;
-                if (it.toString().isEmpty()) input.setText("0");
+                if (isEditing) return@doAfterTextChanged
+                if (it.toString().isEmpty()) input.setText("0")
                 else {
-                    isEditing = true;
-                    input.setText(PriceUtils.formatStringPrice(it.toString()));
+                    isEditing = true
+                    input.setText(PriceUtils.formatStringPrice(it.toString()))
                 }
-                input.setSelection(input.length());
-                isEditing = false;
+                input.setSelection(input.length())
+                isEditing = false
             }
         }
 
         report?.let {
-            reportDrawerInfoAdapter.submitList(report.Reports);
-            reportDrawerInfoAdapter.notifyDataSetChanged();
+            reportDrawerInfoAdapter.submitList(report.Reports)
+            reportDrawerInfoAdapter.notifyDataSetChanged()
         }
 
     }
@@ -95,11 +95,11 @@ class EndDrawerFragment(private val report: ReportCashDrawerResp?) : BaseFragmen
     }
 
     override fun backPress() {
-        onFragmentBackPressed();
+        onFragmentBackPressed()
     }
 
     override fun onEndDrawer() {
-        navigator.goTo(PinCodeFragment());
+        navigator.goTo(PinCodeFragment())
     }
 
 }

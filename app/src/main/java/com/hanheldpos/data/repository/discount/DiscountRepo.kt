@@ -16,23 +16,23 @@ class DiscountRepo : BaseRepo() {
         locationGuid: String?,
          callback: BaseRepoCallback<BaseResponse<List<DiscountResp>>>
     ) {
-        callback.apiRequesting(true);
+        callback.apiRequesting(true)
         discountService.getDiscounts(userGuid,locationGuid).enqueue(object :
             Callback<BaseResponse<List<DiscountResp>>> {
             override fun onResponse(
                 call: Call<BaseResponse<List<DiscountResp>>>,
                 response: Response<BaseResponse<List<DiscountResp>>>
             ) {
-                callback.apiRequesting(false);
-                callback.apiResponse(getBodyResponse(response));
+                callback.apiRequesting(false)
+                callback.apiResponse(getBodyResponse(response))
             }
 
             override fun onFailure(call: Call<BaseResponse<List<DiscountResp>>>, t: Throwable) {
-                callback.apiRequesting(false);
-                t.printStackTrace();
-                callback.showMessage(t.message);
+                callback.apiRequesting(false)
+                t.printStackTrace()
+                callback.showMessage(t.message)
             }
-        });
+        })
     }
 
     fun getDiscountDetailList(
@@ -40,47 +40,47 @@ class DiscountRepo : BaseRepo() {
         locationGuid: String?,
         callback: BaseRepoCallback<BaseResponse<List<CouponResp>>>
     ) {
-        callback.apiRequesting(true);
+        callback.apiRequesting(true)
         discountService.getDiscountDetails(userGuid,locationGuid).enqueue(object :
             Callback<BaseResponse<List<CouponResp>>> {
             override fun onResponse(
                 call: Call<BaseResponse<List<CouponResp>>>,
                 response: Response<BaseResponse<List<CouponResp>>>
             ) {
-                callback.apiRequesting(false);
-                callback.apiResponse(getBodyResponse(response));
+                callback.apiRequesting(false)
+                callback.apiResponse(getBodyResponse(response))
             }
 
             override fun onFailure(call: Call<BaseResponse<List<CouponResp>>>, t: Throwable) {
-                callback.apiRequesting(false);
-                t.printStackTrace();
-                callback.showMessage(t.message);
+                callback.apiRequesting(false)
+                t.printStackTrace()
+                callback.showMessage(t.message)
             }
-        });
+        })
     }
 
     fun postDiscountCoupon(
         body: String,
         callback: BaseRepoCallback<BaseResponse<List<DiscountCoupon>>?>
     ) {
-        callback.apiRequesting(true);
+        callback.apiRequesting(true)
         discountService.postDiscountCoupon(body).enqueue(object :
             Callback<BaseResponse<List<DiscountCoupon>>?> {
             override fun onResponse(
                 call: Call<BaseResponse<List<DiscountCoupon>>?>,
                 response: Response<BaseResponse<List<DiscountCoupon>>?>
             ) {
-                callback.apiRequesting(false);
-                callback.apiResponse(getBodyResponse(response));
+                callback.apiRequesting(false)
+                callback.apiResponse(getBodyResponse(response))
             }
 
             override fun onFailure(
                 call: Call<BaseResponse<List<DiscountCoupon>>?>,
                 t: Throwable
             ) {
-                callback.apiRequesting(false);
-                t.printStackTrace();
-                callback.showMessage(t.message);
+                callback.apiRequesting(false)
+                t.printStackTrace()
+                callback.showMessage(t.message)
             }
 
         })

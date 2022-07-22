@@ -1,10 +1,7 @@
 package com.hanheldpos.ui.screens.menu.orders.adapter
 
 import android.annotation.SuppressLint
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.hanheldpos.R
 import com.hanheldpos.databinding.ItemOrdersMenuGroupBinding
 import com.hanheldpos.extension.addItemDecorationWithoutLastDivider
@@ -13,7 +10,6 @@ import com.hanheldpos.model.order.OrderSummaryPrimary
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter
 import com.hanheldpos.ui.base.adapter.BaseBindingViewHolder
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
-import com.hanheldpos.utils.DateTimeUtils
 
 class OrdersMenuGroupAdapter(private val listener : BaseItemClickListener<OrderSummaryPrimary>) : BaseBindingListAdapter<OrderMenuGroupItem>(DiffCallBack()) {
 

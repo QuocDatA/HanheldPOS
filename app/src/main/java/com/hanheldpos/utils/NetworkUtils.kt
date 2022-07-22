@@ -52,7 +52,7 @@ object NetworkUtils {
 
     private fun isOnline(): Boolean {
         return if (isActiveInternet(PosApp.instance.applicationContext)) {
-            hasActiveInternet();
+            hasActiveInternet()
         } else {
             false
         }

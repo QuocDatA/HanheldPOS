@@ -18,7 +18,7 @@ abstract class BasePrinterManager {
     abstract fun performPrinterAction(printerAction: () -> Unit)
 
 
-    enum class FontSize() {
+    enum class FontSize {
         Small() {
             override fun urovo() = 20
         },

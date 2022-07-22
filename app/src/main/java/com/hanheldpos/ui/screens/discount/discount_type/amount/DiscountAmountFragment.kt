@@ -1,6 +1,5 @@
 package com.hanheldpos.ui.screens.discount.discount_type.amount
 
-import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentDiscountAmountBinding
@@ -21,14 +20,14 @@ class DiscountAmountFragment(
     override fun layoutRes(): Int = R.layout.fragment_discount_amount
 
     override fun viewModelClass(): Class<DiscountAmountVM> {
-        return DiscountAmountVM::class.java;
+        return DiscountAmountVM::class.java
     }
 
     override fun initViewModel(viewModel: DiscountAmountVM) {
         viewModel.run {
-            init(this@DiscountAmountFragment);
-            initLifeCycle(this@DiscountAmountFragment);
-            binding.viewModel = this;
+            init(this@DiscountAmountFragment)
+            initLifeCycle(this@DiscountAmountFragment)
+            binding.viewModel = this
         }
 
     }
@@ -38,14 +37,14 @@ class DiscountAmountFragment(
         binding.amountDiscount.let { input ->
             var isEditing = false
             input.doAfterTextChanged {
-                if (isEditing) return@doAfterTextChanged;
-                if (it.toString().isEmpty()) input.setText("0");
+                if (isEditing) return@doAfterTextChanged
+                if (it.toString().isEmpty()) input.setText("0")
                 else {
-                    isEditing = true;
-                    input.setText(PriceUtils.formatStringPrice(it.toString()));
+                    isEditing = true
+                    input.setText(PriceUtils.formatStringPrice(it.toString()))
                 }
-                input.setSelection(input.length());
-                isEditing = false;
+                input.setSelection(input.length())
+                isEditing = false
             }
         }
 
@@ -57,10 +56,10 @@ class DiscountAmountFragment(
 
     override fun initAction() {
         viewModel.amount.observe(this) {
-            listener.validDiscount(validDiscount());
-        };
+            listener.validDiscount(validDiscount())
+        }
         viewModel.title.observe(this) {
-            listener.validDiscount(validDiscount());
+            listener.validDiscount(validDiscount())
         }
     }
 
@@ -80,7 +79,7 @@ class DiscountAmountFragment(
                 )
             }
         }
-        listener.validDiscount(validDiscount());
+        listener.validDiscount(validDiscount())
     }
 
     private fun validChooseDiscount(): Boolean {

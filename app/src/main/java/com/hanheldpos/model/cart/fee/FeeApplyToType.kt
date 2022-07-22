@@ -1,8 +1,6 @@
 package com.hanheldpos.model.cart.fee
 
-import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.annotation.JsonValue
-import com.hanheldpos.model.home.order.ProductModeViewType
 
 enum class FeeApplyToType(@JsonValue val value: Int) {
     NotIncluded(1),
@@ -10,7 +8,7 @@ enum class FeeApplyToType(@JsonValue val value: Int) {
     Order(3);
     companion object {
         fun fromInt(value: Int): FeeApplyToType? {
-            FeeApplyToType.values().forEach {
+            values().forEach {
                 if (it.value == value) {
                     return it
                 }

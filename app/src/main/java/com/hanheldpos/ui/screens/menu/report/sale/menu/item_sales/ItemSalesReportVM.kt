@@ -3,7 +3,6 @@ package com.hanheldpos.ui.screens.menu.report.sale.menu.item_sales
 import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import com.hanheldpos.R
-import com.hanheldpos.data.api.pojo.report.CashVoucherReport
 import com.hanheldpos.data.api.pojo.report.ItemSale
 import com.hanheldpos.model.menu.report.ReportItem
 import com.hanheldpos.model.menu.report.ReportItemDetail
@@ -16,9 +15,9 @@ class ItemSalesReportVM : BaseUiViewModel<ItemSalesReportUV>() {
     fun getItemSalesSummary(itemSales : List<ItemSale>?) : List<Any> {
         var total = 0.0
         val list = itemSales?.map { itemSale ->
-            total += itemSale.SubTotal ?: 0.0
+            total += itemSale.SubTotal
             ReportItem(
-                PriceUtils.formatStringPrice(itemSale.SubTotal ?: 0.0),
+                PriceUtils.formatStringPrice(itemSale.SubTotal),
                 itemSale.ProductName
             )
         }
@@ -33,8 +32,8 @@ class ItemSalesReportVM : BaseUiViewModel<ItemSalesReportUV>() {
         var totalAmount = 0.0
         val rows = mutableListOf<ReportItemDetail>()
         itemSales?.map { itemSale ->
-            totalQty += itemSale.Quantity ?: 0
-            totalAmount += itemSale.SubTotal ?: 0.0
+            totalQty += itemSale.Quantity
+            totalAmount += itemSale.SubTotal
             ReportItemDetail(
                 itemSale.ProductName,
                 itemSale.Quantity,

@@ -13,5 +13,5 @@ data class OrderMenuItem(
     var color: String? = null,
     var childList: MutableList<ProductMenuItem>? = null,
     ) {
-    var uiType: MenuModeViewType? = MenuModeViewType.Menu;
+    var uiType: MenuModeViewType? = MenuModeViewType.Menu
 }

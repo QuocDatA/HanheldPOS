@@ -4,12 +4,10 @@ import android.os.Parcelable
 import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.data.api.pojo.product.Product
 import com.hanheldpos.data.api.pojo.product.VariantsGroup
+import com.hanheldpos.model.cart.BaseProductInCart
+import com.hanheldpos.model.fee.ChooseProductApplyTo
 import com.hanheldpos.model.product.buy_x_get_y.CustomerDiscApplyTo
 import com.hanheldpos.model.product.buy_x_get_y.ItemBuyXGetYGroup
-import com.hanheldpos.model.product.buy_x_get_y.MinimumType
-import com.hanheldpos.model.cart.BaseProductInCart
-import com.hanheldpos.model.discount.DiscountEntireType
-import com.hanheldpos.model.fee.ChooseProductApplyTo
 import com.hanheldpos.ui.screens.cart.CurCartData
 import kotlinx.parcelize.Parcelize
 

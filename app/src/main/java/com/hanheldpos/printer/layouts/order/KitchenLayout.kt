@@ -1,17 +1,15 @@
 package com.hanheldpos.printer.layouts.order
 
-import com.hanheldpos.data.api.pojo.order.settings.DiningOption
 import com.hanheldpos.model.cart.DinningOptionType
-import com.hanheldpos.printer.printer_setup.printer_manager.BasePrinterManager
-import com.hanheldpos.printer.wagu.Block
-import com.hanheldpos.printer.wagu.WaguUtils
-import com.hanheldpos.printer.wagu.WrapType
 import com.hanheldpos.model.order.OrderModel
 import com.hanheldpos.model.order.ProductChosen
 import com.hanheldpos.model.product.ExtraConverter
 import com.hanheldpos.model.product.ProductType
 import com.hanheldpos.printer.printer_devices.Printer
-import com.hanheldpos.printer.printer_setup.PrintConfig
+import com.hanheldpos.printer.printer_setup.printer_manager.BasePrinterManager
+import com.hanheldpos.printer.wagu.Block
+import com.hanheldpos.printer.wagu.WaguUtils
+import com.hanheldpos.printer.wagu.WrapType
 import com.hanheldpos.utils.StringUtils
 
 
@@ -65,7 +63,7 @@ open class KitchenLayout(
         level: Int = 0,
         parentQuantity: Int? = 1
     ) {
-        val quantity = "${(productChosen.Quantity ?: 0) * (parentQuantity ?: 1)} "
+        val quantity = "${productChosen.Quantity * (parentQuantity ?: 1)} "
         val diningOption = "(${productChosen.DiningOption?.Acronymn})"
 
         val isBundleOrBuyXGetY =
@@ -92,7 +90,7 @@ open class KitchenLayout(
                     ).toString() else "") +
                     (if (productChosen.Note.isNullOrBlank()) ""
                     else
-                        "(${productChosen.Note ?: "".trim()})")
+                        "(${productChosen.Note})")
 
 
         device.drawText(

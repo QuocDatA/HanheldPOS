@@ -21,7 +21,7 @@ object SystemHelper {
      */
     fun hideSystemUI(window: Window) {
         window.run {
-            window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN)
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
                 decorView.systemUiVisibility = (
                         View.SYSTEM_UI_FLAG_LAYOUT_STABLE
@@ -31,7 +31,7 @@ object SystemHelper {
                                 or View.SYSTEM_UI_FLAG_FULLSCREEN
                                 or View.SYSTEM_UI_FLAG_IMMERSIVE)
             } else {
-                setDecorFitsSystemWindows(true);
+                setDecorFitsSystemWindows(true)
                 insetsController?.let { controller ->
                     controller.systemBarsBehavior =
                         WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE

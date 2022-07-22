@@ -1,6 +1,5 @@
 package com.hanheldpos.ui.screens.discount.discount_type.percentage
 
-import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
 import com.hanheldpos.R
 import com.hanheldpos.databinding.FragmentDiscountPercentageBinding
@@ -17,17 +16,17 @@ class DiscountPercentageFragment(
     private val listener: DiscountFragment.DiscountTypeListener
 ) :
     BaseFragment<FragmentDiscountPercentageBinding, DiscountPercentageVM>(), DiscountPercentageUV {
-    override fun layoutRes(): Int = R.layout.fragment_discount_percentage;
+    override fun layoutRes(): Int = R.layout.fragment_discount_percentage
 
     override fun viewModelClass(): Class<DiscountPercentageVM> {
-        return DiscountPercentageVM::class.java;
+        return DiscountPercentageVM::class.java
     }
 
     override fun initViewModel(viewModel: DiscountPercentageVM) {
         viewModel.run {
-            init(this@DiscountPercentageFragment);
-            initLifeCycle(this@DiscountPercentageFragment);
-            binding.viewModel = this;
+            init(this@DiscountPercentageFragment)
+            initLifeCycle(this@DiscountPercentageFragment)
+            binding.viewModel = this
         }
     }
 
@@ -36,15 +35,15 @@ class DiscountPercentageFragment(
         binding.percentDiscount.let { input ->
             var isEditing = false
             input.doAfterTextChanged {
-                if (isEditing) return@doAfterTextChanged;
-                isEditing = true;
+                if (isEditing) return@doAfterTextChanged
+                isEditing = true
                 when {
                     it.toString().isEmpty() -> input.setText(0.toString())
                     it.toString().toInt() > 100 -> input.setText(100.toString())
                     else -> input.setText(it.toString().toInt().toString())
                 }
-                input.setSelection(input.length());
-                isEditing = false;
+                input.setSelection(input.length())
+                isEditing = false
             }
         }
     }
@@ -54,10 +53,10 @@ class DiscountPercentageFragment(
 
     override fun initAction() {
         viewModel.percent.observe(this) {
-            listener.validDiscount(validDiscount());
-        };
+            listener.validDiscount(validDiscount())
+        }
         viewModel.title.observe(this) {
-            listener.validDiscount(validDiscount());
+            listener.validDiscount(validDiscount())
         }
     }
 
@@ -77,7 +76,7 @@ class DiscountPercentageFragment(
                 )
             }
         }
-        listener.validDiscount(validDiscount());
+        listener.validDiscount(validDiscount())
     }
 
     private fun validChooseDiscount(): Boolean {

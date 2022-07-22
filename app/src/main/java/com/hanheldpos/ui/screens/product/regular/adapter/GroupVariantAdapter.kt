@@ -24,7 +24,7 @@ class GroupVariantAdapter(
     var itemSelected: List<VariantCart>? = null
 
     override fun getItemViewType(position: Int): Int {
-        return R.layout.item_product_group_variant;
+        return R.layout.item_product_group_variant
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -32,9 +32,9 @@ class GroupVariantAdapter(
         holder: BaseBindingViewHolder<VariantsGroup>,
         position: Int
     ) {
-        val item = getItem(position);
-        holder.bindItem(item);
-        val binding = (holder.binding as ItemProductGroupVariantBinding);
+        val item = getItem(position)
+        holder.bindItem(item)
+        val binding = (holder.binding as ItemProductGroupVariantBinding)
         VariantAdapter(
             variantViewType = VariantGroupType.fromInt(item.VariantOptionType ?: 0),
             listener = object : BaseItemClickListener<VariantsGroup.OptionValueVariantsGroup> {
@@ -42,11 +42,11 @@ class GroupVariantAdapter(
                     adapterPosition: Int,
                     item: VariantsGroup.OptionValueVariantsGroup
                 ) {
-                    listener.onItemClick(adapterPosition, item);
+                    listener.onItemClick(adapterPosition, item)
                 }
             },
         ).also { variantAdapter ->
-            binding.containerVariantItem.adapter = variantAdapter;
+            binding.containerVariantItem.adapter = variantAdapter
             binding.containerVariantItem.itemAnimator = null
 
             /*
@@ -55,7 +55,7 @@ class GroupVariantAdapter(
             when (VariantGroupType.fromInt(item.VariantOptionType ?: 0)) {
                 VariantGroupType.ButtonStyle -> {
                     binding.containerVariantItem.layoutManager =
-                        GridLayoutManager(holder.binding.root.context, 2);
+                        GridLayoutManager(holder.binding.root.context, 2)
                     if (binding.containerVariantItem.itemDecorationCount == 0) {
                         binding.containerVariantItem.addItemDecoration(
                             GridSpacingItemDecoration(
@@ -68,7 +68,7 @@ class GroupVariantAdapter(
                 }
                 VariantGroupType.RadioStyle -> {
                     binding.containerVariantItem.layoutManager =
-                        LinearLayoutManager(holder.binding.root.context);
+                        LinearLayoutManager(holder.binding.root.context)
                     if (binding.containerVariantItem.itemDecorationCount == 0) {
                         binding.containerVariantItem.addItemDecoration(
                             DividerItemDecoration(
@@ -88,7 +88,7 @@ class GroupVariantAdapter(
 
                 else -> {
                     binding.containerVariantItem.layoutManager =
-                        GridLayoutManager(holder.binding.root.context, 2);
+                        GridLayoutManager(holder.binding.root.context, 2)
                     if (binding.containerVariantItem.itemDecorationCount == 0) {
                         binding.containerVariantItem.addItemDecoration(
                             GridSpacingItemDecoration(
@@ -104,10 +104,10 @@ class GroupVariantAdapter(
             /**
              * Fix scroll when change type variant
              */
-            binding.containerVariantItem.setHasFixedSize(true);
+            binding.containerVariantItem.setHasFixedSize(true)
 
-            val list = item.subOptionValueList()?.toMutableList();
-            variantAdapter.submitList(list);
+            val list = item.subOptionValueList()?.toMutableList()
+            variantAdapter.submitList(list)
             /**
              *  Restore option chosen
              */
@@ -116,13 +116,13 @@ class GroupVariantAdapter(
                     run lit@{
                         list?.forEach {
                             if (it.Id == variant?.Id) {
-                                variantAdapter.selectedItem = list.indexOf(it);
-                                return@lit;
+                                variantAdapter.selectedItem = list.indexOf(it)
+                                return@lit
                             }
                         }
                     }
                 }
-            variantAdapter.notifyDataSetChanged();
+            variantAdapter.notifyDataSetChanged()
         }
     }
 
@@ -132,14 +132,14 @@ class GroupVariantAdapter(
             oldItem: VariantsGroup,
             newItem: VariantsGroup
         ): Boolean {
-            return oldItem == newItem;
+            return oldItem == newItem
         }
 
         override fun areContentsTheSame(
             oldItem: VariantsGroup,
             newItem: VariantsGroup
         ): Boolean {
-            return false;
+            return false
         }
 
     }

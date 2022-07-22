@@ -6,25 +6,22 @@ import com.bumptech.glide.request.RequestOptions
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.welcome.WelcomeRespModel
 import com.hanheldpos.databinding.FragmentWelcomeBinding
-import com.hanheldpos.extension.navigateTo
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.devicecode.DeviceCodeFragment
-import com.hanheldpos.ui.screens.main.MainActivity
-import com.hanheldpos.ui.screens.pincode.PinCodeFragment
 
 class WelcomeFragment : BaseFragment<FragmentWelcomeBinding, WelcomeVM>(), WelcomeUV {
 
     override fun layoutRes() = R.layout.fragment_welcome
 
     override fun viewModelClass(): Class<WelcomeVM> {
-        return WelcomeVM::class.java;
+        return WelcomeVM::class.java
     }
 
     override fun initViewModel(viewModel: WelcomeVM) {
         viewModel.run {
             init(this@WelcomeFragment)
             initLifeCycle(this@WelcomeFragment)
-            binding.viewModel = this;
+            binding.viewModel = this
         }
     }
 
@@ -44,7 +41,7 @@ class WelcomeFragment : BaseFragment<FragmentWelcomeBinding, WelcomeVM>(), Welco
     }
 
     override fun updateUI(welcomeResp: WelcomeRespModel?) {
-        welcomeResp ?: return;
+        welcomeResp ?: return
         welcomeResp.Welcome.firstOrNull()?.Pages_Welcome?.firstOrNull()?.let {
             Glide.with(this).applyDefaultRequestOptions(RequestOptions()).load(it.Logo)
                 .error(ContextCompat.getDrawable(requireContext(), R.drawable.ic_app)).into(binding.iconApp)
@@ -53,9 +50,9 @@ class WelcomeFragment : BaseFragment<FragmentWelcomeBinding, WelcomeVM>(), Welco
                 .into(binding.bgWelcome)
         }
         welcomeResp.Welcome.firstOrNull()?.Pages_Welcome_Text?.firstOrNull()?.let {
-            binding.titleWelcome.text = it.Title;
-            binding.descriptionWelcome.text = it.Description;
-            binding.btnWelcome.text = it.Button;
+            binding.titleWelcome.text = it.Title
+            binding.descriptionWelcome.text = it.Description
+            binding.btnWelcome.text = it.Button
         }
 
     }

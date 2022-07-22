@@ -13,20 +13,18 @@ import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.data.api.pojo.fee.CustomerGets
 import com.hanheldpos.databinding.FragmentBuyXGetYBinding
 import com.hanheldpos.extension.notifyValueChange
-import com.hanheldpos.model.product.buy_x_get_y.BuyXGetY
-import com.hanheldpos.model.product.buy_x_get_y.GroupBuyXGetY
 import com.hanheldpos.model.cart.BaseProductInCart
 import com.hanheldpos.model.cart.Combo
 import com.hanheldpos.model.cart.Regular
-import com.hanheldpos.model.product.buy_x_get_y.ItemBuyXGetYGroup
+import com.hanheldpos.model.product.buy_x_get_y.BuyXGetY
+import com.hanheldpos.model.product.buy_x_get_y.GroupBuyXGetY
 import com.hanheldpos.model.product.combo.ItemActionType
 import com.hanheldpos.ui.base.fragment.BaseFragment
-import com.hanheldpos.ui.screens.product.buy_x_get_y.adapter.BuyXGetYGroupAdapter
-import com.hanheldpos.ui.screens.product.combo.ComboFragment
 import com.hanheldpos.ui.screens.discount.discount_type.discount_code.DiscountCodeFragment
 import com.hanheldpos.ui.screens.home.order.OrderFragment
+import com.hanheldpos.ui.screens.product.buy_x_get_y.adapter.BuyXGetYGroupAdapter
+import com.hanheldpos.ui.screens.product.combo.ComboFragment
 import com.hanheldpos.ui.screens.product.regular.RegularDetailFragment
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 

@@ -23,7 +23,7 @@ data class Reason(
     val CompVoidValue: Int,
 ) : Parcelable {
     fun total(total : Double) : Double {
-        val totalComp = total * CompVoidValue / 100;
-        return totalComp;
+        val totalComp = total * CompVoidValue / 100
+        return totalComp
     }
 }

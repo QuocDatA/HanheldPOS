@@ -1,7 +1,6 @@
 package com.hanheldpos.ui.screens.menu.report.sale.adapter
 
 import androidx.recyclerview.widget.DiffUtil
-import com.diadiem.pos_components.PTextView
 import com.hanheldpos.R
 import com.hanheldpos.model.menu.report.ReportItem
 import com.hanheldpos.ui.base.adapter.BaseBindingListAdapter

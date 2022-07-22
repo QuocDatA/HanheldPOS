@@ -8,7 +8,7 @@ class CustomerActivityAdapterHelper(private val listener: ActivityCallBack) {
     private var keyRequest: Int = 0
     private var isLoadingMore = false
     private var currentPage = 1
-    private var customerId : String? = null;
+    private var customerId : String? = null
     private fun init() {
         activities.clear()
         currentPage = 1

@@ -269,12 +269,12 @@ abstract class BaseProductInCart {
     }
 
     fun isExistDiscount(discountId: String): Boolean {
-        return discountServersList?.firstOrNull { discServer -> discServer._id == discountId } != null;
+        return discountServersList?.firstOrNull { discServer -> discServer._id == discountId } != null
     }
 
     open fun addDiscountUser(discount: DiscountUser) {
         discountUsersList =
-            mutableListOf(discount);
+            mutableListOf(discount)
     }
 
     open fun addDiscountServer(discount: DiscountResp) {
@@ -286,7 +286,7 @@ abstract class BaseProductInCart {
     }
 
     open fun addCompReason(comp: Reason) {
-        compReason = comp;
+        compReason = comp
     }
 
     open fun clearCompReason() {

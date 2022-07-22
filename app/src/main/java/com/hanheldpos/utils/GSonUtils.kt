@@ -19,14 +19,14 @@ object GSonUtils {
      *  Server designer is drunk so we have this method
      */
     private fun toServerFormat(str: String): String {
-        var json = str;
-        json = json.replace("\\", "\\\\");
-        json = json.replace("\"", "\\\"");
-        json = json.replace("\b", "\\b");
-        json = json.replace("\n", "\\n");
-        json = json.replace("\r", "\\r");
-        json = json.replace("\t", "\\t");
-        return "\"${json}\"";
+        var json = str
+        json = json.replace("\\", "\\\\")
+        json = json.replace("\"", "\\\"")
+        json = json.replace("\b", "\\b")
+        json = json.replace("\n", "\\n")
+        json = json.replace("\r", "\\r")
+        json = json.replace("\t", "\\t")
+        return "\"${json}\""
     }
 
     fun <T> mapToObject(any: Any?, type: Class<T>): T? {

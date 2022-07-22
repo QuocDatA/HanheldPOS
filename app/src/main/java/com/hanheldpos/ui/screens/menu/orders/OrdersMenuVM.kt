@@ -3,7 +3,6 @@ package com.hanheldpos.ui.screens.menu.orders
 import android.content.Context
 import com.hanheldpos.R
 import com.hanheldpos.model.menu.orders.OrdersOptionType
-import com.hanheldpos.model.menu.report.ReportOptionType
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
 import com.hanheldpos.ui.screens.menu.adapter.ItemOptionNav
 

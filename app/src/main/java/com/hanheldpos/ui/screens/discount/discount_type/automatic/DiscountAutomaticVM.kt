@@ -13,7 +13,7 @@ import java.util.*
 
 class DiscountAutomaticVM : BaseUiViewModel<DiscountAutomaticUV>() {
 
-    val isLoading = MutableLiveData(false);
+    val isLoading = MutableLiveData(false)
 
     fun initData() {
         loadDiscountAutomatic()
@@ -29,15 +29,15 @@ class DiscountAutomaticVM : BaseUiViewModel<DiscountAutomaticUV>() {
 
     fun onApplyDiscountAuto(discount : DiscountResp) {
         // Re-check the validity of the discount.
-        if (discount.isBuyXGetY() || !discount.isValid(CurCartData.cartModel!!, Date()) ?: false) {
+        if (discount.isBuyXGetY() || !discount.isValid(CurCartData.cartModel!!, Date())) {
             showError(PosApp.instance.getString(R.string.invalid_discount))
-            return;
+            return
         }
 
         // Check limit for discount.
         if (discount.isMaxNumberOfUsedPerOrder()) {
             showError(PosApp.instance.getString(R.string.maxium_usage_limited))
-            return;
+            return
         }
 
         when (DiscApplyTo.fromInt(discount.DiscountApplyTo)) {

@@ -15,7 +15,7 @@ import com.hanheldpos.utils.PriceUtils
 class PayInPayOutFragment(private val listener : PayInOutCallback) : BaseFragment<FragmentPayInPayOutBinding, PayInPayOutVM>(),
     PayInPayOutUV {
 
-    private lateinit var paidInOutAdapter: PaidInOutAdapter;
+    private lateinit var paidInOutAdapter: PaidInOutAdapter
 
     override fun layoutRes() = R.layout.fragment_pay_in_pay_out
 
@@ -34,14 +34,14 @@ class PayInPayOutFragment(private val listener : PayInOutCallback) : BaseFragmen
         binding.amountInput.let { input ->
             var isEditing = false
             input.doAfterTextChanged {
-                if (isEditing) return@doAfterTextChanged;
-                if (it.toString().isEmpty()) input.setText("0");
+                if (isEditing) return@doAfterTextChanged
+                if (it.toString().isEmpty()) input.setText("0")
                 else {
-                    isEditing = true;
+                    isEditing = true
                     input.setText(PriceUtils.formatStringPrice(it.toString()))
                 }
-                input.setSelection(input.length());
-                isEditing = false;
+                input.setSelection(input.length())
+                isEditing = false
             }
         }
 
@@ -52,17 +52,17 @@ class PayInPayOutFragment(private val listener : PayInOutCallback) : BaseFragmen
                         requireContext(),
                         R.color.color_0
                     )
-                );
+                )
                 binding.textBtnPayOut.setTextColor(
                     ContextCompat.getColor(
                         requireContext(),
                         R.color.color_0
                     )
-                );
+                )
                 binding.btnPayIn.background =
-                    ContextCompat.getDrawable(requireContext(), R.color.color_11);
+                    ContextCompat.getDrawable(requireContext(), R.color.color_11)
                 binding.btnPayOut.background =
-                    ContextCompat.getDrawable(requireContext(), R.color.color_11);
+                    ContextCompat.getDrawable(requireContext(), R.color.color_11)
 
             } else {
                 binding.textBtnPayIn.setTextColor(
@@ -70,19 +70,19 @@ class PayInPayOutFragment(private val listener : PayInOutCallback) : BaseFragmen
                         requireContext(),
                         R.color.color_8
                     )
-                );
+                )
                 binding.textBtnPayOut.setTextColor(
                     ContextCompat.getColor(
                         requireContext(),
                         R.color.color_8
                     )
-                );
+                )
                 binding.btnPayIn.background =
-                    ContextCompat.getDrawable(requireContext(), R.drawable.bg_outline);
+                    ContextCompat.getDrawable(requireContext(), R.drawable.bg_outline)
                 binding.btnPayOut.background =
-                    ContextCompat.getDrawable(requireContext(), R.drawable.bg_outline);
+                    ContextCompat.getDrawable(requireContext(), R.drawable.bg_outline)
             }
-        };
+        }
 
         viewModel.isActiveButton.observe(this) {
             when (it) {
@@ -92,17 +92,17 @@ class PayInPayOutFragment(private val listener : PayInOutCallback) : BaseFragmen
                             requireContext(),
                             R.color.color_11
                         )
-                    );
+                    )
                     binding.textBtnPayOut.setTextColor(
                         ContextCompat.getColor(
                             requireContext(),
                             R.color.color_0
                         )
-                    );
+                    )
                     binding.btnPayIn.background =
-                        ContextCompat.getDrawable(requireContext(), R.color.color_0);
+                        ContextCompat.getDrawable(requireContext(), R.color.color_0)
                     binding.btnPayOut.background =
-                        ContextCompat.getDrawable(requireContext(), R.color.color_11);
+                        ContextCompat.getDrawable(requireContext(), R.color.color_11)
                 }
                 PayInPayOutVM.ActiveButton.PayOut -> {
                     binding.textBtnPayIn.setTextColor(
@@ -110,27 +110,27 @@ class PayInPayOutFragment(private val listener : PayInOutCallback) : BaseFragmen
                             requireContext(),
                             R.color.color_0
                         )
-                    );
+                    )
                     binding.textBtnPayOut.setTextColor(
                         ContextCompat.getColor(
                             requireContext(),
                             R.color.color_11
                         )
-                    );
+                    )
                     binding.btnPayIn.background =
-                        ContextCompat.getDrawable(requireContext(), R.color.color_11);
+                        ContextCompat.getDrawable(requireContext(), R.color.color_11)
                     binding.btnPayOut.background =
-                        ContextCompat.getDrawable(requireContext(), R.color.color_0);
+                        ContextCompat.getDrawable(requireContext(), R.color.color_0)
                 }
                 else -> {
-                    viewModel.isValid.postValue(viewModel.isValid.value);
+                    viewModel.isValid.postValue(viewModel.isValid.value)
                 }
             }
-        };
+        }
 
-        paidInOutAdapter = PaidInOutAdapter();
+        paidInOutAdapter = PaidInOutAdapter()
         binding.paidInOutList.apply {
-            adapter = paidInOutAdapter;
+            adapter = paidInOutAdapter
             addItemDecoration(
                 DividerItemDecoration(
                 context,
@@ -147,7 +147,7 @@ class PayInPayOutFragment(private val listener : PayInOutCallback) : BaseFragmen
     }
 
     override fun initData() {
-        viewModel.loadPaidInOut(requireContext());
+        viewModel.loadPaidInOut(requireContext())
     }
 
     override fun initAction() {
@@ -163,13 +163,13 @@ class PayInPayOutFragment(private val listener : PayInOutCallback) : BaseFragmen
 
     @SuppressLint("NotifyDataSetChanged")
     override fun onLoadPaidInOutListToUI(list: List<PaidInOutListResp>?) {
-        paidInOutAdapter.submitList(list);
-        paidInOutAdapter.notifyDataSetChanged();
-        val totalPrice = list?.sumOf { (it.Receivable?:0.0).minus(it.Payable?:0.0) };
-        binding.totalPaid.text =PriceUtils.formatStringPrice( totalPrice.toString() );
+        paidInOutAdapter.submitList(list)
+        paidInOutAdapter.notifyDataSetChanged()
+        val totalPrice = list?.sumOf { (it.Receivable?:0.0).minus(it.Payable?:0.0) }
+        binding.totalPaid.text =PriceUtils.formatStringPrice( totalPrice.toString() )
     }
 
     interface PayInOutCallback {
-        fun onLoadReport();
+        fun onLoadReport()
     }
 }

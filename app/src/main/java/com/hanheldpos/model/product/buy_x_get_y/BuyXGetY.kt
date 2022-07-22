@@ -186,7 +186,7 @@ class BuyXGetY() : BaseProductInCart(),Cloneable {
         var proModSubTotal = price
         var grossPrice = grossPrice(subTotal, 0.0)
 
-        var subOrderDetail_id = 0;
+        var subOrderDetail_id = 0
 
         groupList?.mapIndexed { groupIndex, groupBuyXGetY ->
             groupBuyXGetY.productList.mapIndexed { proIndex, baseProduct ->

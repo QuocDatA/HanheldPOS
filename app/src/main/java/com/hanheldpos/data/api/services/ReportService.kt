@@ -1,6 +1,5 @@
 package com.hanheldpos.data.api.services
 
-import com.hanheldpos.data.api.pojo.payment.PaymentMethodResp
 import com.hanheldpos.data.api.pojo.report.ReportSalesResp
 import com.hanheldpos.data.repository.BaseResponse
 import retrofit2.Call

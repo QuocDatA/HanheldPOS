@@ -147,6 +147,4 @@ data class CustomerResp(
 data class CustomerGroup(
     val CustomerGuestGroupGuid : String,
     val GroupName : String,
-) : Parcelable {
-
-}
+) : Parcelable

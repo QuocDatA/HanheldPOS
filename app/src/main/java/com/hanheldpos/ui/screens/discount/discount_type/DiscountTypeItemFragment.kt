@@ -9,12 +9,11 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.order.settings.Reason
-import com.hanheldpos.databinding.*
+import com.hanheldpos.databinding.FragmentDiscountTypeItemBinding
 import com.hanheldpos.extension.setOnClickDebounce
 import com.hanheldpos.model.cart.BaseProductInCart
 import com.hanheldpos.model.cart.CartModel
 import com.hanheldpos.model.discount.DiscApplyTo
-import com.hanheldpos.model.discount.DiscountTriggerType
 import com.hanheldpos.model.discount.DiscountTypeFor
 import com.hanheldpos.model.discount.DiscountTypeTab
 import com.hanheldpos.ui.base.fragment.BaseFragment

@@ -24,7 +24,6 @@ import com.hanheldpos.ui.screens.home.order.OrderDataVM
 import com.hanheldpos.ui.screens.home.table.adapter.TableAdapter
 import com.hanheldpos.ui.screens.home.table.adapter.TableAdapterHelper
 import com.hanheldpos.ui.screens.home.table.customer_input.TableInputFragment
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 

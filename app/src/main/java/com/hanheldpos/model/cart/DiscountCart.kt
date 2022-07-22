@@ -5,5 +5,4 @@ data class DiscountCart(
     val title : String,
     val amount : Double,
     val isDiscBuyXGetYEntire: Boolean? = false,
-) {
-}
+)

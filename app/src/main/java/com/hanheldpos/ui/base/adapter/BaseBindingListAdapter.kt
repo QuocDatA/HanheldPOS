@@ -6,7 +6,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import com.hanheldpos.R
 
 abstract class BaseBindingListAdapter<T>(
     diffCallback: DiffUtil.ItemCallback<T>,

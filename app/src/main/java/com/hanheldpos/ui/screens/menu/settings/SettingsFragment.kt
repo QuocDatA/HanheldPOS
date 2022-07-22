@@ -74,10 +74,10 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding, SettingsVM>(), Se
         when (option.type as SettingsOptionType) {
             SettingsOptionType.GENERAL -> navigator.goToWithAnimationEnterFromRight(
                 GeneralFragment()
-            );
+            )
             SettingsOptionType.HARDWARE -> navigator.goToWithAnimationEnterFromRight(
                 HardwareFragment()
-            );
+            )
         }
     }
 }

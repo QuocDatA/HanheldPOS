@@ -1,7 +1,6 @@
 package com.hanheldpos.ui.screens.menu.settings.adapter
 
 import android.graphics.Color
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import com.hanheldpos.PosApp
 import com.hanheldpos.R

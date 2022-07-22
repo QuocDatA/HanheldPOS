@@ -2,9 +2,9 @@ package com.hanheldpos.ui.screens.menu.settings.general
 
 import android.content.Context
 import com.hanheldpos.R
-import com.hanheldpos.model.menu.settings.ItemSettingOption
 import com.hanheldpos.model.menu.settings.GeneralNotificationType
 import com.hanheldpos.model.menu.settings.GeneralPushType
+import com.hanheldpos.model.menu.settings.ItemSettingOption
 import com.hanheldpos.ui.base.viewmodel.BaseUiViewModel
 
 class GeneralVM : BaseUiViewModel<GeneralUV>() {

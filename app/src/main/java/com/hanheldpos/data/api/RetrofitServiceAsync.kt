@@ -52,7 +52,7 @@ class RetrofitServiceAsync private constructor() {
         val sslContext: SSLContext = SSLContext.getInstance("SSL")
         sslContext.init(null, trustAllCerts, SecureRandom())
         // Create an ssl socket factory with our all-trusting manager
-        val socketFactory: SSLSocketFactory = sslContext.socketFactory;
+        val socketFactory: SSLSocketFactory = sslContext.socketFactory
 
         val okHttpBuilder = OkHttpClient.Builder()
             .readTimeout(REQ_TIME_OUT, TimeUnit.SECONDS)

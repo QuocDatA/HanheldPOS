@@ -10,18 +10,17 @@ import com.hanheldpos.R
 import com.hanheldpos.data.api.pojo.discount.DiscountCoupon
 import com.hanheldpos.data.api.pojo.discount.DiscountResp
 import com.hanheldpos.databinding.FragmentDiscountCodeBinding
-import com.hanheldpos.model.product.buy_x_get_y.BuyXGetY
 import com.hanheldpos.model.cart.BaseProductInCart
-import com.hanheldpos.model.product.combo.ItemActionType
 import com.hanheldpos.model.discount.DiscApplyTo
 import com.hanheldpos.model.discount.DiscountTriggerType
 import com.hanheldpos.model.discount.DiscountTypeFor
+import com.hanheldpos.model.product.buy_x_get_y.BuyXGetY
+import com.hanheldpos.model.product.combo.ItemActionType
 import com.hanheldpos.ui.base.fragment.BaseFragment
-import com.hanheldpos.ui.screens.product.buy_x_get_y.BuyXGetYFragment
 import com.hanheldpos.ui.screens.discount.DiscountFragment
 import com.hanheldpos.ui.screens.discount.discount_detail.DiscountDetailFragment
 import com.hanheldpos.ui.screens.discount.discount_type.adapter.DiscountServerAdapter
-import kotlinx.coroutines.CoroutineScope
+import com.hanheldpos.ui.screens.product.buy_x_get_y.BuyXGetYFragment
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 

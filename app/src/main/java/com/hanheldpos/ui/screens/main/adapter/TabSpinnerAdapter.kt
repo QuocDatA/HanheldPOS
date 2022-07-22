@@ -12,7 +12,7 @@ class TabSpinnerAdapter(context: Context) :
         R.layout.item_dropdown_spinner
     ) {
     override fun binding(binding: ItemDropdownSpinnerBinding?, item: HomeFragment.HomePage?) {
-        if (item == null) return;
+        if (item == null) return
 
         binding?.text = context.getString(item.textId)
     }

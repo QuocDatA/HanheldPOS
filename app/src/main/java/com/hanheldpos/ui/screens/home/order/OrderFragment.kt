@@ -1,7 +1,6 @@
 package com.hanheldpos.ui.screens.home.order
 
 import android.annotation.SuppressLint
-import android.os.SystemClock
 import android.util.Log
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
@@ -10,28 +9,26 @@ import com.hanheldpos.data.api.pojo.discount.CustomerBuys
 import com.hanheldpos.data.api.pojo.fee.CustomerGets
 import com.hanheldpos.data.api.pojo.order.menu.Menu
 import com.hanheldpos.databinding.FragmentOrderBinding
-import com.hanheldpos.model.product.buy_x_get_y.BuyXGetY
-import com.hanheldpos.model.product.buy_x_get_y.CustomerDiscApplyTo
-import com.hanheldpos.model.product.buy_x_get_y.GroupType
 import com.hanheldpos.model.cart.*
-import com.hanheldpos.model.product.combo.ItemActionType
 import com.hanheldpos.model.discount.DiscApplyTo
 import com.hanheldpos.model.home.order.ProductModeViewType
 import com.hanheldpos.model.home.order.menu.ProductMenuItem
-import com.hanheldpos.model.order.OrderModel
+import com.hanheldpos.model.product.buy_x_get_y.BuyXGetY
+import com.hanheldpos.model.product.buy_x_get_y.CustomerDiscApplyTo
+import com.hanheldpos.model.product.buy_x_get_y.GroupType
+import com.hanheldpos.model.product.combo.ItemActionType
 import com.hanheldpos.ui.base.adapter.BaseItemClickListener
 import com.hanheldpos.ui.base.fragment.BaseFragment
 import com.hanheldpos.ui.screens.cart.CartDataVM
 import com.hanheldpos.ui.screens.cart.CartFragment
 import com.hanheldpos.ui.screens.cart.CurCartData
-import com.hanheldpos.ui.screens.product.combo.ComboFragment
 import com.hanheldpos.ui.screens.home.HomeFragment
 import com.hanheldpos.ui.screens.home.ScreenViewModel
 import com.hanheldpos.ui.screens.home.order.adapter.OrderProductAdapter
 import com.hanheldpos.ui.screens.home.order.adapter.OrderProductAdapterHelper
 import com.hanheldpos.ui.screens.home.order.menu.CategoryMenuFragment
+import com.hanheldpos.ui.screens.product.combo.ComboFragment
 import com.hanheldpos.ui.screens.product.regular.RegularDetailFragment
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
