@@ -21,7 +21,7 @@ class IntroActivity : BaseActivity<ActivityIntroBinding, IntroVM>(), IntroUV {
     }
 
     override fun initView() {
-        binding.root.viewTreeObserver.addOnGlobalLayoutListener { hideSystem(); }
+        binding.root.viewTreeObserver.addOnGlobalLayoutListener { hideSystem() }
     }
 
     override fun initData() {
@@ -33,7 +33,10 @@ class IntroActivity : BaseActivity<ActivityIntroBinding, IntroVM>(), IntroUV {
     }
 
     override fun finishIntro() {
-        navigateTo(MainActivity::class.java, true,true)
+        navigateTo(MainActivity::class.java,
+            alsoFinishCurrentActivity = true,
+            alsoClearActivity = true
+        )
     }
     private fun hideSystem(){
         SystemHelper.hideSystemUI(window)
